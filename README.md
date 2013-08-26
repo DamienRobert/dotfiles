@@ -1,9 +1,9 @@
-This repository contain config files and custom scripts.
+This repository contain dotfiles files and custom scripts.
 
 - bin: symlinks to scripts that I use often, in my `PATH`. Some symlinks
   are broken here because they reference programs available in my other
   github repositories.
-- config: config files
+- config: dotfiles
 - doc: notes on several things (maths, git, ruby, ...)
 - ruby: custom ruby library
 - script: custom scripts
