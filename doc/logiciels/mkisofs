@@ -1,0 +1,104 @@
+mkisofs [options] -o filename pathspec
+
+-graft-points pour changer les paths dans le cd:
+foo/bar/=../old.lis will  include  the file old.lis in the cdrom image at /foo/bar/old.lis
+foo/bar/xxx=../old.lis will include the file old.lis in the cdrom image at /foo/bar/xxx.
+
+-root ploum: pour faire commencer les fichiers à ploum
+
+-hide glob: pour cacher des files
+-hide*: cf le man
+
+-input-charset
+-output-charset
+
+-m glob: empeche glob d'etre ecrit
+-x path: idem
+-nobak: n'inclue pas les fichiers de backup
+
+-pad: par défaut
+-no-pad
+
+-print-size: pour graver à la volée, cf man
+
+-sort: pour optimiser le data layout, cf man
+
+Multisession:
+-C last_sess_start,next_sess_start: obtenus pas cdrecord -msinfo
+-M spécifier le nom de l'image iso déjà existente
+(-C sans le -M est pour les CDextra: moitié cd-audio, moitié cd-iso)
+-old-root s'il y a eu un root
+
+Infos sur le cd:
+-A nom de l'application (128 charactères)
+-abstract filename: nom du fichier de résumé
+-biblio file: nom du fichier de biblio
+-copyright file
+-P publisher_id
+-p preparer_id
+-sysid ID
+-V volid: nom du cd
+-volset ID: nom de la série de cd
+-volset size: taille de la série de cd
+-volset-seqno: numéro du cd actuel
+
+ISO9660:
+-l: allow full 31 characters filenames (->dur à lire sous dos)
+
+Violation de ISO9660:
+-allow-lowercase
+-allow-multidot
+-d: n'ajoute pas de . à la fin de fichiers qui n'ont pas de .
+-D: ne fait pas de "deep directory relocation"
+-L: permet à un filename de commencer par un .
+-max-iso9660-filenames: permet 37 charactères dans les filenames.Implique -N
+-N: omit version numbers from ISO9660 file names
+-relaxed-filenames: pour avoir des digits
+-no-iso-translate: ne converti pas les # et ~ en autre chose
+-U: la totale (-d, -l, -L, -N,-relaxed-filenames,-allow-lowercase,-allow-multidot,-no-iso-translate)
+
+Windows:
+-J pour activer les extensions Joliet
+-joliet-long (->103 caractères, marche en pratique)
+
+
+RockRidge:
+-R: pour activer
+-r: pour activer, avec des modes plus raisonnables
+-dir-mode mode: le mode des répertoires
+-file-mode mode: overwrite le mode des files
+-new-dir-mode
+-f: suit les liens symboliques
+-gid gid -uid uid
+-T pour créer un fichier de translation pour les systèmes ne comprenant pas rock ridge
+-z: pour les transparently compressed files
+
+Divers:
+-gui: more verbose for futures gui
+-quiet
+-v, -vv: more verbose
+
+DVD:
+-dvd-video
+
+Exemples:
+mkisofs -o cd.iso cd_dir : full ISO-9660
+
+j'utilise:
+mkisofs -o cd.iso -r -l (-f) -V NOMDUCD: rock-ridge, avec des noms iso longs
+                 (-J pour le joliet, -f pour suivre les liens
+		  -D pour avoir bcp de répertoires, -relaxed-filenames)
+mount cd.iso -r -t iso9660 -o loop /mnt/iso: pour voir l'image
+cdrecord -pad -v dev=/dev/hdc -tao cd.iso #cdrecord -v [speed=2] dev=2,0 cd.iso
+(-multi pour les multisession)
+
+Pour les trucs audio:
+cdrecord -v speed=1 dev=2,0 -audio track*.cdaudio
+
+To  write a tar archive directly to a CD that will later contain a sim- ple iso9660 filesystem with the tar archive call:
+% star -c . | mkisofs -stream-media-size 333000 | \
+    cdrecord dev=b,t,l -dao tsize=333000s -
+		     
+
+#j'utilise:
+mkisofs (-f)  -r -l -f -V NOMDUCD . | cdrecord -pad -v dev=/dev/hdc -tao -

@@ -1,0 +1,15 @@
+Compiling unison:
+http://archlinuxarm.org/forum/viewtopic.php?t=4003
+
+wget https://github.com/ocaml/ocaml/archive/3.12.zip
+unzip 3.12.zip
+
+./configure
+make world
+make opt
+make install
+
+wget http://www.seas.upenn.edu/~bcpierce/unison//download/releases/unison-2.40.102/unison-2.40.102.tar.gz
+tar xvf unison-*.tar.gz
+
+make

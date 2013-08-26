@@ -1,0 +1,15 @@
+WindowList
+ Next  (Iconic,  CirculateHitIcon) Function WarpFocus
+ Next  (Iconic,  CirculateHitIcon) Function WarpFocus
+ Next  (Iconic,  CirculateHitIcon) Function WarpFocus
+ Next  (Iconic) Function WarpFocus
+ Next  (Iconic, CirculateHit) Function WarpFocus
+ Next  (Iconic, CirculateHitIcon) Function WarpFocus
+Warp
+Prev (CurrentPage) Function WarpFocus
+All DestroyWindowStyle
+All WindowStyle !Title
+All UseStyle _without_mouse
+All !FPEnterToFocus
+All WindowStyle UseStyle _without_mouse
+All WindowStyle !FPEnterToFocus

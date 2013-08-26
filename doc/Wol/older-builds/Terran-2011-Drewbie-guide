@@ -1,0 +1,782 @@
+%%%%%%%%%%%%%%%%%%%%% Drewbie %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+http://www.complexitygaming.com/forums/showthread.php?t=4456
+(from http://www.teamliquid.net/forum/viewmessage.php?topic_id=293252)
+
+Default drewbie's Strategy Guide
+
+    Hey guys, I wanted to do something nice for all of you for the
+    holidays! I have been doing lessons for almost a year now, and I think
+    I am a pretty good teacher (at least my students seem happy!). I really
+    want to focus on streaming for a while though, so I decided that I am
+    going to take a break from doing lessons for the next month or so.
+    Instead, I am just going to give it away for free! So, I wrote out a
+    few of my favorite Terran strategies and did my best to explain what to
+    do in every situation when playing each build. I also included some
+    replays of me doing the build orders and analyzed some of the games. I
+    hope that players that are trying to improve, or are thinking about
+    taking lessons or have in the past will try reading this, and I hope
+    that you learn something that helps to make you a better player!
+
+
+  Terran vs Protoss
+  ================
+
+    So, right now against Protoss my go-to build is a one barracks no-gas
+    expand. This build can stop any rushes and it gives you a good economy,
+    I think it is a good all-around strategy.
+
+    Before we get to the build-order, I just have to go over some early
+    game Terran vs Protoss things that you should be doing every single
+    game. Every player should learn how to scout vs Protoss, and how you
+    can decipher what exactly they are about to throw at you.
+
+    On four player maps, I send my SCV scout out at 13-14 supply depending
+    on the size of the map (Shakuras / Metalopolis / Shattered you only
+    have to scout two positions so you can get away with sending it out at
+    14) and on two player maps, I scout when my Barracks finishes. Run
+    around the Protoss’ base, check everything out, and then be sure to
+    leave before 4:00 on the game timer. The reason behind this timing is
+    that this is about when the Stalker finishes, and you need to keep that
+    SCV alive so that it can get scouting intel later on.
+
+    What should you look for when scouting? Well the most important thing
+    to do is check if they have one or two gas geysers.
+
+    There are really only two things that the Protoss will be doing if they
+    only have one gas geyser. The first is a one gate fast expand, the
+    second is pressuring you with gateway units when warpgate finishes with
+    three or four warpgates. To figure out whether they are going for a
+    fast expand or gateway pressure, run that SCV out of their base before
+    4:00 and hide, then come back between 5:00-5:30 and if they are one
+    gate expo-ing then you will see a Nexus there.
+
+    If there is no Nexus, then the Protoss is most likely going to attack
+    you as soon as warp gate finishes, so you need to build at least two
+    bunkers and leave some SCVs on autorepair at the bunkers. Four-gate is
+    really simple to stop if you follow all these steps and do not get
+    caught with your pants down .
+
+    If the Protoss had two gases you shouldn't be worried about a four-gate
+    allin. Most likely, they are going for some sort of fast tech and a
+    timing attack like a three-gate voidray / Dark Templar rush, or a
+    three-gate robo timing attack. If one of these are coming, you should
+    be able to stop it as long as you are prepared. You have to get an
+    Engineering Bay at around 6:00 minutes in the game because Dark Templar
+    rushes arrive at your base at about 7:10. If you are not sure what the
+    Protoss is doing it is definitely worth it to scan their main when your
+    expansion Orbital Command finishes at 6:00. These types of timing
+    attacks hit around eight minutes so you need to be prepared, by making
+    at least 3 bunkers and leaving some SCVs on auto-repair.
+
+    It’s ok if you have twelve SCVs idle at your bunkers, because remember
+    they are going all in here and they don't have an expansion, which
+    means that about twelve SCVs plus your two mules at a time from the two
+    Orbital CC's will give you the same, if not a better, income. You also
+    have to get stim and combat shields as soon as possible. In fact, try
+    not to engage the Protoss army, just hide behind your wall of bunkers
+    and wait for the upgrades which make you waaaaaaaay more cost efficient
+    vs. Protoss units.
+
+
+  1 Barracks No-Gas Expand:
+  10 depot
+  12 barracks
+  15 OC
+  16 depot
+  (you can actually use the same scv to build the 1st depot + barracks + 2nd depot, then send it to your expo and build the CC)
+  18 CC
+  20 bunker
+  Stop marine production after 4 marines to get your 2nd/3rd/4th barracks up faster
+  Constantly pump SCVs and build the barracks as soon as you have money
+  22 2nd rax
+  23 3rd rax
+  23 4th rax
+  24 depot
+  30 depot
+  Constantly pump marines and SCVs until you hit about 35 supply, then take 2 gas geysers. (@around 6:00)
+  Continue making marines until you have 125 gas and then build 3 techlabs and 1 reactor on your 4 barracks.
+  If the Protoss did a one-gate expand then you can move out with about
+  12-16 Marines and try to punish them if they are teching too fast. Make
+  sure not to over commit though. If you can kill a few stalkers and
+  sentries that’s great, and it forces the Protoss to stop teching and
+  spend their chronoboost on gateways instead of upgrades or probes, doing
+  this also tends to trigger a lot of counter all-ins so be careful not to
+  die if you lose all of your marines.
+
+  My game plan in the midgame:
+    There is a really standard way to tech up in TvP. The way I think of it
+    is that it’s a balancing act. You want to tech faster than your
+    opponent, but you also need to have enough bio units to hold off any
+    pressure that the Protoss is going to throw at you. The idea is the
+    same for the Protoss. They want to tech up as fast as possible, but
+    they need to make enough gateway units to be able to hold off any bio
+    timing pushes.
+
+    If I am doing bio fast expands (there’s lots of different ways to do
+    them, two rax expo or one rax reaper expand or one rax marauder expand
+    or just gasless expand like my strat) I always spend my gas in the same
+    way. I will have tech labs on all my Barracks except for one, which
+    will have a reactor. I'll upgrade Stim / Combat Shields / Concussive
+    shells and then get the +1 weapons upgrade. So that’s where my first
+    475 gas goes (three techlabs + one reactor + stim + shields + conc
+    shells + weapons upgrade) and once I have those I start my factory.
+
+    When the factory finishes I make a Starport immediately and add a
+    reactor on the factory so that I can make double Medivacs right when
+    the Starport finishes. It's really important to get your timings down
+    and not forget the Starport! Once it’s done it is very important to be
+    producing non-stop out of that Starport.
+
+    Two or four Medivac timing attacks are super strong because you get so
+    much more mobility and you can heal after stimming. It actually only
+    takes three vespene geysers with three scvs each on them to produce up
+    to this point, and you should have enough gas to macro five barracks +
+    one reactored Starport with just the three geysers. If you want to take
+    a fast third expansion then hold off on getting the fourth gas, but I
+    usually take it and get a fast second engineering bay + Armory and
+    start upgrading +1 armor / +2 attack and make a Ghost Academy.
+
+    While the Starport is building, add a fourth and fifth Barracks,
+    because your two bases should be almost saturated by now and your money
+    will start to pile up if you don't have more production. As a general
+    rule of thumb, I try to have three production buildings per base that I
+    have. So in TvP I go for five rax and a reactored Starport. Then, once
+    I get a third base I'll make three more Barracks. Later on in the game
+    though it’s better to add even more production buildings, because once
+    you get to the point where you don't need to build supply depots or
+    SCV's anymore, you need to start spending that extra money on units.
+
+    No matter what opener I do in TvP, this is generally what I try to
+    transition into if I am playing a standard solid style.
+
+    I realized when playing that one of my problems was that I was not
+    being aggressive enough with Protoss. As soon as you get Medivacs, you
+    need to be out there in the middle of the map taking control. The
+    Protoss needs to be scared that you are going to doom drop him if he
+    moves out. He needs to be scared that you are going to attack him head
+    on and kite all his units to death. He needs to be scared to take a
+    third base for fear of being spread out too thin.
+
+    Also, you have to realize that Medivacs are an amazing unit. You don't
+    even have to be super fast or have amazing APM, just leave a scouting
+    unit in front of their base and sit two Medivacs near their main base
+    just out of vision and if they move out into the center drop their
+    main. This should allow you to get a third base faster than the
+    Protoss. This is the easy part, and I am really good at getting myself
+    into a good position up until this point in the game. The hard part
+    comes next.
+
+  And this is what I try to do in the late game vs Protoss:
+    Whenever I used to get ahead vs. Protoss and I knew my army was bigger,
+    I was always afraid to attack into the Protoss army. I would just
+    expand all over the place, take my half of the map and try to get a big
+    economic advantage. It turns out that this is actually the worst thing
+    you can do vs. Protoss. Their army gets more and more cost effective
+    vs. the Terran army as the game goes on. Also, if you both max out and
+    keep throwing armies at each other then you will never be able to kill
+    him, because the Protoss will always be one round of production ahead
+    of you, thanks to warp gates.
+
+    Three bases is all a Terran needs to make the army they want. Once you
+    get your three bases and get your macro set up, and upgrades going, you
+    need to just go full out aggressive mode. Stop macroing, use only your
+    hotkeys to build Marines and Ghosts, a few marauders and Medivacs. You
+    need to focus on having the right unit composition to counter theirs.
+
+    This is what your unit composition should look like:
+    For every zealot - you need 2 marines
+    For every high templar - you need 1 ghost
+    For every archon - you need 2 ghosts
+    For every colossus - 3 vikings
+    For every stalker - 1 marauder
+
+    Notice how each counter is the same supply as its Protoss counter-part.
+    If you can do this in the late game then you should be able to win a
+    200 vs 200 supply fight vs the protoss easily and cost-effectively.
+
+    Whatever you do, DO NOT let the Protoss get a fourth base. Three base
+    Protoss is manageable, but if you let them get four bases of gas,
+    everything just spirals out of control. Use drops to split the Protoss'
+    attention and split up their army. Bio is more cost effective in
+    smaller fights, just try and chip and chip away and eventually their
+    back will break and you can over run them. Also, once you get cloak,
+    one Ghost can completely shut down a Protoss expansion just by building
+    a nuke, dropping it on their expo, then building another one, dropping
+    a nuke, rinse and repeat. It's really good and nobody does it.
+
+
+    Ok so that is my TvP game plan. I have saved 3 replays of me doing this
+    build and you can find them here http://www.megaupload.com/?d=MJ9WW8T7
+    One of the games (vs moggi) I watched the replay and analyzed the game
+    and wrote down what I was doing and what was going through my head. I
+    put that on a notepad and it is zipped with the replays, be sure to
+    look at that while watching the TvP FE moggi replay
+
+
+
+  Terran vs Terran
+  ===============
+
+    TvT is an interesting match-up right now. There are so many different
+    TvT builds and styles and there is no real "optimal" strategy. I'm
+    going to write about two builds that I know really well and that have
+    worked well in the past. One is a fast expand build that I would use on
+    big maps, while the other is a one-one-one that gives you the ability
+    to be aggressive and put pressure on your opponent.
+
+  The first strategy is a 1-1-1 build:
+
+  10 depot
+  12 barracks
+  13 refinery
+  15 OC
+  pump marines non-stop from barracks
+  16 depot
+  18 factory
+  20 refinery
+  22 depot
+  build starport right when factory finishes (25 supply)
+  build 3 hellions in a row from factory
+  build medivac from starport right when it finishes
+  the 8 marine 3 hellion 1 medivac push should be stronger than any units they can have at the time so go up to their ramp and try to scout out their unit composition and see if you can do some damage.
+  You can also drop hellions in the back of their base so that you can try to kill scvs + the hellions will scout at the same time.
+
+    At this point in the game there are a lot of different options open for
+    you. The most important thing that you can do here is to find out what
+    your opponent is doing and make the right unit composition to deal with
+    that. Your army is very mobile and you should be able to find out
+    exactly what they are doing.
+
+    You should always send the very first Hellion out into the map to
+    scout. If you see that your opponent has a Hellion too, its very likely
+    that they are also doing a 1-1-1 as well and you need to have a plan to
+    deal with cloak banshees. If you don't see a Hellion, but you go up
+    their ramp to scout and there is only a couple of Marines, that also
+    indicates that they are teching. If you don't know what they are doing
+    then use a scan, at 6:20 (instead of dropping a third mule).
+
+    You have to play proactively. You can transition into a really, really
+    strong one-base play with either cloaked banshees or a Tank push. Or,
+    if they are going banshees then you should make a Viking and then a
+    raven. You can also just cut units and make an expansion and keep them
+    contained with the threat of Hellion drops.
+
+    With this opening, I always transition into Marine Tank. Once your
+    expansion is up and running, you need to have six production facilities
+    (three per base). The standard for Marine Tank is to make three
+    Barracks (two reactors and one techlab), two factories, and one
+    Starport with a reactor. If you have all four gas geysers and are
+    saturated on two bases you can easily produce five Marines / two Tanks
+    / two Medivacs non-stop, and have a bit of gas leftover for upgrading,
+    and enough extra minerals to take a third base.
+
+  The second strategy is a one barracks fast expand:
+  10 depot ( at wall )
+  12 barracks ( at wall )
+  15 OC
+  16 depot
+  build 2 marines then liftoff barracks from wall, land in main and make 2 more marines
+  18 CC in main
+  19 take both refineries
+  21 bunker at ramp ( where barracks used to be )
+  25 factory ( build it as soon as you have 100 gas )
+  27 build 2nd CC into Orbital
+  28 techlab on barracks ( when factory is about half done )
+  30 depot
+  31 starport ( build starport as soon as factory finishes )
+  build a reactor with the barracks
+  6:20 in the game, SCAN YOUR OPPONENTS MAIN
+
+    Ok so, now you just did a 1-1-1 except there was a CC thrown in first.
+    From this point on, just like with the other TvT strat you have to play
+    reactively. Make sure to always SCV scout with this B.O at around 13-14
+    supply, you want to check and see if your opponent is doing a no gas
+    expand like you, or if they did gas before barrack, or if they are
+    going reapers.
+
+    If they go no gas expand, put your Starport on the reactor and go for
+    cloaked banshees. Also, float your CC down to your expansion as soon as
+    it is finished turning into an orbital command and make a bunker at
+    your expo.
+
+    If they go gas before Barracks, there are only two builds that it could
+    be: one is fast blue flame Hellion into mech (which was all the rage a
+    few months ago before the blue flame nerf but almost nobody does it
+    anymore lol), the other is a super fast banshee.
+
+    If you scout gas first, then you will need to make an Engineering Bay
+    at around 5:00-5:30 and build one turret in your mineral line and one
+    turret over your production. Then, build a Viking as soon as that
+    Starport finishes. It is ok if you lose a few SCVs to their harass,
+    because you will have a massive economic lead from making such a fast
+    second command center.
+
+    If you scout that they are making reapers, just leave one Marine in
+    your bunker and keep the rest of your Marines together (do not split
+    them up) and try to predict where it will jump up into your base so
+    that you can deny it.
+
+    If they just go for a normal 12 rax, 13 gas tech build, then you will
+    most likely have to worry about one of two things: first is a
+    Marine/Tank timing push, second is cloak banshees. When you scan your
+    opponent at 6:20, you should be able to figure out which of the two he
+    is doing, and you should have time to react accordingly.
+
+    Tank / Viking is the best way to stop any sort of early pressure. You
+    must have air control, so that you can use the Vikings to give vision
+    for your Tanks. Plus, you will be able to push them back and secure
+    your expansion.
+
+    You don't need that many Tanks, only one or two, just make sure that
+    you keep them alive and that you have some SCVs on auto-repair near
+    them. You will have a ton of SCVs at this point so it won't hurt your
+    economy at all if you pull off six SCVs to repair and stop his push.
+
+    This strat gives a really nice economy and a good transition into the
+    mid game. In the replay of me doing this build against a computer, I
+    maxed out in under 15 minutes with only the three rax / two factory /
+    one reactor Starport. Once you have secured your expansion, you need to
+    take both gas geysers right away. You will have a ton of minerals, and
+    it is important to get as much gas as possible to get all your upgrades
+    + Tank count up.
+
+
+    Ok so those are my two go-to TvT early game plans, and now for the mid-late game:
+
+
+    Marine/Tank/Medivac is the most cost effective unit composition in TvT,
+    unless they are going mech (Tank /Hellion/Viking). In that case, you
+    need to add Marauders to your army as Marauder/Tank is really good
+    against mech. So, once your macro is all set up, and you have stim and
+    combat shields, a couple of Medivacs and a handful of Tanks, it's time
+    to go out and put pressure on your opponent.
+
+    The key to Marine/Tank is to get sieged up in really good positions and
+    force your opponent to attack in to your already sieged Tanks. Using
+    drops (just 8 Marines in a Medivac) is a really good way to harass your
+    opponent and it also forces them to pull their army back to deal with
+    it which gives you a good opportunity to push forward with your main
+    army and siege in a good location.
+
+    You have to try to be cost-effective with your engagements at all
+    times. It is better to just play safe than to run into a situation
+    where you aren't sure if you will come out ahead.
+
+    Upgrades are also super important in TvT. If you upgrade +1 vehicle
+    weapons then your Tanks will kill enemy Tanks in three hits instead of
+    four, which is a huge advantage if your opponent does not have +1.
+    Marine upgrades are huge too. If you do an eight Marine drop in their
+    main and you have 1-1 upgrades and your opponent is 0-0, he will need
+    to send a lot more Marines to deal with it, opening up different places
+    for you to attack.
+
+    I really like using nukes to push my opponent back when this happens.
+    You can nuke their Tanks, just make sure that you are far enough back
+    that they cannot hit your Ghost, and it will force your opponent to
+    unsiege and back up. When they back up, you need to advance your Tanks
+    forward, and continue doing so until you can find a hole in their
+    defense or push one of their expansions.
+
+    If both players are evenly matched, it can end up being a split map
+    hour long game pretty easily. If that happens, don't worry about taking
+    all your bases as fast as possible. Just make sure that you have at
+    least three bases running, and secure your side of the map from drops
+    with turret rings and sensor towers everywhere. There is a point in TvT
+    where you should realize that you will never be able to kill each other
+    if you stay on ground units. You have to realize this point in time
+    before your opponent and get ready for an air war ( which is not
+    necessarily a bad thing, I for one enjoy those huge sky terran fights
+
+    The next phase of the game turns into BC /Viking/Raven/Thor. Don't try
+    and get there too fast though, you need to have enough money saved up
+    so that if your opponent decides to all out attack you and trade
+    armies, that you have enough money in the bank to re-make Marines/Tanks
+    while teching to BCs.
+
+    If you see your opponent teching to BCs too fast, usually you can kill
+    them before they get enough BCs. If you have 3-3 Marines and they have
+    0-0 or 1-1 upgrades on their BCs then the Marines will absolutely
+    destroy them. BCs are only good late game if they have 2-2 or 3-3
+    upgrades. Once BC's get 3-3 then the Marines barely tickle the BCs and
+    the Marines become useless.
+
+    You want a balanced army of Vikings and BCs. You only need enough BCs
+    to kill your opponent's ground forces. Vikings are the best air to air
+    unit in TvT. I would say you only need like six to eight BCs and the
+    rest Vikings. Also, two to four Ravens are really useful if you can
+    spare the extra gas. When the fight starts, send the Ravens in to
+    suicide Seeker Missile your opponent's Vikings.
+
+    TvT is fun sometimes, but it can also be really frustrating at other
+    times. If you have a solid gameplan that accounts for everything that
+    your opponent can throw at you, and you practice it and work hard at it
+    then you will find that TvT becomes a lot more fun and easier.
+
+
+    OK so here are some replays of me playing these strategies: http://www.megaupload.com/?d=BOWLFH5P
+    There are 3 replays, and in 2 of them I watched the replay and analyzed what I was doing and pointed out my own mistakes so that you won't make them ! The 2 notepads are in the zip file with the replays, check them out when you watch.
+
+
+ Terran vs Zerg
+ ==============
+
+    This is my favorite match up to play right now, it comes down to having
+    good micro and making really smart decisions with your army control, as
+    well as having good multitasking to harass the crap out of your
+    opponent. My first strategy is a reactor-hellion opener where you
+    expand fast and then transition to a two base timing attack. The second
+    is a 1 barracks no-gas expand into blue-flame hellions that gives you
+    an awesome economy and a chance to toast some drones, and then
+    transitions into either marine tank or mech, whichever you prefer.
+
+  Reactor Hellion Opener:
+  10 depot
+  12 barracks
+  13 gas
+  15 OC
+  16 depot
+  build 2 marines then stop
+  18 factory
+  19 reactor
+  21 Command Center
+  22 depot ( use the SCV that built the factory to make it )
+  switch factory onto the reactor
+  23 build 2 hellions
+  27 techlab on rax
+  when the 2 hellions finish put the factory onto the techlab that the barracks made and put the barracks onto the reactor and start pumping out 2 marines + tanks non-stop.
+  Go out and scout with the hellions, just leave them infront of the zergs base and try to deny creep spread ( it will help you later on when you push ) and it will give you a heads up if roaches or anything is coming at you.
+  35 2nd + 3rd barracks
+  39 2nd refinery
+  39 depot
+  when the 2nd + 3rd barracks finish, build 1 techlab and upgrade combat shields as soon as the tech lab finishes
+  produce scvs, marines and tanks non-stop
+  when you float your 2nd CC to your expo, make your supply depots down there in a wall, to stop zergling counterattacks when you move out
+  once you have 4 tanks, that is the timing to move out ( at about 9:30, combat shields is about to finish as well )
+  while you are moving out, take a 3rd refinery, and add a 4th rax and a 2nd factory, and build a reactor on the 3rd rax.
+
+    This timing is really strong. If the Zerg is going Mutalisks then they
+    will be making right when you move out. The Zerg makes Mutas so that he
+    can contain you with them, control the map, and get a third base up and
+    running. By attacking him right now you force him to use the Mutas
+    defensively, and Muta are not very good in a head on fight, especially
+    when you have about 25 Marines with combat shields.
+
+    If they are going Roach, Ling, or Baneling then having 4 Tanks and
+    spreading out your Marines is really strong as well. Just make sure
+    that you do not blindly walk onto the creep. If you fight the Zerg off
+    creep, you will destroy him with this army. But if you step onto creep
+    and are all clumped up then you can easily get surrounded by Zerglings
+    and Banelings and be in big trouble.
+
+    You need to focus all of your attention on this army, making sure that
+    the Marines are spread out, the Tanks too. Try to siege one Tank ahead
+    of the others, spread every Marine out, and then send five to six
+    Marines in to harass/bait the Zerg into attacking into your army. Make
+    sure that you scan and kill the creep tumors so that they cannot see
+    your army. It is important to scout for a 3rd base while you are doing
+    this push. If they have a 3rd and you can eliminate all of the zerg's
+    creep and take out his 3rd base then you should be in a really good
+    position to win with a follow up push.
+
+    Try to get into the most abusive position possible, for example on
+    Shattered temple you can seige by the gold base and just have 1 tank in
+    front shelling their expansion. If you spread your units out really
+    well, then the battle should go in your favor, and even if you lose the
+    fight it will probably have been pretty cost-effective for you. You
+    should be able to just continue pushing over and over, and trying to
+    get into good positions, while slowly taking a 3rd base and keeping
+    your macro going.
+
+    Constant aggression like this agaisnt zerg is really strong. If your
+    first push kills all his creep tumors, then the next time you push it
+    will be a lot easier for you. Putting pressure on Zergs like this also
+    forces them to make mistakes, if a zerg misses larva injects then they
+    lose larva forever. If you forget to drop mules for a while you can
+    always go back to your base and drop 6 at the same time, the Zerg can't
+    do that and if you force them to miss injects then they will not be
+    able to keep up with your constant pressure.
+
+    Another reason why this is so strong is because Zerg has to choose to
+    either make units or drones. If you are constantly attacking them then
+    they will have to make only units, and every time Zerg wants to build a
+    building then they lose a drone. You can make both SCVs and units so
+    you should be able to pull ahead economically.
+
+
+  1 Barracks Gasless Expand:
+  10 depot
+  12 barracks
+  15 OC
+  pump marines nonstop
+  16 depot
+  once you have 400 minerals make CC ( 18-19 supply )
+  double gas when 150 minerals at 20-21 supply
+  23 make bunker at expo
+  24 depot
+  when you have 100 gas make 1st factory ( around 27-29 supply )
+  2nd 100 gas make 2nd factory ( around 28-30 supply )
+  at 50 gas make reactor on barrack ( stop pumping marines after 6 to make reactor )
+  OC when expo done around 30 supply
+  tech lab on first factory ( around 30-31 supply )
+  switch 2nd factory with barracks reactor
+  36 supply depot
+  upgrade pre-igniter right when techlab finishes
+  pump hellions non-stop from both factories
+  42 supply depot
+  try to keep well ahead on supply depots, even making 2 at once, you will have extra minerals at this point
+  52 engineering bay + armory
+  52 take 3rd + 4th gas geysers at expo
+  attack with hellions right when pre-igniter finishes at around 60 supply
+  62 after you move out to attack,lift off factory with a reactor and make a techlab
+  At this point in the game there are two routes that you can go: First, you can go mech. Second, you can go Marine/Tank. It's up to you.
+
+    OK I am going to go Inception style here and make a spoiler within a spoiler
+    If you like going mech:
+    ----------------------
+
+    Add a third factory (you should have two techlabs and one reactor) and
+    build a third CC. Your goal should be to continually harass with
+    Hellions to distract them while getting that third base up. If you go
+    mech you need to PF that third base because Tanks and Thors are
+    freaking slow.
+
+    You need to react to what the Zerg is doing at this point. The initial
+    blue flame Hellion timing attack should give you a really good idea of
+    what your opponent is doing. Basically, you just need to find out if
+    they are going Roach or Muta, which are the two most common counters to
+    mech.
+
+    If they are going Roach then you do not need to make any Thors, just
+    keep making Tanks and Hellions, and maybe a Starport to do some Hellion
+    drops. You have to make sure that you are safe, because it is very easy
+    to mass up a 200/200 army of Roaches and just A-move to victory as a
+    Zerg.
+
+    Your Tanks should always be sieged in good defensive positions and you
+    should make supply depots at your expansions in a wall so that the Zerg
+    units can't get up close to the Tanks. Also, make sure that you are
+    constantly scouting.
+
+    Roach is good in the mid-game but it is absolutely horrible in late
+    game, so the Zerg must switch out of Roaches. If your opponent is
+    sitting back and not putting any pressure on you, it is a pretty safe
+    bet that he is transitioning into either Mutas or Broodlords. You must
+    not get caught with your pants down when the Z switches to Muta. It
+    really happens a lot. Mech is really gas heavy, so it won't really hurt
+    you at all if you make some turrets around your bases. They are good
+    even if the Zerg doesn't make Mutas, as they stop any Overlord/Overseer
+    scouting, as well as Roach drops and Nydus worms.
+
+    It is just all about being safe, because when it gets to the late game
+    you will have a huge ball of death that cannot be stopped!
+
+    If you attack them with blue flame Hellions and they have only
+    Zerglings, you should be able to run into their base because, well,
+    Hellions own lings right? You'll also be able to roast a bunch of
+    drones and scout to see what they are up to. Most likely there will be
+    a Spire that will finish around 10:00.
+
+    The timing for the Armory with this build order is pretty fast. It
+    should start around eight minutes and if you suspect Mutas you will
+    have plenty of time to get two Thors out. Do not over make turrets when
+    you are doing this. Just make one turret at each mineral line and one
+    over your factories to protect your addons. Leave one Thor at each base
+    to defend the Muta harass and just build up an army until you are ready
+    to push.
+
+    The one thing that is tough about mech is knowing exactly when to
+    attack. The best time is when the Zerg is making a Hive, as they will
+    be saving up money for (most likely) Broodlords and making Corruptors.
+    Also, a Muta/Ling/Baneling army gets weaker and weaker the more splash
+    damage and upgrades that your army has.
+
+    So once you have three bases, you should be scanning the Zerg every two
+    minutes or so to look for that Hive timing. If you don't scout the Hive
+    in time, and miss your timing window, its ok. You just need to switch
+    into Vikings + Ghosts to defend against Broodlords. You can actually
+    split the map in half and never attack once if you feel like it. You
+    will probably get flamed a lot, but it is super strong
+
+    If you would rather go Marine/Tank:
+    ---------------------------------
+    you need to get a Techlab on that Barracks around the time that you are
+    going to move out with Hellions and start upgrading stim ASAP. You need
+    to gain map control with the Hellions and make the Zerg defend, while
+    you add a third command center and a lot of production.
+
+    Also make sure that you are upgrading +1 weapons from both the
+    Engineering Bay and the Armory. If they are going Mutas, make two Thors
+    and leave them in your main bases to stop Muta harass. It's amazing how
+    good Thors + turrets are together. The Mutas fly in and clump up to
+    kill a turret, and then the Thor splashes them all to death.
+
+    There are a few minutes in time where you are doing nothing but
+    building up production + tech + economy and you cannot really attack
+    the Zerg. But you should still be safe with the two factories building
+    (Thors if they are going Mutas, or Tanks if they are going anything
+    else) and be able to get your third base up.
+
+    After you get your production set up (it should be nine production
+    buildings for three bases, maybe six rax /two factories/one Starport
+    with a reactor) and that is when Terran explodes with units. Now it's
+    time to start pushing.
+
+    You should be able to safely run to the edge of the Zerg's creep, but
+    be careful never to step onto creep unless you are ready for a fight.
+    You need to be sieged up and have a good Tank spread, as well as spread
+    your Marines out as much as possible. When you see progamers do amazing
+    Marine splits and stuff, you don't realize that 90% of it is that they
+    were perfectly set up before the fight began, and they knew exactly
+    when the Zerg was coming. One thing that I can't stress enough is that
+    you always need to have your units spread out. Always.
+
+    Just think of Muta/Ling/Baneling. Mutas + Banelings both do splash
+    damage and Mutas are the only unit with range but it's only a range of
+    three. Every single Terran unit is a ranged unit. The more you are
+    spread out, the better you will do.
+
+
+  Late game TvZ:
+    is really fun. 3-3 Marines own everything, Ghosts + Vikings own
+    Broodlords, and Tanks/Thors are so good against Ultralisks. You just
+    need to make sure that you are scanning the Zerg every couple of
+    minutes to see when that Hive is incoming.
+
+    Usually there are other clues too. If the Zerg is constantly harassing
+    you with Mutas and the Muta flock keeps getting bigger and bigger, they
+    can't really be going for Hive tech yet. If they are being really
+    aggressive and trying to kill you with Muta/Ling/Baneling, don't worry
+    about it either.
+
+    But if both players are just sitting there macroing, there should be a
+    little alarm going off in the back of your head saying, he's making
+    Broodlords!
+
+    Once you get to the late late game agaisnt zerg you need to have a nice
+    balanced army. You are going to need Marines / Tanks / Thors / Ghosts /
+    Vikings / Medivacs. Good Zerg players usually start off by going
+    Broodlord Infestor, and forcing you to make a lot of thors and vikings
+    and then transition into Ultralisks. The key to stopping this is having
+    Ghosts in your army. Ghosts can use snipe, which outranges BroodLords
+    and can EMP the Infestors. Snipe is also pretty good agaisnt
+    Ultralisks, but you will definitely need more than just Ghosts to do
+    good DPS to the Ultralisks. Tanks and Thors are your best bet. If you
+    can stay cost-effective agaisnt Zerg in the late game, and get a nice
+    Ghost count of around 12-18 Ghosts you should be able to take the game.
+
+
+    Here are some replays of me playing TvZ doing these two build orders: http://www.megaupload.com/?d=2CVTKTW0
+    There is seven replays agaisnt zerg in that file, and for four of the games I analyzed my thought process and tried to point out any mistakes so that you won't make them too !
+
+  TIPS
+  ====
+    OK and one last thing, I just wanted to share a few tips that help me to be a better player and improve:
+
+    Having a good Hotkey setup:
+    OK so one thing that every player needs is a good hotkey set-up. Every
+    player needs to learn how to use them properly. If you aren't doing it
+    right now, and you are trying to improve as a player then you should
+    stop everything and fix it. I am going to recommend mine, but the
+    important thing is that you find something you are comfortable with. I
+    think the way mine is set up is pretty standard and anyone can use it.
+
+    1 / 2 / 3 are all for units
+
+    4 is for my command centers / orbitals / planetaries
+
+    5 is for all of my barracks
+
+    6 is for all of my factories
+
+    7 is for all of my starports
+
+
+    I like to hotkey all my main ground army on 1, that would be every ground unit and medivacs except for ghosts
+
+    I hotkey my air units on 2 - vikings / ravens / BCs / banshees
+
+    3 is for drops or commando forces that are harassing, and in TvP I always hotkey my ghosts on 3
+
+
+    I think that everyone should have at least 3 control groups as a
+    minimum dedicated to units, if you have ever tried microing an army
+    that has ghosts / ravens / marines / tanks with them all being on 1
+    hotkey it is really hard, you have to spam tab and its really
+    confusing.
+
+    Some people like to put all of their production on 1 hotkey. It is just
+    personal preference, I like doing it this way so that if I need
+    medivacs I can just press 7dd instead of 5 tab tab dd.
+
+    The point of having hotkeys is to be able to do the things that you
+    need to do in the least possible amounts of clicks. When I'm giving
+    lessons and my students don't hotkey their army I get so frustrated.
+    Their opponent attacks them and they have to left click on the minimap
+    and then drag the mouse over their whole army, then tab through to find
+    stim and find their ghosts to emp. It takes like 5x more clicks than it
+    should. If i want to EMP a protoss army all I have to do is go 3 e
+    leftclick e leftclick e leftclick 1 T A leftclick. There I just emp'd a
+    protoss's whole army and attack moved my bio at them in 11 clicks. You
+    can do that in 2 seconds. EZPZ
+
+    It is the same thing with macroing, if your buildings are hotkeyed
+    properly then you can macro at any time, no matter what you are looking
+    at. Also you can set good rally points with your buildings which is
+    also super important.
+
+
+    Rally Points:
+    The rally point should be a safe spot, but it should be as far out into
+    the map as possible, so that your units reinforce faster. So many times
+    I see people move out and set a rally point on their units, then they
+    have 20 units on move command in the big fight not attacking because
+    they aren't hotkeyed. Or the unit that has the rally point set on it
+    dies and then all the rally points get reset, and 2 minutes later you
+    wonder why you have no army, only to look back at your base and find
+    100 units sitting there around your production buildings.
+
+
+    Keep your base organized:
+
+
+    Write it down:
+    Writing things down so that you can remember really helps me out a lot,
+    and I think it could help anyone. Write down the build order that you
+    want to use, and write what you are going to do if you get 4 gated, or
+    if the protoss goes colossus, or how you will be able to find out about
+    and stop a DT rush. Then when you finish a game, go and watch the
+    replay. Watch and see if you did it said on the paper, if you didn't do
+    it... then would your plan on paper have worked if you had followed
+    it?. If not then you need to figure out a new way to deal with that
+    problem. This is how you improve, you don't just wing it every game on
+    the ladder and hope that it works out. You come up with a strategy that
+    you like doing, and you repeat it over and over and see how it works in
+    every situation. Doing this will also increase your APM, repeating the
+    same thing over and over and learning all the timings so that you can
+    do it with your eyes closed is the secret to being a really fast
+    player.
+
+
+    Every player has his or her own strengths and weaknesses. Some players
+    love to micro, some players love to macro. Some like to win games fast
+    and some like to go to the long game. You can make any way work, you
+    just need to find a solid build order that compliments your style, and
+    figure out what you are going to do in every possible imagineable
+    circumstance that could arise in a game of starcraft 2.
+
+    I think that my strategies and gameplans are a really good start for
+    any terran player below grandmasters (they work for me agaisnt top
+    players), and as long as you stick to it and learn the timings and how
+    to deal with what your opponent can throw at you, you will get a lot
+    more consistent, you will start to predict exactly what your opponent
+    is going to do and the best part is that you are going to know exactly
+    what you have to do to stop it and win the game.
+
+    Thanks for reading, I hope you enjoyed it and can use this as tool to
+    help improve your game.
+
+    CHEERS, coLdrewbie
+
+    Oh and one last thing, I would just like to give a big thanks to my
+    girlfriend Leah for editing everything and turning my wall of text into
+    something that is actually readable 

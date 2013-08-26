@@ -1,0 +1,251 @@
+Variation bornée
+================
+V_a,b(f)=sup \sum_partitions |f(x_i+1)-f(x_i)|
+        = \int |f'(x)|
+Bounded variation => "dérivée" qui est une mesure
+
+Rappel: si f dérivable à peu près partout, |f(b)-f(a)|<=\int |f'(x)|
+Si f' L1 on a f(b)-f(a)=\int f'(x)
+
+Si f dérivable partout, f' est Darboux
+Si f est localement lipschitz, D^+ F finie.
+
+\lambda_f: c'est l'inf des variations de f sur les full subcovers
+\lambda_f*: pareil pour les fine subcovers
+on a \lambda_f*<=\lambda f, égalité si f a la propriété de Vitali (on peut
+montre que c'est équivalent à f VBG*)
+- \lambda f(E) <= \lambda_f(E)
+- Si f continue croissante stricte, \lambda f(E)=\lambda_f(E)
+
+Zéro Variation
+==============
+(dans tout ce qui suit, on considère des fonctions sur [a,b] à valeur dans R.
+Zéro variation: \lambda_f = 0, où \lambda_f est la mesure de Stielje
+
+Si F'=0 sur E, F a zéro variation sur E.
+F a zéro variation sur E => F'(x) = 0 a.e. sur E, et de plus mu(F(E))=0
+(Attention: f continue => zéro variation si E dénombrable, mais pas
+forcément si E de mesure nulle. Il faut être lambda-AC pour ça, par ex
+ACG*)
+
+Si F différentiable et mu(F(E))=0, alors F'(x)=0 a.e. sur E.
+
+ex: -F(x)=x a zéro variation sur E ssi E de mesure nulle
+    - on dit que F est lambda-AC si F a
+      zéro variation sur les ensembles E de mesures nulles
+    - On dit que F a la condition (N) de Luzin si F(E) à mesure zéro
+      lorsque E a mesure 0. lambda-AC => (N) par ce qui précède.
+
+Relations entre AC, VB, ...
+===========================
+
+Th: AC => (i) unif cont (ii) VB (iii) lambda-AC (iv) (N)
+Réciproquement, (i)+(ii)+[ (iii) ou (iv) ] => AC.
+(Thomson, théorie de l'intégrale)
+
+AC => VB+ACG*, VB=>VBG*, AC* => VB*, ACG => VBG, ACG* => VBG* (trivial)
+ACG* <=> unif continue + lambda-AC (Thomson, théorie de l'intégrale)
+f continue ou localement VB => VBG*; VBG* <=> f a la Vitali property (ie
+pour calculer \lambda_f on peut prendre des fine ou full cover)
+
+Remarque: la variation de f sur [a,b] est égale à la mesure de Stilje
+(celle qui définit VB*) de f sur (a,b)+celle sur {a} et sur {b}.
+
+VB* sur E => VB* sur cloture de E
+C'est vrai aussi pour BV, AC, AC* si F continue sur la cloture de E.
+
+Saks, si E est fermé:
+AC=VB+continue+(N)
+ACG=VBG+continue+(N)
+AC*=VB* + AC
+ACG*=VBG* + ACG
+
+Notations: (ACG), c'est la condition AC sur une réunion dénombrable
+d'ensembles. [ACG] c'est quand on peut trouver ces ensembles fermés.
+ACG, c'est (ACG) + continu (ou [ACG]+continu, ça revient au même)
+
+VBG et dérivée approximative
+============================
+(Saks)
+
+f mesurable <=> f approx continue a.e.
+
+- f VBG + mesurable => f approx dérivable a.e. (et f(E) est de mesure nulle
+  où E est l'ensemble des points où f n'est pas approx dérivable).
+  Si de plus f ACG, f est l'intégrale (de Khintchin) de sa dérivée
+  approximative.
+- A rapprocher du th de Lebesgue: f VB => f dérivable a.e (et f(E) est de
+  mesure nulle si E est l'ensemble des points où f n'est pas dérivable). 
+  Si f AC c'est l'intégrale de sa dérivée (qui est sommable).
+- Et pour l'intégrale de Denjoy, on a la même chose pour f ACG*
+  (ie f VBG* => f dérivable a.e, et si f ACG* c'est l'intégrale de Denjoy
+  de sa dérivée)
+
+Réciproquement, si f continue + approx dér à peu près partout, f est ACG
+(et est l'intégrale de Khintchin de sa dérivée approx).
+Si f est continue et dérivable à peu près partout, f est ACG*
+
+- Si D^sup F<infty  ou D_inf F >-infty n.e. sur E F est VBG* sur E.
+- Si D^+ F<infty et D_+ F >-infty n.e. sur E, F vérifie les conditions ACG*
+sur E, donc est ACG* sur E si de plus F continue.
+(En particulier, dans les deux cas, F est dérivable a.e sur E, donc les
+points ou F a une dérivée infinie est de mesure nulle).
+
+- Si D^+ F<infty ou D_+ F >-infty ou D^- F < infty ou D_- F > -infty 
+ou D^sup,ap F < infty ou D_inf,ap F > -infty n.e. sur E
+alors F est VBG sur E
+(et donc F est approx dérivable a.e sur E, et la dérivée approx est presque
+partout égale au dini fini)
+- Si D^+,ap F<infty et D_+,ap F >-infty n.e. sur E, F vérifie les conditions ACG sur E, donc est ACG sur E si de plus F continue.
+(Saks, chapitre VII $10)
+
+Application: si F continue et D^+F existe partout, alors F est ACG et
+F'_ap = D^+ F a.e (ça doit même marcher si F est de variation nulle là où
+D^+F n'existe pas, car là F'=0 a.e)
+Cf aussi Monotonicity theorem de Thomson, ou Bruckner Th 1.2 Chapitre X.
+
+Propriété des dérivées approximatives
+=====================================
+
+On suppose que F est approx dérivable sur [a,b]
+- F'_ap est Baire 1 Darboux.
+- Si F'_ap(x)<=G'(x) pour G dérivable, ou F croissante, alors en fait F est
+  dérivable. 
+En général, il existe un ouvert dense tel que F est dérivable.
+
+Le théorème des valeurs intérmédiaires marche pour les dérivées
+approximatives. (ie F(b)-F(a)/b-a = F'_ap(c))
+
+Dini et condition (N)
+=====================
+Saks, Chapitre XI
+
+Refinements de Denjoy-Youg-Saks:
+- Si D^+F existe en tout point de E, alors l'ensemble X des points où ce
+  n'est pas égal à D_- F est de mesure nulle, et F(X) est de mesure nulle
+- Si sur E F a deux dérivées Dini du même côté finies, ou une dérivée sup ou
+inf finie, alors F est presque partout dérivable, et si X est l'ens des
+points où elle n'est pas dérivable, le graphe de F sur X est de mesure
+nulle.
+
+- Si |D^+F|<=M sur E, \mu(F(E))<=M \mu(E)
+Applications: 
+- si en tout point de E F a une de ses Dini finie, alors F satisfait la
+  condition (N).
+-  Si D^+F est finie n.e. sur E, alors \mu(F(E)) <= \int_E D^+F et
+   \mu(graphe de F sur E)<= \int_E [1+D^+F^2]^1/2
+- Si une des Dini s'annule en tout point de E, \mu(F(E))=0
+  Si F est Darboux sur E, ça impose F est constante sur E.
+
+Banach conditions
+=================
+
+(T1)/(T2): almost every value of F is assumed at most a finite/denumbrable
+number of time.
+
+Th: Si F continue, F T1 sur I <=> F{x/ F non dérivable, même infinie en x} est
+de mesure 0
+Application: 
+- F continue VBG* => T1, F continue VBG => T2
+(En fait on peut montrer que F VB => T1, et donc que F VBG => T2)
+- F continue+(N) => T1 (cf Saks IX.7.3)
+
+- Si F continue, La variation de F est égale à l'intégrale du nombre
+d'antécédants de F.
+- Si F continue+T2, -\mu F[N]<=F(b)-F(a)<=\mu F[P] où N est l'ensemble des points où
+F a une dérivée négative ou nulle, et P celle où la dérivée est positive ou
+nulle. (Et N union P est non dénombrable)
+- Si F continue + T2, g L1 et |F'(x)|<=g(x) n.e. x où F'(x) existe (ou plus
+  généralement si l'ens E où ce n'est pas le cas vérifie \mu F(E)=0), alors
+  F est VB et F(b)-F(a) <= \int_a^b F'(x).
+  Si g est Denjoy-integrale, alors on a la même conclusion, sauf que F est
+  VBG* seulement.
+
+Conditions (S)
+=============
+
+Condition (S): pour tout epsilon, il existe eta tel que si mu(E)<eta,
+mu(F(E)) < epsilon. (S) => (N) (et \lambda-AC il me semble)
+(S) <=> (N)+(T1)
+
+Théorème (Saks IX.7.7)
+F continue. Alors F AC <=> F est (N) et \int F'(x) < \infty, où l'intégrale
+se fait le long des points où F'(x)>=0 (et existe).
+(Plus généralement, si g(x)=F'(x), 0 si F' n'existe pas est intégrale au
+sens de Denjoy, F est ACG*)
+
+Application: 
+- si F continue+(N), de dérivée positive ou nulle a.e. points où
+elle est dérivable, alors F est croissante.
+- si F continue+(N), alors elle est dérivable sur un ens de mesure >0
+
+Conditions (D)
+==============
+
+Si F mesurable, condition (D) en x_0: \exist N tel que x_0 n'est pas un
+point de dispersion pour l'ensemble {x / |F(x)-F(x_0)|<=N (x-x_0)}
+
+Th: - si une des dérivées de Dini approximatives est finie en x_0, F a (D) en
+x_0.
+    - Si F satisfait (D) sur un ens E, F satisfait (N) sur E.
+Application:
+  - Si F est continue sur E *fermé*, et n.e. dans E, F a deux dini du même
+    côté finis ou une dérivée sup/inf finie, F est ACG* sur E.
+  - Si F est continue sur E *fermé*, et n.e. dans E, F a un dini fini,
+    ou une dérivée approx sup/inf finie, ou deux dini approximatifs du même
+    côté fini, alors F est ACG sur E.
+Corollaire:
+  - Si f est n.e égale à une dérivée sup/inf d'une fonction continue F,
+    alors f est intégrale au sens de Denjoy
+  - Si f est n.e égale à une dérivée approx sup/inf ou une Dini d'une
+    fonction continue F, alors f est intégrale au sens de Denjoy-Khintchin
+
+=======================================================================
+Résumé
+======
+
+VBG et dérivée
+- f VBG + mesurable => f approx dérivable a.e.
+  Si de plus f ACG, f est l'intégrale (de Khintchin) de sa dérivée 
+  approximative.
+- f VBG* => f dérivable a.e.
+  Si de plus f ACG*, f est l'intégrale (de Denjoy) de sa dérivée.
+  f' L1 <=> f AC (et alors f est l'intégrale de Lebesgue de f')
+
+Dérivée et VBG
+- Si n.e x \in E, f a une Dini finie, ou une dérivée extrème approx finie, F
+  est VBG sur E.
+- Si n.e x \in E, f a deux Dini approx du même côté finis alors f est [ACG]
+  sur E.
+  Si E fermé, f continue sur E et n.e x \in E, f a un Dini fini, ou une
+  dérivée extrème approx finie, ou deux Dini approx du même côté finis,
+  alors f est ACG sur E.
+  Corollaire: si F continue + approx dérivable (ou d'un Dini fini) n.e.
+  alors F ACG sur E (et de dérivée approx égale au truc fini a.e.)
+- Si n.e x \in E, f a une dérivée extrème finie, f est VBG* sur E.
+- Si n.e x \in E, f a deux Dini du même côté finis alors f est [ACG*] sur E.
+  Si E fermé, f continue sur E et n.e x \in E, f a une dérivée extrème finie, 
+  ou deux Dini du même côté finis, alors f est ACG* sur E.
+  Corollaire: si F continue + dérivable n.e. alors F ACG* sur E.
+
+Conditions de Banach
+- F a un Dini approx nul en x_0 => F a (D) en x_0
+- F a (D) sur E => F a (N) sur E
+- F a un Dini nul sur E => \mu(F(E))=0
+- (S) = (N)+(T1)
+
+- VBG => (T2). VB ou (continu+VBG*) ou (continu+(N)) => (T1)
+- Si F continue, F (T1) <=> \mu({F(x), F non dérivable, même infinie, en x})=0
+- Si F continue+(T2) alors
+  * -\mu F[N]<=F(b)-F(a)<=\mu F[P] où N est l'ensemble des points où
+      F a une dérivée négative ou nulle, et P celle où la dérivée est
+      positive ou nulle.
+  * Si |F'(x)|<=g(x) n.e. x où F'(x) existe (ou plus généralement si l'ens
+    E où ce n'est pas le cas vérifie \mu F(E)=0), avec g intégrale au sens
+    de Denjoy, alors F est VBG* et F(b)-F(a) <= \int_a^b F'(x).
+    Si g est L1, F est VB.
+- Si F continue, alors
+  * F ACG* <=> F a (N) et g(x)=F'(x) là où F dérivable, et 0 sinon est
+    Denjoy intégrale
+  * F ACG <=> F a (N) et g(x)=F'(x) là où F dérivable de dérivée >=0, et 0
+    sinon est Lebesgue intégrale

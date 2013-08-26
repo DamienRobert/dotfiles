@@ -1,0 +1,2 @@
+tail -f /var/log/kernel.log devient
+journalctl -f _TRANSPORT=kernel

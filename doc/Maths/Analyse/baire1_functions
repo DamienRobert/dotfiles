@@ -1,0 +1,24 @@
+Une fonction est baire alpha+1 si elle est limite simple de fonctions baire
+alpha. Critère bien connu: f est baire alpha ssi la réciproque d'un ouvert
+et un borel de classe alpha.
+
+En particulier, toute fonction borélienne est une fonction baire alpha.
+
+Ex: f est baire 1 (=limite de fonctions continues), ssi la réciproque d'un
+ouvert est un F_sigma (union dén de fermés). Autre caractérisation
+(Bruckner) pour tout ensemble parfait P, il existe un x dans P tel que f|P
+soit continue en x. (Rappel: tout borel non dénombrable contient un
+ensemble parfait non vide).
+
+Une dérivée est baire 1, et aussi Darboux (cf Bruckner)
+
+~/posts/forum/maths/agreg_limites_fonctions_continues:
+- Une fonction est continue en dehors d'un ensemble négligeable ssi la
+réciproque de tout ouvert et l'union d'un ouvert et d'un négligeable.
+- Une fonction est continue sur un résiduel (un G_delta dense, ie une
+  intersectino dénombrable d'ouvert denses) ssi la réciproque d'un ouvert
+  est l'union d'un ouvert et d'un maigre (un F_delta formés de fermés
+  d'intérieur vide).
+  Ex: c'est le cas d'une fonction Baire 1 (car un F_delta est l'union d'un
+  ouvert (l'intérieur des fermés) et d'un maigre (la frontière des fermés),
+  donc une baire 1 est continue sur un résiduel.

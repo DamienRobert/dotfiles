@@ -1,0 +1,5 @@
+Custom git scripts I wrote.
+
+- contrib/ are scripts from git contrib source folder
+- hooks/ are scripts that could be usefull as hooks
+- scripts/ more usefull scripts found on the web

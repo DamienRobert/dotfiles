@@ -1,0 +1,76 @@
+#!/bin/sh
+. $MYFILES/.xgeometry
+
+FVWMSCREEN="exec screen256 -RR -S fvwm"
+
+case $MYHOSTNAME in
+  Gondolin|Durin ) CUSTOM=screen ;;
+  imb ) CUSTOM=gnome ;;
+  * ) CUSTOM=xfce
+esac
+
+process() {
+  case $1 in
+    gnome ) process gnome1; process gnome2;;
+    lxde ) process lxde1; process lxde2;;
+    screen ) process screen1; process screen2;;
+    xterm ) process xterm1; process xterm2;;
+    custom ) process custom1; process custom2 ;;
+    custom1 ) process "${CUSTOM}1" ;;
+    custom2 ) process "${CUSTOM}2" ;;
+    FVWMsinglecommand )
+      exec xterm -fa "$FONT" -geometry $HORIZx1$GEOUR -name FVWMsinglecommand -title Executer -e runprg
+      ;;
+    FVWMmulticommand ) 
+      exec xterm -fa "$FONT" -geometry $XTERMG$GEOUR -name FVWMmulticommand -title Console -e screen -S FVWMmulticommand -RR ;;
+    FVWMmulticommandCP ) 
+      exec xterm -fa "$FONT" -geometry $XTERMG$GEOUR -name FVWMmulticommandCP -title ConsoleCurrentPage -e screen -S FVWMmulticommandCP -RR
+      ;;
+    gnome1 )
+    TERM=gnome-256color exec gnome-terminal --geometry $GTERMG$GEODL --tab-with-profile default --tab-with-profile defaut &
+    ;;
+    gnome2)
+    TERM=gnome-256color exec gnome-terminal --geometry $GTERMG$GEODR --tab-with-profile default --tab-with-profile defaut &
+    ;;
+    lxde1 )
+    exec lxterminal -t lxalpha1 --geometry=$GTERMG &
+    ;;
+    lxde2 )
+    exec lxterminal -t lxalpha2 --geometry=$GTERMG &
+    ;;
+    xfce1 )
+    exec xfce4-terminal --geometry=$GTERMG$GEODL &
+    ;;
+    xfce2 )
+    exec xfce4-terminal --geometry=$GTERMG$GEODR &
+    ;;
+    xterm1 )
+    exec xterm -fa "$FONT" -geometry $XTERMG$GEODL &
+    ;;
+    xterm2 )
+    exec xterm -fa "$FONT" -geometry $XTERMG$GEODR &
+    ;;
+    screen1 )
+    exec xterm -fa "$FONT" -geometry $XTERMG$GEODL -e "$FVWMSCREEN" &
+    ;;
+    screen2 )
+    exec xterm -fa "$FONT" -geometry $XTERMG$GEODR -e "$FVWMSCREEN" &
+    ;;
+    screendl )
+    exec xterm -fa "$SFONT" -geometry $SXTERMG$GEODL -e "$FVWMSCREEN" &
+    ;;
+    screendr )
+    exec xterm -fa "$SFONT" -geometry $SXTERMG$GEODR -e "$FVWMSCREEN" &
+    ;;
+    screenur )
+    exec xterm -fa "$SFONT" -geometry $SXTERMG$GEOUR -e "$FVWMSCREEN" &
+    ;;
+    screenul )
+    exec xterm -fa "$SFONT" -geometry $SXTERMG$GEOUL -e "$FVWMSCREEN" &
+    ;;
+  esac
+}
+
+for cmd in "$@"; do
+  process $cmd
+done

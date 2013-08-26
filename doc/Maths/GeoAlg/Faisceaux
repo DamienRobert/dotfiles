@@ -1,0 +1,91 @@
+Base d'ouverts
+==============
+
+Soit X un espace topologique, T la topologie de Grothendieck naturelle
+dessus. Si X a une base fondamentale d'ouverts, soit U la topologie de
+Grothendieck associée à cette base.
+
+Alors il y a équivalence entre les U-faisceaux et les T-faisceaux. En
+particulier, si F est un T-préfaisceau, le T-faisceau associé ne dépend que de
+la restriction de F à U. Donc:
+- Deux préfaisceaux sur T qui sont égaux sur U ont le même faisceau
+  associé.
+- Deux faisceaux sur T qui sont égaux sur U sont égaux.
+- Si F est un préfaisceau égal à un faisceau G sur U, alors le faisceau
+  associé à F est G.
+
+On peut recoller des faisceaux.
+
+Germes
+======
+
+Les faisceaux de modules forment une catégorie abélienne (donc tout
+mono/épi est effectif, ie est un noyau/conoyau).
+
+Un morphisme de faisceau est mono/épi/bij ssi c'est le cas en chaque germe.
+Le foncteur Ker/Coker/Im/Coim commute avec les germes.
+
+Le foncteur faisceau associé à un préfaisceau est exact à gauche (ie envoit
+un mono sur un mono) et conserve les germes.
+Le foncteur section globales est exact à gauche.
+
+Soit f:F->G. 
+- Im f = F/Ker f; coker f=G/Im f
+- f monomorphisme équivaut à F(U) \subset G(U) pour tout U. Ex: im(f) ->
+G est toujours un monomorphisme.
+- f épi ss'il l'est sur les sections locales d'un recouvrement ouvert.
+- Si f est mono, on a une suite exacte 0->F->G->H->0 où H=G/F.
+  Réciproquement, si on a une telle suite exacte, F est un sous faisceau de
+  G et H est le quotient associé.
+
+Limite inductive de faisceau: ce n'est pas forcément un faisceau (c'est le cas s'il s'agit d'une limite directe), ie il faut prendre le faisceau associé.
+La limite proj de faisceau est un faisceau.
+
+Si s est une section globale de F, son support est fermé.
+
+Faisceaux flasques
+==================
+
+Un faisceau est flasque ssi pour tout V \subset U, F(U)->>F(V).
+- Si 0->F->G->H->0 est exact et H flasque, alors pour tout ouvert U
+  0->F(U)->G(U)->H(U)->0 est exact, ie un faisceau flasque est
+  cohomologiquement trivial.
+- Si F et H sont flasques, G aussi.
+- L'image directe d'un faisceau flasque est flasque.
+- Tout faisceau F s'inclut dans un faisceau flasque G (le faisceau des
+  sections discontinues, où on prend X l'espace étalé de F que l'on munit
+  de la topo discrète).
+
+Adjonction
+==========
+
+Hom_X(f^-1 G,F)=Hom_Y(G,f_* F).
+
+Ouverts et fermés
+=================
+
+Soit X un espace topo, Z un fermé, U son complémentaire ouvert, i,j les
+inclusions.
+
+- Si F est un faisceau sur Z, alors i_*(F) a pour germe F_P si P \in Z, 0
+  sinon. On dit qu'on étend F par 0 en dehors de Z.
+- Si F faisceau sur U, on note j!(F) le faisceau associé au préfaisceau
+  V->F(V) si V \subset U, 0 sinon. Alors les germes de j!(F) sont F_P si P
+  \in U, 0 sinon; j!(F) est l'unique faisceau ayant cette prop dont la
+  restriction à U soit F, on l'appelle aussi l'extension de F par 0.
+Si F faisceau sur X, on a la suite exacte
+0->j!(F|U)->F->i_*(F|Z)->0
+
+Sous-faisceau des supports
+==========================
+
+Si F faisceau sur X, on définit H^0_Z(F) le faisceau qui à un ouvert V
+associe l'ensemble des F(V) dont le support est dans F \inter V. C'est bien
+un faisceau, et on a une suite exacte
+0->H^0_Z(F)->F->j_*(F|U)
+Si de plus F est flasque, c'est exact à droite.
+
+Dans le cas des modules quasi-cohérents, si Z est défini localement sur un
+ouvert affine U par l'idéal I,
+H^0_Z(F) est défini comme le sous-module module (0:I^\infty) du module F(U).
+Cf PrimaryDecomposition/EmbeddedPrimes

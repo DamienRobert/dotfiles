@@ -1,0 +1,65 @@
+Définition
+==========
+
+Soit X un schéma, F un faisceau de modules.
+
+On dit que F est quasi-cohérent ssi pour tout ouvert affine U, F|U est
+isomorphe au faisceau induit par un O_X(U) module M.
+
+Th: Si X affine, le foncteur section globale induit une équivalence de
+catégorie entre faisceau quasi-cohérent et O_X(X)-modules; de plus il est
+exact (ainsi que son foncteur réciproque "faisceau associé").
+
+Th: F est quasi-cohérent équivaut à:
+- il existe un recouvrement de X par des ouverts affines U_i tels que F|U_i
+  soit isomorphe au faisceau induit par un module affine
+- Pour tout V affine inclus dans U affine, l'application canonique
+  F(U) \tens_O_X(U) O_X(V) -> F(V) est un isomorphisme
+- F est un conoyau: O_X^n -> O_X^m -> F -> 0
+  (n, m poeuvent être des ordinaux)
+
+Cor: si F est induit par M sur un ouvert affine Spec(A), F|D_f=M_f, F|P=M_P
+
+Ex: Si R anneau de valuation discrète, Spec R a un point fermé x_1 et un
+point ouvert x_0. Un faisceau quasi-cohérent F est donné par
+M_0=\Gamma(x_0,F) et M_1=\Gamma(X,F) avec M_0=M_1 \tens_R Frac(R).
+
+Rem: Si Y est fermé dans X, F un O_Y module, alors F est O_Y-quasi-cohérent
+ssi F étendu par 0 en X\Y est O_X-quasi-cohérent.
+
+Th: Si X noéthérien, F est cohérent si pour tout ouvert affine U, F|U vient
+d'un module fini M; il suffit de le vérifier pour un recouvrement ouvert.
+
+Th: Si f:X->Y est qs, et F quasi-cohérent sur X, f_*(F) est quasi-cohérent
+sur Y. Si de plus f est projectif(?) et F cohérent, f_*(F) est cohérent.
+
+Pr: Mumford, RedBook III.$1, ou Hartshorne.
+
+Extension faisceaux cohérents
+=============================
+
+1) Se donner un module de type fini sur le localisé revient à se
+donner un Module cohérent sur un voisinage ouvert suffisamment petit (cf EGA
+IV paragraphe 8).
+
+ie: si M est de type fini sur A_P, il vient d'un module de type fini sur
+A[1/f].
+
+2) Maintenant, un module de type fini sur le localisé
+A[S^-1] est le localisé d'un A-module de type fini. Deux démonstrations :
+
+a- de manière générale, si X est un schéma noethérien, U un
+ouvert, tout faisceau cohérent sur U peut se prolonger en un faisceau
+*cohérent* sur X [cela doit se trouver dans Pierre Gabriel, _Des catégories
+abéliennes_, Bull. Soc. Math. France 90 (1962) 323--448.] 
+(cf Hartshorne, exo 5.15)
+
+b- si on choisit une présentation A[S^-1]^m -> A[S^-1]^n -> M -> 0 du
+module, on voit que, quitte à les multiplier tous par un élément de S
+convenable, on peut supposer que les coefficients de la matrice
+(n,m) représentant le morphisme de gauche proviennent de A...
+
+=> Au final, un module de type fini sur le localisé A_P provient d'un
+module de type fini sur A.
+
+(cf sciences.maths  Message 10835)

@@ -1,0 +1,53 @@
+1) En général, pour une fonction réelle, même continue et bornée il y a une
+infinité de séries trigo qui convergent vers elle.
+
+2) Question: 
+Soit \sum a_n e^(in \theta) une série trigonométrique qui converge 
+simplement vers une fonction continue sur le cercle unité.
+Est-elle déterminée uniquement par cette fonction?
+(ie si on rajoute la périodicité, est-ce que ça marche?)
+
+Cf aussi Zygmund pour pleins d'info sur la convergence, la réponse est oui!
+forum.maths:20425
+
+3) Si les a_n sont monotones décroissantes, on a des résultats sur la
+convergence simple d'une série trigo (ex na_n tend vers 0 implique conv uniforme sur tout intervalle qui ne contient pas 0)
+
+4) D'autres questions: 
+- si la série de Fourier converge en tout point, que
+peut-on dire de la fonction résultante? A priori rien, elle n'est meme pas
+bornée (si on demande juste la convergence radiale, il suffit de prendre le
+noyau de poisson d'une fonction pas bornée).
+- si f est continue sur le disque fermé, holomorphe sur le disque ouvert,
+  est-ce que la série de Fourier converge simplement? (à priori non hors
+  hypothèse Taubérienne). La série va converger au sens de Césaro, donc par
+  radialité, mais ça on le savait déjà vu qu'on a supposé f continue...
+
+Le noyau de poisson d'une fonction continue sur T (dont les coeffs de
+Fourier negatifs sont nuls) est continue sur le disque fermé (et holomorphe
+sur D)
+
+5) Zygmund: comportement au bord: pour tout ensemble maigre E du cercle,
+pour tout fonction continue sur le disque ouvert, il existe une fonction
+holomorphe qui a la meme convergence radiale sur E.
+
+Cependant si on prend les limites non tangentielles, le comportement est
+plus restrictif:
+si f est une fonction holomorphe, alors pour presque tout point theta du cercle,
+soit f a une limite non tangentielle, ou alors f(T) est dense dans C pour
+tout ouvert triangulaire avec pointe en theta.
+En particulier si f est bornée sur les ouverts triangulaires de ce type
+avec pointe sur un ensemble E, f a une limite non tangentielle presque partout sur E (c'est vrai avec f harmonique aussi)
+
+6) Transformée de Fourier sur R:
+
+F envoit L_p sur L_q avec 1/p+1/q=1 pour p entre 1 et 2. De plus f est la
+transformée de Fourier inverse de F(f). De plus la norme Lq de F(f) est
+<= la norme Lp de f.
+Sur L_1, F(f) est uniformément continue et tend vers 0 en l'infini.
+Sur L_p (p>2) il y a des transformées de Fourier (au sens des distributions
+temperees) qui ne sont pas des fonctions.
+
+7) Inegalite de Holder
+si sum 1/p_i = 1/r (p_i peut etre +infty mais pas r), la Lr norme du produit
+des f_i est plus petite que le produit des L_p_i norme de f_i.

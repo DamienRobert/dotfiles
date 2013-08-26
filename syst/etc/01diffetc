@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+MELD=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -m ) shift; MELD=1 ;;
+    *) break;;
+  esac
+done
+
+DEFAULT="$MYFILES/syst/etc/local/etc-$MYHOSTNAME"
+DIR=${1-$DEFAULT}
+cd $DIR
+
+OUTDIR="/var/tmp/etc-snapshot"
+rm -rf "$OUTDIR"
+mkdir "$OUTDIR"
+
+(
+cd $DIR
+for file in **/*; do
+  if [ -d $file ]; then
+    mkdir -p "$OUTDIR/$file";
+  fi
+  if [ -f $file ]; then
+    sudo ln "/etc/$file" "$OUTDIR/$file"
+  fi
+done
+)
+
+#sudo chmod 644 "$OUTDIR/sudoers"
+
+if [ -z "$MELD" ]; then
+  gitdiff $OUTDIR .
+else
+  meld "." "$OUTDIR"
+fi

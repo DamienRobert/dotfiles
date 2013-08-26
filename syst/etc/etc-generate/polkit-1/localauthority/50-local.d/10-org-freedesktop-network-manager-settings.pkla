@@ -1,0 +1,6 @@
+[Allow user in group network to create wireless connections for all users]
+Identity=unix-group:network
+Action=org.freedesktop.NetworkManager.*
+ResultAny=yes
+ResultInactive=no
+ResultActive=yes

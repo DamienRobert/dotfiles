@@ -1,0 +1,11 @@
+#compdef git-mysquash
+
+_arguments \
+  '-h[help]' \
+  '-svn[svn mode]' \
+  "-g[don't edit commit]" \
+  '-nopush' \
+  '-nopull' \
+  '-to[specify upstream]:upstream:__git_branch_names' \
+  '-from[specify downstream]:downstream:__git_branch_names' \
+  '*:Branches:__git_branch_names'

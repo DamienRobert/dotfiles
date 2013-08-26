@@ -1,0 +1,82 @@
+Corps de définition
+===================
+
+On dit que X/kbar est défini sur k ssi X=X0 *_k kbar, avec X0 schéma sur k.
+
+Ex: si X/kbar est une variété fermée de A^n, X est définie sur k ss'il
+existe des équations f_i(X_1,...,X_n)=0 définissant X, où f_i \in
+k[X_1,...,X_n]
+
+Th: Soit p: X->X0 la projection.
+- p est surjective, fermée et ouverte
+- Pour tout x \in X0, p^-1(x) est une orbite finie de Gal(k/k0)
+  Si x est fermé, il y a bijection entre p^-1(x) et les
+  k-plongements de k(x) dans kbar.
+Pr: Mumford, RedBook, $4 Th1.
+
+Conjugaisons
+============
+
+Soit \sigma un automorphisme de kbar/k, on note \sigma_X la conjugation
+induite sur X par (1 * \phi) où \phi: \Spec kbar -> \Spec kbar est induite
+par \sigma^{-1}.
+
+Ex: si X0=Spec k[X_1,...,X_n]/(f_1,...,f_m) et x \in X est le point fermé (x_1,...,x_n), alors \sigma_X(x)=(\sigma(x_1),...,\sigma(x_n)).
+Plus généralement, si X0 (donc X est affine), \sigma_X([P]) correspond à
+l'idéal (1 \tens \sigma)P dans X.
+
+Si f est une fonction sur X, on a par définition (\sigma_X^*
+f)(\sigma_X(x))=\sigma_X^* (f(x)) (où sigma_X^* est induite sur la fibre).
+
+Th: Si X0 est de type fini sur k alors, en notant p:X->X0 la projection
+(i) Pour tout ouvert U de X0, l'application canonique
+O_X0(U) \tens_k kbar -> O_X(p^-1(U))
+est un isomorphisme
+(ii) Si f \in O_X0(U), alors pour tout point fermé x de p^-1(U) on a
+f(\sigma_X(x))=\sigma(f(x)) [#]
+(iii) Inversement, si k parfait et X réduit, O_X0(U) est l'ensemble des
+sections O_X(p^-1(U)) satisfaisant [#]
+
+Pr: Mumford, RedBook $4, Th 2.
+  Pour (i), il suffit de se ramener aux ouverts affines.
+  Pour (ii), comme X/kbar est de type fini, les points fermés ont pour corps
+  résiduel kbar, et \sigma_X induit \sigma sur les corps résiduels. Or f est
+  rationel => \sigma_X^* f = f pour tout \sigma, ce qui implique que
+  f(\sigma(x))=\sigma(f(x))
+  Pour (iii), si f(\sigma(x))=\sigma(f(x)) pour tout x, alors f0=f-\sigma_X^*
+  f a pour valeur 0 en tout x fermé. Comme X est réduit, f0 qui s'annule en
+  tout point fermé s'annule partout (car les points fermés sont denses sur
+  kbar), donc f est stable par chaque \sigma_X^*. Mais comme k est parfait, k
+  est l'ensemble des invariants de \Gal(kbar/k), donc f est k-rationelle.
+
+Cor: Se donner X0/k est équivalent à se donner
+(i) X/kbar
+(ii) l'action de Gal(kbar/k) par conjugaison sur X
+(X0 en tant qu'espace topologique sera le quotient de X par Gal(kbar/k)
+(iii) Un sous faisceau de O_X défini sur les k-ouverts (ie les ouverts de X
+stables par l'action de Galois): le faisceau des fonctions rationnelles
+(ce faisceau induisant le faisceau sur X0)
+
+Rem: - Si X est réduit et k parfait, il suffit d'avoir (i) et (ii)
+- Si x \in X0 est un point fermé, il y a bijection entre p^-1(x) et les
+  k-plongements de k(x) dans kbar.
+
+Extension des scalaires
+=======================
+
+Soit X un schéma de type fini sur k.
+
+On dit que X est géométriquement irréductible si X*kbar est irréductible.
+C'est équivalent à X*K est irréductible pour toute extension K/k, et il
+suffit de le vérifier pour K=cloture séparable de k.
+
+On dit que X est géométriquement réduit si X*kbar est réduit.
+C'est équivalent à X*K est réduit pour toute extension K/k, et il
+suffit de le vérifier pour K=cloture parfaite de k.
+
+Th:
+(i) X est géométriquement réduit ssi k(X)/k est séparé
+(ii) X est géométriquement irréductible ssi k est alg clos dans k(X) ssi
+k(X) \inter kbar = k.
+
+Pr: Mumford, $4 Prop 4, ou Maths/Galois/produit_tensoriel

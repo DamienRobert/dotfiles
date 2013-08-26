@@ -1,0 +1,24 @@
+1) Certain properties are absolute to all transitive models of set theory, including the following (see Jech (2003 sec. I.12) and Kunen (1980 sec. IV.3)).
+
+    x is the empty set.
+    x is an ordinal.
+    X is a finite ordinal.
+    x = ω.
+    x is (the graph of) a function.
+
+Other properties, such as countability, are not absolute.
+
+2) Shoenfield's absoluteness theorem
+
+Shoenfield's absoluteness theorem shows that \Pi^1_2 and \Sigma^1_2 sentences in the analytical hierarchy are absolute between a model V of ZFC and the constructible universe L of the model, when interpreted as statements about the natural numbers in each model. The theorem can be relativized to allow the sentence to use sets of natural numbers from V as parameters, in which case L must be replaced by the smallest submodel containing those parameters and all the ordinals. The theorem has corollaries that \Sigma^1_3 sentences are upward absolute (if such a sentence holds in L then it holds in V) and \Pi^1_3 sentences are downward absolute (if they hold in V then they hold in L). Because any two transitive models of set theory with the same ordinals have the same constructible universe, Shoenfield's theorem shows that two such models must agree about the truth of all \Pi^1_2 sentences.
+
+One consequence of Shoenfield's theorem relates to the axiom of choice. Gödel proved that the constructible universe L always satisfies ZFC, including the axiom of choice, even when V is only assumed to satisfy ZF. Shoenfield's theorem shows that if there is a model of ZF in which a given \Pi^1_3 statement φ is false, then φ is also false in the constructible universe of that model. In contrapositive, this means that if ZFC proves a \Pi^1_3 sentence then that sentence is also provable in ZF. The same argument can be applied to any other principle which always holds in the constructible universe, such as the combinatorial principle ◊. Even if these principles are independent of ZF, each of their \Pi^1_3 consequences is already provable in ZF. In particular, this includes any of their consequences that can be expressed in the language of Peano arithmetic.
+
+Shoenfield's theorem also shows that there are limits to the independence results that can be obtained by forcing. In particular, any sentence of Peano arithmetic is absolute to transitive models of set theory with the same ordinals. Thus it is not possible to use forcing to change the truth value of arithmetical sentences, as forcing does not change the ordinals of the model to which it is applied. Many famous open problems, such as the Riemann hypothesis and the P = NP problem, can be expressed as \Pi^1_2 sentences (or sentences of lower complexity), and thus cannot be proven independent of ZFC by forcing.
+
+Rem: une version moins forte de ce th montre que V_{w_2} est Sigma_0-absolu
+
+3) Aller beaucoup plus loin :-)
+http://mathoverflow.net/questions/108197/sets-of-reals-and-absoluteness
+    Theorem. Assume there are a proper class of cardinals that are simultaneously measurable and Woodin. If ϕ is a Σ^2_1 statement (with real parameters from the ground model), then: ϕ is true in some set forcing extension of the universe iff ϕ is true in every set forcing extension that satisﬁes 𝖢𝖧.
+

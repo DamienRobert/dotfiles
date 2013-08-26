@@ -1,0 +1,47 @@
+=======
+B anneau commutatif intègre, G gpe d'auto fini de B.
+L=Frac B, A=B^G, K=Frac A.
+
+Alors:
+- K=L^G, ie L/K Galois de groupe G.
+- x \in L s'écrit b/a, b \in B, a  \in A.
+- B int clos => A aussi.
+
+=======
+A intègre, K=Frac A, L/K ext algébrique
+B cloture intégrale de A dans L.
+Si x \in L, x s'écrit b/a, b \in B, a  \in A.
+Donc toute partie gén (resp libre) de B/A est gén (resp libre) dans L/K
+ (car B est intègre donc sans A-torsion)
+
+======
+
+Soit S=k[X_1,...,X_n] une algèbre de polynômes, X_i homogène de deg d_i>0
+Soit R=k[Y_1,...Y_n] \subset S, Y_i homogène de deg e_i.
+Si Y_i alg libre, e_i >= d_i
+Alors (i) S/R entier
+  <=> (ii) S/R fini
+  <=> (iii) L'idéal (Y_1, ..., Y_n) de S est de codimension finie dans S
+  <=> (iv) pour toute extension K de k, il y a qu'un nombre finis de
+  solutions Y_i(x)=0 (il suffit de le vérifier pour kbar)
+
+Ds ce cas les Y_i sont alg libres, et S/R est libre de rang \prod e_i/\prod d_i.
+
+Si G groupe fini d'auto de S, Y_i \in S^G homogènes de deg > 0, alors
+S^G=k[Y_i] ssi # G=\prod e_i/\prod d_i et S/R entier.
+
+Rem (Nakayama gradué)
+===
+A k-alg graduée, M A-module gradué. M fini <=> M/A+M k-ev fini.
+M A-module gradué libre fini => M admet une base homogène
+
+===
+
+Soit A une k-alg de type fini, intègre. Par normalisation, \exists X_i (i<=n)
+A/k[X_i] entière. Alors K=Frac(A) / k(X_i) algébrique, donc X_i base de
+transcendance.
+Donc - si Y_i (i<=r) alg ind, r<=n. Si r=n, K/k(Y_i) entière
+(Attention, A/k[Y_i] n'est pas forcément entière, ex A=S et o prend Y_i alg
+ind, \prod d_i ne divise pas \prod e_i).
+     - si A/k[Y_i] (i<=r) entier, r>=n. Si r=n, Y_i alg libres
+     

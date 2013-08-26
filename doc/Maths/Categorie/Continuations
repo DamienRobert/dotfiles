@@ -1,0 +1,2 @@
+call/cc f prend la continuation cont et applique f(cont) avec pour
+continuation cont.

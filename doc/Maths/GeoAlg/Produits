@@ -1,0 +1,106 @@
+Sciences.maths.avancees         Message  1160
+Date: Wed Dec 7 22:52:34 2005 
+Auteur: Joel Riou (joel.riou) [jriou]
+Réponse à: Dam's (robert) [1160]                                        /o-o-o
+(suite) -Sujet: Re: produit de schemas irreductibles/connexes/[...]    o-@
+
+Dam's, dans le message (sciences.maths.avancees:1160), a écrit :
+> Géométriquement, c'est assez clair, mais je ne sais pas trop quel genre
+> d'arguments utiliser. Et algèbriquement je n'y arrive pas...
+
+Le problème avec « irréductible », « connexe » et « réduit », c'est que
+ce sont des notions absolues, pas des propriétés des morphismes de
+schémas, ou moins incompréhensiblement, des schémas au-dessus d'une base
+donnée. De fait, la théorie de Galois donne des contre-exemples aux
+énoncés X/k et Y/k irréductible (resp. connexe) => X ×_k Y irréductible
+(resp...), dès que k n'est pas séparablement clos. Pour k=F_p ou k=Q, le
+produit fibré sur k ou le produit « absolu » (i.e. sur Spec Z), c'est
+pareil. Yves a donné un contre-exemple pour réduit.
+
+David avait proposé une définition de morphisme « connexe », pour en
+faire une propriété relative [il s'agissaitt plutôt d'une notion relative
+de « connexe et non vide »]. Tautologiquement, si on avait X -> Spec Z
+connexe et Y -> Spec Z un morphisme quelconque, on avait X × Y -> Y
+connexe, et la composée X × Y -> Spec Z était connexe si Y -> Spec Z
+était aussi supposé connexe.
+
+> D'ailleurs ça me fait penser à ceci: j'ai envie de dire qu'un anneau A est
+> réduit ssi il est réduit en chaque localisé (par un idéal maximal).
+>
+> Algébriquement, on peut voir ça comme ça: je suppose de plus A
+> noéthérien. Alors son nilradical peut s'écrire comme intersection finie
+> des idéaux premiers minimaux. Comme les intersections finies commutent à
+> la localisation (car la localisation est un produit tensoriel), on voit
+> que Nilrad_(m) = Intersection des idéaux premiers minimaux contenus dans
+> m (car les autres donnent lieu à tout A_(m))= Nilrad de A_(m).
+>      
+> Donc Nilrad est nul ssi il est nul dans tous les localisés (car il est de
+> type fini) ssi tout localisé est réduit.
+>
+> (tiens géométriquement on pourrait dire ça comment? IL est assez clair
+> qu'une fonction qui est nilpotente localement est nilpotente globalement
+> par quasi-compacité, qu'une fonction nilpotente est nilpotente
+> localement, et son germe est non nul en au moins un point, donc il y a un
+> localisé qui est non réduit, et enfin si un localisé est non réduit, on
+> trouve une fonction nilpotente au voisinage D(f) d'un point, on peut
+> l'étendre en la multipliant par f^n en une section globale, mais rien ne
+> nous dit que la section obtenue est nilpotente globalement...).
+
+Tu as un élément de la forme s/f^n qui est nilpotent dans A[1/f], cela
+veut dire qu'on a, pour un certain entier N, s^N/f^{nN} = 0 dans A[1/f],
+ce qui signifie qu'il existe r tel que f^r s^N = 0 dans A, (s.f^?) pour
+une bonne valeur de ? est nilpotent et non nul puisque diffère de s par
+une unité dans A[1/f].
+
+> Question subsidiaire: que se passe t'il maintenant si je regarde les
+> produits au-dessus d'un autre schéma (affine)?
+
+Les contre-exemples évidents pour irréductible/connexe sont au-dessus
+d'une base. Pour réduit, on peut aussi en fabriquer si on considère un
+corps imparfait k, E une extension algébrique finie qui n'est pas
+séparable, il existe alors une extension k'/k finie telle que E tenseur
+k' ait des éléments nilpotents (la négation de cette assertion est une
+caractérisation des algèbres étales sur k, E ne l'est pas puisqu'elle est
+inséparable).
+
+Maintenant, au-dessus d'un corps algébriquement clos k (ce qui est un
+sens possible de l'adverbe « géométriquement »), le produit sur k de deux
+schémas X et Y irréductibles (resp. réduits, connexes) est itou ; c'est
+classique, mais non « trivial », cela doit utiliser le Nullstellensatz
+quelque part... Pour « irréductible » et « connexe », cela se voit bien
+quand on sait que X peut être décrit en termes de la topologie de Zariski
+sur X(k) ; pour « réduit », c'est un exercice. [On peut généraliser ce
+cas au cas des morphismes X -> S « à fibres géométriquement réduites
+(resp...) », un produit au-dessus de S de deux schémas vérifiant cette
+condition relative satisfait encore cette propriété.]
+
+================================================
+Remarque sur les schémas réduits: sciences.maths.avancees  Message  670
+
+Soit X un schéma.
+On définit le schéma réduit Xréd comme étant le sous-schéma fermé de X
+induit par le faisceau quasi-cohérent qui a U associe le nilradical de
+O(U). (enfin on va dire X schéma noéthérien pour être sûr que ce machin
+là est bien un faisceau).
+  
+Donc le faisceau structural de Xréd associe à un ouvert _affine_ U l'anneau
+O(U)/Nilrad (de O(U)) (car le foncteur section globales est exact sur les
+ouverts affines). Est-ce que c'est également vrai pour n'importe quel ouvert?
+
+Réponse: a priori non, mais le contreexemple de Joel est pour un idéal qui n'est pas le Nilradical.
+
+Rem: si X n'est pas noethérien:
+si on note I(U)=nilradical de O(U), on obtient un préfaisceau qui n'est pas
+forcément est faisceau : le bon Idéal est l'idéal Nilrad qui à U associe
+l'ensemble des éléments de O(U) qui sont *localement* nilpotents (en effet, sur
+l'union disjointe des Spec Z[X]/X^n, la section globale qui vaut « X » sur
+chaque composante, donne 0 dans le schéma réduit associé, mais n'est pas
+nilpotente au départ).
+
+====================
+Si X et Y sont deux variétés intègres sur k alg clos, alors leur produit
+est une variété intègre (si X est recouvert par les Spec A_i et Y par les
+Spec B_j, alors XxY est recouvert par les Spec A_i \tens Spec B_j), et O_(x,y)
+est le localisé de O_x \tens O_y en l'idéal maximal m_x O_y + m_y O_x.
+De plus, si x est dans Spec A et y dans Spec B, alors la cloture de (x,y)
+correspond à l'idéal du noyau A \tens B -> O_(x,y)/m_x,y

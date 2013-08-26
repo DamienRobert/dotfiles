@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<title>pacman - ArchWiki</title>
+<meta name="generator" content="MediaWiki 1.17.0" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="ArchWiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.archlinux.org/api.php?action=rsd" />
+<link title="Creative Commons" type="application/rdf+xml" href="/index.php?title=Pacman&amp;action=creativecommons" rel="meta" />
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html" />
+<link rel="alternate" type="application/atom+xml" title="ArchWiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared&amp;only=styles&amp;skin=archlinux&amp;*" />
+<link rel="stylesheet" href="/skins/archlinux/main.css?301" media="screen" />
+<!--[if lt IE 5.5000]><link rel="stylesheet" href="/skins/archlinux/IE50Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 5.5000]><link rel="stylesheet" href="/skins/archlinux/IE55Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 6]><link rel="stylesheet" href="/skins/archlinux/IE60Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/archlinux/IE70Fixes.css?301" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/skins/archlinux/archnavbar.css?301" media="screen" />
+<link rel="stylesheet" href="/skins/archlinux/arch.css?301" media="screen" /><meta name="ResourceLoaderDynamicStyles" content="" />
+</head>
+<body class="mediawiki ltr ns-0 ns-subject page-Pacman skin-archlinux">
+<div id="archnavbar"><!-- Arch Linux global navigation bar -->
+	<div id="archnavbarlogo">
+		<p><a id="logo" href="http://www.archlinux.org/"></a></p>
+	</div>
+	<div id="archnavbarmenu">
+		<ul id="archnavbarlist">
+			<li id="anb-home"><a href="http://www.archlinux.org/">Home</a></li><li id="anb-packages"><a href="http://www.archlinux.org/packages/">Packages</a></li><li id="anb-forums"><a href="https://bbs.archlinux.org/">Forums</a></li><li id="anb-wiki" class="anb-selected"><a href="https://wiki.archlinux.org/">Wiki</a></li><li id="anb-bugs"><a href="https://bugs.archlinux.org/">Bugs</a></li><li id="anb-aur"><a href="https://aur.archlinux.org/">AUR</a></li><li id="anb-download"><a href="http://www.archlinux.org/download/">Download</a></li>		</ul>
+	</div>
+</div><!-- #archnavbar -->
+<div id="globalWrapper">
+<div id="column-content"><div id="content" >
+	<a id="top"></a>
+	
+	<h1 id="firstHeading" class="firstHeading">pacman</h1>
+	<div id="bodyContent">
+		<div id="siteSub">From ArchWiki</div>
+		<div id="contentSub"></div>
+		<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+		<!-- start content -->
+<div class="toc noprint" style="text-align: center; margin-bottom: 1em">
+<p><b><a href="/index.php/Help:I18n" title="Help:I18n">i18n</a></b>
+</p>
+<hr />
+<p><a href="/index.php/Pacman_(Dansk)" title="Pacman (Dansk)">Dansk</a>&#160;&#8211;
+<strong class="selflink">English</strong>&#160;&#8211; 
+<a href="/index.php/Pacman_(Espa%C3%B1ol)" title="Pacman (Español)">Español</a>&#160;&#8211;
+<a href="/index.php/Pacman_(Fran%C3%A7ais)" title="Pacman (Français)" class="mw-redirect">Français</a>&#160;&#8211;
+<a href="/index.php/Pacman_(Indonesia)" title="Pacman (Indonesia)">Indonesia</a>&#160;&#8211;
+<a href="/index.php/Pacman_(Italiano)" title="Pacman (Italiano)">Italiano</a>&#160;&#8211;
+<a href="/index.php/Pacman_(Lietuvi%C5%A1kai)" title="Pacman (Lietuviškai)">Lietuviškai</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(Magyar)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (Magyar) (page does not exist)">Magyar</a>&#160;&#8211;
+<a href="/index.php/Pacman_(Nederlands)" title="Pacman (Nederlands)">Nederlands</a>&#160;&#8211;
+<a href="/index.php/Pacman_(Portugu%C3%AAs)" title="Pacman (Português)">Português</a>&#160;&#8211;
+<a href="/index.php/Pacman_(Rom%C3%A2n%C4%83)" title="Pacman (Română)">Română</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(Slovensk%C3%BD)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (Slovenský) (page does not exist)">Slovenský</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(Suomi)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (Suomi) (page does not exist)">Suomi</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(Svenska)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (Svenska) (page does not exist)">Svenska</a>&#160;&#8211;
+<a href="/index.php/Pacman_(T%C3%BCrk%C3%A7e)" title="Pacman (Türkçe)">Türkçe</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%C4%8Cesky)" title="Pacman (Česky)">Česky</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%CE%95%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC)" title="Pacman (Ελληνικά)">Ελληνικά</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(%D0%91%D1%8A%D0%BB%D0%B3%D0%B0%D1%80%D1%81%D0%BA%D0%B8)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (Български) (page does not exist)">Български</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)" title="Pacman (Русский)">Русский</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%D0%A1%D1%80%D0%BF%D1%81%D0%BA%D0%B8)" title="Pacman (Српски)">Српски</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B0)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (Українська) (page does not exist)">Українська</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(%D7%A2%D7%91%D7%A8%D7%99%D7%AA)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (עברית) (page does not exist)">עברית</a>&#160;&#8211;
+<a href="/index.php?title=Pacman_(%E0%B9%84%E0%B8%97%E0%B8%A2)&amp;action=edit&amp;redlink=1" class="new" title="Pacman (ไทย) (page does not exist)">ไทย</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%E6%97%A5%E6%9C%AC%E8%AA%9E)" title="Pacman (日本語)">日本語</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%E6%AD%A3%E9%AB%94%E4%B8%AD%E6%96%87)" title="Pacman (正體中文)">正體中文</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" title="Pacman (简体中文)">简体中文</a>&#160;&#8211;
+<a href="/index.php/Pacman_(%ED%95%9C%EA%B5%AD%EC%96%B4)" title="Pacman (한국어)">한국어</a> 
+</p>
+</div> 
+<table style="margin-left: 5px; padding: 5px; border-spacing: 0px 4px; float: right; clear: right; width: 25%;" cellpadding="0">
+
+<tr style="text-align: center; border-bottom: 5px #08c solid;">
+<th style="background: #333; color: white; padding: 3px;"> <b>Summary</b>
+</th></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> pacman is the Arch Linux <a href="http://en.wikipedia.org/wiki/Package_management_system" class="extiw" title="wikipedia:Package management system">package manager</a>. Package managers are used to install, upgrade, and remove software. This article covers basic usage and troubleshooting tips.
+</td></tr>
+<tr style="text-align: center; height: 1.5em; border-bottom: 5px #08c solid;">
+<th style="background: #333; color: white; padding: 2px;"> <b>Overview</b>
+</th></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> Packages in Arch Linux are built using <a href="/index.php/Makepkg" title="Makepkg">makepkg</a> and a custom build script for each package (known as a <a href="/index.php/PKGBUILD" title="PKGBUILD">PKGBUILD</a>). Once packaged, software can be installed and managed with <strong class="selflink">pacman</strong>. PKGBUILDs for software in the <a href="/index.php/Official_Repositories" title="Official Repositories">official repositories</a> are available from the <a href="/index.php/Arch_Build_System" title="Arch Build System">ABS</a> tree; thousands more are available from the (unsupported) <a href="/index.php/Arch_User_Repository" title="Arch User Repository">Arch User Repository</a>.
+</td></tr>
+<tr style="text-align: center; height: 1.5em; border-bottom: 5px #08c solid;">
+<th style="background: #333; color: white; padding: 2px;"> <b>Related</b>
+</th></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="/index.php/Downgrading_Packages" title="Downgrading Packages">Downgrading Packages</a>
+</td></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="/index.php/Improve_Pacman_Performance" title="Improve Pacman Performance">Improve Pacman Performance</a>
+</td></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="/index.php/Pacman_GUI_Frontends" title="Pacman GUI Frontends">pacman GUI Frontends</a>
+</td></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="/index.php/Pacman_Rosetta" title="Pacman Rosetta">pacman Rosetta</a>
+</td></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="/index.php/Pacman_Tips" title="Pacman Tips">pacman Tips</a>
+</td></tr>
+<tr style="text-align: center; height: 1.5em; border-bottom: 5px #08c solid;">
+<th style="background: #333; color: white; padding: 2px;"> <b>Resources</b>
+</th></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="http://www.archlinux.org/pacman/libalpm.3.html" class="external text" rel="nofollow">libalpm(3) Manual Page</a>
+</td></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="http://www.archlinux.org/pacman/pacman.8.html" class="external text" rel="nofollow">pacman(8) Manual Page</a>
+</td></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="http://www.archlinux.org/pacman/pacman.conf.5.html" class="external text" rel="nofollow">pacman.conf(5) Manual Page</a>
+</td></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> <a href="http://www.archlinux.org/pacman/repo-add.8.html" class="external text" rel="nofollow">repo-add(8) Manual Page</a>
+</td></tr></table>
+<p>The <b><a href="http://archlinux.org/pacman/" class="external text" rel="nofollow">pacman</a></b> <a href="http://en.wikipedia.org/wiki/Package_management_system" class="extiw" title="wikipedia:Package management system">package manager</a> is one of the main features of Arch Linux. It combines a simple binary package format with an easy-to-use build system (see <a href="/index.php/Makepkg" title="Makepkg">makepkg</a> and <a href="/index.php/Arch_Build_System" title="Arch Build System">Arch Build System</a>). The goal of pacman is to make it possible to easily manage packages, whether they are from the official Arch repositories or the user's own builds.
+</p><p>pacman keeps the system up to date by synchronizing package lists with the master server. This server/client model also allows you to download/install packages with a simple command, complete with all required dependencies.
+</p><p>pacman is written in the C programming language and uses the <span style="font-family: monospace; color: #050; white-space: nowrap">.pkg.tar.xz</span> package format.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB"><strong> Tip: </strong>The official <b>pacman</b> package contains also other useful tools, such as <a href="/index.php/Makepkg" title="Makepkg">makepkg</a>, pactree, vercomp and more. You can get the full list from <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Ql pacman | grep bin</span> </div>
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Configuration"><span class="tocnumber">1</span> <span class="toctext">Configuration</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#General_options"><span class="tocnumber">1.1</span> <span class="toctext">General options</span></a>
+<ul>
+<li class="toclevel-3 tocsection-3"><a href="#Skip_package_from_being_upgraded"><span class="tocnumber">1.1.1</span> <span class="toctext">Skip package from being upgraded</span></a></li>
+<li class="toclevel-3 tocsection-4"><a href="#Skip_package_group_from_being_upgraded"><span class="tocnumber">1.1.2</span> <span class="toctext">Skip package group from being upgraded</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-5"><a href="#Repositories"><span class="tocnumber">1.2</span> <span class="toctext">Repositories</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="#Usage"><span class="tocnumber">2</span> <span class="toctext">Usage</span></a>
+<ul>
+<li class="toclevel-2 tocsection-7"><a href="#Installing_packages"><span class="tocnumber">2.1</span> <span class="toctext">Installing packages</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="#Removing_packages"><span class="tocnumber">2.2</span> <span class="toctext">Removing packages</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="#Upgrading_packages"><span class="tocnumber">2.3</span> <span class="toctext">Upgrading packages</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="#Querying_package_databases"><span class="tocnumber">2.4</span> <span class="toctext">Querying package databases</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="#Additional_commands"><span class="tocnumber">2.5</span> <span class="toctext">Additional commands</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="#Partial_upgrades_are_unsupported"><span class="tocnumber">2.6</span> <span class="toctext">Partial upgrades are unsupported</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-13"><a href="#Troubleshooting"><span class="tocnumber">3</span> <span class="toctext">Troubleshooting</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Q:_An_update_to_package_XYZ_broke_my_system.21"><span class="tocnumber">3.1</span> <span class="toctext">Q: An update to package XYZ broke my system!</span></a></li>
+<li class="toclevel-2"><a href="#Q:_I_know_an_update_to_package_ABC_was_released.2C_but_pacman_says_my_system_is_up_to_date.21"><span class="tocnumber">3.2</span> <span class="toctext">Q: I know an update to package ABC was released, but pacman says my system is up to date!</span></a></li>
+<li class="toclevel-2"><a href="#Q:_I_get_an_error_when_updating:_.22file_exists_in_filesystem.22.21"><span class="tocnumber">3.3</span> <span class="toctext">Q: I get an error when updating: "file exists in filesystem"!</span></a></li>
+<li class="toclevel-2"><a href="#Q:_I_get_an_error_when_installing_a_package:_.22not_found_in_sync_db.22"><span class="tocnumber">3.4</span> <span class="toctext">Q: I get an error when installing a package: "not found in sync db"</span></a></li>
+<li class="toclevel-2"><a href="#Q:_pacman_is_repeatedly_upgrading_the_same_package.21"><span class="tocnumber">3.5</span> <span class="toctext">Q: pacman is repeatedly upgrading the same package!</span></a></li>
+<li class="toclevel-2"><a href="#Q:_pacman_crashes_during_an_upgrade.21"><span class="tocnumber">3.6</span> <span class="toctext">Q: pacman crashes during an upgrade!</span></a></li>
+<li class="toclevel-2"><a href="#Q:_I_installed_software_using_make_install.3B_these_files_do_not_belong_to_any_package.21"><span class="tocnumber">3.7</span> <span class="toctext">Q: I installed software using make install; these files do not belong to any package!</span></a></li>
+<li class="toclevel-2"><a href="#Q:_pacman_is_completely_broken.21_How_do_I_reinstall_it.3F"><span class="tocnumber">3.8</span> <span class="toctext">Q: pacman is completely broken! How do I reinstall it?</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-14"><a href="#See_also"><span class="tocnumber">4</span> <span class="toctext">See also</span></a></li>
+</ul>
+</td></tr></table>
+<h2> <span class="mw-headline" id="Configuration"> Configuration </span></h2>
+<p>pacman configuration is located in <span style="font-family: monospace; color: #050; white-space: nowrap">/etc/pacman.conf</span>. This is the place where the user configures the program to work in the desired manner. In-depth information about the configuration file can be found in <a href="http://www.archlinux.org/pacman/pacman.conf.5.html" class="external text" rel="nofollow">man pacman.conf</a>.
+</p>
+<h3> <span class="mw-headline" id="General_options"> General options </span></h3>
+<p>General options are in the <span style="font-family: monospace; color: #000055; white-space: nowrap">[options]</span> section. Read the man page or look in the default <span style="font-family: monospace; color: #050; white-space: nowrap">pacman.conf</span> for information on what can be done here.
+</p>
+<h4> <span class="mw-headline" id="Skip_package_from_being_upgraded"> Skip package from being upgraded </span></h4>
+<p>To skip upgrading a specific package, specify it as such:
+</p>
+<pre>IgnorePkg=linux
+</pre>
+<p>For multiple packages use a space-separated list, or use additional IgnorePkg lines.
+</p>
+<h4> <span class="mw-headline" id="Skip_package_group_from_being_upgraded"> Skip package group from being upgraded </span></h4>
+<p>As with packages, skipping a whole package group is also possible:
+</p>
+<pre>IgnoreGroup=gnome
+</pre>
+<h3> <span class="mw-headline" id="Repositories"> Repositories </span></h3>
+<p>This section defines which repositories to use, as referred to in <span style="font-family: monospace; color: #050; white-space: nowrap">pacman.conf</span>. They can be stated here directly, or included from another file.
+</p><p>All official repositories use the same <span style="font-family: monospace; color: #050; white-space: nowrap">/etc/pacman.d/mirrorlist</span> file which uses the <span style="font-family: monospace; color: #000055; white-space: nowrap">$repo</span> variable, making it necessary to maintain only one list.
+</p><p>The following is an example for the <a href="/index.php/Official_repositories" title="Official repositories" class="mw-redirect">official repositories</a> that defers <a href="/index.php/Mirrors" title="Mirrors">mirrors</a> to the mirrorlist.
+</p>
+<pre>
+[core]
+# Add your preferred servers here, they will be used first
+Include=/etc/pacman.d/mirrorlist
+
+[extra]
+# Add your preferred servers here, they will be used first
+Include=/etc/pacman.d/mirrorlist
+
+[community]
+# Add your preferred servers here, they will be used first
+Include=/etc/pacman.d/mirrorlist
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD"><strong> Note: </strong>Care should be taken when using the <span style="font-family: monospace; color: #000055; white-space: nowrap">[testing]</span> repository. It is in active development and updating may cause some packages to stop working. People who use the <span style="font-family: monospace; color: #000055; white-space: nowrap">[testing]</span> repository are encouraged to subscribe to the <a href="http://mailman.archlinux.org/mailman/listinfo/arch-dev-public" class="external text" rel="nofollow">arch-dev-public mailing list</a> for current information.</div>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #FFDDDD; border: thin solid #DDBBBB"><strong> Warning: </strong><a href="/index.php/FAQ#Q.29_Why_does_Arch_not_use_signed_packages_and_what_does_this_mean_for_me.3F" title="FAQ">Pacman currently uses unsigned packages</a>; however, package signing is in development.</div>
+<h2> <span class="mw-headline" id="Usage"> Usage </span></h2>
+<p>To read other examples of what pacman can do, refer to <a href="http://archlinux.org/pacman/pacman.8.html" class="external text" rel="nofollow">man pacman</a>. The examples below are just a small sample of operations that can be performed.
+</p>
+<h3> <span class="mw-headline" id="Installing_packages">Installing packages</span></h3>
+<p>To install a single package or list of packages (including dependencies), issue the following command:
+</p>
+<pre># pacman -S package_name1 package_name2 ...
+</pre>
+<p>Sometimes there are multiple versions of a package in different repositories (e.g. extra and testing). Specify which one to install:
+</p>
+<pre># pacman -S extra/package_name
+# pacman -S testing/package_name
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD"><strong> Note: </strong>If a package in the list is already installed on the system, it will be reinstalled even if it is already up-to-date, unless you use the <tt>--needed</tt> option.</div>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #FFDDDD; border: thin solid #DDBBBB"><strong> Warning: </strong>Do not refresh the package list when installing packages (i.e. <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Sy package_name</span>); this can lead to dependency issues.<a href="http://bbs.archlinux.org/viewtopic.php?id=89328" class="external autonumber" rel="nofollow">[1]</a> <a href="#Upgrading_packages">Upgrade</a> explicitly first; before installing new packages.</div>
+<h3> <span class="mw-headline" id="Removing_packages"> Removing packages </span></h3>
+<p>To remove a single package, leaving all of its dependencies installed:
+</p>
+<pre># pacman -R package_name
+</pre>
+<p>To remove a package and its dependencies which are not required by any other installed package:
+</p>
+<pre># pacman -Rs package_name
+</pre>
+<p>To remove a package, its dependencies and all the packages that depend on the target package:
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #FFDDDD; border: thin solid #DDBBBB"><strong> Warning: </strong>This operation is recursive, and must be used with care since it can remove many potentially needed packages.</div>
+<pre># pacman -Rsc package_name
+</pre>
+<p>pacman saves important configuration files when removing certain applications and names them with the extension: <span style="font-family: monospace; color: #050; white-space: nowrap">.pacsave</span>. To prevent the creation of these backup files use the <tt>-n</tt> option:
+</p>
+<pre># pacman -Rn package_name
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD"><strong> Note: </strong>pacman will not remove configurations that the application itself creates (for example "dotfiles" in the home folder).</div>
+<h3> <span class="mw-headline" id="Upgrading_packages">Upgrading packages</span></h3>
+<p>pacman can update all packages on the system with just one command. This could take quite a while depending on how up-to-date the system is. This command can synchronize the repository databases <i>and</i> update the system's packages:
+</p>
+<pre># pacman -Syu
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #FFDDDD; border: thin solid #DDBBBB"><strong> Warning: </strong>Instead of immediately updating as soon as updates are available, users must recognize that due to the nature of Arch's rolling release approach, an update may have unforeseen consequences. This means that it is not wise to update if, for example, one is about to deliver an important presentation. Rather, update during free time and be prepared to deal with any problems that may arise.</div>
+<p>pacman is a powerful package management tool, but it does not attempt to handle all corner cases. Read <a href="/index.php/The_Arch_Way" title="The Arch Way">The Arch Way</a> if this confuses you. Rather, users must be vigilant and take responsibility for maintaining their own system. <b>When performing a system update it is essential that users read all information output by pacman and use common sense.</b> If a configuration file that you have modified needs to be upgraded for a new version of a package, pacman will prompt you to merge a <a href="/index.php/Pacnew_and_Pacsave_Files" title="Pacnew and Pacsave Files">pacnew</a> file.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB"><strong> Tip: </strong>Remember that pacman's output is logged in <span style="font-family: monospace; color: #050; white-space: nowrap">/var/log/pacman.log</span>.</div>
+<p>Before upgrading, it is advisable to visit the <a href="http://archlinux.org/" class="external text" rel="nofollow">Arch Linux home page</a> to check the latest news (or subscribe to the RSS feed): when updates require out-of-the-ordinary user intervention (more than what can be handled simply by following the instructions given by pacman), an appropriate news post will be made.
+</p><p>If you encounter problems that cannot be solved by these instructions, make sure to search the forum. It is likely that others have encountered the same problem and have posted instructions for solving it.
+</p>
+<h3> <span class="mw-headline" id="Querying_package_databases"> Querying package databases </span></h3>
+<p>pacman queries the local package database with the -Q flag; see:
+</p>
+<pre>$ pacman -Q --help
+</pre>
+<p>and queries the sync databases with the -S flag; see:
+</p>
+<pre>$ pacman -S --help
+</pre>
+<p>pacman can search for packages in the database, searching both in packages' names and descriptions:
+</p>
+<pre>$ pacman -Ss string1 string2 ...
+</pre>
+<p>To search for already installed packages:
+</p>
+<pre>$ pacman -Qs string1 string2 ...
+</pre>
+<p>To display extensive information about a given package:
+</p>
+<pre>$ pacman -Si package_name
+</pre>
+<p>for locally installed packages:
+</p>
+<pre>$ pacman -Qi package_name
+</pre>
+<p>Passing two <tt>-i</tt> flags will also display the list of backup files and their modification states:
+</p>
+<pre>$ pacman -Qii package_name
+</pre>
+<p>To retrieve a list of the files installed by a package:
+</p>
+<pre>$ pacman -Ql package_name
+</pre>
+<p>One can also query the database to know which package a file in the file system belongs to:
+</p>
+<pre>$ pacman -Qo /path/to/a/file
+</pre>
+<p>To list all packages no longer required as dependencies (orphans):
+</p>
+<pre>$ pacman -Qdt
+</pre>
+<h3> <span class="mw-headline" id="Additional_commands"> Additional commands </span></h3>
+<p>Upgrade the system and install a list of packages (one-liner):
+</p>
+<pre># pacman -Syu package_name1 package_name2 ...
+</pre>
+<p>Download a package without installing it:
+</p>
+<pre># pacman -Sw package_name
+</pre>
+<p>Install a 'local' package that is not from a repository:
+</p>
+<pre># pacman -U /path/to/package/package_name-version.pkg.tar.xz
+</pre>
+<p>Install a 'remote' package (not from a repository):
+</p>
+<pre># pacman -U http://www.example.com/repo/example.pkg.tar.xz
+</pre>
+<p>Clean the package cache of packages that are not currently installed (<span style="font-family: monospace; color: #050; white-space: nowrap">/var/cache/pacman/pkg</span>):
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #FFDDDD; border: thin solid #DDBBBB"><strong> Warning: </strong>Only do this when you are sure that the current versions of installed packages are stable and you will not need to <a href="/index.php/Downgrading_Packages" title="Downgrading Packages">downgrade</a> as <tt>pacman -Sc</tt> removes all the old versions of installed packages.</div>
+<pre># pacman -Sc
+</pre>
+<p>Clean the entire package cache:
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #FFDDDD; border: thin solid #DDBBBB"><strong> Warning: </strong>This clears the entire package cache. Doing this is a very bad practice, as you will not be able to downgrade to the current set of packages in the case that you upgrade and it causes breakage.</div>
+<pre># pacman -Scc
+</pre>
+<h3> <span class="mw-headline" id="Partial_upgrades_are_unsupported">Partial upgrades are unsupported</span></h3>
+<p>Arch Linux is a rolling release, and new <a href="http://en.wikipedia.org/wiki/Library_(computing)" class="extiw" title="wikipedia:Library (computing)">library</a> versions will be pushed to the repositories. The developers and trusted users will rebuild all the packages in the repositories that need to be rebuilt against the libraries. If you have locally installed packages (such as AUR packages), you will need to rebuild them yourself when their dependencies receive a <a href="http://en.wikipedia.org/wiki/soname" class="extiw" title="wikipedia:soname">soname</a> bump.
+</p><p>This means that partial upgrades are <b>not supported</b>. Do not use <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Sy package</span> or any equivalent such as <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Sy</span> and then <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -S package</span>. Always upgrade before installing a package if you have refreshed the sync repositories. You should also be very careful when using IgnorePkg/IgnoreGroup for the same reason.
+</p><p>If you do a partial upgrade and binaries are broken because they cannot find the libraries they are linked against, <b>do not "fix" the problem simply by symlinking</b>. Libraries receive <a href="http://en.wikipedia.org/wiki/soname" class="extiw" title="wikipedia:soname">soname</a> bumps when they are <b>not backwards compatible</b>. A simple <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Syu</span> to a properly synced mirror will fix the issue as long as pacman is not broken.
+</p>
+<h2> <span class="mw-headline" id="Troubleshooting"> Troubleshooting </span></h2>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_An_update_to_package_XYZ_broke_my_system.21">Q: An update to package XYZ broke my system!</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>Arch Linux is a rolling-release cutting-edge distribution. Package updates are available as soon as they are deemed stable enough for general use. However, updates sometimes require user intervention: configuration files may need to be updated, optional dependencies may change, etc.
+<p>The most important tip to remember is to not "blindly" update your system. Always read the list of packages to be updated. Note whether "critical" packages are going to be updated (<span style="font-family: monospace; color: #000055; white-space: nowrap">linux</span>, <span style="font-family: monospace; color: #000055; white-space: nowrap">xorg-server</span>, and so on). If so, it is usually a good idea to check for any news at <a href="http://archlinux.org" class="external free" rel="nofollow">http://archlinux.org</a> and scan recent forum posts to see if people are experiencing problems as a result of an update.
+</p><p>If a package update is expected/known to cause problems, packagers will ensure that pacman displays an appropriate message when the package is updated. If experiencing trouble after an update, double-check pacman's output by looking at the log (<span style="font-family: monospace; color: #050; white-space: nowrap">/var/log/pacman.log</span>). 
+</p><p>At this point, <b>only after ensuring there is no information available through pacman, there is no relative news on <a href="http://archlinux.org" class="external free" rel="nofollow">http://archlinux.org</a>, and there are no forum posts regarding the update</b>, you should consider seeking help on the forum, over <a href="/index.php/IRC_Channel" title="IRC Channel">IRC</a>, or <a href="/index.php/Downgrading_Packages" title="Downgrading Packages">downgrading the offending package</a>.
+</p>
+Re-read the last paragraph.</div>
+</div>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_I_know_an_update_to_package_ABC_was_released.2C_but_pacman_says_my_system_is_up_to_date.21">Q: I know an update to package ABC was released, but pacman says my system is up to date!</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>pacman mirrors are not synced immediately. It may take over 24 hours before an update is available to you. 
+The only options are be patient or use another mirror. <a href="https://www.archlinux.de/?page=MirrorStatus" class="external text" rel="nofollow">MirrorStatus</a> can help you identify an up-to-date mirror.</div>
+</div>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_I_get_an_error_when_updating:_.22file_exists_in_filesystem.22.21">Q: I get an error when updating: "file exists in filesystem"!</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>ASIDE: <i>Taken from <a href="http://bbs.archlinux.org/viewtopic.php?id=56373" class="external free" rel="nofollow">http://bbs.archlinux.org/viewtopic.php?id=56373</a> by Misfit138.</i>
+<pre>error: could not prepare transaction
+error: failed to commit transaction (conflicting files)
+package: /path/to/file exists in filesystem
+Errors occurred, no packages were upgraded.
+</pre>
+<p>Why this is happening: pacman has detected a file conflict, and by design, will not overwrite files for you. This is a design feature, not a flaw. (<span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Qo</span> may be invoked to query which package owns the file, if any.)
+</p>
+The issue is usually trivial to solve. A safe way is to first check if another package owns the file (<span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Qo /path/to/file</span>). If the file is owned by another package, <a href="/index.php/Reporting_Bug_Guidelines" title="Reporting Bug Guidelines">file a bug report</a>. If the file is not owned by another package, rename the file which 'exists in filesystem' and re-issue the update command. If all goes well, the file may then be removed.</div>
+</div>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_I_get_an_error_when_installing_a_package:_.22not_found_in_sync_db.22">Q: I get an error when installing a package: "not found in sync db"</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>Firstly, ensure the package actually exists (and watch out for typos!) If certain the package exists, your package list may be out-of-date or your repositories may be incorrectly configured. Try running <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Syy</span> to force a refresh of all package lists.</div>
+</div>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_pacman_is_repeatedly_upgrading_the_same_package.21">Q: pacman is repeatedly upgrading the same package!</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>This is due to duplicate entries in <span style="font-family: monospace; color: #050; white-space: nowrap">/var/lib/pacman/local/</span>, such as two <span style="font-family: monospace; color: #000055; white-space: nowrap">linux</span> instances. <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Qi</span> outputs the correct version, but <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Qu</span> recognizes the old version and therefore will attempt to upgrade.
+<p>Solution: delete the offending entry in <span style="font-family: monospace; color: #050; white-space: nowrap">/var/lib/pacman/local/</span>.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD"><strong> Note: </strong>pacman version 3.4 should display an error in case of duplicate entries, which should make this note obsolete.</div></div>
+</div>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_pacman_crashes_during_an_upgrade.21">Q: pacman crashes during an upgrade!</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>In the case that pacman crashes with a "database write" error whilst removing packages, and reinstalling or upgrading packages fails:
+<ol><li>Boot using the Arch live CD
+</li><li>Mount your root filesystem
+</li><li>Update the pacman database via <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Syy</span>
+</li><li>Reinstall the broken package via <span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -r /path/to/root -S package</span></div>
+</li></ol>
+</div>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_I_installed_software_using_make_install.3B_these_files_do_not_belong_to_any_package.21">Q: I installed software using <span style="font-family: monospace; color: #000055; white-space: nowrap">make install</span>; these files do not belong to any package!</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>If receiving a "conflicting files" error, note that pacman will overwrite manually-installed software if supplied with the <span style="font-family: monospace; color: #000055; white-space: nowrap">-f</span> switch (<span style="font-family: monospace; color: #000055; white-space: nowrap">pacman -Sf</span>).
+See <a href="/index.php/Pacman_Tips#Getting_a_list_of_files_not_owned_by_any_package" title="Pacman Tips">pacman Tips#Getting a list of files not owned by any package</a> for a script that searches the filesystem for <i>disowned</i> files.</div>
+</div>
+<div style="padding: 0.25em; margin: 0.50em 0; border: medium solid; border-color: #DDD #BBB #BBB #DDD;">
+<h4 style="font-style: italic; border-bottom: thin solid #000000"> <span class="mw-headline" id="Q:_pacman_is_completely_broken.21_How_do_I_reinstall_it.3F">Q: pacman is completely broken! How do I reinstall it?</span></h4>
+<div style="padding-left: 3.50em"><span style="float: left; margin-left: -2.50em; font-style: italic; font-weight: bold; font-size: large">A: </span>In the case that pacman is broken beyond repair, manually download the necessary packages (openssl, libarchive, libfetch and pacman) and extract them to root. The pacman binary will be restored along with its default configuration file. Afterwards, reinstall these packages with pacman to maintain package database integrity. Additional information and an example (outdated) script that automates the process is available in <a href="https://bbs.archlinux.org/viewtopic.php?id=95007" class="external text" rel="nofollow">this</a> forum post.</div>
+</div>
+<h2> <span class="mw-headline" id="See_also">See also</span></h2>
+<ul><li><a href="/index.php/FAQ#Package_Management" title="FAQ">FAQ#Package_Management</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 981/1000000
+Post-expand include size: 30126/2097152 bytes
+Template argument size: 16923/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key archwiki:pcache:idhash:1577-0!*!0!!en!*!edit=0 and timestamp 20110831012337 -->
+<div class="printfooter">
+Retrieved from "<a href="https://wiki.archlinux.org/index.php/Pacman">https://wiki.archlinux.org/index.php/Pacman</a>"</div>
+		<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks"><a href="/index.php/Special:Categories" title="Special:Categories">Categories</a>: <span dir='ltr'><a href="/index.php/Category:Package_management_(English)" title="Category:Package management (English)">Package management (English)</a></span> | <span dir='ltr'><a href="/index.php/Category:Utilities_(English)" title="Category:Utilities (English)">Utilities (English)</a></span></div></div>		<!-- end content -->
+				<div class="visualClear"></div>
+	</div>
+</div></div>
+<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<div class="pBody">
+			<ul>
+				 <li id="ca-nstab-main" class="selected"><a href="/index.php/Pacman" title="View the content page [c]" accesskey="c">Page</a></li>
+				 <li id="ca-talk"><a href="/index.php/Talk:Pacman" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				 <li id="ca-viewsource"><a href="/index.php?title=Pacman&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li>
+				 <li id="ca-history"><a href="/index.php?title=Pacman&amp;action=history" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=Pacman" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in / create account</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(/archwiki_logo.png);" href="/index.php/Main_Page" title="Visit the main page"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+	<div class='generated-sidebar portlet' id='p-navigation'>
+		<h5>Navigation</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage-description"><a href="/index.php/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+				<li id="n-portal"><a href="/index.php/Getting_Involved" title="Various ways Archers can contribute to the community">Getting Involved</a></li>
+				<li id="n-currentevents"><a href="/index.php/Wiki_News" title="The latest lowdown on the wiki">Wiki News</a></li>
+				<li id="n-recentchanges"><a href="/index.php/Special:RecentChanges" title="The list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+				<li id="n-randompage"><a href="/index.php/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+				<li id="n-help"><a href="/index.php/Help:Contents" title="Wiki navigation, reading, and editing help">Help</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/index.php" id="searchform">
+				<input type='hidden' name="title" value="Special:Search"/>
+				<input id="searchInput" title="Search ArchWiki" accesskey="f" type="search" name="search" />
+				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="Go" title="Go to a page with this exact name if exists" />&#160;
+				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Search" title="Search the pages for this text" />
+			</form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Toolbox</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/index.php/Special:WhatLinksHere/Pacman" title="List of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="/index.php/Special:RecentChangesLinked/Pacman" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/index.php/Special:SpecialPages" title="List of all special pages [q]" accesskey="q">Special pages</a></li>
+				<li id="t-print"><a href="/index.php?title=Pacman&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>				<li id="t-permalink"><a href="/index.php?title=Pacman&amp;oldid=152229" title="Permanent link to this revision of the page">Permanent link</a></li>			</ul>
+		</div>
+	</div>
+	<div id="p-lang" class="portlet">
+		<h5>In other languages</h5>
+		<div class="pBody">
+			<ul>
+				<li class="interwiki-de"><a href="https://wiki.archlinux.de/title/Pacman" title="Pacman">Deutsch</a></li>
+				<li class="interwiki-fr"><a href="http://wiki.archlinux.fr/Pacman" title="Pacman">Français</a></li>
+				<li class="interwiki-ro"><a href="http://wiki.archlinux.ro/index.php/Pacman" title="Pacman">Română</a></li>
+			</ul>
+		</div>
+	</div>
+</div><!-- end of the left (by default at least) column -->
+<div class="visualClear"></div>
+<div id="footer">
+	<div id="f-copyrightico">
+		<a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.2" width="88" height="31" /></a>
+	</div>
+	<div id="f-poweredbyico">
+		<a href="http://www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+	</div>
+	<ul id="f-list">
+		<li id="lastmod"> This page was last modified on 16 August 2011, at 13:59.</li>
+		<li id="viewcount">This page has been accessed 1,222,340 times.</li>
+		<li id="copyright">Content is available under <a href="http://www.gnu.org/copyleft/fdl.html" class="external ">GNU Free Documentation License 1.2</a>.</li>
+		<li id="privacy"><a href="/index.php/ArchWiki:Privacy_policy" title="ArchWiki:Privacy policy">Privacy policy</a></li>
+		<li id="about"><a href="/index.php/ArchWiki:About" title="ArchWiki:About">About ArchWiki</a></li>
+		<li id="disclaimer"><a href="/index.php/ArchWiki:General_disclaimer" title="ArchWiki:General disclaimer">Disclaimers</a></li>
+	</ul>
+</div>
+</div>
+
+<script src="/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=archlinux&amp;*"></script>
+<script>if ( window.mediaWiki ) {
+	mediaWiki.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "Pacman", "wgTitle": "Pacman", "wgAction": "view", "wgArticleId": 1577, "wgIsArticle": true, "wgUserName": null, "wgUserGroups": ["*"], "wgCurRevisionId": 152229, "wgCategories": ["Package management (English)", "Utilities (English)"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script>
+<script>if ( window.mediaWiki ) {
+	mediaWiki.loader.load(["mediawiki.util", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+	mediaWiki.loader.go();
+}
+</script>
+
+<script>if ( window.mediaWiki ) {
+	mediaWiki.user.options.set({"ccmeonemails":0,"cols":80,"contextchars":50,"contextlines":5,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":1,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"archlinux","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,
+	"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mediaWiki.loader.state({"user.options":"ready"});
+}
+</script><!-- Served in 0.048 secs. --></body></html>

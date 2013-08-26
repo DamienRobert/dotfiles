@@ -1,0 +1,13 @@
+Fabriquer un pdf:
+
+convert -page a4 -size 595x841 -gravity NorthWest -draw "scale 5,5 text 0,0
+'Hello world'" canvas:none test.pdf
+
+595x841 est la taille en pixels d'une page A4 à 72dpi.
+
+ou:
+
+echo '%!PS-Adobe-2.0\n/Helvetica findfont 72 scalefont setfont\n100 500
+moveto (Hello World) show showpage' |ps2pdf - helloworld.pdf
+
+cf forum.informatique.bureautique:546

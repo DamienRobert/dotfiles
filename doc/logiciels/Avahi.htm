@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<title>Avahi - ArchWiki</title>
+<meta name="generator" content="MediaWiki 1.17.0" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="ArchWiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.archlinux.org/api.php?action=rsd" />
+<link title="Creative Commons" type="application/rdf+xml" href="/index.php?title=Avahi&amp;action=creativecommons" rel="meta" />
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html" />
+<link rel="alternate" type="application/atom+xml" title="ArchWiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared&amp;only=styles&amp;skin=archlinux&amp;*" />
+<link rel="stylesheet" href="/skins/archlinux/main.css?301" media="screen" />
+<!--[if lt IE 5.5000]><link rel="stylesheet" href="/skins/archlinux/IE50Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 5.5000]><link rel="stylesheet" href="/skins/archlinux/IE55Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 6]><link rel="stylesheet" href="/skins/archlinux/IE60Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/archlinux/IE70Fixes.css?301" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/skins/archlinux/archnavbar.css?301" media="screen" />
+<link rel="stylesheet" href="/skins/archlinux/arch.css?301" media="screen" /><meta name="ResourceLoaderDynamicStyles" content="" />
+</head>
+<body class="mediawiki ltr ns-0 ns-subject page-Avahi skin-archlinux">
+<div id="archnavbar"><!-- Arch Linux global navigation bar -->
+	<div id="archnavbarlogo">
+		<p><a id="logo" href="http://www.archlinux.org/"></a></p>
+	</div>
+	<div id="archnavbarmenu">
+		<ul id="archnavbarlist">
+			<li id="anb-home"><a href="http://www.archlinux.org/">Home</a></li><li id="anb-packages"><a href="http://www.archlinux.org/packages/">Packages</a></li><li id="anb-forums"><a href="https://bbs.archlinux.org/">Forums</a></li><li id="anb-wiki" class="anb-selected"><a href="https://wiki.archlinux.org/">Wiki</a></li><li id="anb-bugs"><a href="https://bugs.archlinux.org/">Bugs</a></li><li id="anb-aur"><a href="https://aur.archlinux.org/">AUR</a></li><li id="anb-download"><a href="http://www.archlinux.org/download/">Download</a></li>		</ul>
+	</div>
+</div><!-- #archnavbar -->
+<div id="globalWrapper">
+<div id="column-content"><div id="content" >
+	<a id="top"></a>
+	
+	<h1 id="firstHeading" class="firstHeading">Avahi</h1>
+	<div id="bodyContent">
+		<div id="siteSub">From ArchWiki</div>
+		<div id="contentSub"></div>
+		<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+		<!-- start content -->
+<div class="toc noprint" style="text-align: center; margin-bottom: 1em">
+<p><b><a href="/index.php/Help:I18n" title="Help:I18n">i18n</a></b>
+</p>
+<hr />
+<p><a href="/index.php?title=Avahi_(Dansk)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Dansk) (page does not exist)">Dansk</a>&#160;&#8211;
+<strong class="selflink">English</strong>&#160;&#8211; 
+<a href="/index.php?title=Avahi_(Espa%C3%B1ol)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Español) (page does not exist)">Español</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Fran%C3%A7ais)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Français) (page does not exist)">Français</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Indonesia)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Indonesia) (page does not exist)">Indonesia</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Italiano)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Italiano) (page does not exist)">Italiano</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Lietuvi%C5%A1kai)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Lietuviškai) (page does not exist)">Lietuviškai</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Magyar)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Magyar) (page does not exist)">Magyar</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Nederlands)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Nederlands) (page does not exist)">Nederlands</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Portugu%C3%AAs)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Português) (page does not exist)">Português</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Rom%C3%A2n%C4%83)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Română) (page does not exist)">Română</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Slovensk%C3%BD)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Slovenský) (page does not exist)">Slovenský</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Suomi)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Suomi) (page does not exist)">Suomi</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(Svenska)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Svenska) (page does not exist)">Svenska</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(T%C3%BCrk%C3%A7e)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Türkçe) (page does not exist)">Türkçe</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%C4%8Cesky)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Česky) (page does not exist)">Česky</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%CE%95%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Ελληνικά) (page does not exist)">Ελληνικά</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%D0%91%D1%8A%D0%BB%D0%B3%D0%B0%D1%80%D1%81%D0%BA%D0%B8)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Български) (page does not exist)">Български</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Русский) (page does not exist)">Русский</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%D0%A1%D1%80%D0%BF%D1%81%D0%BA%D0%B8)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Српски) (page does not exist)">Српски</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B0)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (Українська) (page does not exist)">Українська</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%D7%A2%D7%91%D7%A8%D7%99%D7%AA)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (עברית) (page does not exist)">עברית</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%E0%B9%84%E0%B8%97%E0%B8%A2)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (ไทย) (page does not exist)">ไทย</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%E6%97%A5%E6%9C%AC%E8%AA%9E)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (日本語) (page does not exist)">日本語</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%E6%AD%A3%E9%AB%94%E4%B8%AD%E6%96%87)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (正體中文) (page does not exist)">正體中文</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (简体中文) (page does not exist)">简体中文</a>&#160;&#8211;
+<a href="/index.php?title=Avahi_(%ED%95%9C%EA%B5%AD%EC%96%B4)&amp;action=edit&amp;redlink=1" class="new" title="Avahi (한국어) (page does not exist)">한국어</a> 
+</p>
+</div>
+<p><a href="http://avahi.org/" class="external text" rel="nofollow">Avahi</a> is a free <a href="http://en.wikipedia.org/wiki/Zero_Configuration_Networking" class="extiw" title="wikipedia:Zero Configuration Networking">Zero Configuration Networking</a> (Zeroconf) implementation, including a system for multicast DNS/DNS-SD service discovery. It allows programs to publish and discover services and hosts running on a local network with no specific configuration. For example you can plug into a network and instantly find printers to print to, files to look at and people to talk to. It is licensed under the GNU Lesser General Public License (LGPL). (Source: <a href="http://en.wikipedia.org/wiki/Avahi_(software)" class="extiw" title="wikipedia:Avahi (software)">Wikipedia:Avahi (software)</a>)
+</p>
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Installation"><span class="tocnumber">1</span> <span class="toctext">Installation</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Using_Avahi"><span class="tocnumber">2</span> <span class="toctext">Using Avahi</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#Obtaining_IPv4LL_IP_address"><span class="tocnumber">2.1</span> <span class="toctext">Obtaining IPv4LL IP address</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#Hostname_resolution"><span class="tocnumber">2.2</span> <span class="toctext">Hostname resolution</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#File_sharing"><span class="tocnumber">2.3</span> <span class="toctext">File sharing</span></a>
+<ul>
+<li class="toclevel-3 tocsection-6"><a href="#NFS"><span class="tocnumber">2.3.1</span> <span class="toctext">NFS</span></a></li>
+<li class="toclevel-3 tocsection-7"><a href="#GShare"><span class="tocnumber">2.3.2</span> <span class="toctext">GShare</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="#Vsftpd"><span class="tocnumber">2.3.3</span> <span class="toctext">Vsftpd</span></a></li>
+<li class="toclevel-3 tocsection-9"><a href="#Giver"><span class="tocnumber">2.3.4</span> <span class="toctext">Giver</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-10"><a href="#Link-Local_XMPP_Chat"><span class="tocnumber">2.4</span> <span class="toctext">Link-Local XMPP Chat</span></a>
+<ul>
+<li class="toclevel-3 tocsection-11"><a href="#Pidgin"><span class="tocnumber">2.4.1</span> <span class="toctext">Pidgin</span></a></li>
+<li class="toclevel-3 tocsection-12"><a href="#Kopete"><span class="tocnumber">2.4.2</span> <span class="toctext">Kopete</span></a></li>
+<li class="toclevel-3 tocsection-13"><a href="#Telepathy"><span class="tocnumber">2.4.3</span> <span class="toctext">Telepathy</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-14"><a href="#External_Resources"><span class="tocnumber">3</span> <span class="toctext">External Resources</span></a></li>
+</ul>
+</td></tr></table>
+<h2> <span class="mw-headline" id="Installation"> Installation </span></h2>
+<p>Install Avahi with:
+</p>
+<pre>
+# pacman -S avahi nss-mdns
+</pre>
+<p>After installing Avahi you will need to restart the <i>dbus</i> daemon before you can start <i>avahi-daemon</i>.
+</p><p>To start Avahi at boot, add <i>avahi-daemon</i> to the DAEMONS line of /etc/rc.conf. Note that <i>avahi-daemon</i> must be started after the <i>dbus</i> daemon.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>Sometimes adding avahi-daemon to <span style="font-family: monospace; color: #050; white-space: nowrap">/etc/rc.conf</span> can cause it to load too early and fail. One possible solution is to add it as "<span style="font-family: monospace; color: #005; white-space: nowrap">/etc/rc.d/avahi-daemon start</span>" in <span style="font-family: monospace; color: #050; white-space: nowrap">/etc/rc.local</span>.</div>
+<h2> <span class="mw-headline" id="Using_Avahi"> Using Avahi </span></h2>
+<h3> <span class="mw-headline" id="Obtaining_IPv4LL_IP_address"> Obtaining IPv4LL IP address </span></h3>
+<p>By default, if you are getting IP using DHCP, you are using <span style="font-family: monospace; color: #005; white-space: nowrap">dhcpcd</span> package. It can attempt to obtain an IPv4LL address if it failed to get one via DHCP. By default this option is disabled. To enable it, comment noipv4ll string:
+</p>
+<div style="padding: 0.25em; margin: 0.50em 0 0 0; background-color: #E7FFE7; border: thin dashed #7F7F7F; border-bottom: thin solid #7F7F7F"><strong>File: <span style="font-family: monospace;">/etc/dhcpcd.conf</span></strong></div><pre style="white-space: pre-wrap; overflow-x: auto; padding: 0.25em; margin: 0 0 0.50em 0; background-color: #F7F7F7; border: thin dashed #7F7F7F; border-top: none">#noipv4ll</pre>
+<p>Alternatively, run <span style="font-family: monospace; color: #005; white-space: nowrap">avahi-autoipd</span>, included in <span style="font-family: monospace; color: #005; white-space: nowrap">avahi</span> package:
+</p>
+<div style="padding: 0.5em; line-height: 1.1; background-color: #333; color: #eee; border: 1px solid #08c"><code style="background: transparent; white-space: pre-wrap; overflow-x: auto"># avahi-autoipd -D</code></div>
+<h3> <span class="mw-headline" id="Hostname_resolution"> Hostname resolution </span></h3>
+<p>Avahi also allows you to access computers using their hostnames. <b>Note:</b> you must install <span style="font-family: monospace; color: #005; white-space: nowrap">nss-mdns</span> for this to work.
+</p><p>Suppose you have machines with names maple, fig and oak, all running avahi. Avahi can be set up so that you do not have to manage a <span style="font-family: monospace; color: #005; white-space: nowrap">/etc/hosts</span> file for each computer. Instead you can simply use <span style="font-family: monospace; color: #005; white-space: nowrap">maple.local</span> to access whatever services <span style="font-family: monospace; color: #005; white-space: nowrap">maple</span> has. However by default, .local querying is disabled in Arch Linux. To enable it edit the file <span style="font-family: monospace; color: #005; white-space: nowrap">/etc/nsswitch.conf</span> and change the line:
+</p>
+<pre>hosts: files dns
+</pre>
+<p>to
+</p>
+<pre>hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4
+</pre>
+<p>A small section of users in Ubuntu noticed a slowdown in DNS querying; it was attributed to this change. Whether it applies to Arch Linux too, is not known. (Reference: <a href="https://bugs.launchpad.net/ubuntu/+source/avahi/+bug/94940" class="external text" rel="nofollow">Ubuntu Bug 94940</a>) -- I found this to be true for Arch; However, I just used the line:
+</p>
+<pre>hosts: files mdns4_minimal dns mdns4
+</pre>
+<p>and I get the correct behavior without slower DNS.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>I had to remove <b>mdns</b> completely to prevent slowdowns. However, <b>mdns_minimal</b> alone appeared to be sufficient.</div> 
+<p>Avahi also has quite a few nifty utilities which can help you discover which services are being used on a network.   
+The <span style="font-family: monospace; color: #005; white-space: nowrap">avahi-discover</span> (Avahi Zeroconf Browser) shows the various services on your network. You can also browse SSH and VNC Servers using <span style="font-family: monospace; color: #005; white-space: nowrap">bssh</span> and <span style="font-family: monospace; color: #005; white-space: nowrap">bvnc</span> respectively.
+</p><p>There's a good list of software with Avahi support at their website: <a href="http://avahi.org/wiki/Avah4users" class="external free" rel="nofollow">http://avahi.org/wiki/Avah4users</a>
+</p>
+<h3> <span class="mw-headline" id="File_sharing">File sharing</span></h3>
+<h4> <span class="mw-headline" id="NFS">NFS</span></h4>
+<p>If you have an <a href="/index.php/NFS" title="NFS">NFS</a> share set up, you can use Avahi to be able to automount them in Zeroconf-enabled browsers (such as Konqueror on KDE and Finder on Mac OS X). Create a .service file in /etc/avahi/services with the following:
+</p>
+<pre>&lt;?xml version="1.0" standalone='no'?&gt;
+&lt;!DOCTYPE service-group SYSTEM "avahi-service.dtd"&gt;
+&lt;service-group&gt;
+  &lt;name&gt;Zephyrus Shared Music&lt;/name&gt;
+  &lt;service&gt;
+    &lt;type&gt;_nfs._tcp&lt;/type&gt;
+    &lt;port&gt;2049&lt;/port&gt;
+    &lt;txt-record&gt;path=/data/shared/Music&lt;/txt-record&gt;
+  &lt;/service&gt;
+&lt;/service-group&gt;
+</pre>
+<p>The port is correct if you have <i>insecure</i> as an option in your /etc/exports; otherwise, it needs to be changed (note that <i>insecure</i> is needed for OS X clients). The path is the path to your export, or a subdirectory of it. For some reason the automount functionality has been removed from Leopard, however <a href="http://www.macosxhints.com/article.php?story=20071116042238744" class="external text" rel="nofollow">a script is available</a>. This was based upon <a href="http://ubuntuforums.org/showthread.php?p=4387032#post4387032" class="external text" rel="nofollow">this post</a>.
+</p>
+<h4> <span class="mw-headline" id="GShare">GShare</span></h4>
+<p>You can grab <a href="/index.php?title=Gshare&amp;action=edit&amp;redlink=1" class="new" title="Gshare (page does not exist)">gshare</a> from [community] and have shared files between the LAN, with no configuration, no hours in samba hacking, no nothing - it just works.
+</p>
+<h4> <span class="mw-headline" id="Vsftpd">Vsftpd</span></h4>
+<p>Sourced from <a href="http://ubuntuforums.org/showthread.php?t=218630" class="external text" rel="nofollow">ubuntuforums.org</a>.
+If you would rather use a regular ftp service, install vsftpd and avahi. Change the settings of vsftpd according to what is shown on the ubuntuforums page or according to your own personal preferences (See 'man vsftpd.conf).
+</p><p>Create a ftp.service file in /etc/avahi/services and paste in that file
+</p>
+<pre>&lt;?xml version="1.0" standalone='no'?&gt;
+   &lt;!DOCTYPE service-group SYSTEM "avahi-service.dtd"&gt;
+   &lt;service-group&gt;
+   &lt;name&gt;FTP file sharing&lt;/name&gt;
+   &lt;service&gt;
+   &lt;type&gt;_ftp._tcp&lt;/type&gt;
+   &lt;port&gt;21&lt;/port&gt;
+   &lt;/service&gt;
+   &lt;/service-group&gt;
+</pre>
+<p>When you are done, (re)start avahi-daemon and vsftpd in your /etc/rc.d directory.
+</p>
+<pre>/etc/rc.d/avahi-daemon restart
+/etc/rc.d/vsftpd restart
+</pre>
+<p>After that you should be able to browse through the ftp server from another computer in your network. The steps shown in this section are created so that the ftp server is 'advertised' by avahi to the local Zeroconf network.
+</p><p>Unless you are using GNOME or KDE, you might not be able to log in to the ftp server directly through your file manager, and so you will have to use a ftp client pointed to the IP address of the server or the hostname of the machine (as shown in <a href="/index.php/Avahi#Hostname_resolution" title="Avahi">this section</a>).
+</p>
+<h4> <span class="mw-headline" id="Giver">Giver</span></h4>
+<p><a href="http://code.google.com/p/giver/" class="external text" rel="nofollow">Giver</a> is a mono program that allows simple file-sharing between two desktops when both are running Giver. All you need to do is click and drag the file to the name or picture of the person you wish to send the file to.
+</p><p>A package is on the <a href="http://aur.archlinux.org/packages.php?ID=17139" class="external text" rel="nofollow">AUR</a>.
+</p><p>Note that this depends on gnome-sharp, which has heavy GNOME dependencies.
+</p>
+<h3> <span class="mw-headline" id="Link-Local_XMPP_Chat">Link-Local XMPP Chat</span></h3>
+<p>Link-Local XMPP clients need TCP port 5298 allowed for incoming connections. Check <a href="/index.php/Simple_stateful_firewall_HOWTO#Opening_ports_to_incoming_connections" title="Simple stateful firewall HOWTO" class="mw-redirect">Simple stateful firewall: opening ports to incoming connections</a> for more details if you use iptables.
+</p>
+<h4> <span class="mw-headline" id="Pidgin">Pidgin</span></h4>
+<p><a href="http://www.pidgin.im" class="external text" rel="nofollow">Pidgin</a> is an instant messaging client that supports quite a few commonly used IM protocols. In addition to these, it supports Bonjour.
+</p><p>Just select 'Bonjour' as the protocol type when you add an account, and enter a username. The first and last name you enter in the 'Advanced' tab will be what the other person (whom you are chatting with) sees, and 'local alias' under 'User Options' in the 'Basic' tab will be what you see of your own name (you could try putting in something like I, me or myself).
+</p><p>Once this is done, other Pidgin (iChat) users who are on the local network will see you and be able to chat with you. To implement file-sharing, you just send and receive files like you would do with a regular IM session.
+</p>
+<h4> <span class="mw-headline" id="Kopete">Kopete</span></h4>
+<p><a href="http://kopete.kde.org/" class="external text" rel="nofollow">Kopete</a> is the KDE equivalent of Pidgin. It supports the Bonjour/Link-local XMPP protocol. One need to create an account in Kopete, by simply entering the desired name.
+</p>
+<h4> <span class="mw-headline" id="Telepathy">Telepathy</span></h4>
+<p><a href="http://telepathy.freedesktop.org" class="external text" rel="nofollow">Telpathy</a> is a communication framework which supports different protocols using plugins. The <a href="http://www.archlinux.org/packages/?sort=&amp;q=telepathy-salut&amp;maintainer=&amp;last_update=&amp;flagged=&amp;limit=50" class="external text" rel="nofollow">Telepathy Salut</a> plugin provides support for Bonjour/Link-Local XMPP protocol. Empathy is a GNOME front-end to Telepathy. Officially, KDE does not support Telepathy, but work is going on which will eventually replace Kopete. Development version of KDE Telepathy is available in <a href="https://aur.archlinux.org/packages.php?O=0&amp;K=telepathy&amp;do_Search=Go" class="external text" rel="nofollow">AUR</a>.
+</p>
+<h2> <span class="mw-headline" id="External_Resources"> External Resources </span></h2>
+<ul><li> <a href="http://avahi.org/" class="external text" rel="nofollow">Avahi</a> - Official project website
+</li><li> <a href="http://en.wikipedia.org/wiki/Avahi_%28software%29" class="external text" rel="nofollow">Wikipedia entry</a>
+</li><li> <a href="http://www.apple.com/support/downloads/bonjourforwindows.html" class="external text" rel="nofollow">Bonjour for Windows</a> - Enable Zeroconf on Windows
+</li><li> <a href="http://www.zeroconf.org/" class="external free" rel="nofollow">http://www.zeroconf.org/</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 432/1000000
+Post-expand include size: 6923/2097152 bytes
+Template argument size: 2589/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key archwiki:pcache:idhash:2421-0!*!0!!en!*!edit=0 and timestamp 20111005094418 -->
+<div class="printfooter">
+Retrieved from "<a href="https://wiki.archlinux.org/index.php/Avahi">https://wiki.archlinux.org/index.php/Avahi</a>"</div>
+		<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks"><a href="/index.php/Special:Categories" title="Special:Categories">Category</a>: <span dir='ltr'><a href="/index.php/Category:Networking_(English)" title="Category:Networking (English)">Networking (English)</a></span></div></div>		<!-- end content -->
+				<div class="visualClear"></div>
+	</div>
+</div></div>
+<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<div class="pBody">
+			<ul>
+				 <li id="ca-nstab-main" class="selected"><a href="/index.php/Avahi" title="View the content page [c]" accesskey="c">Page</a></li>
+				 <li id="ca-talk"><a href="/index.php/Talk:Avahi" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				 <li id="ca-viewsource"><a href="/index.php?title=Avahi&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li>
+				 <li id="ca-history"><a href="/index.php?title=Avahi&amp;action=history" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=Avahi" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in / create account</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(/archwiki_logo.png);" href="/index.php/Main_Page" title="Visit the main page"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+	<div class='generated-sidebar portlet' id='p-navigation'>
+		<h5>Navigation</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage-description"><a href="/index.php/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+				<li id="n-portal"><a href="/index.php/Getting_Involved" title="Various ways Archers can contribute to the community">Getting Involved</a></li>
+				<li id="n-currentevents"><a href="/index.php/Wiki_News" title="The latest lowdown on the wiki">Wiki News</a></li>
+				<li id="n-recentchanges"><a href="/index.php/Special:RecentChanges" title="The list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+				<li id="n-randompage"><a href="/index.php/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+				<li id="n-help"><a href="/index.php/Help:Contents" title="Wiki navigation, reading, and editing help">Help</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/index.php" id="searchform">
+				<input type='hidden' name="title" value="Special:Search"/>
+				<input id="searchInput" title="Search ArchWiki" accesskey="f" type="search" name="search" />
+				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="Go" title="Go to a page with this exact name if exists" />&#160;
+				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Search" title="Search the pages for this text" />
+			</form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Toolbox</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/index.php/Special:WhatLinksHere/Avahi" title="List of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="/index.php/Special:RecentChangesLinked/Avahi" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/index.php/Special:SpecialPages" title="List of all special pages [q]" accesskey="q">Special pages</a></li>
+				<li id="t-print"><a href="/index.php?title=Avahi&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>				<li id="t-permalink"><a href="/index.php?title=Avahi&amp;oldid=163927" title="Permanent link to this revision of the page">Permanent link</a></li>			</ul>
+		</div>
+	</div>
+</div><!-- end of the left (by default at least) column -->
+<div class="visualClear"></div>
+<div id="footer">
+	<div id="f-copyrightico">
+		<a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.2" width="88" height="31" /></a>
+	</div>
+	<div id="f-poweredbyico">
+		<a href="http://www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+	</div>
+	<ul id="f-list">
+		<li id="lastmod"> This page was last modified on 4 October 2011, at 05:12.</li>
+		<li id="viewcount">This page has been accessed 57,625 times.</li>
+		<li id="copyright">Content is available under <a href="http://www.gnu.org/copyleft/fdl.html" class="external ">GNU Free Documentation License 1.2</a>.</li>
+		<li id="privacy"><a href="/index.php/ArchWiki:Privacy_policy" title="ArchWiki:Privacy policy">Privacy policy</a></li>
+		<li id="about"><a href="/index.php/ArchWiki:About" title="ArchWiki:About">About ArchWiki</a></li>
+		<li id="disclaimer"><a href="/index.php/ArchWiki:General_disclaimer" title="ArchWiki:General disclaimer">Disclaimers</a></li>
+	</ul>
+</div>
+</div>
+
+<script src="/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=archlinux&amp;*"></script>
+<script>if ( window.mediaWiki ) {
+	mediaWiki.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "Avahi", "wgTitle": "Avahi", "wgAction": "view", "wgArticleId": 2421, "wgIsArticle": true, "wgUserName": null, "wgUserGroups": ["*"], "wgCurRevisionId": 163927, "wgCategories": ["Networking (English)"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script>
+<script>if ( window.mediaWiki ) {
+	mediaWiki.loader.load(["mediawiki.util", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+	mediaWiki.loader.go();
+}
+</script>
+
+<script>if ( window.mediaWiki ) {
+	mediaWiki.user.options.set({"ccmeonemails":0,"cols":80,"contextchars":50,"contextlines":5,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":1,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"archlinux","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,
+	"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mediaWiki.loader.state({"user.options":"ready"});
+}
+</script><!-- Served in 0.032 secs. --></body></html>

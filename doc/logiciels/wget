@@ -1,0 +1,18 @@
+wget -A regular_exp??.ssion -r -l 1 http://www.server.com
+
+-H : pour traverser les hosts
+-P: pour qu'un chargement de la page charge les images contenues dedans
+
+-k: convert links
+
+-----------------------
+
+wget -r -l1 --no-parent -A "*.jpg" http://www.server.com/dir/
+
+################################
+wget -P ~/.fonts -A ttf -r -np -nd http://garamond.org/urw/
+-P: prefix
+-A ttf, download *.ttf
+-r: recursive
+-nd: don't create directory
+-np: don't ascend

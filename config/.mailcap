@@ -1,0 +1,28 @@
+text/html; w3m -dump '%s'; copiousoutput; nametemplate=%s.html
+application/x-pkcs7-signature; openssl pkcs7 -in '%s' -inform der -noout -print_certs -text; copiousoutput; needsterminal
+
+application/x-dvi;              mutt_bgrun evince '%s';        test=haslocaldisplay
+application/x-dvi;              dvi2tty -q '%s';    copiousoutput
+application/x-pdf;              mutt_bgrun evince '%s';        test=haslocaldisplay
+application/x-pdf;              pdftotext -enc UTF-8 '%s' -; copiousoutput
+application/pdf;                mutt_bgrun evince '%s';        test=haslocaldisplay
+application/pdf;                pdftotext -enc UTF-8 '%s' -; copiousoutput
+image/pdf;                      mutt_bgrun evince '%s';        test=haslocaldisplay
+image/eps;                      mutt_bgrun evince '%s';        test=haslocaldisplay
+application/postscript;         mutt_bgrun evince '%s';        test=haslocaldisplay
+application/postscript;         pstotext '%s';      copiousoutput
+application/msword;             mutt_bgrun libreoffice '%s';   test=haslocaldisplay
+application/msword;             mutt_bgrun antiword '%s';      copiousoutput
+application/vnd.ms-word;        mutt_bgrun libreoffice '%s';   test=haslocaldisplay
+application/vnd.ms-word;        mutt_bgrun antiword '%s';      copiousoutput
+application/msexcel;            mutt_bgrun libreoffice '%s';   test=haslocaldisplay 
+application/vnd.ms-excel;       mutt_bgrun libreoffice '%s';   test=haslocaldisplay
+application/msexcel;            mutt_bgrun xls2txt '%s';       copiousoutput
+application/vnd.ms-excel;       mutt_bgrun xls2txt '%s';       copiousoutput
+application/vnd.ms-powerpoint;  mutt_bgrun libreoffice '%s';   test=haslocaldisplay
+application/mspowerpoint;       mutt_bgrun libreoffice '%s';   test=haslocaldisplay
+application/vnd.openxm;         mutt_bgrun libreoffice '%s';   test=haslocaldisplay
+image/*;                        mutt_bgrun eog '%s';           test=haslocaldisplay
+image/*;                        img2txt '%s'
+video/*;                        mutt_bgrun mplayer '%s';       test=haslocaldisplay
+audio/*;                        mutt_bgrun mplayer '%s'

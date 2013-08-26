@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH  "$@"
+
+# forum.informatique.graphisme:2014
+# http://www.alfredklomp.com/programming/shrinkpdf/
+# http://ghostscript.com/doc/current/Ps2pdf.htm
+
+
+output=`echo $1 | sed -e 's/.pdf/_small.pdf/g'`
+
+gs  -dNOPAUSE -dBATCH -dSAFER \
+    -sPAPERSIZE=a4 \
+    -sDEVICE=pdfwrite \
+    -dCompatibilityLevel=1.5 \
+    -dPDFSETTINGS=/screen \
+    -dEmbedAllFonts=true \
+    -dSubsetFonts=true \
+    -dColorImageFilter=/FlateEncode \
+    -dColorImageDownsampleType=/Average \
+    -dColorImageResolution=10 \
+    -dGrayImageFilter=/FlateEncode \
+    -dGrayImageDownsampleType=/Average \
+    -dGrayImageResolution=10 \
+    -dMonoImageFilter=/FlateEncode \
+    -dMonoImageDownsampleType=/Average \
+    -dMonoImageResolution=10 \
+    -dOptimize=false \
+    -dOffOptimizations=1 \
+    -sOutputFile=$output \
+    $1

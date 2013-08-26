@@ -1,0 +1,23 @@
+##  # Fn F7
+##  Key XF86Launch2 A A Exec exec sudo nc10 bluetooth status
+##  Key XF86Launch2 A 4 Exec exec sudo nc10 bluetooth 
+##  Key XF86Launch2 A S Exec exec sudo nc10 bluetooth on
+##  Key XF86Launch2 A C Exec exec sudo nc10 bluetooth off
+##  # Fn F8
+##  Key XF86Launch3 A A Exec exec sudo nc10 cpuperf status
+##  Key XF86Launch3 A S Exec exec sudo nc10 cpuperf 
+##  Key XF86Launch3 A C Exec exec sudo nc10 cpuperf auto
+##  #Fn F9
+##  Key XF86WLAN A A Exec exec sudo nc10 wifi status
+##  Key XF86WLAN A 4 Exec exec sudo nc10 wifi 
+##  Key XF86WLAN A S Exec exec sudo nc10 wifi on
+##  Key XF86WLAN A C Exec exec sudo nc10 wifi off
+##  #Fn F5
+##  Key XF86Launch1 A A Exec exec sudo nc10 webcam status
+##  Key XF86Launch1 A S Exec exec sudo nc10 webcam on
+##  Key XF86Launch1 A C Exec exec sudo nc10 webcam off
+##  Key XF86Launch1 A 4 Exec exec sudo nc10 webcam
+##  # Fn F4
+##  Key XF86Launch4 A A Exec exec nc10 lcd
+##  Key XF86Launch4 A C Exec exec nc10 lcd off
+##  Key XF86Launch4 A S Exec exec nc10 lcd on

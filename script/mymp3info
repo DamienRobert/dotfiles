@@ -1,0 +1,29 @@
+#!/bin/sh
+help() {
+  echo "mp3info files or mp3info -a albums"
+  exit 1
+}
+
+album=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -h|-help|--help ) shift ; help ;;
+    -a ) shift; album=true ;;
+    *) break;;
+  esac
+done
+
+if [ -z "$album" ]; then
+  mp3info -r a -p "File:      %f\nTitle:     %t\nArtist:    %a\nAlbum:     %l\nTrack:     %n\nTime:      %m:%02s\nGenre:     %g\nYear: %y\nComment:   %c\nSampling:  %Q\nRate:      %.0r\nStereo:    %o\nFrames:    %u - %b\nLayer:     %L (%.2v)\nOriginal:  %O\nCopyright: %C\nCRC:       %E\nEmphasis:  %e\n" "$@" 
+  mp3info -r v -p "VRate:     %r\n" "$@"
+else
+  for i in "$@"; do
+    j=`ls "$i"/*.mp3 | tail -1`
+    echo "### $i ###";
+  #mp3info -r a -p "File:      %f\nTitle:     %t\nArtist:    %a\nAlbum: %l\nTrack:     %n\nTime:      %m:%02s\nGenre:     %g\nYear: %y\nComment:   %c\nSampling:  %Q\nRate:      %.0r\nStereo:    %o\nFrames: %u - %b\nLayer:     %L (%.2v)\nOriginal:  %O\nCopyright: %C\nCRC:     %E\nEmphasis:  %e\n\n" "$j" 
+  mp3info -r a -p "Artist:    %a\nAlbum:     %l\nTrack:     %n\nTime:      %m:%02s\nSampling:  %Q Rate: %.0r Stereo: %o\n" "$j" 
+  mp3info -r v -p "VRate:     %r\n" "$j"
+  done;
+fi

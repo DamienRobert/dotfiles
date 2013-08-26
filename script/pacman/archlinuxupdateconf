@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+for i in /etc/**/*.pacnew; do
+  echo "$i: `stat -c '%y' $i`      launch meld (y/n)?"
+  read a
+  if [ "x$a" = "xy" ]; then
+  	sudo meld "${i%.pacnew}" "$i";
+  fi
+  # echo "Remove $i?"
+  # read answer
+  # if [ x"$answer" = "xy" ]; then rm "$i"; fi
+done;

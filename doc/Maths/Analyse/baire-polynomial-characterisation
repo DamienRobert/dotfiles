@@ -1,0 +1,26 @@
+Let f be an infinitely differentiable function on [0,1] and suppose that
+for each x∈[0,1] there is an integer n∈N such that f^(n)(x)=0. Then does f
+coincide on [0,1] with some polynomial? If yes then how.
+
+
+The proof is by contradiction. Assume f is not a polynomial.
+
+Consider the following closed sets:
+Sn={x:f(n)(x)=0}
+and
+X={x:∀(a,b)∋x:f↾(a,b) is not a polynomial}.
+
+It is clear that X is a non-empty closed set without isolated points.
+Applying Baire category theorem to the covering {X∩Sn} of X we get that
+there exists an interval (a,b) such that (a,b)∩X is non-empty and
+(a,b)∩X⊂Sn
+for some n. Since every x∈(a,b)∩X is an accumulation point we also have
+that x∈Sm for all m≥n and x∈(a,b)∩X.
+
+Now consider any maximal interval (c,e)⊂((a,b)−X). Recall that f is a
+polynomial of some degree d on (c,e). Therefore f(d)=const≠0 on [c,e].
+Hence d<n. (Since either c or e is in X.)
+
+So we get that f(n)=0 on (a,b) which is in contradiction with (a,b)∩X being
+non-empty.
+

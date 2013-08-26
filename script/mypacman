@@ -1,0 +1,3 @@
+#!/bin/sh
+
+fakeroot pacman --config "$HOME/.pacman.conf" "$@"

@@ -1,0 +1,10 @@
+<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/">
+<os:ShortName>AlloCiné : Cinéma, Séries TV, Stars, Vidéos, DVD et VOD</os:ShortName>
+<os:Description>AlloCiné : Cinéma, Séries TV, Stars, Vidéos, DVD et VOD</os:Description>
+<os:InputEncoding>UTF-8</os:InputEncoding>
+<os:Image width="16" height="16">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADFUlEQVQ4jVXTXWyTVRjA8bOxsQ612RZY6Vnb0Xeh27Av21zbrd3W1tFuZSRKJE6UmSGJ0egEDSHGKxHFxQDJ4kcYRIciAxkqgRhQEuLH8JO+jq7flAkX3HihV7Agyvv34i0zXvxuTs7zvzh5jiDrw9BR1AlZP2S7INcD+SBcLir0FHVDoQsuBxBk2jF4IOODrB8928NvX4f5/rMYFz5/iMTZPuYzEZjrhbkwXAkagYIfQboF0q1GJNvJt0eDPLN5LY9uGOTxjZt4cmgzIyMvsGPHS5ye3MKtwgBci8BcNxQ6EKTckF4NGQ8H3uwi0hulP9JPfzRGrG8d35wIcDPXzshzGxnZtp2Tn77N39efhathKPgQpJogrXLukJdgd4gvP2zlT62Zd3Z5GdvZyVcfe/hkv599u6I8MfQU+w98wMXpMbgWhSseBLMO7iRV1g/48HcEuHiyCT2noOcUpt5dTSAQJNYX4ouPfMQGHmZo+Gnen5jgRm4d5Fch0Mr59XgNKxUX7maV915zoWft/PFLPZGQl8H1XsZHW7j+YzNd3b2EHuxnw+AmpqdWQaoKgVbB5Gg11lqJtNTxSHQperKEsVeq2b7Fwp10JXrWhJ4z0eltwNWo0tbu59RBNyTNRuDQ6/8FVtgk83FBJLCM6cMV6KkSSC+CzCK2Di9HURpxqw9warwBEvci0BZz/mDVQkBa6jg/UYHNKon4l3H1XFkxUsqRPWbqHQru+1vQppbCTCWCeBk3frgPxWFZCLyx1YxDSuxS8vt3pehJgZ4UFM6UY6+rx9/u5B/NDFo5gngpaJWMbqv53ztMvrWE8Vfv4dieJex83sy8Jvj52GIUh43Du2tAM0G8BIFmgplq/tIkjw1YsdZKnHbJzbggc7qMpgYr0lKHYjfiLw5L9EsSZqpAMyFI2CDhgFknty81svdlJy7FSqNzOdZauUBtkkzsVtCTLphdAQk7JGzFVb67zulWyHi4lfBx4WgbR/aqTO5T+WmqjdtJn/Ff0i2QUrk7J8gFMYSKwpDvhfwayEeK1hhnuXDxTnDBv81ReZ6Ux0cuAAAAAElFTkSuQmCC</os:Image>
+<SearchForm>http://www.allocine.fr/</SearchForm>
+<os:Url type="text/html" method="GET" template="http://www.allocine.fr/recherche/">
+  <os:Param name="q" value="{searchTerms}"/>
+</os:Url>
+</SearchPlugin>

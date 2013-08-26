@@ -1,0 +1,41 @@
+# "chmod"-acl
+user::rw-
+group::r--
+other::r--
+
+#named user and group acl
+user:name:rwx
+group:groupname:rwx
+
+# mask
+mask::rw
+
+All the named user and named group acl + the owner group acl are subject to
+the mask. This is what is printed by ll in the group permission.
+
+  Entry type      Text form       Permissions
+  Named user      user:joe:r-x    r-x
+  Mask            mask::rw-       rw-
+  Effective permissions           r- 
+
+#default acl: the acl of new files
+
+
+Example:
+=======
+               1:  # file: somedir/
+               2:  # owner: lisa
+               3:  # group: staff
+               4:  # flags: -s-
+               5:  user::rwx
+               6:  user:joe:rwx               #effective:r-x
+               7:  group::rwx                 #effective:r-x
+               8:  group:cool:r-x
+               9:  mask::r-x
+              10:  other::r-x
+              11:  default:user::rwx
+              12:  default:user:joe:rwx       #effective:r-x
+              13:  default:group::r-x
+              14:  default:mask::r-x
+              15:  default:other::---
+

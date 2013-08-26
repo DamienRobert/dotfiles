@@ -1,0 +1,13 @@
+fsarchiver/partclone/partimage: saving partitions to an image file
+testdisk
+  TestDisk is powerful free data recovery software! It was primarily designed
+  to help recover lost partitions and/or make non-booting disks bootable
+  again when these symptoms are caused by faulty software, certain types of
+  viruses or human error (such as accidentally deleting a Partition Table).
+  Partition table recovery using TestDisk is really easy. 
+
+ddrescue #projet gnu
+dd_rescue #un autre similaire
+-> comme dd mais permet de continuer en cas d'erreur
+http://ubuntu-rescue-remix.org/node/51:
+ddrescue est mieux (mais dd_rescue permet d'aller en arrière explicitement)

@@ -1,0 +1,9 @@
+markdown:       true
+yard:           true
+gemspec_yml:    true
+git:            true
+myrubygems_tasks: true
+mymini_test:      true
+authors:
+    - Damien Robert
+email: Damien.Olivier.Robert+gems@gmail.com

@@ -1,0 +1,3 @@
+transfert --include *.MOV --bwlimit 100
+transfert --filter '- *.JPG' --filter '+ *.MOV' --bwlimit 100 2011-08-Seattle dams@microsoft:Photos/
+transfert --include '*.MOV' --exclude '*.*' --bwlimit 300 2011-06-Corse microsoft:Photos/

@@ -1,0 +1,10 @@
+if exists("enumitem_package_file")
+	finish
+endif
+let enumitem_package_file = 1
+
+let g:TeX_package_option_enumitem = ''
+
+let g:TeX_package_enumitem = 'ens:enumitem:[<+prefix+>]'
+
+" vim:ft=vim:ff=unix:

@@ -1,0 +1,452 @@
+Soit T une théorie du premier ordre, avec des axiomes récursivement
+énumérable (et une signature dénombrable) alors pour tout énoncé P de T  on
+peut construire un énoncé arithmétique Sigma_1 []P qui dit: il existe un
+entier qui code une démonstration de P.
+
+Et on a N|= []P ssi T |- P.
+
+Maintenant on peut regarder []P dans une théorie contenant T2 l'arithmétique.
+Il me semble que les affirmations suivantes sont vraies:
+- si T2 contient l'arithmétique de Robinson, alors si T |- P, T2 |- []P
+  (en effet, on a un algorithme de preuve pour la logique du premier ordre,
+  et l'arithmétique de Robinson est suffisante pour parler de fonctions
+  calculables)
+- si T2 est Sigma_1-sound (donc en particulier si elle est
+  Omega-consistante) alors
+  T2 |- []P implique T |- P
+  (en effet []P étant Sigma_1, si T2 |- []P,  N |= [] P)
+
+Mais attention, sans hypothèse de plus 
+(pour simplifier prenons T2=T, T arithmétique), soit M un modèle de T.
+alors M |= []P n'implique pas M |= P:
+M |= []P signifie juste qu'il existe un entier, pê non standard qui code une démo de P, mais s'il est non standard ça ne prouve pas P.
+Par exemple, il existe des modèles M de Peano tels que
+M |= [](0=1) (ça existe par Gödel), par contre on n'a pas M |= (0=1) par
+définition.
+
+==============================================================
+ens.forum.sciences.maths.avancees:2309 et thread associé
+
+----------------------------------------------------------------
+Les deux exercices suivants (tirés de K. Kunen, « Set Theory: an
+Introduction to Independence Proofs », Studies in Logic and the
+Foundations of Mathematics 102, Elsevier 1980 - que je ne recommande
+d'ailleurs pas particulièrement) m'ont fait complètement bugguer,
+surtout mis l'un à côté de l'autre :
+
+Exercice 1.  Donner une définition D d'un ensemble M et d'une relation
+e sur M telle que : (a) [ZFC prouve qu']il existe effectivement M et e
+satisfaisant cette relation, même avec M dénombrable, et on pourra
+aussi facilement imposer leur unicité, et (b) pour tout théorème P de
+ZFC, [ZFC prouve que, si M et e vérifient la définition en question,]
+(M,e) |= P.
+        
+Commentaires : Comprendre l'énoncé est très subtil !  On a envie de
+traduire ça en disant « il existe un ensemble M et une relation e
+dessus tels que (M,e) |= P pour tout théorème P de ZFC », mais ZFC ne
+prouve pas ça, bien sûr, puisque ça voudrait dire que (M,e) est un
+modèle de ZFC.  Le truc, c'est que même si ZFC ne prouve pas que pour
+tout théorème P de ZFC on a (M,e)|=P, on a quand même que pour tout
+théorème P de ZFC, ZFC prouve (M,e)|=P.  Mais pour dire ça on est
+obligé de dégager le (a) parce que dire « montrer qu'il existe (M,e)
+tel que pour tout théorème P de ZFC, ZFC prouve (M,e)|=P » ne veut
+rien dire, et ZFC _ne prouve pas_ « il existe (M,e) tel que pour tout
+théorème P de ZFC, ZFC prouve (M,e)|=P ».  Le Club Contexte vous
+félicite si vous avez suivi !  Mais même une fois qu'on a compris
+l'énoncé, ce n'est pas hyper facile, parce que s'il est vrai (c'est le
+« théorème de réflexion ») que pour tout théorème P de ZFC, ZFC prouve
+qu'il existe un ensemble M dénombrable transitif tel que (M,\in)|=P
+(et il faut s'en servir dans l'exercice), où \in est la relation
+d'appartenance, pourtant, _on ne peut pas utiliser la relation \in_
+comme relation e dans l'exercice ci-dessus ! et c'est justement
+l'objet de l'exercice qui suit.  Je donne quand même une indication :
+il faut _aussi_ utiliser le théorème de compacité.
+
+Exercice 2.  On suppose que pour un certain prédicat D on a les
+hypothèses suivantes : (a) ZFC prouve qu'il existe effectivement M
+satisfaisant D, et (b) pour tout axiome P de ZFC, ZFC prouve que, si M
+vérifie D alors (M,\in) |= P.  Montrer alors que ZFC est
+\omega-inconsistant (i.e., qu'il existe une formule H(n) telle que
+H(n) soit un théorème pour tout entier naturel mais que ¬(\forall n
+\in \omega)(H(n)) le soit).
+
+Commentaires : Bref, si on avait réussi à résoudre l'exercice
+précédent avec e=\in, alors ZFC prouverait son incohérence.
+Indication : soit Q l'énoncé « tout M vérifiant D est un modèle de
+ZFC » : il est facile de voir que ZFC + ¬Q est \omega-inconsistant ;
+mais si on suppose Q, il existe un modèle transitif de ZFC, donc un
+modèle transitif de plus petit rang, et celui-ci ne contient pas de
+modèle transitif donc vérifie ¬Q, etc.
+
+--------------------------- réponse ----------------------------
+Voici comment je vois maintenant les choses :
+
+En travaillant dans ZFC, on ne sait pas si ZFC a un modèle.  On peut
+cependant considérer les entiers n tels que les n premiers axiomes[#]
+de ZFC aient un modèle.  D'après le théorème de compacité [je me suis
+trompé en écrivant « complétude » au lieu de « compacité » dans le
+grand-père de ce message], soit il y a un N tel que les n premiers
+axiomes de ZFC aient un modèle pour n<=N et pas au-delà, soit ZFC a un
+modèle.  On peut alors appeler (M,e) un modèle de, dans le premier
+cas, les N premiers axiomes de ZFC, et dans le second cas, ZFC.  Ceci
+fournit un prédicat D(M,e) portant sur[*] le couple (M,e) (« être un
+modèle des N premiers axiomes de ZFC pour le plus grand N tel que les
+N premiers axiomes de ZFC aient un modèle, ou bien être un modèle de
+ZFC si ZFC a un modèle »).  Bref, on obtient (M,e) (ou plus
+exactement, un prédicat D(M,e) les définissant) tel que ZFC prouve que
+(M,e) existe bien, et que, pour tout entier n, ZFC prouve que (M,e)
+vérifie les n premiers axiomes de ZFC (car il est bien connu que ZFC
+prouve la consistance des n premiers axiomes de ZFC, pour tout n).
+Ceci n'est pas uniforme en n, évidemment, sans quoi ZFC prouverait que
+ZFC a un modèle.
+
+[#] En général, en fait, il est plus agréable de prendre ZFC dans
+lequel les axiomes de sélection et remplacement ont été limités aux
+propriétés Sigma_n.  Mais ça ne change rien à ce que je dis.
+
+[*] En travaillant un peu avec L (même si je n'ai pas vérifié avec un
+soin infini), on doit même d'ailleurs pouvoir assurer l'unicité de ce
+couple (M,e) (genre, prendre le premier couple (M,e) qui vient dans le
+bon-ordre canonique de L, sachant qu'il doit forcément y en avoir un).
+Alors le prédicat D(M,e) _définit_ vraiment M et e.
+
+C'est ce qui était demandé par mon premier exercice.
+
+Maintenant, si on essaie de prendre M transitif dans ce qui précède,
+on se heurte au problème suivant : certes on peut considérer les n
+tels que les n premiers axiomes de ZFC aient un modèle transitif, mais
+on n'a plus de théorème de compacité : il est parfaitement
+envisageable que pour chaque n les n premiers axiomes de ZFC aient un
+modèle transitif, et pourtant que ZFC n'ait pas de modèle transitif.
+C'est d'ailleurs ce qui se passe dans le plus petit modèle transitif S
+de ZFC s'il existe (il est alors bien défini, et c'est un L_alpha).
+
+Ou, pour dire les choses autrement : si on appelle alpha_n le plus
+petit ordinal (s'il exste) tel que L_{alpha_n} soit un modèle des n
+premiers axiomes de ZFC, et alpha_omega le plus petit ordinal (s'il
+existe) tel que L_{alpha_omega} soit un modèle de ZFC (c'est le modèle
+transitif minimal S, justement), alors ZFC prouve pour chaque n que
+alpha_n existe, mais il ne prouve pas que la suite (alpha_n) existe,
+et même si tous les alpha_n existent rien ne dit que leur limite soit
+alpha_omega (au contraire : si alpha_omega existe, L_{alpha_omega}
+vérifie « pour tout n, alpha_n est bien défini », donc la suite
+(alpha_n) est bien définie dans L_{alpha_omega}, donc sa limite _ne
+peut pas_ être alpha_omega).
+
+C'est ce qui justifie de se poser la question de mon second exercice.
+
+
+Maintenant supposons que pour un certain prédicat D(M) portant sur un
+ensemble transitif M, ZFC prouve les choses suivantes :
+
+(P) il existe un M (transitif) tel que D(M),
+
+(Q_n) tout M (transitif) vérifiant D(M) est un modèle transitif des n
+premiers axiomes de ZFC.
+
+Je suppose bien sûr que pour tout n ZFC prouve (Q_n), pas que ZFC
+prouve « pour tout n (Q_n) ».  Soit Q cette dernière affirmation,
+« pour tout n, (Q_n) » : manifestement, c'est encore équivalent à
+« tout M (transitif) vérifiant D(M) est un modèle transitif de ZFC ».
+
+Alors la théorie ZFC+¬Q est omega-inconsistante, c'est-à-dire qu'il y
+a un prédicat d'une variable entière (en l'occurrence (Q_n)) tel que
+la théorie en question prouve Q_n pour tout n mais prouve la négation
+de « pour tout n, (Q_n) ».  J'ai tout fait pour.
+
+Quant à la théorie ZFC+Q, elle prouve P et Q, donc elle prouve
+l'existence d'un modèle transitif de ZFC.  Or (en raisonnant dans
+cette théorie,) s'il existe un modèle transitif de ZFC, il existe un
+plus petit modèle transitif de ZFC, S, et on a S|=P et S|=Q_n pour
+tout n, donc S|=Q, donc S |= « il existe un modèle transitif de ZFC »,
+ce qui n'est pas le cas (puisque S est minimal, justement).  Donc
+ZFC+Q est inconsistante.  [Je crois bien que c'est inconsistante tout
+court, et pas juste omega-inconsistante, mais j'ai quand même un petit
+doute, là.]
+
+Du coup, ZFC tout court est omega-inconsistante.  (Si ZFC+Q et ZFC+¬Q
+sont omega-inconsistantes, alors ZFC l'est, ce n'est pas difficile de
+s'en convaincre.)  Noter que tout ça (« ZFC+¬Q est
+omega-inconsistante », « ZFC+Q est inconsistante », « ZFC est
+omega-inconsistante »), ce sont des théorèmes d'une méta-théorie sans
+grande importance dans laquelle on a supposé « il existe un prédicat D
+tel que (etc.) ».  Typiquement cette méta-théorie pourrait aussi être
+ZFC (mais je crois qu'une théorie faible comme Peano suffirait tout à
+fait).  Ce n'est pas très important, mais c'est juste pour ça que
+c'est un peu plus conceptuel que le premier exercice dans lequel on
+construit explicitement un prédicat D(M,e) donc on n'a pas à se
+soucier de méta-théorie...
+
+-------------------------------------------------
+Encore un exercice instructif (qui permet de comprendre en quoi les
+grands cardinaux sont des choses puissantes) :
+
+On suppose qu'il existe un cardinal inaccessible.  Montrer pour tout
+énoncé P que « si P est un théorème de ZFC alors P est vrai ».
+
+(Remarque : on ne peut évidemment pas quantifier sur P puisqu'il est
+question de la vérité de P ; on demande donc de prouver cette
+affirmation pour tout P, pas de prouver l'affirmation « machin pour
+tout P ».)
+        
+        Indication : il suffit de prouver : « si ¬P, alors il existe un
+        modèle
+        transitif de ZFC+¬P » ; or il existe une classe close cofinale sous
+        tout cardinal régulier indénombrable d'ordinaux \alpha tels que
+        V_\alpha soit un modèle de ¬P (réflexion), et si \kappa est
+        inaccessible, V_\kappa est un modèle de ZFC et il existe un
+        ensemble
+        clos confinal de \alpha sous \kappa tels que V_\alpha soit
+        élémentairement équivalent à V_\kappa.
+
+
+À la réflexion, c'est faux (je vais expliquer pourquoi), et le bon
+énoncé est :
+
+        On suppose que toute classe close cofinale d'ordinaux contient
+        un cardinal régulier (« On est Mahlo »).  Montrer pour tout
+        énoncé P que « si P est un théorème de ZFC alors P est vrai ».
+
+D'abord, j'explique ce que signifie cette hypothèse et pourquoi je la
+traduis « On est Mahlo ».  C'est une hypothèse qui permet de générer
+beaucoup d'inaccessibles : déjà, en l'appliquant à la classe des
+cardinaux singuliers, elle prouve qu'il existe un cardinal
+inaccessible, et facilement que tout cardinal est majoré par un
+inaccessible ; mais elle prouve mieux : il existe un cardinal régulier
+qui est limite d'inaccessibles (i.e., « hyperinaccessible »), et tout
+cardinal est majoré par un hyperinaccessible ; et il existe un
+cardinal régulier qui est limite de ça, etc.
+
+Un cardinal inaccessible \kappa est dit Mahlo lorsque l'ensemble des
+cardinaux réguliers plus petits que lui est stationnaire dans \kappa
+(i.e., rencontre tout ensemble clos cofinal dans \kappa).  Mon
+hypothèse dit donc essentiellement que la classe des ordinaux (On) est
+un cardinal Mahlo.  En termes de consistance, c'est moins fort que de
+demander qu'il existe un cardinal Mahlo, mais l'hypothèse dont j'ai
+envie est bien que On soit Mahlo : par exemple, ça ne me convient pas
+s'il y a juste un cardinal Mahlo et pas d'inaccessible au-dessus.
+L'hypothèse « On est Mahlo » est une infinité d'axiomes (c'est
+essentiel pour que l'exercice puisse marcher, comme je vais
+l'expliquer), un pour chaque formule définissant une classe
+d'ordinaux.  Il faut penser à cette hypothèse un peu comme le schéma
+de remplacement, c'est un schéma de clôture de l'univers (d'ailleurs,
+moralement, le schéma de remplacement affirme que « On est
+inaccessible »).
+Bon, maintenant pourquoi mon exercice était trivialement faux avec
+juste « il existe un cardinal inaccessible » ?  Notons (H) l'hypothèse
+« il existe un cardinal inaccessible » - peu importe ce que c'est
+exactement, en fait, du moment qu'elle est consistante.  Par Gödel,
+ZFC+(H) ne peut pas prouver Consis(ZFC+(H)).  Donc il existe un modèle
+de ZFC+(H)+¬Consis(ZFC+(H)) : dans ce modèle, ZFC « prouve » ¬(H) (je
+mets des guillemets parce que c'est une « preuve » qui n'est pas
+standard, heureusement), et pourtant (H) est vrai.  Quand on y pense,
+c'est pervers : c'est un monde dans lequel les cardinaux inaccessibles
+existent mais sont démontrablement impossibles. ;-) En tout cas, ça
+réfute l'exercice comme je l'avais posé : on a simultanément
+« ZFC|-¬(H) » et (H).  Et aucun axiome seul, que ce soit « il existe
+un cardinal inaccessible », « il existe un cardinal Mahlo » ou « il
+existe un cardinal Vachement Super Grand » ne peut entraîner
+« (ZFC|-P)=>P » pour tout P.
+
+(Ce qui n'allait pas dans mon indication c'était justement le point
+« clos cofinal sous tout cardinal <schmurz> » : les ordinaux \alpha
+tels que V_\alpha |= ¬P sont une classe close cofinale mais qui peut
+commencer très haut : on s'en persuade en prenant justement pour ¬P
+l'énoncé « il existe un inaccessible ».  En revanche, si On est Mahlo,
+ce n'est pas grave, on va trouver plein de cardinaux inaccessibles
+dans ces \alpha, donc plein de modèles de ZFC.  Là je pense qu'on peut
+dire que j'ai vraiment démontré le truc.)
+
+Il y a un truc qui marche avec un cardinal inaccessible, quand même,
+donc une autre façon de réparer l'exercice :
+
+        On suppose qu'il existe un cardinal inaccessible.  Montrer
+        pour tout énoncé _arithmétique_ P que « si P est un théorème
+        de ZFC alors P est vrai ».
+
+Mais là c'est vraiment facile : si \kappa est inaccessible, V_\kappa
+est un modèle de ZFC ayant pour entiers naturels les vrais entiers
+naturels, donc tout ce que ZFC démontre à leur sujet est vrai...
+
+--------------------------------------------------------------------
+
+Ah oui, je comprends ce qui te perturbe : « vrai » est subtilement
+polysémique ; enfin, non, c'est toujours le même sens, mais des
+emplois subtilement différents du même sens.  Quand on dit que « P est
+vrai dans M » - où M est une structure - c'est la notion de
+satisfaction dans un modèle/structure, mais quand on dit que « P est
+vrai » tout court, c'est juste de l'emphase pour dire « P » (i.e.,
+<truc> peut se dire « <truc> est vrai » ou « "<truc> est vrai" est
+vrai », etc.), de même que « P est faux » est une variante emphatique
+de « ¬P ».  En fait, ces deux emplois de « vrai » se rejoignent avec
+la notion de satisfaction dans une classe : le « vrai » tout court est
+juste le « vrai » dans la classe universelle (V = {x|x=x}).
+
+Donc, reprenons : si P est un prédicat du langage de la théorie des
+ensembles :
+
+1. dire que « P est vrai » signifie juste P, (i.e., l'écriture V|=P
+   sera considérée comme un rallongement inutile de P),
+
+2. dire que « P est vrai dans la classe M », où M est la classe {x |
+   H(x)} définie par un prédicat H (mettons pour simplifier une classe
+   transitive, mais on pourrait aussi prendre une classe avec une
+   relation-classe dessus), ça veut juste dire l'énoncé obtenu en
+   remplaçant tous les quantificateurs dans P par des quantificateurs
+   gardés par H (i.e. : on remplace les « pour tout x » par « pour
+   tout x tel que H(x) » et « il existe un x » par « il existe un x
+   tel que H(x) »), on dit encore que c'est l'énoncé P _relativisé_ à
+   la classe M, et on note M|=P,
+
+3. dire que « P est vrai dans la structure (M,e) » (où M est un
+   ensemble et e une relation binaire sur M) signifie l'énoncé obtenu
+   en remplaçant tous les quantificateurs de P par des quantificateurs
+   portant sur M et tous les « u \in v » par des « e(u,v) », et on
+   note ça (M,e)|=P.
+
+La différence essentielle entre l'usage 3 et les usages 1-2, c'est que
+dans l'usage 3 on peut aussi définir « P est vrai dans la structure
+(M,e) » non pas pour P un _prédicat_ mais le _code arithmétique_ d'un
+prédicat, c'est-à-dire qu'on peut écrire une formule « (M,e) |= #P »
+qui dit que la formule de code #P est satisfaite dans la structure
+(M,e) : _ceci n'est pas possible pour le sens 1 (ou 2, a fortiori)_
+comme l'affirme un célèbre théorème de Tarski (par ailleurs assez
+trivial : si on pouvait écrire une formule V |= #P, on pourrait
+facilement construire une formule qui dit d'elle-même qu'elle est
+fausse.  (En revanche, on peut écrire une formule V |=_n #P qui
+fonctionne uniquement pour les énoncés \Sigma_n-ou-moins, avec n
+fixé ; mais le point est qu'on ne peut pas uniformiser sur n.)
+
+On passe souvent sous silence la distinction entre une formule et son
+code arithmétique, mais elle est essentielle ici parce que c'est ce
+qui permet de quantifier sur les formules (sans faire de la logique du
+second ordre ou quelque chose comme ça).  Par exemple, « (M,e) est un
+modèle de ZFC » (si M est un ensemble et e une relation dessus) est
+bien un énoncé (il se traduit : « pour tout code-de-formule #P qui
+fait partie des codes-des-axiomes-de-ZFC, on a (M,e) |= #P » - comme
+on utilise le code #P de P, on peut quantifier dessus) ; alors que
+quand on se permet de dire « M est un modèle de ZFC » où M est une
+classe (typiquement, M la classe des ensembles constructibles, ou,
+tautologiquement, la classe universelle), c'est une infinité d'énoncés
+qu'on fait à la fois, un pour chaque axiome de ZFC (à savoir les mêmes
+énoncés relativisés à la classe M).  Et ce passage sous silence est
+*d'autant plus testique* que l'exercice 1 du message précédent
+montrait qu'il y a des cas où ZFC va effectivement prouver (M,e)|=P
+(ou (M,e)|=#P) pour chaque axiome P de ZFC sans pour autant prouver
+« pour tout code #P d'un axiome de ZFC, on a (M,e)|=#P » !
+
+Il est tautologique que pour tout théorème P de ZFC, ZFC
+prouve « P est vrai » (puisque ça signifie juste P, d'après les
+conventions que j'ai données : et, oui, si ZFC prouve P alors ZFC
+prouve P).  Mais ce qui n'est pas tautologique, et même pas vrai (du
+moins si ZFC est consistant) c'est si ZFC prouve « si #P est le code
+d'un théorème de ZFC alors P [est vrai] » : la différence est dans le
+placement des guillemets.  De fait, si on applique ça à P = Faux
+(l'affirmation tautologiquement fausse), on se demande si ZFC prouve
+« si #Faux est le code d'un théorème de ZFC alors Faux », i.e.,
+« #Faux n'est pas le code d'un théorème de ZFC », i.e., « ZFC est
+consistant », et ça on sait que ce nest pas possible si ZFC est
+consistant.
+
+J'insiste : pour chaque énoncé ensembliste P, « #P est (le code d')un
+théorème de ZFC » est un énoncé arithmétique, et « (#P est un théorème
+de ZFC) => P » est un énoncé ensembliste qui n'est pas du tout
+tautologique et n'est pas du tout, en général, une conséquence des
+axiomes de ZFC.  (Alors que si on a un modèle (M,e) de ZFC, l'énoncé
+« (#P est un théorème de ZFC) => (M,e)|=P » est évident pour tout P,
+et même, en fait, « pour tout #P, (#P est un théorème de ZFC) =>
+(M,e)|=#P ».  Donc la différence entre les usages 1 et 3 de la notion
+de vérité est vraiment critique.)  Et bien sûr, on ne peut pas
+quantifier sur P dans ce « (#P est un théorème de ZFC) => P » (mais de
+toute façon, même pour des énoncés bien explicites, ZFC ne peut pas le
+prouver).
+
+Il y a en fait un théorème, le théorème de Löb, qui dit que si ZFC
+prouve « (#P est un théorème de ZFC) => P » alors ZFC prouve P (ce
+n'est pas particulier à ZFC, hein...).  Informellement, donc, les
+_seuls_ énoncés dont ZFC arrive à prouver que s'ils sont des théorèmes
+ils sont vrais, sont les énoncés qui sont effectivement des
+théorèmes !  Inversement, c'est une façon standard de renforcer une
+théorie (récursive, contenant l'arithmétique, \omega-consistante et
+tout le tralala) c'est de lui ajouter ce schéma d'axiomes qui dit
+donc, informellement, que ses propres théorèmes sont vrais !  Ça
+implique la consistance du système, mais aussi la consistance du
+système renforcé par sa propre consistance, et la consistance de ça...
+(Mais ça n'empêche qu'on peut ensuite recommencer et dire que les
+théorèmes qui découlent du schéma en question sont eux-mêmes vrais,
+etc.  On peut aussi essayer des trucs plus forts comme ajouter un
+prédicat de vérité.  Il y a beaucoup de façons d'essayer de renforcer
+systématiquement un système de ce genre.)
+
+Mon exercice consiste donc à prouver qu'ajouter un cardinal
+inaccessible à ZFC est plus fort que ce schéma.
+
+Bref, l'exercice consiste à prouver dans ZFC, pour P un énoncé
+quelconque :
+
+« S'il existe un cardinal inaccessible et si #P est un théorème de
+ZFC, alors P. »
+------------------------------------
+Qu'est-ce que #P?
+
+C'est un code arithmétique de P.  J'ai mis le # pour insister sur
+le fait que c'est un entier naturel.  Le point de mon message, c'est
+qu'il y a deux relations |= différentes : si M est un ensemble
+transitif (ou (M,e) un ensemble muni d'une relation binaire
+quelconque), on peut définir M|=#P (ou (M,e)|=#P) lorsque #P est le
+code arithmétique d'une formule P, et on peut ensuite quantifier sur
+#P et ainsi de suite (par exemple, on peut écrire en une seule formule
+« l'ensemble M est un modèle transitif de ZFC »), mais d'autre part si
+M est un ensemble _ou une classe_ transitif (ou (M,E) un ensemble ou
+une classe muni d'une relation binaire quelconque), on peut définir
+M|=P (ou (M,E)|=P) lorsque P est une formule explicite, en modifiant
+tous ses quantificateurs pour porter sur M (et éventuellement aussi
+ses symboles d'appartenance pour les remplacer par E).  Là on ne peut
+pas quantifier sur P : on peut juste dire, par exemple, que telle
+classe vérifie les n premiers axiomes de ZFC (et il se peut que ZFC
+prouve ça pour tout n, mais c'est un schéma de théorèmes).  En théorie
+des ensembles, on manie beaucoup ces deux notions, et c'est parfois
+très confusant.
+  
+Par exemple, voici trois façons d'enrichir ZFC par réflexion :
+  
+(a) pour tout énoncé arithmétique P, mettre l'axiome « si ZFC|-P alors
+P »,
+  
+(a1) mettre l'unique axiome « pour tout code #P d'un énoncé
+arithmétique, si ZFC|-P alors N|=#P » (on peut faire ça dans ZFC parce
+que N est un ensemble dans ZFC, on ne pourrait pas dans Peano),
+
+(b) pour tout énoncé P (pas forcément arithmétique), mettre l'axiome
+« si ZFC|-P alors P ».
+
+On ne peut pas transformer (b) en un unique axiome comme (a) a été
+transformé en (a1).
+--------------------------------
+Dans le même genre, quelle serait la différence de réaction de la
+communauté mathématique dans le cas (a) quelqu'un fournit une
+démonstration valable de « 0=1 » à partir de ZFC, et (b) quelqu'un
+fournit une démonstration valable de « il existe une démonstration de
+"0=1" à partir de ZFC » à partir de ZFC ?  Probablement le (b) serait
+vu comme aussi désastreux que le (a) (indépendamment du fait que le
+(b) montre d'ores et déjà l'inexistence d'un cardinal inaccessible ou
+même d'un modèle transitif de ZFC, toutes choses sur lesquelles on
+compte beaucoup).  Et ce, même s'il est logiquement envisageable qu'il
+existe une démonstration dans ZFC de la contradiction de ZFC sans pour
+autant que ZFC soit contradictoire...  mais mathématiquement, on se
+foutrait de cette subtilité, donc on attend plus des axiomes de ZFC
+que juste le fait qu'ils soient consistants - on s'attend à ce qu'ils
+soient, au moins arithmétiquement, *vrais*.
+
+(Maintenant, on peut peut-être avoir à distinguer la situation d'un
+énoncé P arithmétique et celle d'un énoncé P ensembliste, et admettre
+le principe « (ZFC |- P) => P » uniquement pour les premiers.  Ce que
+ça a de sympathique, c'est que le simple axiome « il existe un
+cardinal inaccessible » non seulement entraîne automatiquement « (ZFC
+|- P) => P » pour tout énoncé P arithmétique, mais même entraîne
+« (ZFC+R |- P) => P » où R est le schéma « (ZFC|-P)=>P », et aussi
+« (ZFC+R' |- P) => P » où R' est le schéma précédent, « et ainsi de
+suite ».  Alors que pour P de nature ensembliste, « (ZFC|-P)=>P » il
+faut peut-être des hypothèses du style « On est faiblement compact » -
+mais je n'ai pas vraiment réfléchi.)
+--------------------------------------------------------------------------

@@ -1,0 +1,5 @@
+! layout
+  mysymbols              Symboles Locaux
+
+! variant
+  us              mysymbols: With us Layout

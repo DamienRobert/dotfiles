@@ -1,0 +1,150 @@
+#!/bin/zsh
+SUBDIRECTORY_OK=true
+. "$(git --exec-path)/git-sh-setup" ""
+
+require_work_tree
+cd_to_toplevel
+
+patchdir="11patch-upstream"
+cccmd=
+name=
+upstreamname=
+actiondir=
+actionmv=
+
+help() {
+    echo "git-mypatch [-n[ame]/-up[stream]/-cc/-dir/-dirfrom/-dirto] format/send/sent/toresend check apply/applied/toreapply"
+    echo ""
+    echo "- git mypatch format [-n name|] [-up upstream] args"
+    echo "  Apply format-patch args, and save it in 'name'. 'upstream' can be used to explain against what branch the patches are to be applied. As an optimization, if args=branch, then we use branch as the upstream description. Note: in most case, args will be upstream..name"
+    echo "- git mypatch send [-cc] [-n name|]"
+    echo "  Send patches in name, eventually applying the git-mycc as cc-cmd if -cc is given as parameters"
+    echo "- git mypatch sent/toresend [-n name|]"
+    echo "  mv patches from 'tosend' to 'sent' or back in toresend"
+    echo ""
+    echo "- git mypatch apply [-n name|name]"
+    echo "  apply patches in name"
+    echo "- git mypatch applied/toreapply [-n name|name]"
+    echo "  mv patches from 'toapply' to 'applied' or back in toreapply"
+    echo ""
+    echo "- git mypatch check [-n name|name]"
+    echo "  Check if the patches in name apply on the workdir (usually won't be the case if there is one of them that depend on another). Also check for whitespace error"
+    echo ""
+    echo "|-dir|: change the patchdir 11patch-upstream"
+    echo "|-dirfrom|: change the default tosend/toapply"
+    echo "|-dirto|: change the default sent/applied"
+    exit 0
+}
+
+while true;
+do
+  case "$1" in
+    -- ) shift; break ;;
+  -dir ) shift; patchdir=$1; shift ;;
+  -dirfrom )  shift; actiondir=$1; shift ;;
+  -dirto )  shift; actionmv=$1; shift ;;
+  -n|-na|-nam|-name ) shift; name=$1; shift ;;
+  -u|-up|-ups|-upst|-upstr|-upstre|-upstrea|-upstream ) 
+    shift; upstreamname=$1; shift ;;
+  -cc ) shift; cccmd="--cc-cmd=$HOME/script/git/git-mycc" ;;
+-h|-help ) help ;;
+    *) break;;
+  esac
+done
+
+mvaction() {
+  mkdir -p "$patchdir/$2/"
+  mv -i "$patchdir/$1/$name" "$patchdir/$2/"
+}
+mvpatch() {
+  [ -z "$actiondir" ] && actiondir=tosend
+  [ -z "$actionmv" ] && actionmv=sent
+  mvaction $actiondir $actionmv
+}
+mvpatchback() {
+  [ -z "$actiondir" ] && actiondir=tosend
+  [ -z "$actionmv" ] && actionmv=sent
+  mvaction $actionmv $actiondir
+}
+ammv() {
+  [ -z "$actiondir" ] && actiondir=topatch
+  [ -z "$actionmv" ] && actionmv=patched
+  mvaction $actiondir $actionmv
+}
+amremv() {
+  [ -z "$actiondir" ] && actiondir=topatch
+  [ -z "$actionmv" ] && actionmv=patched
+  mvaction $actionmv $actiondir
+}
+
+getlist() {
+    [ -z "$actiondir" ] && actiondir=topatch
+    OLDIFS=$IFS
+    IFS='
+'
+    list=($(find "$patchdir/$actiondir/$name" -type f -not -name '0000*' | sort ))
+    IFS=$OLDIFS
+}
+
+[ -z "$1" ] && help
+action=$1; shift
+
+getbranch() {
+    branch=$(git current-branch -a)
+    name=$branch
+}
+
+case $action in
+  format )
+    [ -z "$actiondir" ] && actiondir=tosend
+    [ -z "$name" ] && getbranch
+    [ -z "$upstreamname" -a $# -eq 1 ] && upstreamname=$1
+    [ -n "$upstreamname" ] && signature="--signature=Patched on top of $(git describe --always $upstreamname)" || signature=""
+
+    mkdir -p "$patchdir/$actiondir/$name"
+    echo git format-patch $signature -B -M -C -s --cover-letter -o "$patchdir/$actiondir/$name" "$@"
+    git format-patch $signature -B -M -C -s --cover-letter -o "$patchdir/$actiondir/$name" "$@"
+    #-M detect move, -C detect copy, -B rewrite are written as a deletion + a creation
+    ;;
+  send )
+    [ -z "$actiondir" ] && actiondir=tosend
+    [ -z "$name" ] && getbranch
+    echo git send-email $cccmd --annotate "$@" "$patchdir/$actiondir/$name/"
+    git send-email $cccmd --annotate "$@" "$patchdir/$actiondir/$name/"  && mvpatch
+    ;;
+  sent )
+    [ -z "$name" ] && getbranch
+    mvpatch
+    ;;
+  toresend )
+    [ -z "$name" ] && getbranch
+    mvpatchback
+    ;;
+  check )
+    [ -z "$name" ] && { name=$1; shift }
+    getlist
+    for patch in $list; do
+    echo "*** Testing $patch (mostly usefull for whitespace errors) ***"
+    git apply --check --whitespace=error-all "$@" $patch 2>&1 | grep --color -E '.*whitespace.*|$'
+    #clever trick to color the match on whitespace: grep match all lines,
+    #but most of them only on the end of line which is not colored
+    done
+    ;;
+  apply )
+    [ -z "$name" ] && { name=$1; shift }
+    getlist
+    echo "git am -3 $@" $list
+    git am -3 "$@" $list  && ammv
+    ;;
+  applied )
+    [ -z "$name" ] && name=$1
+    ammv
+    ;;
+  toreapply )
+    [ -z "$name" ] && name=$1
+    amremv
+  ;;
+  * )
+    help
+  ;;
+esac

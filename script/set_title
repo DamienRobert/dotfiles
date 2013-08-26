@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+help() {
+  echo "set_title: set the shell title
+  Special option for screen by default set the title and the hardstatus. 
+  -hs: only set hardstatus
+  -s: only set status
+"
+  exit 1
+}
+
+hardstatus=
+tabstatus=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -h|-help|--help ) shift ; help ;;
+    -hs ) shift; hardstatus=true ;;
+    -s ) shift; tabstatus=true ;;
+    *) break;;
+  esac
+done
+
+if [[ -z $hardstatus && -z $tabstatus ]]; then
+  #the user did not specify, we set both
+  hardstatus=true
+  tabstatus=true
+fi
+
+case "$TERM" in
+  screen|screen.*)
+    # See screen(1) "TITLES (naming windows)".
+    # "\ek" and "\e\" are the delimiters for screen(1) window titles
+    [[ -n $tabstatus ]] && print -Pn "\ek$@\e\\" # set screen tab title.
+    [[ -n $hardstatus ]] && print -Pn "\e]2;$@\a" # set screen hardstatus title
+    ;;
+  rxvt|rxvt-unicode|rxvt-unicode-256color|xterm|xterm-color|xterm-256color)
+    print -Pn "\e]2;$@\a"
+    ;;
+  *)
+    echo -e "\033]2;$@\007" 
+    ;;
+esac

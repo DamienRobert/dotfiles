@@ -1,0 +1,7 @@
+xkb_keymap {
+	xkb_keycodes  { include "xfree86+aliases(azerty)"	};
+	xkb_types     { include "complete"	};
+	xkb_compat    { include "complete"	};
+	xkb_symbols   { include "pc+fr(oss)+keypad(oss)+altwin(alt_super_win)+level3(ralt_switch)+compose(menu)"	};
+	xkb_geometry  { include "pc(pc105)"	};
+};

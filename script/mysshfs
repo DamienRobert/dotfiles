@@ -1,0 +1,38 @@
+#!/bin/zsh
+MYFILES=${MYFILES-$HOME/config}
+#. "$MYFILES/00COMPUTERS"
+
+CONTROL_PATH="$HOME/sshfs/.control/%l_%r@%h:%p"
+SSH_OPT="-nNT -o ExitOnForwardFailure=yes -o ControlMaster=auto -o ControlPath=$CONTROL_PATH"
+#SSH_OPT="-nNT -o ExitOnForwardFailure=yes"
+#SSHFS_OPT="-o ControlMaster=auto -o ControlPath=$CONTROL_PATH -o transform_symlinks -o cache_stat_timeout=300 -o ServerAliveInterval=300"
+SSHFS_OPT="-o transform_symlinks -o cache_stat_timeout=300 -o ServerAliveInterval=100"
+#300/3=100
+
+DIR="$HOME/sshfs"
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -c ) shift ; 
+      mkdir -p $DIR; cd $DIR
+          name="$1"; shift ;
+          eval $($MYFILES/00COMPUTERS.rb --export $name)
+          #info_computer $name
+          mkdir -p "$name-root"
+          sshfs "$SSHUNISON:/" "$DIR/$name-root"
+          ln -s "$name-root/$HOMEPATH" "$HOME/sshfs/$name";;
+    -u ) shift; name="$1"; shift
+         fusermount -u "$DIR/$name" ;;
+    -uall )
+      for i in `cut /etc/mtab -d ' ' -f '2' | grep sshfs`; do
+        fusermount -u "$i"
+      done ;;
+    *) break;;
+  esac
+done
+
+if [[ $# -gt 0 ]]; then
+  exec sshfs $SSHFS_OPT "$@"
+fi

@@ -1,0 +1,20 @@
+#compdef git-mydeploy
+#description Deployment script
+
+    #_message "ploum"
+    local committype; committype=(all update yes no none)
+    _arguments \
+      {-l,-local}'[local git dir]:directory:_files -/' \
+      {-u,-upstream}'[upstream git dir]:directory:_files -/' \
+    {-b,-branch}'[the local branch to push]:branch:__git_branch_names' \
+    {-rb,-remote-branch}'[name of remote branch]:remote branch:' \
+    {-ub,-upstream-branch}'[the upstream branch to update]:upstream branch:' \
+    "-rebase[rebase rather than merge upstreambranch into branch]" \
+    "-nopull[don't pull only push]" \
+    "-pullopt[custom pull options]:pull options:" \
+    "-pushopt[custom push options]:push options:" \
+    {-lc,-local-commit}"[what do we commit?]:commit type:($committype)" \
+    {-lo,-local-opt}"[local commit options]:commit options:" \
+    {-rc,-remote-commit}"[what do we commit in remote?]:commit type:($committype)" \
+    {-ro,-remote-opt}"[remote commit options]:commit options:" \
+    "*:remote:_files -/"

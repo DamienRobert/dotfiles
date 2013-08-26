@@ -1,0 +1,8 @@
+[Unit]
+Description=user session
+AllowIsolate=yes
+Wants=basic.target
+Wants=crontab.target
+
+[Install]
+Alias=default.target

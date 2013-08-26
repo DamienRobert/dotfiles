@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+#from: http://felipec.wordpress.com/2009/10/25/git-send-email-tricks/
+#https://gist.github.com/218093
+# parse the patch to find all the persons that have contributed to a line
+# modified by the patch
+# here @from is the commit from which the patch was generated
+# @source is the file modified
+
+@authors = {}
+
+def parse_blame(line)
+  key, value = line.split(" ", 2)
+  case key
+  when "author"
+    @name = value
+  when "author-mail"
+    @mail = value
+    author = "\"#{@name}\" #{@mail}"
+    @authors[author] = true
+  end
+end
+
+ARGV.each do |filename|
+  patch_file = File.open(filename)
+  patch_file.each_line do |patch_line|
+    @from ||= patch_line[/From (\w+)/, 1]
+    case patch_line
+    when /^---\s+(\S+)/
+      @source = $1[2..-1]
+    when /^@@\s-(\d+),(\d+)/
+      blame = `git blame --incremental -L #{$1},+#{$2} #{@source} #{@from}^ | grep author`
+      blame.each_line { |l| parse_blame(l.chomp) }
+    end
+  end
+end
+
+@authors.each_key do |a|
+  puts a
+end

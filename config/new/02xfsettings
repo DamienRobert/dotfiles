@@ -1,0 +1,40 @@
+#!/bin/sh
+xfconf-query -n -c keyboard-layout -p /Default/XkbDisable -t bool -s true
+xfconf-query -n -c keyboards -p /Default/Numlock -t bool -s true
+xfconf-query -n -c xsettings -p /Xft/DPI -t int -s -1
+xfconf-query -n -c xfce4-session -p /startup/ssh-agent/enabled -t bool -s false
+xfconf-query -n -c xfce4-session -p /general/SaveOnExit -t bool -s false
+xfconf-query -n -c xfce4-session -p /sessions/Failsafe/Client0_Command -a -t string -s fvwm
+xfconf-query -n -c xfce4-keyboard-shortcuts -p '/commands/custom/<Control><Alt>l' -t string -s "dm-tool lock"
+xfconf-query -n -c xfce4-notifyd -p /theme -t string -s "Smoke"
+
+. $MYFILES/.xgeometry
+XFCEDIR="$HOME/.config/xfce4/terminal"
+mkdir -p "$XFCEDIR"
+cat >"$XFCEDIR/terminalrc" <<EOF
+[Configuration]
+MiscAlwaysShowTabs=TRUE
+MiscBell=FALSE
+MiscBordersDefault=TRUE
+MiscCursorBlinks=FALSE
+MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK
+MiscDefaultGeometry=$GTERMG
+MiscInheritGeometry=FALSE
+MiscMenubarDefault=FALSE
+MiscMouseAutohide=FALSE
+MiscToolbarDefault=FALSE
+MiscConfirmClose=TRUE
+MiscCycleTabs=TRUE
+MiscTabCloseButtons=TRUE
+MiscTabCloseMiddleClick=TRUE
+MiscTabPosition=GTK_POS_TOP
+MiscHighlightUrls=TRUE
+ScrollingOnOutput=FALSE
+ColorForeground=#000000000000
+ColorBackground=#ffffffffdddd
+ColorPalette=#2E2E34343636;#CCCC00000000;#4E4E9A9A0606;#C4C4A0A00000;#34346565A4A4;#757550507B7B;#060698209A9A;#D3D3D7D7CFCF;#555557575353;#EFEF29292929;#8A8AE2E23434;#FCFCE9E94F4F;#72729F9FCFCF;#ADAD7F7FA8A8;#3434E2E2E2E2;#EEEEEEEEECEC
+ColorCursor=#cdcd26262626
+FontName=$FONTTYPE $FONTSIZE
+EOF
+
+echo "Run xfce4-session-settings to set up autostart, and ./02Xresources"

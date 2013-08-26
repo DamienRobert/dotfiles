@@ -1,0 +1,87 @@
+Propriétés topo élémentaires
+============================
+
+Def pour B loc connexe:
+X/B est un revêtement ssi
+il existe un recouvrement de B par des ouverts connexes U, tel que toute
+composante connexe V de \pi^-1(U) soit isomorphe à U.
+
+- Si X/B est étalé séparé, alors X est un revêtement trivial ssi tout point
+x\in X admet une section.
+- Si B connexe et loc connexe, X/B revêtement, alors X trivial <=> tout
+  point d'une fibre admet une section
+
+- Si f,g Y->X sont des morphismes de B-revêtement, f=g sur un ensemble ouvert
+fermé. En particulier, si Y connexe et f(y)=g(y), ou si B connexe et f=g
+sur une fibre, alors f=g.
+- Si f Y->X morphisme de revetement, B loc connexe, f est un revetement
+  (En effet, si B connexe et que Y, X sont triviaux, alors Y->X est un
+  revetement de X, trivial sur chaque composante connexe de X)
+Application:
+  - si f Y-> X morphisme de revetement, f(Y) est ouvert fermé dans X, en
+  particulier f est surj si X connexe
+  - si B est connexe et que f est une bij sur une fibre, f est un iso.
+Inversement, si Y revetement de X, X revetement de B, et X/B fini ou B loc
+simplement connexe => Y/B revetement.
+
+Prop: X/B revetement fini <=> X->B est étale, propre et séparée
+
+Th: si g,f B'-> B sont homotopes, X/B revetement, alors les pullback de X
+par f et g sont des revêtements isomorphes sur B'
+
+Revetement universel
+===================
+
+Def: revetement universel, represente le foncteur fibre X -> X(b_0) de
+l'espace pointé (B,b_0). E/B revetement, E universel <=> E est connexe +
+trivialise toute revetement de B. En particulier, si E simplement connexe
+il est universel.
+
+Prop: si B est connexe, loc simplement connexe, il admet un revetement
+universel simplement connexe
+
+Revetement galoisien
+====================
+
+E/B est Galoisient si E se trivialise, ie Aut_B(E) opére transitivement sur les fibres de E.
+
+Si X/B est connexe et f:E -> X morphisme de revetement, alors E/X est
+galoisien, et Aut_X(E) est le sous-groupe de Aut_B(E) stabilisant f. Si B
+est loc connexe, E trivialise X.
+
+On a Hom_B(E,X)=Hom_E(E,E x_B X) = sections du pullback de X à E.
+
+Théorème: Le foncteur Hom_B(E,-) est une équiv de catégorie est les
+Aut_X(E)-Ens et les revetements de B trivialisés par E.
+
+Groupe fondamental
+==================
+
+\pi_1(B,b_0) c'est le groupe d'automorphie du foncteur fibre
+(ne dépend que de la composante connexe de b_0 si B loc connexe)
+
+Si E/B est un revetement universel, tel que E(b_0) est non vide, alors 
+\pi_1(B,b_0) est antiisomorphe à Aut_B(E)
+
+Théorème: B connexe, loc connexe et admet un revetement universel.
+Alors le foncteur fibre est une équivalence de catégorie avec
+\pi_1(B,b_0)-ens
+
+Dico: 
+- union disjointe topo <=> union disjointe des fibres
+- connexe <=> action transitive
+- revetements pointés connexes <=> sous groupes
+- X/B et X'/B connexes sont isomorphes <=> leur stabilisateurs sont
+  conjugués
+- X/B connexe, galoisien  <=> stabilisateur distingué
+
+(Passage à la limite:)
+Prop: B connexe admettant un revetement simplement connexe, X/B revetement
+Alors le pullback \pi_1(X,x_0) -> \pi_1(B,b_0) est injectif, d'image le
+stabilisateur de x_0
+Donc en particulier, les sous-groupes du dico qui viennent des
+stabilisateurs sont les \pi_1(X,x_0). Et X galoisien, alors
+Aut_B(X)=\pi_1(B,b_0)/\pi_1(X,x_0)
+
+Th: si B est loc simplement connexe par arc, alors \pi_1(B,b_0) est
+isomorphe à l'espace des lacets à homothépie près.

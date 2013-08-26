@@ -1,0 +1,94 @@
+From david+forum@madore.org Fri May 29 16:26:40 2009
+Article: 2478 of ens.forum.sciences.maths.avancees
+Path: eleves!not-for-mail
+From: Gro-Tsen <david+forum@madore.org>
+Newsgroups: ens.forum.sciences.maths.avancees
+Subject: monomorphismes et epimorphismes de schemas (was: Re: epimorphismes plats d'anneaux)
+Supersedes: <gvorb0$ii6$1@clipper.ens.fr>
+Date: Fri, 29 May 2009 14:26:40 +0000 (UTC)
+Organization: Le forum de l'ENS.
+Lines: 69
+Sender: madore@quatramaran.ens.fr
+Message-ID: <gvorbl$ii6$2@clipper.ens.fr>
+References: <gvo6k2$m7c$2@clipper.ens.fr> <gvoasl$13a$2@clipper.ens.fr> <gvokg4$5l7$1@clipper.ens.fr>
+NNTP-Posting-Host: quatramaran.ens.fr
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Trace: clipper.ens.fr 1243607221 19014 129.199.129.64 (29 May 2009 14:27:01 GMT)
+X-Complaints-To: forum@clipper.ens.fr
+NNTP-Posting-Date: Fri, 29 May 2009 14:27:01 +0000 (UTC)
+X-Newsreader: Flrn (0.9.1 - 05/04)
+X-Start-Date: 29 May 2009 13:24:17 GMT
+Xref: eleves ens.forum.sciences.maths.avancees:2478
+
+Dam's in litteris <gvokg4$5l7$1@clipper.ens.fr> scripsit:
+> D'accord, il est donc isomorphe à son image ouverte (car il est fidèlement
+> plat sur son image, vu que c'est un monomorphisme c'est un isomorphisme par
+> ce que vient de dire Joël). J'imagine que c'est ce que tu voulais dire par
+> immersion ouverte, mais je précise car une application étale n'est pas
+> forcément un isomorphisme local.
+
+« Immersion ouverte » est un terme standard pour les morphismes de
+schémas : c'est un morphisme f:X->Y tel qu'il existe un ouvert U de Y
+pour lequel f se factorise comme composée de l'immersion ouverte
+canonique U->Y par un isomorphisme X->U.  C'est bien ce que tu as
+l'air d'avoir compris, mais je ne vois pas bien pourquoi tu parles de
+morphisme étale (un monomorphisme étale est, à plus forte raison qu'un
+monomorphisme plat, une immersion ouverte) : voulais tu peut-être que
+je précisasse « de Zariski » après ouvert, pour souligner qu'on ne
+parlait pas d'un « ouvert étale » ?
+
+> Est-ce que plus généralement on a une caractérisation "géométrique" d'un
+> monomorphisme?
+
+Pas spécialement, je crois.  Il faut garder à l'esprit des exemples
+comme Spec(k×k[t,t^-1]) -> Spec(k[t]) (c'est-à-dire, au niveau des
+anneaux, le morphisme k[t] -> k×k[t,t^-1] où la première composante
+évalue en 0 et la seconde est l'inclusion des polynômes dans les
+polynômes de Laurent), qui est un monomorphisme un peu déplaisant
+(c'est aussi un épimorphisme et pourtant ce n'est pas un isomorphisme)
+et qui sert tout le temps à fabriquer des contre-exemples.
+
+>		 (Pour les épimorphismes, ce sont simplement les morphismes
+> X->Y tels que l'image schématique de X est Y).
+
+Je ne suis pas sûr de savoir ce qu'est l'« image schématique ».
+J'imagine que tu veux dire, en l'occurrence, que X->Y ne se factorise
+par aucun sous-schéma strict de Y.  Mais la notion d'« image
+schématique » ainsi définie est peu agréable, parce que :
+
+* si X->Y est surjectif (au niveau des points-au-sens-idéaux-premiers)
+  et que Y est réduit, alors X->Y est un épimorphisme de schémas, là
+  il n'y a pas de problème à dire que l'image du morphisme est Y ;
+
+* cependant, si les morphisme surjectifs (au niveau des
+  points-au-sens-idéaux-premiers) sont stables par changement de base,
+  les épimorphismes de schémas, eux, _ne le sont pas en général_ (ou,
+  si on veut, il existe des épimorphismes qui ne sont pas des
+  épimorphismes universels).
+
+Cette dernière affirmation fait que la notion d'image schématique ne
+peut pas se comporter de façon agréable par changement de base.
+
+L'exemple standard d'un épimorphisme dans la catégorie des schémas qui
+n'est pas universel, c'est X = la réunion Spec(k[x]×k[y]) de deux
+droites et Y = deux droites qui se coupent Spec(k[x,y]/(xy)) avec X->Y
+le morphisme évident (qui identifie les origines des deux droites).
+C'est bien un épimorphisme de schémas, mais si on coupe les deux
+droites transversalement, c'est-à-dire qu'on tire par Z->Y donné par
+k[x,y]/(xy) -> k[h]/(h²) qui envoie x et y tous deux sur h, alors on
+obtient le morphisme qui envoie deux points réduits Spec(k²) sur un
+point épaissi Z=Spec(k[h]/(h²)), et c'est certes surjectif au niveau
+des points-au-sens-idéaux-premiers mais ce n'est pas un épimorphisme.
+Donc si la notion d'« image schématique » fait que X->Y a pour image
+Y, en revanche, en tirant par Z->Y l'image devient Z^red qui est plus
+petit que Z : c'est peu plaisant, comme notion.
+
+Je ne connais pas de caractérisation des épimorphismes universels de
+schémas : être fidèlement plat ou bien admettre une rétraction sont
+des conditions suffisantes - mais j'ai l'impression qu'un éclatement
+(disons du plan affine à l'origine) est un épimorphisme universel,
+auquel cas il montre que la disjonction de ces deux conditions n'est
+pas nécessaire pour être un épimorphisme universel.
+

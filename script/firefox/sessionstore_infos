@@ -1,0 +1,61 @@
+#!/bin/zsh
+help() {
+  echo "sessionstore_infos [sessionstore.js]
+  Print the tabs and the history opened in the browser (or the ones that were opened if the session is closed).
+
+  OPTIONS: -q to not print the history, only the current page
+"
+  exit 1
+}
+
+#FILE=$(ls -t ~/.mozilla/firefox/*/sessionstore.js | sed q)
+QUICK=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -h|-help|--help ) help ;;
+    -q ) shift; QUICK=1;;
+    *) break;;
+  esac
+done
+FILE="$@"
+[ -z $FILE ] && FILE=$(ls -t ~/.mozilla/firefox/*/sessionstore.js | sed q)
+
+NBWINDOWS=`jshon -e windows -l <$FILE`
+NBCWINDOWS=`jshon -e _closedWindows -l <$FILE`
+echo "####### Number of windows: $NBWINDOWS ($NBCWINDOWS closed) #######"
+ITER=("windows" "_closedWindows");
+[ -n "$QUICK" ] && ITER=("windows");
+for winname in $ITER; do
+	NBWINDOWS=`jshon -e $winname -l <$FILE`
+	for (( i = 0; i < $NBWINDOWS; i++ )); do
+		NBTABS=`jshon -e $winname -e $i -e tabs -l <$FILE`
+		NBCTABS=`jshon -e $winname -e $i -e _closedTabs -l <$FILE`
+		echo "##### Tabs in $winname $i (open: $NBTABS, closed: $NBCTABS) #####"
+		##tabs
+		for (( j = 0; j < $NBTABS; j++ )); do
+		  HISTORY=`jshon -e $winname -e $i -e tabs -e $j -e entries -l <$FILE`
+			echo "### History in tab $j of $winname $i: $HISTORY ###"
+			DEBUT=0
+			[ -n "$QUICK" ] && DEBUT=$(($HISTORY-1))
+      for (( k = $DEBUT; k < $HISTORY; k++ )); do
+				printf "  %s\n" "`jshon -e $winname -e $i -e tabs -e $j -e entries -e $k -e url -u <$FILE`"
+				printf "    Title: %s\n" "`jshon -e $winname -e $i -e tabs -e $j -e entries -e $k -e title -u <$FILE`"
+      done
+		done
+		## closed tabs
+		if [ -z "$QUICK" ]; then
+		NB=`jshon -e $winname -e $i -e _closedTabs -l <$FILE`
+		for (( j = 0; j < $NBCTABS; j++ )); do
+		  HISTORY=`jshon -e $winname -e $i -e _closedTabs -e $j -e state -e entries -l <$FILE`
+			echo "### History in closed tab $j of $winname $i: $HISTORY ###"
+      for (( k = 0; k < $HISTORY; k++ )); do
+				printf "  %s\n" "`jshon -e $winname -e $i -e _closedTabs -e $j -e state -e entries -e $k -e url -u <$FILE`"
+				#There is no title in closed tabs
+				#printf "    Title: %s\n" "`jshon -e $winname -e $i -e _closedTabs -e state -e $j -e entries -e $k -e title -u <$FILE`"
+      done
+		done
+		fi
+	done
+done

@@ -1,0 +1,154 @@
+Attention, en geoalg une immersion c'est ce qu'on appelle plongement en
+géodiff, et réciproquement. Cf
+http://mathoverflow.net/questions/48527/why-open-immersion-rather-than-open-embedding
+
+Immersions ouvertes
+===================
+
+f: X->Y immersion ouverte ssi f induit un homéo sur un ouvert U de Y et X est isomorphe au schéma sur U.
+
+Les immersions ouvertes sont stables par changement de base.
+Être une immersion ouverte est une propriété affine locale sur la cible.
+
+http://mathoverflow.net/questions/20782/ring-theoretic-characterization-of-open-affines
+
+Theorem 2: Spec(A)→Spec(R) is an open immersion if and only if R→A is flat,
+of finite presentation and an epimorphism in the category of rings.
+
+More generally, in EGA IV, 17.9.1 it is proven that a morphism of schemes
+is an open immersion if and only if it is flat, a (categorical)
+monomorphism and locally of finite presentation.
+
+Preuve: 
+  Un morphisme plat localement de presentation finie est ouvert, cf
+  Matsumura, commutative algebra, theorem 8 du chapitre 2. Cf aussi EGA, ou
+  il y a en plus un exemple de morphisme plat qui n'est pas ouvert (et qui
+  n'est donc pas de presentation finie).
+  
+  Si f: Y->X est plat localement de presentation finie, son image Y'=f(Y) est
+  ouvert dans X donc, et f: Y->Y' est fidelement plat (un morphisme
+  fidelement plat est un morphisme plat surjectif). Comme l'a remarque Joel,
+  si en plus f est un monomorphisme, f est un isomorphisme (ce qui se voit
+  facilement par descente fidelement plate, ou encore parce qu'un morphisme
+  fidèlement plat est un épi effectif, et les épi effectifs qui sont des
+  monos sont des isos).
+
+Cas particulier:
+Theorem 1: Let R be an integral domain with field of fractions K, and R→A a
+homomorphism. Then Spec(A)→Spec(R) is an open immersion if and only if A=0
+or R→K factors through R→A (i.e. A is birational over R) and A is flat and
+of finite type over R.
+
+Theorem 3: There is the following characterisation. I don't think it's too
+tautological. Let T⊆A be the set of f such that the induced map
+A[f−1]→B[f−1] is an isomorphism. Then Spec(B)→Spec(A) is an open immersion
+if and only if the image of T in B generates the unit ideal.
+
+Immersion fermée
+================
+
+f: X->Y est une immersion fermée ssi f est un homéo sur un fermé Z de Y et
+O_Y -> f_* O_X est surjectif.
+(Rem: dans ce contexte, f_* O_X est simplement l'extension de O_X par 0 à
+tout Y).
+
+Les immersions fermées sont stables par changement de base.
+
+Rem: contrairement au cas des immersions ouvertes, il peut y avoir
+différentes immersions fermées pour le même fermé Z.
+
+ex: Il y a bijection entre les sous-schémas fermés de P^n_k et les idéaux
+homogènes I de k[X_0,...,X_n] tels que I:(X_0,...,X_n)=I.
+
+Th: soit f est une immersion fermée, et Q le module (idéal) quasi-cohérent
+donné par le noyau de O_Y dans O_X. Alors f est affine; plus précisément:
+pour tout ouvert affine Spec A de Y,
+X \inter Spec A est isomorphe à Spec(A/I) où I=Q(Spec A) est le noyau de
+l'application (surjective) A-> Gamma(Spec A \inter X, f_* O_X).
+Comme Q est quasi cohérent, on a de plus Q(A_f)=QA_f, et Q(A_P)=QA_P
+En particulier, on a bijection entre les idéaux quasi-cohérents et les
+immersions fermées.
+
+Th (être une immersion fermée est une propriété affine locale sur la cible): 
+f est une immersion fermée ssi on a une des conditions suivantes:
+(i) Pour tout ouvert affine V de Y, U=f^-1(V) est affine et l'application 
+O_Y(V)->O_X(U) est surjective
+(ii) Il y a un recouvrement affine de X par des V_i tels que 
+U_i=f^-1(V_i) est affine et l'application O_Y(V_i)->O_X(U_i) est surjective
+
+Rem: Si Q est un O_X idéal, alors Y={y \in X, 1 \not in Q_y} est fermé dans
+X, ie Y est le support de O_X/Q. (Y,O_X/Q) est un sous-schéma fermé ssi Q
+est quasi-cohérent ssi
+pour tout y\in X il y a un ouvert autour U et des sections s_i \in Q(U)
+telles que Q|x=\sum res(s_i) O_X|x pour tout x dans U.
+
+Prop: Si X est fermé dans Y, il existe une plus petite structure de schéma
+Xréd sur X telle que Xréd se factorise par toute immersion fermée ayant
+image X.
+- Xréd est l'unique schéma fermé réduit de support X.
+- Xréd est définie en recollant la construction suivante: si Y est fermé et X
+correspond à un idéal I, Xréd=Spec(A/Radical(I))
+(Remarque: U->Radical(O_X(U))=fonctions nilpotentes sur U, n'est pas un
+faisceau si X n'est pas Noethérien, le faisceau associé est le faisceau des
+fonctions localement nilpotentes. Par contre d'après Eisenbud et Harris, le
+faisceau quotient associé est U->O_X(U)/Radical pour tout ouvert U, même
+pas forcément affine.)
+- Si X0 est un schéma fermé de support X, définit par un idéal I0, alors
+  l'idéal Iréd définissant Xréd est Radical(I0)
+  (ie pour tout ouvert affine, on prend le radical des sections de I0 sur
+  cet ouvert)
+
+Si f:X->Y est un morphisme, on appelle l'image schématique de f le schéma
+fermé Z tel que f se factorise par Z, et si f se factorise par un schéma
+fermé Z', alors Z->X se factorise par Z' également. Si X est réduit, Z est
+simplement le schéma réduit sur la cloture de f(X).
+
+Si Z est un sous-schéma localement fermé, sa cloture Zbar est le plus petit
+schéma fermé contenant Z. Concrêtement, si Z est fermé dans l'ouvert U,
+l'idéal de Zbar est donné par les fonctions régulières dont la restriction
+à U s'annule sur Z.
+
+Epimorphismes
+=============
+(sciences.maths.avancees         Message  2478)
+
+f: X->Y est épi ssi l'image schématique de f est Y.
+
+Ex: si X->Y est surjectif (au niveau des points-au-sens-idéaux-premiers)
+  et que Y est réduit, alors X->Y est un épimorphisme de schémas.
+
+Ex: si f: X->Y est fidèlement plat, alors c'est un épi effectif universel.
+Autrement dit dans la catégorie des anneaux, c'est un mono effectif, donc
+si f: B->A est de plus épi (cf une localisation) c'est un iso.
+
+Attention:
+---------
+Si les morphismes surjectifs (au niveau des
+points-au-sens-idéaux-premiers) sont stables par changement de base, les
+épimorphismes de schémas, eux, _ne le sont pas en général_ (ou, si on
+veut, il existe des épimorphismes qui ne sont pas des épimorphismes
+universels).
+
+Cette dernière affirmation fait que la notion d'image schématique ne
+peut pas se comporter de façon agréable par changement de base.
+
+L'exemple standard d'un épimorphisme dans la catégorie des schémas qui
+n'est pas universel, c'est X = la réunion Spec(k[x]×k[y]) de deux
+droites et Y = deux droites qui se coupent Spec(k[x,y]/(xy)) avec X->Y
+le morphisme évident (qui identifie les origines des deux droites).
+C'est bien un épimorphisme de schémas, mais si on coupe les deux
+droites transversalement, c'est-à-dire qu'on tire par Z->Y donné par
+k[x,y]/(xy) -> k[h]/(h²) qui envoie x et y tous deux sur h, alors on
+obtient le morphisme qui envoie deux points réduits Spec(k²) sur un
+point épaissi Z=Spec(k[h]/(h²)), et c'est certes surjectif au niveau
+des points-au-sens-idéaux-premiers mais ce n'est pas un épimorphisme.
+Donc si la notion d'« image schématique » fait que X->Y a pour image
+Y, en revanche, en tirant par Z->Y l'image devient Z^red qui est plus
+petit que Z : c'est peu plaisant, comme notion.
+
+Je ne connais pas de caractérisation des épimorphismes universels de
+schémas : être fidèlement plat ou bien admettre une rétraction sont
+des conditions suffisantes - mais j'ai l'impression qu'un éclatement
+(disons du plan affine à l'origine) est un épimorphisme universel,
+auquel cas il montre que la disjonction de ces deux conditions n'est
+pas nécessaire pour être un épimorphisme universel.

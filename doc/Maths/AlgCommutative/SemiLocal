@@ -1,0 +1,32 @@
+Eisenbud, exo 4.13:
+===================
+R semilocal, M,N de présentation finies.
+Si M_P \iso N_P pour tout maximal P, alors M \iso N
+(la difficulté est de construire l'application M \to N qui induit l'iso
+localement en les P).
+
+===========
+
+http://math.stackexchange.com/questions/218020/finite-free-rings-over-complete-local-rings-are-direct-products-of-local-rings
+
+As rschwieb notes, commutative Artinian rings can always be factored
+uniquely as a product of local Artinian rings, and the formation of this
+factorization commutes with the passage to the maximal reduced quotient
+(i.e. it is invariant under quotienting out by the nilradical).
+
+Since a complete semilocal ring is (by definition) the projective limit of
+A/InA, where I is the Jacoson radical and is the intersection of the
+finitely many maximal ideals, applying the preceding paragraph to the
+quotients A/InA (each of which is Artinian, and all of which has the same
+maximal reduced quotient, namely A/IA), we obtain a factorization of A into
+a product of finitely many complete local rings.
+
+This result uses completeness in a crucial way (via passage to the Artinian
+case). E.g. the localization of ℤ[i] at the prime ideal 5 of ℤ (i.e. invert
+all elements coprime to 5) is semi-local (because there are two prime
+ideals in ℤ[i] lying over the prime ideal 5 of ℤ), but is not a product of
+local rings. (It is an integral domain, and so cannot be written as a
+product in a non-trivial way.) Of course, if we 5-adically complete it,
+then by the preceding discussion it will split as a product (of two copies
+of ℤ5).
+

@@ -1,0 +1,31 @@
+#!/bin/sh
+help() {
+  echo "get_http_links url: print the url in a page
+get_http_links -dl file dir: download the links provided in file into dir
+"
+  exit 1
+}
+
+dl=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -h|-help|--help ) shift ; help ;;
+    -dl ) shift; dl=true ;;
+    *) break;;
+  esac
+done
+
+if [ -z "$dl" ]; then
+  lynx --dump "$@" | awk '/http/{print $2}'
+else
+  file=$1; dir=$2
+  mkdir -p $dir
+  case $file in 
+      /* )  ;;
+    * ) file="$(pwd)/$file" ;; #relative path to absolute
+  esac
+  cd $dir
+  wget -c -i $file
+fi

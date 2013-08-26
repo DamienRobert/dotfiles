@@ -1,0 +1,40 @@
+Th: Soit X un schéma, U ouvert, s une section sur U. On a l'équivalence de
+(i) s est localement nilpotent
+(ii) s(x)=0 pour tout x \in U
+(iii) Ann s = U
+(iv) Si U est qc: s est nilpotente
+
+Pr: (ii)<=>(iii) est trival, (i)<=>(ii) vient de ce que pour un ouvert
+affine, nilrad=intersection des premiers, (i)<=>(iv) pour U qc est trivial.
+
+Th: 1) S'il existe un élément localement nilpotent s sur un ouvert U, il
+existe une germe dans U tel que s soit nilpotent.
+2) Réciproquement, s'il existe une un élément nilpotent d'une germe, ou une
+section localement nilpotente sur un ouvert, alors il existe un élément
+nilpotent en chaque ouvert affine contenant cet ouvert/cette germe.
+
+Pr: 1) Si on a un élément nilpotent non nul, il existe une germe ou il est
+toujours non nul, et toujours nilpotent.
+2) Par définition des germes, un élément nilpotent d'une germe vient d'un
+élément nilpotent d'un petit ouvert autour. Soit A un ouvert affine
+contenant ce petit ouvert affine, que l'on peut supposer égale à A_f. On
+a donc un élément nilpotent g/f^m dans A_f. Donc les f^k g sont non nuls
+dans A (sinon g serait nul dans A_f); et comme (g/f^m)^k est nul pour k
+assez grand, ça veut dire que f^k' g^k est nul pour k,k' assez grand,
+donc gf est nilpotent. (Par le th précédent, ça se voit directement en
+constatant que g est nul sur D(f), et que f étant nul sur Var(f), gf est
+nul sur A, donc nilpotent).
+
+Cor: Soit X un schéma. X réduit <=> il n'y a pas d'éléments localement
+nilpotents sur un ouvert <=> l'anneau des sections en chaque ouvert est
+réduit <=> chaque germe est réduite.
+De plus X est réduit ss'il existe un recouvrement par des ouverts affines
+réduits.
+
+Cor (si je ne me plante pas):
+soit N le préfaisceau des sections nilpotenents, R le préfaisceau quotient
+R(U)=O_X(U)/N(U), ie le quotient réduit maximal.
+Si X n'est pas noéth, N et R ne sont pas des faisceaux en gal. Soit N+ et
+R+ les faisceaux associés. Alors N+ est le faisceau des sections localement
+nilpotenentes, et R+ est le faisceau associé à X_réd. Comme le foncteur
+faisceau associé est exact, on a toujours que R+=O_X/N+.

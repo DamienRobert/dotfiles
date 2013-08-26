@@ -1,0 +1,6 @@
+echo "Usage: ploum [OPTION] ploum1 ploum2
+Ploumifie
+
+  -a Option -a
+  -b, --backup	Description of option b
+"

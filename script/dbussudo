@@ -1,0 +1,4 @@
+#!/bin/sh
+
+DBUS_SESSION_BUS_ADDRESS= sudo "$@"
+

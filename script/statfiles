@@ -1,0 +1,3 @@
+#!/bin/sh
+
+stat -L --printf='%n: %y\n' "$@"

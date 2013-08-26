@@ -1,0 +1,75 @@
+Fonctionnement de gdm:
+
+1) Gnome < 2.4:
+GNOME_WINDOW_MANGER=fvwm gnome-session.
+
+2) Gnome 2.4
+-gconftool-2 --type string --set /desktop/gnome/session/required_components/windowmanager fvwm
+- fvwm.desktop:
+  [Desktop Entry]
+  Type=Application
+  Encoding=UTF-8
+  Name=fvwm
+  Name[fr]=fvwm
+  Exec=fvwm
+  NoDisplay=true
+  # autostart phase
+  #X-GNOME-Autostart-Phase=WindowManager
+  X-GNOME-Provides=windowmanager
+  # name we put on the WM spec check window
+  X-GNOME-WMName=fvwm
+
+dans /usr/share/applications/ ou ~/.local/share/applications
+
+3) Gnome 3
+- gnome-session ploum
+lit un fichier ploum.session dans /usr/share/gnome-session/sessions/ 
+(ou ~/.config/gnome-session/sessions/) 
+Par défaut, gnome-session lit le fichier gnome.session :
+
+[GNOME Session]
+Name=GNOME
+RequiredComponents=gnome-shell;gnome-settings-daemon;
+IsRunnableHelper=/usr/lib/gnome-session/gnome-session-check-accelerated
+FallbackSession=gnome-fallback
+
+Le fallback /usr/share/gnome-session/sessions/gnome-fallback.session:
+[GNOME Session]
+Name=GNOME fallback
+RequiredComponents=gnome-panel;gnome-settings-daemon;
+RequiredProviders=windowmanager;notifications;
+DefaultProvider-windowmanager=metacity
+DefaultProvider-notifications=notification-daemon
+
+Avec le fichier suivant, gnome-session fvwm va lancer fvwm (grâce au fvwm.desktop précédent):
+~/.config/gnome-session/sessions/gnome-fvwm.session
+[GNOME Session]
+Name=GNOME with fvwm
+RequiredComponents=gnome-panel;gnome-settings-daemon;
+RequiredProviders=windowmanager;notifications;
+DefaultProvider-windowmanager=fvwm
+DefaultProvider-notifications=notification-daemon
+
+- Les sessions proposées sont dans /usr/share/xsessions/ 
+Ex gnome-fvwm-session.desktop:
+[Desktop Entry]
+Name=Fvwm GNOME
+TryExec=/usr/bin/gnome-session
+Exec=gnome-session --session=gnome-fvwm
+Type=XSession
+
+Dans le menu de gdm, on peut alors choisir la sessions Fvwm GNOME plutôt
+que Gnome. Mais il faut être root pour ça. 
+
+Autre solution: changer le défaut de session de gnome-session de gnome.session à
+gnome-fvwm.session. 
+GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.session session-name gnome-fvwm
+
+Attention: 
+- gdm lance consolekit, si on utilise startx il faut lancer consolekit avant gnome-session
+- gnome-session hardcode le fait de lancer polkit-gnome si la session est
+"gnome-fallback". Si je lance la session "gnome-fvwm", qui a besoin de
+polkit-gnome aussi, il ne sera pas lancé!  
+- si dans fvwm.desktop je mets 
+X-GNOME-Autostart-Phase=WindowManager
+gnome attend un signal XSMP de fvwm mais fvwm ne l'envoie pas

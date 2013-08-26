@@ -1,0 +1,147 @@
+From madore@clipper.ens.fr Tue Jan 17 17:36:59 2006
+Article: 1260 of ens.forum.sciences.maths.avancees
+Path: eleves!not-for-mail
+From: madore@clipper.ens.fr (Gro-Tsen)
+Newsgroups: ens.forum.sciences.maths,ens.forum.sciences.maths.avancees
+Subject: integrale de Denjoy-Khintchine
+Followup-To: ens.forum.sciences.maths.avancees
+Date: Tue, 17 Jan 2006 16:36:59 +0000 (UTC)
+Organization: Le forum de l'ENS.
+Lines: 126
+Sender: madore@clipper.ens.fr
+Message-ID: <dqj6fb$elb$1@clipper.ens.fr>
+NNTP-Posting-Host: clipper.ens.fr
+X-Trace: clipper.ens.fr 1137515819 15019 129.199.129.1 (17 Jan 2006 16:36:59 GMT)
+X-Complaints-To: forum@clipper.ens.fr
+NNTP-Posting-Date: Tue, 17 Jan 2006 16:36:59 +0000 (UTC)
+X-Newsreader: Flrn (0.5.0pre1 - 03/04)
+X-Start-Date: 17 Jan 2006 15:04:30 GMT
+Xref: eleves ens.forum.sciences.maths:12837 ens.forum.sciences.maths.avancees:1260
+
+Je me propose dans ce message de décrire de façon très synthétique,
+pour ceux qui n'y connaissent rien (comme moi, jusqu'à un moment), ce
+que c'est que l'intégrale de Denjoy-Khintchine (parfois appelée par un
+des deux noms seulement, mais, attention, il y a deux intégrales de
+Denjoy : celle de Denjoy-Perron et celle de Denjoy-Khintchine, cette
+dernière étant plus générale).
+
+Je parlerai uniquement de fonctions réelles de la variable réelle.  Et
+je vais me placer sur des intervalles bornés, juste pour éviter
+d'avoir à écrire L¹_{loc} (j'écrirai juste L¹).
+
+Voici les observations de base (qui servent à motiver ce qu'on veut
+faire) :
+
+* Si F définie sur [a;b] est une fonction absolument continue (ce qui
+signifie que pour tout epsilon>0 il existe eta>0 tel que si [a_i;b_i]
+est une famille finie de segments _deux à deux disjoints_ dans [a;b]
+tels que la somme des longueurs |b_i-a_i| soit inférieure à eta alors
+la somme des |F(b_i)-F(a_i)| est inférieure à epsilon ; c'est aussi,
+je crois, équivalent à dire que F, vue comme distribution, a une
+dérivée qui est une fonction L¹) alors (1) F est presque partout
+dérivable (de dérivée finie), (2) sa dérivée f=F' (définie presque
+partout) est L¹, et (3) F est l'intégrale, au sens de Lebesgue, de sa
+dérivée f (cette intégrale ayant un sens, justement, parce que f est
+L¹).  Et « réciproquement », si f est L¹, alors son intégrale F (pour
+l'intégrale de Lebesgue) est absolument continue de dérivée presque
+partout égale à f (donc f détermine F).
+
+* Si F est une fonction dérivable (partout, sauf éventuellement sur un
+ensemble dénombrable, et de dérivée finie), il n'est pas forcément
+vrai que sa dérivée, f, soit L¹, ni que F soit absolument continue
+(ces deux choses sont équivalentes).  En revanche, si f _est_ L¹,
+alors F est bien l'intégrale, au sens de Lebesgue, de f.  Et dans le
+cas général, la donnée de f suffit bien à déterminer F à constante
+près (théorème des accroissements finis).
+
+* Si F est une fonction dérivable (de dérivée finie) presque partout,
+sans condition supplémentaire, il n'est pas forcément vrai que la
+donnée de f suffit à déterminer F : il existe des fonctions presque
+partout dérivable et de dérivée nulle partout où elle est définie,
+mais qui ne sont pas constantes.
+
+Pour résumer, une intégrale de Lebesgue donne une fonction absolument
+continue, et une intégrale au sens « primitive » donne une fonction
+dérivable.  Il n'y a pas d'implication entre ces deux notions, et on
+veut essentiellement trouver une généralisation commune : l'approche
+naïve consistant à dire « on va prendre toutes les fonctions
+dérivables presque partout » n'est pas bonne, parce que ces fonctions
+ne sont pas déterminées par leur primitive presque partout.
+
+Donc, on définit une fonction ACG (« absolument continue au sens
+généralisé ») comme une fonction F qui est continue et dont le domaine
+de définition peut s'écrire comme réunion au plus dénombrable de
+parties sur chacune desquelles F est absolument continue.  (Pour une
+partie qui n'est pas un intervalle, il n'y a pas de difficulté
+particulière à définir l'absolue continuité : on demande que les
+intervalles [a_i;b_i] aient des extrémités dans le domaine de
+définition.)
+
+L'idée, c'est que les intégrales de Denjoy-Khintchine donneront des
+fonctions ACG.  On pourrait espérer qu'une fonction ACG soit dérivable
+presque partout - comme l'est une fonction absolument continue.  Ce
+n'est pas le cas, donc il faut introduire la dérivée approximative,
+qui généralise la dérivée.
+
+Rappelons qu'un point x d'un ensemble mesurable E est appelé « point
+de densité » de E lorsque la limite quand h tend vers 0 de µ(E inter
+]x-h;x+h[) / 2h existe et vaut 1 (il suffit, bien sûr, de demander que
+la limite inf vaille 1).  Moralement, E occupe presque toute la mesure
+tout près de x.  Un théorème dont on ne connaît pas bien le nom (voir
+le thread du message <b0p278$cq2$2@clipper.ens.fr> aka maths:7206 pour
+une discussion à son sujet) affirme que presque tout point de E est un
+point de densité de E.
+
+Une fonction réelle (définie sur un mesurable E) est dite
+approximativement continue, resp. approximativement dérivable, en x
+(un point de E) lorsqu'il existe une partie E' de E dont x soit un
+point de densité, et telle que la restriction de f à E' soit continue,
+resp. dérivable, en x.  On devine facilement le sens de la « dérivée
+approximative » d'une fonction approximativement dérivable en x.
+
+Théorème : toute fonction mesurable est approximativement continue
+presque partout (et réciproquement).
+
+Théorème : toute fonction ACG est approximativement dérivable presque
+partout.  Bonus : si sa dérivée approximative est positive ou nulle,
+la fonction est croissante (et par conséquent, si sa dérivée
+approximative est nulle, la fonction est nulle).
+
+Théorème : toute fonction dérivable partout (sauf éventuellement sur
+un ensemble dénombrable ; de dérivée finie) est ACG (elle est même
+quelque chose de plus fort, dite ACG*, mais je ne veux pas en parler).
+
+D'après tout ce qui précède, on comprend l'intérêt de définir :
+
+Une fonction mesurable f (définie sur un intervalle [a;b]) est dite
+intégrable au sens de Denjoy-Khintchine ssi il existe une fonction F
+qui est ACG et dont la dérivée approximative est, presque partout,
+égale à f.  Dans ce cas, l'intégrale de Denjoy-Khintchine de f entre a
+et b sera, par définition, F(b)-F(a) (ce qui a un sens puisque F est
+déterminée à constante près par f, cf. ci-dessus).
+
+Il résulte de ce qui précède que toute fonction L¹ est intégrable au
+sens de Denjoy-Khintchine, et l'intégrale de Denjoy-Khintchine
+coïncide alors avec l'intégrale de Lebesgue.  Idem, la dérivée de
+n'importe quelle fonction dérivable (partout, de dérivée finie) est
+intégrable au sens de Denjoy-Khintchine, et l'intégrale de
+Denjoy-Khintchine coïncide alors avec la primitive.
+
+Par ailleurs, une fonction intégrable au sens de Denjoy-Khintchine est
+mesurable et, si elle est positive, elle est intégrable au sens de
+Lebesgue (L¹, quoi, puisque je me place sur des intervalles bornés).
+
+Je vous passe tous les théorèmes afférents, mais voici pour
+l'intégration par parties : si f est intégrable au sens de
+Denjoy-Khintchine, et si G est à variations bornées (= différence
+d'une fonction croissante et d'une fonction décroissante : c'est plus
+faible que absolument continu) alors fG est encore intégrable au sens
+de Denjoy-Khintchine et, si on note F l'intégrale de f, l'intégrale de
+fG est FG moins l'intégrale de F par rapport à dG (où dG est la mesure
+évidente : celle qui donne à un intervalle [x;y] la mesure G(y)-G(x)).
+
+En particulier, bien sûr, toute fonction f intégrable au sens de
+Denjoy-Khintchine définit une distribution, à savoir la dérivée au
+sens des distributions de la fonction F intégrale de f (et qui, elle,
+est certainement une distribution puisqu'elle est continue...).
+

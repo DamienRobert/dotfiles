@@ -1,0 +1,36 @@
+Commandes de bases pour les balises html:
+
+Structure du texte:
+<p>: paragraphe
+<h1>: titre
+<br>: aller à la ligne
+
+Modifications in-line:
+<strong>: gras
+<em>: italique
+<cite>: citer un livre (italique en pratique)
+<code>: citer un bout de code
+<dfn>: pour une définition
+
+Mise en forme:
+<center> centrer le texte
+<i>: italique
+
+Modification "dans la hiérarchie":
+<blockquote>: citation (poésie...)
+<pre>: texte préformaté (affiché tel quel)
+
+<dl> : pour un lexique
+  <dt>: nom
+    <dd>: définition
+    
+<ol type="i">: liste numéroté (type="i" pour chiffres romains, "a" pour lettres, rien pour num)    
+<ul>: liste non numéroté
+<li>: élément de la liste
+
+Ajout d'éléments:
+<img src="nom fichier" alt="descriptif">: pour une image
+<A href="page web"> nom du lien </A>: pour un lien hypertexte
+<A name="nom ancre">nom</A>: définir une ancre
+<A href="[page web.html)#nom ancre">: revenir à l'ancre
+<a href="mailto:Nom&#45;Prénom&#46;&#64;ens&#46;fr>adress mail</a>

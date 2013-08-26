@@ -1,0 +1,87 @@
+#!/bin/sh
+mkdir -p "$HOME/tmp"
+
+MYFILES=${MYFILES-"$HOME/mine/config"} #en cas d'appel par ssh, initenv n'est pas initialisé
+MYFILESNAME=${MYFILES#$HOME/}
+
+export MYFILESNAME MYFILES
+PATH=~/mine/progs/linkutils:$MYFILES/new:$PATH
+export PATH
+
+MYHOSTNAME=none
+MYHOSTTYPE=none
+MYHOSTFILE="$MYFILES/hosttype.local"
+[ -f "$MYHOSTFILE" ] && . "$MYHOSTFILE"
+MYHOSTNAME=${1-$MYHOSTNAME}
+MYHOSTTYPE=${2-$MYHOSTTYPE}
+
+echo "MYHOSTNAME=$MYHOSTNAME
+MYHOSTTYPE=$MYHOSTTYPE" > $MYHOSTFILE
+
+echo "Updating config files for $MYHOSTNAME with type $MYHOSTTYPE"
+
+cd "$HOME"
+IFS="
+"
+. $MYFILES/new/00updatecomptefiles
+
+do_link() {
+  orig="$1"
+  dest="$2"
+  if [ ! -e "$MYFILES/$orig" ]; then return 1; fi
+  if [ -e "$dest" -a ! -L "$dest" ]; then
+    mv "$dest" "$dest.old";
+  fi
+  echo "rel_ln.pl" -v -n "$MYFILES/$orig" "$HOME/$dest"
+  "rel_ln.pl" -v -n "$MYFILES/$orig" "$HOME/$dest"
+}
+
+local_link() {
+  file="$1"
+  for type in "-$MYHOSTNAME" "-$MYHOSTTYPE" "-none" ""; do
+    if [ -f "$MYFILESNAME/$file$type" ]; then
+      do_link "$file$type" "$file"
+      break
+    fi
+  done
+}
+
+echo "Symlinks"
+for i in $link; do
+  do_link "$i" "$i"
+done
+
+echo "Squel"
+for i in $squel; do
+  if [ -e "$MYFILESNAME/$i" ]; then
+  copy "$MYFILESNAME/$i";
+  fi
+done
+  if [ -e "$MYFILESNAME/.local-desktop" ]; then
+install_package -a -s "$MYFILESNAME/.local-desktop/" "$MYFILESNAME/.local-desktop" .local 
+  fi
+
+for i in $linklocal; do local_link "$i"; done
+#need to put it after squel in case we link to a directory there
+for i in $linklocal; do local_link "$i"; done
+
+# Special cases
+echo "mkdir .vim_backup"
+mkdir -p "$HOME/.vim_backup"
+
+case $MYHOSTTYPE in
+  perso )
+    [ -e ~/.fonts.conf ] && rm  ~/.fonts.conf #prevent a warning
+    [ ! -e ~/.gvfs ] && ln -s /run/user/$(id -u)/gvfs ~/.gvfs
+    [ ! -e ~/media ] && ln -s /run/media/$USER ~/media
+    cp -rn ~/mine/config/squel/* ~/
+    ;;
+  perso|imb|phare )
+    $MYFILESNAME/new/01dosymlinks
+    ;;
+esac
+
+if [ -h "$HOME/.config/systemd/user/session.target.wants/offlineimap.service" ]; then
+    echo "Deleting offlineimap as service symlink"
+    rm -i "$HOME/.config/systemd/user/session.target.wants/offlineimap.service"
+fi

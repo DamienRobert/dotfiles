@@ -1,0 +1,36 @@
+#!/bin/zsh
+renderer="pdflatex"
+synctex=
+bib8=
+once=
+aux=
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -lua ) shift; renderer='lualatex' ;;
+    -xetex ) shift; renderer='xetex' ;;
+    -synctex ) shift; synctex='true' ;;
+    -bib8 ) shift; bib8='true' ;;
+  -aux ) shift; aux='true' ;; #for latex suite (but i have a patch in latex-suite that don't need this option)
+    -once ) shift;  once='true' ;;
+    -out ) shift; out='true' ;; #at imb latexmk is too old to understand $out_dir
+    *) break;;
+  esac
+done
+
+ARGS=()
+[[ -n $bib8 ]] && ARGS=($ARGS -bibtex="bibtex8 --wolfgang %O %S")
+
+latexcmd="$renderer -file-line-error"
+[[ -n $out ]] && latexcmd="$latexcmd -output-directory out/"
+[[ -n $synctex ]] && latexcmd="$latexcmd -synctex=1"
+latexcmd="$latexcmd %O %S; cp %D ."
+[[ -n $synctex ]] && latexcmd="$latexcmd; ln -snf %Z%R.synctex.gz ."
+[[ -n $aux ]] && latexcmd="$latexcmd; ln -s out/*.aux ."
+[[ -n $once ]] && latexcmd="$latexcmd; exit 1"
+ARGS=($ARGS "-pdflatex=$latexcmd")
+
+echo "latexmk '$ARGS' $@"
+exec latexmk $ARGS "$@"

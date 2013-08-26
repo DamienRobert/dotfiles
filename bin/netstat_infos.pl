@@ -1,0 +1,1 @@
+../script/netstat_infos.pl

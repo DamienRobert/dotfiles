@@ -1,0 +1,2 @@
+#!/bin/sh
+xkbcomp -w 3 -I"$HOME/.xkb"  "$HOME/.xkb/mykb.local" "$DISPLAY"

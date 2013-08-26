@@ -1,0 +1,1862 @@
+# vim: foldmethod=marker ft=markdown:
+
+# Index {{{1 
+## Intro {{{2
+The index store the stat of all files
+ git add ploum
+   touch ploum
+   git diff-files
+will show that ploum has changed (of course git diff-files -p will show
+nothing)
+
+One can use git update-index --refresh to get up to date stats in the index
+
+Options to do that:
+  git checkout-index -u: update stat information for the checked out entries 
+  git read-tree -m tree: when merging one tree, this is the same as reading
+    the tree, but use stat informations from the index when the content is
+    the same (in order to not give wrong stat info for these files)
+
+Note: most porcelain command run git update-index --refresh before running,
+for instance git diff or git status. But gitk does not, so sometimes one
+has to call git status and reload gitk. Also: zsh vcscommand also calls git
+update-index --refresh.
+===========================================================
+## git update-index {{{2
+===============
+--assume-unchanged: git suppose que le fichier n'est pas changé, et donc peut
+le reverter à tout moment. 
+si le fichier a changé: git co va refuser de fonctionner, mais git reset va
+rechanger le fichier (et enlever le flag)
+si le fichier a changé upstream, git co va updater le fichier (et enlever
+le flag)
+Attention: en particulier, git stash va sauver le fichier stagé (car assume
+unchanged) puis faire un git reset, donc le changement sera perdu!
+
+--skip-worktree: ne prend pas en compte le fichier dans le worktree
+si le fichier a changé: git co va refuser de fonctionner, et git reset ne
+fait rien
+si le fichier a changé upstream, git co va updater le fichier (et laisser
+le flag)
+
+--info-only: pour rajouter un fichier dans l'index, sans le mettre dans
+l'object database. Par exemple si on veut juste savoir si des fichiers ont
+changé, pas connaitre leurs contenu
+--cacheinfo:  pour enregistrer dans l'index un fichier qui est dans la base
+mais plus dans le working dir
+    ex:git update-index --cacheinfo 100755 $(perl -lne 'print unless (/^#/)' post_load | git hash-object -w --stdin) post_load
+      pour changer post_load dans l'index sans changer le fichier
+    #!/bin/sh (stage-part)
+    start_line=$1
+    end_line=$2
+    path=$3
+    mode=$(git ls-files -s $path | awk '{print $1}')
+    blob_id=$(
+        (
+            head -n $(expr $start_line - 1) $path
+            cat
+            tail -n +$(expr $end_line + 1) $path
+            ) | git hash-object -w --stdin
+        )
+    exec git update-index --cacheinfo $mode $blob_id $path
+    for example echo "HELLO WORLD" | ./stage-part 8 10 post_load will replace the three lines from 8-10 with just "HELLO WORLD".
+    
+git read-tree
+=============
+Sparse-checkout: si core.sparseCheckout=true, alors 
+git regarde si .git/info/sparse-checkout existe. Ce fichier est comme
+.gitignore et donne tous les fichiers à *checkouter* (mettre !unwanted pour
+un fichier à ne pas checkouter). Tous les autres fichiers auront le
+skip-worktree mis par git read-tree. Ca permet de spécifier les
+skip-worktree bit automatiquement (attention, si on veut arrêter, les
+skip-worktree qui ont déjà été ajoutés seront toujours là!)
+
+============================================================
+## Checkout de l'index {{{2
+
+git checkout ploum prend ploum dans l'index
+  ajouter -f pour ignorer les unmerged entries au lieu de fail
+  en cas de merge: --ours pour sélectionner le stage2
+                   --theirs pour le stage3
+                   -m pour remettre le conflit originel
+  (autre méthode pour récupérer le stage1: 
+    git checkout-index --stage=1 (-f) ploum
+      ou rajouter --temp pour juste le voir)
+
+Cf aussi
+  git show :ploum (lire le stage 0 dans l'index de ploum)
+  git show :1:ploum, :2:ploum, ....
+  git show HEAD:ploum (le ploum dans HEAD)
+  git show ploum (montre le diff enrengistré dans le commit actuel de
+  ploum)
+===========================================================
+## tree-objects {{{2
+http://stackoverflow.com/questions/9594169/create-a-git-tree-from-working-tree-without-touching-the-index
+
+write-tree: create a tree object from the index
+-> use GIT_INDEX_FILE to not modify the 'true' index
+
+mktree: create a tree object from an input similar to ls-tree
+
+
+Ex: checkouting a subdir in a tree:
+
+git checkout treeish -- subdir
+  -> use --work-tree=path (or GIT_WORK_TREE) to co somewhere else
+  -> use GIT_INDEX_FILE in order to not override the index entries
+
+# Commit {{{1
+git commit: prend le stage et le commite
+git commit -a: fait un git add -u avant
+git commit --amend:
+       It is a rough equivalent for:
+                   $ git reset --soft HEAD^
+                   $ ... do something else to come up with the right tree ...
+                   $ git commit -c ORIG_HEAD
+       but can be used to amend a merge commit.
+
+git commit --interactive/--patch(=-p)
+ fais l'équivalent de git add ploum, upstream recommande plutôt de passer par git add -p et git diff  que de faire le git commit -p
+
+git commit -o foo bar: ne commite que foo et bar
+    If this option is specified together with --amend, then no paths need to be
+    specified, which can be used to amend the last commit without committing
+    changes that have already been staged.
+git commit -i foo bar: commit foo et bar et le stage
+git commit foo bar: comme git commit -o foo bar
+
+       -m <msg>, --message=<msg>
+           Use the given <msg> as the commit message.
+       -t <file>, --template=<file>
+           When editing the commit message, start the editor with the contents
+           in the given file. The commit.template configuration variable is
+           often used to give this option implicitly to the command. This
+           mechanism can be used by projects that want to guide participants
+           with some hints on what to write in the message in what order. If
+           the user exits the editor without editing the message, the commit
+           is aborted. This has no effect when a message is given by other
+           means, e.g. with the -m or -F options.
+       -C <commit>, --reuse-message=<commit>
+           Take an existing commit object, and reuse the log message and the
+           authorship information (including the timestamp) when creating the
+           commit.
+       -c <commit>, --reedit-message=<commit>
+           Like -C, but with -c the editor is invoked, so that the user can
+           further edit the commit message.
+       -F <file>, --file=<file>
+           Take the commit message from the given file. Use - to read the
+           message from the standard input.
+       -e, --edit, --no-edit
+         edit the commit mesage:
+           The message taken from file with -F, command line with -m, and from
+           file with -C are usually used as the commit log message unmodified.
+           This option lets you further edit the message taken from these
+           sources.
+
+       --fixup=<commit>
+           Construct a commit message for use with rebase --autosquash. The
+           commit message will be the subject line from the specified commit
+           with a prefix of "fixup! ". See git-rebase(1) for details.
+       --squash=<commit>
+           Construct a commit message for use with rebase --autosquash. The
+           commit message subject line is taken from the specified commit with
+           a prefix of "squash! ". Can be used with additional commit message
+           options (-m/-c/-C/-F). See git-rebase(1) for details.
+       --reset-author
+           When used with -C/-c/--amend options, or when committing after a a
+           conflicting cherry-pick, declare that the authorship of the
+           resulting commit now belongs of the committer. This also renews the
+           author timestamp.
+
+
+}}}
+# Merging and git read-tree {{{1
+## Overview and plumbing behaviour {{{2
+
+Note sur git-read-tree:
+----------------------
+git read-tree -m HEAD branch fait un 3-way merge entre l'index et la
+branche, avec ancetre commun HEAD (fast forward...)
+S'il y a des changements non stagé, il continue sauf si il y a
+un conflit avec un des ces changements dans le merge.
+
+git read-tree -m OLD NEW1 NEW2 fait un 3-way merge entre OLD, NEW1 et NEW2.
+En particulier, s'il y a des trucs dans l'index non commité, il aborte.
+Par contre, comme précedememnt, s'il y a des changements non stagé, il
+continue sauf si il y a un conflit avec un des ces changements dans le
+merge.
+
+Dans les deux cas, quand il y a un changement non stagé et que le merge
+fait un conflit, on peut quand même continuer en rajoutant l'option -i
+Cette option est incompatible avec l'option -u (update the working tree),
+parce que pour le coup on perdrait le changement local...
+
+Dans le cadre d'un three way merge (non fast forward), on a les options
+suivantes:
+git read-tree --trivial: dans le cas d'un three-way merge, abort s'il y a
+un file level merging to do (en gros ne marche que s'il n'y a que les
+merges triviaux que fait git read-tree -m à faire)
+git read-tree --aggressive: rajoute les files delete dans les opérations
+triviales qui sont faites
+
+
+git merge/git checkout
+----------------------
+
+git merge calcule automatiquement s'il faut faire un fast forward ou un
+3-way merge.
+
+git co -m fait aussi un 3-way merge (non trivial!) lors du changement de
+branche avec les modifs locales (sinon il refuse), alors qu'avec -f il
+overwrite les changements locaux
+
+git merge et git co marchent si le changement ne concerne pas des fichiers non stagés ou stagés mais pas commités. 
+Si le merge en concerne un, git co refuse de procéder, sauf si on passe -m.
+Dans ce cas le working tree est mergé (non trivial), et l'index stagé mais
+non commité est perdu (le nouveau index a le stage 1 et le stage 2 des
+versions mergées)
+Quand à git merge il refuse de fonctionner.
+
+Enfin, git stash ajoute tout le working tree dans le commit, et enregistre
+l'état de l'index dans un parent (l'autre parent du stash commit est le
+dernier commit). L'index courant est rétabli à celui du dernier commit,
+sauf si on passe --keep-index, dans ce cas le commit est toujours le
+working tree, mais il ne revient pas au dernier commit, il revient à la
+version stagée (et laisse le staged aread tel quel)
+
+*Résumé*
+
+3 way merge
+===========
+
+git write-tree -m ancetre tree1 tree2
+si le changement affecte une dirty file (meaning un truc stagé ou changé
+dans le working tree), aborte
+
+git merge branche2
+en gros fait 
+- calculer l'ancetre commune
+- git write-tree -m ancetre brancheactuelle branche2
+- git merge-index git-merge-one-file -a
+- si il n'y a pas de conflits fait un commit
+en particulier, si le changement affecte une dirty file, aborte
+Note: s'il y a plusieurs ancetres communs possible, l'algo plus haut est ce
+que fait l'algo resolve. L'algo recursive (par défaut) fait des merges des
+ancêtres d'abord.
+
+Fast forward
+============
+  Niveau référence: git write-tree ne change pas de ref, git merge ou git
+  reset --soft avance la branche pointée par HEAD (sachant que merge
+  vérifie qu'il s'agit bien d'un fast forward...), git checkout change HEAD
+  directement.
+
+  git checkout: aborte si le changement affecte une dirty file
+  git checkout -m: fait un vrai 3-way merge entre le HEAD, le fichier dans le workdir et la target. Attention: le stage d'un fichier mergé est remplacé par le stage1 (HEAD) et le stage 2 (target)
+
+ git merge: si il y a un changement conflictuel, refuse de fast forward
+ git read-tree -m HEAD target: pareil (mais si le conflit ne concerne que le working tree et pas l'index, rajouter -i passe outre, si on ne met pas -u qui updaterait le working tree)
+
+==============================================================
+## git merge {{{2
+=======
+
+git merge --squash: 
+  Produce the working tree and index state as if a real merge happened
+  (except for the merge information), but do not actually make a commit or
+  move the HEAD, nor record `$GIT_DIR/MERGE_HEAD` to cause the next git commit
+  command to create a merge commit. This allows you to create a single commit
+  on top of the current branch whose effect is the same as merging another
+  branch (or more in case of an octopus).
+
+git merge --no-ff: forcer à faire un merge
+
+Autrement dit, fait un merge, mais si on commite il ne montre pas les deux
+parents. La différence avec git merge --no-commit c'est que le merge ne
+fait pas le commit, mais prépare `MERGE_HEAD` de sorte que le prochain
+commit sera considéré comme un merge.
+
+Merge strategies:
+----------------
+   - resolve: standard 3-way merge
+   - recursive 
+           This can only resolve two heads using a 3-way merge algorithm. When
+           there is more than one common ancestor that can be used for 3-way
+           merge, it creates a merged tree of the common ancestors and uses
+           that as the reference tree for the 3-way merge. This has been
+           reported to result in fewer merge conflicts without causing
+           mis-merges by tests done on actual merge commits taken from Linux
+           2.6 kernel development history. Additionally this can detect and
+           handle merges involving renames. This is the default merge strategy
+           when pulling or merging one branch.
+        options:
+           ours
+               This option forces conflicting hunks to be auto-resolved
+               cleanly by favoring our version. Changes from the other tree
+               that do not conflict with our side are reflected to the merge
+               result.
+               This should not be confused with the ours merge strategy, which
+               does not even look at what the other tree contains at all. It
+               discards everything the other tree did, declaring our history
+               contains all that happened in it.
+           theirs This is opposite of ours.
+           patience
+               With this option, merge-recursive spends a little extra time to
+               avoid mismerges that sometimes occur due to unimportant
+               matching lines (e.g., braces from distinct functions). Use this
+               when the branches to be merged have diverged wildly. See also
+               git-diff(1) --patience.
+           ignore-space-change, ignore-all-space, ignore-space-at-eol
+               Treats lines with the indicated type of whitespace change as
+               unchanged for the sake of a three-way merge. Whitespace changes
+               mixed with other changes to a line are not ignored. See also
+               git-diff(1) -b, -w, and --ignore-space-at-eol.
+               ·   If their version only introduces whitespace changes to a
+                   line, our version is used;
+               ·   If our version introduces whitespace changes but their
+                   version includes a substantial change, their version is
+                   used;
+               ·   Otherwise, the merge proceeds in the usual way.
+           renormalize
+               This runs a virtual check-out and check-in of all three stages
+               of a file when resolving a three-way merge. This option is
+               meant to be used when merging branches with different clean
+               filters or end-of-line normalization rules. See "Merging
+               branches with differing checkin/checkout attributes" in
+               gitattributes(5) for details.
+           no-renormalize
+               Disables the renormalize option. This overrides the
+               merge.renormalize configuration variable.
+           rename-threshold=<n>
+               Controls the similarity threshold used for rename detection.
+               See also git-diff(1) -M.
+           subtree[=<path>]
+               This option is a more advanced form of subtree strategy, where
+               the strategy makes a guess on how two trees must be shifted to
+               match with each other when merging. Instead, the specified path
+               is prefixed (or stripped from the beginning) to make the shape
+               of two trees to match.
+       octopus
+           This resolves cases with more than two heads, but refuses to do a
+           complex merge that needs manual resolution. It is primarily meant
+           to be used for bundling topic branch heads together. This is the
+           default merge strategy when pulling or merging more than one
+           branch.
+       ours
+           This resolves any number of heads, but the resulting tree of the
+           merge is always that of the current branch head, effectively
+           ignoring all changes from all other branches. It is meant to be
+           used to supersede old development history of side branches. Note
+           that this is different from the -Xours option to the recursive
+           merge strategy.
+       subtree
+           This is a modified recursive strategy. When merging trees A and B,
+           if B corresponds to a subtree of A, B is first adjusted to match
+           the tree structure of A, instead of reading the trees at the same
+           level. This adjustment is also done to the common ancestor tree.
+
+==========================================================
+## Ex: subtree merge strategy {{{2
+http://www.kernel.org/pub/software/scm/git/docs/howto/using-merge-subtree.html
+
+$ git remote add -f Bproject /path/to/B <1>
+$ git merge -s ours --no-commit Bproject/master <2>
+$ git read-tree --prefix=dir-B/ -u Bproject/master <3>
+$ git commit -m "Merge B project as our subdirectory" <4>
+
+$ git pull -s subtree Bproject master <5>
+
+   <1> name the other project "Bproject", and fetch.
+   <2> prepare for the later step to record the result as a merge.
+   <3> read "master" branch of Bproject to the subdirectory "dir-B".
+   <4> record the merge result.
+   <5> maintain the result with subsequent merges using "subtree"
+The first four commands are used for the initial merge, while the last one is to merge updates from B project.
+#}}}
+
+## ours/theirs strategy in the merge  {{{2
+
+Des fois j'ai envie de faire un merge "trivial", ie de merger ploum et plam
+mais de ne décider que de plam.
+
+On peut faire git merge -Xours, ou git merge -Xtheirs pour résoudre les
+conflits en faveur de ours ou theirs.
+On peut faire git merge -s ours pour tout garder chez nous.
+
+Sinon on peut aussi faire git read-tree -mu plam pour mettre l'arbre de
+plam chez nous (après faut faire du plombing pour commiter plusieurs
+parents, quitte à faire du plumbing, si on veut vraiment un truc identique,
+on doit pouvoir commiter le tree de plam directement)
+
+# Reset {{{1
+git reset --option commit
+--soft: change juste HEAD, ne touche pas le worktree et l'index
+--mixed: change HEAD et l'index, pas le worktree (défaut)
+--hard: change HEAD, l'index et le worktree (défaut)
+--keep: comme --mixed, 
+  sauf que pour tous les fichiers qui ont changé entre commit et HEAD (*et*
+  qui n'ont pas changé entre HEAD _et_ le worktree _et_ l'index [sinon
+  abort]), update le worktree aussi.
+  L'idée est de revenir à un commit en gardant les changements courants, on
+  veut donc updater le worktree des fichiers qui ont changé entre HEAD et
+  commit si possibles.
+--merge: comme --hard, 
+  mais abort si le working tree n'est pas égal à l'index (l'idée étant
+  qu'un merge produit toujours un fichier dans le working tree égal à
+  l'index, donc si on reset un fichier qui n'a pas cette propriété, ça veut
+  dire qu'on a fait des trucs après le reset). Cas particulier, si
+  index=HEAD=commit, alors on garde le worktree (car on sait que ça a été
+  modifié à la main, mais comme HEAD=commit on n'a pas besoin de revenir
+  à la version d'avant).
+
+# Remotes and Branches tracking {{{1
+## Introduction:  git remote {{{2
+git remote add ploum git://ploum.plim
+->
+[remote "ploum"]
+  url = git://ploum.plim
+  fetch = +refs/heads/*:refs/remotes/ploum/*
+
+Options:
+-------
+
+-f: appelle fetch
+-t <branch>: only track the specified branch
+-m <master>: a symbolic-ref refs/remotes/<name>/HEAD is set up to point at remote’s <master> branch.
+
+Modifier ça: 
+-----------
+
+git remote rename/rm/set-url/show
+git remote prune:  Deletes all stale remote-tracking branches
+git remote update: Fetch updates for a named set of remotes in the repository
+ as defined by remotes.<group>
+ Si group n'est pas spécifié, group=default, et si remotes.default n'est pas spécifié, équivalent à git fetch --all
+ With --prune option, prune all the remotes that are updated.
+git remote set-head (git remote add -m): 
+  Use <branch> to set the symbolic-ref refs/remotes/<name>/HEAD
+  explicitly. e.g., "git remote set-head origin master" will set the 
+  symbolic-ref refs/remotes/origin/HEAD to refs/remotes/origin/master.
+-> git remote set-head -a pour avoir le même réglage que upstream
+git remote set-branches
+    Changes the list of branches tracked by the named remote. This can
+    be used to track a subset of the available remote branches after
+    the initial setup for a remote.
+
+Setting upstreams with git branch
+--------------------------------
+  -t, --track
+      When creating a new branch, set up configuration to mark the
+      start-point branch as "upstream" from the new branch. This
+      configuration will tell git to show the relationship between the
+      two branches in git status and git branch -v. Furthermore, it
+      directs git pull without arguments to pull from the upstream when
+      the new branch is checked out.
+
+      This behavior is the default when the start point is a
+      remote-tracking branch. Set the branch.autosetupmerge configuration
+      variable to false if you want git checkout and git branch to always
+      behave as if --no-track were given. Set it to always if you want
+      this behavior when the start-point is either a local or
+      remote-tracking branch.
+  --no-track
+      Do not set up "upstream" configuration, even if the
+      branch.autosetupmerge configuration variable is true.
+  --set-upstream
+      If specified branch does not exist yet or if --force has been
+      given, acts exactly like --track. Otherwise sets up configuration
+      like --track would when creating the branch, except that where
+      branch points to is not changed.
+Attention, sur la branche ploum, faire git branch --set-upstream plam
+(ou bien faire git branch --set-upstream plam ploum)
+veut dire que ploum est l'upstrem de plam.
+git 1.8 introduit git branch --set-upstream-to plam, ce qui fera de plam
+l'upstream de ploum.
+
+Example: 
+-------
+
+[branch "tmp/pending/meta"]
+  remote = debian
+  merge = refs/heads/tmp/pending/meta
+[branch "master"]
+  remote = origin
+  merge = refs/heads/tmp/pending/meta
+[branch "build"] #crée en utilisant --track explicitement ici!
+  remote = .
+  merge = refs/heads/master
+
+Valinor ~/dist/forks/bup/.git $ git remote show origin
+* remote origin
+  Fetch URL: git://github.com/bup/bup.git
+  Push  URL: git://github.com/bup/bup.git
+  HEAD branch: master
+  Remote branches:
+    master           tracked
+    tmp/pending/meta tracked
+  Local branch configured for 'git pull':
+    master merges with remote tmp/pending/meta
+  Local refs configured for 'git push':
+    master           pushes to master           (fast-forwardable)
+    tmp/pending/meta pushes to tmp/pending/meta (up to date)
+
+A propos des thin packs
+-----------------------
+
+http://stackoverflow.com/questions/1583904/what-are-gits-thin-packs
+
+Fetch and pull options
+----------------------
+
+git fetch --all
+git fetch --multiple: 
+           Allow several <repository> and <group> arguments to be
+           specified. No <refspec>s may be specified.
+git fetch --tags/--no-tags: git fetch récupére les tags qui sont les
+  parents des branches fetchés. Ces options récupèrent tous les tags/aucun.
+
+git push --prune: enlever les branches remotes qui n'existent plus localement
+git push --mirror: tout synchroniser
+git push -u, --set-upstream
+    For every branch that is up to date or successfully pushed, add
+    upstream (tracking) reference,
+
+
+## git-config for branch/push/pull/remotes {{{2
+branch
+------
+       branch.<name>.remote
+           When in branch <name>, it tells git fetch and git push which remote
+           to fetch from/push to. It defaults to origin if no remote is
+           configured.  origin is also used if you are not on any branch.
+       branch.<name>.merge
+           Defines, together with branch.<name>.remote, the upstream branch
+           for the given branch. It tells git fetch/git pull/git rebase which
+           branch to merge and can also affect git push (see push.default).
+           When in branch <name>, it tells git fetch the default refspec to be
+           marked for merging in FETCH_HEAD. The value is handled like the
+           remote part of a refspec, and must match a ref which is fetched
+           from the remote given by "branch.<name>.remote". The merge
+           information is used by git pull (which at first calls git fetch) to
+           lookup the default branch for merging. Without this option, git
+           pull defaults to merge the first refspec fetched. Specify multiple
+           values to get an octopus merge. If you wish to setup git pull so
+           that it merges into <name> from another branch in the local
+           repository, you can point branch.<name>.merge to the desired
+           branch, and use the special setting .  (a period) for
+           branch.<name>.remote.
+       branch.<name>.mergeoptions
+           Sets default options for merging into branch <name>. The syntax and
+           supported options are the same as those of git-merge(1), but option
+           values containing whitespace characters are currently not
+           supported.
+       branch.<name>.rebase
+           When true, rebase the branch <name> on top of the fetched branch,
+           instead of merging the default branch from the default remote when
+           "git pull" is run. See "pull.rebase" for doing this in a non
+           branch-specific manner.
+
+       push.default
+           Defines the action git push should take if no refspec is given on
+           the command line, no refspec is configured in the remote, and no
+           refspec is implied by any of the options given on the command line.
+           Possible values are:
+           ·    nothing - do not push anything.
+           ·    matching - push all branches having the same name in both
+               ends. This is for those who prepare all the branches into a
+               publishable shape and then push them out with a single command.
+               It is not appropriate for pushing into a repository shared by
+               multiple users, since locally stalled branches will attempt a
+               non-fast forward push if other users updated the branch.
+               This is currently the default, but Git 2.0 will change the
+               default to simple.
+           ·    upstream - push the current branch to its upstream branch.
+               With this, git push will update the same remote ref as the one
+               which is merged by git pull, making push and pull symmetrical.
+               See "branch.<name>.merge" for how to configure the upstream
+               branch.
+           ·    simple - like upstream, but refuses to push if the upstream
+               branch’s name is different from the local one. This is the
+               safest option and is well-suited for beginners. It will become
+               the default in Git 2.0.
+           ·    current - push the current branch to a branch of the same
+               name.
+
+       remote.<name>.fetch
+           The default set of "refspec" for git-fetch(1). See git-fetch(1).
+       remote.<name>.push
+           The default set of "refspec" for git-push(1). See git-push(1).
+       remote.<name>.mirror
+           If true, pushing to this remote will automatically behave as if the
+           --mirror option was given on the command line.
+       remote.<name>.skipDefaultUpdate
+           If true, this remote will be skipped by default when updating using
+           git-fetch(1) or the update subcommand of git-remote(1).
+       remote.<name>.skipFetchAll
+           If true, this remote will be skipped by default when updating using
+           git-fetch(1) or the update subcommand of git-remote(1).
+       remote.<name>.tagopt
+           Setting this value to --no-tags disables automatic tag following
+           when fetching from remote <name>. Setting it to --tags will fetch
+           every tag from remote <name>, even if they are not reachable from
+           remote branch heads. Passing these flags directly to git-fetch(1)
+           can override this setting. See options --tags and --no-tags of git-
+           fetch(1).
+       remote.<name>.vcs
+           Setting this to a value <vcs> will cause git to interact with the
+           remote with the git-remote-<vcs> helper.
+       remotes.<group>
+           The list of remotes which are fetched by "git remote update
+           <group>". See git-remote(1).
+
+## Examples {{{2
+  [remote "plim"]
+    fetch = +refs/heads/*:refs/remotes/plum/*
+    url = /tmp/git/ploum
+  [branch "plam"]
+    remote = plim
+    merge = refs/heads/plam
+
+### Fetching
+Sur la branche plam.
+1) git fetch
+- Sur la branche plam le remote associé est plim donc on fait git fetch plim
+(par défaut si branch.plam.remote n'est pas configuré le remote est origin)
+-> git fetch branch.plam.remote
+2) git fetch plim
+- Pour plim la refspec est `+refs/heads/*:refs/remotes/plum/*`, donc on
+fait `git fetch origin +refs/heads/*:refs/remotes/plum/*`
+- De plus comme branch.<current_branch>.remote=plim *et*
+  branch.<current_branch>.merge=ref/heads/plam, il fetche le plam upstream
+  qu'il met dans `.git/FETCH_HEAD`, mais il ne crée pas de branche, ie il
+  fait git fetch plim ref/heads/plam:
+- Si aucun des deux n'est spécifié, équivalent à git fetch plim HEAD:
+-> git fetch plim remote.plim.fetch (+ branch.plam.merge si plim=branch.plam.remote)
+3) `git fetch origin +refs/heads/*:refs/remotes/origin/*`
+- récupérère toutes les refs/heads/ de origin dans refs/remotes/origin/
+(et le + veut dire qu'on a le droit de faire des non fast forward).
+-> git fetch origin +refs/heads/ploum:refs/remotes/origin/ploum
+pour chaque ploum dans refs/heads/
+4) git fetch origin ploum:plam plim plum: :plam
+Fetch le ploum de origin et met tout ça dans la branche plam
+(fetch refuse de faire ça si plam est la branche actuelle)
+Fetch plim et plum, mais ne les mets dans aucune branche.
+Fetch le HEAD de origin et le met dans plam
+
+### Pulling
+Le cas de `FETCH_HEAD`:
+1) git fetch mets toutes les branches qu'il a fetché dans `FETCH_HEAD`:
+ae402e7192814f4d25e24ee541cbb4d441d02b7c                branch 'b1' of /tmp/git/ploum
+5000aee06507f1ff98a461e3a7c43891d9fefd7b        not-for-merge   branch 'master' of /tmp/git/ploum
+2) Dans le cas du fetch d'une glob refspec _dans le fichier de conf_, les
+branches refspecs sont marquées 'not-for-merge' (ce n'est pas le cas quand
+elles sont données en ligne de commande)
+Sinon, lorsque remote.plimo.fetch est utilisée et a des refspecs non glob, la
+première refspec est incluse dans les trucs à merger, sauf si
+branch.current.remote est plimo, dans ce cas c'est branch.current.merge qui
+prend précédence
+3) `FETCH_HEAD` se comporte comme un 'extended SHA-1' (ie comme HEAD ou une
+branche), et l'utiliser comme tel donne le premier SHA-1 qu'il contient
+(comme le montre git rev-parse `FETCH_HEAD`)
+  Donc par exemple, on peut faire git fetch origin new-patch (qui fetche
+  new-path, n'update pas de branche locale mais juste `FETCH_HEAD`), et
+  faire `git log -p FETCH_HEAD` pour voir les commits introduits dans le
+  patch.
+4) Exception: dans git pull, il appelle sed pour construire tous les
+commits de `FETCH_HEAD` qui ne sont pas en not-for-merge (dans `$merge_head`).
+Il génère le merge message avec 
+    merge-msg=git fmt-merge-msg $log_arg <"$GIT_DIR/FETCH_HEAD"
+(fmt-merge-msg est intelligent: déjà il skippe les not-for-merge, et il
+skippe aussi un merge s'il est parent d'un autre merge)
+et fait 
+    git merge "$merge-msg" $merge-heads
+En particulier, git pull, c'est différent de git fetch && git merge `FETCH_HEAD`
+quand il y a plusieurs branches.
+
+### Pushing
+
+git push repo refspec fait le dual de fetch, par contre on ne peut pas
+  pusher sur une branche qui est checkoutée actuellement dans repo.
+
+git push repo ploum: équivalent à git push repo ploum:ploum
+git push repo ':' : équivalent à pusher les 'matching' branches
+git push repo '+' : pareil, sauf qu'on a le droit au non ff
+git push repo :ploum : écrase la branche ploum dans repo
+
+git push repo --mirror: pushe toute les refs, cad update les refs communes,
+  crée les nouvelles réfs, et supprime celles de repo qui ne sont pas chez nous.
+
+git push repo: équivalent à git push repo remote.repo.push si ce dernier
+  est non nul, sinon applique la stratégie push.default (que j'ai mis à
+  upstream: ie fait git push repo branch.current.merge si
+  branch.current.remote=repo) 
+
+git push branch: pushe branch dans branch.branch.remote, si ce dernier
+  n'est pas défini use l'option --repo= de git push, sinon use origin
+git push: équivalent à git push branch.current.remote, 
+  si ce dernier n'est pas défini utilise l'option --repo, sinon utilise origin
+
+(Non symétrie par rappot git fetch/pull: 
+- git fetch :ploum mets HEAD dans ploum alors que git push :ploum détruit ploum)
+- git push fait git push branch.current.remote puis utilise
+  remote.repo.push s'il existe. C'est seulement avec ma config de
+  push.default qu'il utilise ensuite git repo branch.current.merge si
+  repo=branch.current.remote et que le remote.repo.push n'est pas
+  configuré.
+  Alors que git fetch utilise branch.current.merge en même temps
+  branch.current.remote est le remote actuel)
+
+### refspec, +refspec, -f/--force
+Dans git fetch/push/pull, git action refspec ne fait que des ff
+Si on fait git action +refspec, il autorise les non fastforwards, mais il
+  faut quand même que la remote ref soit un ancêtre de la ref locale
+git -f override tout ça
+
+### remote.ploum.skipDefaultUpdate
+
+Si remote.ploum.skipDefaultUpdate = true 
+alors le remote ploum n'est pas fetché par 
+git fetch --all ou git remote update,
+même si ploum est l'upstream de la branche actuelle
+
+Par contre, git fetch ploum et git remote update ploum marchent
+
+Enfin remote.ploum.skipFetchAll a l'air d'être un alias (une recherche sur
+le patch qui l'a introduit montre que c'est le cas).
+
+# Format patch and send email {{{1
+
+git format-patch
+----------------
+
+-o <dir>
+-s: signoff
+       --cover-letter
+           In addition to the patches, generate a cover letter file containing
+           the shortlog and the overall diffstat. You can fill in a
+           description in the file before sending it out.
+       --attach[=<boundary>]
+           Create multipart/mixed attachment, the first part of which is the
+           commit message and the patch itself in the second part, with
+           Content-Disposition: attachment.
+       --no-attach
+           Disable the creation of an attachment, overriding the configuration
+           setting.
+       --inline[=<boundary>]
+           Create multipart/mixed attachment, the first part of which is the
+           commit message and the patch itself in the second part, with
+           Content-Disposition: inline.
+git format-patch -s --cover-letter -o 00patch-upstream/tosend/ branch
+
+git send-email
+-------------
+cf: http://felipec.wordpress.com/2009/10/25/git-send-email-tricks/
+
+Remarque: si on spécifie des révisions plutôt que des patchs, il appelle format-patch d'abord. Du coup:
+    git format-patch --cover-letter master
+    git send-email --annotate *.patch
+devient 
+    git send-email --annotate --cover-letter master
+
+       --annotate
+           Review and edit each patch you’re about to send. 
+       --compose
+           Invoke a text editor (see GIT_EDITOR in git-var(1)) to edit an
+           introductory message for the patch series.
+       --to/cc-cmd=<command>
+           Specify a command to execute once per patch file which should
+           generate patch file specific "Cc:" entries. Output of this command
+           must be single email address per line. Default is the value of
+           sendemail.cccmd configuration value.
+       --[no-]chain-reply-to
+           If this is set, each email will be sent as a reply to the previous
+           email sent. If disabled with "--no-chain-reply-to", all emails
+           after the first will be sent as replies to the first email sent.
+           When using this, it is recommended that the first file given be an
+           overview of the entire patch series. Disabled by default, but the
+           sendemail.chainreplyto configuration variable can be used to enable
+           it.
+       --identity=<identity>
+           A configuration identity. When given, causes values in the
+           sendemail.<identity> subsection to take precedence over values in
+           the sendemail section. The default identity is the value of
+           sendemail.identity.
+       --[no-]signed-off-by-cc
+           If this is set, add emails found in Signed-off-by: or Cc: lines to
+           the cc list. Default is the value of sendemail.signedoffbycc
+           configuration value; if that is unspecified, default to
+           --signed-off-by-cc. (ie les signed-off-by sont rajoutés au Cc:)
+
+git am
+------
+-s: signoff
+-3: 3 way merge
+-c: scissors
+-p<n>: remove n leading slashes (default is 1, because git diff produce things like a/foo b/bar)
+
+git apply
+--------(
+
+L'intérêt de git apply monpatch plutôt que git am, c'est que git am fait un
+commit après avoir appelé git apply. En utilisant directement git apply, on
+modifie juste les fichiers (et pas l'index), et on peut ensuite commiter ce
+que l'on veut.
+
+# Changer l'historique: {{{1
+## git commit --amend: change le dernier commit
+
+## git rebase pour rejouer les patchs sur la nouvelle branche:
+git rebase --onto newbase base topic
+  -> checkout sur topic
+  -> les commits base..HEAD sont sauvés
+  -> la branche est resettée sur newbase
+  -> les commits sauvés sont réappliqués sur newbase
+si le --onto n'est pas spécifié, newbase=base
+si topic n'est pas spécifié, prend la branche courrante
+ex:
+  o---o---o---o---o  master
+                    \
+                     o---o---o---o---o  next
+                                      \
+                                       o---o---o  topic
+
+  git rebase --onto master next topic
+               o---o---o---o---o  master
+                   |            \
+                   |             o'--o'--o'  topic
+                    \
+                     o---o---o---o---o  next
+
+git rebase -p: préserver les merges
+
+En cas de merge failure:
+- resolver à la main et faire git rebase --continue
+- git rebase --skip
+- git rebase --abort pour s'arrêter
+
+       -f, --force-rebase
+           Force the rebase even if the current branch is a descendant of the
+           commit you are rebasing onto. Normally non-interactive rebase will
+           exit with the message "Current branch is up to date" in such a
+           situation. Incompatible with the --interactive option.
+
+## git rebase -i/--interactive
+
+           pick deadbee The oneline of this commit
+           pick fa1afe1 The oneline of the next commit
+
+pick: cherry-pick
+reword: edit the commit message
+fixup/squash: fold the commits on top of the last picked commit
+       If you want to fold two or more commits into one, replace the command
+       "pick" for the second and subsequent commits with "squash" or "fixup".
+       If the commits had different authors, the folded commit will be
+       attributed to the author of the first commit. The suggested commit
+       message for the folded commit is the concatenation of the commit
+       messages of the first commit and of those with the "squash" command,
+       but omits the commit messages of commits with the "fixup" command.
+edit: rend la main à l'utilisateur (qui peut commiter autant qu'il veut)
+  jusqu'à ce qu'il appelle git rebase --continue
+
+       --autosquash, --no-autosquash
+           When the commit log message begins with "squash! ..." (or "fixup!
+           ..."), and there is a commit whose title begins with the same ...,
+           automatically modify the todo list of rebase -i so that the commit
+           marked for squashing comes right after the commit to be modified,
+           and change the action of the moved commit from pick to squash (or
+           fixup).
+           This option is only valid when the --interactive option is used.
+           If the --autosquash option is enabled by default using the
+           configuration variable rebase.autosquash, this option can be used
+           to override and disable this setting.
+       --no-ff
+           With --interactive, cherry-pick all rebased commits instead of
+           fast-forwarding over the unchanged ones. This ensures that the
+           entire history of the rebased branch is composed of new commits.
+           Without --interactive, this is a synonym for --force-rebase.
+
+## git cherry-pick
+Comme git rebase mais spécifie exactement les commits à cherry-picker (git rebase est un wrapper au dessu)
+
+git cherry-pick --continue/--quit/--abort
+
+       -e, --edit
+           With this option, git cherry-pick will let you edit the commit
+           message prior to committing.
+       -x
+           When recording the commit, append a line that says "(cherry picked
+           from commit ...)" to the original commit message in order to
+           indicate which commit this change was cherry-picked from. This is
+           done only for cherry picks without conflicts.
+       -n, --no-commit
+           Usually the command automatically creates a sequence of commits.
+           This flag applies the changes necessary to cherry-pick each named
+           commit to your working tree and the index, without making any
+           commit. In addition, when this option is used, your index does not
+           have to match the HEAD commit. The cherry-pick is done against the
+           beginning state of your index.
+       -s, --signoff
+           Add Signed-off-by line at the end of the commit message.
+       --ff
+           If the current HEAD is the same as the parent of the cherry-pick’ed
+           commit, then a fast forward to this commit will be performed.
+       --keep-redundant-commits
+           If a commit being cherry picked duplicates a commit already in the
+           current history, it will become empty. By default these redundant
+           commits are ignored. This option overrides that behavior and
+           creates an empty commit object. Implies --allow-empty.
+
+Note: git rebase n'applique pas les commits qui ont déjà été cherry-pickés.
+Par contre, git cherry-pick si.
+
+## grafts et git replace
+
+Si on veut remplacer le parent d'un commit, mais garder les mêmes fichiers (pas rejouer les diff comme avec git rebase):
+1) Utiliser les grafts
+echo "$commit-id $graft-id" >> .git/info/grafts
+2) Rendre ça permanent:
+git filter-branch $graft-id..HEAD
+
+Ou bien créer un nouveau commit avec un faux parent, et utiliser git replace
+(les grafts ça fait un peu l'équivalent du script replace_first_parent)
+
+  # …---o---A---o---o---…
+  #
+  # …---o---B---b---b---…
+  #
+  # We want to transplant B to be "on top of" A.
+  # The tree of descendants from B (and A) can be arbitrarily complex.
+  
+  replace_first_parent() {
+      old_parent=$(git rev-parse --verify "${1}^1") || return 1
+      new_parent=$(git rev-parse --verify "${2}^0") || return 2
+      new_commit=$(
+        git cat-file commit "$1" |
+        sed -e '1,/^$/s/^parent '"$old_parent"'$/parent '"$new_parent"'/' |
+        git hash-object -t commit -w --stdin
+      ) || return 3
+      git replace "$1" "$new_commit"
+  }
+  replace_first_parent B A
+  
+  # …---o---A---o---o---…
+  #          \
+  #           C---b---b---…
+  #
+  # C is the replacement for B.
+
+cf http://stackoverflow.com/questions/3810348/setting-git-parent-pointer-to-a-different-parent
+
+## git filter-branch
+Le plus puissant: changer les fichiers commités avec git filter-branch
+
+-env-filter <command>
+           This filter may be used if you only need to modify the environment
+           in which the commit will be performed.
+--tree-filter <command>
+           This is the filter for rewriting the tree and its contents.
+--index-filter <command>
+           This is the filter for rewriting the index. It is similar to the
+           tree filter but does not check out the tree, which makes it much
+           faster.
+-parent-filter <command>
+           This is the filter for rewriting the commit’s parent list.
+--msg-filter <command>
+           This is the filter for rewriting the commit messages. 
+--commit-filter <command>
+           This is the filter for performing the commit.
+--tag-name-filter <command>
+           This is the filter for rewriting tag names. 
+--subdirectory-filter <directory>
+           Only look at the history which touches the given subdirectory.
+--prune-empty
+           Some kind of filters will generate empty commits, that left the
+           tree untouched. This switch allow git-filter-branch to ignore such
+           commits.
+
+ex: enlever un fichier du repo
+git filter-branch --index-filter 'git rm --cached --ignore-unmatch filename' HEAD
+Puis pour vraiment rendre ça effectif:
+· Clone it with git clone file:///path/to/repo. The clone will not
+  have the removed objects. See git-clone(1). (Note that cloning with
+  a plain path just hardlinks everything!)
+Sinon (plus dangereux), enlever le reflog
+- Remove the original refs backed up by git-filter-branch: 
+  git for-each-ref --format="%(refname)" refs/original/ | xargs -n 1 git update-ref -d
+- git reflog expire --expire=now --all
+- git gc --prune=now
+
+=================================================================
+# References: {{{1
+
+ref: (abbr)sha1, ou v1.7.4.2-679-g3bee7fb ou heads/master
+
+ref@{date}: ref{yesterday}, HEAD@{5 minutes ago}
+HEAD@{n} là où HEAD était il y a n changements de HEAD
+(utilise le reflog)
+@{-n}: the nth branch checkedout prior to the current one
+
+ref@{upstream} ref@{u} la version d'upstream
+
+ref^: le parent
+ref^n: le n-ième parent
+ref~n = ref^^^^^^ (n fois)
+
+ref^{} c'est utilisé pour déférencer un tag jusqu'à trouver un non tag
+ref^{<type>}: de même, jusqu'à trouver un truc de type type
+ex: ref^{commit}, dont ref^0 est un raccourci (et ~0 a l'air aussi)
+
+:/text: find youngest commit with test in message
+ref^{/text}: find youngest commit with test in message reachable from ref
+
+ref:path the blob (or tree) corresponding to path in ref
+:n:path show the path at stage number n in the index
+:path is equivalent to :0:path
+
+Commit ranges (for use  in git log, produces by git rev-list)
+=============
+
+^r1 r2: commits reachable from r2 but not r1
+(shortcut: r1..r2)
+
+r1...r2 is called symmetric difference of r1 and r2 and is defined as 
+    r1 r2 --not $(git merge-base --all r1 r2)
+
+r^@: all parents of r (and commits reachable from them, but not r)
+r^!: r but not any of his parent
+
+## Examples:
+
+Get commit hash:
+git rev-parse --verify HEAD
+  38fd21489744079ec32b59c1674fea8d403bc00a
+git rev-parse --short HEAD
+  38fd214
+git rev-parse --short=4 HEAD
+  38fd
+
+Get all parents:
+git rev-list ref
+
+Get all childs:
+git rev-list --reverse --ancestry-path ref..master
+git rev-list --reverse --ancestry-path HEAD~2..
+  (rajoute automatiquement HEAD à la fin)
+
+Get the direct parents:
+git rev-list -n1 --parents ref
+(ou git rev-list --parents ref^! ou git rev-list --parents --no-walk ref^!)
+
+Get the direct childs
+(plus compliqué car git rev-list --children list ne donne que les enfants
+qui sont dans la liste). Donc
+git rev-list --all --children | grep "^"$(git rev-parse --verify ref)
+
+Rem: A..B n'output pas A, sauf si --boundary est mis
+     A...B n'output pas les premiers parents communs de A et B, sauf si
+     --boundary est mis
+
+## Symbolic links
+
+- HEAD: pointeur courrant
+- `ORIG_HEAD`: 
+    "pull" or "merge" or "am" always leaves the original tip of the current branch in ORIG_HEAD.
+En gros c'est comme HEAD@{1}, sauf que `ORIG_HEAD` n'est mis à jour que
+avant des opérations dangereuses comme pull/merge/am...
+
+- `COMMIT_EDITMSG`: the last commit msg
+- `FETCH_HEAD`: The SHAs of branch/remote heads that were updated during the
+  last git fetch
+- `ORIG_HEAD`: When doing a merge, this is the SHA of the branch you’re
+  merging into.
+- `MERGE_HEAD`: When doing a merge, this is the SHA of the branch you’re
+  merging from.
+- `MERGE_MODE`: Used to communicate constraints that were originally given to
+  git merge to git commit when a merge conflicts, and a separate git commit
+  is needed to conclude it. Currently --no-ff is the only constraints
+  passed this way.
+- `MERGE_MSG`: Enumerates conflicts that happen during your current merge.
+- `SQUASH_MSG`: same as `MERGE_MSG` for a squash
+
+==========================================================================
+# Git log {{{1
+
+--no-walk: show only the ref specified
+-n 3: limit to 3 commits
+
+--follow: follow renames
+
+--decorate: show the ref name of a commit
+--oneline: --pretty=oneline et --abbrev-commit
+--stat: stat pour chaque fichiers
+--shortstat: juste une ligne pour résumer les stats de chaque fichier
+--dirstat: donne un % de changement des dossiers
+--summary: donne les fichiers crées et removés
+--name-only: show only names of changed files
+--name-status: show status of changed files
+
+--date=relative shows dates relative to the current time, e.g. "2 hours ago".
+--date=local shows timestamps in user’s local timezone.
+--date=iso (or --date=iso8601) shows timestamps in ISO 8601 format.
+2012-08-29 21:05:26 +0200
+--date=rfc (or --date=rfc2822) shows timestamps in RFC 2822 format, often found in E-mail messages.
+Wed, 29 Aug 2012 21:05:26 +0200
+--date=short shows only date but not time, in YYYY-MM-DD format.
+--date=default shows timestamps in the original timezone (either committer’s or author’s).
+Wed Aug 29 21:05:26 2012 +0200
+
+Commit Ordering
+  By default, the commits are shown in reverse chronological order.
+  --topo-order
+      This option makes them appear in topological order (i.e. descendant
+      commits are shown before their parents).
+  --date-order
+      This option is similar to --topo-order in the sense that no parent
+      comes before all of its children, but otherwise things are still
+      ordered in the commit timestamp order.
+  --reverse
+      Output the commits in reverse order. Cannot be combined with
+      --walk-reflogs.
+--graph for a nice graph (enables topo-order)
+
+Cherry picking {{{2
+
+git log --left-right A...B
+  put a < for each commit comming from a
+  and a > for each commit comming from b
+git log --boundary: Output uninteresting commits at the boundary, which are usually not shown.
+  (and put a - for these commits with --left-right)
+
+       --cherry-pick
+           Omit any commit that introduces the same change as another commit
+           on the "other side" when the set of commits are limited with
+           symmetric difference.
+           For example, if you have two branches, A and B, a usual way to list
+           all commits on only one side of them is with --left-right (see the
+           example below in the description of the --left-right option). It
+           however shows the commits that were cherry-picked from the other
+           branch (for example, "3rd on b" may be cherry-picked from branch
+           A). With this option, such pairs of commits are excluded from the
+           output.
+       --cherry-mark
+           Like --cherry-pick but mark equivalent commits with =
+           rather than omitting them, and inequivalent ones with +.
+       --left-only, --right-only
+           List only commits on the respective side of a symmetric range, i.e.
+           only those which would be marked < resp.  > by --left-right.
+           For example, --cherry-pick --right-only A...B omits those commits
+           from B which are in A or are patch-equivalent to a commit in A. In
+           other words, this lists the + commits from git cherry A B. More
+           precisely, --cherry-pick --right-only --no-merges gives the exact
+           list.
+       --cherry
+           A synonym for --right-only --cherry-mark --no-merges; useful to
+           limit the output to the commits on our side and mark those that
+           have been applied to the other side of a forked history with git
+           log --cherry upstream...mybranch, similar to git cherry upstream
+           mybranch.
+
+git log --cherry-pick A...B give only commits that have not be applied to A and B
+git log --cherry A...B give each commit comming from B, with a + if it has not been applied on A, and a = if it as
+
+Remarque: git cherry A B give something similar as git log --cherry A...B:
+       Every commit that doesn’t exist in the <upstream> branch has its id
+       (sha1) reported, prefixed by a symbol. The ones that have equivalent
+       change already in the <upstream> branch are prefixed with a minus (-)
+       sign, and those that only exist in the <head> branch are prefixed with
+       a plus (+) symbol:
+
+}}}2
+
+Diff formatting {{{2
+  -m: for merge commit: show a diff for each parent
+  -c: for merge commit: show combined diff
+  --cc: like -c, mais enlève les hunks où il n'y a que deux versions chez les parents et le merge en a pris un (donc typiquement pour un three way merge, si on a pris le hunk de l'un des deux, ne l'affiche pas)
+
+--word-diff: show word diffs
+--minimal: spend extra time to produce the smallest diff
+    --diff-algorithm={histogram|myers|minimal|patience}::
+           Choose a diff algorithm.  The variants are as follows:
+    histogram::
+            This is the fastest algorithm, and thus the default.
+           (si j'ai bien compris, c'est comme patience, mais match les lignes qui apparaissent peu fréquemment, pas celles qui n'apparaissent qu'une fois)
+    myers::
+            The classical Myers diff algorithm.  <state a reason why myers
+            would be useful>
+            (match surtout les lignes haute fréquences)
+    minimal::
+            Like 'myers', but spend extra time making sure that the diff
+            is the shortest possible for the set of changes performed.
+    patience::
+            The patience diff algorithm, which first matches unique lines
+            with each other.  This sometimes results in more readable (if
+            longer) patches than the other algorithms.
+
+-M90% consider a rename if 90% is the same
+-C90% same for copy
+--find-copies-harder (or -C -C): also inspect unmodified files as candidates for the source of a copy
+-B60% if 60% of the file has changed, it should be considered as a delete followed by a create
+-D: if a file was deleted, don't print the diff of what was deleteed
+}}}2
+
+Simplifying history: {{{2
+git log ploum
+   Default mode
+       Commits are included if they are not TREESAME to any parent (though
+       this can be changed, see --sparse below). If the commit was a
+       merge, and it was TREESAME to one parent, follow only that parent.
+       (Even if there are several TREESAME parents, follow only one of
+       them.) Otherwise, follow all parents.
+    --full-history
+       Same as the default mode, but in case of merge walks all TREESAME parents
+          (in case of merge show all parents)
+    --full-history --parents
+        Like --full-history but output a virtual parent (ie if a parent is omitted, replace it by one of its parent that was included)
+       This force to always include merge commit (otherwise it would produce false merge)
+     --simplify-merges
+        Like --full-history --parents, but remove merge parents that are ancestors of other parents (and simplify recursively)
+    In addition to the above settings, you can change whether TREESAME affects 
+        inclusion:
+          --dense (default)
+              Commits that are walked are included if they are not TREESAME to
+              any parent.
+          --sparse
+              All commits that are walked are included.
+              Note that without --full-history, this still simplifies merges: if
+              one of the parents is TREESAME, we follow only that one, so the
+              other sides of the merge are never walked.
+   --simplify-merges
+           Additional option to --full-history to remove some needless merges
+           from the resulting history, as there are no selected commits
+           contributing to this merge.
+   --ancestry-path
+           When given a range of commits to display (e.g.  commit1..commit2 or
+           commit2 ^commit1), only display commits that exist directly on the
+           ancestry chain between the commit1 and commit2, i.e. commits that
+           are both descendants of commit1, and ancestors of commit2.
+    (by default commit1..commit2 show commits that are ancestors of commit2 and not ancestors of commit1, this option restrict to commits that are also descendant of commit1)
+
+git log --simplify-by-decoration: show only logs that come from tags (or heads of branches)
+}}}2
+
+git show-branch:
+===============
+For all commits until the one that are common to all branches, show the commit
+and to which branch it belongs
+Add --more=n to show n commits before the common commit
+--sparse By default, the output omits merges that are reachable from only
+           one tip being shown. This option makes them visible
+--topics Shows only commits that are NOT on the first branch given.
+Use --list to only list the last commit of each branch
+
+--independent Among the <reference>s given, display only the ones that cannot be
+           reached from any other <reference>.
+--merge-base
+           Instead of showing the commit list, determine possible merge bases
+           for the specified commits. All merge bases will be contained in all
+           specified commits. This is different from how git-merge-base(1)
+           handles the case of three or more commits.
+
+git merge-base:
+--------------
+ --octopus
+           Compute the best common ancestors of all supplied commits, in
+           preparation for an n-way merge. This mimics the behavior of git
+           show-branch --merge-base.
+ --independent
+           Instead of printing merge bases, print a minimal subset of the
+           supplied commits with the same ancestors. In other words, among the
+           commits given, list those which cannot be reached from any other.
+           This mimics the behavior of git show-branch --independent.
+
+# Attributes {{{1
+
+.gitattributes par défaut (ou .git/info/attributes si on ne veut pas de version control)
+Donne des attributs sur les fichiers (ex quel merge utiliser, faire des filtres pour le commit/uncommit, comment faire des diff sur du fichier binaire, sur quel fichiers faire du whitespace check, ignorer les fichiers lors de git archive)
+
+ex: end of line normalization
+               *.txt           text
+               *.vcproj        eol=crlf (implique text)
+               *.sh            eol=lf   (implique text)
+               *.jpg           -text
+.vcproj -> crlf end of line, sh -> lf end of line in the working dir
+.jpg pas de normalization, .txt: dans le repo, les lignes sont normalisées à LF, et dénormalisé au format natif
+
+
+Rem: .gitconfig
+       core.autocrlf
+           Setting this variable to "true" is almost the same as setting the
+           text attribute to "auto" on all files except that text files are
+           not guaranteed to be normalized: files that contain CRLF in the
+           repository will not be touched. Use this setting if you want to
+           have CRLF line endings in your working directory even though the
+           repository does not have normalized line endings. This variable can
+           be set to input, in which case no output conversion is performed.
+       core.safecrlf (when converting crlf to lf, ensure one can convertback, ie there are not a mix of crlf and lf in the file)
+Donc en résumé: core.autocrlf=true est équivalent à eol=crlf, tandis que core.autocrlf=input est équivalent à eol=lf
+#Donc en gros: text=auto: convertit tout en lf dans le repo, et en core.eol (par défaut native) pour le checkout. Mettre eol=lf ou eol=crlf dans le gitattributes pour les fichiers qui doivent rester en lf sous windows et crlf sous linux.
+(cf aussi: http://timclem.wordpress.com/2012/03/01/mind-the-end-of-your-line/)
+
+ident: remplacer $Id$ par le sha1 du blob
+
+filter:
+               *.c     filter=indent
+.git/config:
+               [filter "indent"]
+                       clean = indent (lors de l'ajout au repo)
+                       smudge = cat   (lors d'un check out)
+
+Rem: white space error, c'est indiqué par
+git diff --check ou git log --check
+git apply --whitespace warn (par défaut) dit qu'il y a des erreurs de whitespace
+    (--whitespace nowarn: pas de warning, error ou error-all donne les erreurs et n'applique pas le patch)
+Réglé dans core.whitespace:
+           ·    blank-at-eol treats trailing whitespaces at the end of the
+               line as an error (enabled by default).
+           ·    space-before-tab treats a space character that appears
+               immediately before a tab character in the initial indent part
+               of the line as an error (enabled by default).
+           ·    indent-with-non-tab treats a line that is indented with 8 or
+               more space characters as an error (not enabled by default).
+           ·    tab-in-indent treats a tab character in the initial indent
+               part of the line as an error (not enabled by default).
+           ·    blank-at-eof treats blank lines added at the end of file as an
+               error (enabled by default).
+           ·    trailing-space is a short-hand to cover both blank-at-eol and
+               blank-at-eof.
+           ·    cr-at-eol treats a carriage-return at the end of line as part
+               of the line terminator, i.e. with it, trailing-space does not
+               trigger if the character before such a carriage-return is not a
+               whitespace (not enabled by default).
+
+==============================================================================
+# Git notes {{{1
+
+Add, removes or read notes to an object
+
+L'implémentation est rigolote: les notes sont sauvées dans
+refs/notes/commits (le commits peut etre change par --ref)
+donc en fait il s'agit d'une branche. A chaque changement, ref/notes/commits est updaté (avec un commit du genre "added note to..."), et le tree sur lequel le commit pointe est composé de fichiers de la forme
+- adffef14. Ce fichier contient la note de l'objet adffef14
+- ad/ffe15 ce fichier contient la note de l'objet adffe15...
+
+
+# git gc {{{1
+
+git gc
+======
+Legacy version:
+    git pack-refs --prune &&
+    git reflog expire --all &&
+    git-repack -a -d -l &&
+    $no_prune git prune &&
+    git rerere gc || exit
+(`$no_prune` on seulement si --no-prune passé)
+
+--aggressive: repacke plus agressivement
+--(no-)prune (on by defaut): call prune
+par défaut aussi: call pack-refs
+
+git pack-refs: 
+=============
+  pack-refs --no-prune ne pas enlever les loose refs qui ont été packed
+            --all par défaut sans --all ne pack que ce qui a est packé, donc à utiliser au début pour packer une fois pour initialisé
+       A recommended practice to deal with a repository with too many refs is
+       to pack its refs with --all --prune once, and occasionally run git
+       pack-refs --prune. Tags are by definition stationary and are not
+       expected to change. Branch heads will be packed with the initial
+       pack-refs --all, but only the currently active branch heads will become
+       unpacked, and the next pack-refs (without --all) will leave them
+       unpacked.
+
+git reflog:
+==========
+  - show ref (par défaut), alias pour git log -g --abbrev-commit --pretty=oneline;
+  - expire ref: prune reflog entries (according to gc.reflogexpire and gc.reflogexpireunreachable, can override on config line). 
+  (--all pour appliquer à ttes les refs, --stale-fix pour considérer unreachableseulement les commits unreachables qui font référence à un objet qui n'existe plus)
+
+git repack: compress loose objects in a pack
+==========
+ -a: Instead of incrementally packing the unpacked objects, pack everything referenced into a single pack.
+ -d: remove redondant packs after the repack (i think using git pack-redundant to get them)+ run git prune-packed to remove redondant loose files 
+ -l: use --local on git pack-objects
+       --local
+           This flag causes an object that is borrowed from an alternate
+           object store to be ignored even if it would have otherwise been
+           packed.
+       --incremental
+           This flag causes an object already in a pack to be ignored even if
+           it would have otherwise been packed.
+-A: comme -a, sauf si l'option -d est ajoutée, où les objets unreachables contenus dans un vieux pack deviennent loose (alors qu'avec -a -d, un unreachable object dans un pack n'est pas ajouté dans le nouveau pack, et avec -d le pack dans lequel il est risque de se faire détruire, car pour savoir si le pack est redondant on ne check pas les unreachables)
+
+git prune:  enlève les unreachables 
+========
+(sauf ceux qui sont dans des packs, utiliser git repack -a -d pour ça), et appelle git prune-packed pour virer les loose objects qui sont dans des packs
+Attention: n'utilise pas gc.pruneexpire, c'est git gc qui appelle git prune avec l'option --expire qui va bien. Donc les objets ajoutés avec git add mais overwrités avec un autre git add seront supprimés car ils ne sont pas dans le reflog)
+
+config:
+======
+       gc.aggressiveWindow
+           The window size parameter used in the delta compression algorithm
+           used by git gc --aggressive. This defaults to 250.
+       gc.auto
+           When there are approximately more than this many loose objects, compact. The default value is 6700. Setting this to 0 disables it.
+       gc.autopacklimit
+           When there are more than this many packs that are not marked with
+           *.keep file in the repository, git gc --auto consolidates them into
+           one larger pack. The default value is 50. Setting this to 0
+           disables it.
+       gc.packrefs
+           This variable determines whether git gc runs git pack-refs. This can
+be set to notbare to enable it within all non-bare repos or it can be set to a
+boolean value. The default is true.
+       gc.pruneexpire
+           When git gc is run, it will call prune --expire 2.weeks.ago.
+           Override the grace period with this config variable. The value
+           "now" may be used to disable this grace period and always prune
+           unreachable objects immediately.
+       gc.reflogexpire, gc.<pattern>.reflogexpire
+           git reflog expire removes reflog entries older than this time;
+           defaults to 90 days. With "<pattern>" (e.g. "refs/stash") in the
+           middle the setting applies only to the refs that match the
+           <pattern>.
+       gc.reflogexpireunreachable, gc.<ref>.reflogexpireunreachable
+           git reflog expire removes reflog entries older than this time and
+           are not reachable from the current tip; defaults to 30 days. With
+           "<pattern>" (e.g. "refs/stash") in the middle, the setting applies
+           only to the refs that match the <pattern>.
+       gc.rerereresolved
+           Records of conflicted merge you resolved earlier are kept for this
+           many days when git rerere gc is run. The default is 60 days. See
+           git-rerere(1).
+       gc.rerereunresolved
+           Records of conflicted merge you have not resolved are kept for this
+           many days when git rerere gc is run. The default is 15 days. See
+           git-rerere(1).
+
+*Forget everything*
+       ·   Remove the original refs backed up by git-filter-branch: say git
+           for-each-ref --format="%(refname)" refs/original/ | xargs -n 1 git
+           update-ref -d.
+       ·   Expire all reflogs with git reflog expire --expire=now --all.
+       ·   Garbage collect all unreferenced objects with git gc --prune=now
+
+# git fsck {{{1
+           If no objects are given, git fsck defaults to using the index
+           file, all SHA1 references in refs namespace, and all reflogs
+           (unless --no-reflogs is given) as heads.
+
+       --unreachable
+           Print out objects that exist but that aren’t reachable from any of
+           the reference nodes.
+       --dangling, --no-dangling
+           Print objects that exist but that are never directly used
+           (default).  --no-dangling can be used to omit this information from
+           the output.
+Si j'ai bien compris, --dangling donne le tip des bouts unreachables du dag, ie si on est en A-B-C-D unreachable, D est dangling, et A,B,C,D est unreachable.
+
+       --root
+           Report root nodes. (ie le root de l'arbre)
+       --tags
+           Report tags.
+       --no-reflogs
+           Do not consider commits that are referenced only by an entry in a
+           reflog to be reachable. This option is meant only to search for
+           commits that used to be in a ref, but now aren’t, but are still in
+           that corresponding reflog.
+
+
+
+
+#}}}
+# git rerere {{{1
+Reuse recorded resolution of conflicted merges
+
+Enabled when rerere.enabled=true
+
+git rerere called by git merge if there are conflicts, rerere records the
+conflicts.
+git rerere called by commit after a merge, rerere records the manual
+resolutions.
+In the next conflicting merge, rerere resolve the ones that were given a
+manual resolution previously.
+
+clear: 
+      Reset the metadata used by rerere if a merge resolution is to be aborted.
+forget <pathspec>:
+           Reset the conflict resolutions which rerere has recorded
+diff:
+           Display diffs for the current state of the resolution.
+  (rerere affects only the working dir. So git diff include the manual
+  resolutions+the one rerere did automatically. Call git rerere diff to see
+  the ones do manually)
+status:
+           Print paths with conflicts whose merge resolution rerere will
+           record.
+remaining:
+           Print paths with conflicts that have not been autoresolved by
+           rerere.
+gc:
+           Prune records of conflicted merges that occurred a long time ago.
+
+# git stash {{{1
+
+git stash save message: 
+  Save your local modifications to a new stash, and run git reset --hard to revert them.
+           If the --keep-index option is used, all changes already added to
+           the index are left intact.
+           If the --include-untracked option is used, all untracked files are
+           also stashed and then cleaned up with git clean, leaving the
+           working directory in a very clean state. If the --all option is
+           used instead then the ignored files are stashed and cleaned in
+           addition to the untracked files.
+           --patch: interactively select things to be stashed
+  list: list the stash that you have
+  show [<stash>]
+           Show the changes recorded in the stash as a diff between the
+           stashed state and its original parent
+  pop [--index] [-q|--quiet] [<stash>]
+           Remove a single stashed state from the stash list and apply it on
+           top of the current working tree state, i.e., do the inverse
+           operation of git stash save. The working directory must match the
+           index.
+           If the --index option is used, then tries to reinstate not only the
+           working tree’s changes, but also the index’s ones.
+  apply [--index] [-q|--quiet] [<stash>]
+           Like pop, but do not remove the state from the stash list.
+  branch <branchname> [<stash>]
+      Creates and checks out a new branch named <branchname> starting
+      from the commit at which the <stash> was originally created,
+      applies the changes recorded in <stash> to the new working tree and
+      index. If that succeeds, and <stash> is a reference of the form
+      stash@{<revision>}, it then drops the <stash>. When no <stash> is
+      given, applies the latest one.
+  clear
+      Remove all the stashed states. Note that those states will then be
+      subject to pruning, and may be impossible to recover 
+  drop [-q|--quiet] [<stash>]
+      Remove a single stashed state from the stash list. When no <stash>
+      is given, it removes the latest one. i.e.  stash@{0.
+  create
+      Create a stash (which is a regular commit object) and return its
+      object name, without storing it anywhere in the ref namespace.
+
+Remarque: stash enregistre le working dir dans un commit, avec pour parent
+HEAD et pour deuxième parent l'index courant. Faire git stash apply revient
+à faire un merge avec le commit stashé (en particulier, si ça concerne un
+fichier dirty, aborte). 
+
+git stash apply --index restaure aussi l'index. 
+Si ça crée des conflits par rappot à l'index actuel, aborte:
+  Valinor ~/tmp/git $ git stash apply --index
+  error: patch failed: ploum:1
+  error: ploum: patch does not apply
+  Conflicts in index. Try without --index.
+Modifier l'index actuel pour être le même que la version du stash ne marche
+pas:
+  Unstaged changes after reset:
+  M       ploum
+  error: Your local changes to the following files would be overwritten by merge:
+    ploum
+  Please, commit your changes or stash them before you can merge.
+  Aborting
+  Index was not unstashed.
+(on voit que appliquer l'index stashé marche vu qu'il n'y a plus de
+conflit, mais du coup le fichier est dirty et le merge au niveau du working
+dir ne s'applique pas...)
+Modifier l'index et le working dir pour qu'il n'y ait pas de conflit ne
+marche pas non plus (même si le ploum du working dir est le même que pour
+le stash, il est marqué dirty, donc le merge conflicte même si en le
+faisant on verrait que rien n'a changé).
+
+# Hooks {{{1
+am:
+1. applypatch-msg
+    git am -> check commit log message
+    (sample: use commit-msg hook if active)
+2. pre-applypatch
+    git am -> between patch and commit (to check the working tree)
+    (sample: use precommit hook if active)
+3. post-applypatch
+    git am -> after commit (notification)
+
+commit:
+1. pre-commit 
+    git commit -> check for whitespace
+    (sample: check for whitespace and if all files are in ascii)
+2. prepare-commit-msg
+    git commit -> template for commit log msg
+    (sample: comment Conflicts: part on a merge commit, show name-status
+    change, add Signed-off-by messages)
+3. commit-msg
+    git commit -> check commit log msg
+    (sample: catches duplicates signed-off lines)
+4. post-commit 
+    git commit -> after commit (notification)
+
+push:
+1. pre-receive (git push, happen in remote) -> 
+2. update (git push, happen in remote) -> just before updating the ref on
+   remotes (enforce fast-forward policy)
+   (sample: block unannontated tags from entering, + some config on
+   branch/tag creations deletions)
+3. post-receive (git push, happen in remote) ->  notifications (supersedes de
+   post-update)
+   (sample: git update-server-info)
+
+- post-checkout -> repository validity checks, auto-display differences, working dir metadata properties...
+- post-merge -> restore metadata after a merge,....
+
+- post-rewrite: 
+      This hook is invoked by commands that rewrite commits (git commit
+      --amend, git-rebase; currently git-filter-branch does not call it!).
+- pre-rebase -> prevent a branch being rebased
+  (sample: show how to prevent topic branches already merged to the "next" branch to be rebased)
+- pre-auto-gc: by git gc --auto
+
+# git/contrib {{{1
+*blameview*
+  git blame de manière incrémentale (Fugitive fait déjà ça)
+buildsystems
+  compiler git sous windows
+ciabot
+  hook scripts for the CIA notification service
+completion
+  completion for bash/zsh (already included in zsh)
+continuous
+  A daemon that waits for update events sent by its companion
+  post-receive-cinotify hook, checks out a new copy of source,
+  compiles it, and emails the guilty parties if the compile
+  (and optionally test suite) fails.
+convert-objects
+  git-convert-objects - Converts old-style git repository
+credential
+  osx-keychain
+**diff-highlight**
+  word diff, but in a line by line manner
+**diffall**
+  directory diff
+emacs
+  git emacs modules
+examples
+  old porcelain implementations using sh
+*fast-import*
+  examples of fast-import script:
+  - git-import.perl: 
+    # Performs an initial import of a directory. This is the equivalent
+    # of doing 'git init; git add .; git commit'. It's a little slower,
+    # but is meant to be a simple fast-import example.
+  - import-zips.py: zip archive
+  - import-tars.perl: tar archives
+  - import-directories.perl: to import "manual" version control (using cp
+    dir dir-date)
+*git-jump*
+  Produce vim quick-fix for git diff,merge,...
+  But I think the git fugitive plugin is better
+**git-resurrect.sh**
+  git-resurrect attempts to find traces of a branch tip called <name>, and tries to resurrect it (using the reflog)
+*git-shell-commands*
+  add help and list commands to git-shell (so a user can log in and use
+  these commands when restricted to git-shell)
+*gitview*
+  gitview - A GTK based repository browser for git
+*hg-to-git*
+  hg to git conversion (incremental)
+*hooks*
+  - post-receive-email: a (post-receive) hook to mail out commit update informations
+  - pre-auto-gc-battery: a (pre-auto-gc) hook to check if we are on battery
+  - setgitperms.perl: a (pre-commit/post-merge post-checkout) hook to 
+     save/restore full permissions and ownership data within a git working tree
+  - update-paranoid: set acl for git operations (probably gitolite is
+    better for this)
+mw-to-git
+  Gateway between MediaWiki and git
+p4import
+  p4 import
+patches
+  a patch for building the documentation with docbook
+persistent-https
+  The git-remote-persistent-https binary speeds up SSL operations
+  by running a daemon job (git-remote-persistent-https--proxy) that
+  keeps a connection open to a server.
+remotes2config.sh
+  Use this tool to rewrite your .git/remotes/ files into the config. (for
+  old git repos)
+**rerere-train.sh**
+  Train rerere database from existing merge commits
+**stats**
+  - git-common-hash: 
+     This script displays the distribution of longest common hash prefixes.
+     This can be used to determine the minimum prefix length to use
+     for object names to be unique.
+  - mailmap.pl: sort the mails of the commiters (and use mailmap but
+    strangely)
+  - packinfo.pl: get size information on packs 
+        git verify-pack -v | packinfo.pl -tree -filenames
+        #0 blob 03156f21... 1767 1767 Documentation/git-lost-found.txt @ tags/v1.2.0~142
+        #1 blob f52a9d7f... 10   1777 Documentation/git-lost-found.txt @ tags/v1.5.0-rc1~74
+    (meaning the second file in the pack is a delta of the first)
+**subtree**
+  des subtrees, basées non pas sur les git submodules, mais sur le subtree merge (il s'agit en gros d'un wrapper autour pour permettre de splitter/réintégrer le projet autant de fois que l'on veut, ou de faire du git subtree pull...) 
+svn-fe
+  convert an SVN "dumpfile" to a fast-import stream
+thunderbird-patch-inline
+  helper to add inline patches in thunderbird
+vim
+  vim files (included in vim 7.2)
+*workdir*
+  Have multiple workdirs with same git repo (but independant index and HEAD) by making appropriate symlinks
+  Usage: workdir <repository> <new_workdir> [<branch>]
+  
+# Config files {{{1
+    $GIT_DIR/hooks/*
+    $GIT_WORK_DIR/.gitmodules
+
+- Gitignore:
+    $GIT_DIR/info/exclude, .gitignore, core.excludesfile, 
+    core.excludesfile, $XDG_CONFIG_HOME/git/ignore
+
+- Gitattributes
+    $GIT_DIR/info/attributes, .gitattributes
+    core.attributesfile, $XDG_CONFIG_HOME/git/attributes
+
+- Gitconfig
+    $GIT_DIR/config Repository specific configuration file.
+    ~/.gitconfig
+        User-specific configuration file. Also called "global"
+        configuration file.
+    $XDG_CONFIG_HOME/git/config
+        Second user-specific configuration file. If $XDG_CONFIG_HOME is not
+        set or empty, $HOME/.config/git/config will be used. Any
+        single-valued variable set in this file will be overwritten by
+        whatever is in ~/.gitconfig. It is a good idea not to create this
+        file if you sometimes use older versions of Git, as support for
+        this file was added fairly recently.
+    $(prefix)/etc/gitconfig
+        System-wide configuration file.
+
+Note: `$GIT_DIR/*` are not tracked
+}}}
+# git-svn {{{1
+    svn info #get url
+    git svn init url #add --stdlayout if necessary
+Pb: à la fin, git svn essaye de checkouter le repo dans le répertoire
+courant, et si je fais ça à l'intérieur du dossier svn et que les fichiers
+existent, ça va faire des conflits.
+Solution: faire git svn clone monprojet-svn, et copier le .git dans le
+répertoire svn.
+#}}}1
+# Divers {{{1
+ Choses apprises sur la ML de git
+
+## Pour partager des objets sur les répos:
+git clone -l (hard links), alternates, namespaces
+
+## git add
+  -N, --intent-to-add
+    Record only the fact that the path will be added later.
+    An entry for the path is placed in the index with no
+    content. This is useful for, among other things, showing
+    the unstaged content of such files with git diff and
+    committing them with git commit -a.
+
+## Commiting external files
+http://stackoverflow.com/questions/505467/can-i-store-the-git-folder-outside-the-files-i-want-tracked
+You just need to ensure that the repository knows where the work tree is and vice versa.
+To let the repository know where the work tree is, set the configuration value core.worktree. To let the work tree know where it's git directory is, add a file named .git (not a folder!) and add a line like
+gitdir: /path/to/repo.git
+You can initialize a new "external" repository with
+git --git-dir=/path/to/repo.git --work-tree=. init && echo "gitdir: /path/to/repo.git" > .git
+Your current directory will be the working tree and git will use the repository at /path/to/repo.git. The init command will automatically set the core.worktree value as specified with the --git-dir parameter.
+You could even add an alias for this:
+[alias]
+    initexternal = !"f() { git --work-tree=. --git-dir=\"$1\" init && echo \"gitdir: $1\" >> .git; }; f"
+
+-> allow to add a file not in the workdir: git --work-tree=.. add ../a
+(but git co a will checkout a in ., need to use git co --work-tree=.. a to check it in the right directory)
+
+## See who worked on a file
+git-who file = git shortlog -sn -- file: see who worked on file
+
+## Getting number of lines modified:
+http://codeimpossible.com/2011/12/16/Stupid-Git-Trick-getting-contributor-stats/
+git log --author="Jared Barboza" --pretty=tformat: --numstat
+(numstat c'est comme stat mais en machine friendly)
+
+## Diff against the first version of the file that was commited
+git diff $(git log --follow --pretty=%H $1| tail -n 1) $1
+
+##  How to have local versions of tracked config files in git
+https://gist.github.com/canton7/1423106
+
+# Sitaram: {{{2
+http://sitaramc.github.com/master-toc.html#index
+Recovering a dropped stash:
+=========================
+    http://sitaramc.github.com/tips/recover-dropped-stash.html#tips_recover_dropped_stash_recovering_a_dropped_stash__
+## the GUI way
+You dropped a stash that was created recently, and now you want to recover
+it. As long as you did not do a garbage collection in between, this should
+work:
+    gitk $(git fsck | grep commit | cut -f3 -d' ') --since='1 week ago'
+The part within the parenthesis finds all unreachable commit objects and
+returns their hashes. If you never did a garbage collect there might be too
+many false positives so the --since clause (which you can adjust to
+whatever you want of course; mine is just an example) limits the display to
+commits created recently.
+A "stash" has a very recognisable, triangular, shape in the commit DAG, and
+with gitk you can visually find stashes really fast. For me, this is the
+kind of task that calls out for a GUI -- infrequently required, no
+conceivable need to automate, and containing data that stands out visually.
+## the command line way
+git fsck --unreachable | grep commit | cut -d\  -f3 |
+xargs git log --no-walk --merges --grep='^\(WIP on \|On \)\((no branch)\|[^
+]\+\):'
+## Look at the reflog with gitk
+     gitk --all `git reflog | cut -c1-7`
+
+conflicts on pull/merge
+=======================
+- try gitk --merge conflictedpath
+       --merge
+           After an attempt to merge stops with conflicts, show the commits on
+           the history between two branches (i.e. the HEAD and the MERGE_HEAD)
+           that modify the conflicted files and do not exist on all the heads
+           being merged.
+- `git diff MERGE_HEAD...HEAD` (note the three dots) shows you differences between the common ancestor and your HEAD.
+- similarly `git diff HEAD...MERGE_HEAD` shows you differences between the common ancestor and the branch you're trying to merge
+- git checkout --conflict=diff3 conflictedpath is a novel way of getting all 3 versions into the file so you can hack at it in vim
+       --conflict=<style>
+           The same as --merge option above, but changes the way the
+           conflicting hunks are presented, overriding the merge.conflictstyle
+           configuration variable. Possible values are "merge" (default) and
+           "diff3" (in addition to what is shown by "merge" style, shows the
+           original contents).
+-  you can tell git blame to only show important changes, like so (pity it does not work with the GUI blame)
+    git blame -C $(git merge-base HEAD MERGE_HEAD).. conflicted_path
+
+## Fixup whitespace errors:
+http://sitaramc.github.com/the-list-and-irc/whitespace-index-filter.html#the_list_and_irc_whitespace_index_filter_fixup_whitespace_errors_
+
+## git show-branch
+http://sitaramc.github.com/2-command-line-usage/git-tasks.html#2_command_line_usage_git_tasks_git_command_line_usage_cheatsheet_quickref_
+    git show-branch -a is useful to get a bird's eye view of all your branches and their topological relationships.
+    git show-branch -gN (N is some number) shows you reflog info for the current branch, including topological relationships and relative time. This is useful if you had a lot of rebases or amended commits and you think you might need one of them back :-) See reflog for more on this
+    if you need serious troubleshooting with branches, use the following. It may be useful in some contexts where git lg is too complex to figure out what tip contains what commit, and you are unable to use gitk
+    git show-branch $(git show-ref -h |cut -c41-)
+
+## git ls-files
+
+git ls-tree         # files and directories, top level only
+git ls-tree -l      # also show the size of the object
+git ls-tree -d      # only directories
+git ls-tree -r      # recurse, only files
+git ls-tree -r -d   # recurse, only directories
+git ls-tree -r -t   # recurse, both directories and files
+git ls-files -d -m  # deleted files and modified files (deleted files are also counted as modified, so may come up twice...
+git ls-files -s     # what's in the index; includes files that were "git add"ed
+git ls-files -u     # conflicted files
+git ls-files -o     # "other files"; includes EVERYthing not in d/m/s, I think seems to be equal to untracked + ignored
+git ls-files --exclude-standard -o    # untracked files only
+git ls-files --exclude-standard -o -i # ignored files only
+}}}2

@@ -1,0 +1,26 @@
+MYHOSTNAME="Feanor"
+
+loadkeys fr 
+loadkeys fr-latin9 #too hard to type if not in fr mode...
+wifi-menu
+
+#i need vim
+pacman -Sy vim git
+vim /etc/pacman.d/mirrorlist
+
+git clone https://github.com/DamienRobert/config .
+
+#partitions: cfdisk, cgdisk, mkfs.btrfs...
+#mount on /mnt
+
+pacstrap /mnt base base-devel
+
+genfstab -p -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+ssh imb ~syst/pkgs/packages.rb init
+
+#editer ~etc-generate/fstab
+#editer ~etc-generate/mkinitcpio.conf pour rajouter les modules DKMS
+#regarder 01bootloader et 02init et 03backup
+
+systemctl reboot

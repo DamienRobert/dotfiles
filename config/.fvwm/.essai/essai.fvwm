@@ -1,0 +1,62 @@
+#Grille
+
+#SnapAttraction 0
+#SnapGrid 1 1
+
+AddToFunc StartFunction
++ I Module FvwmIconMan
+
+       Style "FvwmIconMan"  NoTitle, Sticky, WindowListSkip, BorderWidth 0
+       Style "FvwmIconMan"  HandleWidth 0
+
+       Key F8 A N SendToModule FvwmIconMan bif select Select, bif focus Focus, \
+         gotomanager 0, select, sendcommand WarpToWindow, ret, label Focus, \
+         gotobutton focus, select, sendcommand WarpToWindow, ret, label Select,\
+         gotobutton prev, select, sendcommand WarpToWindow
+       Key F9 A N SendToModule FvwmIconMan bif select Select, bif focus Focus, \
+         gotomanager 0, select, sendcommand WarpToWindow, ret, label Focus, \
+         gotobutton focus, select, sendcommand WarpToWindow, ret, label Select, \
+         gotobutton next, select, sendcommand WarpToWindow
+      *FvwmIconMan: NumManagers 2
+       *FvwmIconMan: Resolution  page
+       *FvwmIconMan: Background  steelblue
+       *FvwmIconMan: Foreground  white
+       *FvwmIconMan: Font        7x13
+       *FvwmIconMan: UseWinList  true
+       *FvwmIconMan: DrawIcons   true
+       *FvwmIconMan: Shape       true
+       *FvwmIconMan: FollowFocus true
+       *FvwmIconMan: Sort        name
+       *FvwmIconMan: PlainButton          up white steelblue
+       *FvwmIconMan: SelectButton         down white steelblue
+       *FvwmIconMan: FocusButton          up white brown
+       *FvwmIconMan: FocusAndSelectButton down white brown
+       *FvwmIconMan: TitleButton          raisededge white steelblue
+       *FvwmIconMan: NoIconAction         "SendToModule FvwmAnimate animate"
+
+       *FvwmIconMan: 1 Title           "Emacs windows"
+       *FvwmIconMan: 1 IconName        "FvwmIconMan: Emacs"
+       *FvwmIconMan: 1 Format          "%i"
+       *FvwmIconMan: 1 Show            resource=emacs resource=gemacs
+       *FvwmIconMan: 1 ManagerGeometry 1x0-400+0
+       *FvwmIconMan: 1 ButtonGeometry  200x0
+
+       *FvwmIconMan: 2 Title           "All windows"
+       *FvwmIconMan: 2 IconName        "FvwmIconMan: all"
+       *FvwmIconMan: 2 Format          "%c: %i"
+       *FvwmIconMan: 2 DontShow        icon=Untitled
+       *FvwmIconMan: 2 ManagerGeometry 2x4-0+0
+       *FvwmIconMan: 2 ButtonGeometry  200x0
+
+       *FvwmIconMan: transient Geometry 194x100
+       *FvwmIconMan: transient DontShow icon=Untitled
+       *FvwmIconMan: transient Action   Mouse 0 A sendcommand select select Iconify
+
+       *FvwmIconMan: Action     Mouse     1 N sendcommand Iconify
+       *FvwmIconMan: Action     Mouse     2 N sendcommand WarpToWindow
+       *FvwmIconMan: Action     Mouse     3 N sendcommand "Module FvwmIdent FvwmIdent"
+       *FvwmIconMan: Action     Key  Left  N gotobutton Left, select
+       *FvwmIconMan: Action     Key  Right N gotobutton Right, select
+       *FvwmIconMan: Action     Key  Up    N gotobutton Up, select
+       *FvwmIconMan: Action     Key  Down  N gotobutton Down, select
+       *FvwmIconMan: Action     Key  q     N quit

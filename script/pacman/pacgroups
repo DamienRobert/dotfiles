@@ -1,0 +1,74 @@
+#!/usr/bin/python2
+
+'''
+Description: A simple script that informs the user of pacman groups that are
+partially installed or upgraded.
+Author: sabooky (archlinux forums)
+'''
+import os
+import sys
+
+
+#===============================================================================
+# Functions
+#===============================================================================
+# function to compare installed groups
+def group_comp(a, b):
+    '''Compares pacman groups by percent, total group count'''
+    a_status = a[1]
+    b_status = b[1]
+    return cmp((a_status['percent'], a_status['total_cnt']),
+               (b_status['percent'], b_status['total_cnt']))
+
+
+#===============================================================================
+# Main script
+#===============================================================================
+# initial variables and user input
+thresh = 50
+if len(sys.argv) == 2:
+    thresh = int(sys.argv[1])
+
+# get a list of all installed packages
+installed_pkgs = set(x.strip() for x in os.popen('pacman -Qq'))
+
+group_status = {}
+# organise pacman groups installed/not installed
+for line in os.popen('pacman -Sgg'):
+    group, pkg = line.split()
+    group_status.setdefault(group, {'installed': set(), 'not_installed': set()})
+    if pkg in installed_pkgs:
+        group_status[group]['installed'].add(pkg)
+    else:
+        group_status[group]['not_installed'].add(pkg)
+
+# add additional information to each groups dictionary
+for group, status in group_status.iteritems():
+    status['installed_cnt'] = len(status['installed'])
+    status['not_installed_cnt'] = len(status['not_installed'])
+    status['total_cnt'] = status['installed_cnt'] + status['not_installed_cnt']
+    status['percent'] = (float(status['installed_cnt']) /
+                        status['total_cnt']) * 100
+
+# sort and output group information
+for group, status in sorted(group_status.iteritems(),
+                            cmp=group_comp, reverse=True):
+    # skip groups that have no packages intalled
+    if not status['percent']:
+        continue
+    layout = "{group:<40} {installed_cnt:3}/{total_cnt:<3} %{percent:.02f}"
+    print layout.format(group=group, **status)
+
+
+# summary line explaining how to fill in the missing groups
+incomplete_groups = ' '.join(group for group, status in group_status.iteritems()
+                     if thresh <= status['percent'] < 100)
+
+if incomplete_groups:
+    summary_layout = "\nIncomplete groups with over {thresh}% installed:\n" \
+                     "{0}\n\nTo update your system run:\npacman -S --needed {0}"
+else:
+    summary_layout = "\nThere are no groups with over {thresh}% installed"
+
+
+print summary_layout.format(incomplete_groups, thresh=thresh)

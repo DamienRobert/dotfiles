@@ -1,0 +1,48 @@
+#compdef myunison myunisonsync
+
+#[ -n "$MYFILES" ] && eval $($MYFILES/00COMPUTERS.rb --export-local)
+local UNISONTYPES; 
+UNISONTYPES=(common data large perso perso2 minimal sh)
+
+case $service in
+  myunison )
+    _arguments \
+      '-b[batch]' \
+      '-c[text mode]' \
+      '-g[gui mode]' \
+      '-P[specify unison]:unison:' \
+      '-o[unison option]:option:' \
+      "-t[type]:type:($UNISONTYPES)" \
+      '-ta[use all types]' \
+      '-cat[merge types passed]' \
+      '-tc[shortcut for -ta -cat]' \
+      '-push[only push]' \
+      '-pull[only pull]' \
+      '-cpush[equivalent to -c -push -o -auto]' \
+      '-cpull[equivalent to -c -pull -o -auto]' \
+      '-batch[equivalent to -c -b -push]' \
+      '*:host:_hosts'
+   ;;
+
+  myunisonsync)
+    _arguments \
+      '-photos[Server=oimb, type=perso]' \
+      '-perso[Server=Feanor, type=perso]' \
+      '-perso2[Server=Feanor, type=perso2]' \
+      '-i[Sync current computer with server]' \
+      '-o[Sync server with computer specified in argument]' \
+      '-io[Sync in, sync out]' \
+      '-oi[Sync out, sync in]' \
+      '-ioi[Sync in, sync out, sync in]' \
+      '-oio[Sync out, sync in, sync out]' \
+      '-Oo[sync out option]:option:' \
+      '-Oi[sync in option]:option:' \
+      '-Os[ssh option]:option:' \
+      '-O[unison option]:option:' \
+      '-Y[equivalent to -Os -Y (on by default)]:option:' \
+      '-x[equivalent to -Os -x (more secure)]:option:' \
+      "-t[type]:type:($UNISONTYPES)" \
+      '-Sname[specify server]:server:' \
+      '-Sssh[specify ssh command]:ssh command:' \
+      '*:host:_hosts'
+esac

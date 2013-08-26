@@ -1,0 +1,144 @@
+[cf thèse de Bardet - Etude des systèmes algébriques surdéterminés]
+
+Notations: m polynômes en n variables de degrés d_i; d=max(d_i)
+
+Base de Groebner
+================
+
+Complexité dans le pire cas: 2^2^O(n)
+
+Th: pour tout corps K il exist un syst de n poly en n variables de degré D
+tel que la base de Groebner (pour tout ordre admissible) contienne un poly
+de degré D^2^n.
+
+Cas des systèmes de dimension 0
+===============================
+
+Si le système n'admet qu'un nombre fini de solutions, la complexité est de
+d^O(n^2) où d est le degré maximum d'un élément de l'idéal.
+
+Prop: Le système est de dim 0 ssi pour tout x_i il existe dans la base de
+Grobner un polynôme dont le terme de tête soit une puissance de x_i.
+
+Prop: Si F est un système affine, F_h le système homogéne, G_h une base de
+Grobner de F_h, alors l'affinisé de G_h est une base de Grobne de F.
+
+Méthode de Macauley: (I homogène) représenter l'idéal I_d en exprimant les
+t*f_i tels que t*f_i soit de degré d sur la base de S_d. (C'est la
+généralisation de la matrice de Sylvester à plusieurs polynômes). Le
+résultant est le ppcm des déterminants de la matrice de Macauley en degré
+d=\sum (deg f_i-1)+1.
+
+Th: Si les F_i sont génériques, le résultant R est homogène, irréductible, de
+degré \prod deg F_i/deg F_j en les coefficients de F_j. Il existe une
+solution non triviale de F_i=0 ssi R=0.
+
+Algo de Lazard: partir de la matrice de Macauley en degré d, et faire du
+Gauss, on retrouve une base de Grobner jusqu'au degré d. En particulier, en
+partant de la matrice pour d=d_max, on retrouve la base de Grobner; pour un
+coût de N^\omega si N est la taille de la matrice de Macauley.
+
+FGLM
+====
+
+Si un idéal à D solutions, FGLM se fait en O(nD^3).
+
+Fonction de Hilbert
+===================
+
+Soit HF la fonction de Hilbert associé à k[x_0,...,x_n]/I; HF est égale à
+un polynôme pour n>=l'indice de régularité H(I).
+
+La série de Hilbert HS=\sum HF(n) z^n = P(z)/(1-z)^d où d=dim I et P(1) \ne
+0 est le degré de la variété I.
+
+Th: l'indice de régularité majore le degré max d'un élément d'une base de
+Groebner pour un ordre quelconque gradué par le degré.
+
+Rem: si le système est de dim 0, l'indice de rég est le plus petit entier
+tel que HF(n)=0.
+
+Soit G la série de Hilbert associé à des polynômes génériques (on fixe les
+degrés d_i ici). Alors pour tout idéal (avec les même d_i), on a HS>=G; on
+conjecture que G=\prod (1-z^d_i)/(1-z)^n. Si m<=n on peut prouver que c'est
+vrai (prendre une suite régulière).
+
+Suite régulière
+===============
+
+Si I=(f_1,...,f_m) est un idéal de codim h, il existe un changement de
+variable linéaire (en drapeau)
+g_1=f_1; g_2=f_2+?f_3+?f_4; g_3=f_3+?f_4+?f_5; ...
+g_{h+1}=f_{h+1}; ...
+Tel que I=(g_1,...,g_m), et (g_1,...,g_h) soit régulière;
+(de plus c'est vrai pour tout coefficients ? sauf un nombre fini)
+
+Pr: k[x_0,...,x_m] est de Cohen-Macauley.
+
+Th: Si f_1,...,f_m est une suite rég de poly homogènes;
+1) l'idéal I est de dim n-m
+2) La série de Hilbert est \prod_i=1^m (1-z^d_i)  / (1-z)^n
+(inversement si I a une telle série de Hilbert les f_i sont une suite rég)
+3) Une permutation des f_i reste régulière
+4) L'indice de régularité est la borne de Macauley
+5) Presque toute suite est régulière: l'ensemble des suites de pol de deg
+   d_i qui sont régulières est un ouvert non vide de Zariski.
+
+Cas générique:
+Si le système est de dim 0 donné par une suite régulière f_i de degré d_i,
+alors pour l'ordre grevlex, et pour presque tout changement de variable
+linéaire; le degré maximum des polynômes intervenant dans la base de
+Grobner est donné par la borne de Macauley \sum_i=1^m (deg f_i-1)+1; et le
+calcul de la base de Groebner est polynômial en d^n.
+
+Attention: il existe des suites régulières où le degré maximal peut être
+d^n (en fait ça dépend bcp de l'ordre grevlex choisit).
+
+De manière plus précise:
+Th: Si les variables x_1, ..., x_n mettent les f_i en position de Noether,
+alors le degré maximum est la borne de Macauley (ie il n'y a pas besoin de
+faire un changement linéaire de variable)
+(Interprétation Grobner de la position de noether: pour l'ordre grevlex, et
+pour tout i, il existe n_i tel que x_i^n_i \in LeadingTerms(I))
+
+Plus précisément, le nombre de poly de degré d de la base de Groebner est
+majoré par g(d) qui donne la série génératrice:
+z^d_m \prod_i<m (1-z^d_i) / (1-z)^{m-1}, qui est un poly de degré la borne
+de Macauley
+[Cf Bardet, Th 3.4.1]
+
+Cas des systèmes surdéterminés
+==============================
+
+Une suite est semi-régulière ssi sa série de Hilbert est
+\prod_i=1^m (1-z^d_i)  / (1-z)^n
+et le degré max d'un élément de la base de Gröbner est le premier d tel que
+le coefficient a_d de la série de Hilbert est =0.
+(En particulier une suite est régulière <=> semi-règ + m<=n)
+
+Asysmptotiquement, pour une suite semi-régulière à n+k éléments, quand n
+tend vers l'infini, k>0, on a d_max=(\sum (d_i-1))/2, soit un facteur 2 sur
+la borne de Macauley.
+
+(Autres déf: 
+- ce sont les suites pour lesquelles F5 n'a pas de réduction à 0
+- si f_i est diviseur de 0 dans S/(f_1,...,f_{i-1}); 0=g_i f_i et deg(g_i
+f_i)<H(I) alors g_i=0. L'intérprétation est que si m>n il y a forcément un
+diviseur de 0; mais dans ce cas on veut qu'il soit plus grand que l'indice
+de régularité)
+
+Calcul des solutions
+====================
+
+Soit f_i homogène de degré d pour simplifier. Quitte à faire un changement
+de variable, on peut supposer que les n premiers sont réguliers (en
+position de Noether) donc on raisonne là-dessus (une fois qu'on a les
+solutions pour f_1,...,f_n, il suffit de sélectionner parmis celles qui
+vérifient aussi f_{n+1}...=0). 
+Ce système a un degré <=d^n.
+
+La borne de Macauley est nd-n+1.
+On calcule donc la matrice de Macauley en degré D=nd-n+1; c'est (n+D-1;D).
+Bornons hyper salement la taille par (nd)^n/n!<=(nd)^n et on obtient une
+borne en (nd)^{wn} pour grevlex, puis du FGLM par nd^{3n}; pour au final un
+coût pour Lex en (nd)^{3n}

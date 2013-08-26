@@ -1,0 +1,91 @@
+# Create own window instead of using desktop (required in nautilus)
+own_window yes
+#own_window_type override
+own_window_transparent yes
+#own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+ 
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# Use Xft?
+use_xft yes
+xftfont <%= @font %>
+xftalpha 0.8
+text_buffer_size 2048
+# fiddle with window
+#use_spacer right
+ 
+# Update interval in seconds
+update_interval 3
+update_interval_on_battery 10
+if_up_strictness link
+short_units
+
+maximum_width 400
+# Minimum size of text area
+#minimum_size 420 5
+ 
+# Draw shades?
+draw_shades no
+ 
+# Text stuff
+draw_outline no # amplifies text if yes
+draw_borders yes
+uppercase no # set to yes if you want all text to be in uppercase
+ 
+#border
+#stippled_borders 0
+border_inner_margin 10
+border_width 0
+ 
+# Default colors and also border colors, grey90 == #e5e5e5
+#default_color grey
+default_color black
+own_window_colour brown
+own_window_transparent yes
+ 
+# Text alignment, other possible values are commented
+#alignment top_left
+alignment top_right
+#alignment bottom_left
+#alignment bottom_right
+ 
+# Gap between borders of screen and text
+gap_x 10
+gap_y 45
+
+top_cpu_separate true
+
+mpd_host /run/user/1000/mpd_sock
+
+TEXT
+#DATE
+${font}${color orange}${time %a, %e %B %G %H:%M:%S} — MPD: ${mpd_status} (${mpd_vol}%)${hr 2}${alignr}$color
+$nodename $sysname $kernel on $machine ${alignr}Uptime: $uptime
+${mpd_track} - ${mpd_smart} [${mpd_album}]${alignr}${if_empty $mpd_length}$else($mpd_elapsed/$mpd_length)$endif
+
+#SYSTEM
+$font${color orange}SYSTEM ${hr 2}$color
+${freq}MHz ($cpu%) ${goto 120}Temp: ${acpitemp}°C ${goto 220}Fan: ${acpifan}  ${alignr}IO: $diskio
+${cpugraph 25,190 000000 ffffff} ${goto 220}${diskiograph 25,190 000000 ffffff}
+${font <%= @smallfont %>}${top name 1} ${goto 80}${top pid 1}  ${goto 120}${top cpu 1} ${goto 160}${top mem 1} ${alignr}Load: ${loadavg}
+${top name 2} ${goto 80}${top pid 2}  ${goto 120}${top cpu 2} ${goto 160}${top mem 2}${alignr}Processes: $processes
+${top name 3} ${goto 80}${top pid 3}  ${goto 120}${top cpu 3} ${goto 160}${top mem 3}${alignr}Running: $running_processes
+${top name 4} ${goto 80}${top pid 4}  ${goto 120}${top cpu 4} ${goto 160}${top mem 4}${alignr}Connexions: ${tcp_portmon 1 65535 count} (In: ${tcp_portmon 1 32767 count} Out: ${tcp_portmon 32768 61000 count})${font}
+RAM: $memeasyfree ${goto 120}${membar 6, 80} ${goto 230}Swap: $swap ${goto 320}${swapbar 6,80}
+/home: ${fs_free /home} ${goto 120}${fs_bar 6,80 /home} ${goto 230}/: ${fs_free /}${goto 320}${fs_bar 6,80 /} 
+Battery: ${goto 120}${battery_bar 6,80 <%= @battery %>} ${goto 230}${battery <%= @battery %>} ${if_empty ${battery_time <%= @battery %>}}${else}(${battery_time <%= @battery %>})${endif}   
+
+#NETWORK
+$font${color orange}NETWORK ${if_empty ${wireless_essid <%= @wlan %>}}$else(${wireless_essid <%= @wlan %>}: ${wireless_bitrate <%= @wlan %>})$endif ${hr 2}$color
+${addr eth0}${goto 120}${addr <%= @wlan %>} ${goto 230} Wifi: ${wireless_link_qual_perc <%= @wlan %>}% ${goto 320}${wireless_link_bar 6,80 <%= @wlan %>}
+${goto 20} Down: ${downspeed eth0}/s ${goto 130}Up: ${upspeed eth0}/s${goto 220} Down: ${downspeed <%= @wlan %>}/s ${goto 330}Up: ${upspeed <%= @wlan %>}/s
+${goto 20}${downspeedgraph eth0 25,80 000000 ff0000} ${goto 120}${upspeedgraph eth0 25,80 000000 00ff00} ${goto 220}${downspeedgraph <%= @wlan %> 25,80 000000 ff0000} ${goto 320}${upspeedgraph <%= @wlan %> 25,80 000000 00ff00}
+${goto 20} Total: ${totaldown eth0} ${goto 120} Total: ${totalup eth0} ${goto 220} Total: ${totaldown <%= @wlan %>} ${goto 320} Total: ${totalup <%= @wlan %>}${font }
+${execi 30 netstat_infos.pl | head -n5}${font <%= @smallfont %>}
+
+#LOG
+$font${color orange}LOGGING ${hr 2}$color${font <%= @smallfont %>}
+${execi 30 journalctl -b -n3}
+$hr
+${execi 30 journalctl -n100 |grep pam_unix |tail -n3 }

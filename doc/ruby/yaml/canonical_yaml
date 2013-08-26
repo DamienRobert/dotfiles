@@ -1,0 +1,28 @@
+---
+!!seq [
+  !!map {
+    ? !!str "just"
+    : !!str "write some",
+  },
+  !!map {
+    ? !!str "yaml"
+    : !!seq [
+      !!seq [
+        !!str "here",
+        !!str "and",
+      ],
+      !!map {
+        ? !!str "in"
+        : !!str "real-time",
+        ? !!str "it"
+        : !!str "updates",
+      },
+    ],
+  },
+  !!null "null",
+  !!bool "true",
+  !!map {
+    ? !!str "plim.ploum"
+    : !!str "plam",
+  },
+]

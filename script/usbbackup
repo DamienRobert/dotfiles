@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "git push ~/media/usbkey/dams/backups/gitbackup :"
+cd ~/backups/gitbackup
+git push ~/media/usbkey/dams/backups/gitbackup :
+cd
+echo "myunison usb"
+myunison usb

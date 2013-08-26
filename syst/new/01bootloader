@@ -1,0 +1,15 @@
+## grub2 (bios)
+
+pacman -S grub2-bios
+grub-install --directory=/usr/lib/grub/i386-pc --target=i386-pc --boot-directory=/boot --recheck /dev/sda
+#modifier /etc/grub.d/40_custom pour rajouter windows
+#editer ~etc-generate/default/grub
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+## gummiboot (efi)
+pacman -S efibootmgr btrfs-progs gummiboot
+gummiboot install
+
+### initrd
+#Configure /etc/mkinitcpio.conf as needed (see mkinitcpio) and create an initial RAM disk with: 
+mkinitcpio -p linux

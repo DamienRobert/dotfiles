@@ -1,0 +1,6 @@
+[Unit]
+Description=Git backup
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c 'exec %h/mine/script/gitbackup -v save'

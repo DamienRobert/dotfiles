@@ -1,0 +1,137 @@
+Note que s'il s'agit juste de compter le nombre de polynômes
+unitaires, resp. unitaires irréductibles, resp. unitaires
+irréductibles primitifs, de degré k, sur F_p, sans les énumérer, ça se
+fait très bien.  Je vais expliquer comment (les agrégatifs sont
+encouragés à lire ce qui suit, n'est-ce pas, Fabrice ? ;-).
+
+Pour simplifier, je me place sur F_p avec p premier.  Je laisse en
+exercice au lecteur la tâche de tout refaire sur un corps de base F_q
+non nécessairement premier.
+
+D'abord, le nombre de polynômes unitaires de degré k sur F_p est
+
+				 p^k
+
+Ça c'est évident.  Mais je le signale pour amener la suite.
+
+Une observation : si P est un polynôme irréductible sur un corps fini,
+son corps de décomposition est égal à son corps de rupture.
+[Démonstration : avec de la théorie de Galois, c'est trivial : le
+corps de décomposition est la clôture galoisienne du corps de rupture,
+c'est le composé de tous ses conjugués par le groupe de Galois
+absolu ; mais comme le groupe de Galois est abélien (procyclique
+engendré par le Frobenius), il n'y a qu'un seul conjugué.  On peut
+certainement dire ça de façon plus élémentaire.]
+
+Ça, ça nous dit que la donnée d'un polynôme unitaire irréductible de
+degré k sur F_p, c'est pareil que la donnée d'une orbite à k éléments
+du groupe de Galois, c'est-à-dire essentiellement du Frobenius,
+agissant sur F_{p^k}.  On veut donc regarder un peu de plus près à
+quoi ressemble F_{p^k} muni de cette action du Frobenius.
+
+L'astuce, maintenant, c'est d'oublier la structure additive sur
+F_{p^k}, et ne garder que la structure multiplicative.  Parce qu'elle
+est particulièrement simple : on a un élément tout seul, le zéro, et
+les autres éléments forment un groupe cyclique (d'ordre p^k-1, donc).
+Là-dessus, le Frobenius, il laisse zéro fixe (évidemment) et il agit
+par élévation à la puissance p, c'est-à-dire, si on note additivement
+(plutôt que multiplicativement) le groupe cyclique multiplicatif, par
+multiplication par p.  Cette multiplication par p a ordre k (car elle
+envoie 1 sur p, sur p², sur..., sur p^k=1, qui sont tous distincts,
+donc elle n'a pas un ordre moins, et certainement pas plus non plus).
+
+Commençons par compter les polynômes unitaires irréductibles de degré
+k sur F_p.  D'après ce que je viens d'expliquer, il suffit pour ça de
+compter les éléments de F_{p^k} sur lesquels l'ordre de p est
+exactement k (i.e., qui appartiennent à une orbite de cardinal k) et
+diviser par k.  Or les éléments qui appartiennent à une orbite plus
+petite, ce sont ceux qui appartiennent à un F_{p^l} pour l divisant k
+(où l est la taille de l'orbite en question).  Pour les compter
+précisément, on va partir de p^k, soustraire tous les p^l pour l=k/d
+avec d un facteur premier de k, mais en ce faisant on aura décompter
+deux fois certains éléments, donc il faut ajouter à nouveau les p^l
+avec l=k/(dd') avec d et d' deux facteurs premiers distincts de k, et
+ainsi de suite.  Sur l'exemple de p=2 et k=18, le nombre de polynômes
+unitaires irréductibles de degré 18 sur F_2 est donc donné par 1/18
+fois 2^18 - 2^9 - 2^6 + 2^3 = 261576 (il y a 262144 éléments dans
+F_{2^18}, dont on retire les 512 appartenant à F_{2^9}, les 64
+appartenant à F_{2^6} et on rajoute les 8 qui appartiennent aux deux à
+la fois, c'est-à-dire à F_8, parce qu'on les a décomptés deux fois),
+soit 14532 (on a trouvé 14532 orbites de taille 18), ce qui est bien
+la valeur que tu annonçais.  Pour le dire plus proprement et plus
+formellement, le nombre de polynômes unitaires irréductibles de degré
+k sur F_p est :
+
+		     (1/k) · somme(mu(d)·p^(k/d))
+
+où mu(d) est la fonction de Möbius et d parcourt les diviseurs de k.
+Remarquons qu'on a simplement besoin de savoir factoriser k ici.  Et,
+comme Mehdi le disait, ça fait en gros un polynôme unitaire sur k qui
+est irréductible.
+
+Maintenant, comptons le nombre de polynômes unitaires irréductibles
+qui sont primitifs (rappelons que ça veut dire qu'une de leur racines
+- et, par conséquence, n'importe laquelle de leurs racines - engendre
+le groupe multiplicatif de F_{p^k}).  Le nombre d'éléments primitifs
+du groupe multiplicatif de F_{p^k} est donné par phi(p^k-1) où phi est
+la fonction indicatrice d'Euler.  Sur chacun de ces éléments, le
+Frobenius a bien l'ordre k (je veux dire, chacun appartient bien à une
+orbite de cardinal k) parce que c'est le cas de l'un d'entre eux (1,
+comme je l'ai expliqué au début) et que tous ces éléments sont
+conjugués par des automorphismes (*multiplicatifs seulement* ! ce ne
+sont pas des automorphismes pour la structure de corps !) du groupe
+cyclique d'ordre p^k-1.  Bref, le nombre recherché est tout
+simplement :
+
+			  (1/k) · phi(p^k-1)
+
+Noter qu'ici, la formule peut paraître plus simple, mais il faut
+savoir factoriser p^k-1 pour l'utiliser, ce qui est quand même autre
+chose que de factoriser k...  Exemple : pour p=2 et k=18, toujours, on
+a 2^18-1 = 3³·7·19·73, donc phi(2^18-1) = 2·3²·6·18·72 = 139968, et le
+nombre de polynômes unitaires irréductibles primitifs est 1/18 fois
+ça, soit 7776.  (Attention : si p>2, il faut se rappeler qu'il y a une
+racine primitive (p-1)-ième dans le corps de base.  Donc, si la
+formule ci-dessus est juste, il convient cependant de penser que
+chaque racine primitive (p^k-1)-ième en détermine p-1 par
+multiplication par les éléments non nuls du corps de base.)
+
+On peut éventuellement dire quelques petites choses sur la
+combinatoire de ces trucs.  Dans le cas où 2^k-1 est un nombre
+premier, par exemple, c'est-à-dire un premier de Mersenne, il y a donc
+(2^k-2)/k polynômes unitaires irréductibles de degré k sur F_2 qui
+sont primitifs : ils le sont tous (et évidemment, du coup, k lui-même
+est premier...).
+
+Ce qui est un peu perturbant, avec les corps finis, c'est que les
+polynômes cyclotomiques ne sont pas irréductibles : en comptant comme
+je viens de le faire, c'est flagrant : le polynôme cyclotomique pour
+les racines (p^k-1)-ièmes de l'unité, il est de degré phi(p^k-1), et
+il se décompose en phi(p^k-1)/k polynômes irréductibles primitifs
+chacun de degré k.  Quand on y pense, c'est assez violent, comme
+décomposition (comme non-irréductibilité).  Et ça veut dire que, alors
+que le groupe multiplicatif de F_{p^k} a phi(p^k-1) automorphismes,
+seul un sous-groupe d'ordre k, le groupe de Galois, donne des
+automorphismes de *corps*.
+
+En particulier, si je me dis : j'appelle g un générateur du groupe
+multiplicatif de F_{p^k}, j'ai donc g, g^p, g^{p²}, ..., g^{p^{k-1}}
+qui sont un système complet de conjugués (une orbite de cardinal k
+sous l'action de Galois, quoi), donc (X-g)·...·(X-g^{p^{k-1}}) doit
+être un polynôme unitaire irréductible primitif.  Seulement, manque de
+chance, on peut certes calculer le coefficient constant de ce
+polynôme, mais, pour les autres, il faudrait connaître la structure
+additive, et ça, on ne sait pas faire.  Et pour cause : ça dépend du
+choix de g, il y en a plein possibles, et ils ne sont *pas* conjugués
+par Galois.  Comme je disais, je trouve ça hautement perturbant.
+
+(Normalement, là, je devrais parler des places au-dessus de p du corps
+Q(\zeta_{p^k-1}) obtenu en rajoutant une racine primitive (p^k-1)-ième
+de l'unité aux rationnels, et de choses de ce genre, mais je n'ai pas
+le temps.  Peut-être plus tard.)
+
+-- 
+David, qui n'a jamais trouvé aucun endroit où ces choses étaient bien
+expliquées.  Du coup, on en retient une idée très vague des corps
+finis.
+

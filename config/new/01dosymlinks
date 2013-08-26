@@ -1,0 +1,39 @@
+#!/bin/zsh
+#do standard symlinks in $HOME
+
+dolink() {
+  target=$1
+  [ -h $target ] && target=$(readlink $target)
+  filename=$(basename $target)
+  echo "Target: $target, filename: $filename"
+  if [ -e $target ]; then
+    if [ -h $filename ]; then
+      ln -snf $target $filename
+    elif [ ! -e $filename ]; then
+      ln -s $target .
+    else
+      ls -ld $filename
+    fi
+  fi
+}
+
+cd
+for file in data/*(N) ; do
+  if [ file != WorkData ]; then
+    dolink $file
+  fi
+done
+dolink perso/ViePratique
+dolink pro/magma
+dolink pro/Work
+dolink perso/posts
+dolink mine/config
+dolink mine/script
+dolink mine/doc
+dolink mine/progs
+dolink latex/texmf
+
+#cd ~/dist
+#dolink ../pro/gforge
+#dolink ../pro/mathrice
+#dolink ../data/var

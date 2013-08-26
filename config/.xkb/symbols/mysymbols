@@ -1,0 +1,74 @@
+// partial default xkb_types "default" {
+//     // Definition for a key type used for the czech keymap, for instance.
+//     // Defines style a with four level shift. It is similar to three_level
+//     // type used for iso9995 but it lets the shift key behave "normally".
+// 
+//     virtual_modifiers LevelThree;
+// 
+// 
+//     // Base level, two Shift-ed LevelThree levels, one Ctrl+Alt command level
+//     type "FOUR_LEVEL_X" {
+//         modifiers = Shift+LevelThree+Control+Alt+NumLock;
+//         map[None] = Level1;
+//         map[LevelThree] = Level2;
+// 	map[Shift+LevelThree] = Level3;
+// 	map[Control+Alt] = Level4;
+//         map[None+NumLock] = Level1;
+//         map[LevelThree+NumLock] = Level2;
+// 	map[Shift+LevelThree+NumLock] = Level3;
+// 	map[Control+Alt+NumLock] = Level4;
+//         level_name[Level1] = "Base";
+//         level_name[Level2] = "Alt Base";
+//         level_name[Level3] = "Shift Alt";
+// 	level_name[Level4] = "Ctrl+Alt";
+//     };
+// };
+
+default
+partial alphanumeric_keys
+xkb_symbols "us" {
+
+    name[Group1]= "USA(my-modified) - International (with dead keys)";
+    include "us(intl)"
+
+    // Alphanumeric section
+// onequarter etc (not in iso8859-15) deleted to get three unshifted deadkeys:
+    key <TLDE> { [    grave, asciitilde,  dead_grave,   dead_tilde      ] };
+    key <AE01> { [        1, exclam,      onesuperior,  exclamdown      ] };
+    key <AE06> { [        6, asciicircum,       dead_circumflex, onequarter         ] };
+    key <AE07> { [        7, ampersand,         dead_horn, onehalf               ] };
+    key <AE08> { [        8, asterisk,          dead_ogonek, threequarters             ] };
+
+    // key <AD01> { [   q, Q, acircumflex,     Acircumflex ] };
+    key <AD01> { [   q, Q, agrave,     Agrave ] };
+    key <AD02> { [   w, W, plusminus,     notsign ] };
+    key <AD03> { [   e, E, eacute,      Eacute ] };
+    key <AD04> { [   r, R, egrave,     Egrave ] };
+    key <AD06> { [   y, Y, ydiaeresis,     Ydiaeresis ] };
+    key <AD07> { [   u, U, ugrave,     Ugrave ] };
+    key <AD08> { [   i, I, icircumflex,     Icircumflex ] };
+    key <AD09> { [   o, O, ocircumflex,     Ocircumflex ] };
+    key <AD10> { [   p, P, lessthanequal, greaterthanequal] };
+
+    // key <AC01> { [   a, A, agrave, Agrave ] };
+    key <AC01> { [   a, A, adiaeresis, Adiaeresis ] };
+    key <AC03> { [   d, D, ecircumflex, Ecircumflex ] };
+   // key <AC04> { [   f, F, trademark, uparrow ] };
+    key <AC04> { [   f, F, ediaeresis, Ediaeresis ] };
+    key <AC05> { [   g, G, oslash, Ooblique ] };
+    key <AC06> { [   h, H, udiaeresis, Udiaeresis  ] };
+    key <AC07> { [   j, J, ucircumflex, Ucircumflex  ] };
+    key <AC08> { [   k, K, idiaeresis, Idiaeresis ] };
+    key <AC09> { [   l, L, odiaeresis, Odiaeresis ] };
+    key <AC11> { [apostrophe,quotedbl,    dead_acute,   dead_diaeresis  ] };
+
+    key <AB02> { [        x, X,           oe,           OE              ] };
+    key <AB03> { [   c, C, ccedilla, Ccedilla ] };
+    key <AB04> { [        v, V,           registered,   downarrow     ] };
+    key <AB05> { [   b, B, copyright, 0x1002212 ] }; // ©, −
+    key <AB06> { [   n, N, 0x1002026, leftarrow ] }; // …  
+    key <AB07> { [   m, M, mu, rightarrow ] }; // ..., _
+    key <AB08> { [   comma, less, dead_cedilla, 0x100202F ] }; // espace fine
+
+    include "level3(ralt_switch)"
+};

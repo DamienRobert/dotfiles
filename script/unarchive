@@ -1,0 +1,10 @@
+#!/bin/zsh
+help() {
+  echo "unarchive dir: launch archive -u foo
+
+OPTIONS:
+  -r|-rm: in decompression mode ask (or not with -rm) to remove foo"
+  exit 1
+}
+
+archive -u "$@"

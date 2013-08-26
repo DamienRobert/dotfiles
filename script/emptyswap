@@ -1,0 +1,22 @@
+#!/bin/sh
+echo "Dropping caches (press a key)"
+read a
+echo -e "BEFORE EMPTY CACHES"
+free
+echo 3 > /proc/sys/vm/drop_caches
+#free
+#echo 0 > /proc/sys/vm/drop_caches
+echo "After drop_cache"
+free
+
+msg="Cannot write swap back to RAM...\nNot enough memory - bye..."
+mem=`free|grep Mem:|awk '{print $4}'`
+swap=`free|grep Swap:|awk '{print $3}'`
+test $mem -lt $swap && echo -e $msg && exit 1
+echo "Empty swap (press a key)"
+read a
+swapoff -a && swapon -a
+echo -e "\nOutput of free after:"
+free
+exit 0
+

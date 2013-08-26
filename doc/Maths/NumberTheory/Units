@@ -1,0 +1,30 @@
+- x est une unité ssi N(x)=1.
+
+- x est une racine de l'unité ssi pour tout plongement i, ||x||_i=1.
+http://math.stackexchange.com/questions/4323/are-all-algebraic-integers-with-absolute-value-1-roots-of-unity
+En particulier s'il existe un plongement réel, les seules racines de
+l'unité sont \pm 1.
+
+- Le groupe des unités est de rang r=r_1+r_2-1 où r_1 est le nombre de
+plongements réels, r_2 le nombre de plongements complexes.
+
+Plus précisément le plongement log ||u||_i dans R^{r+1} réalise les unités
+comme un sous-réseau de l'espace vectoriel de dimension r des vecteurs 
+de somme nulle.
+
+Ici, ||u||_i dénote la valeur absolue normalisée du i-ième plongement, ie
+si c'est un plongement complexe c'est |\phi_i(u)|^2.
+
+- Application: L/K est une extension telle que rang unités(L)=rang
+  unités(K) ssi L est un corps CM et K le corps réel associé (ie tout
+  plongement réel de K devient un plongement complexe).
+
+- Soit K un corps CM. Alors si ||x||_i=1 pour un plongement complexe, x est
+  une racine de l'unité.
+  [Pr: par ce qui précède il suffit de prouver que ||x||_j=1 pour tout
+  plongement complexe j, mais ça vient du fait que les plongements
+  commutent à la conjugation pour un corps CM. Cf:
+  http://math.stackexchange.com/questions/39856/sums-of-roots-of-unity
+  http://math.stackexchange.com/questions/4323/are-all-algebraic-integers-with-absolute-value-1-roots-of-unity]
+  Application: si x \in Z[\zeta_n] est de valeur absolue 1, alors x est une
+  racine 2n-ième de l'unité. [Pr: Q(\zeta_n) est un corps CM].

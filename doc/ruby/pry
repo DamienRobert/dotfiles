@@ -1,0 +1,85 @@
+# vim: foldmethod=marker ft=markdownlight
+# Navigating objects
+
+cd
+ls
+whereami
+nesting
+
+cd ploum
+exit (return ploum)
+cd .. (don't return ploum)
+exit-all: exit the pry session (differ from !!! if pry was called from a program)
+exit-program, !!!: exit completly
+
+# historique
+
+hist
+hist --replay
+
+
+# Editer
+
+amend-line line: amend the line
+edit: edit the last line
+edit -t: starts with an empty file
+edit -ex: edit the file that generated the last exception
+edit -i line: edit line
+
+cat -i line: see line
+play -i line: replay line
+
+# shell
+
+.ls #{dir}
+shell-mode (see the current dir rather than the current object)
+cat file
+save-file #save history to a file
+
+# Exceptions:
+
+pyr-backtrack: the backtrace of the current pry session
+wtf? show last stack trace
+cat -ex: show the code responsible for the exception (use -n up to go up
+the backtrace)
+
+# Documentation
+
+find-method
+find-method -c (grep in the source)
+edit-method
+show-method (alias: show-source, $)
+show-method (-a to get all matching source)
+show-doc (alias: ?)
+(_file_ and _dir_ then give the file and dir where the method was found)
+
+# Divers
+gem-cd
+gem-install
+gem-list
+
+gist/jist
+
+simple-prompt #small prompt
+
+# Plugins:
+https://github.com/ConradIrwin/pry-syntax-hacks
+(allow access to instance variables, call private methods and access to the
+methods of an object)
+
+- pry-debugger
+next,step (the difference is that step goes inside functions but next see a
+function as an atom)
+finish,continue (finish finish the current frame, continue resume the program)
+break
+- à combiner avec pry-stack_explorer
+up, down, frame (to go to frame number n), show-stack
+
+- pry-exception_explorer
+in a wrap like
+EE.wrap do
+  raise ploum
+end
+the exception ploum will launch a pry session. ->
+continue-exception #continue the exception
+enter-exception  #enter the context of the last exception

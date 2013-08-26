@@ -1,0 +1,54 @@
+desc "tic toc"
+task :tic => [:toc] do |t|
+  puts "tic"
+end
+
+desc "toc"
+task :toc  do |t|
+  puts "toc"
+end
+
+desc "ploum"
+task :ploum, [:name] => [:plam] do |t,args|
+  puts "ploum: #{args.name}"
+end
+
+desc "plam"
+task :plam, [:name] do |t,args|
+  args.with_defaults(:name => "John")
+  puts "plam: #{args.name}"
+end
+
+#file "ploum"              do |t| touch t.name end
+#directory "testdata/examples/doc" #=> mkdir -p
+#rule '.o' => ['.c'] do |t|
+#  sh "cc #{t.source} -c -o #{t.name}"
+#end
+#rule( /\.o$/ => [
+#  proc {|task_name| task_name.sub(/\.[^.]+$/, '.c') }
+#  ]) do |t|
+# sh "cc #{t.source} -c -o #{t.name}"
+# end
+=begin
+ 1 require 'rake/clean'
+ 2 
+ 3 CLEAN.include('*.o')
+ 4 CLOBBER.include('hello')
+ 5 
+ 6 task :default => ["hello"]
+ 7 
+ 8 SRC = FileList['*.c']
+ 9 OBJ = SRC.ext('o')
+10 
+11 rule '.o' => '.c' do |t|
+12   sh "cc -c -o #{t.name} #{t.source}"
+13 end
+14 
+15 file "hello" => OBJ do
+16   sh "cc -o hello #{OBJ}"
+17 end
+18   
+19 # File dependencies go here ...
+20 file 'main.o' => ['main.c', 'greet.h']
+21 file 'greet.o' => ['greet.c']
+=end

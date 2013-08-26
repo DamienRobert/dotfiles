@@ -1,0 +1,13 @@
+#!/bin/sh
+#launch pacman $OPT on the packages given by $@
+OPT=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -* ) OPT="$OPT $1"; shift;;
+    *) break;;
+  esac
+done
+
+pacman $OPT `$@ | cut -d ' ' -f 1`

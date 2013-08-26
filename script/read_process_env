@@ -1,0 +1,18 @@
+#!/bin/zsh
+#read the environment of a pid
+#use -C prog to use the name of the prog instead
+
+pid=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -C ) shift; prog=$1; shift;
+       pid=$(ps -C $prog -o pid --no-heading) ;;
+    *) break;;
+  esac
+done
+
+[[ -z $pid ]] && pid=$1
+  #eval "unset ${vars[@]}; $(printf "export %s;" $(sed 's/\x00/\n/g' /proc/${pid//[^0-9]/}/environ | grep $(printf -- "-e ^%s= " "${vars[@]}")) )"
+  printf "%s\n" $(sed 's/\x00/\n/g' /proc/${pid//[^0-9]/}/environ) | less

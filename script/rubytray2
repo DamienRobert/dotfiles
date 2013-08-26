@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'gtk2'
+require 'dr/gtk'
+
+###**************************###
+## Displayed Icon
+###**************************###
+si=Gtk::StatusIcon.new
+##use a stock image
+si.stock=Gtk::Stock::FILE
+
+##or a personnal one
+#si.pixbuf=Gdk::Pixbuf.new('/path/to/image')
+si.tooltip='StatusIcon'
+
+###**************************###
+## Handle left click on icon
+###**************************###
+si.signal_connect('activate'){|icon| icon.blinking=!(icon.blinking?)}
+
+###**************************###
+## Pop up menu on rigth click
+###**************************###
+##Build a menu
+info=Gtk::ImageMenuItem.new(Gtk::Stock::INFO)
+info.signal_connect('activate'){p "Embedded: #{si.embedded?}"; p "Visible: #{si.visible?}"; p "Blinking: #{si.blinking?}"}
+quit=Gtk::ImageMenuItem.new(Gtk::Stock::QUIT)
+quit.signal_connect('activate'){Gtk.main_quit}
+menu=Gtk::Menu.new
+menu.append(info)
+menu.append(Gtk::SeparatorMenuItem.new)
+menu.append(quit)
+menu.show_all
+##Show menu on rigth click
+si.signal_connect('popup-menu'){|tray, button, time| menu.popup(nil, nil, button, time)}
+
+
+###**************************###
+## Main loop
+###**************************###
+
+Gtk.init_add do
+  Thread.new do
+    loop do
+      sleep 2
+      #si.blinking=!(si.blinking?)
+      si.stock=Gtk::Stock::DIALOG_INFO
+    end
+  end
+end
+
+Gtk.main

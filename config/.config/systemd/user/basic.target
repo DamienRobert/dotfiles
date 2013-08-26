@@ -1,0 +1,7 @@
+[Unit]
+Description=Services needed on console
+Wants=init.target
+AllowIsolate=yes
+
+[Install]
+Alias=default.target

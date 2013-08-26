@@ -1,0 +1,18 @@
+sciences.maths                  Message 15016
+
+Si je ne m'abuse (je n'ai pas vérifié très soigneusement, donc
+peut-être que je me plante), un h:A^m->A^n est
+
+* injectif ssi /\^m(h):A->/\^m(A^n) est injectif (i.e., les C_n^m
+  coordonnées, qui sont les mineurs m×m de h, n'ont pas de diviseur de
+  zéro commun),
+
+* surjectif ssi /\^n(h):/\^n(A^m)->A est surjectif (i.e., les C_m^n
+  coordonnées, qui sont les mineurs n×n de h, engendrent l'idéal
+  unité).
+
+Exemples:
+- il n'y a pas d'injection de A^m dans A^n si m>n
+- il n'y a pas de surjection de A^m dans A^n si m<n
+- Si n=m, h monomorphisme <=> dét h non diviseur de 0, et
+  h épi <=> dét h inversible <=> h iso.

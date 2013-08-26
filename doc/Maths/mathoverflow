@@ -1,0 +1,204 @@
+#Abelian Varieties
+==================
+
+http://mathoverflow.net/questions/108945/defining-isogenies-over-smaller-fields
+http://mathoverflow.net/questions/108918/nonsingular-zeroes-are-algebraic
+http://mathoverflow.net/questions/109248/on-simple-factors-of-modular-jacobians-endomorphism-ring-and-simplicity-of-mod-p
+http://mathoverflow.net/questions/110351/heegner-points-and-binary-quadratic-forms
+http://mathoverflow.net/questions/109152/axiomatizing-gross-zagier-formulae
+http://mathoverflow.net/questions/110737/why-doesnt-functoriality-immediately-imply-the-modularity-theor
+http://mathoverflow.net/questions/10860/why-no-abelian-varieties-over-z
+http://mathoverflow.net/questions/113856/what-are-some-consequences-of-the-mumford-tate-conjecture
+http://mathoverflow.net/questions/113871/are-ranks-of-jacobians-over-number-fields-unbounded
+http://mathoverflow.net/questions/116969/elliptic-curves-over-function-fields
+http://mathoverflow.net/questions/117196/poincare-line-bundle
+http://mathoverflow.net/questions/122901/elliptic-curves-over-qq-with-isomorphic-n-torsion
+http://mathoverflow.net/questions/122499/topologically-embedding-curves-in-jacobian
+http://mathoverflow.net/questions/125664/division-by-3-on-elliptic-curve
+http://mathoverflow.net/questions/126926/isogenous-elliptic-curves-have-same-conductor
+http://math.stackexchange.com/questions/219027/affine-algebraic-varieties-defined-over-a-not-necessarily-algebraically-closed
+http://math.stackexchange.com/questions/210022/affine-space-over-non-algebraically-closed-field
+http://mathoverflow.net/questions/139118/what-does-the-jacobian-of-a-curve-tell-us-about-the-curve
+http://mathoverflow.net/questions/139338/compactifying-the-space-of-indecomposable-abelian-varieties
+
+#Algebraic Geometry
+===================
+
+http://mathoverflow.net/questions/89263/my-first-question-on-affine-schemes-in-algebraic-geometry
+ Quels sont les espaces locally ringed qui sont des variétés affines (il
+ faut que le morphisme vers Spec(sections globales) soit un iso!)
+http://mathoverflow.net/questions/118387/connectedness-principle-in-algebraic-geometry #stein factorization
+http://mathoverflow.net/questions/118837/comparing-the-homogeneous-defining-ideals-of-multiple-embeddings-of-a-projective
+http://mathoverflow.net/questions/114023/product-of-projective-schemes
+http://mathoverflow.net/questions/112416/zero-locus-of-a-sheaf-homomorphism
+http://mathoverflow.net/questions/114032/restriction-of-sheaf
+http://mathoverflow.net/questions/78696/is-there-an-intuitive-reason-for-zariskis-main-theorem
+http://mathoverflow.net/questions/94838/emptyness-of-a-projective-variety
+http://mathoverflow.net/questions/65267/global-sections-of-flat-scheme-also-flat
+http://mathoverflow.net/questions/106745/characteristic-zero-and-characteristic-p-in-algebraic-geometry
+http://mathoverflow.net/questions/117238/how-to-calculate-zeroth-crystalline-cohomology
+http://mathoverflow.net/questions/117890/is-kx-1-ldots-to-kx-1-ldots-a-flat-morphism
+http://mathoverflow.net/questions/117043/flatness-criterion-on-normal-bases
+http://mathoverflow.net/questions/34110/algebraic-geometry-examples
+http://mathoverflow.net/questions/37/non-quasi-separated-morphisms
+  #nice intuition of the qs notion
+http://mathoverflow.net/questions/64776/flatness-of-normalization
+http://mathoverflow.net/questions/74588/does-property-p-for-fibers-over-closed-points-of-a-morphism-of-schemes-imply-pro
+  #local to global properties
+http://mathoverflow.net/questions/57777/question-about-the-spec-and-global-section-functors
+  #adjonction for locally ringed spaces
+http://mathoverflow.net/questions/24331/extending-properties-of-commutative-rings-to-schemes
+  #what local properties mean
+http://mathoverflow.net/questions/26558/on-semi-local-schemes?rq=1
+  #localising along a radical ideal yields a semi local ring
+http://mathoverflow.net/questions/73936/the-restriction-of-a-global-section-which-is-not-a-zero-divisor-is-still-an-non?rq=1
+  #U->Total ring of fractions on U is not a prescheaf
+http://mathoverflow.net/questions/28553/extra-principal-cartier-divisors-on-non-noetherian-rings-answered-no/28566#28566
+  #what happen to the scheafication of the locally total fraction prescheaf
+http://mathoverflow.net/questions/64294/gluing-along-closed-subschemes
+  #when is a pushout of schemes in the category of locally ringed spaces a scheme
+http://mathoverflow.net/questions/16235/what-properties-define-open-loci-in-excellent-schemes?rq=1
+
+#Analyse
+========
+
+http://mathoverflow.net/questions/115908/does-a-weaker-condition-than-vanishing-derivative-imply-a-function-being-constant
+http://math.stackexchange.com/questions/235689/pointwise-existence-of-radon-nikodym-derivative-sufficient-for-absolute-continui
+http://mathoverflow.net/questions/126923/image-of-l1-under-the-fourier-transform
+http://mathoverflow.net/questions/66377/why-is-differentiating-mechanics-and-integration-art
+http://mathoverflow.net/questions/66462/which-functions-of-one-variable-are-derivatives
+
+#Category
+=========
+
+http://mathoverflow.net/questions/111801/what-is-the-correct-notion-of-morita-equivalence-between-topological-groupoids
+http://mathoverflow.net/questions/114040/free-objects-in-functor-categories
+http://mathoverflow.net/questions/114391/adjoint-functors-as-initial-objects-of-some-category
+  #Un peu de 2-category
+http://mathoverflow.net/questions/117401/is-every-functor-inducing-a-homotopy-equivalence-a-composition-of-adjoint-functor
+http://mathoverflow.net/questions/139874/pullback-stability-of-internally-projective-objects
+http://mathoverflow.net/questions/139388/example-of-an-unnatural-isomorphism
+  #(Point wise isomorphic functors that are not isomorphics)
+http://mathoverflow.net/questions/139645/applications-of-lawveres-fixed-point-theorem
+http://mathoverflow.net/questions/136478/can-the-lawvere-fixed-point-theorem-be-used-to-prove-the-brouwer-fixed-point-the
+
+#Computer Science
+=================
+
+http://cstheory.stackexchange.com/questions/2708/complexity-of-greatest-common-divisor-gcd
+http://cs.stackexchange.com/questions/43/language-theoretic-comparison-of-ll-and-lr-grammars
+(cf forum.sciences.informatique:2692)
+
+#Crypto
+=======
+
+http://crypto.stackexchange.com/questions/6395/why-is-blum-goldwasser-not-ind-cca-2-secure
+http://crypto.stackexchange.com/questions/6444/why-are-the-constants-so-simple-in-keccak
+
+#Galois
+=======
+
+http://mathoverflow.net/questions/108465/elementary-polynomial-free-proofs-of-fundamental-theorem-of-galois-theory
+  #Some nice references to proofs of Galois main theorem
+http://mathoverflow.net/questions/120749/what-is-an-algebro-geometric-family-of-modular-forms
+  #un post très intéressant sur groupe de galois et groupe fondamental (à la Grothendieck)
+http://mathoverflow.net/questions/546/galois-groups-vs-fundamental-groups
+http://mathoverflow.net/questions/30030/galois-group-as-a-sheaf/30038#30038
+ #topologie étale
+ #donne un lien vers: http://front.math.ucdavis.edu/0902.3464
+ #("Universal covering spaces and fundamental groups in algebraic geometry
+ #as schemes")
+
+#Groups
+=======
+
+http://mathoverflow.net/questions/139493/epimorphisms-mathbbz-mathbbn-to-mathbbz-mathbbn-are-split
+
+#Gro-tsen:
+=========
+
+http://mathoverflow.net/questions/108949/various-definitions-of-recursion-from-ordinal-machines
+http://mathoverflow.net/questions/72800/every-real-function-has-a-dense-set-on-which-its-restriction-is-continuous
+http://mathoverflow.net/questions/79535/constructing-the-surreal-numbers-as-iterated-hahn-series
+http://mathoverflow.net/questions/72590/maximal-domain-of-holomorphy-of-a-series
+
+#Interesting Questions
+=====================
+
+http://mathoverflow.net/questions/46138/does-taking-the-dual-space-stabilize/46210#46210
+http://mathoverflow.net/questions/113840/for-consecutive-primes-abc-prove-that-abcG
+http://mathoverflow.net/questions/117657/generalization-of-the-isoperimetric-inequality
+http://mathoverflow.net/questions/117723/geometric-intuitive-interpretation-of-ext
+http://mathoverflow.net/questions/117840/injective-with-finite-discontinuities-mapping-from-mathbb-rn-to-0-1
+http://mathoverflow.net/questions/127476/analogy-between-the-exterior-power-and-the-power-set
+http://mathoverflow.net/questions/138454/a-property-of-the-unit-circle
+http://mathoverflow.net/questions/138193/is-there-a-cheap-proof-of-power-savings-for-exponential-sums-over-finite-fields
+http://mathoverflow.net/questions/139140/are-there-infinitely-many-integer-polynomials-dominated-by-en-on-all-of-mat
+
+#Logic
+======
+
+http://mathoverflow.net/questions/110866/interpreting-ff
+http://mathoverflow.net/questions/111176/what-ordinals-are-definable-relations-in-peano-arithmetic
+http://mathoverflow.net/questions/116564/ill-admit-it-i-dont-understand-the-definition-of-the-easton-product
+  #du forcing
+http://mathoverflow.net/questions/116788/what-is-the-status-of-cantor-schroder-bernstein-in-reverse-math
+http://mathoverflow.net/questions/116898/assuming-a-transitive-set-model-of-zf
+http://mathoverflow.net/questions/117791/what-axioms-are-stronger-than-the-axiom-of-choice
+http://mathoverflow.net/questions/118081/nice-algebraic-statements-independent-from-zf-vl-constructibility
+http://mathoverflow.net/questions/138418/existence-property-for-ordered-fields
+http://mathoverflow.net/questions/138308/woodins-unpublished-proof-of-the-global-failure-of-gch
+http://mathoverflow.net/questions/138875/why-do-stacked-quantifiers-in-pa-correspond-to-ordinals-up-to-epsilon-0
+http://mathoverflow.net/questions/114083/why-skolemization
+  #For example, Skolemizations (and the dual operation of Herbrandization)
+  #are used, proof-theoretically, when one wants "reductions" of first order
+  #logic to propositional logic.
+http://mathoverflow.net/questions/139589/does-zf-imply-a-weak-version-of-hahn-banach
+http://mathoverflow.net/questions/24047/ultrafilters-and-automorphisms-of-the-complex-field
+http://mathoverflow.net/questions/78819/does-godels-incompleteness-theorem-admit-a-converse
+
+#Meta
+=====
+
+http://mathoverflow.net/questions/116531/the-unreasonable-effectiveness-of-physics-in-mathematics-why-what-how-to-catch
+http://mathoverflow.net/questions/116201/does-grothendiecks-approach-to-mathematics-survive-today
+http://mathoverflow.net/questions/100265/not-especially-famous-long-open-problems-which-anyone-can-understand
+http://mathoverflow.net/questions/138914/contemporary-mathematical-themes
+http://mathoverflow.net/questions/51395/a-soft-introduction-to-physics-for-mathematicians-who-dont-know-the-first-thing
+http://mathoverflow.net/questions/127045/fixed-point-theorems
+http://mathoverflow.net/questions/139607/what-are-some-deep-theorems-and-why-are-they-considered-deep
+http://mathoverflow.net/questions/4994/fundamental-examples
+  #Very nice overview with link to other related meta questions!
+
+#Number Theory
+==============
+
+http://mathoverflow.net/questions/116273/how-do-you-compute-the-primes-of-bad-reduction
+http://mathoverflow.net/questions/110702/factor-rings-of-the-ring-of-integers-in-a-number-field
+http://mathoverflow.net/questions/13733/wild-ramification
+http://mathoverflow.net/questions/103911/phi-gamma-module-of-ordinary-elliptic-curve
+http://mathoverflow.net/questions/11648/current-status-of-crystalline-cohomology
+  #Nice references to p-adic representation and hodge theory
+http://mathoverflow.net/questions/127157/status-of-global-langlands-conjecture-for-gl-2-over-mathbbq
+http://mathoverflow.net/questions/127351/simple-proof-of-relation-between-h1-crystalline-and-dieudonne-module
+http://mathoverflow.net/questions/125050/about-equivalent-statements-of-the-birch-and-swinnerton-dyer-conjecture
+http://mathoverflow.net/questions/72213/ideal-classes-and-integral-similarity
+http://mathoverflow.net/questions/122162/formal-power-series-over-a-henselian-ring
+http://mathoverflow.net/questions/116906/proof-of-tracenorm-equality
+http://mathoverflow.net/questions/117394/applications-of-iwasawa-theory
+http://mathoverflow.net/questions/10124/the-factorial-of-1-2-3
+http://mathoverflow.net/questions/140147/factoring-gaussian-integers
+http://mathoverflow.net/questions/16735/is-a-non-analytic-proof-of-dirichlets-theorem-on-primes-known-or-possible
+
+#Proba
+======
+
+http://mathoverflow.net/questions/139804/distribution-of-roots-of-complex-polynomials
+
+#Topology
+=========
+
+http://mathoverflow.net/questions/139668/vector-bundle-trivial-over-every-compact-subset-then-it-is-globally-trivial
+http://mathoverflow.net/questions/5351/whats-an-example-of-a-space-that-needs-the-hahn-banach-theorem
+  #Nice examples of dual of l^1 and l^\infinity under different axioms of
+  #logic

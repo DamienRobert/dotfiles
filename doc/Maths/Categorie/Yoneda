@@ -1,0 +1,5 @@
+Yoneda embadding: h^A = Hom(A,-).
+Alors Nat(h^A,F) \cong F(A). 
+
+Pr: en effet, pour tout élément x de F(A), il existe un unique morphisme
+naturel qui envoit id \in Hom(A,A) sur x: pour tout f:A->X \Phi_X(f) = (Ff)x. 

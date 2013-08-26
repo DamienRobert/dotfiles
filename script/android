@@ -1,0 +1,4 @@
+#!/bin/sh
+
+. "$MYFILES/.i18n"
+exec "$SHELL"

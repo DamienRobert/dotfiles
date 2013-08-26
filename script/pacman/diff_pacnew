@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+MELD=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -m ) shift; MELD=1 ;;
+    *) break;;
+  esac
+done
+
+DIRnew="/var/tmp/etc-diff.pacnew"
+DIR="/var/tmp/etc-diff"
+rm -rf "$DIRnew"
+rm -rf "$DIR"
+mkdir "$DIRnew"
+mkdir "$DIR"
+
+for pathnew in /etc/**/*.pacnew; do
+  thepath=${pathnew%.pacnew}
+  file=$(basename "$thepath")
+  ln "$pathnew" "$DIRnew/$file"
+  ln "$thepath" "$DIR/$file"
+done
+
+if [ -z "$MELD" ]; then
+  gdiff $DIR $DIRnew
+else
+  DBUS_SESSION_BUS_ADDRESS= sudo meld "$DIRnew" "$DIR"
+fi

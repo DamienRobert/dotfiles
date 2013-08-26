@@ -1,0 +1,8 @@
+autoconf, automake, libtool
+
+libtool permet d'abstraire la création de librairies (par exemple en en
+créant à la fois des statiques et des  dynamiques)
+
+Voir aussi
+pkg-config --cflags --libs qt-mt
+pour utiliser une librairie extérieure

@@ -1,0 +1,239 @@
+%YAML 1.1
+#http://www.yaml.org/spec/1.2/spec.html
+#On n'est pas obligé de mettre la directive %YAML 1.1, ni même le premier
+#---, mais c'est dans la norme, donc c'est mieux de le faire :)
+--- #Compact style
+- ploum: plam
+  plim: plom
+- ahah: hihi
+  ohoh: ohoh
+--- #loose style
+- 
+  ploum: plam
+  plim: 
+    plom
+- 
+  ahah:
+   hihi
+  ohoh: ohoh
+
+--- #inline seq
+[ploum, plam, plim]
+--- #inline hash
+{ploum: plam, plim: plom}
+
+--- #quoting
+- ploum "ahah 'lala
+- "ahah\"hihi\\ahah"
+- 'uhuh''ihih\ouhouh' #quoting ' need two '', \ don't need escaping
+
+############################################################
+
+--- #types
+int: 10
+decimal: +12345
+octal: 0o14
+hexadecimal: 0xC
+float: 3.14
+canonical: 1.23015e+3
+exponential: 12.3015e+02
+fixed: 1230.15
+negative infinity: -.inf
+not a number: .NaN
+bool1: yes
+bool2: false
+nil: ~
+null: 
+time: 18:00
+date: 1984-12-11
+datetime: 1984-11-11 12:45:00
+canonical: 2001-12-15T02:59:43.1Z
+iso8601: 2001-12-14t21:59:43.10-05:00
+spaced: 2001-12-14 21:59:43.10 -5
+
+--- #other types
+not-date: !!str 2002-04-28
+not-int: !!float 2012
+
+picture: !!binary |
+ R0lGODlhDAAMAIQAAP//9/X
+ 17unp5WZmZgAAAOfn515eXv
+ Pz7Y6OjuDg4J+fn5OTk6enp
+ 56enmleECcgggoBADs=
+
+application specific tag: !something |
+ The semantics of the tag
+ above may be different for
+ different documents.
+
+# Sets are represented as a
+# Mapping where each key is
+# associated with a null value
+--- !!set
+? Mark McGwire
+? Sammy Sosa
+? Ken Griff
+
+# Ordered maps are represented as
+# A sequence of mappings, with
+# each mapping having one key
+--- !!omap
+- Mark McGwire: 65
+- Sammy Sosa: 63
+- Ken Griffy: 58
+
+#######################################
+--- #refs
+- &ploum
+  ahah: uhuh
+  uhuh: ohoh
+- *ploum
+
+--- #complex mappings
+? - Detroit Tigers
+  - Chicago cubs
+: - 2001-07-23
+
+? [ New York Yankees,
+    Atlanta Braves ]
+: 
+  [ 2001-07-02, 2001-08-12,
+    2001-08-14 ]
+
+###############################################
+# ASCII Art
+# new lines are conserved
+--- |
+  \//||\/||
+  // ||  ||__
+
+#new lines are folded (except for blank lines)
+--- >
+  Mark McGwire's
+  year was crippled
+  by a knee injury.
+
+  This marks a new line
+
+#Folded newlines are preserved for "more indented" and blank lines 
+# |-: strip last \n + empty lines, |: only strip last empty lines, |+: keep
+# last empty lines
+---
+- >
+ Sammy Sosa completed another
+ fine season with great stats.
+
+   63 Home Runs
+   0.288 Batting Average
+
+ What a year!
+- |
+  Ploum plam plim
+  plimo plumo
+
+    ahah ohoh
+
+  Hihi ohoh
+
+--- #Default mode is folded, even inside quotes
+- A litteral
+
+  with a new line
+    here
+- "Within quoted
+ strings"
+- 'Within single
+    quotes'
+
+###############################################
+--- #unicode
+unicode: "Sosa did fine.\u263A"
+control: "\b1998\t1999\t2000\n"
+hex esc: "\x0d\x0a is \r\n"
+
+single: '"Howdy!" he cried.'
+quoted: ' # Not a ''comment''.'
+tie-fighter: '|\-*-/|'
+
+---
+plain:
+  This unquoted scalar
+  spans many lines.
+
+quoted: "So does this
+  quoted scalar.\n"
+
+! ahah: ohoh #empty tag means autodetect
+
+%TAG ! tag:clarkevans.com,2002:
+--- !shape
+  # Use the ! handle for presenting
+  # tag:clarkevans.com,2002:circle
+- !circle
+  center: &ORIGIN {x: 73, y: 129}
+  radius: 7
+- !line
+  start: *ORIGIN
+  finish: { x: 89, y: 102 }
+- !label
+  start: *ORIGIN
+  color: 0xFFEEBB
+  text: Pretty vector drawing.
+
+--- !<tag:clarkevans.com,2002:invoice>
+invoice: 34843
+date   : 2001-01-23
+bill-to: &id001
+    given  : Chris
+    family : Dumars
+    address:
+        lines: |
+            458 Walkman Dr.
+            Suite #292
+        city    : Royal Oak
+        state   : MI
+        postal  : 48046
+ship-to: *id001
+product:
+    - sku         : BL394D
+      quantity    : 4
+      description : Basketball
+      price       : 450.00
+    - sku         : BL4438H
+      quantity    : 1
+      description : Super Hoop
+      price       : 2392.00
+tax  : 251.42
+total: 4443.52
+comments:
+
+################# ruby serializing ##################
+#http://www.yaml.org/YAML_for_ruby.html
+--- #symbols
+- !ruby/symbol symbol
+- !ruby/sym another 
+    symbol
+- :ploum: plam
+
+--- #ranges and regexps
+normal range: !ruby/range 10..20 
+exclusive range: !ruby/range 11...20 
+case-insensitive: !ruby/regexp "/George McFly/i" 
+complex: !ruby/regexp "/\\A\"((?:[^\"]|\\\")+)\"/" 
+simple: !ruby/regexp '/a.b/' 
+struct: !ruby/struct
+  author: Yukihiro Matsumoto 
+  title: Ruby in a Nutshell 
+  year: 2002 
+  isbn: 0-596-00214-9 
+
+# If modules C B and A exists:
+# --- !ruby/object:C
+# a_object: &id001 !ruby/object:A
+#   number: 5
+#   string: hello world
+# b_object: !ruby/object:B
+#   a_object: *id001
+#   number: 7
+
+# A merge key ('<<') can be used in a mapping to insert other mappings. If the value associated with the merge key is a mapping, each of its key/value pairs is inserted into the current mapping. 

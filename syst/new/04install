@@ -1,0 +1,14 @@
+# install packages
+~syst/pkgs/packages.rb missing
+
+# aur
+sudo ~dams/script/comment.rb -u /etc/pacman.conf <<'EOS'
+[archlinuxfr]
+Server = http://repo.archlinux.fr/$arch
+EOS
+sudo pacman -S yaourt
+yaourt -S pacaur
+
+# /etc
+cd ~etc
+./01gendiffcommit

@@ -1,0 +1,1114 @@
+# vim: set ft=fvwm foldmethod=marker: let b\:fvwm_version=2
+
+# Résumé sur les Raccourcis clavier {{{
+# ------------------
+
+# La syntaxe des fonctions clavier ou souris est toujours :
+# <Touche ou Bouton> <Contexte> <Modificateur> <Action>
+
+# Signification des modificateurs :
+# N : aucun
+# C : Appui simultané sur la touche Ctrl
+# S : Touche Shift
+# M : Touche méta (le petit losange noir sur les claviers des Sun)
+# A : N'importe quelles touches enfoncées.
+# 3 ou 4 suivant les machines : Num-Lock enfoncée. Ça pose plein de
+#                               problèmes, donc on va l'ignorer.
+# sur mon pc, 4 c'est la touche win (superL)
+
+# Signification des contextes :
+# R : Fond de l'écran
+# W : Intérieur d'une fenêtre
+# T : Barre de titre
+# S : Bord d'une fenêtre
+# F : Coin d'une fenêtre
+# I : Icone (mais on n'a pas d'icones dans la présente config.) Pouet
+# A : N'importe ou ailleurs que sur la barre de titre (Mu? N'importe
+#     quoi)
+# 1,2,3... : Boutons de la barre de titre
+
+# Contexte du mouvement 
+# I: immediate
+# M: mouse move
+# C: click
+# H: hold
+# D: double click
+
+#On va essayer d'être ICCM compliant :)
+
+# Ras le bol des problèmes de num lock :)
+IgnoreModifiers L2
+# }}}
+
+# Les fonctions {{{
+
+DestroyFunc CMenu
+AddToFunc CMenu
++ I Menu $* Root c c
+
+# Divers {{{
+DestroyFunc BMenu
+AddToFunc BMenu
++ I Raise
++ I Menu Fenetre Button1 0 100
+
+DestroyFunc BMaxOff
+AddToFunc BMaxOff
+#+ I Resize keep keep
+# sinon il se rend pas compte qu'il est plus max
++ I ResizeMaximize keep keep 
++ I Maximize false
+
+DestroyFunc MoveToOrig
+AddToFunc MoveToOrig
++ I MoveAndFollow 1 1
++ I MoveToDeskAndFollow 0 0
+
+#pour resizer une windows
+#DestroyFunc Keybdresize
+#AddToFunc KeybdResize
+#+ I WarpToWindow 1 1
+#+ I Resize 
+#+ I WarpToWindow 50 50
+#AddToFunc KeybdResize2
+#+ I WarpToWindow -1 -1
+#+ I Resize 
+#+ I WarpToWindow 50 50
+
+#pour restorer la fenêtre
+DestroyFunc Restore
+AddToFunc Restore
++ I Iconify False
++ I Maximize False
++ I WindowShade False
++ I Layer 0 4
++ I RefreshWindow
+#}}}
+
+#sélection des fenêtres et souris {{{
+#----------------------
+
+#quand on arrive sur une fenêtre
+DestroyFunc Warp
+AddToFunc Warp
++ I FlipFocus
++ I Raise
+DestroyFunc WarpFocus
+AddToFunc WarpFocus
++ I Focus
++ I Raise
+
+#Quand on clique sur une fenêtre
+DestroyFunc Raise-and-move
+AddToFunc Raise-and-move
++ I Raise
++ M Move
++ D WindowShade Toggle
+
+#pour le click droit
+DestroyFunc LowerAndResize
+AddToFunc LowerAndResize
++ C Lower
++ D Resize
++ M Resize
+#}}}
+
+# Se déplacer {{{
+# ----------------------
+
+#Deplacement dans le desktop
+#Si jamais il n'y a pas de fenêtre focusée, on en focus une
+#nowarp pour pas déplacer le bureau virtuel sur la fenêtre focusée
+DestroyFunc ChangeDesktop
+AddToFunc ChangeDesktop
++ I GotoDesk $*
+#+ I Prev (CurrentDesk !Iconic) Focus NoWarp
+#+ I Next (CurrentDesk !Iconic) Focus NoWarp
++ I None (CurrentDesk, Focused) Next (CurrentDesk, !Iconic) FlipFocus NoWarp
+
+# Se déplacer avec une fenêtre
+# ----------------------------
+
+DestroyFunc MoveAndFollow
+AddToFunc MoveAndFollow
+#+ I WarpToWindow 50 50
++ I MoveToPage $*
++ I Schedule 10  Focus
++ I GotoPage   $*
+#Next ($[w.id]) Focus
+
+DestroyFunc MoveToDeskAndFollow
+AddToFunc MoveToDeskAndFollow
+#+ I WarpToWindow 50 50
++ I MoveToDesk $* 
++ I Schedule 10  Focus
++ I GotoDesk   $* 
+#}}}
+
+# Application toggling function
+# First argument is the window name, second argument is the
+# command to start the application.
+DestroyFunc ToggleWindow
+AddToFunc ToggleWindow
++ I None ($$0,CirculateHit, CirculateHitIcon) $$1
++ I TestRc (Match) Break
++ I Next (Iconic, CirculateHit, CirculateHitIcon, $$0) Iconify false
++ I TestRc (Match) Break
++ I Next (!Iconic, CirculateHit, $$0) Iconify true
+
+DestroyFunc ToggleWindowCurrentPage
+AddToFunc ToggleWindowCurrentPage
++ I None ($$0,CirculateHit, CirculateHitIcon, CurrentPage) $$1
++ I TestRc (Match) Break
++ I Next (Iconic, CirculateHit, CirculateHitIcon, CurrentPage, $$0) Iconify false
++ I TestRc (Match) Break
++ I Next (!Iconic, CirculateHit, CurrentPage, $$0) Iconify true
+
+DestroyFunc ToggleWindowUpDown
+AddToFunc ToggleWindowUpDown
++ I Next ($$0,CirculateHit, CirculateHitIcon, Layer $$1) Layer 0 $$2
++ I TestRc (Match) Break
++ I Next ($$0, CirculateHit, CirculateHitIcon, Layer $$2) Layer 0 $$1
+
+DestroyFunc ConsoleOneLine
+AddToFunc ConsoleOneLine
++ I Exec exec $HOME/.fvwm/fenetre FVWMsinglecommand 
+DestroyFunc Console
+AddToFunc Console
++ I ToggleWindow "FVWMmulticommand" "Exec exec $HOME/.fvwm/fenetre FVWMmulticommand"
+DestroyFunc ConsoleCP
+AddToFunc ConsoleCP
++ I ToggleWindow "FVWMmulticommandCP" "Exec exec $HOME/.fvwm/fenetre FVWMmulticommandCP"
+# }}}
+
+# Les menus {{{
+# Programs menus {{{
+AddToMenu MainSessionMenu
++ "Session Menu" Title
++ "Fvwm" Popup FvwmFuncMenu
++ "Refresh" Popup RefreshMenu
++ ""
++ "Restart" Popup RestartMenu
++ "Quit" Popup QuitMenu
+
+AddToMenu RefreshMenu
++ "Refresh" Title
++ "Refresh Window" RefreshWindow
++ "Refresh All" Refresh
++ "Update Styles" UpdateStyles
++ "Recapture Window" RecaptureWindow
++ "Recapture" Recapture
+
+AddToMenu RestartMenu
++ "Save/Restart" Title
++ "Restart"     Restart
++ "Restart --dont-preserve-state" Restart --dont-preserve-state
++ "Restart fvwm" Restart fvwm
++ ""
++ "Save Session" SaveSession
++ "dm save" Exec exec dm save-session
+
+AddToMenu QuitMenu
++ "Quit" Title
++ "dm lock" Exec exec dm lock
++ "dm dialog" Exec exec dm dialog
++ ""
++ "dm logout" Exec exec dm logout
++ "dm suspend" Exec exec dm suspend
++ "dm hibernate" Exec exec dm hibernate
++ "dm reboot" Exec exec dm reboot
++ "dm poweroff" Exec exec dm poweroff
++ ""
++ "Save Quit Session" SaveQuitSession
++ "Quit" Quit
+
+AddToMenu FvwmFuncMenu
++ "Fvwm Functions" Title
++ "Console (sticky)" Function Console
++ "Console on current page" Function ConsoleCP
++ "One line console" Function ConsoleOneLine
++ ""
++ "Pager" ToggleWindow "FvwmPager" "Module FvwmPager 0 3"
++ "Fvwm Console" Function ToggleWindow "FvwmConsole" "Module FvwmConsole"
++ "Fvwm Ident" Module FvwmIdent
++ "Add Scrollbar" FvwmScroll
+#}}}
+
+# Window menu {{{
+AddToMenu MainWindowMenu
++ "Windows operations" Title
++ "Shade" Popup WindowShadeMenu
++ "L&ayers" Popup LayersMenu
++ "Sticky" Popup StickMenu
++ "Change Page" Popup WindowNavigateMenu
++ ""
++ "Move" Popup MoveMenu
++ "Resize" Popup ResizeMenu
++ "Maximize" Popup MaximizeMenu
++ "Resize Maximize" Popup ResizeMaximizeMenu
++ "Iconfiy"       Popup IconWindowMenu
++ "Close"       Popup CloseWindowMenu
++ ""
++ "Move Pointer" Popup WindowPointerMenu
++ "Place Again"  Popup PlaceAgainMenu
+
+AddToMenu CloseWindowMenu
++ "Close Window" Title
++ "Delete" Delete
++ "Close" Close
++ "Destroy" Destroy
+AddToMenu IconWindowMenu
++ "Iconify Window" Title
++ "Iconfify toggle" Iconify toggle
++ "Iconfify true" Iconify true
++ "Iconfify false" Iconify false
+
+AddToMenu WindowNavigateMenu
++ "Change Page" Title
++ "Left Page" MoveAndFollow -1p +0p
++ "Up Page" MoveAndFollow +0p -1p
++ "Right Page" MoveAndFollow +1p +0p
++ "Down Page" MoveAndFollow +0p +1p
++ "Next Desk"  MoveToDeskAndFollow +1 0 0 3
++ "Prior Desk"  MoveToDeskAndFollow -1 0 0 3
++ ""
++ "Goto Page" Popup WindowPageNavigateMenu
++ "Goto Desk" Popup WindowDeskNavigateMenu
+AddToMenu WindowPageNavigateMenu
++ "(0,0)" MoveAndFollow 0 0
++ "(0,1)" MoveAndFollow 0 1
++ "(0,2)" MoveAndFollow 0 2
++ "(1,0)" MoveAndFollow 0 0
++ "(1,1)" MoveAndFollow 0 1
++ "(1,2)" MoveAndFollow 0 2
++ "(2,0)" MoveAndFollow 0 0
++ "(2,1)" MoveAndFollow 0 1
++ "(2,2)" MoveAndFollow 0 2
+AddToMenu WindowDeskNavigateMenu
++ "$[desk.name0]"    MoveToDeskAndFollow 0 0 0 3 
++ "$[desk.name1]"    MoveToDeskAndFollow 0 1 0 3 
++ "$[desk.name2]"    MoveToDeskAndFollow 0 2 0 3 
++ "$[desk.name3]"    MoveToDeskAndFollow 0 3 0 3 
+
+AddToMenu StickMenu
++ "Sticky" Title
++ "Unstick" Stick false
++ "Stick" Stick true
++ "Stick Across Pages" StickAcrossPages true
++ "Stick Across Desks" StickAcrossDesks true
+
+AddToMenu LayersMenu
++ "Stays on" Title
++ "Top"                             Layer 0 6
++ "Middle"                          Layer 0 4
++ "Bottom"                          Layer 0 2
+
+AddToMenu WindowShadeMenu
++ "Window Shade" Title
++ "Unshade"  WindowShade false
++ "Shade NW" WindowShade ShadeAgain NW
++ "Shade N"  WindowShade ShadeAgain N
++ "Shade NE" WindowShade ShadeAgain NE
++ "Shade W"  WindowShade ShadeAgain W
++ "Shade E"  WindowShade ShadeAgain E
++ "Shade SW" WindowShade ShadeAgain SW
++ "Shade S"  WindowShade ShadeAgain S
++ "Shade SE" WindowShade ShadeAgain SE
+
+AddToMenu ResizeMenu
++ "Resize Windows" Title
++ "Resize NW" Resize direction "NorthWest"
++ "Resize NW Warp" Resize direction "NorthWest" warptoborder
++ "Resize SE" Resize direction "SouthEast"
++ "Resize SE Warp" Resize direction "SouthEast" warptoborder
++ ""
++ "Resize" Resize
+AddToMenu ResizeMaximizeMenu
++ "ResizeMaximize Windows" Title
++ "Resize NW" ResizeMaximize direction "NorthWest"
++ "Resize NW Warp" ResizeMaximize direction "NorthWest" warptoborder
++ "Resize SE" ResizeMaximize direction "SouthEast"
++ "Resize SE Warp" ResizeMaximize direction "SouthEast" warptoborder
++ ""
++ "Resize" ResizeMaximize
+
+AddToMenu MaximizeMenu
++ "Maximize" Title
++ "Maximize Toggle" Maximize
++ "Maximize True" Maximize true
++ "Maximize False" Maximize false
++ "Commit Maximize" Function BMaxOff
++ ""
++ "UseWorkingArea" Popup MaximizeWAMenu
++ "IgnoreWorkingArea" Popup MaximizeIWAMenu
+AddToMenu MaximizeWAMenu
++ "Maximize" Maximize true
++ "Maximize Vertical" Maximize true 0 100
++ "Maximize Horizontal" Maximize true 100 0
++ ""
++ "Maximize growleft" Maximize true growleft 0
++ "Maximize growright" Maximize true growright 0
++ "Maximize growup" Maximize true 0 growup
++ "Maximize growdown" Maximize true 0 growdown
+AddToMenu MaximizeIWAMenu
++ "Maximize" Maximize true ewmhiwa 100 100
++ "Maximize Vertical" Maximize true ewmhiwa 0 100
++ "Maximize Horizontal" Maximize true ewmhiwa 100 0
++ ""
++ "Maximize growleft" Maximize true ewmhiwa growleft 0
++ "Maximize growright" Maximize true ewmhiwa growright 0
++ "Maximize growup" Maximize true 0 ewmhiwa growup
++ "Maximize growdown" Maximize true 0 ewmhiwa growdown
+
+AddToMenu MoveMenu
++ "Move Window" Move
++ ""
++ "Up" Move w +0
++ "Right" Move -0 w
++ "Down" Move w -0
++ "Left" Move +0 w
++ ""
++ "NW" Move +0 +0
++ "N" Move 50-50w +0
++ "NE" Move -0 +0
++ "W" Move +0 50-50w
++ "C" Move 50-50w 50-50w 
++ "E" Move -0 50-50w
++ "SW" Move +0 -0
++ "S" Move 50-50w -0
++ "SE" Move -0 -0
+
+AddToMenu PointerMenu
++ "Move Pointer" Title
++ "On Window" Popup WindowPointerMenu
++ "On Root" Popup RootPointerMenu
+AddToMenu WindowPointerMenu
++ "NW" WarpToWindow 0 0
++ "N"  WarpToWindow 50 0
++ "NE" WarpToWindow 100 0
++ "W"  WarpToWindow 0 50
++ "C"  WarpToWindow 50 50
++ "E"  WarpToWindow 100 50
++ "SW" WarpToWindow 0 100
++ "S"  WarpToWindow 50 100
++ "SE" WarpToWindow 100 100
+AddToMenu RootPointerMenu
++ "NW" WindowId root 1 WarpToWindow 0 0
++ "N"  WindowId root 1 WarpToWindow 50 0
++ "NE" WindowId root 1 WarpToWindow 100 0
++ "W"  WindowId root 1 WarpToWindow 0 50
++ "C"  WindowId root 1 WarpToWindow 50 50
++ "E"  WindowId root 1 WarpToWindow 100 50
++ "SW" WindowId root 1 WarpToWindow 0 100
++ "S"  WindowId root 1 WarpToWindow 50 100
++ "SE" WindowId root 1 WarpToWindow 100 100
+# }}}
+
+# Desktop menus {{{
+AddToMenu MainDesktopMenu
++ "Desktop Menu" Title
++ "Windows List" Popup WindowListMenu
++ "Focus"        Popup FocusMenu
++ "Change Page"  Popup NavigateMenu
++ "Move Pointer" Popup RootPointerMenu
++ "PlaceAgain"  Popup PlaceAgainMenu
++ "Scroll" Popup ScrollMenu
++ "Iconify"  Popup IconifyPageMenu
++ "UnIconify"  Popup DeIconifyPageMenu
+
+AddToMenu PlaceAgainMenu
++ "Place Again" Title
++ "Current Windows" PlaceAgain
++ "Current Page" All (!CirculateHit, CurrentPage) PlaceAgain
++ "Current Global Page" All (!CirculateHit, CurrentGlobalPage) PlaceAgain
++ "Current Desk" All (!CirculateHit, CurrentDesk) PlaceAgain
++ "All Windows" All PlaceAgain
++ ""
++ "Move to current screen" Popup MoveToCurrentScreenMenu
++ "Move to primary screen" Popup MoveToPrimaryScreenMenu
++ "Move to global screen" Popup MoveToGlobalScreenMenu
++ ""
++ "Cascade" FvwmRearrange -cascade
++ "Tile" FvwmRearrange -tile -noresize
++ "Tile Resize" FvwmRearrange -tile -resize
+
+AddToMenu MoveToCurrentScreenMenu
++ "Current Window" MoveToScreen c
++ "All Windows" All MoveToScreen c
+AddToMenu MoveToPrimaryScreenMenu
++ "Current Window" MoveToScreen p
++ "All Windows" All MoveToScreen p
+AddToMenu MoveToGlobalScreenMenu
++ "Current Window" MoveToScreen g
++ "All Windows" All MoveToScreen g
+
+AddToMenu ScrollMenu
++ "Scroll" Title
++ "Scroll" Scroll
++ "Scroll reverse" Scroll reverse
++ ""
++ "Add Scrollbar" FvwmScroll
+
+AddToMenu IconifyPageMenu
++ "Iconify"     Title
++ "CurrentPage"  All (CurrentPage, !Iconic, !Fvwm*) Iconify true 
++ "CurrentGlobalPage"  All (CurrentGlobalPage, !Iconic, !Fvwm*) Iconify true 
++ "CurrentDesk"  All (CurrentDesk, !Iconic, !Fvwm*) Iconify true 
++ "All"  All (!Iconic, !Fvwm*) Iconify true 
+
+AddToMenu DeIconifyPageMenu
++ "DeIconify"   Title
++ "CurrentPage"  All (CurrentPage, Iconic, !Fvwm*) Iconify false
++ "CurrentGlobalPage"  All (CurrentGlobalPage, Iconic, !Fvwm*) Iconify false
++ "CurrentDesk"  All (CurrentDesk, Iconic, !Fvwm*) Iconify false 
++ "All"  All (Iconic, !Fvwm*) Iconify false 
+
+AddToMenu NavigateMenu
++ "Navigate" Title
++ "Left Page" GotoPage -1p +0p
++ "Up Page" GotoPage +0p -1p
++ "Right Page" GotoPage +1p +0p
++ "Down Page" GotoPage +0p +1p
++ "Next Desk"  ChangeDesktop +1 0 0 3
++ "Prior Desk"  ChangeDesktop -1 0 0 3
++ ""
++ "Goto Page" Popup PageNavigateMenu
++ "Goto Desk" Popup DeskNavigateMenu
+AddToMenu PageNavigateMenu
++ "(0,0)" GotoPage 0 0
++ "(0,1)" GotoPage 0 1
++ "(0,2)" GotoPage 0 2
++ "(1,0)" GotoPage 0 0
++ "(1,1)" GotoPage 0 1
++ "(1,2)" GotoPage 0 2
++ "(2,0)" GotoPage 0 0
++ "(2,1)" GotoPage 0 1
++ "(2,2)" GotoPage 0 2
+AddToMenu DeskNavigateMenu
++ "$[desk.name0]"    MoveToDesk 0 0 0 3 
++ "$[desk.name1]"    MoveToDesk 0 1 0 3 
++ "$[desk.name2]"    MoveToDesk 0 2 0 3 
++ "$[desk.name3]"    MoveToDesk 0 3 0 3 
+
+AddToMenu FocusMenu
++ "Focus" Title
++ "Next" NextFocusMenu
++ "Prev" PrevFocusMenu
++ ""
++ "Direction NW" Direction NorthWest (CurrentPage) Function Warp
++ "Direction N"  Direction North     (CurrentPage) Function Warp
++ "Direction NE" Direction NorthEast (CurrentPage) Function Warp
++ "Direction W"  Direction West      (CurrentPage) Function Warp
++ "Direction C"  Direction Center    (CurrentPage) Function Warp
++ "Direction E"  Direction East      (CurrentPage) Function Warp
++ "Direction SW" Direction SouthWest (CurrentPage) Function Warp
++ "Direction S"  Direction South     (CurrentPage) Function Warp
++ "Direction SE" Direction SouthEast (CurrentPage) Function Warp
+AddToMenu NextFocusMenu
++ "Current Page" Next (CurrentPage) Function WarpFocus
++ "Current Global Page" Next (CurrentGlobalPage) Function WarpFocus
++ "Current Desk" Next (CurrentDesk) Function WarpFocus
++ "All Desks" Next Function WarpFocus
++ "All Desks (CirculateHit)" Next (CirculateHit) Function WarpFocus
++ "Icons" Next (Iconic, CirculateHitIcon) Function WarpFocus
+AddToMenu PrevFocusMenu
++ "Current Page" Prev (CurrentPage) Function WarpFocus
++ "Current Global Page" Prev (CurrentGlobalPage) Function WarpFocus
++ "Current Desk" Prev (CurrentDesk) Function WarpFocus
++ "All Desks" Prev Function WarpFocus
++ "All Desks (CirculateHit)" Prev (CirculateHit) Function WarpFocus
++ "Icons" Prev (Iconic, CirculateHitIcon) Function WarpFocus
+# }}}
+
+# Window List {{{
+AddToMenu WindowListMenu
++ "Windows Lists" Title
++ "Current Page" Popup CPWindowListMenu
++ "Current Global Page" Popup CGPWindowListMenu
++ "Current Desk" Popup CDWindowListMenu
++ "All" Popup AllWindowListMenu
+AddToMenu CPWindowListMenu
++ "All"        WindowList (CurrentPage) Root c c \
+               IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Non Iconic" WindowList (CurrentPage) Root c c \
+               NoIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Iconic" WindowList (CurrentPage) Root c c \
+               OnlyIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Skip List" WindowList (CurrentPage) Root c c \
+               OnlyListSkip,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "All+SkipList+Infos" WindowList (CurrentPage) Root c c \
+               UseListSkip,IconifiedAtEnd
+AddToMenu CDWindowListMenu
++ "All"        WindowList (CurrentDesk) Root c c \
+               IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Non Iconic" WindowList (CurrentDesk) Root c c \
+               NoIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Iconic" WindowList (CurrentDesk) Root c c \
+               OnlyIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Skip List" WindowList (CurrentDesk) Root c c \
+               OnlyListSkip,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "All+SkipList+Infos" WindowList (CurrentDesk) Root c c \
+               UseListSkip,IconifiedAtEnd
+AddToMenu CGPWindowListMenu
++ "All"        WindowList (CurrentGlobalPage) Root c c \
+               IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Non Iconic" WindowList (CurrentGlobalPage) Root c c \
+               NoIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Iconic" WindowList (CurrentGlobalPage) Root c c \
+               OnlyIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Skip List" WindowList (CurrentGlobalPage) Root c c \
+               OnlyListSkip,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "All+SkipList+Infos" WindowList (CurrentGlobalPage) Root c c \
+               UseListSkip,IconifiedAtEnd
+AddToMenu AllWindowListMenu
++ "All"        WindowList  Root c c \
+               IconifiedAtEnd NoGeometryWithInfo NoDeskNum 
++ "Non Iconic" WindowList  Root c c \
+               NoIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Iconic" WindowList  Root c c \
+               OnlyIcons,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "Only Skip List" WindowList  Root c c \
+               OnlyListSkip,IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
++ "All+SkipList+Infos" WindowList  Root c c \
+               UseListSkip,IconifiedAtEnd
+# }}}
+
+# Style menu {{{
+AddToMenu MainStyleMenu
++ "Styles" Title
++ "Title Bar" Popup TitleStyleMenu
++ "Mouse Focus" Popup MouseStyleMenu
++ ""
++ "Destroy Window Style" Current DestroyWindowStyle
++ "Refresh" Popup RefreshMenu
+
+AddToMenu TitleStyleMenu
++ "Title Style" Title
++ "Add Titles for" Popup AddTitleStyleMenu
++ "Remove Titles for" Popup RmTitleStyleMenu
+AddToMenu AddTitleStyleMenu
++ "Current Window" WindowStyle Title
++ "Current Page" \
+  All (CurrentPage, !CirculateHit) WindowStyle Title
++ "Current Global Page" \
+  All (CurrentGlobalPage, !CirculateHit) WindowStyle Title
++ "Current Desk" \
+  All (CurrentDesk, !CirculateHit) WindowStyle Title
++ "All (CirculateSkip)" \
+  All (!CirculateHit) WindowStyle Title
++ "All (CirculateHit)" \
+  All (CirculateHit) WindowStyle Title
++ ""
++ "All Same Style" \
+  Current Style $[w.class] Title
++ "All Style" \
+  Style * Title
+AddToMenu RmTitleStyleMenu
++ "Current Window" Current WindowStyle !Title
++ "Current Page" \
+  All (CurrentPage, !CirculateHit) WindowStyle !Title
++ "Current Global Page" \
+  All (CurrentGlobalPage, !CirculateHit) WindowStyle !Title
++ "Current Desk" \
+  All (CurrentDesk, !CirculateHit) WindowStyle !Title
++ "All (CirculateSkip)" \
+  All (!CirculateHit) WindowStyle !Title
++ "All (CirculateHit)" \
+  All (CirculateHit) WindowStyle !Title
++ ""
++ "All Same Style" \
+  Current Style $[w.class] Title
++ "All Style" \
+  Style * Title
+
+AddToMenu MouseStyleMenu
++ "Mouse Style" Title
++ "Click to Focus for" Popup RmMouseStyleMenu
++ "Enter to Focus for" Popup AddMouseStyleMenu
+AddToMenu AddMouseStyleMenu
++ "Current Window" WindowStyle FPEnterToFocus
++ "Current Page" \
+  All (CurrentPage, !CirculateHit) WindowStyle FPEnterToFocus
++ "Current Global Page" \
+  All (CurrentGlobalPage, !CirculateHit) WindowStyle FPEnterToFocus
++ "Current Desk" \
+  All (CurrentDesk, !CirculateHit) WindowStyle FPEnterToFocus
++ "All (CirculateSkip)" \
+  All (!CirculateHit) WindowStyle FPEnterToFocus
++ "All (CirculateHit)" \
+  All (CirculateHit) WindowStyle FPEnterToFocus
++ ""
++ "All Same Style" \
+ Current  Style $[w.class] FPEnterToFocus
++ "All Style" \
+  Style * FPEnterToFocus
+AddToMenu RmMouseStyleMenu
++ "Current Window" WindowStyle !FPEnterToFocus
++ "Current Page" \
+  All (CurrentPage, !CirculateHit) WindowStyle !FPEnterToFocus
++ "Current Global Page" \
+  All (CurrentGlobalPage, !CirculateHit) WindowStyle !FPEnterToFocus
++ "Current Desk" \
+  All (CurrentDesk, !CirculateHit) WindowStyle !FPEnterToFocus
++ "All (CirculateSkip)" \
+  All (!CirculateHit) WindowStyle !FPEnterToFocus
++ "All (CirculateHit)" \
+  All (CirculateHit) WindowStyle !FPEnterToFocus
++ ""
++ "All Same Style" \
+  Current Style $[w.class] !FPEnterToFocus
++ "All Style" \
+  Style * !FPEnterToFocus
+
+#}}}
+
+# Des menus qui utilisent les menus précédents
+# Generic Menus {{{
+AddToMenu MainMenu
++ "Main Menu" Title
++ "Window" Popup MainWindowMenu
++ "Desktop" Popup MainDesktopMenu
++ "Session" Popup MainSessionMenu
++ "Style" Popup MainStyleMenu
+
+AddToMenu IconifyMenu
++ "Iconify" Title
++ "Iconfify toggle" Iconify toggle
++ "Iconfify true" Iconify true
++ "Iconfify false" Iconify false
++ ""
++ "Window Shade" Popup WindowShadeMenu
+
+# AddToMenu ScrollRefreshMenu
+# + "Scroll" Title
+# + "Scroll" Scroll
+# + "Scroll reverse" Scroll reverse
+# + ""
+# + "Refresh" Popup RefreshMenu
+# + "Add Scrollbar" FvwmScroll
+# }}}
+# }}}
+
+# Raccourcis claviers
+# -------------------
+
+DestroyFunc SetBindings
+AddToFunc SetBindings
+
+#-- Raccourcis globaux--# {{{
+
++ I Key F1 A C4  Menu MainMenu Root c c
++ I Key F7 A 4 Menu PlaceAgainMenu Root c c
++ I Key F8 A 4 Menu MainDesktopMenu Root c c
++ I Key F9 A 4 Menu MainStyleMenu Root c c
++ I Key F10 A 4 Menu MainSessionMenu Root c c
++ I Key F11 A 4 Menu RestartMenu Root c c
++ I Key F12 A 4 Menu QuitMenu Root c c
+
+#Lancer un groupe de fenêtre
++ I Key 0 A MS Exec exec $HOME/.fvwm/fenetre custom
++ I Key 8 A MS Exec exec $HOME/.fvwm/fenetre custom1
++ I Key 9 A MS Exec exec $HOME/.fvwm/fenetre custom2
++ I Key 0 A CS Exec exec $HOME/.fvwm/fenetre xterm
++ I Key 8 A CS Exec exec $HOME/.fvwm/fenetre xterm1
++ I Key 9 A CS Exec exec $HOME/.fvwm/fenetre xterm2
++ I Key 0 A S4 Exec exec $HOME/.fvwm/fenetre screen
++ I Key 8 A S4 Exec exec $HOME/.fvwm/fenetre screen1
++ I Key 9 A S4 Exec exec $HOME/.fvwm/fenetre screen2
++ I Key 1 A S4 Exec exec $HOME/.fvwm/fenetre screenul
++ I Key 2 A S4 Exec exec $HOME/.fvwm/fenetre screenur
++ I Key 3 A S4 Exec exec $HOME/.fvwm/fenetre screendr
++ I Key 4 A S4 Exec exec $HOME/.fvwm/fenetre screendl
+# }}}
+
+#-- Raccourcis pour le desktop --# {{{
+
+# Pour changer d'écran {{{.
++ I Key Right A 4 GotoPage +1p +0p
++ I Key Left  A 4 GotoPage -1p +0p
++ I Key Up    A 4 GotoPage +0p -1p
++ I Key Down  A 4 GotoPage +0p +1p
++ I Key Next A 4 ChangeDesktop +1 0 0 3
++ I Key Prior A 4 ChangeDesktop -1 0 0 3
++ I Key Home A 4 GotoDeskAndPage 0 1 1
++ I Key End A 4 GotoPage 1 1
+
++ I Key Right A M4 Scroll 50 0
++ I Key Left  A M4 Scroll -50 0
++ I Key Up    A M4 Scroll 0 -50
++ I Key Down  A M4 Scroll 0 50
++ I Key Next  A M4 Scroll 100000 0
++ I Key Prior  A M4 Scroll -100000 0
+
++ I Key Return A 4 GotoDeskAndPage prev
+#}}}
+
+# Méta-tab pour aller d'une fenêtre à la suivante. {{{
++ I Key Tab   A 4 Next (CurrentPage, !Shaded) Function WarpFocus
++ I Key Tab   A 4C Next (CurrentPage) Function WarpFocus
++ I Key Tab   A 4S Next (CurrentPage, Shaded) Function WarpFocus
+
++ I Key Tab   A M WindowList (CurrentPage, !Iconic) Root c c\
+    NoGeometryWithInfo,CurrentAtEnd,NoDeskNum,SelectOnRelease Alt_L
++ I Key Tab   A MC WindowList (CurrentPage) Root c c\
+    NoGeometryWithInfo,CurrentAtEnd,NoDeskNum,SelectOnRelease Alt_L
++ I Key Tab   A MS WindowList (CurrentPage, Iconic) Root c c\
+    NoGeometryWithInfo,CurrentAtEnd,NoDeskNum,SelectOnRelease Alt_L
+
++ I Key Left A S4 Direction West (CurrentPage) Function Warp
++ I Key Right A S4 Direction East (CurrentPage) Function Warp
++ I Key Up A S4 Direction North (CurrentPage) Function Warp
++ I Key Down A S4 Direction South (CurrentPage) Function Warp
+
++ I Key Prior A S4 Prev (CurrentPage) Function WarpFocus
++ I Key Next A S4 Next (CurrentPage) Function WarpFocus
++ I Key Home A S4 Prev (CurrentDesk) Function WarpFocus
++ I Key End A S4 Next (CurrentDesk) Function WarpFocus
++ I Key Home A SC4 Prev  Function WarpFocus
++ I Key End A SC4 Next   Function WarpFocus
+#+ I Key Home A SM4 Prev (Iconic,  CirculateHitIcon) Function WarpFocus
+#+ I Key End A SM4 Next  (Iconic,  CirculateHitIcon) Function WarpFocus
+#+ I Key Home A CM4 Prev (CirculateHit) Function WarpFocus
+#+ I Key End A CM4 Next  (CirculateHit) Function WarpFocus
+#}}}
+
+# Les window list {{{
+# + I Key F1 A 4C Menu WindowListMenu
+# + I Key F1 A S4 WindowList Root c c \
+#                CurrentDesk IconifiedAtEnd 
+#SelectOnRelease est là pour désactiver le SelectOnRelease Alt par défaut
+#pas besoin de le mettre si j'ai des bindings qui n'utilisent pas alt...
+#+ I Key F1 A M4 WindowList Root c c \
+#               CurrentDesk UseSkipList IconifiedAtEnd SelectOnRelease 
+#+ I Key F1 A SM4 WindowList Root c c \
+#               CurrentDesk OnlyListSkip IconifiedAtEnd SelectOnRelease
+#+ I Key F2 A 4C  WindowList Root c c \
+#               IconifiedAtEnd NoGeometryWithInfo 
+#+ I Key F2 A S4 WindowList Root c c \
+#               IconifiedAtEnd TitleForAllDesks ShowPage 
+#+ I Key F2 A M4 WindowList Root c c \
+#                UseSkipList IconifiedAtEnd SelectOnRelease 
+#+ I Key F2 A SM4 WindowList Root c c \
+#                OnlyListSkip IconifiedAtEnd SelectOnRelease
++ I Key F2 A 4  WindowList Root c c \
+               IconifiedAtEnd
++ I Key F2 A C4  Menu WindowListMenu Root c c
+
++ I Key A A 4C WindowList Root c c \
+               CurrentDesk,IconifiedAtEnd,\
+               NoGeometryWithInfo,NoDeskNum 
++ I Key A A 4S WindowList Root c c \
+               IconifiedAtEnd,\
+               NoGeometryWithInfo,NoDeskNum 
++ I Key Q A 4C WindowList (CurrentGlobalPage, !Iconic) Root c c \
+               NoGeometryWithInfo,NoDeskNum 
++ I Key Q A 4S WindowList (CurrentGlobalPage, Iconic) Root c c \
+               NoGeometryWithInfo,NoDeskNum
++ I Key S A 4C WindowList (CurrentDesk, !Iconic) Root c c \
+               NoGeometryWithInfo,NoDeskNum 
++ I Key S A 4S WindowList (CurrentDesk, Iconic) Root c c \
+               NoGeometryWithInfo,NoDeskNum
++ I Key D A 4C WindowList (!Iconic) Root c c \
+               NoGeometryWithInfo,NoDeskNum
++ I Key D A 4S WindowList (Iconic) Root c c \
+               NoGeometryWithInfo,NoDeskNum
+# }}}
+
+#  Menus quickstart et programmes {{{
++ I Key E A 4C Menu QuickStart Root c c 
++ I Key Z A 4C Menu Programmes Root c c
++ I Key Z A 4S Menu Programmes Root +0 +100
+# pour les claviers anglais...
++ I Key W A 4C Menu Programmes Root c c
++ I Key W A 4S Menu Programmes Root +0 +100
+
++ I Key O A 4C Scroll
++ I Key O A 4S Scroll reverse
+#}}}
+
+# Toggle and exec {{{
++ I Key R A 4M Function ConsoleOneLine
++ I Key R A 4C Function Console
++ I Key R A 4S Function ConsoleCP
++ I Key P A 4C Menu FvwmFuncMenu Root c c
++ I Key P A 4S Function ToggleWindow "FvwmPager" "Module FvwmPager 0 3"
+#+ I Key I A 4C ToggleWindow "Conky" "Exec exec conky"
++ I Key I A 4S ToggleWindowUpDown "Conky" 2 6
+# }}}
+
+# Transparency {{{
++ I Key Insert WTFSI 4C Exec exec transset-df -a --inc 0.05
++ I Key Delete WTFSI 4C Exec exec transset-df -a --dec 0.05
+
+# {{{ Warp cursor in screen 
++ I Key KP_Home A 4C      WindowId root 1 WarpToWindow 0 0
++ I Key KP_Up A 4C        WindowId root 1 WarpToWindow 50 0
++ I Key KP_Page_Up A 4C   WindowId root 1 WarpToWindow 100 0
++ I Key KP_Left A 4C      WindowId root 1 WarpToWindow 0 50
++ I Key KP_Begin A 4C     WindowId root 1 WarpToWindow 50 50
++ I Key KP_Right A 4C     WindowId root 1 WarpToWindow 100 50
++ I Key KP_End A 4C       WindowId root 1 WarpToWindow 0 100
++ I Key KP_Down A 4C      WindowId root 1 WarpToWindow 50 100
++ I Key KP_Page_Down A 4C WindowId root 1 WarpToWindow 100 100
+# }}}
+# }}}
+
+#-- Raccourcis pour les fenêtres--# {{{
+
+# Mettre une fenêtre en avant/arrière plan
++ I Key Space WTFSI 4 Raise
++ I Key BackSpace  WTFSI 4 Lower
+
++ I Key Space WTFSI 4M Layer 0 6
++ I Key BackSpace WTFSI 4M Layer 0 2
++ I Key Return WTFSI 4M Layer 0 4
+
++ I Key BackSpace WTFSI C4 WindowShade Toggle
++ I Key Return WTFSI C4 Function Restore
++ I Key Space WTFSI C4 Menu StickMenu Root c c
+
+# Déplacer, changer la taille
++ I Key Insert WTFSI 4 Resize Direction NW warptoborder
++ I Key Delete WTFSI 4 Resize Direction SE warptoborder
++ I Key Insert WTFSI S4 ResizeMaximize Direction NW warptoborder
++ I Key Delete WTFSI S4 ResizeMaximize Direction SE warptoborder
+#+ I Key Insert WTFSI C4 Menu MoveMenu Root c c
+#+ I Key Delete WTFSI C4 Menu ResizeMenu Root c c
+
+# Pour changer d'écran.
++ I Key Right WTFSI C4 MoveAndFollow +1p +0p
++ I Key Left  WTFSI C4 MoveAndFollow -1p +0p
++ I Key Up    WTFSI C4 MoveAndFollow +0p -1p
++ I Key Down  WTFSI C4 MoveAndFollow +0p +1p
++ I Key Next WTFSI C4 MoveToDeskAndFollow +1 0 0 3
++ I Key Prior WTFSI C4 MoveToDeskAndFollow -1 0 0 3
++ I Key Home WTFSI C4 MoveAndFollow 1 1
++ I Key End WTFSI C4 Function MoveToOrig
+
+#Utiliser les boutons
++ I Key F1 A 4  Menu MainWindowMenu 
++ I Key F3 WTFSI 4 Function BMenu
++ I Key F4 WTFSI 4 Delete
++ I Key F4 WTFSI 4C Menu CloseWindowMenu Root c c
++ I Key F5 WTFSI 4 Iconify toggle
++ I Key F5 WTFSI 4C Menu IconifyMenu Root c c
++ I Key F6 WTFSI 4 Maximize 100 100
++ I Key F6 WTFSI C4 Menu MaximizeMenu Root c c
++ I Key F6 WTFSI S4 Maximize true 0 100
++ I Key F6 WTFSI 4CS Maximize true 100 0
++ I Key F6 WTFSI M4 Maximize true ewmhiwa 100 100
++ I Key F6 WTFSI SM4 Maximize true ewmhiwa 0 100
++ I Key F6 WTFSI CM4 Maximize true ewmhiwa 100 0
+
++ I Key h WTFSI S4 Maximize true growleft 0
++ I Key j WTFSI S4 Maximize true 0 growdown
++ I Key k WTFSI S4 Maximize true 0 growup
++ I Key l WTFSI S4 Maximize true growright 0
++ I Key m WTFSI S4 Maximize true 100 100
++ I Key semicolon WTFSI S4 Maximize true 100 100
++ I Key g WTFSI S4 Maximize false
++ I Key f WTFSI S4 Function BMaxOff
+
++ I Key h WTFSI C4 Move +0 w
++ I Key j WTFSI C4 Move w -0
++ I Key k WTFSI SC4 Move w +28p
++ I Key k WTFSI C4 Move w +0
++ I Key l WTFSI C4 Move -0 w
++ I Key g WTFSI 4C Move 50-50w 50-50w
++ I Key semicolon WTFSI 4C Move 
++ I Key m WTFSI 4C Move
++ I Key f WTFSI 4C PlaceAgain
+
++ I Key KP_Home WTFSI 4 WarpToWindow 0 0
++ I Key KP_Up WTFSI 4 WarpToWindow 50 0
++ I Key KP_Page_Up WTFSI 4 WarpToWindow 100 0
++ I Key KP_Left WTFSI 4 WarpToWindow 0 50
++ I Key KP_Begin WTFSI 4 WarpToWindow 50 50
++ I Key KP_Right WTFSI 4 WarpToWindow 100 50
++ I Key KP_End WTFSI 4 WarpToWindow 0 100
++ I Key KP_Down WTFSI 4 WarpToWindow 50 100
++ I Key KP_Page_Down WTFSI 4 WarpToWindow 100 100
+# }}}
+
+#--changer le mode de fonctionnement--# {{{
+
+#changer le focus policy
+
++ I Key U A C4 WindowStyle FPEnterToFocus
+# + I Key U A S4 Function AllMouseStyle
++ I Key I A C4 WindowStyle !FPEnterToFocus
+# + I Key I A S4 Function AllNoMouseStyle
+# + I Key I A C4 Menu MouseStyleMenu
++ I Key T A C4 WindowStyle Title
+# + I Key T A C4 Menu TitleStyleMenu
+# + I Key T A S4 Function AllTitleStyle
++ I Key Y A C4 WindowStyle !Title
+# + I Key Y A S4 Function AllNoTitleStyle
+#+ I Key D A C4 Menu IconifyPageMenu 
+#+ I Key D A S4 Menu DeIconifyPageMenu
+# }}}
+
+# La souris {{{
+# ---------
+
+#les menus
+Mouse 1  A   4C Scroll reverse
+Mouse 1  A   4S Scroll
+Mouse 1  A   4M Module FvwmPager -transient 0 3
+
+# Warning: this 4M Mouse 3 binding conflict with one after when on a windows
+Mouse 3  A   4M \
+  WindowList (CurrentGlobalPage) \
+  IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
+Mouse 3  A   4C \
+  WindowList (CurrentDesk) \
+  IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
+Mouse 3  A   4S \
+  WindowList  \
+  IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
+
+Mouse 2  A   4C Module FvwmPager -transient 0 3
+Mouse 2  A   4S Menu Programmes
+Mouse 2  A   4M Menu QuickStart
+
+Mouse 3  R   4 \
+  WindowList \
+  IconifiedAtEnd,NoGeometryWithInfo,NoDeskNum 
+
+#les icônes
+Mouse 1 I A IconFunc
+
+Mouse 4 A 4 Prev (CurrentPage) Function Warp
+Mouse 5 A 4 Next (CurrentPage) Function Warp
+Mouse 4 A 4S GotoDesk -1 0 0 3
+Mouse 5 A 4S GotoDesk +1 0 0 3
+Mouse 4 A 4C Scroll -100000 0
+Mouse 5 A 4C Scroll 100000 0
+
+#c'est inconsistant parce que j'ai supprime le bouton 2
+Mouse 0  1   A Function BMenu
+Mouse 0  3   A Delete
+Mouse 0  3   C Close
+Mouse 0  3   S Destroy
+Mouse 0  5   A Layer 0 2
+Mouse 0  7   A Layer 0 6
+Mouse 0  9   A Layer 0 4
+Mouse 0  4   A Iconify
+Mouse 0  4   C WindowShade
+Mouse 0  2   A Maximize 100 100
+Mouse 0  2   S Maximize 0 100
+Mouse 0  2   C Maximize 100 0
+Mouse 0  2   M Maximize ewmhiwa 100 100
+Mouse 0  2   SM Maximize ewmhiwa 0 100
+Mouse 0  2   CM Maximize ewmhiwa 100 0
+Mouse 0  2   4  Function BMaxOff
+
+# click sur une fenetre
+Mouse 1  T   A Function Raise-and-move
+Mouse 2  TFS A Move
+Mouse 3  TFS A Function LowerAndResize
+Mouse 1  FS  A Resize
+
+Mouse 1  FSWT 4 Function Raise-and-move
+Mouse 2  WTFS 4 Move
+Mouse 3  WTFS 4 Function LowerAndResize
+Mouse 3  WTFS 4M Resize br $[pointer.x]p $[pointer.y]p
+
+# }}}
+
+#-------------------------------------------------------------------
+# Virer les bindings {{{
+# ------------------
+DestroyFunc UnsetBindings
+AddToFunc UnsetBindings
+#Pour se déloguer
++ I Key F8 A 4 -
++ I Key F12 A CM -
++ I Key F9 A 4 -
+#Lancer un groupe de fenêtre
++ I Key F12 A 4 -
++ I Key F11 A 4 -
++ I Key F10 A 4 -
+#-- Raccourcis pour le desktop --#
+# Pour changer d'écran.
++ I Key Right A 4 -
++ I Key Left  A 4 -
++ I Key Up    A 4 -
++ I Key Down  A 4 -
++ I Key Next A 4 -
++ I Key Prior A 4 -
++ I Key End A 4 -
++ I Key Home A 4 -
+# Méta-tab pour aller d'une fenêtre à la suivante.
++ I Key Tab   A 4 -
++ I Key Tab   A M -
++ I Key Tab   A 4M -
+#+ I Key F1 A M Function AfficheAllWindowsKbd
++ I KeY F1 A 4 -
++ I Key F1 A 4M -
++ I Key F1 A C4 -
++ I KeY F2 A 4 -
++ I Key F2 A 4M -
++ I Key F2 A C4 -
++ I Key E A 4C -
++ I Key Z A 4C -
++ I Key E A M4C -
++ I Key Z A M4C -
++ I Key R A 4C -
+#-- Raccourcis pour les fenêtres--#
+# Mettre une fenêtre en avant/arrière plan
++ I Key Space WTFS 4 -
++ I Key BackSpace  WTFS 4 -
++ I Key Space WTFS 4M -
++ I Key BackSpace WTFS 4M -
++ I Key Return WTFS 4M -
++ I Key Return WTFS C4 -
++ I Key BackSpace WTFS C4 -
++ I Key Space WTFS C4 -
+# Déplacer, changer la taille
++ I Key Insert WTFSI 4 -
++ I Key Delete WTFS 4 -
+# Pour changer d'écran.
++ I Key Right WTFSI C4 -
++ I Key Left  WTFSI C4 -
++ I Key Up    WTFSI C4 -
++ I Key Down  WTFSI C4 -
++ I Key Next WTFSI C4 -
++ I Key Prior WTFSI C4 -
++ I Key Home WTFSI  C4 -
+#+ I Key Home WTFSI CM GotoDeskAndPage 0 0 0
+#Utiliser les boutons
++ I Key F3 WTFSI 4 -
++ I Key F4 WTFSI 4 -
++ I Key F5 WTFSI 4 -
++ I Key F6 WTFSI 4 -
++ I Key F6 WTFSI S4 -
+#--changer le mode de fonctionnement--#
+#changer le focus policy
++ I Key Q WTFSI C4 -
++ I Key S WTFSI C4 -
++ I Key Escape A 4C Function SetBindings
+
+# }}}
+#
+#SetAllBindings {{{
+#changer les bindings
+#WinCtrl+Escape: toggler les bindings
+#Win-Escape pour les desactiver temporairement
+DestroyFunc UnsetAllBindings
+AddToFunc UnsetAllBindings
++ I Function UnsetBindings
++ I Key Escape A 4 -
++ I Key Escape A C4 -
+
+DestroyFunc SetAllBindings
+AddToFunc SetAllBindings
++ I Function SetBindings
++ I Key Escape A 4C Function UnsetBindings
++ I Key Escape A 4 Function EscapeBindings
+
+DestroyFunc EscapeBindings
+AddToFunc EscapeBindings
++ I Function UnsetAllBindings
++ I Schedule 1000 Function SetAllBindings 
+#}}}

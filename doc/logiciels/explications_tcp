@@ -1,0 +1,273 @@
+Voici qqs explications sur tcp postées par Xanthia sur le forum de wow ->
+pbs techiques -> truc de college:
+http://forums.worldofwarcraft.com/thread.aspx?FN=wow-tech-support&T=459010&P=8
+
+Je connais déjà, mais c'est très bien expliqué:
+------------------------------------------------------------------------------
+150. Re: College connection issues | 9/26/2005 1:16:44 PM PDT	
+							Quote this post		Reply to this post
+
+    Q u o t e:
+    Im having the exact same problems in New Mexico. Basic web surfing, nothing else works, whereas last week WoW worked perfectly on the same connection and same comp. I called the tech people and they said the WoW ports are not blocked, and I have the same WoW problems on two seperate computers. I'm gonna have to go with the hurricane theory.
+
+    Are most of you on ethernet? I wish i knew more about this sort of thing...Maybe ethernet is the problem, seeing as how its pretty common in colleges. maybe it has been effected by the hurricane more than other connections.
+
+
+    Q u o t e:
+    Ethernet is used on all college campuses and any household or business that has a broadband to t1/t3/t5 connection or fiber optical connection. Since a majority of players use Ethernet I doubt it has anything to do with that. I could play fine the first to weeks out at college from late August to the middle of the first week in September, since then my connection has basically been shot to hell to the point where I get UNABLE TO CONNECT over and over, and on the chance that it does connect the second I do connect it gives me Disconnected from Server. I have a feeling this is more of a Blizzard issue than a ISP or College connection issue, because my college network according to the ITs that run it have every single port open on the network. 
+
+
+I would agree that Ethernet is not likely to be the cause.
+
+If we go back to first principles, Ethernet is a datalink layer protocol, i.e. layer 2 of the 7 layer ISO model.
+
+http://www.scit.wlv.ac.uk/~jphb/comms/std.7layer.html
+
+The job of datalink is nothing more nor less than to get a packet from a machine to another machine with which it shares a physical connection.
+
+So if the datalink layer goes out, it'll take EVERYTHING and I do mean everything, with it.
+
+IP addresses are a layer 3 entity, used to route packets, and port numbers are a layer 4 entity.
+
+So a failure at layer 2 will not be selective in what layer 4 ports work and don't work.
+
+If surfing works, and nothing else does, I'd give pretty good odds, that they're blocking at the port level (i.e. let 80 and 443 thru for browsing, block most everything else).
+
+What they tell you, and what actually happens may be two things. They could have blocked 3724 and then said "It's still open" simply to keep you guys out of their hair.
+
+For those that are having trouble connecting from inside colleges, have you investigated to see what other ports are open. For example, can you do NTP checks (which use UDP on port 123). There's plenty of apps out there that do NTP, and include lists of servers to check against.
+
+-- Edit removed thoughts about packet sniffers, and replaced with a EULA compliant idea --
+
+As soon as you get to the "connecting" message, alt tab out, and run netstat -n -a. There should be a line where the port number in the foreign address is 3724. The last entry on that line is the status of the connection. I care what that status is.
+
+[ post edited by Xanthia ]
+-------------------------------------------------------------------------------
+
+121. Re: College connection issues | 9/16/2005 2:25:49 PM PDT	
+							Quote this post		Reply to this post
+
+    Q u o t e:
+    Thought I'd throw you poor people something else to play with in trying to fix this! Neat little security website, has all kinds of neat and useful stuff on it. What's particularly useful here however is the 'shieldsUP!' portion of the site. Address is http://www.grc.com . Direct to the wow port probe: https://www.grc.com/x/PortProbe=3724 (oh look, it even lists that as the battle.net port on there!)
+
+
+
+OK. Hold it right there.
+
+We need to have a brief discussion about TCP connections, ports, exactly what Mr Gibson's page is telling you, and what it has to do with connecting to WoW servers.
+
+First of all, do the following. Crack open your favorite browser, open up a webpage anywhere, and then run netstat -n -a in a cmd.exe window.
+
+netstat will list all connections, and there are two columns that I care about. They are the "Local Address" and "Foreign Address" columns.
+
+With a broswer session open, The Local address will have the same IP over and over, with port numbers most likely in the range 1030 through 1200, or thereabouts. The foreign address will have various (possibly different IP's), but the foreign port number for a web session will always be 80.
+
+Here's an example cut and paste from doing this on my machine:
+
+Proto Local Address Foreign Address State
+
+...
+
+TCP 10.98.48.191:1073 66.102.7.147:80 ESTABLISHED
+TCP 10.98.48.191:1075 130.187.2.150:80 ESTABLISHED
+TCP 10.98.48.191:1078 130.187.2.150:80 ESTABLISHED
+TCP 10.98.48.191:1079 130.187.2.150:80 ESTABLISHED
+TCP 10.98.48.191:1081 130.187.2.150:80 ESTABLISHED
+TCP 10.98.48.191:1083 129.42.18.99:80 ESTABLISHED
+TCP 10.98.48.191:1085 129.42.18.99:80 ESTABLISHED
+
+10.98.48.191 is my machine's IP, the port numbers range from 1073 through 1085, and the three sites I browsed to were 66.102.7.147 , 130.187.2.150 and 129.42.18.99. NOTE THAT THE PORT NUMBER IS 80 ONLY IN THE FOREIGN ADDRESS SECTION!
+
+An internet connection is defined by these four numbers: two IP addresses, and two port numbers. The reason that the foreign port is 80 is that web (http:) servers listen on port 80. So the foreign port number is always 80. When the connection is established, a port number is selected by the protocol stack on your system and assigned. It need not be the same as the port the server is listening on, and in 99.999% of cases it won't be.
+
+Do the same thing when WoW is running - alt tab out, and run netstat -n -a. You'll see a line with the following:
+
+XX.XX.XX.XX:YYYY ZZ.ZZ.ZZ.ZZ:3724
+
+Now, what did we learn from above? XX.XX.XX.XX is your machine's IP address. YYYY is the port number in use ON YOUR MACHINE It probably won't be 3724. ZZ.ZZ.ZZ.ZZ is the IP address of one of Blizzard's servers, and 3724 is the port that their server is listening on.
+
+What this all means is that having Steve Gibson's page probe port 3724 on your system IS A COMPLETELY POINTLESS EXCERCISE because in all probability, the port in use on your system isn't 3724.
+
+Again, if you don't believe me, run netstat -n -a when the game is logged in, and see how many of the local address entries have 3724 as the port number.
+
+Secondly. Steve Gibson's page is probing your machine to see what port numbers on your system are listening for connections. Since your system never listens during normal gameplay you could be in 100% stealth mode and still connect just fine.
+
+It should be noted that the above discussion does not hold true during the patch process, at that time, other people WILL attempt to connect to your system, so it will be listening. However for normal gameplay, open ports on your system are a complete non-issue, since your system never listens. It only establishes outgoing connections to Blizzard's servers.
+
+So. Steve Gibson's page is extremely useful to tell how secure your system is, but it cannot provide any useful information when it comes time to determine why you can't get WoW to connect.
+
+PS. If you want a very complete, but incredibly technical discourse on exactly what a TCP connection is, go read RFC 793 at http://www.faqs.org/rfcs/rfc793.html because that is arguably the charter for TCP. In particular, section 2.7 covers the "two IP address two ports" issue to uniquely identify a connection. At the bottom of sect 2.7 Postel mentions the three way handshake and SYN's. This became what I know of as the SYN,SYN,ACK trio or more accurately the SYN,SYN/ACK,ACK trio.
+
+The vital point here is that the initial SYN packet is ALWAYS sent from the client to the server. i.e. from your system to Blizzard's server. That packet contains all four pieces of information that uniquely identify the connection, and allows the router to deal with packets coming back from the server. Since the server knows where the original SYN came from, it uses that information to send all returning packets to the correct place. This means that the simple act of establishing the connection automatically makes the router open up a connection so that returning packets can be forwarded to your system. It does this for all connections, and it does it automatically and invisibly.
+
+-- Edit -- typos, and further clarification. --
+
+[ post edited by Xanthia ]
+
+33. Re: College connection issues | 9/20/2005 10:28:54 AM PDT	
+							Quote this post		Reply to this post
+
+    Q u o t e:
+    in order to do what was posted must you have your client connect through a server other than the WoW server?
+
+
+Yes. It's what I refer to as the "outside" or "home" system.
+
+    Q u o t e:
+    if this is the case, wouldnt all your information(acct name/password) go through that server????
+
+
+Yes, however the data is encrypted. Remember, this data normally travels over the Internet, so it has to be encrypted. I'm simply relaying that encrypted data, I don't decrypt it and re-encrypt it. I don't need to.
+
+    Q u o t e:
+
+    do you have to setup a personal server(home) and if thats the case, the college i'm at is in MA and my home is in NY...so what would i do in this situation?
+
+
+
+Head on over to http://francessa0.tripod.com and look at the "Wow through a firewall" page. It's pretty long, but that's about what it takes. The home system would be at your home in NY, the dorm one would be at college in MA with you.
+
+    Q u o t e:
+
+    and i'm 100% unable to connect to WoW whatsoever so i'm guessing all ports are just blocked at my school.
+
+
+
+That sounds to be the case. More accurately, most ports, including 3724, are blocked. However, if you can browse the web, port 443 is probably open, in which case the system I outline on that page has a good chance of working.
+
+-- Edit typos --
+
+[ post edited by Xanthia ]
+
+------------------------------------------------------------------------------
+127. Re: College connection issues | 9/17/2005 2:35:36 PM PDT	
+							Quote this post		Reply to this post
+
+    Q u o t e:
+    I'm not having problems, but a friend is, and that was incredibly helpful background info to have! Thanks!
+
+    I was wondering if you knew anything about NATting, as you seem very knowledgeable, and could help with a workaround for my friend.
+
+    Thanks. 
+
+
+
+Assuming you're asking me, here's about the fastest explaination of NAT. (and it is long - don't say I didn't warn you).
+
+Going back to my first long diatribe, we need to think about the magic four: local IP and port, foreign IP and port.
+
+Many people running behind NAT routers will have an IP address of the form 192.168.x.x. This is one of the three (not four) IANA reserved blocks. These are (in netspeak) 192.168.0.0/16, 172.16.0.0/20 and 10.0.0.0/24. See RFC 1918 for details, at http://www.faqs.org/rfcs/rfc1918.html .
+
+Someone mentioned four such groups of addresses. There is a fourth group, the "link local" block 169.254.0.0/16 which gets an honorable mention in RFC 3330 at http://www.faqs.org/rfcs/rfc3330.html . While this usually behaves a whole lot like the other three, it's intended use is a little different.
+
+OK, let's go back to 192.168.0.0/16, routers and NAT. We also need to cover a tiny bit about exactly what a router is, and what it does.
+
+It may not come as a complete shock, but the job of a router is to route packets. Do I get a prize for the most tautological statement in this thread?
+
+In particular, every router has the ability to receive a packet, look at the destination IP address, and figure out how to get it there. On the backbone, the routers have huge routing tables. For your small home router it's usually a lot simpler.
+
+The WAN side has an IP address assigned by your ISP. More often than not it's configured automatically (this is what DHCP was designed for), in some cases it's a static IP, which you have to explicitly configure into the router.
+
+The LAN side is where it gets interesting. You only have the one IP given to you by your ISP, but you want to attach two or more computers. So, your router starts handing out IP's in the 192.168.x.x range.
+
+All is well and good, except for one minor problem. If you have the fortitude to wade through RFC 1918, the second to last paragraph in section three is this:
+
+    Q u o t e:
+
+    Because private addresses have no global meaning, routing information about private networks shall not be propagated on inter-enterprise links, and packets with private source or destination adresses should not be forwarded across such links. Routers in networks not using private address space, especially those of Internet service providers, are expected to be configured to reject (filter out) routing information about private networks. If such a router receives such information the rejection shall not be treated as a routing protocol error.
+
+
+
+Translating that to non geek-speak, that means this if a router out on the backbone sees a packet with either source or destination address in one of these three blocks, it should summarily drop it on the floor. If you think about it for a sec, this is a complete necessity, because there could, in threory, be a couple of thousand machines connected right now, all of which have the same IP address: 192.168.1.4, as an example. I'll use this address for the rest of this discussion.
+
+So, how do packets get from your machine to WoW, and back again, given the apparent ambiguity?
+
+NAT. Short for Network Address Translation.
+
+Your router has a unique IP on it's WAN side. So when you open the connection, the first packet is sent from your system to Blizz's servers, and in the lifespan of the connection it is unique, because it is the only packt that has the SYN flag set, and the ACK flag clear. Your router sees this, and does the following.
+
+1. It assigns a new port number, and creates a table entry that maps 192.168.1.4:porta to XX.XX.XX.XX:portb. In this context porta is the local port number that your computer thinks it's using, and portb is the one that just got assigned. XX.XX.XX.XX is the wan IP of your router.
+
+2. It then very carefuly adjusts the IP and TCP headers on the packet, and changes the source IP from 192.168.1.4 to XX.XX.XX.XX, as well as changing the port from porta to portb.
+
+It then sends the packet to your ISP's router, confident that there is a good chance it'll reach Blizzard.
+
+A short time later, Blizz's servers dutifully reply, with a packet that has both the SYN and ACK flags set. This packet will have a DESTINATION IP of XX.XX.XX.XX and a destination port of portb. Simply because it's making the return trip.
+
+Your router looks in it's table and says "AHA! XX.XX.XX.XX:portb maps to 192.168.1.4:porta"
+
+It reverses the operation done on the outgoing packet: it changes XX.XX.XX.XX to 192.168.1.4, and portb to porta, and then delivers it to your machine.
+
+This same massaging of all packets continues for that connection, until such time as it closes.
+
+And that, dear friends, is exactly what NAT is all about.
+
+At this point, we should review what went on, and note that nowhere in the process do we have to tell the router that there is anything special about port 3724. Put this another way, you do not need to "open" or "forward" port 3724 in order to play. So why might you want to do this, and indeed what does it mean to open a port?
+
+All the above has been outgoing connections, i.e. the connection starts at your machine, and goes outbound through the router.
+
+The patcher is different, it wants to be able to have other people connect to your system.Remember what we decided about what routers do if they see 192.160.1.4? Oh noes! We can't do that - it won't work! Packets will never arrive.
+
+Port forwarding to the rescue.
+
+Remember the table entry that mapped between 192.168.1.4:porta and XX.XX.XX.XX:portb? Just suppose, we were able to create a permanent entry in that table that mapped XX.XX.XX.XX:3724 to 192.168.1.4:3724.
+
+I have to assume that Blizz's patcher has the smarts to do this, but if that permanent table entry is in place, and Blizz thinks you live at XX.XX.XX.XX, let's see what happens.
+
+Someone else wants to connect to you. So they open a connection to XX.XX.XX.XX:3724. This means they send a packet with SYN set, ACK clear, destination IP XX.XX.XX.XX and dest port 3724. This packet arrives at your router, which says "AHA! XX.XX.XX.XX:3724 maps to 192.168.1.4:3724". It does the IP address and port number changing, and delivers the packet to your system, which will be listening on port 3724 for that connection. And thus the connection will be established, and the data will flow.
+
+It is very important to note that IF you have set up this port forwarding / opening, Steve Gibson's web page will detect it. Remember, his page can tell you what ports you're listening to. In this instance you will be listening to 3724.
+
+It is for this reason that Blizz reccomend opening 3724 and 6112, to allow the patcher to work. The game does not need these ports forwarded, but the patcher does.
+
+Did that all make any kind of sense?
+
+[ post edited by Xanthia ]
+-------------------------------------------------------------------------------
+129. Re: College connection issues | 9/17/2005 11:18:29 PM PDT	
+							Quote this post		Reply to this post
+Where I go most ports are throttled. Some ports are not, such as port 80 (http) and port 22 (ssh).
+
+We (as in me and other students) have been told several times that these ports should not be getting throttled, and that they would look into it. As far as I can tell, there has been no change.
+
+As a result, I ended up setting up a socks server off campus and with the sockscap program and putty (the socks server only has ssh exposed), and I set up a tunnel of sorts. Sockscap forces WoW to use SOCKS, which is set as "localhost", so that putty tunnels the actual socks connection to the socks server which connects to Blizzard's servers.
+
+The ping through tunnel is about 100-300 while the ping without the tunnel is 1000-2000.
+
+
+This won't help most people, but for those who are more technically inclined, it isn't too hard to set up. I -am- beef.
+	
+	
+	
+	
+60
+	
+Xanthia 	View All Posts by This User
+
+Level 60 Dwarf Hunter
+Guild: 	Black Orchid Fellowship
+Realm: 	Windrunner
+	
+ 130. Re: College connection issues | 9/19/2005 2:56:05 PM PDT	
+							Quote this post		Reply to this post
+
+    Q u o t e:
+
+    As a result, I ended up setting up a socks server off campus and with the sockscap program and putty (the socks server only has ssh exposed), and I set up a tunnel of sorts. Sockscap forces WoW to use SOCKS, which is set as "localhost", so that putty tunnels the actual socks connection to the socks server which connects to Blizzard's servers.
+
+    The ping through tunnel is about 100-300 while the ping without the tunnel is 1000-2000.
+
+
+    This won't help most people, but for those who are more technically inclined, it isn't too hard to set up. 
+
+
+
+Would you be so good as to post links for all the progs you used for this.
+
+It sounds a whole lot like you did something very close to what I suggested, however you're using the ssh port (22) rather than the https port (443) to tunnel out thru the firewall.
+
+This putty app sounds a whole lot like stunnel (what I use). I'd like to compare the two for ease of use - setting up stunnel is a bit gnarly.
+
+Also, what are you using on the outside for the socks server i.e. the prog that "undoes" the socksification that sockscap did.
+
+Thanks for any info .... 

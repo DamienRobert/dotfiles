@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/dams/.config/xfce4'
+let g:netrw_dirhist_2='/home/dams/.config/xfce4/terminal'
+let g:netrw_dirhist_3='/home/dams/.zsh'
+let g:netrw_dirhist_4='/home/dams/.ore'
+let g:netrw_dirhist_5='/tmp/markup/lib/github'
+let g:netrw_dirhist_6='/tmp/markup/lib/github/markup'
+let g:netrw_dirhist_7='/home/dams/mine/syst/etc/etc-generate/default'

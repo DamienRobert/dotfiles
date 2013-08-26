@@ -1,0 +1,10 @@
+[Unit]
+Description=ssh-agent
+ConditionFileIsExecutable=/usr/bin/ssh-agent
+
+[Service]
+ExecStart=/usr/bin/ssh-agent -d -a %t/ssh_auth_sock
+Restart=always
+
+[Install]
+WantedBy=basic.target

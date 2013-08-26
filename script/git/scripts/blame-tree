@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+#cf http://thread.gmane.org/gmane.comp.version-control.git/168323, ou plus récemment 213394 pour un lien vers une version C
+
+my $tree = shift;
+my @revs = @ARGV;
+
+my @files = `git ls-tree --name-only $tree`;
+chomp @files;
+my $num_interesting = @files;
+
+open(my $fh, '-|', join(' ',
+        "git rev-list --no-merges",
+        @revs,
+        "| git diff-tree --stdin --name-status")
+) or die "unable to run rev-list: $!";
+
+my %last = map { $_ => undef } @files;
+while($num_interesting and $_ = <$fh>) {
+        if (/^[0-9a-f]{40}$/) {
+                $sha1 = $&;
+        }
+        elsif (/^.\t(.*)/) {
+                next unless exists $last{$1};
+                next if defined $last{$1};
+                $last{$1} = $sha1;
+                $num_interesting--;
+        }
+}
+
+foreach my $file (sort keys(%last)) {
+        print "$last{$file} $file\n";
+}

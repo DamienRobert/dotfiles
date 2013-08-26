@@ -1,0 +1,11 @@
+A Kummer extension is a field extension L/K, where for some given integer n > 1 we have
+- K contains n distinct nth roots of unity (i.e., roots of X^n-1)
+- L/K has abelian Galois group of exponent n.
+
+Kummer theory: if K has n distinc nth roots of unity, then
+abelian extensions of K of exponent n correspond bijectively with subgroups
+of
+    K^{\times}/K^{\times,n}
+via the correspondance
+    \Delta -> K(\Delta^{1/n})
+and reciproqly L -> \Delta K^{\times} \inter L^{\times,n} \iso Hom(Gal(L/K), \mu_n)

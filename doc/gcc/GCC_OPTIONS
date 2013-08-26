@@ -1,0 +1,268 @@
+-O2 -Wall -Wextra -std=c99 -pedantic -Wwrite-strings -Wcast-qual -Wpointer-arith -Wstrict-prototypes 
+
+Je pense que je dirais plus vite qu'il faut compiler avec -O2. En
+particulier pour les warnings, puisque le compilo fait une analyse plus
+poussee, et que donc la qualite des diagnostics en -Wall -W -O2 est
+notablement meilleure qu'en -O0.
+
+
+-O6 / -g pour le debug
+-Wall -Wextra 
+-std=c99 
+-pedantic  // pas de features supplementaires
+-Wwrite-strings -Wcast-qual -Wpointer-arith -Wstrict-prototypes
+
+-Wwrite-strings
+         When compiling C, give string constants the type "const
+         char[length]" so that copying the address of one into a
+         non-"const" "char *" pointer will get a warning; when
+         compiling C++, warn about the deprecated conversion from
+         string constants to "char *".  These warnings will help
+         you find at compile time code that can try to write into
+         a string constant, but only if you have been very care¿
+         ful about using "const" in declarations and prototypes.
+         Otherwise, it will just be a nuisance; this is why we
+         did not make -Wall request these warnings.
+ -Wcast-qual
+         Warn whenever a pointer is cast so as to remove a type
+         qualifier from the target type.  For example, warn if a
+         "const char *" is cast to an ordinary "char *".
+ -Wpointer-arith
+         Warn about anything that depends on the ``size of'' a
+         function type or of "void".  GNU C assigns these types a
+         size of 1, for convenience in calculations with "void *"
+         pointers and pointers to functions.
+ -Wstrict-prototypes (C only)
+         Warn if a function is declared or defined without speci¿
+         fying the argument types.  (An old-style function defi¿
+         nition is permitted without a warning if preceded by a
+         declaration which specifies the argument types.)
+
+
+-D_GNU_SOURCE pour reconnaître qu'il ne l'est pas, sinon tu te fais engueuler
+parce qu'il manque des prototypes.
+
+
+Optimisations:
+-march -> compiler pour cette archi
+-mtune -> optimiser pour cette archi
+
+cpu: pentium4, amd64
+------------------------------------------------------
+-O
+     -O1 Optimize.  Optimizing compilation takes somewhat more
+         time, and a lot more memory for a large function.
+
+         With -O, the compiler tries to reduce code size and exe¿
+         cution time, without performing any optimizations that
+         take a great deal of compilation time.
+
+         -O turns on the following optimization flags: -fde¿
+         fer-pop -fmerge-constants -fthread-jumps -floop-optimize
+         -fif-conversion -fif-conversion2 -fdelayed-branch
+         -fguess-branch-probability -fcprop-registers
+
+         -O also turns on -fomit-frame-pointer on machines where
+         doing so does not interfere with debugging.
+
+     -O2 Optimize even more.  GCC performs nearly all supported
+         optimizations that do not involve a space-speed trade¿
+         off.  The compiler does not perform loop unrolling or
+         function inlining when you specify -O2.  As compared to
+         -O, this option increases both compilation time and the
+         performance of the generated code.
+
+         -O2 turns on all optimization flags specified by -O.  It
+         also turns on the following optimization flags:
+         -fforce-mem -foptimize-sibling-calls -fstrength-reduce
+         -fcse-follow-jumps  -fcse-skip-blocks -fre¿
+         run-cse-after-loop  -frerun-loop-opt -fgcse  -fgcse-lm
+         -fgcse-sm  -fgcse-las -fdelete-null-pointer-checks -fex¿
+         pensive-optimizations -fregmove -fschedule-insns
+         -fschedule-insns2 -fsched-interblock  -fsched-spec
+         -fcaller-saves -fpeephole2 -freorder-blocks  -fre¿
+         order-functions -fstrict-aliasing -funit-at-a-time
+         -falign-functions  -falign-jumps -falign-loops
+         -falign-labels -fcrossjumping
+
+         Please note the warning under -fgcse about invoking -O2
+         on programs that use computed gotos.
+
+     -O3 Optimize yet more.  -O3 turns on all optimizations spec¿
+         ified by -O2 and also turns on the -finline-functions,
+         -fweb and -frename-registers options.
+
+-fomit-frame-pointer
+         Don't keep the frame pointer in a register for functions
+         that don't need one.  This avoids the instructions to
+         save, set up and restore frame pointers; it also makes
+         an extra register available in many functions.  It also
+         makes debugging impossible on some machines.
+  (active avec -O sur certaines machines)
+-finline-functions
+         Integrate all simple functions into their callers.  The
+         compiler heuristically decides which functions are sim¿
+         ple enough to be worth integrating in this way.
+
+         If all calls to a given function are integrated, and the
+         function is declared "static", then the function is nor¿
+         mally not output as assembler code in its own right.
+
+         Enabled at level -O3.
+----------------------------------------------
+ Unreliable arithmetic
+----------------------------------------------------------------
+ -ffast-math
+         Sets -fno-math-errno, -funsafe-math-optimizations,
+         -fno-trapping-math, -ffinite-math-only, -fno-round¿
+         ing-math and -fno-signaling-nans.
+
+         This option causes the preprocessor macro
+         "__FAST_MATH__" to be defined.
+
+         This option should never be turned on by any -O option
+         since it can result in incorrect output for programs
+         which depend on an exact implementation of IEEE or ISO
+         rules/specifications for math functions.
+
+     -fno-math-errno
+         Do not set ERRNO after calling math functions that are
+         executed with a single instruction, e.g., sqrt.  A pro¿
+         gram that relies on IEEE exceptions for math error han¿
+         dling may want to use this flag for speed while main¿
+         taining IEEE arithmetic compatibility.
+
+         This option should never be turned on by any -O option
+         since it can result in incorrect output for programs
+         which depend on an exact implementation of IEEE or ISO
+         rules/specifications for math functions.
+
+         The default is -fmath-errno.
+
+     -funsafe-math-optimizations
+         Allow optimizations for floating-point arithmetic that
+         (a) assume that arguments and results are valid and (b)
+         may violate IEEE or ANSI standards.  When used at
+         link-time, it may include libraries or startup files
+         that change the default FPU control word or other simi¿
+         lar optimizations.
+
+         This option should never be turned on by any -O option
+         since it can result in incorrect output for programs
+         which depend on an exact implementation of IEEE or ISO
+         rules/specifications for math functions.
+
+         The default is -fno-unsafe-math-optimizations.
+
+     -ffinite-math-only
+         Allow optimizations for floating-point arithmetic that
+         assume that arguments and results are not NaNs or
+         +-Infs.
+
+         This option should never be turned on by any -O option
+         since it can result in incorrect output for programs
+         which depend on an exact implementation of IEEE or ISO
+         The default is -fno-finite-math-only.
+
+     -fno-trapping-math
+         Compile code assuming that floating-point operations
+         cannot generate user-visible traps.  These traps include
+         division by zero, overflow, underflow, inexact result
+         and invalid operation.  This option implies -fno-signal¿
+         ing-nans.  Setting this option may allow faster code if
+         one relies on ``non-stop'' IEEE arithmetic, for example.
+
+         This option should never be turned on by any -O option
+         since it can result in incorrect output for programs
+         which depend on an exact implementation of IEEE or ISO
+         rules/specifications for math functions.
+
+         The default is -ftrapping-math.
+
+     -frounding-math
+         Disable transformations and optimizations that assume
+         default floating point rounding behavior.  This is
+         round-to-zero for all floating point to integer conver¿
+         sions, and round-to-nearest for all other arithmetic
+         truncations.  This option should be specified for pro¿
+         grams that change the FP rounding mode dynamically, or
+         that may be executed with a non-default rounding mode.
+         This option disables constant folding of floating point
+         expressions at compile-time (which may be affected by
+         rounding mode) and arithmetic transformations that are
+         unsafe in the presence of sign-dependent rounding modes.
+
+         The default is -fno-rounding-math.
+
+         This option is experimental and does not currently guar¿
+         antee to disable all GCC optimizations that are affected
+         by rounding mode.  Future versions of GCC may provide
+         finer control of this setting using C99's "FENV_ACCESS"
+         pragma.  This command line option will be used to spec¿
+         ify the default state for "FENV_ACCESS".
+
+     -fsignaling-nans
+         Compile code assuming that IEEE signaling NaNs may gen¿
+         erate user-visible traps during floating-point opera¿
+         tions.  Setting this option disables optimizations that
+         may change the number of exceptions visible with signal¿
+         ing NaNs.  This option implies -ftrapping-math.
+
+         This option causes the preprocessor macro
+         "__SUPPORT_SNAN__" to be defined.
+
+         The default is -fno-signaling-nans.
+
+         This option is experimental and does not currently guar¿
+         antee to disable all GCC optimizations that affect sig¿
+         naling NaN behavior.
+
+------------------------------------------------------------------
+Options de archlinux:
+CFLAGS="-march=i686 -mtune=native -O2 -pipe -fstack-protector
+--param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2"
+
+-pipe pour ne pas utiliser de fichiers temporaires
+-fstack-protector
+    Emit extra code to check for buffer overflows, such as stack
+    smashing attacks.  This is done by adding a guard variable to
+    functions with vulnerable objects.  This includes functions that
+    call alloca, and functions with buffers larger than 8 bytes.  The
+    guards are initialized when a function is entered and then checked
+    when the function exits.  If a guard check fails, an error message
+    is printed and the program exits.
+--param: ssp-buffer-size
+               The minimum size of buffers (i.e. arrays) that will receive
+               stack smashing protection when -fstack-protection is used.
+
+
+
+----  Librairie ---------------------------------------------------------------
+-Dmacro
+
+foo.o -lz bar.o searches library z (z.a)
+           after file foo.o but before bar.o.
+-L libdir pour spécifier ou chercher les librairies
+LIBRARY_PATH comme variable d'environnement
+
+Include:
+-I libdir: ajout libdir pour chercher les headers
+CPATH comme variable d'environnement
+
+Linkers:
+-Wl,-rpath,mylibrarydir
+  le -Wl pour dire que c'est une option à passer à ld.so
+  -rpath pour mettre en place le rpath (run time path de la librairie)
+LD_RUN_PATH comme variable d'environnement
+(a précédence sur LD_LIBRARY_PATH)
+
+LD_LIBRARY_PATH=mylibrarydir monprog
+  pour modifier le run time path à l'execution
+  (LD_LIBRARY_PATH est regardé au moment du link, LD_RUN_PATH au moment de
+  l'execution)
+cf aussi patchELF et chrpath pour modifier le rpath d'un binaire directement
+
+LD_PRELOAD pour surcharger une librairie
+
+------- Test ------
+Valgrind, Electric fence

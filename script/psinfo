@@ -1,0 +1,4 @@
+#!/bin/sh
+
+PS=$(pgrep "$@")
+[ -n "$PS" ] && ps -ww -fp $PS

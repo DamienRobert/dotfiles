@@ -1,0 +1,108 @@
+[user]
+	name = Damien Robert
+	email = damien.olivier.robert+git@gmail.com
+	signingkey = Damien.Olivier.Robert+gnupg@gmail.com
+[core]
+	editor = vi
+	excludesfile = ~/.config/git/ignore 
+	attributesfile = ~/.config/git/attributes
+	autocrlf = input
+	safecrlf = warn
+[advice]
+	pushNonFastForward=false
+	commitBeforeMerge=false
+	resolveConflict=false
+	detachedHead=false
+[branch]
+	autosetupmerge=true
+[color]
+	ui = auto
+[column]
+	ui=auto
+	#branch = true
+	#status = true
+	#tag = true
+[diff]
+	mnemonicprefix = true
+	renames = copy #detect renames and copy
+	tool = meld
+[merge]
+	tool = gvimdiff
+	defaultToUpstream = true
+[push]
+	default = upstream
+[format]
+	signoff = true
+	numbered = true
+	#signature = ""
+[instaweb]
+	httpd = webrick
+[tar]
+	umask = user
+[notes]
+	rewriteRef=refs/notes/commits #copier les notes en cas de amend/rebase
+[status]
+	submodulesummary=true
+[sendemail]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = damien.olivier.robert@gmail.com
+	smtpserverport = 587
+	aliasesfile=~/.mutt/muttalias
+	aliasfiletype=mutt
+	confirm = auto
+	#set up repo by repo
+	#cccmd=git-cc
+[pretty]
+	summary = "format:%C(yellow)%h%Creset%Cred%d%Creset %s %Cgreen%cr %C(bold blue)<%an>%Creset"
+	sumdate = "format:%C(yellow)%h%Creset%Cred%d%Creset %Cgreen%ci %C(bold blue)<%an>%Creset %s "
+[alias]
+	co = checkout
+	ci = commit
+	st = status --short --branch
+	sl = shortlog
+	br = branch -vv
+	sb = show-branch 
+	ls = ls-files
+	rb = rebase
+	di = diff
+	dc = diff --staged
+	ds = diff --stat
+	dw = diff --word-diff
+	dcw = diff --staged --word-diff
+
+	l  = log --decorate
+	la  = log --decorate --all
+	l1 = log --decorate --no-walk --stat --dirstat
+	ll = log --decorate --name-status
+	lla = log --decorate --name-status --all
+	lls = log --decorate --stat
+	llf = log --decorate --name-status --pretty=fuller
+	lg  = log --oneline --decorate --graph --date-order
+	lt  = log --oneline --decorate --graph --topo-order
+	lgm  = log --pretty=sumdate --decorate --graph --date-order
+	ltm  = log --pretty=sumdate --decorate --graph --topo-order
+	lga  = log --pretty=summary --decorate --graph --date-order --all
+	lta  = log --pretty=summary --decorate --graph --topo-order --all
+
+	#authors = ! git log --pretty=format:%aN | sort | uniq -c | sort -rn
+	ls-ignored = ls-files --exclude-standard --ignored --others -s
+	rmdeleted = ! git ls-files -z --deleted | xargs -0 git rm
+
+	#info = log --decorate --name-status
+	#info1 = log --decorate --no-walk --name-status
+	#infostat = log --decorate --stat #--dirstat
+	#infostat1 = log --decorate --no-walk --stat --dirstat
+
+	#summary = log --oneline --decorate --graph --date-order
+	#summarytopo = log --oneline --decorate --graph
+	#summaryfull = log --decorate --graph --pretty=summary --abbrev-commit --date=relative --date-order --all
+	#summarytopofull = log --decorate --graph --pretty=summary --abbrev-commit --date=relative --all
+
+	meld = difftool -y -t meld
+	vimdiff = difftool -y -t gvimdiff
+	mergemeld = mergetool -y -t meldgitmerge
+	mergevim = mergetool -y -t gvimdiff
+	#worddiff = diff --word-diff
+	#diffstaged = diff --staged
+	#diffstat = diff --stat

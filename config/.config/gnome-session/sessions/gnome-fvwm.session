@@ -1,0 +1,6 @@
+[GNOME Session]
+Name=GNOME with fvwm
+RequiredComponents=gnome-panel;gnome-settings-daemon;
+RequiredProviders=windowmanager;notifications;
+DefaultProvider-windowmanager=fvwm
+DefaultProvider-notifications=notification-daemon

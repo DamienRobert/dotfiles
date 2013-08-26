@@ -1,0 +1,155 @@
+============================================================
+Cas des variétés
+================
+
+Systèmes de paramètres
+======================
+Si Y est une composante irréductible de Var(f_1,...,f_r), alors codim Y<=r.
+
+Inversement, si X est une variété affine, et codim Y=r, alors il existe
+- Une chaine Y=Y_r \subset ... \subset Y_1 avec codim Y_i=i
+- (f_1,...,f_r) tel que Y_i est une composante irréd de Var(f_1,...,f_i),
+  et toutes les composantes irréd sont de codim i
+Pr: cf www.nd.edu/~sevens/fibdim.pdf
+
+Normalité
+=========
+
+Si f:X->Y est fini, Y normal, W \subset Y fermé, alors pour toute
+composante Z de f^-1(W), f(Z)=W et dim(Z)=dim(W)
+[Pr: dans ce cas on a le going down]
+
+Prop: - Si X est une variété normale, X*k^n est normale, X_a est normale.
+- Si X est une variété affine, il existe un localisé X_f normal.
+
+Th: Soit f:X->Y un morphisme dominant de variétés, r=dim X-dim Y.
+Il existe un ouvert normal V de Y tel que si U=f^-1(Y), alors il existe un
+morphisme de U dans k^r tel que U->V*k^r soit fini et dominant.
+[Pr: cf www.nd.edu/~sevens/fibdim.pdf, c'est un cas particulier de la
+normalisation de Noether]
+
+Dimension des fibres
+====================
+
+(Hartshorne exo 3.22 et 3.20)
+
+Soit f: X->Y un morphisme dominant de variétés (=schémas intègres de type
+finis) sur un corps k.
+Soit V \subset Y un fermé irréductible contenu dans l'adhérence de f(X) (ie
+son point générique v appartient à f(X)), et U une composante irréductible de
+f^-1(V) qui domine V (ie v \in f(U)). Alors 
+- codim(U,X) <= codim(V,Y)
+- si e=dim X-dim Y = dim fibre générique
+  dim(U)>=e+dim V
+  En particulier, pour tout y \in f(X), les composantes irréd de la fibre
+  X_y sont de dim >=e.
+- par platitude générique, il existe un ouvert U de X tel que pour tout y
+  fermé \in f(U), dim U_y=e.
+- Pour tout n, soit E_n l'ensemble des points x \in X tels que X_f(x) a une
+  composante irréductible contenant x de dim >=n.
+  Alors les E_n sont fermés, E_e=X, E_n n'est pas dense si n>e.
+  ie: la dimension des fibres est semi-continue sup à la source
+- Pour tout n, soit D_n les points y\in Y tels que X_y soit de dim n. Alors
+  les D_n sont constructibles et D_e contient un ouvert dense de Y.
+  ie: si f est fermée, la dimension des fibres est semi-continue sup à la
+  cible
+
+Rappels: si X est une variété sur k, on a
+(i) dim X=dim O_P pour tout P fermé
+(ii) dim X=tr deg k(X)/k 
+(iii) Si Y fermé dans X, codim(Y,X)=inf {dim O_P,X, P \in Y}
+(iv) Si Y fermé dans X, dim Y+codim(Y,X)=dim X
+(v) Si U ouvert non vide de X, dim U= dim X
+(vi) Si k'/k extension, les composantes irréd de X*k' sont de dim dim X.
+
+Rem: Soit R un anneau de valuation discrète contenant son corps résiduel k.
+Alors Spec R[t] ne vérifie pas (i), (iv) et (v).
+
+Platitude et équidimension
+==========================
+
+si f:X->S est un morphisme dont
+toutes les fibres ont la même dimension, avec S régulier et X
+Cohen-Macaulay, alors f est automatiquement plat (EGA IV.6.1.5)
+
+==========================================================================
+Dimension des fibres
+====================
+
+Theorem (cf FOAG, Chapitre 11.4)
+=======
+
+Soit f: X->Y un morphisme de prés finie de schémas, y=f(x).
+- Alors codim_X x <= codim_Y y  + codim_fibre(y) x
+Si f a le going-down (ex: plat) il y a égalité.
+[Pr: utiliser les systèmes de paramètres]
+- Les dimensions des fibres est semi-continue à la source
+- Il existe un ouvert U de Y tel que les fibres en U sont
+  équidimensionelles de dim dim X-dim Y (=dim fibre générique [TODO: is
+  dim X - dim Y always the dim of the generic fiber?? This looks wrong]).
+[Pr: f de prés fini est localement le pull back d'un morphisme de type
+finis entre Z-anneaux de types finis, le pullback préserve les dimensions,
+donc on se ramène au cas loc noeth de type fini sur un anneau excellent.]
+- Cf Topologie: f envoie un loc constructible sur un loc constructible.
+
+Theorem (stack projects, 25.28.2)
+=======
+Soit f:X->Y un morphisme de schéma de type fini, F cohérent sur X, Y
+réduit. Alors il existe un ouvert dense V de Y tel que le pullback de f à
+U=f^-1(V) soit plat de présentation finie, et F|U soit plat de présentation
+finie.
+
+Theorem (stack project, sections 25.29-30)
+=======
+Soit f:X->Y un morphisme de schéma loc de type fini. y=f(x)
+- dim_x X_y = dim O_Xy,x + trdeg_k(y) k(x)
+[Pr: dim+codim = dim globale sur une variété, or la fibre ici est de type
+fini sur k(y)]
+
+- Si x se spécialise en x', alors
+  . dim_x (X_y) <= dim_x' (X_y)
+  . trdeg_k(y) k(x) > trdeg_k(y) k(x')
+  . dim O_Xy,x < dim O_Xy,x'
+
+- Si de plus f est dominant, Y loc noeth, X et Y intègres, alors
+  dim O_X,x <= dim O_Y,y + tr deg_K(Y) K(X) - tr deg_k(y) k(x)
+  Il y a égalité si Y est universellement caténaire
+
+  En particulier, dim(X)<=dim(Y)+dim fibre générique, avec égalité si f
+  fermée.
+
+Eisenbud: theorème d'altitude de Nagata et platitude des fibres spéciales
+========================================================================
+Soit f:X->Y un morphisme dominant de schéma intègres loc de type fini loc noeth. y=f(x)
+
+Th: 
+- dim OX_x <= dim OY_y + dim fibre générique.
+  Si Y universellement caténaire et x maximal dans la fibre, il y a égalité.
+  * En particulier, dim OX_y <= dim OY_y + dim fibre générique si X_y est non vide
+    Si Y universellement caténaire, il y a égalité.
+  * En particulier, dim X <= dim Y + dim fibre générique.
+    Si les points fermés de Y sont denses et Y Cohen-Macauley (ex: Y
+    variété), alors dim X=dim Y + dim fibre générique
+    [Pr: car il existe un point max de Y avec une préimage non vide]
+- dim OX_x <= dim OY_y + dim fibre spéciale (=dim OX_x/yOX_x=dim Ofibre(y)_x)
+  (ie codim_X x <= codim_Y y  + codim_fibre(y) x)
+  Si X->Y est plat, il y a égalité.
+  (Rem: si x est maximal dans la fibre, alors par semi continuité
+  supérieure on a toujours que dim fibre spéciale = dim de la composante en x
+  de la fibre en y >= dim fibre générique.
+  Si X/Y plat, on retrouve que les composantes des
+  fibres sont toutes de dimension=dim fibre générique (=dim X-dim Y si X,Y
+  variétés))
+
+Cor: 
+- dim Var(x)<=dim Var(y)+dim Var(x dans la fibre en y) (=dim OX_y/xOX_y)
+  [Pr: Appliquer le Th à Var(x)->Var(y)]
+  Si Y Cohen-Macauley+points fermés dense il y a égalité.
+  Dans ce cas, en raisonnant sur les composantes de la fibre, on a aussi 
+  dim Adhérence fibre =dim Var(y)+dim fibre 
+  (ie dim OX/yOX = dim OY/yOY + dim OX_y/y OX_y)
+- Dans le cas de variétés, dim OX_x=dim X-dim Var(x).
+  D'où via dim OX_x <= dim OY_y + dim Ofibre(y)_x on tire
+  dim Var(x)>=dim X-dim Y+dim Var(y)-codim de x dans la fibre
+            >=dim Var(y) + dim fibre générique - codim de x dans la fibre en y
+            (= si plat)

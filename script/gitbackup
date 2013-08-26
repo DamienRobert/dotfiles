@@ -1,0 +1,103 @@
+#!/bin/zsh
+
+[[ -z $MYHOSTNAME ]] && . $HOME/mine/config/hosttype.local
+
+#FILES=("${(@f)$(bupbackuplist common)}")
+DIRS=(mine/ perso/ pro/ latex/)
+SKIP=(pro/dist/gforge/mpc/ pro/dist/gforge/inria-doc-style/ latex/texmf/tex/generic/beamercolorthemesolarized/)
+GITDIR="$HOME/backups/gitbackup"
+mkdir -p $GITDIR || exit 1
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -v ) shift ; VERBOSE="true";;
+    *) break;;
+  esac
+done
+
+gitcmd() {
+  #echo git --git-dir=$GITDIR --work-tree=$HOME "$@"
+  git "--work-tree=$HOME" "--git-dir=$GITDIR/.git" "$@"
+}
+
+gitbarecmd() {
+  git "--git-dir=$GITDIR/.git" "$@"
+}
+
+#find SSH_AUTH_SOCK while running in cron
+function get_env_info() {
+  vars=(SSH_AUTH_SOCK)
+    pid=$1
+    eval "unset ${vars[@]}; $(printf "export %s;" $(sed 's/\x00/\n/g' /proc/${pid//[^0-9]/}/environ | grep $(printf -- "-e ^%s= " "${vars[@]}")) )"
+}
+
+process() {
+  case $1 in 
+    myinit )
+gitbarecmd init #--bare 
+#gitbarecmd config core.logAllRefUpdates true
+gitbarecmd config core.excludesfile $HOME/mine/script/gitbackup_ignore
+gitbarecmd symbolic-ref "refs/heads/$MYHOSTNAME" refs/heads/master
+gitbarecmd remote add -t $MYHOSTNAME origin ssh://imbunison/home/imb/drobert/backups/gitbackup
+;;
+    myadd ) 
+[[ -d $GITDIR/.git ]] || process myinit
+for dir in $DIRS; do
+  cd $HOME
+  SUBMODULES=("${(@f)$(find $dir -name .git | sort -r)}")
+  for subdir in $SUBMODULES; do 
+    sub=${subdir%.git}
+    #echo $sub
+    if [[ -n ${(M)SKIP:#${sub}} ]] ; then
+      #echo "skipped"
+    else
+      gitcmd add -A $sub
+    fi
+  done
+  gitcmd add -A $HOME/$dir
+done
+;;
+    mycommit )
+#DATE=$(date --rfc-3339=seconds)
+gitcmd commit -m ' ' --allow-empty-message --untracked-files=no
+#we want to exit 0 if $?==1 because a possible error is that there is
+#nothing to commit, which is normal when we run this script from a crontab
+[[ $? == 0 || $? == 1 ]] && exit 0
+exit $?
+;;
+    save ) process myadd
+      [[ -n $VERBOSE ]] && process list
+           process mycommit;;
+    mypush ) 
+      #find a ssh-agent
+      [[ -e "/run/user/$UID/ssh_auth_sock" ]] && SSH_AUTH_SOCK="/run/user/$UID/ssh_auth_sock"
+      [[ -z $SSH_AUTH_SOCK ]] && pid=$(pgrep -U $UID polkit-gnome)  &&  get_env_info $pid
+      [[ -z $SSH_AUTH_SOCK ]] && pid=$(pgrep -U $UID ssh-agent)  &&  get_env_info $pid
+      export SSH_AUTH_SOCK
+      gitbarecmd push origin +$MYHOSTNAME:$MYHOSTNAME
+    ;;
+
+
+    list ) shift;
+      gitcmd st --untracked-files=no "$@" ;;
+    mygc )
+      gitbarecmd gc --aggressive ;;
+    rmcached )
+      shift;
+      gitcmd rm --cached "$@" ;;
+
+    help ) echo  "Usage: gitbackup myinit/list/myadd/mycommit/save/mypush/mygc
+      - list: list files saved
+      - save: save the files
+      - mypush: push the saved folders at imb"
+      ;;
+
+    * )
+      gitcmd "$@"
+      ;;
+  esac
+}
+
+process "$@"

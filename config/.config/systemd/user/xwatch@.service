@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch for X on display %I
+BindsTo=xsession@.target
+
+[Service]
+Environment=DISPLAY=%I
+ExecStart=/bin/sh -c 'exec %h/mine/script/services/xwatch %I'
+
+[Install]
+WantedBy=xsession@.target

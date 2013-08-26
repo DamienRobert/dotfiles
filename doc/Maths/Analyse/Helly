@@ -1,0 +1,29 @@
+Si f_n: I->I est uniformément de bounded variation, alors 
+  - il existe une sous suite qui converge simplement partout vers f.
+  - de même pour une convergence locale dans L_1
+  - et |df/dt|_L1 (au sens des distributions) <= lim inf |df_n_k/dt|_L1
+
+Si de plus f_n croissante et f est continue la convergence est uniforme.
+
+Même hypothèse, on suppose que f_n tend simplement vers f pour tout x
+(c'est tjrs le cas d'après ce qui précède quitte à prendre une sous suite)
+
+Alors df_n tend préfaiblement vers df ie Int phi df_n tend vers Int phi df
+pour toute phi continue
+
+Rappels:
+
+Une fonction BV est la diff de deux fonctions croissantes.
+Une fonction croissante est dérivable pp, et sa dérivée f' est intégrable,
+avec Int f' <= f(b-)-f(a+)
+
+L'escalier de Cantor montre qu'il n'y a pas toujours égalité (f(0)=0,
+f(1)=1, f dérivable pp avec f'(x)=0)
+L'égalité arrive si f est absolument continue. Réciproquement la primitive
+d'une fonction intégrable est abs continue.
+
+Si f est continue et dérivable partout (sf en un ens dénombrable), alors f'
+n'est pas forcément L_1. Ms si f' est L_1 alors f est la primitive de f',
+donc est abs continue.
+
+

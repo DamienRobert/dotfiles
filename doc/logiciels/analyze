@@ -1,0 +1,7 @@
+ pv - monitor the progress of data through a pipe 
+ perf - profiling:
+   This is the wiki page for the perf performance counters subsystem in
+   Linux. Performance counters are CPU hardware registers that count hardware
+   events such as instructions executed, cache-misses suffered, or branches
+   mispredicted. They form a basis for profiling applications to trace
+   dynamic control flow and identify hotspots. 

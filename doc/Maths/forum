@@ -1,0 +1,60 @@
+forum.maths:20655 <k6791k$47h$1@clipper.ens.fr>
+  Dès que K est un espace compact dénombrable, l'espace dual de C(K),
+  l'esace des fonctions continues sur K, qui est l'espace des mesures sur
+  K, est isométrique à l¹.
+  La classification des espaces C(K) pour K compact dénombrable est bien
+  connue, deux tels espaces C(K) et C(L) sont isométriques si et seulement
+  si K et L sont homéomorphes, ce n'est pas difficile à montrer. Deux tels
+  espaces C(K) et C(L) sont isomorphes si les rangs de Cantor-Bendixson
+  vérifient des inégalités du type rg(K)<rg(L)^omega (et réciproquement),
+  c'est un résultat plus difficile. C'est expliqué mieux ici
+http://mathoverflow.net/questions/1380/isomorphisms-of-banach-spaces
+
+Si P \in Q[x] est irréd de degré premier, alors Gal(P) est résolube ssi le
+spliting field est engendré par 2 racines de P.
+http://mathoverflow.net/questions/110727/on-a-theorem-of-galois
+http://mathoverflow.net/questions/24081/solvable-transitive-groups-of-prime-degree
+
+==================================================================
+sciences.maths.avancees: 1832 et thread associé.
+  Exemples très intéressant de sous-ouvert affine d'une variété affine qui
+  n'est pas une localisation, et que ça ne peut pas se produire si A est
+  factoriel:
+    J'ai retrouvé la référence. C'est SGA 6 II 2.2.6 qui dit que si X est
+    un schéma localement noethérien, U un ouvert tel que U -> X soit un
+    morphisme affine, alors les composantes irréductibles de X-U sont de
+    codimension 0 ou 1 
+    [l'idée est de montrer que si A est un anneau local noethérien de
+    dimension >=2, alors le complémentaire du point fermé dans Spec A n'est
+    pas un schéma affine (en montrant qu'il a de la cohomologie
+    cohérente)].
+    Si A est un anneau noethérien et intègre, pour que tout ouvert affine de
+    Spec A soit de la forme D(f), il suffit donc que A soit factoriel.
+
+sciences.maths:19065 topologie de Zariski : des premiers aux maximaux, continuite sur le spectre
+  (Des questions un peu zarb de Name Sage sur les schémas, pas sûr que ce
+  soit très intéressant...)
+
+===========================================================
+sciences.maths:20891
+C'est faux, parce que tu confonds « mesurable » au sens de
+« Lebesgue-mesurable » (i.e., pour un ensemble : appartient à la tribu
+complétée ; et pour une fonction : l'image réciproque d'un ouvert /
+borélien est dans cette tribu) et au sens de « borélien » :
+
+On peut prouver l'existence d'un ensemble non _borélien_ de R sans
+utiliser l'axiome du choix (sa fonction indicatrice est alors non
+Borel-mesurable) ; en fait, on peut montrer l'existence d'un borélien
+de R² dont la projection sur R n'est pas borélienne.  Ce n'est pas
+super difficile, et c'est complètement explicite : c'est en gros un
+argument diagonal à partir d'un truc universel.  D'ailleurs, c'est
+fait dans le message 58 (<6v13fp$ovq$1@clipper.ens.fr>) de ce conti :
+on peut vérifier assez facilement que la démonstration n'utilise pas
+l'axiome du choix.
+
+Ce qui est consistant avec ZF (si on admet la consistance d'un
+cardinal inaccessible) c'est que toute partie de R est
+Lebesgue-mesurable.  Remarquons, et ce n'est pas trivial, que la
+projection d'un borélien de R² (ou l'image d'un borélien par une
+fonction continue) est Lebesgue-mesurable.
+

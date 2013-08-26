@@ -1,0 +1,158 @@
+#!/bin/zsh
+
+help() {
+  echo "play_movie: play a movie :)
+  play_movie [-play] SEASON EPI SUBSEASON SUBEPI
+play_movie -rename season number_of_subtiles: rename the subtitles to match the name of the movies
+  
+OPTIONS:
+  -ss: set subtitle separation
+  -ms: set movie separation
+  -bs: set both separation
+  -glob: enable global separation (ie use *)
+  -go: select first movie/sub available
+  -play: don't write intermediate file
+"
+  exit 1
+}
+
+SUBSEP=
+MOVIESEP=
+GLOBSEP=
+PLAY=
+GO=
+rename=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -h|-help|--help )  help ;;
+    -ss ) shift ; SUBSEP="$1"; shift ;;
+    -ms ) shift ; MOVIESEP="$1"; shift ;;
+    -bs ) shift; SUBSEP="$1"; MOVIESEP="$1"; shift ;;
+    -glob ) shift; GLOBSEP="true";;
+    -play ) shift; PLAY="true";;
+    -g|-go ) shift; GO="true";;
+    -rename ) shift; rename=true ;;
+    *) break;;
+  esac
+done
+
+handle() {
+  ipath=$1
+  msg=$2
+
+  if [[ -n $rename || -n $GO ]]; then
+    break;
+  else
+    echo "$msg: $ipath (y/n)"
+    read a;
+    if [[ $a == "y" ]]; then break; fi
+  fi
+}
+
+find_files() {
+  SEASON=$1
+  EPI=$2
+  SUBSEASON=$3
+  SUBEPI=$4
+  echo "Season: $SEASON; Episode: $EPI, Subseason: $SUBSEASON, Subepi: $SUBEPI"
+  echo "  ------ Movie ------"
+  if [[ -n $GLOBSEP ]]; then #glob separation
+    echo *"$SEASON$MOVIESEP"*"$EPI"*.{avi,mkv,mp4}(.N)
+    for MOVIE in *"$SEASON$MOVIESEP"*"$EPI"*.{avi,mkv,mp4}(.N); do
+      handle $MOVIE "Movie"
+    done
+    echo "  ------ Subtitle ------"
+    echo {sub/,}*"$SUBSEASON$SUBSEP"*"$SUBEPI"*.srt(.N)
+    for SUB in {sub/,}*"$SUBSEASON$SUBSEP"*"$SUBEPI"*.srt(.N); do
+      handle $SUB "Subtitle"
+    done
+  else #non glob separation
+    echo *"$SEASON$MOVIESEP$EPI"*.{avi,mkv,mp4}(.N)
+    for MOVIE in *"$SEASON$MOVIESEP$EPI"*.{avi,mkv,mp4}(.N); do
+      handle $MOVIE "Movie"
+    done
+    echo "  ------ Subtitle ------"
+    echo {sub/,}*"$SUBSEASON$SUBSEP$SUBEPI"*.srt(.N)
+    for SUB in {sub/,}*"$SUBSEASON$SUBSEP$SUBEPI"*.srt(.N); do
+      handle $SUB "Subtitle"
+    done
+  fi
+}
+
+launch_movie() {
+  find_files "$SEASON" "$EPI" "$SUBSEASON" "$SUBEPI"
+  COMMAND="mymplayer \"$MOVIE\""
+  if [[ $MYHOSTNAME = "Numenor" ]]; then
+    COMMAND="mymplayer -slow \"$MOVIE\""
+  fi
+  if [[ -n $SUB ]]; then
+    COMMAND="$COMMAND -sub \"$SUB\""
+  fi
+  if [[ $MYHOSTNAME = "Durin" ]]; then
+    COMMAND="mymplayer -omx \"$MOVIE\""
+    if [[ -n $SUB ]]; then
+      COMMAND="$COMMAND --subtitles \"$SUB\""
+    fi
+  fi
+}
+
+if [[ -n $rename ]]; then
+  SUBTITLECHANGE="0Asubrename"
+  SEASON=$1
+  EPIS=$2
+  for (( EPI=1; EPI<$EPIS; EPI+ )); do
+    if [[ ${#EPI} -eq 1 ]]; then EPI="0$EPI"; fi
+    find_files "$SEASON" "$EPI" "$SUBSEASON" "$SUBEPI"
+    NEWSUB=${MOVIE%.*}.srt
+    COMMAND="cp \"$SUB\" \"$NEWSUB\""
+    echo "$COMMAND" >>$SUBTITLECHANGE
+  done
+  echo ". .$SUBTITLECHANGE".
+
+else
+  case $# in
+    0 ) FILE="00Epi" ;;
+    1 ) FILE="$1" ;;
+    2 ) SEASON=$1; EPI=$2 ;;
+    3 ) SEASON=$1; EPI=$2; SUBEPI=$3 ;;
+    4 ) SEASON=$1; EPI=$2; SUBSEASON=$3; SUBEPI=$4 ;;
+  esac
+  if [[ -n $FILE ]]; then . "./$FILE"; fi
+  if [[ -z $SUBEPI ]]; then 
+    SUBEPI=$EPI
+  else
+    WRITESUBEPI="true"
+  fi
+  if [[ -z $SUBSEASON ]]; then 
+    SUBSEASON=$SEASON
+  fi
+
+  if [[ -z $PLAY ]]; then
+    PLAYMOVIEFILE=".${SEASON}x${EPI}"
+    if [[ ! -f $PLAYMOVIEFILE ]]; then 
+      launch_movie
+      echo "$COMMAND" >$PLAYMOVIEFILE
+    fi
+    echo "Will play $PLAYMOVIEFILE (press a key to continue):";
+    cat "$PLAYMOVIEFILE"
+    [[ -n $GO ]] || read a
+    . "./$PLAYMOVIEFILE"
+  else
+    launch_movie
+    echo "Will launch: $COMMAND (press a key to continue)"
+    [[ -n $GO ]] || read a
+    eval "$COMMAND"
+  fi
+
+  if [[ -n $FILE ]]; then
+    NEWEPI=$(($EPI+1))
+    echo "EPI=$NEWEPI" >> $FILE
+    if [[ -n $WRITESUBEPI ]]; then
+      NEWSUBEPI=$(($SUBEPI+1))
+      echo "SUBEPI=$NEWSUBEPI" >> $FILE
+    fi
+    $EDITOR $FILE
+  fi
+fi

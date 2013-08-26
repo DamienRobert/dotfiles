@@ -1,0 +1,60 @@
+Le théorème de réflexion est en fait un schéma de théorèmes×: pour
+chaque P, il dit «×si P [est vrai] alors il existe un ensemble
+transitif M, qu'on peut choisir dénombrable ou bien égal à un V_\alpha
+(mais pas les deux à la fois), tel que M |= P×».  Bon, en fait, il y a
+plein plein plein d'énoncés dans le même genre, en voici quelques
+uns si je ne me plante pas×:
+
+* {pour chaque énoncé P,} il existe un ensemble transitif M, qu'on
+  peut choisir dénombrable ou bien égal à V_\alpha, tel qu'on ait
+  l'équivalence×: P <=> (M |= P)×;
+
+* {pour chaque énoncé P,} il existe une classe close cofinale
+  d'ordinaux \alpha tels que P <=> (V_\alpha |= P)×;
+
+* {pour chaque énoncé P,} si M_0 est un ensemble transitif quelconque,
+  il existe un ensemble transitif M contenant M_0, qu'on peut choisir
+  de cardinal card(M_0)+\aleph_0 ou bien égal à un V_\alpha, tel qu'on
+  ait l'équivalence×: P <=> (M |= P)×;
+
+* {pour chaque énoncé P,} il existe une classe close cofinale (et même
+  close cofinale sous chaque cardinal régulier indénombrable)
+  d'ordinaux \alpha tels que (L |= P) <=> (L_\alpha |= P) (où L est
+  l'univers constructible, réunion des L_\alpha définis comme
+  l'ensemble des parties définissables d'un des L_\beta antérieur)×;
+
+* {pour chaque formule R(x_1,...x_n),} si M_0 est un ensemble
+  transitif quelconque, il existe un ensemble transitif M contenant
+  M_0, qu'on peut choisir de cardinal card(M_0)+\aleph_0 ou bien égal
+  à un V_\alpha, tel qu'on ait pour tous x_1,...,x_n de M_0
+  l'équivalence R(x_1,...,x_n) |= (M |= R(x_1,...,x_n))×;
+
+* {pour chaque formule R(x_1,...x_n),} si M_0 est un ensemble
+  (transitif) quelconque, il existe un ensemble transitif M contenant
+  M_0, qu'on peut choisir égal à un V_\alpha, tel qu'on ait pour tous
+  x_1,...,x_n de M (et plus seulement de M_0 cette fois×!)
+  l'équivalence R(x_1,...,x_n) |= (M |= R(x_1,...,x_n))×;
+
+* {pareil que l'un des précédents, avec n'importe quel ensemble fini
+  de formules R}×;
+
+* {pour chaque entier naturel n,} il existe un ensemble transitif M,
+  qu'on peut choisir dénombrable ou bien égal à V_\alpha, tel qu'on
+  ait×: M |= tous les axiomes de ZFC sauf que le schéma de
+  remplacement est limité aux prédicats \Sigma_n.
+
+Attention×!  À chaque fois, ce que j'ai écrit entre accolades ne fait
+pas partie de l'énoncé mais paramètre un schéma de théorèmes×!  Par
+exemple, ZFC - s'il est consistant - ne prouve certainement pas «×pour
+chaque entier naturel n, il existe un ensemble transitif M tel qu'on
+ait M |= tous les axiomes de ZFC sauf que le remplacement est limité
+aux prédicats \Sigma_n×» (un tel théorème impliquerait la consistance
+ait M |= tous les axiomes de ZFC sauf que le remplacement est limité
+aux prédicats \Sigma_n×» (un tel théorème impliquerait la consistance
+de ZFC)×!  C'est ce qui rend le dernier schéma d'énoncés d'autant plus
+impressionnant.
+
+Tous ces résultats sont prouvés avec le même genre de techniques que
+le théorème de Löwenheim-Skolem×: prendre des clôtures pour des
+fonctions de Skolem.
+

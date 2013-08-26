@@ -1,0 +1,47 @@
+#!/bin/sh
+. $MYFILES/.initlog
+mylog ".Xresources-generate run"
+
+. $MYFILES/.xgeometry
+
+FILE="$HOME/.Xresources.local"
+rm "$FILE"
+touch "$FILE"
+
+case "$MYHOSTNAME" in 
+  Valinor )
+  #Le drivers nvidia fout le dpi a 96, mumblemumble, donc je mets ca pour
+  #les cas où il n'est pas lancé
+  cat >>"$FILE" <<EOF
+Xft.dpi: 96
+EOF
+;;
+  Numenor )
+  cat >>"$FILE" <<EOF
+Xft.dpi:
+EOF
+esac
+
+case $MYHOSTNAME in
+  imb )
+  #by default this is set to -color, and it prevent xterm to read my colors
+cat >>"$FILE" <<EOF
+*.customization: 
+EOF
+;;
+esac
+
+cat >>"$FILE" <<EOF
+URxvt.font: xft:$FONT
+*vt100.faceName: "$FONT"
+*vt100.geometry: $XTERMG
+beta*.vt100.faceName: "$SFONT"
+
+alpha.vt100.geometry: ${XTERMG}${GEODL}
+alpha2.vt100.geometry: ${XTERMG}${GEODR}
+
+betadr.vt100.geometry: ${SXTERMG}${GEODR}
+betadl.vt100.geometry: ${SXTERMG}${GEODL}
+betaur.vt100.geometry: ${SXTERMG}${GEOUR}
+betaul.vt100.geometry: ${SXTERMG}${GEOUL}
+EOF

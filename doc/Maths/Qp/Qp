@@ -1,0 +1,41 @@
+* Extensions *
+
+- non ramification
+Il y a bijection entre les extensions non ramifiées de Q_p et les
+extensions de F_p. En particulier, l'extension maximale non ramifiée de Q_p
+est donnée par toutes les racines n-ième de l'unité, n premier à p.
+
+- ramification modérée
+La ramification modérée est donnée par les racines e-ièmes de p, avec e
+premier avec p
+
+- ramification sauvage
+On rajoute les racines p^n-ièmes de p, en particulier on a aussi les
+racines p^n-ièmes de l'unité.
+
+========================
+* Théorie de hodge p-adique *
+
+Si K est un corps local, on regarde les représentations du groupe de galois
+de K. Dedans on peut trouver des sous-espaces sympa, avec des foncteurs
+pleinement fidèles vers des objets d'algèbres linéaires.
+
+Représentation crystalline < Représentation semi-stables <Représentation de
+De Rham < Représentation de Hodge-Tate < Toutes les représentations.
+
+On gros on associe un anneau, genre B_cris, de sorte que B_cris tens
+cohomologie étale sur Q donne B_cris tens cohomologie de De Rham sur K pour
+une bonne variété.
+
+On défini D_cris(V)=(B_cris \tens_Q_p V)^G, par ce qui précède pour une bonne
+variété, D_cris(cohomologie étale)=cohomologie de De Rham.
+
+On dit que V est crystallin si B \tens D_cris(V) -> V est un isomorphisme.
+
+- V -> D_cris(V) est un foncteur pleinement fidèle des représentations
+crystallines vers les \phi-module.
+- V -> D_st(V) est un foncteur pleinement fidèle des représentations
+crystallines vers les (\phi,N)-module.
+
+En général, il y a une équivalence de catégorie entre les représentations
+et les (phi, Gamma)-modules d'un certain type.

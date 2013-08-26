@@ -1,0 +1,51 @@
+#compdef git-mymovesubdir meldgitmerge gitdiff gitbackup gitstatus.rb
+
+case $service in
+  meldgitmerge )
+    _arguments \
+      ':Base:_files' \
+      ':Parent 1:_files' \
+      ':Parent 2:_files' \
+      ':Merged file:_files'
+  ;;
+
+  gitdiff) 
+    _arguments -s \
+    '-c[no pager output]' \
+    '-w[words diff]' \
+    '-H[no highlight]' \
+    '*:Files to diff:_files'
+  ;;
+
+  git-mymovesubdir)
+    _arguments '1:subdirectory where worktree will be move:_files -/'
+    ;;
+
+  gitbackup)
+    local -a values
+    values=("myinit:'create ~/backups/gitbackup'"
+            "list:'list backuped files'"
+            "myadd:'add files in list to the index'"
+            "mycommit:'commit'"
+            "save:'myadd+mycommit'"
+            "mypush:'push to imb'"
+            "mygc:'launch git gc --aggressive'"
+            "rmcached:'launch git rm --cached'")
+    _arguments \
+      '-v[verbose]' \
+      ":Action:(($values))"
+  ;;
+
+  gitstatus.rb)
+    _arguments -s -S \
+  {-p,--prompt}"[To be used in shell prompt]" \
+  {-s,--status}"[Output value of git status]" \
+  {-c,--color}"[Color output (on by default)]" \
+  "--porcelain[Don't format the status but output it in a machine convenient format]" \
+  "--sequencer[Show sequencer data (on by default)]" \
+  "--indent[Indent to use if showing git status]:indent" \
+  --no-{prompt,porcelain,color,sequencer} \
+  "--describe[How to describe a detached HEAD]:describe detached HEAD:(sha1 describe contains branch match all)" \
+  '*:git directory:_files -/'
+  ;;
+esac

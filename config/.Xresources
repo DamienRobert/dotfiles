@@ -1,0 +1,121 @@
+! Marre des applications qui foutent un dpi débile!
+Xft.dpi: 
+
+! Couleur du texte et du fond du XTerm. cf /usr/lib/X11/rgb.txt 
+! Les gris ne bougent pas
+!*VT100.color0:  black
+!*VT100.color15: white
+!*VT100.color7:  gray75
+!*VT100.color8:  gray50
+! Pour un fond clair
+!*VT100.color1:  red3
+!*VT100.color2:  green4
+!*VT100.color3:  gold3
+!*VT100.color4:  blue3
+!*VT100.color5:  magenta3
+!*VT100.color6:  DeepSkyBlue4
+!*VT100.color9:  red2
+!*VT100.color10: Springgreen3
+!*VT100.color11: darkgoldenrod2
+!*VT100.color12: dodgerblue2
+!*VT100.color13: magenta2
+!*VT100.color14: turquoise3
+! Tango theme from gnome-terminal
+*.color0: #000000000000
+*.color1: #CCCC00000000
+*.color2: #4E4E9A9A0606
+*.color3: #C4C4A0A00000
+*.color4: #34346565A4A4
+*.color5: #757550507B7B
+*.color6: #060698209A9A
+*.color7: #D3D3D7D7CFCF
+*.color8: #555557575353
+*.color9: #EFEF29292929
+*.color10: #8A8AE2E23434
+*.color11: #FCFCE9E94F4F
+*.color12: #72729F9FCFCF
+*.color13: #ADAD7F7FA8A8
+*.color14: #3434E2E2E2E2
+*.color15: #EEEEEEEEECEC
+
+*.foreground:	Black
+!*.background:	LemonChiffon
+*.background:	#FFFFFFFFDDDD
+*.cursorColor:	firebrick3
+
+! La ScrollBar est la barre de défilement à gauche du xterm; elle permet
+! de se déplacer avec la souris dans le texte déjà affiché dans le xterm.
+*.VT100.scrollBar: on
+*.VT100.scrollbar.thickness: 6
+
+! Conditions pour arrêter le défilement (scroll) dans un xterm.
+! scrollkey:       arrêter quand on appuie sur une touche
+! scrollttyoutput: arrêter quand du texte est affiché dans le xterm
+*VT100.scrollKey:	on
+*VT100.scrollTtyOutput:	off
+
+! Permet de remonter d une ligne de la colonne 1 à la colonne 80 avec la
+! flèche <- lorsqu on efface avec backspace. Ça ne change rien pour votre
+! shell, mais ça aura effet avec des programmes moins perfectionnés.
+*VT100.reverseWrap: on
+! Le nombre de lignes gardées en mémoire pour scroller.
+*VT100.saveLines: 2000
+! En cas d erreur, est-ce que le terminal doit clignoter au lieu d émettre
+*VT100.visualBell: on
+
+! Ceci redéfinit certaines combinaisons de touches dans les xterms. Par
+! exemple, Ctrl-Flèche_vers_le_haut fait défiler d une demie page en
+! arrière le texte déjà affiché par le XTerm. 
+*VT100.translations: #override \
+	Shift<Key>Up:	scroll-back(1,line)\n\
+	Shift<Key>Down:	scroll-forw(1,line)\n
+
+! la console:
+*FVWMmulticommand.foreground:	White
+*FVWMmulticommand.background:	Black
+
+URxvt.perl-ext-common:  default,tabbed,url-select
+URxvt.keysym.M-u:    perl:url-select:select_next
+URxvt.urlLauncher:   firefox
+URxvt.underlineURLs: true
+
+
+
+gv.antialias: true
+gv.scratchDir: /tmp/
+
+Emacs.foreground:	Black
+Emacs.background:	BlanchedAlmond
+Emacs.cursorColor:	red
+Emacs.pointerColor:	red
+
+! Type de terminal. C est ce qui contrôle les capacités d affichage du
+! xterm. Si vous mettez xtermm-a, et sélectionnez titeInhibit: off, des
+! programmes comme less, forum, etc. seront par exemple capables en mourant
+! de restaurer l affichage du xterm tel qu il était au moment où on les a
+! lancés. C est parfois pénible, donc on désactive.
+!XTerm*termName: xterm
+!UXTerm*termName: xterm
+!XTerm*termName: xtermm-a
+!XTerm*titeInhibit: off
+!*VT100.titeInhibit: true
+
+! Dans un xterm, la touche pour effacer doit être Backspace.
+!XTerm.ttyModes: erase ^?
+!UXTerm.ttyModes: erase ^?
+
+! On ne souhaite pas recevoir de message (sauf dans sa console)
+!XTerm*messages: off
+!UXTerm*messages: off
+
+! Règle ce qu un double-clic considère comme étant un mot.
+!*VT100.charClass: 33:48,35:48,37:48,43:48,45-47:48,58:48,64:48,92:48,126:48
+
+! Le souligné (UnderLine) et le gras (BolD) peuvent être affichés d une
+! couleur différente.
+!*VT100.colorULMode:	on
+!*VT100.colorUL:		Green
+!*VT100.colorBDMode:	on
+!*VT100.colorBD:		Black
+
+!XTerm.vt100.metaSendsEscape:	true

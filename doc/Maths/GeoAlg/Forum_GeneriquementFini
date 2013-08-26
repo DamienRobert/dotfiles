@@ -1,0 +1,116 @@
+cf sciences.maths.avancees         Message  1794
+
+Sam:
+Soit f:X -> Y un morphisme de type fini, dominant, et generiquement fini
+(i.e., la fibre generique est un ensemble fini) entre schemas integres.
+Montrer qu'il existe un ouvert U de X dense tel que f^{-1}(U) -> U soit un
+morphisme fini. On me conseille de montrer d'abord que K_X est une
+extension finie de K_Y, ce que je n'arrive en fait meme pas a faire (c'est
+la que doit jouer le fait que le morphisme est generiquement fini, mais je
+n'arrive pas a traduire cela algebriquement de maniere commode).
+
+----------
+Gro-tsen:
+J'allais répondre, mais d'autres m'ont précédé.  Je rajoute juste une
+précision : tu as fait l'hypothèse que la fibre générique est
+*ensemblistement* finie, et par ailleurs elle est de type fini (sur le
+point générique de la cible) puisque f l'est, il faut donc utiliser le
+fait qu'un schéma ensemblistement fini et de type fini sur un corps
+est (schématiquement) fini.
+
+----------
+Sophie:
+
+Je vais peut-être écrire des conneries, parce que je fais plutôt de la
+théorie des groupes adéliques (formule des traces d'Arthur, la version
+stable, en plus, autant dire l'horreur absolue) que de la géométrie
+algébrique en ce moment, mais : Si ton morphisme est dominant, il envoie
+le point générique de Y sur le point générique de X. Donc K_Y, qui est
+juste le corps résiduel en le point générique de Y, est contenu dans une
+algèbre finie sur K_X (là tu utilises que la fibre en le point générique
+est finie), donc K_Y est une extension finie de K_X.
+
+Ensuite, tu prends un ouvert affine non vide de X, disons U=Spec(A), et
+tu notes V son image inverse. D'abord, tu montres que, pour tout ouvert
+affine Spec(B) de V, quitte à inverser un nombre fini d'éléments de A
+(ie à remplcer U par un ouvert affine non vide plus petit), B est fini
+sur A. Remarque que A est un sous-anneau de K_X tel que K_X soit le
+corps des fractions de A, et que B est un sous-anneau de K_Y tel que K_Y
+soit le corps des fractions de B. De plus, B est de type fini sur A (car
+le morphisme est de type fini), donc il existe une famille finie (b_i)
+de B qui engendre B comme A-algèbre. Les b_i sont algébriques sur K_X
+(car K_Y est fini sur K_X), donc, quitte à inverser quelques
+dénominateurs de coefficients (qui sont des éléments de A), tu peux
+supposer que les b_i sont entiers sur A. Tu obtiens que B est une
+A-algèbre engendrée par un nombre fini d'éléments entiers sur A, et ceci
+implique que B est fini sur A.
+
+Ceci suffirait si je savais que V est affine, mais je ne le sais pas.
+Comme mon morphisme est de type fini, je peux recouvrir V par un nombre
+fini d'ouverts affines Spec(B_i), et, d'après le paragraphe ci-dessus,
+quitte à remplacer U par un ouvert affine non vide un peu plus petit, je
+peux supposer que tous les B_i sont finis sur A. Maintenant, il faut que
+je montre que, quitte à inverser encore quelques éléments de A (en
+nombre fini, bien sûr), tous les B_i sont égaux (ce sont des
+sous-anneaux de K_Y, donc ce que j'écris a un sens). Comme il n'y a
+qu'un nombre fini de B_i, il suffit de traiter le cas où il y en a deux,
+disons B_1 et B_2. Le A-module B_2 est engendré par un nombre fini
+d'éléments, et je veux montrer que, quitte à inverser un nombre fini
+d'éléments de A, ces éléments qui engendrent B_2 sont dans B_1. Il
+suffit de traiter le cas où B_2 est engendré par un élément, disons c.
+Comme K_Y est le corps des fractions de B_1, tu as c=b'/b, avec b et b'
+dans B_1. Comme de plus B_1 est fini sur A, b est entier sur A, donc
+j'ai une équation : b*P(b)+a=0, avec a un élément non nul de A et P un
+polynôme à coefficients dans A (je peux supposer a non nul car tous mes
+anneaux sont intègres). Si je remplace A par A[1/a], l'élément b de B
+devient inversible dans B, donc c=b'/b est dans B, et j'ai gagné.
+
+Pour finir, il suffit de remarquer que tout ouvert non vide de X est
+dense (en particulier l'ouvert U=Spec(A)), parce que X est irréductible.
+
+----------------
+Joel
+
+> Soit f:X -> Y un morphisme de type fini, dominant, et generiquement fini
+> (i.e., la fibre generique est un ensemble fini) entre schemas
+> integres. Montrer qu'il existe un ouvert U de X dense tel que f^{-1}(U) -> U
+> soit un morphisme fini.
+
+Réponse 1 : c'est une conséquence d'un principe général de géométrie
+algébrique (au moins si on rajoute que f est de présentation finie) : le
+schéma \eta_Y=\Spec K(Y) est la limite projective des ouverts non vides de
+Y, le morphisme f est de présentation finie et f×_Y \eta_Y est fini, il
+existe donc un ouvert non vide U tel que f×_Y U soit fini. Cf. EGA IV §8.
+
+>                         On me conseille de montrer d'abord que K_X est une
+> extension finie de K_Y, ce que je n'arrive en fait meme pas a faire (c'est
+> la que doit jouer le fait que le morphisme est generiquement fini, mais je
+> n'arrive pas a traduire cela algebriquement de maniere commode).
+
+Réponse 2 : On montre facilement que X_{\eta_Y} est intègre. On a un
+morphisme évident \eta_X -> X_{\eta_Y}. L'hypothèse dit que X_{\eta_Y} ->
+\eta_Y est fini, donc X_\eta_Y est un Spec A avec A une K(Y)-algèbre finie.
+Mais A doit être intègre, donc A est un corps. \eta_X -> X_{\eta_Y} étant
+l'inclusion du point générique de X_{\eta_Y}, c'est un isomorphisme.
+
+On sait maintenant que K(X) est fini sur K(Y). Pour simplifier les
+notations, je vais supposer qu'il existe un élément primitif t de
+l'extension K(X)/K(Y). Il existe un polynôme unitaire P à coefficients dans
+K(Y) tel qu'on ait un isomorphisme K(Y)[T]/(P) -> K(X) où T est envoyé sur
+t. On peut supposer Y affine. Les coefficients de P sont des éléments du
+corps des fractions de l'anneau de Y, quitte à inverser les dénominateurs
+de ces coefficients (donc remplacer Y par un ouvert non vide), on peut
+supposer que les coefficients de P sont des fonctions régulières sur Y.
+Soit V un ouvert non vide affine de X sur lequel l'élément t soit une
+section régulière. Posons Y=Spec A, V=Spec B. On a un morphisme évident
+A[T]/(P) -> B. Ce sont deux anneaux intègres qui ont le même corps de
+fractions K(X) et ce morphisme est tel que si on tensorise avec K(Y) sur A,
+on trouve un isomorphisme. Le morphisme A[T]/(P) -> B est injectif. On peut
+supposer qu'il est surjectif : il suffit que son image contienne un
+ensemble fini de générateurs de B comme A-algèbre, ce qui peut se faire en
+remplaçant Y par un ouvert affine plus petit.
+Finalement, on peut supposer que Y=Spec A et que X contient un ouvert non
+vide V isomorphe à Spec A[T]/P. Spec A[T]/P est fini sur Spec A, donc
+propre, Spec A[T]/P est donc fermé dans X, d'où X=Spec A[T]/P.
+
+Je préfère la réponse 1...

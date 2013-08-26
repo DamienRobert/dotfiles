@@ -1,0 +1,7 @@
+perl -F'\t' -alne  'print "$F[1]\t$F[0]"
+
+-F choisi le delimiter
+-a : autosplit
+-l chomp l'input 
+-lOctnum pour choisir l'output separator (par defaut la valeur de l'input separator)
+-0Octnum pour choisir l'input separator (par défaut the null character avec -0)

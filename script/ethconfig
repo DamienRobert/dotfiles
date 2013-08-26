@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "IP: $1"
+echo "broadcast: $2"
+echo "netmask: $3"
+echo "routeur: $4"
+echo "nameserver: $5"
+
+ifconfig eth0 "$1" broadcast "$2" netmask "$3" 
+route add default gw "$4"
+echo "nameserver $5" > /etc/resolv.conf

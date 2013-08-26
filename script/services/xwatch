@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#socat PIPE "UNIX-CONNECT:/tmp/.X11-unix/X${1#:}"
+xprop -spy -root XFree86_VT
+echo systemctl --user stop "xsession@$1.target"
+systemctl --user stop "xsession@$1.target"
+#for i in "$HOME/.config/systemd/user/xsession@.target.wants"/*@*; do
+#  i=`basename "$i"`
+#  pre="${i%@*}"
+#  post="${i#*@}"
+#  echo systemctl --user stop "$pre@$1$post"
+#  systemctl --user stop "$pre@$1$post"
+#done

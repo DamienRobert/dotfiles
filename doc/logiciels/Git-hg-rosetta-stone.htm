@@ -1,0 +1,1248 @@
+  
+
+
+<!DOCTYPE html>
+<html>
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# githubog: http://ogp.me/ns/fb/githubog#">
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Git hg rosetta stone · sympy/sympy Wiki</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub" />
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub" />
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144.png" />
+
+    
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.png" />
+
+    <meta content="authenticity_token" name="csrf-param" />
+<meta content="0KJIbmr9O1V0ODj1/+RQyLQcGGUVu9yi5QTPmOfNlY0=" name="csrf-token" />
+
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-fc8f93aa673bcc847295986dc6d690ee822e90d0.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-327db63293098d6476136b438e34be409ae3b461.css" media="screen" rel="stylesheet" type="text/css" />
+    
+
+
+    <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-917510fd4e1e5f0487cfe32445a6cfc8927e84f1.js" type="text/javascript"></script>
+    
+    <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/github-d5d6341dd56a258b1ed19b094ef897b3d2c3af1f.js" type="text/javascript"></script>
+    
+    
+
+      <script defer="defer" src="https://a248.e.akamai.net/assets.github.com/assets/wiki-dd61702f697328168a57fa2ae2837e60d1821170.js" type="text/javascript"></script>
+    <meta property="og:title" content="sympy"/>
+    <meta property="og:type" content="githubog:gitrepository"/>
+    <meta property="og:url" content="https://github.com/sympy/sympy"/>
+    <meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/gravatars/gravatar-140.png?1340659560"/>
+    <meta property="og:site_name" content="GitHub"/>
+    <meta property="og:description" content="A computer algebra system written in pure Python. Contribute to sympy development by creating an account on GitHub."/>
+
+    <meta name="description" content="A computer algebra system written in pure Python. Contribute to sympy development by creating an account on GitHub." />
+
+  <link href="https://github.com/sympy/sympy/commits/master.atom" rel="alternate" title="Recent Commits to sympy:master" type="application/atom+xml" />
+
+  </head>
+
+
+  <body class="logged_in  linux vis-public env-production ">
+    <div id="wrapper">
+
+    
+    
+
+      <div id="header" class="true clearfix">
+        <div class="container clearfix">
+          <a class="site-logo" href="https://github.com/">
+            <img alt="GitHub" class="github-logo-4x" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x.png?1340659561" />
+            <img alt="GitHub" class="github-logo-4x-hover" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x-hover.png?1340659561" />
+          </a>
+
+              <a href="/notifications" class="notification-indicator tooltipped downwards" title="You have no unread notifications">
+                <span class="mail-status all-read"></span>
+              </a>
+
+              
+    <div class="topsearch ">
+        <form accept-charset="UTF-8" action="/search" id="top_search_form" method="get">
+  <a href="/search" class="advanced-search tooltipped downwards" title="Advanced Search"><span class="mini-icon mini-icon-advanced-search"></span></a>
+  <div class="search placeholder-field js-placeholder-field">
+    <input type="text" class="search my_repos_autocompleter" id="global-search-field" name="q" results="5" spellcheck="false" autocomplete="off" data-autocomplete="my-repos-autocomplete" placeholder="Search&hellip;" data-hotkey="s" />
+    <div id="my-repos-autocomplete" class="autocomplete-results">
+      <ul class="js-navigation-container"></ul>
+    </div>
+    <input type="submit" value="Search" class="button">
+    <span class="mini-icon mini-icon-search-input"></span>
+  </div>
+  <input type="hidden" name="type" value="Everything" />
+  <input type="hidden" name="repo" value="" />
+  <input type="hidden" name="langOverride" value="" />
+  <input type="hidden" name="start_value" value="1" />
+</form>
+
+      <ul class="top-nav">
+          <li class="explore"><a href="https://github.com/explore">Explore</a></li>
+          <li><a href="https://gist.github.com">Gist</a></li>
+          <li><a href="/blog">Blog</a></li>
+        <li><a href="http://help.github.com">Help</a></li>
+      </ul>
+    </div>
+
+
+            
+
+
+  <div id="userbox">
+    <div id="user">
+      <a href="https://github.com/DamienRobert"><img height="20" src="https://secure.gravatar.com/avatar/f7e75615c655e7325c136e3dc11ceb3f?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="20" /></a>
+      <a href="https://github.com/DamienRobert" class="name">DamienRobert</a>
+    </div>
+    <ul id="user-links">
+      <li>
+        <a href="/new" id="new_repo" class="tooltipped downwards" title="Create a New Repo"><span class="mini-icon mini-icon-create"></span></a>
+      </li>
+      <li>
+        <a href="/settings/profile" id="account_settings"
+          class="tooltipped downwards"
+          title="Account Settings ">
+          <span class="mini-icon mini-icon-account-settings"></span>
+        </a>
+      </li>
+      <li>
+          <a href="/logout" data-method="post" id="logout" class="tooltipped downwards" title="Sign Out">
+            <span class="mini-icon mini-icon-logout"></span>
+          </a>
+      </li>
+    </ul>
+  </div>
+
+
+
+          
+        </div>
+      </div>
+
+      
+
+      
+
+            <div class="site hfeed" itemscope itemtype="http://schema.org/WebPage">
+      <div class="container hentry">
+        <div class="pagehead repohead instapaper_ignore readability-menu">
+        <div class="title-actions-bar">
+          
+
+
+
+              <ul class="pagehead-actions">
+
+
+          <li class="subscription">
+              <form accept-charset="UTF-8" action="/notifications/subscribe" data-autosubmit="true" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="0KJIbmr9O1V0ODj1/+RQyLQcGGUVu9yi5QTPmOfNlY0=" /></div>
+  <input id="repository_id" name="repository_id" type="hidden" value="640534" />
+  <div class="context-menu-container js-menu-container js-context-menu">
+    <span class="minibutton switcher bigger js-menu-target">
+      <span class="js-context-button">
+          <span class="mini-icon mini-icon-watching"></span> Watch
+      </span>
+    </span>
+
+    <div class="context-pane js-menu-content">
+      <a href="javascript:;" class="close js-menu-close"><span class="mini-icon mini-icon-remove-close"></span></a>
+      <div class="context-title">Notification status</div>
+
+      <div class="context-body pane-selector">
+        <ul class="js-navigation-container">
+          <li class="selector-item js-navigation-item js-navigation-target selected">
+            <span class="mini-icon mini-icon-confirm"></span>
+            <label>
+              <input checked="checked" id="do_included" name="do" type="radio" value="included" />
+              <h4>Not watching</h4>
+              <p>You will only receive notifications when you participate or are mentioned.</p>
+            </label>
+            <span class="context-button-text js-context-button-text">
+              <span class="mini-icon mini-icon-watching"></span>
+              Watch
+            </span>
+          </li>
+          <li class="selector-item js-navigation-item js-navigation-target ">
+            <span class="mini-icon mini-icon-confirm"></span>
+            <label>
+              <input id="do_subscribed" name="do" type="radio" value="subscribed" />
+              <h4>Watching</h4>
+              <p>You will receive all notifications for this repository.</p>
+            </label>
+            <span class="context-button-text js-context-button-text">
+              <span class="mini-icon mini-icon-unwatch"></span>
+              Unwatch
+            </span>
+          </li>
+          <li class="selector-item js-navigation-item js-navigation-target ">
+            <span class="mini-icon mini-icon-confirm"></span>
+            <label>
+              <input id="do_ignore" name="do" type="radio" value="ignore" />
+              <h4>Ignored</h4>
+              <p>You will not receive notifications for this repository.</p>
+            </label>
+            <span class="context-button-text js-context-button-text">
+              <span class="mini-icon mini-icon-mute"></span>
+              Stop ignoring
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</form>
+          </li>
+
+          <li class="js-toggler-container js-social-container starring-container ">
+            <a href="/sympy/sympy/toggle_star" class="minibutton js-toggler-target" data-remote="true" data-method="post" rel="nofollow">
+              <span class="starred">
+                <span class="mini-icon mini-icon-star"></span>
+                  Unstar
+              </span>
+              <span class="unstarred">
+                <span class="mini-icon mini-icon-star"></span>
+                  Star
+              </span>
+            </a>
+
+            <a class="social-count js-social-count" href="/sympy/sympy/stargazers">465</a>
+          </li>
+
+              <li><a href="/sympy/sympy/fork" class="minibutton btn-fork js-toggler-target fork-button lighter" rel="nofollow" data-method="post">Fork</a><a href="/sympy/sympy/network" class="social-count">289</a>
+              </li>
+
+
+    </ul>
+
+          <h1 itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="entry-title public">
+            <span class="repo-label"><span>public</span></span>
+            <span class="mega-icon mega-icon-public-repo"></span>
+            <span class="author vcard">
+<a href="/sympy" class="url fn" itemprop="url" rel="author">              <span itemprop="title">sympy</span>
+              </a></span> /
+            <strong><a href="/sympy/sympy" class="js-current-repository">sympy</a></strong>
+          </h1>
+        </div>
+
+          
+
+  <ul class="tabs">
+    <li><a href="/sympy/sympy" highlight="repo_sourcerepo_downloadsrepo_commitsrepo_tagsrepo_branches">Code</a></li>
+    <li><a href="/sympy/sympy/network" highlight="repo_network">Network</a>
+    <li><a href="/sympy/sympy/pulls" highlight="repo_pulls">Pull Requests <span class='counter'>53</span></a></li>
+
+      <li><a href="/sympy/sympy/issues" highlight="repo_issues">Issues <span class='counter'>53</span></a></li>
+
+      <li><a href="/sympy/sympy/wiki" class="selected" highlight="repo_wiki">Wiki</a></li>
+
+    <li><a href="/sympy/sympy/graphs" highlight="repo_graphsrepo_contributors">Graphs</a></li>
+
+
+  </ul>
+  
+  
+  
+  <div class="subnav-bar">
+  <ul class="subnav">
+    <li><a href="/sympy/sympy/wiki">Home</a></li>
+    <li><a href="/sympy/sympy/wiki/_pages">Pages</a></li>
+    <li><a href="/sympy/sympy/wiki/_history">Wiki History</a></li>
+    <li><a href="/sympy/sympy/wiki/_access">Git Access</a></li>
+  </ul>
+</div>
+
+
+          
+
+        </div><!-- /.repohead -->
+
+        <div id="js-repo-pjax-container" data-pjax-container>
+          
+
+
+
+<div id="wiki-wrapper" class="page">
+<div id="head">
+  <h1 class="instapaper_title">Git hg rosetta stone</h1>
+  <ul class="wiki-actions readability-extra">
+    <li class="gollum-minibutton" class="jaws">
+      <a href="/sympy/sympy/wiki/_new" class="minibutton btn-new-page bigger js-new-wiki-page">New Page</a>
+    </li>
+    <li class="gollum-minibutton"><a href="/sympy/sympy/wiki/Git-hg-rosetta-stone/_edit"
+       class="minibutton bigger action-edit-page">
+       Edit Page
+     </a></li>
+    <li class="gollum-minibutton"><a href="/sympy/sympy/wiki/Git-hg-rosetta-stone/_history"
+       class="minibutton bigger action-page-history">
+       Page History
+     </a></li>
+  </ul>
+</div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-mediawiki-content instapaper_body">
+    <div class="markdown-body">
+      
+<p>The sympy git server is at <a href="https://github.com/sympy/sympy">https://github.com/sympy/sympy</a> . The main Sympy repository may be cloned with "git clone <a>git://github.com/sympy/sympy.git</a>".
+</p>
+<p>The first and the most important thing is that you should understand that git is <b>different</b>. For example it uses staging area (so called index) for iteratively preparing commits. This and other great and unique features of git make it the preference of many developers, so go read its documentation - you would not regret!
+</p>
+
+
+
+
+
+
+
+
+
+<ul>
+<li>git project page  <a href="http://git.or.cz/">http://git.or.cz/</a>
+</li>
+<li>git faq explaining many things <a href="http://git.or.cz/gitwiki/GitFaq">http://git.or.cz/gitwiki/GitFaq</a><dl>
+<dd>make sure you read mails referenced from the faq - they are really brilliant, e.g. this mail by Linus about git and renames:</dd>
+<dd>http://permalink.gmane.org/gmane.comp.version-control.git/217</dd>
+</dl>
+</li>
+</ul><li>git wiki <a href="http://git.or.cz/gitwiki">http://git.or.cz/gitwiki</a>
+</li><li>git documentation <a href="http://git.or.cz/gitwiki/GitDocumentation">http://git.or.cz/gitwiki/GitDocumentation</a>
+</li>
+Here is a nice cheatsheet which will probably make your life easier in the beginning:
+
+<p>http://jan-krueger.net/development/git-cheat-sheet-extended-edition
+</p>
+
+<p>Being said all this, now comes a <i>simplified</i> mapping between hg commands and git commands. Use it with care -- there are some semantic differences ...
+</p>
+<hr><p>If you know how to use hg very well and just looking at how to do the same things in git, this page is right for you. Use it like a dictionary hg -&gt; git.
+Some equivalent git commands may seem more complex than the corresponding hg counterparts, that's because the natural flow of work in git doesn't map 1:1 to mercurial. But important is, that if you are used to some workflow in hg, it can be directly translated to git using the table below and it does exactly the same thing as you are expecting it to.
+</p>
+<p>When editing this wiki page, please only add an exact equivalent to some hg command, explanation can always be found somewhere else on the net.
+</p>
+<table id="wiki-toc" class="toc" summary="Contents"><tr><td>
+<div>Table of Contents</div>
+<ul><ul>
+<li><a href="#wiki-Rosetta_Stone">Rosetta Stone</a></li>
+<li><a href="#wiki-Setup">Setup</a></li>
+<li><a href="#wiki-More_Information">More Information</a></li>
+<li><a href="#wiki-Tips">Tips</a></li>
+<li><a href="#wiki-git__hg_conversion">git -&gt; hg conversion</a></li>
+<li><a href="#wiki-how_to_checkout_remote_branch">how to checkout remote branch</a></li>
+</ul></ul>
+</td></tr></table><h2><span class="mw-headline" id="wiki-Rosetta_Stone"><a name="wiki-Rosetta_Stone">Rosetta Stone</a></span></h2>
+
+<table border="0" cellspacing="5" cellpadding="5" align="top">
+<tr>
+<th>
+hg
+</th>
+<th>
+git
+</th>
+</tr>
+<tr>
+<td>
+hg cat -r rev some_file
+</td>
+<td>
+git show rev:some_file
+</td>
+</tr>
+<tr>
+<td>
+hg clone <a href="http://hg.sympy.org/sympy-git.hg">http://hg.sympy.org/sympy-git.hg</a>
+</td>
+<td>
+git clone <a>git://git.sympy.org/sympy.git</a>
+</td>
+</tr>
+<tr>
+<td>
+hg clone -U <a href="http://hg.sympy.org/sympy-git.hg">http://hg.sympy.org/sympy-git.hg</a>
+</td>
+<td>
+git clone --bare <a>git://git.sympy.org/sympy.git</a>
+</td>
+</tr>
+<tr>
+<td>
+hg diff
+</td>
+<td>
+git diff HEAD
+</td>
+</tr>
+<tr>
+<td>
+hg status
+</td>
+<td>
+git status
+</td>
+</tr>
+<tr>
+<td>
+hg manifest
+</td>
+<td>
+git ls-tree -r --name-only --full-tree HEAD
+</td>
+</tr>
+<tr>
+<td>
+hg parents
+</td>
+<td>
+git show --pretty=format:'%P' -s
+</td>
+</tr>
+<tr>
+<td>
+hg commit
+</td>
+<td>
+git commit -a
+</td>
+</tr>
+<tr>
+<td>
+hg record
+</td>
+<td>
+git add -p; git commit # or, for a more detailed interface: git add -i; git commit
+</td>
+</tr>
+<tr>
+<td>
+<a target="_blank" href="http://mercurial.selenic.com/wiki/PatchbombExtension">hg email -r tip</a>
+</td>
+<td>
+git send-email HEAD^   # or: git format-patch HEAD^ ; git send-email 0001-Add-whitespace.patch
+</td>
+</tr>
+<tr>
+<td>
+hg view
+</td>
+<td>
+gitk, git gui
+</td>
+</tr>
+<tr>
+<td>
+hg help command
+</td>
+<td>
+git help command
+</td>
+</tr>
+<tr>
+<td>
+~/.hgrc
+</td>
+<td>
+~/.gitconfig
+</td>
+</tr>
+<tr>
+<td>
+.hg/hgrc
+</td>
+<td>
+.git/config
+</td>
+</tr>
+<tr>
+<td>
+hg paths
+</td>
+<td>
+git remote -v
+</td>
+</tr>
+<tr>
+<td>
+<ol><li>editing paths in .hg/hgrc</li></ol>
+</td>
+<td>
+git remote add name url   # see "git help remote" for more info how to edit paths; alternatively, you can edit them by hand in .git/config too
+</td>
+</tr>
+<tr>
+<td>
+.hgignore
+</td>
+<td>
+<a target="_blank" href="http://www.kernel.org/pub/software/scm/git/docs/gitignore.html">.gitignore</a>
+</td>
+</tr>
+<tr>
+<td>
+hg add
+</td>
+<td>
+git add  (note, it adds _content_ to index; can work on a hunk-by-hunk basis with -p!)
+</td>
+</tr>
+<tr>
+<td>
+hg rm
+</td>
+<td>
+git rm
+</td>
+</tr>
+<tr>
+<td>
+hg push
+</td>
+<td>
+git push
+</td>
+</tr>
+<tr>
+<td>
+hg pull
+</td>
+<td>
+git fetch
+</td>
+</tr>
+<tr>
+<td>
+hg pull -u
+</td>
+<td>
+git pull --rebase  # or: git fetch ; git rebase origin
+</td>
+</tr>
+<tr>
+<td>
+hg addremove
+</td>
+<td>
+git add -A (or: git add .; git ls-files --deleted  xargs git rm)
+</td>
+</tr>
+<tr>
+<td>
+hg revert -a
+</td>
+<td>
+git reset --hard
+</td>
+</tr>
+<tr>
+<td>
+hg revert some_file
+</td>
+<td>
+git checkout some_file
+</td>
+</tr>
+<tr>
+<td>
+<a target="_blank" href="http://mercurial.selenic.com/wiki/Strip">hg strip 2fccd4c</a>
+</td>
+<td>
+git reset --hard 2fccd4c^
+</td>
+</tr>
+<tr>
+<td>
+hg import some.patch
+</td>
+<td>
+git apply some.patch
+</td>
+</tr>
+<tr>
+<td>
+hg out
+</td>
+<td>
+git fetch ; git log FETCH_HEAD..master
+</td>
+</tr>
+<tr>
+<td>
+hg in
+</td>
+<td>
+git fetch ; git log master..FETCH_HEAD
+</td>
+</tr>
+<tr>
+<td>
+hg up tip
+</td>
+<td>
+git checkout HEAD   # or this: "git checkout master", or  "git merge FETCH_HEAD", depending on what you did before this
+</td>
+</tr>
+<tr>
+<td>
+hg update -C
+</td>
+<td>
+git checkout -f
+</td>
+</tr>
+<tr>
+<td>
+hg qimport
+</td>
+<td>
+stg something (A separate patch manager extension is probably not necessary in git -- normal workflow combined with git rebase -i should cover your needs)
+</td>
+</tr>
+<tr>
+<td>
+hg qpush
+</td>
+<td>
+(see hg qimport)
+</td>
+</tr>
+<tr>
+<td>
+hg qpop
+</td>
+<td>
+(see hg qimport)
+</td>
+</tr>
+<tr>
+<td>
+hg qimport -r tip
+</td>
+<td>
+?
+</td>
+</tr>
+<tr>
+<td>
+hg qnew -f some.patch
+</td>
+<td>
+?
+</td>
+</tr>
+<tr>
+<td>
+hg resolve -a -m
+</td>
+<td>
+git add -u
+</td>
+</tr>
+</table><h2><span class="mw-headline" id="wiki-Setup"><a name="wiki-Setup">Setup</a></span></h2>
+
+<p>~/.hgrc:
+</p>
+<pre>
+ [ui]
+ username = Ondrej Certik &lt;ondrej@certik.cz&gt;
+</pre>
+
+<p>~/.gitconfig:
+</p>
+<pre>
+ [user]
+     name = Ondrej Certik
+     email = ondrej@certik.cz
+
+ [color]
+     diff  = auto
+     status= auto
+     branch= auto
+     interactive = true
+
+ [alias]
+     ci = commit
+     di = diff --color-words
+     st = status
+</pre>
+
+<h2><span class="mw-headline" id="wiki-More_Information"><a name="wiki-More_Information">More Information</a></span></h2>
+
+<p>One can find some info here:
+</p>
+
+<pre> o http://git.or.cz/course/svn.html
+ o http://www.redhatmagazine.com/2008/05/02/shipping-quality-code-with-git/
+</pre>
+
+
+<p>and at many other pages.
+</p>
+<h2><span class="mw-headline" id="wiki-Tips"><a name="wiki-Tips">Tips</a></span></h2>
+
+
+<pre> - use gitk to visualize history (much more capable than "hg vi")
+ - use git gui to visually stage/unstage what you are preparing for commit
+   to index (it too can work on hunk-by-hunk basis)
+ - git stash is your friend
+ - git rebase --interactive is your friend too :)
+ - windows users: either use cygwin or msysgit:
+   http://code.google.com/p/msysgit/
+</pre>
+
+
+
+<pre> - don't try to project your usual habits - open your mind, and maybe you'll
+   discover much more superior workflow. (yes, this needs hard work and RTFM,
+   and being ready that FM sometimes differ from what software actually does)
+ - Add this
+</pre>
+
+
+
+<pre> parse_git_branch() {
+   git branch 2&gt; /dev/null | sed -e '/^[^*]/d' -e 's/* <img src="/sympy/sympy/wiki/_tex.png?type=inline&data=Lio=" alt=".*">/(\1)/'
+   # __git_ps1 "(%s)"
+   # use the second line instead if you have bash autocompletion for git enabled
+ }
+ PS1="\w\$(parse_git_branch) $ "
+</pre>
+
+
+
+<pre>   to your promptstring to show current branch when in a git-tracked directory.
+   (see http://b.lesseverything.com/2008/3/25/got-git-howto-git-and-github)
+</pre>
+
+
+<h2><span class="mw-headline" id="wiki-git__hg_conversion"><a name="wiki-git__hg_conversion">git -&gt; hg conversion</a></span></h2>
+
+<p>You can use this script:
+</p>
+<pre>
+#! /bin/bash
+
+work=`mktemp -t -d sym.XXX`
+git format-patch -k -p -o $work master..HEAD
+# add a new line after the subject line so that Mercurial imports it fine.
+sed -i '4a\\' $work/*
+cd ~/repos/sympy.hg/
+hg import $work/*
+rm -r $work
+</pre>
+
+<p>to convert all patches between master..HEAD to mercurial repository sitting at ~/repos/sympy.hg/.
+</p>
+<h2><span class="mw-headline" id="wiki-how_to_checkout_remote_branch"><a name="wiki-how_to_checkout_remote_branch">how to checkout remote branch</a></span></h2>
+
+<p>Start with some repository, for example create a new one from scratch:
+</p><pre>
+$ mkdir sympy
+$ cd sympy
+$ git init
+</pre>
+or clone our official repository:
+<pre>
+$ git clone git://git.sympy.org/sympy.git
+$ cd sympy
+</pre>
+Now let's say you want to checkout some branch from <a>git://github.com/certik/sympy.git.</a> The canonical way is to add it to your remotes:
+<pre>
+$ git remote add ondrej git://github.com/certik/sympy.git
+</pre>
+Then fetch all branches from there into your remote branches:
+<pre>
+$ git fetch ondrej
+</pre>
+You can now list them with "git branch -r", or examine them with "git log ondrej/some_branch". Finally, to checkout the mpmath5 branch, do:
+<pre>
+$ git checkout -b mpmath5 ondrej/mpmath5
+</pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="gollum-footer">
+  <p id="last-edit">
+    Last edited by gsauthof, <time class="js-relative-date" datetime="2012-04-21T01:38:15-07:00" title="2012-04-21 01:38:15">April 21, 2012</time>
+  </p>
+  <p id="delete-link">
+    <a href="/sympy/sympy/wiki/Git-hg-rosetta-stone" data-confirm="Are you sure you want to delete this page?" data-method="delete"><span>Delete this Page</span></a>
+  </p>
+</div>
+</div>
+
+
+        </div>
+      </div>
+      <div class="context-overlay"></div>
+    </div>
+
+      <div id="footer-push"></div><!-- hack for sticky footer -->
+    </div><!-- end of wrapper - hack for sticky footer -->
+
+      <!-- footer -->
+      <div id="footer" >
+        
+  <div class="upper_footer">
+     <div class="container clearfix">
+
+       <!--[if IE]><h4 id="blacktocat_ie">GitHub Links</h4><![endif]-->
+       <![if !IE]><h4 id="blacktocat">GitHub Links</h4><![endif]>
+
+       <ul class="footer_nav">
+         <h4>GitHub</h4>
+         <li><a href="https://github.com/about">About</a></li>
+         <li><a href="https://github.com/blog">Blog</a></li>
+         <li><a href="https://github.com/features">Features</a></li>
+         <li><a href="https://github.com/contact">Contact &amp; Support</a></li>
+         <li><a href="https://github.com/training">Training</a></li>
+         <li><a href="http://enterprise.github.com/">GitHub Enterprise</a></li>
+         <li><a href="http://status.github.com/">Site Status</a></li>
+       </ul>
+
+       <ul class="footer_nav">
+         <h4>Clients</h4>
+         <li><a href="http://mac.github.com/">GitHub for Mac</a></li>
+         <li><a href="http://windows.github.com/">GitHub for Windows</a></li>
+         <li><a href="http://eclipse.github.com/">GitHub for Eclipse</a></li>
+         <li><a href="http://mobile.github.com/">GitHub Mobile Apps</a></li>
+       </ul>
+
+       <ul class="footer_nav">
+         <h4>Tools</h4>
+         <li><a href="http://get.gaug.es/">Gauges: Web analytics</a></li>
+         <li><a href="http://speakerdeck.com">Speaker Deck: Presentations</a></li>
+         <li><a href="https://gist.github.com">Gist: Code snippets</a></li>
+
+         <h4 class="second">Extras</h4>
+         <li><a href="http://jobs.github.com/">Job Board</a></li>
+         <li><a href="http://shop.github.com/">GitHub Shop</a></li>
+         <li><a href="http://octodex.github.com/">The Octodex</a></li>
+       </ul>
+
+       <ul class="footer_nav">
+         <h4>Documentation</h4>
+         <li><a href="http://help.github.com/">GitHub Help</a></li>
+         <li><a href="http://developer.github.com/">Developer API</a></li>
+         <li><a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a></li>
+         <li><a href="http://pages.github.com/">GitHub Pages</a></li>
+       </ul>
+
+     </div><!-- /.site -->
+  </div><!-- /.upper_footer -->
+
+<div class="lower_footer">
+  <div class="container clearfix">
+    <!--[if IE]><div id="legal_ie"><![endif]-->
+    <![if !IE]><div id="legal"><![endif]>
+      <ul>
+          <li><a href="https://github.com/site/terms">Terms of Service</a></li>
+          <li><a href="https://github.com/site/privacy">Privacy</a></li>
+          <li><a href="https://github.com/security">Security</a></li>
+      </ul>
+
+      <p>&copy; 2012 <span title="0.88601s from fe18.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
+    </div><!-- /#legal or /#legal_ie-->
+
+  </div><!-- /.site -->
+</div><!-- /.lower_footer -->
+
+      </div><!-- /#footer -->
+
+    
+
+<div id="keyboard_shortcuts_pane" class="instapaper_ignore readability-extra" style="display:none">
+  <h2>Keyboard Shortcuts <small><a href="#" class="js-see-all-keyboard-shortcuts">(see all)</a></small></h2>
+
+  <div class="columns threecols">
+    <div class="column first">
+      <h3>Site wide shortcuts</h3>
+      <dl class="keyboard-mappings">
+        <dt>s</dt>
+        <dd>Focus site search</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>?</dt>
+        <dd>Bring up this help dialog</dd>
+      </dl>
+    </div><!-- /.column.first -->
+
+    <div class="column middle" style='display:none'>
+      <h3>Commit list</h3>
+      <dl class="keyboard-mappings">
+        <dt>j</dt>
+        <dd>Move selection down</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>k</dt>
+        <dd>Move selection up</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>c <em>or</em> o <em>or</em> enter</dt>
+        <dd>Open commit</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>y</dt>
+        <dd>Expand URL to its canonical form</dd>
+      </dl>
+    </div><!-- /.column.first -->
+
+    <div class="column last js-hidden-pane" style='display:none'>
+      <h3>Pull request list</h3>
+      <dl class="keyboard-mappings">
+        <dt>j</dt>
+        <dd>Move selection down</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>k</dt>
+        <dd>Move selection up</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>o <em>or</em> enter</dt>
+        <dd>Open issue</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt><span class="platform-mac">⌘</span><span class="platform-other">ctrl</span> <em>+</em> enter</dt>
+        <dd>Submit comment</dd>
+      </dl>
+    </div><!-- /.columns.last -->
+
+  </div><!-- /.columns.equacols -->
+
+  <div class="js-hidden-pane" style='display:none'>
+    <div class="rule"></div>
+
+    <h3>Issues</h3>
+
+    <div class="columns threecols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt>j</dt>
+          <dd>Move selection down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>k</dt>
+          <dd>Move selection up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>x</dt>
+          <dd>Toggle selection</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>o <em>or</em> enter</dt>
+          <dd>Open issue</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="platform-mac">⌘</span><span class="platform-other">ctrl</span> <em>+</em> enter</dt>
+          <dd>Submit comment</dd>
+        </dl>
+      </div><!-- /.column.first -->
+      <div class="column last">
+        <dl class="keyboard-mappings">
+          <dt>c</dt>
+          <dd>Create issue</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>l</dt>
+          <dd>Create label</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>i</dt>
+          <dd>Back to inbox</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>u</dt>
+          <dd>Back to issues</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>/</dt>
+          <dd>Focus issues search</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="js-hidden-pane" style='display:none'>
+    <div class="rule"></div>
+
+    <h3>Issues Dashboard</h3>
+
+    <div class="columns threecols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt>j</dt>
+          <dd>Move selection down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>k</dt>
+          <dd>Move selection up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>o <em>or</em> enter</dt>
+          <dd>Open issue</dd>
+        </dl>
+      </div><!-- /.column.first -->
+    </div>
+  </div>
+
+  <div class="js-hidden-pane" style='display:none'>
+    <div class="rule"></div>
+
+    <h3>Network Graph</h3>
+    <div class="columns equacols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">←</span> <em>or</em> h</dt>
+          <dd>Scroll left</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">→</span> <em>or</em> l</dt>
+          <dd>Scroll right</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">↑</span> <em>or</em> k</dt>
+          <dd>Scroll up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">↓</span> <em>or</em> j</dt>
+          <dd>Scroll down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>t</dt>
+          <dd>Toggle visibility of head labels</dd>
+        </dl>
+      </div><!-- /.column.first -->
+      <div class="column last">
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">←</span> <em>or</em> shift h</dt>
+          <dd>Scroll all the way left</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">→</span> <em>or</em> shift l</dt>
+          <dd>Scroll all the way right</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">↑</span> <em>or</em> shift k</dt>
+          <dd>Scroll all the way up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">↓</span> <em>or</em> shift j</dt>
+          <dd>Scroll all the way down</dd>
+        </dl>
+      </div><!-- /.column.last -->
+    </div>
+  </div>
+
+  <div class="js-hidden-pane" style='display:none'>
+    <div class="rule"></div>
+    <div class="columns threecols">
+      <div class="column first js-hidden-pane" style='display:none'>
+        <h3>Source Code Browsing</h3>
+        <dl class="keyboard-mappings">
+          <dt>t</dt>
+          <dd>Activates the file finder</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>l</dt>
+          <dd>Jump to line</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>w</dt>
+          <dd>Switch branch/tag</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>y</dt>
+          <dd>Expand URL to its canonical form</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="js-hidden-pane" style='display:none'>
+    <div class="rule"></div>
+    <div class="columns threecols">
+      <div class="column first">
+        <h3>Browsing Commits</h3>
+        <dl class="keyboard-mappings">
+          <dt><span class="platform-mac">⌘</span><span class="platform-other">ctrl</span> <em>+</em> enter</dt>
+          <dd>Submit comment</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>escape</dt>
+          <dd>Close form</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>p</dt>
+          <dd>Parent commit</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>o</dt>
+          <dd>Other parent commit</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="js-hidden-pane" style='display:none'>
+    <div class="rule"></div>
+    <h3>Notifications</h3>
+
+    <div class="columns threecols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt>j</dt>
+          <dd>Move selection down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>k</dt>
+          <dd>Move selection up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>o <em>or</em> enter</dt>
+          <dd>Open notification</dd>
+        </dl>
+      </div><!-- /.column.first -->
+
+      <div class="column second">
+        <dl class="keyboard-mappings">
+          <dt>e <em>or</em> shift i <em>or</em> y</dt>
+          <dd>Mark as read</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift m</dt>
+          <dd>Mute thread</dd>
+        </dl>
+      </div><!-- /.column.first -->
+    </div>
+  </div>
+
+</div>
+
+    <div id="markdown-help" class="instapaper_ignore readability-extra">
+  <h2>Markdown Cheat Sheet</h2>
+
+  <div class="cheatsheet-content">
+
+  <div class="mod">
+    <div class="col">
+      <h3>Format Text</h3>
+      <p>Headers</p>
+      <pre>
+# This is an &lt;h1&gt; tag
+## This is an &lt;h2&gt; tag
+###### This is an &lt;h6&gt; tag</pre>
+     <p>Text styles</p>
+     <pre>
+*This text will be italic*
+_This will also be italic_
+**This text will be bold**
+__This will also be bold__
+
+*You **can** combine them*
+</pre>
+    </div>
+    <div class="col">
+      <h3>Lists</h3>
+      <p>Unordered</p>
+      <pre>
+* Item 1
+* Item 2
+  * Item 2a
+  * Item 2b</pre>
+     <p>Ordered</p>
+     <pre>
+1. Item 1
+2. Item 2
+3. Item 3
+   * Item 3a
+   * Item 3b</pre>
+    </div>
+    <div class="col">
+      <h3>Miscellaneous</h3>
+      <p>Images</p>
+      <pre>
+![GitHub Logo](/images/logo.png)
+Format: ![Alt Text](url)
+</pre>
+     <p>Links</p>
+     <pre>
+http://github.com - automatic!
+[GitHub](http://github.com)</pre>
+<p>Blockquotes</p>
+     <pre>
+As Kanye West said:
+
+> We're living the future so
+> the present is our past.
+</pre>
+    </div>
+  </div>
+  <div class="rule"></div>
+
+  <h3>Code Examples in Markdown</h3>
+  <div class="col">
+      <p>Syntax highlighting with <a href="http://github.github.com/github-flavored-markdown/" title="GitHub Flavored Markdown" target="_blank">GFM</a></p>
+      <pre>
+```javascript
+function fancyAlert(arg) {
+  if(arg) {
+    $.facebox({div:'#foo'})
+  }
+}
+```</pre>
+    </div>
+    <div class="col">
+      <p>Or, indent your code 4 spaces</p>
+      <pre>
+Here is a Python code example
+without syntax highlighting:
+
+    def foo:
+      if not bar:
+        return true</pre>
+    </div>
+    <div class="col">
+      <p>Inline code for comments</p>
+      <pre>
+I think you should use an
+`&lt;addr&gt;` element here instead.</pre>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+
+    <div id="ajax-error-message">
+      <span class="mini-icon mini-icon-exclamation"></span>
+      Something went wrong with that request. Please try again.
+      <a href="#" class="ajax-error-dismiss">Dismiss</a>
+    </div>
+
+    <div id="logo-popup">
+      <h2>Looking for the GitHub logo?</h2>
+      <ul>
+        <li>
+          <h4>GitHub Logo</h4>
+          <a href="http://github-media-downloads.s3.amazonaws.com/GitHub_Logos.zip"><img alt="Github_logo" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/github_logo.png?1340659560" /></a>
+          <a href="http://github-media-downloads.s3.amazonaws.com/GitHub_Logos.zip" class="minibutton btn-download download">Download</a>
+        </li>
+        <li>
+          <h4>The Octocat</h4>
+          <a href="http://github-media-downloads.s3.amazonaws.com/Octocats.zip"><img alt="Octocat" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1340659560" /></a>
+          <a href="http://github-media-downloads.s3.amazonaws.com/Octocats.zip" class="minibutton btn-download download">Download</a>
+        </li>
+      </ul>
+    </div>
+
+    
+    
+    <span id='server_response_time' data-time='0.88881' data-host='fe18'></span>
+  </body>
+</html>
+

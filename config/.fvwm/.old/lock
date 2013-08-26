@@ -1,0 +1,3 @@
+#!/bin/sh
+
+dcop kdesktop KScreensaverIface lock

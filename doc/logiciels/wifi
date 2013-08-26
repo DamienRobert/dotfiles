@@ -1,0 +1,10 @@
+sudo modprobe -r rt73usb rt73
+sudo modprobe rt73
+sudo ip link set wlan0 address 00:08:a1:b0:a6:a2
+sudo ifconfig wlan0 up
+sudo iwconfig wlan0 mode managed
+sudo iwpriv wlan0 set AuthMode=WPAPSK 
+sudo iwpriv wlan0 set EncrypType=AES 
+sudo iwpriv wlan0 set SSID="SSID" 
+sudo iwpriv wlan0 set WPAPSK="PASSWD" 
+sudo dhclient wlan0

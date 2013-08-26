@@ -1,0 +1,34 @@
+Exemple du produit tensoriel:
+============================
+
+\tens B est exact à droite.
+
+Pour mesurer le défaut à gauche on résout M par une suite de projectifs, et
+la cohomologie de cette chaine \tens B donne Tor^i(M,B).
+
+(Rappel: P est projectif si Hom(P, -) est exact, comme c'est toujours exact
+à gauche, ça veut dire que pour tout épi M ->> M', chaque Hom(P,M') se
+relève en Hom(P,M))
+
+Si 0 -> M' -> M -> M'' -> 0 est exact, on peut prendre pour résolution de
+M la somme directe de la résolution de M' et M''. Donc via le snake lemma,
+on a la suite longue de cohomologie.
+
+M est dit flasque si les Tor^i(M,B) sont nuls; on peut remplacer la
+résolution projective par une résolution flasque (à cause de la suite
+longue de cohomologie).
+
+Suites exactes courtes dans un complexe
+=======================================
+
+A_1 -> A_2 -> A_3 -> A_4
+
+Alors C_3=Ker A_3 -> A_4 = Im A_2 -> A_3 = Coker A_1 -> A_2
+ie:
+        C_2            C_4
+    A_1    A_2     A_3    A_4
+C_1            C_3           C_5
+
+soit 0->C_2->A_2->C_3->0
+     0->C_3->A_3->C_4->0...
+

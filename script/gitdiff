@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+HIGHLIGHT=1
+CAT=
+WORDS=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -H ) shift; HIGHLIGHT= ;;
+    -c ) shift; CAT=1 ;;
+    -w ) shift; WORDS="--word-diff"; HIGHLIGHT= ;;
+    -cH ) shift; HIGHLIGHT= CAT=1 ;;
+    *) break;;
+  esac
+done
+
+[[ -z $PAGER ]] && PAGER=less
+HI="$HOME/mine/script/git/contrib/diff-highlight"
+
+if [[ -z $CAT ]]; then
+  if [[ -n $HIGHLIGHT ]]; then
+    GIT_PAGER="$HI|$PAGER" exec git -c "color.ui=always" diff --no-index "$@"
+  else
+     exec git --paginate diff $WORDS --no-index "$@"
+  fi
+else
+  if [[ -n $HIGHLIGHT ]]; then
+    GIT_PAGER="$HI" exec git diff --no-index "$@"
+  else
+     exec git --no-pager diff $WORDS --no-index "$@"
+  fi
+fi

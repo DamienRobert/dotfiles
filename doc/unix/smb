@@ -1,0 +1,10 @@
+##smb-share:server=freebox,share=disque%20dur/
+#sudo mkdir -p /mnt/samba
+#sudo mount -t cifs '//FREEBOX/Disque dur' /mnt/samba -o workgroup=WORKGROUP,ip=192.168.0.254
+
+#http://davejamesmiller.com/blog/mounting-samba-cifs-on-linux-as-non-root-user
+#smbmount //server/filestore /path/to/mountpoint/ -o user=dave,pass=XXX,dir_mode=0700,file_mode=0600
+#smbmount does not exists anymore
+
+mkdir -p $HOME/sshfs/smb
+sudo mount -t cifs '//FREEBOX/Disque dur' $HOME/sshfs/smb -o workgroup=WORKGROUP,ip=192.168.0.254,uid=$UID

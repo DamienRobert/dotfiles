@@ -1,0 +1,7 @@
+#!/bin/zsh -i
+#script de Joel pour lancer des trucs depuis fvwm
+
+line=""
+compcontext=-command-line-
+vared line
+(eval $line < /dev/null >>&! ~/.xsession-errors)&!

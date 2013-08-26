@@ -1,0 +1,14 @@
+#!/bin/bash
+# From:http://blog.falconindy.com/articles/back-to-basics-with-x-and-systemd.html
+
+TTY=${TTY:-$(tty)}
+TTY=${TTY#/dev/}
+
+if [[ $TTY != tty* ]]; then
+  printf '==> ERROR: invalid TTY\n' >&2
+  exit 1
+fi
+
+printf -v vt 'vt%02d' "${TTY#tty}"
+
+exec /usr/bin/X -nolisten tcp "$vt" "$@"

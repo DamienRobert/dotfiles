@@ -1,0 +1,38 @@
+#!/bin/zsh
+SUBDIRECTORY_OK=true
+. "$(git --exec-path)/git-sh-setup" ""
+require_clean_work_tree "git-mymovesubdir" "Please commit or stash them"
+cd_to_toplevel
+
+NEWDIR=$1
+
+[ -z "$NEWDIR" ] && NEWDIR=$(basename $PWD)
+echo "NEWDIR: $NEWDIR"
+export NEWDIR
+
+git filter-branch --index-filter \
+        'git ls-files -s | sed "s!\t\"*!&$NEWDIR/!" |
+                GIT_INDEX_FILE=$GIT_INDEX_FILE.new \
+                        git update-index --index-info &&
+         mv "$GIT_INDEX_FILE.new" "$GIT_INDEX_FILE"' HEAD
+
+mv * $NEWDIR
+
+cat << EOF
+echo "To merge all the files"
+LIST=()
+for dir in *(/); do
+  if [ -e $dir/.git ]; then
+    LIST=($LIST $dir)
+    git fetch $dir "master:$dir"
+  fi
+done
+echo $LIST
+mkdir tomerge
+mv $LIST tomerge
+git merge $LIST
+for dir in $LIST; do
+  mv tomerge/$dir/* .
+done
+rmdir tomerge
+EOF

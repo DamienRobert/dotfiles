@@ -1,0 +1,12 @@
+#!/bin/sh
+
+case $1 in
+  audio) shift
+#0: auto (hdmi si possible), 1: analog, 2: hdmi
+amixer cset 'name=PCM Playback Route' "$@"
+;;
+  mpd) shift
+    systemctl --user --no-pager >/dev/null 2>&1 || exec systemd --user --unit="basic.target" &!
+    systemctl --no-block --user  start mpd
+;;
+esac

@@ -1,0 +1,42 @@
+# vim: ft=txt
+
+http://askql.wordpress.com/2011/01/11/zsh-writing-own-completion/
+http://www.linux-mag.com/id/1106/
+http://tar-jx.bz/notes/zsh-completion.html
+
+cf compdef, compctl, compadd in http://zsh.sourceforge.net/Doc/Release/Completion-System.html
+
+==============================================================
+En gros pour la complétion, j'ai juste à retenir _arguments (pour les
+arguments) et _values (pour spécifier plus finement les valeurs d'une
+option). Les _wanted, ... et autre, c'est seulement si j'ai besoin de
+spécifier des tags (pour que l'utilisateur puisse customiser s'il veut ces
+tags ou pas, moi je m'en fiche un peu pour mes propres fichiers de
+complétions).
+
+Si j'utilise des states: soit
+    local curcontext="$curcontext" state line 
+    _arguments -C 
+ou
+    local context state line 
+    _arguments
+
+Dans la forme *::message:action
+quand action est executé, words ne contient plus les options
+Dans la forme *:::message:action
+quand action est executé, words ne contient plus que les arguments de la forme *
+ex: _arguments -C '1: :->country' '*::: :->city' alors dans hello2 France ploum TAB, words contient suelement ploum
+
+Pour les alternatives simples:
+_alternative \ 
+   'users:user:_users' \ 
+   'hosts:host:_hosts'
+Peut s'écrire aussi
+_arguments - users ':user:_users' - hosts ':host:_hosts'
+
+_message pour un message
+
+https://github.com/robbyrussell/oh-my-zsh
+https://github.com/sorin-ionescu/prezto #a fork of oh-my-zsh
+
+https://github.com/zsh-users/zaw #a plugin to find content

@@ -1,0 +1,9 @@
+cp /etc/resolv.conf /mnt/etc/resolv.conf
+modprobe dm-mod #lvm
+mount -o bind /dev /mnt/dev
+mount -t proc /proc /mnt/proc/
+mount -t sysfs /sys /mnt/sys/
+cp -r new /mnt/root/new
+chroot /mnt bash
+#pacman-db-upgrade
+#pacman -Syy

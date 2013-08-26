@@ -1,0 +1,70 @@
+#TAB:
+#key_screen_switcher = 9 #TAB
+
+
+key_playlist = '1' 265
+key_browser = '2' 266
+key_media_library = '3' 267
+key_playlist_editor = '4' 268
+key_tag_editor = '5' 269
+key_search_engine = '6' 270
+key_outputs = '7' 271
+key_clock = '8' 272
+key_help = '0' 274
+
+key_stop = 'v'
+key_pause = 'c'
+key_next = 'n'
+key_prev = 'b'
+key_seek_forward = 'x'
+key_seek_backward = 'w'
+
+key_toggle_auto_center = 'e'
+key_go_to_now_playing = 'g'
+key_go_to_containing_directory = 'G'
+key_go_to_position = 7 #^g
+key_move_song_up = 'K'
+key_move_song_down = 'J'
+key_move_to = 11 #^k
+
+key_song_info = 'h'
+key_artist_info = 'H'
+key_lyrics = 'l'
+key_toggle_lyrics_db = 'L'
+
+key_reverse_selection = ','
+key_deselect_all = '?'
+key_switch_tag_type_list = '!'
+
+key_clear = 4 #^d
+key_crop = 'D'
+
+key_save_playlist = 's'
+key_edit_tags = 5 #^e
+key_add_selected_items = 'A'
+key_add = 'a'
+key_quit = 'q' 'Q'
+
+key_toggle_display_mode = 'p'
+key_sort_playlist = 'o'
+
+key_toggle_repeat = 'r'
+key_toggle_random = 'z'
+key_shuffle = 'Z'
+key_toggle_single = 'P'
+key_toggle_consume = 'R'
+
+key_toggle_space_mode = 't'
+key_toggle_add_mode = 'T'
+key_toggle_find_mode = 'y'
+key_toggle_mouse = 'u'
+key_toggle_crossfade = 'i'
+key_set_crossfade = 'I'
+key_update_db = 21 #^u
+
+key_apply_filter = 6 #^f
+key_find_forward = '/'
+key_find_backward = '.'
+key_next_found_position = ':'
+key_prev_found_position = ';'
+

@@ -1,0 +1,36 @@
+#!/bin/sh
+ARGS=""
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -c ) shift; USESHELL=true ;;
+    -a ) shift; ARGS="$ARGS $1"; shift ;;
+    -t ) shift; TRANSFERT=true ;;
+    *) break;;
+  esac
+done
+
+COMMAND="$1"
+shift
+
+if [ -n "$TRANSFERT" ]; then
+for name in "$@"; do
+  rsync -vzP "$COMMAND" "$name:/tmp/SSH_$COMMAND"
+  echo ssh "$name" "/tmp/SSH_$COMMAND" $ARGS
+  ssh "$name" "/tmp/SSH_$COMMAND" $ARGS
+done
+exit 0
+fi 
+if [ -n "$USESHELL" ]; then
+  COMMAND="sh -c '$COMMAND'"
+else
+  echo "$COMMAND" | egrep >/dev/null '^/' || COMMAND="$PWD/$COMMAND"
+  echo "$COMMAND" | egrep >/dev/null "^$HOME" && COMMAND='$HOME'"${COMMAND#$HOME}"
+fi
+
+for name in "$@"; do
+  echo ssh "$name" "$COMMAND $ARGS"
+  ssh "$name" "$COMMAND $ARGS"
+done

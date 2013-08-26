@@ -1,0 +1,80 @@
+Anneaux locaux
+==============
+
+Si f:(A,m) -> (B,n) morphisme d'anneaux locaux, on dit qu'il est local si
+f(m) \subset n <=> f^-1(n)=m
+Dans ce cas f induit un morphisme sur les corps résiduels:
+f: k(m) -> k(n)
+On dit que f est un morphisme local.
+
+
+Morphismes
+==========
+
+phi: Y->X induit par f:A->B
+
+Par définition, f est local sur les germes, ie il induit un morphisme
+f: k(phi(y)) -> k(y)
+
+Intuitivement, à une section s de X, phi^*(s) est la section s o phi.
+
+Topologie:
+---------
+- Var(I+J)=Var(I) \inter Var(J)
+- Var(IJ)=Var(I \inter J)=Var(I) \union Var(J)
+- Var(\inter I_i)= Adhérence(Union(Var(I_i)))
+  Ainsi, p_i est dense ssi \inter p_i=Nilradical
+
+Si D_f est un ouvert fondamental, on a
+\intersection finie D_f_i = D_\prod f_i
+
+Comme phi est continu, on a 
+adhérence(phi(\adhérence A)) = adhérence phi(A).
+En particulier, si x est le point générique d'un fermé A, phi(x) est le
+point générique du fermé adhérence phi(A).
+Si les points fermés sont denses dans A, phi(x) est le point générique de
+l'adhérence des phi(y), y fermé dans A.
+
+Algèbre:
+-------
+- f^-1 f(I) contient I, donc f f^-1 f (I)=I
+- f f^-1 (J) inclus dans J, donc f^-1 f f^-1 (J)=J
+
+Préimage:
+--------
+-phi^-1 (Var I)=Var(f(I))
+-phi^-1 (D_u)=D_f(u)
+
+Image:
+-----
+- Adhérence(phi(Var J)) = Var(f^-1 J)
+
+Donc f injectif => phi dominant <=> f^-1(0) inclus dans le nilradical de A
+<=> f^-1(Nilrad B)=Nilrad A.
+Dans ce cas si les premiers minimaux de B sont q_1, q_n, ceux de A sont
+p_1, p_n avec p_i=phi(q_i)
+
+Fibre:
+-----
+Il existe q dans la fibre de p <=> f^-1(f(p))=p. 
+[[ De plus (si p est dans l'image), alors si q est min dans S/pS ou max dans
+S_p, il appartient à S_p/pS donc s'envoit sur p. !!This looks false!!]]
+
+Preuve: - f^-1(f(p)) contient p et est inclus dans f^-1(q)=p
+
+Produits d'idéaux
+-----------------
+- f^-1(I_1 \inter I_2)=f^-1(I_1) \inter f^-1(I_2)
+Et donc phi(F_1 \union F_2)=phi(F_1) \union phi(F_2)
+
+En revanche ça ne marche pas pour le produit, même si B/A est fidèlement
+plat; ex: R[X]\subset C[X], I1=(X-i), I2=(X+i), f^-1(I1I2)=(X^2+1),
+f^-1(I1)f^-1(I2)=(X^2+1)^2
+
+- f(I1I2)=f(I1)f(I2) 
+Pr: les deux idéaux sont générés par f(i1)f(i2) où i1,i2 parcourt les
+générateurs de I1,I2.
+
+Donc f(I1) \inter f(I2) \supset f(I1 \inter I2) (= si B/A plat)
+Mais le Nilrad est toujours égal. (ie: phi^-1(F1 \union F2)=phi^-1(F1)
+\union phi^-1(F2))

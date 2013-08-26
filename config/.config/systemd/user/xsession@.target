@@ -1,0 +1,7 @@
+[Unit]
+Description=xsession on display %I
+Wants=session.target
+AllowIsolate=yes
+
+[Install]
+Alias=default.target

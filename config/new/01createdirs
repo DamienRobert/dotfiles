@@ -1,0 +1,29 @@
+#!/bin/zsh
+
+#create dirs that need to be set up for myunison
+#in case of INIT, we want to print the name of the dir to create them by ssh
+INIT=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -init ) INIT=true; shift ;;
+    *) break;;
+  esac
+done
+MSG="mkdir -p"
+
+domkdir() {
+  local target=$1
+  if [ -z "$INIT" ]; then
+    mkdir -p $1
+  else
+    MSG="$MSG '\$HOME'/$1"
+  fi
+}
+
+#Create dirs under hierarchy ploum
+cd
+for dir in data Mail
+domkdir $dir
+[ -n "$INIT" ] && echo $MSG

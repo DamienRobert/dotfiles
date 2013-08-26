@@ -1,0 +1,48 @@
+growisofs: pour graver
+
+vobcopy
+dvdbackup: pour copier un dvd sur le disque
+
+acidrip
+dvd::rip: frontend pour ripper des films
+
+mencoder
+transcode: pour encoder des films
+
+
+
+#POUR LES DVD:
+vobcopy/dvdbackup: pr copier un dvd
+isoinfo: info sur l'iso
+lsdvd
+
+mplayer  -dvd-device /tmp/film-dvd/LOST_IN_TRANSLATION dvd://1
+pour voir ça comme un dvd
+
+----------
+Newsgroups: yaf.Niouininon
+X-Conti: Niouininon                                                       /o
+Date: 1 Jan 1970 00:00:00 GMT                                       <o-o-@-o-o>
+Auteur: Ni (yaf)                                                     | |  \O
+-Sujet: Deux, et la première est en mode turbo.                      |  \o-o
+                                                                      \o
+                                                                    \O
+Deux, et la première est en mode turbo.  Je ne pense qu'on gagne grand
+chose  en faire plus (et de tout façon, XviD ne sait pas en faire plus
+de 2).  J'ai utilisé ça pour _Duck Soup_:
+
+mencoder -nosound -ovc xvid -xvidencopts
+bitrate=1200:greyscale:trellis:quant_type=mpeg:vhq=4:autoaspect:turbo:pass=1 -vf
+hqdn3d=12:0:12 dvd:// -o /dev/null
+
+mencoder -nosound -ovc xvid -xvidencopts
+bitrate=1200:greyscale:trellis:quant_type=mpeg:vhq=4:autoaspect:turbo:pass=2 -vf
+hqdn3d=12:0:12 dvd:// -o test.avi
+
+
+Aargh!  J'ai laissé turbo pour la deuxième passe!  (Ceci dit, la
+première était à ~15 fps, et la deuxième à ~8 ...)
+
+Et en fait, c'est dans les noirs que je vois les blocs, et ils y sont
+aussi dans _Duck Soup_.  C'est peut-être la faute de mon écran plat.
+

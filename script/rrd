@@ -1,0 +1,13 @@
+#!/bin/sh
+#recursive rmdir
+
+find "$@" -depth -type d -print0 | xargs -0 rmdir
+
+
+# for j in "$@"; do
+#  echo $j
+#  if [ -d "$j" ]; then
+#  rrd "$j"/* "$j"/.[!-~]*; 
+#  rmdir "$j"
+#  fi
+# done

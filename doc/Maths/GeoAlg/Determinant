@@ -1,0 +1,52 @@
+Thread sciences.maths:10489 Le déterminant est irréductible
+
+Preuve: La variété X: Dét=0 est l'image de M_n*M_n via l'application
+(P,Q) -> P.matrice_diagonale(1,...,1,0).Q., or M_n * M_n est irréductible, 
+donc X aussi. Comme A[X_1, ... X_n^2] est factoriel, ça prouve que Dét est
+une puissance d'un polynôme irréductible (sinon X aurait plusieurs
+composantes). Mais il est facile de trouver point où Dét est lisse, donc il
+est irréductible.
+
+[Autres manières de le vérifier: 
+- Regarder le degré par rapport à une variable
+- Si ton polynôme est une puissance k-ième
+d'un autre, dans son écriture comme combinaison linéaire de monômes, il y
+en a au moins un qui est lui-même une puissance k-ième d'un autre monôme
+(c'est facile à vérifier: tu prends un ordre total sur les monômes
+compatible avec le produit (par exemple l'ordre lexicographique), et si P
+est de la forme (somme_i c_i M_i)^k, si M_1 est minimal pour ton ordre, P
+est somme de c_1^k M_1^k et d'une combinaisons linéaires de monômes
+strictement supérieurs à M_1^k). Or il est clair que ce n'est pas le cas
+pour P=det...
+- plus géométriquement, si V est une variété algébrique, Z un sous-schéma
+fermé, pour qu'une fonction f sur V s'écrive g^i avec i>=2, il faut que
+ce soit le cas de la restriction de f à Z ; ici, on applique cela à V=M_n
+et Z le sous-espace affine formé par les matrices diagonales dont la
+diagonale est (X,1,...,1). La restriction du déterminant à Z est X qui
+n'est pas une puissance non triviale.
+]
+
+On peut même se passer de la factorialité dans la preuve:
+si on a un anneau intègre R et un élément D de R (penser que R est l'anneau
+des polynômes à n² variables et D le déterminant), en notant (D) l'idéal
+engendré, il est vrai sans supposer R factoriel (c'est tout à fait trivial,
+même) que si R/(D) est intègre, c'est-à-dire si D engendre un idéal
+premier, alors D est irréductible (au sens « si D=PQ dans R, alors soit P
+soit Q est une unité ») ; le problème ici est qu'on sait simplement que le
+réduit de R/(D) (soit R quotienté par le radical de (D)) est intègre, et
+par ailleurs D n'est pas une puissance non triviale (ou multiple par une
+unité d'une puissance non triviale).  Mais on a de plus que
+R/(D) a un point lisse lisse (parce que le déterminant a une
+différentielle non triviale quelque part) et, pour le coup, ça suffit
+à montrer que R/(D) est intègre.
+
+Preuve: Si on considère Spec A/(f), où A est intègre et intégralement
+clos et f un élément de A, alors ça marche : {f=0} définit un diviseur
+de Cartier, donc en particulier un diviseur de Weil, effectifs, sur
+Spec A, qui s'écrit comme une combinaison à coefficients dans N de
+sous-schémas intègres de codimension 1, et puisqu'on suppose le truc
+réduit et lisse quelque part, il n'y a qu'une seule composante et elle
+a multiplicité 1, donc c'est bien intègre.  (Il y a certainement une
+meilleure façon de dire ça...)
+
+

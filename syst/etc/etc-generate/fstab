@@ -1,0 +1,50 @@
+#GENERATE
+# 
+# /etc/fstab: static file system information
+#
+# <file system>	<dir>	<type>	<options>	<dump>	<pass>
+
+<% case @computer.name %>
+<% when "Numenor" %>
+#/dev/cdrom             /media/cd   auto    ro,user,noauto,unhide   0      0
+#/dev/dvd               /media/dvd  auto    ro,user,noauto,unhide   0      0
+#/dev/fd0               /media/fl   auto    user,noauto             0      0
+#tmpfs		/tmp	tmpfs	nodev,nosuid	0	0
+
+/dev/mapper/MainGroup-home /home ext4 defaults 0 1
+/dev/mapper/MainGroup-slash / ext4 defaults 0 1
+/dev/mapper/MainGroup-swap swap swap defaults 0 0
+<% when "Feanor" %>
+# UUID=ba8d1474-88ec-4342-a63d-e4d4732511af LABEL=linux-root /dev/sdb4
+UUID=ba8d1474-88ec-4342-a63d-e4d4732511af          	/         	btrfs     	rw,relatime,compress=lzo,space_cache	0 1
+
+# UUID=32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e LABEL=linux-home /dev/sdb3
+UUID=32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e           	/home     	btrfs     	rw,relatime,compress=lzo,space_cache,subvol=home	0 2
+
+# UUID=32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e LABEL=linux-home /dev/sdb3
+UUID=32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e           	/data     	btrfs     	rw,relatime,compress=lzo,space_cache,subvol=data	0 2
+
+#LABEL=large /dev/sdc
+UUID=33e81fa8-6a49-4294-8bc9-bf6295ac39d1           	/large     	btrfs     	rw,relatime,compress=lzo,space_cache	0 2
+
+#/dev/sdb2: UUID="382E89A02E895830" TYPE="ntfs" PARTLABEL="Windows" PARTUUID="48faf05a-38c7-4157-a5ec-4af142a91bfc"
+UUID=382E89A02E895830	/mnt/windows	ntfs	ro,user,nls=utf8,umask=00,noauto
+
+# UUID=9D37-7B22 /dev/sdb1
+UUID=9D37-7B22          	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2
+
+<% when "Gondolin" %>
+#UUID=a2221eb4-ff88-4ef4-af93-f1eca17a735e /home ext4 defaults,nobarrier,noauto,x-systemd.automount 0 1
+#UUID=e7775584-22a9-49a4-adf1-6afc8683a37a / ext4 defaults,nobarrier 0 1
+#tmpfs		/tmp	tmpfs	nodev,nosuid	0	0
+UUID=85f0acdd-b80f-4f39-b2fc-6f6521d380fb swap swap defaults 0 0
+UUID=a2221eb4-ff88-4ef4-af93-f1eca17a735e /home ext4 defaults,noauto,x-systemd.automount 0 1
+UUID=e7775584-22a9-49a4-adf1-6afc8683a37a / ext4 defaults 0 1
+UUID=0b20faec-249c-4e3f-a436-8a47bc6ad0c5 /mnt/usbdisk ext4 defaults,noauto,x-systemd.automount 0 1
+<% when "Valinor" %>
+/dev/sda1 /boot ext2 defaults 0 1
+/dev/sda5 swap swap defaults 0 0
+/dev/sda6 / ext4 defaults 0 1
+/dev/sda7 /home ext4 defaults 0 1
+
+<% end %>

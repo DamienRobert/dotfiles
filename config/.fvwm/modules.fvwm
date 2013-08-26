@@ -1,0 +1,16 @@
+# vim: set ft=fvwm: let b\:fvwm_version=2:
+
+DestroyModuleConfig *
+
+*FvwmPager: Geometry 300x50+0+0
+*FvwmPager: Back Black
+*FvwmPager: Fore gray45
+*FvwmPager: Highlight red45
+#*FvwmPager: NoDeskHilight
+*FvwmPager: Balloons All
+*FvwmPager: BalloonYOffset +2
+*FvwmPager: BalloonFore Black
+*FvwmPager: BalloonBack Yellow
+*FvwmPager: LabelsBelow 
+#Hide labels
+*FvwmPager: Font "none"

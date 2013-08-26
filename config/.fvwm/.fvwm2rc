@@ -1,0 +1,45 @@
+#vim: set ft=fvwm foldmethod=marker: let b\:fvwm_version=2
+
+# Paths
+# -----
+ImagePath $HOME/.fvwm/pixmaps/
+
+Read wm.fvwm
+Read style.fvwm
+Read menus.fvwm
+Read bindings.fvwm
+Read modules.fvwm
+#Les réglages locaux
+PipeRead '$HOME/.fvwm/settings'
+
+# Initialisation
+# --------------
+
+#StartFunction (init et restart)
+#InitFunction  (init)
+#RestartFunction (restart)
+#ExitFunction (exit)
+#SessionInitFunction (session init)
+#SessionRestartFunction (session restart)
+#SessionExitFunction (session exit)
+
+#si lance par kde
+DestroyFunc SessionInitFunction
+AddToFunc SessionInitFunction
++ I GotoDeskAndPage 0 1 1
++ I Exec exec $HOME/.fvwm/startup "initsession" &
+DestroyFunc InitFunction
+#Can't use Test (Init) because it matches SessionInit and Init
+AddToFunc InitFunction
++ I GotoDeskAndPage 0 1 1
++ I Exec exec $HOME/.fvwm/startup "init" &
+
+#Read start.local
+DestroyFunc StartFunction
+AddToFunc StartFunction
+#+  I Test (Init)  GotoDeskAndPage 0 1 1
+#+  I Test (Init)  Exec exec $HOME/.fvwm/startup "init" &
++  I Module FvwmCommandS
++  I Function SetAllBindings
+#+  I Function SetBindingsLocal
++  I Exec exec $HOME/.fvwm/startup start &

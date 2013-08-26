@@ -1,0 +1,590 @@
+       CREATE:<filename>
+              Option groups: FD,REG,NAMED
+              Useful  options:  mode,  user, group, unlink-early, unlink-late,
+              append
+
+       EXEC:<command-line>
+              Option groups: FD,SOCKET,EXEC,FORK,TERMIOS
+              Useful options: path, fdin, fdout,  chroot,  su,  su-d,  nofork,
+              pty, stderr, ctty, setsid, pipes, login, sigint, sigquit
+
+       FD:<fdnum>
+              Option groups: FD (TERMIOS,REG,SOCKET)
+
+       GOPEN:<filename>
+              Option groups: FD,REG,SOCKET,NAMED,OPEN
+
+       IP4:<host>:<protocol>
+              Option groups: FD,SOCKET,IP4
+              Useful options: ttl, broadcast
+
+       OPEN:<filename>
+              Option groups: FD,REG,NAMED,OPEN
+              Useful  options:  creat, excl, nofollow, append, rdonly, wronly,
+              lock, ignoreeof
+
+       OPENSSL:<host>:<port>
+              Option groups: FD,SOCKET,SOCK_IP4,TCP,OPENSSL,RETRY
+              Useful options: cipher, method, verify, cafile, capath, certifi‐
+              cate, bind, connect-timeout, sourceport, retry
+
+       OPENSSL-LISTEN:<port>
+              Option            groups:            FD,SOCKET,SOCK_IP4,TCP,LIS‐
+              TEN,OPENSSL,CHILD,RANGE,RETRY
+
+       PIPE:<filename>
+              Option groups: FD,NAMED,OPEN
+              Useful  options:  rdonly,  nonblock,  group, user, mode, unlink-
+              early
+
+       PIPE   Creates an unnamed pipe and uses it for reading and writing.  It
+              Option groups: FD
+
+       PROXY:<proxy>:<hostname>:<port>
+              Option groups: FD,SOCKET,IP4,TCP,HTTP
+              Useful options: proxyport, ignorecr, proxyauth,  resolve,  crnl,
+              bind, connect-timeout, mss, sourceport, retry
+
+       PTY    Generates  a  pseudo  terminal  (pty)  and uses its master side.
+              Option groups: FD,NAMED,PTY,TERMIOS
+              Useful options: link, openpty, wait-slave, mode, user, group
+       
+       READLINE
+              Option groups: FD,READLINE,TERMIOS
+              Useful options: history, noecho
+
+       SOCKS4:<socks-server>:<host>:<port>
+              Option groups: FD,SOCKET,IP4,TCP,SOCKS4
+              Useful options: socksuser, socksport, sourceport, retry
+
+       SOCKS4A:<socks-server>:<host>:<port>
+              Option groups: FD,SOCKET,IP4,TCP,SOCKS4
+              Useful options: socksuser, socksport, sourceport, retry
+
+       SYSTEM:<shell-command>
+              Option groups: FD,SOCKET,EXEC,FORK,TERMIOS
+              Useful options: path, fdin, fdout,  chroot,  su,  su-d,  nofork,
+              pty, stderr, ctty, setsid, pipes, sigint, sigquit
+
+       TCP4:<host>:<port>
+              Option groups: FD,SOCKET,IP4,TCP
+              Useful options: crnl, bind, connect-timeout,  tos,  mtudiscover,
+              mss, nodelay, nonblock, sourceport, retry
+       
+       TCP4-LISTEN:<port>
+              Option groups: FD,SOCKET,LISTEN,CHILD,RANGE,IP4,TCP
+              Useful  options: crnl, fork, bind, range, tcpwrap, backlog, mss,
+              su, reuseaddr, retry
+
+       UDP4:<host>:<port>
+              Option groups: FD,SOCKET,IP4
+              Useful options: ttl, tos, bind, sourceport
+
+       UDP4-LISTEN:<port>
+              Option groups: FD,SOCKET,LISTEN,CHILD,RANGE,IP4
+              Useful options: fork, bind, range
+
+       UNIX-CONNECT:<filename>
+              Option groups: FD,SOCKET,NAMED
+
+       UNIX-LISTEN:<filename>
+              Option groups: FD,SOCKET,NAMED,LISTEN,CHILD
+              Useful options: fork, umask, mode, user, group, unlink-early
+
+------------------------------------------------------------------------------
+       FD option group
+       user=<user>
+              Sets the <user> (owner) of the stream.  If the address is member
+              of  the  NAMED  option group, socat uses the chown() system call
+              after opening the file or binding  to  the  UNIX  domain  socket
+              (race  condition!).   Without  filesystem  entry, socat sets the
+              user of the stream using the fchown() system call.  These  calls
+              might require root privilege.
+
+       user-late=<user>
+              Sets the owner of the fd to <user> with the fchown() system call
+              after opening or connecting the channel.  This is useful only on
+              file system entries.
+
+       group=<group>
+              Sets the <group> of the stream.  If the address is member of the
+              NAMED option group, socat uses the  chown()  system  call  after
+              opening the file or binding to the UNIX domain socket (race con‐
+              dition!).  Without filesystem entry, socat sets the group of the
+              stream with the fchown() system call.  These calls might require
+              group membership or root privilege.
+
+       group-late=<group>
+              Sets the group of the fd to <group>  with  the  fchown()  system
+              call  after  opening  or connecting the channel.  This is useful
+              only on file system entries.
+
+       mode=<mode>
+              Sets the <mode> [mode_t] (permissions) of the  stream.   If  the
+              address  is member of the NAMED option group and uses the open()
+              or creat() call, the mode is applied with these.  If the address
+              is  member  of the NAMED option group without using these system
+              calls, socat uses the chmod()  system  call  after  opening  the
+              filesystem entry or binding to the UNIX domain socket (race con‐
+              dition!).  Otherwise, socat sets the mode of  the  stream  using
+              fchmod().   These  calls  might require ownership or root privi‐
+              lege.
+
+       perm-late=<mode>
+              Sets the permissions of the fd to value  <mode>  [mode_t]  using
+              the  fchmod()  system call after opening or connecting the chan‐
+              nel.  This is useful only on file system entries.
+
+       append=<bool>
+              Always writes data to the actual end of file.  If the address is
+              member  of  the  OPEN option group, socat uses the O_APPEND flag
+              with the open()  system  call.   Otherwise,  socat  applies  the
+              fcntl(fd, F_SETFL, O_APPEND) call.
+
+       nonblock=<bool>
+              Tries  to open or use file in nonblocking mode. Its only effects
+              are that the connect() call of TCP addresses does not block, and
+              that  opening  a  named pipe for reading does not block.  If the
+              address is member of the  OPEN  option  group,  socat  uses  the
+              O_NONBLOCK  flag  with the open() system call.  Otherwise, socat
+              applies the fcntl(fd, F_SETFL, O_NONBLOCK) call.
+-----------------------------------------------------------------------------
+       NAMED option group
+
+       These options work on file system entries.
+       See also options user, group, and mode.
+
+       user-early=<user>
+              Changes the <user> (owner)  of  the  file  system  entry  before
+              accessing  it,  using  the  chown() system call. This call might
+              require root privilege.
+
+       group-early=<group>
+              Changes the <group> of the file system  entry  before  accessing
+              it, using the chown() system call. This call might require group
+              membership or root privilege.
+
+       perm-early=<mode>
+              Changes the <mode> [mode_t] of  the  file  system  entry  before
+              accessing  it,  using  the  chmod() system call. This call might
+              require ownership or root privilege.
+
+       umask=<mode>
+              Sets the umask of the process to <mode> [mode_t] before  access‐
+              ing  the  file  system entry (useful with UNIX domain sockets!).
+              This call might affect all further operations of the socat  pro‐
+              cess!
+
+       unlink-early
+              Unlinks  (removes)  the  file  before opening it and even before
+              applying user-early etc.
+
+       unlink Unlinks (removes) the file before accessing it, but after  user-
+              early etc.
+
+       unlink-late
+              Unlinks  (removes) the file after opening it to make it inacces‐
+              sible for other processes after a short race condition.
+
+-------------------------------------------------------------------------------
+       OPEN option group
+
+       The OPEN group options allow to set flags with the open() system  call.
+       E.g., option ‘creat´ sets the O_CREAT flag.
+       See also options append and nonblock.
+
+       creat=<bool>
+              Creates the file if it does not exist.
+       
+       excl=<bool>
+              With option creat, if file exists this is an error.
+
+       largefile=<bool>
+              On 32 bit systems, allows a file larger than 2^31 bytes.
+
+       noctty=<bool>
+              Does not make this file the controlling terminal.
+
+       nofollow=<bool>
+              Does not follow symbolic links.
+
+       rdonly=<bool>
+              Opens the file for reading only.
+
+       wronly=<bool>
+              Opens the file for writing only.
+
+       trunc  Truncates the file to size 0 during opening it.
+-------------------------------------------------------------------------------
+       REG and BLK option group
+
+       These options are usually applied to a UN*X file descriptor, but  their
+       semantics make sense only on a file supporting random access.
+
+       seek=<offset>
+              Applies  the  lseek(fd,  <offset>, SEEK_SET) (or lseek64) system
+              call, thus positioning the file pointer absolutely  to  <offset>
+              [off_t or off64_t].
+------------------------------------------------------------------------------
+       PROCESS option group
+
+       Options of this group change the process  properties  instead  of  just
+       affecting one data channel.  For EXEC and SYSTEM addresses and for LIS‐
+       TEN and CONNECT type addresses with option FORK, these options apply to
+       the child processes instead of the main socat process.
+
+       chroot=<directory>
+              Performs  a  chroot()  operation to <directory> after processing
+              the address. This call might require root privilege.
+
+       chroot-early=<directory>
+              Performs a chroot() operation to <directory> before opening  the
+              address. This call might require root privilege.
+
+       setgid=<group>
+              Changes  the primary <group> of the process after processing the
+              address. This call might require root privilege.
+
+       setgid-early=<group>
+              Changes the primary <group> of the process  before  opening  the
+              address. This call might require root privilege.
+
+       setuid=<user>
+              Changes  the  <user> (owner) of the process after processing the
+              address. This call might require root privilege.
+
+       setuid-early=<user>
+              Changes the <user> (owner) of the  process  before  opening  the
+              address. This call might require root privilege.
+
+       su=<user>
+              Changes  the <user> (owner) and groups of the process after pro‐
+              cessing the address. This call might require root privilege.
+
+       su-d=<user>
+              Short name for substuser-delayed.  Changes  the  <user>  (owner)
+              and  groups  of  the  process after processing the address.  The
+              user and his groups are retrieved before  a  possible  chroot().
+              This call might require root privilege.
+
+       setpgid=<pid_t>
+              Makes  the  process  a  member  of  the  specified process group
+              <pid_t>. If no value is given, or if the value is 0  or  1,  the
+              process becomes leader of a new process group.
+
+       setsid Makes the process the leader of a new session.
+-------------------------------------------------------------------------------
+       READLINE option group
+
+       These options apply to the readline address type.
+
+       history=<filename>
+              Reads and writes history from/to <filename>.
+
+       noprompt
+              Since  version  1.4.0,  socat  per  default tries to determine a
+              prompt - that is then passed to the readline call - by remember‐
+              ing  the  last  incomplete line of the output. With this option,
+              socat does not pass a prompt to the readline call, so  it  might
+              set the cursor to the first column of the terminal.
+
+       noecho=<pattern>
+              Specifies  a regular pattern for a prompt that prevents the fol‐
+              lowing input line from being displayed on the  screen  and  from
+              being  added  to the history.  The prompt is defined as the text
+              that was output to the readline address after the  lastest  new‐
+              line  character  and  before  an  input character was typed. The
+              pattern is a regular  expression,  e.g.   "^[Pp]assword:.*$"  or
+              "([Uu]ser:|[Pp]assword:)". See regex(7) for details.
+
+       prompt=<string>
+              Passes  the  string as prompt to the readline function. readline
+              prints this prompt when stepping through the  history.  If  this
+              string  matches  a constant prompt issued by an interactive pro‐
+              gram on the other socat address, consistent look and feel can be
+              archieved.
+-------------------------------------------------------------------------------
+       APPLICATION option group
+
+       This  group  contains options that work at data level.  Note that these
+       options only apply to the "raw" data transferred by socat, but  not  to
+       protocol data used by addresses like PROXY.
+
+       cr     Converts  the default line termination character NL (´\n´, 0x0a)
+              to/from CR (´\r´, 0x0d) when writing/reading on this channel.
+
+       crnl   Converts the default line termination character NL (´\n´,  0x0a)
+              to/from CRNL ("\r\n", 0x0d0a) when writing/reading on this chan‐
+              nel.  Note: socat simply strips all CR characters.
+
+       ignoreeof
+              When EOF occurs on this channel, socat ignores it and  tries  to
+              read more data (like "tail -f").
+-------------------------------------------------------------------------------
+       SOCKET option group
+
+       These  options  are  intended for all kinds of sockets, e.g. IP or UNIX
+       domain. Most are applied with a setsockopt() call.
+
+       bind=<sockname>
+              Binds the socket to the given socket address  using  the  bind()
+              system  call. The form of <sockname> is socket domain dependent:
+              IP4  and  IP6  allow  the   form   [hostname|hostaddress][:(ser‐
+              vice|port)], UNIX domain sockets require <filename>.
+
+       connect-timeout=<seconds>
+              Abort  the  connection  attempt  after  <seconds> [timeval] with
+              error status.
+
+       interface=<interface>
+              Binds the socket to the given <interface>.  With Linux, this  is
+              a string like "eth0".  This option might require root privilege.
+
+       broadcast
+              For datagram sockets, allows sending to broadcast addresses  and
+              receiving packets addressed to broadcast addresses.
+       keepalive
+              Enables sending keepalives on the socket.
+
+       linger=<seconds>
+              Blocks shutdown() or close() until data transfers have  finished
+              or the given timeout [int] expired.
+
+-------------------------------------------------------------------------------
+
+       IP4 and IP6 option groups
+
+       These options can be used with IPv4 and IPv6 based sockets.
+
+       tos=<tos>
+              Sets the TOS (type of service)  field  of  outgoing  packets  to
+              <tos> [byte] (see RFC 791).
+
+       ttl=<ttl>
+              Sets  the  TTL (time to live) field of outgoing packets to <ttl>
+              [byte].
+
+       mtudiscover=<0|1|2>
+              Takes 0, 1, 2 to never, want, or always use path MTU discover on
+              this socket.
+
+-----------------------------------------------------------------------------
+       TCP option group
+
+       These  options  may  be  applied  to TCP sockets. They work by invoking
+       setsockopt() with the appropriate parameters.
+
+       defer-accept
+              While listening, accepts connections only  when  data  from  the
+              peer arrived.
+
+       keepcnt=<count>
+              Sets the number of keepalives before shutting down the socket to
+              <count> [int].
+
+       keepidle=<seconds>
+              Sets the idle time before sending the first keepalive  to  <sec‐
+              onds> [int].
+
+       keepintvl=<seconds>
+              Sets the intervall between two keepalives to <seconds> [int].
+
+       mss=<bytes>
+              Sets the MSS (maximum segment size) after the socket()  call  to
+              <bytes>  [int]. This value is then proposed to the peer with the
+              SYN or SYN/ACK packet.
+
+       mss-late=<bytes>
+              Sets the MSS of the socket after connection has been established
+              to <bytes> [int].
+
+       nodelay
+              Turns  off the Nagle algorithm for measuring the RTT (round trip
+              time).
+
+       rfc1323
+              Enables RFC1323 TCP options: TCP window scale,  round-trip  time
+              measurement (RTTM), and protect against wrapped sequence numbers
+              (PAWS) (AIX).
+
+-------------------------------------------------------------------------------
+      UDP and TCP option groups
+
+       Here we find options that are related to the network port mechanism and
+       that thus can be used with UDP and TCP, client and server addresses.
+
+       sourceport=<port>
+              For outgoing (client) TCP  and  UDP  connections,  it  sets  the
+              source  <port> using an extra bind() call.  With TCP or UDP lis‐
+              ten addresses, socat immediately shuts down  the  connection  if
+              the client does not use this sourceport.
+
+       lowport
+              Outgoing  (client)  TCP and UDP connections with this option use
+              an unused random source port between 640 and 1023 incl. On  UNIX
+              class  operating systems, this requires root privilege, and thus
+              indicates that the client process is authorized by  local  root.
+              TCP  and  UDP listen addresses with this option immediately shut
+              down the connection if the client does not use a  sourceport  <=
+              1023.   This  mechanism  can provide limited authorization under
+              some circumstances.
+-------------------------------------------------------------------------------
+       RANGE option group
+
+       These  options check if a connecting client is granted access. They can
+       be applied to listening network sockets.
+
+       range=<address-range>
+              After accepting a connection, tests if the peer is within range.
+              This  option  is  currently only implemented for IPv4 addresses.
+              Address range has the form ww.xx.yy.zz/bits, e.g. 10.0.0.0/8. If
+              the  client address does not match, socat issues an error abort‐
+              ing the program or keeps listening (see option -s).
+
+       tcpwrap[=<name>]
+              Uses Wietse Venema´s libwrap (tcpd) library to determine if  the
+              client  is  allowed  to  connect.  The  configuration  files are
+              /etc/hosts.allow and /etc/hosts.deny, see "man  5  hosts_access"
+              for  more  information.  <name>  (type  string) is passed to the
+              wrapper functions as daemon process name. If omitted, the  base‐
+              name  of socats invocation (argv[0]) is passed.  If both tcpwrap
+              and range options are applied to  an  address,  both  conditions
+              must be fulfilled to allow the connection.
+-------------------------------------------------------------------------------
+       CHILD option group
+
+       Options for addresses with multiple connections via child processes.
+
+       fork   After establishing a connection, handles its channel in a  child
+              process  and keeps the parent process attempting to produce more
+              connections, either by listening or by connecting in a loop.
+              SSL-CONNECT and SSL-LISTEN differ in when they actually fork off
+              the child: SSL-LISTEN forks before the SSL handshake, while SSL-
+              CONNECT forks afterwards.  RETRY and  FOREVER  options  are  not
+              inherited by the child process.
+
+-------------------------------------------------------------------------------
+       EXEC option group
+
+       Options for addresses that invoke a program.
+
+       path=<string>
+              Overrides  the  PATH environment variable for searching the pro‐
+              gram with <string>. This $PATH value is effective in  the  child
+              process too.
+
+       login  Prefixes  argv[0]  for the execvp() call with ´-´, thus making a
+              shell behave as login shell.
+-------------------------------------------------------------------------------
+       FORK option group
+
+       EXEC or SYSTEM addresses invoke a program using  a  child  process  and
+       transfer  data between socat and the program. The interprocess communi‐
+       cation mechanism can be influenced  with  the  following  options.  Per
+       default,  a socketpair() is created and assigned to stdin and stdout of
+       the child process, while stderr is inherited from  the  socat  process,
+       and  the  child process uses file descriptors 0 and 1 for communicating
+       with the main socat process.
+
+       nofork Does not fork a subprocess for executing  the  program,  instead
+              calls  execvp()  or  system()  directly  from  the  actual socat
+              instance. This avoids the overhead of  another  process  between
+              the program and its peer, but introduces a lot of restrictions:
+
+       o      this option can only be applied to the second socat address.
+
+       o      it  cannot  be  applied  to a part of a LINK(dual)(ADDRESS_DUAL)
+              address.
+
+       o      the first socat address cannot be OPENSSL or READLINE
+
+       o      socat options -b, -t, -D, -l, -v, -x become useless
+
+       o      for both addresses, options ignoreeof, cr, and crnl become  use‐
+              less
+
+       o      for  the  second  address  (the one with option nofork), options
+              append,  cloexec, flock, user, group, mode, nonblock, perm-late,
+              setlk,  and  setpgid  cannot  be applied. Some of these could be
+              used on the first address though.
+
+       pipes  Creates a pair of unnamed pipes for  interprocess  communication
+              instead of a socket pair.
+
+       pty    Establishes  communication  with  the sub process using a pseudo
+              terminal instead of a socket  pair.  Creates  the  pty  with  an
+              available  mechanism. If openpty and ptmx are both available, it
+              uses ptmx because this is POSIX compliant.
+
+       ctty   Makes the pty the controlling tty of the sub process.
+
+       stderr Directs stderr of the sub process to its output channel by  mak‐
+              ing stderr a dup() of stdout.
+
+       fdin=<fdnum>
+              Assigns  the  sub processes input channel to its file descriptor
+              <fdnum> instead of stdin (0). The program started from the  sub‐
+              process has to use this fd for reading data from socat.
+
+       fdout=<fdnum>
+              Assigns  the sub processes output channel to its file descriptor
+              <fdnum> instead of stdout (1). The program started from the sub‐
+              process has to use this fd for writing data to socat.
+
+       sighup, sigint, sigquit
+              Has  socat  pass an eventual signal of this type to the sub pro‐
+              cess.  If no address has this option, socat terminates on  these
+              signals.
+------------------------------------------------------------------------------
+       PTY option group
+
+       These options are intended for use with the pty address type.
+
+       link=<filename>
+              Generates a symbolic link that points to the actual pseudo  ter‐
+              minal  (pty). This might help to solve the problem that ptys are
+              generated with more or less unpredictable names, making it  dif‐
+              ficult to directly access the socat generated pty automatically.
+              With this option, the user can specify a "fix" point in the file
+              hierarchy that helps him to access the actual pty.
+
+       wait-slave
+              Blocks  the  open  phase until a process opens the slave side of
+              the pty.  Usually, socat continues after generating the pty with
+              opening  the  next  address  or with entering the transfer loop.
+              With the wait-slave option, socat waits until some process opens
+              the  slave  side of the pty before continuing.  This option only
+              works if the operating system provides the poll()  system  call.
+              And it depends on an undocumented behaviour of pty´s, so it does
+              not work on all operating  systems.  It  has  successfully  been
+              tested on Linux, FreeBSD, NetBSD, and on Tru64 with openpty.
+
+       pty-intervall
+              When the wait-slave option is set, socat periodically checks the
+              HUP condition using poll() to find if the pty´s slave  side  has
+              been  opened.  The default polling intervall is 1s. Use the pty-
+              intervall option [timeval] to change this value.
+-------------------------------------------------------------------------------
+       RETRY option group
+
+       Options  that control retry of some system calls, especially connection
+       attempts. With version 1.4.1, these options are  implemented  only  for
+       tcp4 and tcp6 connect and listen addresses and their derivatives socks,
+       proxy, openssl, and openssl-listen.
+
+       retry=<num>
+              Number of retries before the connection  or  listen  attempt  is
+              aborted.  Default is 0, which means just one attempt.
+
+       intervall=<timespec>
+              Time between consecutive attempts (seconds, [timespec]). Default
+              is 1 second.
+
+       forever
+              Performs an unlimited number of retry attempts.
+
+-----------------------------------------------------------------------------
+
+*****************************************************************************
+
+-----------------------------------------------------------------------------

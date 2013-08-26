@@ -1,0 +1,5 @@
+#!/bin/sh
+
+orig=$1; shift;
+dest=$1; shift;
+squel.pl  -v -squel "$orig" -rm "$@" `find "$orig" -type f` "$dest";

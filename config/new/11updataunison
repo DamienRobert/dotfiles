@@ -1,0 +1,31 @@
+#!/bin/zsh
+#1) transferer unison sur imb:opt/unison
+#2) Lancer 03updateunison
+
+VERSION=unison-2.40.102
+
+MYFILES=${MYFILES-$HOME/config}
+#. "$MYFILES/00COMPUTERS"
+COMPUTERS=(imb phare 4a bbq mygale)
+COMPUTERS=(phare 4a)
+COMPUTERS=(FleurBleue)
+
+#64 bits
+for comp in $COMPUTERS; do
+  #if [[ -n ${(M)LIST_PERSO:#${comp}} ]] ; then
+  #else
+    #info_computer $comp
+    eval $($MYFILES/00COMPUTERS.rb --export $comp)
+    case $comp in
+      bbq )
+        UNISON=$VERSION-64 ;;
+      imb|FleurBleue)
+        UNISON=$VERSION-gtk2-32 ;;
+      mygale|4a|phare)
+        UNISON=$VERSION-32 ;;
+    esac
+    echo "-- $comp: $UNISON --"
+    ssh2 imbunison rsync -vazP "opt/unison/$UNISON" "$SSHUNISON:bin/local/"
+    ssh2 $SSHUNISON ln -snf "$UNISON" "bin/local/unison"
+  #fi
+done

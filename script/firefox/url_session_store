@@ -1,0 +1,4 @@
+#!/bin/sh
+# print all url in sessionstore.js
+
+perl -lne 'print for /url":"\K[^"]+/g' $(ls -t ~/.mozilla/firefox/*/sessionstore.js | sed q)

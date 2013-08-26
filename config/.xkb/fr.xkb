@@ -1,0 +1,9 @@
+xkb_keymap {
+	xkb_keycodes  { include "xfree86+aliases(azerty)"	};
+	xkb_types     { include "complete"	};
+	// xkb_types     { include "complete+numpad(pc)"	};
+	xkb_compat    { include "complete"	};
+	xkb_symbols   { include "pc+fr(oss)+keypad(oss)+inet(logicink)+altwin(alt_super_win)+level3(ralt_switch)+compose(menu)"	};
+	//xkb_symbols   { include "pc+fr(oss)+keypad(oss)+inet(logicink)+altwin(alt_super_win)+level3(ralt_switch_multikey)+compose(menu)"	};
+	xkb_geometry  { include "pc(pc104)"	};
+};

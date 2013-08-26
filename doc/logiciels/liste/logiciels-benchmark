@@ -1,0 +1,14 @@
+calcul entier:
+openssl speed
+
+calcul flottant:
+povray
+
+proc:
+bogomips
+
+mem: free
+disque: df
+
+carte graphique:
+glxgears

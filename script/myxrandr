@@ -1,0 +1,27 @@
+#!/bin/sh
+
+help() {
+  echo "myxrandr on|off|reset"
+  exit 1
+}
+
+[ $# -eq 0 ] && help
+
+MAIN=LVDS
+SECOND=VGA-0
+case $MYHOSTNAME in
+  Numenor)  SECOND="HDMI-0";;
+  Feanor)  MAIN="DP2" SECOND="HDMI1";;
+esac
+
+case $1 in
+  -h|-help|--help ) help ;;
+  true|on ) 
+    xrandr --output $SECOND --auto --below $MAIN ;;
+  false|off)
+    xrandr --output $SECOND --off ;;
+  reset )
+   xrandr --output $MAIN --off
+   xrandr --output $MAIN --auto
+  ;;
+esac

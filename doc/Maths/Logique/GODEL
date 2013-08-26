@@ -1,0 +1,981 @@
+-----------------------------------------------------------------------
+From madore@clipper.ens.fr Fri Jan 21 15:55:54 2005
+Article: 625 of ens.forum.sciences.maths.avancees
+Subject: indecidabilite (was: Re: notations ordinales...)
+
+Marc Mezzarobba  in litteris <csqt2s$jcu$1@clipper.ens.fr> scripsit:
+> (En passant, si je comprends bien, on peut se passer de parler de
+> calculabilité et d'indécidabilité algorithmique pour démontrer le premier
+> théorème de Gödel, mais c'est plus difficile pour le théorème de Tarski ou
+> le second théorème de Gödel. Est-ce que ce que je raconte là est correct ?)
+
+Qu'est-ce que tu appelles le « premier » et le « second » théorèmes de
+Gödel ?  Le théorème de complétude et celui d'incomplétude, ou bien le
+théorème d'incomplétude au sens « il existe une affirmation non
+démontrable dans le système T » et celui au sens « et d'ailleurs
+l'affirmation Consis(T) est un exemple » ?  Ou encore est-ce que le
+second est l'affirmation « et ça marche dans tout système T qui code
+l'arithmétique et qui soit récursivement énumérable » ?  Dans ce
+dernier cas, bien sûr, c'est assez clair qu'on ne peut pas se passer
+de la notion de récursive énumérabilité.
+
+Mais en tout cas, historiquement, tous les théorèmes de Gödel sont
+antérieur aux travaux de Turing, donc à tout ce qui concerne la
+calculabilité.
+
+Personnellement, j'aime bien présenter le théorème de Gödel de la
+façon suivante :
+
+On prend un système formel qui comporte un modalisateur que je vais
+noter [] (petit carré) et qu'il faut imaginer comme signifiant « la
+formule qui suit est un théorème ».  On peut se contenter de
+n'autoriser le modalisateur que sur les énoncés (formules sans
+variables libres).  On autorise de plus, dans ce qui suit le
+modalisateur, un symbole spécial, *, utilisé comme une variable
+propositionnelle, qui signifie « cette formule elle-même ».  Les
+règles utilisées sur le modalisateur sont :
+
+(D1) : Si P est un théorème, alors []P en est un.
+(D2) : []P=>[][]P est un théorème pour toute formule P.
+(D3) : Si [](P=>Q)=>[]P=>[]Q (à parenthéser comme
+       « ([](P=>Q))=>(([]P)=>[]Q) ») est un théorème pour toutes
+       formules P et Q.
+
+Et concernant l'étoile, on demande que si P est une formule utilisant
+(éventuellement) ce symbole (derrière le modalisateur [], donc) et P'
+la formule obtenue en remplaçant * dans P par P elle-même, alors
+P<=>P' soit un théorème.
+
+Soit maintenant P un énoncé quelconque, et G l'énoncé « []*=>P » (il
+faut parenthéser ça comme « ([]*)=>P »).  Alors G=>[]G=>P est un
+théorème (règle de l'étoile), donc [](G=>[]G=>P) en est un par (D1),
+donc []G=>[]([]G=>P) en est un par (D3), donc []G=>[][]G=>[]P encore
+par D3, donc []G=>[]P par (D2).  En particulier, si []P=>P est un
+théorème, alors []G=>P en est un, c'est-à-dire que G en est un (règle
+de l'étoile), donc []G en est un, donc P en est un.  Bilan : si []P=>P
+est un théorème, P en est un ; c'est le théorème de Löb.  Si on prend
+pour P l'affirmation « Faux », ça dit que si ¬[]Faux est un théorème,
+alors Faux en est un : par contraposée, si Faux n'est pas un théorème
+(si le système n'est pas contradictoire), ¬[]Faux n'en est pas un (il
+ne prouve pas sa consistance).
+
+Tout ceci n'a rigoureusement rien à voir avec la calculabilité ou la
+complexité.  Bon, maintenant, on peut me dire, dans le système que je
+veux étudier (un système arithmétique), il n'y a pas ce modalisateur
+[] magique, ni cette étoile magique.  Mais ce n'est pas grave : c'est
+justement ce qu'on obtient en introduisant le codage de Gödel, en
+remplaçant []P par « P est un théorème » (convenablement arithmétisé)
+et en utilisant l'astuce de Quine (expliquée en détails sur <URL:
+http://www.eleves.ens.fr:8080/home/madore/computers/quine.html >) pour
+l'étoile.  La règle D3 ne pose pas de problème particulier, elle
+traduit juste l'expression du modus ponens ; mais pour avoir D1 et D2,
+on va, d'une façon ou d'une autre, utiliser le fait que les axiomes
+sont donnés par une formule Sigma_1 et prouver (soit directement, pour
+D1, soit dans le système lui-même pour D2) le théorème de
+Sigma_1-complétude.  Ceci étant, si tu t'amuses à prendre n'importe
+quel jeu d'axiomes, pas forcément récursif ou quoi que ce soit (mais
+quand même arithmétiquement définissable, sinon on va perdre la
+possibilité d'arithmétiser), et que tu assures les conditions D1, D2
+et D3, le théorème de Gödel vaut encore.
+-------------------------------------------------------------------------
+
+From madore@clipper.ens.fr Sat Jan 22 15:43:53 2005
+Article: 642 of ens.forum.sciences.maths.avancees
+Subject: "cet enonce est un theoreme" (was: Re: indecidabilite)
+
+Joel Riou in litteris <cstnsu$hjk$1@clipper.ens.fr> scripsit:
+> D'accord, donc si on note H l'énoncé « []* », alors par la règle de
+> l'étoile H<=>[]H est un théorème, donc en particulier []H=>H est un
+> théorème, et d'après le théorème de Löb, H est un théorème, c'est-à-dire :
+> 
+> Théorème : cet énoncé est un théorème.
+
+Voilà.  Une autre façon de faire, qui est peut-être plus parlante même
+si elle a l'inconvénient de ne pas fonctionner correctement en logique
+intuitionniste, c'est de dire : ¬H affirme qu'on ne peut pas démontrer
+H, autrement dit, ¬H affirme exactement la consistance de la théorie
+(Peano+)¬H.  Mais une théorie qui affirme sa propre consistance est
+forcément inconsistante d'après le théorème de Gödel[#].  Et si ¬H est
+inconsistante, c'est que H est démontrable (donc vraie).
+
+[#] On s'imagine souvent, probablement à cause de la confusion avec le
+théorème de Tarski sur l'indéfinissabilité de la vérité, qu'il est
+impossible de faire une théorie (Sigma_1...) qui énonce sa propre
+consistance.  Ce n'est pas du tout ce que dit le théorème de Gödel.
+Une telle théorie est facile à constuire, c'est (Peano+)¬H, justement.
+Ce que dit le théorème de Gödel, c'est qu'elle est inconsistante.
+
+À part ça, pour l'étoile, c'était une mauvaise idée de ma part.  Ou
+alors il faut que l'étoile soit accompagnée d'une sorte de renvoi qui
+précise quelle sous-formule elle reprend, parce que comme j'ai fait
+les choses, ¬[]* (l'énoncé de Gödel) n'est pas la négation de []*
+(« cet énoncé est un théorème »), ce qui est quand même lourd.
+
+> [Je me souviens d'avoir vu cet énoncé dans _Gödel Escher Bach_ (et ton
+> Weblog) sans avoir réussi à le démontrer...]
+
+C'est mal, de spoiler. :-) Tu enlèves aux gens tout le plaisir de
+trouver cette démonstration par eux-mêmes !
+
+-- 
+David, qui va devoir écrire un texte rassemblant toutes ces
+considérations sur le théorème de Gödel, sinon je vais rapidement
+oublier.
+
+--------------------------------------------------------------------------
+
+
+From madore@clipper.ens.fr Sat Jul 16 04:26:58 2005
+Article: 12005 of ens.forum.sciences.maths
+
+Sa Majesté le Roy de France in litteris <db9idd$s2$2@clipper.ens.fr> 
+scripsit:
+> Je cherche une preuve *detaille* du theoreme de Godel,
+
+Quel théorème de Gödel ?  C'est très subtil, en fait : il y en a un
+certain nombre qui se ressemblent dangereusement et qui sont en fait
+différents.  En gros, tu as :
+
+* Soit T une théorie _vraie_ [c'est-à-dire, dont tous les axiomes, et
+donc tous les théorèmes, sont vrais], contenant l'arithmétique
+minimale, et récursivement énumérable (ou axiomatisable de façon
+récursivement énumérable, cela revient au même).  Alors si G est
+l'affirmation arithmétique « G n'est pas dénombrable dans T » (qu'on
+peut écrire dans T grâce au fait qu'elle est récursivement énumérable
+- ce qui permet d'arithmétiser les démonstrations - et qu'elle
+contient l'arithmétique), primo, G n'est pas démontrable dans T (elle
+est vraie, quoi), secundo, il est un théorème de T (et donc, vrai,
+mais ça c'est contenu dans le primo) que « si G est démontrable dans T
+alors Faux est démontrable dans T » (i.e., en logique classique, que G
+est indémontrable dans T sauf si T est inconsistante).  Ça (au moins
+le « primo ») c'est généralement ce qu'on appelle le « premier »
+théorème de Gödel (en fait, historiquement, le théorème concernait un
+système T bien précis, celui des *Principia mathematica* de Russell et
+Whitehead).  La démonstration est assez triviale (tout le problème est
+d'expliquer pourquoi on peut construire G) : primo, si G est
+démontrable dans T alors G est vraie donc G n'est pas démontrable dans
+G, contradiction, secundo, on voit dans T que si G que si G est un
+théorème de T alors ¬G en est un (car G théorème de T implique « G
+théorème de T » théorème de T, et c'est justement ¬G) donc Faux en est
+un.
+
+* Soit T une théorie vérifiant les mêmes hypothèses que ci-dessus,
+alors Consis(T) (autrement dit, « Faux n'est pas un théorème de T » -
+qui est une affirmation arithmétique, vraie puisque T l'est) n'est pas
+un théorème de T.  Ça c'est généralement appelé le « second théorème
+de Gödel » (parfois avec tout le secundo du point précédent).  La
+démonstration n'est pas moins triviale : j'ai expliqué ci-dessus que
+c'est un théorème de T que si G est un théorème de T alors Faux en est
+un.  En retraduisant ça (« G est un théorème de T » c'est ¬G, et
+« Faux en est un » c'est ¬Consis(T)) et en passant à la contraposée,
+on voit que Consis(T) implique G (...est un théorème de T).  Comme G
+n'est pas un théorème de T, Consis(T) non plus.
+
+* Quelques faits anecdotiques : le théorème de Robinson dit que « ceci
+est un théorème » (est un théorème...).  Le théorème de Löb généralise
+Gödel (tel qu'énoncé ci-dessus), et dit, en gros, que si P (une
+affirmation quelconque de T) est prouvable dans T en utilisant
+l'hypothèse qu'il existe une démonstration de P (dans T) alors P est
+prouvable dans T (sans cette hypothèse).
+
+* Le théorème de Gödel-Rosser.  Très subtilement différent de Gödel.
+Soit T une théorie _consistante_, contenant l'arithmétique minimale,
+et récursivement énumérable (ou axiomatisable de façon récursivement
+énumérable, cela revient au même) ; mais je ne suppose pas que T est
+vraie.  Alors il existe une affirmation arithmétique indécidable G
+pour T (qu'on peut écrire explicitement, mais qui est plus subtile que
+celle du premier théorème de Gödel ; dans tous les cas, on peut
+prendre pour G une affirmation Pi_1).  Corollaire trivial : l'ensemble
+des théorèmes de T n'est pas récursif.  Accessoirement, G est vrai
+(mais on s'en fout un peu).  Il faut remarquer que T, bien que
+consistante, peut très bien prouver ¬Consis(T), ce qui fait qu'il ne
+faut pas chercher à généraliser le 2e théorème de Gödel.
+
+La confusion vient souvent du mélange entre ces différents énoncés
+(notamment entre le premier théorème de Gödel et celui de
+Gödel-Rosser).
+
+Tu peux jeter un oeil à <URL: http://www.dma.ens.fr/~madore/goedel.pdf
+ >, malheureusement inachevé, mais dont la première partie présente,
+je crois, quelque intérêt.  C'est la version purement formelle du
+théorème de Gödel (débarrasser de toute l'arithmétisation, que je
+comptais présenter ensuite, mais je n'ai pas eu le temps ou la
+patience).  Par ailleurs, il y a mon article
+<cvdmli$hav$1@clipper.ens.fr> (maths:10959) qui prétend démontrer
+Gödel-Rosser.
+
+> Bon deja outre que c'est vague et faux, quel sens doit-on donner a "is
+> true" ? Dans quel modele ?
+
+On parle d'affirmations arithmétiques, donc il y a un modèle naturel,
+ce sont les entiers naturels.  Quand on dit d'une affirmation
+arithmétique qu'elle est « vraie » sans plus de précision, c'est dans
+les entiers naturels.  De même, ci-dessus, quand je parle d'une
+théorie vraie, c'est une théorie dons les axiomes (donc tous les
+théorèmes) sont vrais dans les entiers naturels, i.e., elle admet les
+entiers naturels comme modèle.
+
+(Bon, par ailleurs, il y a des gens, qui, ayant fait trop de logique
+et surtout n'ayant pas bien compris ce qu'ils faisaient, prétendent ne
+plus savoir ce que sont les entiers naturels.  Si c'est ton cas, il
+faut surtout faire une cure de désintoxication ***avant*** d'essayer
+de comprendre quoi que ce soit au théorème de Gödel.)
+
+Remarquons que quand on dit « <gnagna> est un théorème de la théorie
+<bidule> » (<bidule> étant supposée récursivement axiomatisable, quand
+même), *cela* est un énoncé arithmétique, et dire qu'il est « vrai »
+c'est précisément dire qu'il est vrai dans les entiers naturels (il
+existe un entier naturel - un vrai - qui code une démonstration de
+<gnagna> dans la théorie <bidule>).
+
+> Et si l'enonce n'est ni prouvable, ni refutable, par le theoreme de
+> completude c'est bien qu'il existe des modeles ou il est vrai, et des
+> modeles ou il est faux... je suis fatigue, la, faut que j'aille dormir
+> c'est le week-end, en plus j'ai fait une heure de course a pied chuis
+> creve, y'a quelqu'un pour me donner ce que j'ai loupe dans leur enonce ?
+
+Il y a des modèles où l'affirmation de Gödel est fausse, mais ces
+modèles ne sont pas standards.  Dans le modèle standard, elle est
+vraie : l'affirmation dit qu'elle n'est pas un théorème, et, de fait,
+*elle n'est pas* un théorème.
+
+---------------------------------------------------------------
+
+From madore@clipper.ens.fr Sat Jul 16 04:36:19 2005
+Article: 12007 of ens.forum.sciences.maths
+Subject: Re: Godel
+
+Gro-Tsen in litteris <db9r9i$rcm$2@clipper.ens.fr> scripsit:
+> * Soit T une théorie vérifiant les mêmes hypothèses que ci-dessus,
+> alors Consis(T) (autrement dit, « Faux n'est pas un théorème de T » -
+> qui est une affirmation arithmétique, vraie puisque T l'est) n'est pas
+> un théorème de T.
+
+Je peux rajouter que *tout* énoncé Pi_1 vrai qui n'est pas un théorème
+de T est impliquée dans T par Consis(T) pour une certaine énumération
+de T (le piège, justement, est qu'il peut y avoir plein de façons
+d'énumérer T et que ça donne plein d'énoncés Consis(T) qui ne sont pas
+équivalents...).  J'explique ça dans le message
+<csu3ru$oms$1@clipper.ens.fr> (maths.avancees:643), et c'est un
+théorème de Turing (monstrueusement étendue, ensuite, par Feferman).
+
+Quant à des références, il y a le petit bouquin *Inexhaustibility* de
+Torkel Franzén, qui est vachement bien et clair (mais il ne prouve pas
+Gödel-Rosser, par exemple, en revanche il prouve le résultat
+ci-dessus), et le gros *Metamathematics of First-Order Arithmetic* de
+Hájek et Pudlák, qui est assez indigeste mais quand même vachement
+bien.
+
+------------------------------------------------------------------------
+
+From madore@clipper.ens.fr Mon Feb 21 23:17:22 2005
+Article: 10959 of ens.forum.sciences.maths
+Subject: theoreme d'incompletude de Goedel-Rosser
+
+Voici un extrait d'un mail que je viens d'envoyer : je pense que ça
+vaut la peine de poster ça ici, parce que je ne suis sans doute pas le
+seul pour qui ce n'était pas parfaitement clair (dans la formulation
+usuelle du théorème de Gödel, on part d'une théorie T consistante
+récursivement axiomatisable dans le langage de l'arithmétique et on
+construit l'affirmation G qui dit « G n'est pas démontrable [dans T] »
+- alors G n'est pas un théorème de T, mais pour montrer que ¬G n'est
+pas non plus un théorème de T il faut des hypothèses supplémentaires
+sur T, par exemple que T est vraie (a les entiers naturels standards
+pour modèle, bref, est un fragment de l'arithmétique) ou au moins que
+T est « omega-consistante », que T+Consis(T) est consistante, bref,
+quelque chose de plus ; parce qu'il existe des théories T consistantes
+mais qui prouvent leur propre inconsistance, par exemple
+Peano+¬Consis(Peano), et alors elles prouvent évidemment ¬G).
+
+Bref, voici ce que j'écrivais :
+
+J'appelle Q une arithmétique minimale (pour fixer les idées, si le
+langage est (0,S,+,·,<), la clôture universelle des affirmations
+suivantes doit pouvoir servir pour axiomes : (Sm=0 => Faux), (Sm=Sn =>
+m=n), (m+0 = m), (m+Sn = S(m+n)), (m·0 = 0), (m·Sn = (m·n)+m), (m<0 =>
+Faux), (m<Sn <=> (m<n \/ m=n)), (0=n \/ 0<n), ((Sm<n \/ Sm=n) <=>
+m=n)).  Tout ce que je demande, en fait, c'est que tout modèle de Q
+ait pour segment initial une copie isomorphe des entiers naturels N
+avec leur structure usuelle (le sens de « segment initial » I étant à
+prendre pour la relation '<' qui n'est pas forcément une relation
+d'ordre : si m<n et n est dans I alors m est dans I, et si m est dans
+I et n n'y est pas alors m<n).
+
+Théorème : Soit T une théorie consistante contenant Q et récursivement
+énumérable (ce qui revient à dire qu'elle a une axiomatisation
+récursivement énumérable).  Alors il existe une affirmation G, qu'on
+peut explicitement écrire en fonction d'une récursive-énumération des
+théorèmes de T, telle que ni G ni ¬G ne soit un théorème de T, et on
+peut prendre pour G une affirmation Pi_1.  L'ensemble des théorèmes
+(même Sigma_1) de T n'est pas récursif.
+
+Remarques : On n'a pas besoin que T soit aussi forte que Peano.  On
+n'a pas besoin que les axiomes de T soient vrais dans N, ni même que T
+soit omega-consistante ou que T+Consis(T) soit consistante : on a
+seulement besoin que T elle-même le soit.  Le résultat s'applique
+aussi bien à Peano+Consis(Peano) qu'à Peano+¬Consis(Peano).
+Évidemment, le résultat s'applique aussi à n'importe quelle théorie
+consistante capable d'interpréter Q (par exemple, ZF, et ce, sans
+supposer plus que Consis(ZF)).
+
+Historique : J. B. Rosser, « Extensions of some theorems of Gödel and
+Church », *Journ. Symb. Log.*, 1 (1936), 87-91.  (Je n'ai pas vérifié,
+mais ça a l'air d'être ça.)
+
+Démonstration : ce n'est pas difficile quand on connaît l'astuce.  On
+prend une machine de Turing qui énumère les théorèmes de T et on
+considère l'énoncé U(n,"P") qui dit « n est une trace d'exécution de
+la machine de Turing en question, qui s'arrête en ayant énuméré P »
+(ou bien « n est une démonstration de P » si on est parti d'une
+axiomatisation récursive).  Par un argument diagonal facile on écrit
+un énoncé G qui dit « pour tout m, si U(m,"G"), alors il existe n<m
+tel que U(n,"¬G") » (c'est ça l'astuce de Rosser : ne pas essayer de
+dire « je ne suis pas un théorème » mais « je ne suis pas un théorème
+avant ma négation »).
+
+Si G est un théorème de T, alors il existe un vrai entier naturel m
+tel que U(m,"G") et U(n,"¬G") pour aucun n<m, et comme ceci est un
+énoncé Delta_0 (= à quantificateurs bornés), c'est absolu (dans un
+modèle quelconque de Q, comme les vrais entiers naturels forment un
+segment initial, c'est vrai) donc Q le prouve, c'est-à-dire que Q
+prouve ¬G, contradiction (T était supposée consistante).
+
+Si ¬G est un théorème de T, alors il existe un vrai entier naturel n0
+tel que U(n0,"¬G") (et U(m,"G") pour aucun m<=n) ; or Q prouve que
+tout m est soit un vrai entier naturel <=n0 (écrit explicitement) soit
+n0<m, pour ces derniers (Q prouve qu')il existe n<m (à savoir n=n0)
+tel que U(n,"¬G") et pour les premiers Q prouve ¬(U(m,"G")) (ça c'est
+un peu plus subtil, et c'est pour ça que j'ai demandé que m soit une
+*trace d'exécution* de la machine de Turing : dans ce cas, U s'écrit
+uniquement avec quantificateurs bornés parce qu'il y a juste à
+vérifier des informations contenues dans n, ce qui donne le résultat),
+bref, Q prouve G, une nouvelle contradiction.
+
+Pour expliquer que l'ensemble des théorèmes (ne serait-ce que Sigma_1)
+de T n'est pas récursif, on fait essentiellement la même chose, avec
+une machine de Turing qui discerne si un énoncé (Sigma_1) est un
+théorème et U(n,"P") qui dit « n est une trace d'exécution qui
+discerne P comme étant un théorème » et U(n,"¬P") qui dit « n est une
+trace d'exécution qui discerne ¬P comme étant un théorème », enfin,
+bref, je m'exprime mal mais ça se comprend.
+
+Voilà, j'espère ne pas m'être planté (je me suis fait avoir plusieurs
+fois par les raisonnements à la fin ; évidemment, si on est prêt à
+supposer qu'on prend pour arithmétique minimale quelque chose d'un peu
+plus costaud que le strict minimum, ça marche déjà mieux).
+
+---------------------------------------------------------------------------
+
+From madore@clipper.ens.fr Thu Jan 20 18:02:29 2005
+From: madore@clipper.ens.fr (Gro-Tsen)
+Subject: notations ordinales, ordinal de Church-Kleene, et branches de O
+
+[Je poste ceci suite à une discussion ce midi avec Xavier Caruso,
+Benny, Gilles Tauzin et Rémy.]
+
+Je « rappelle » la définition du système de notations ordinales de
+Kleene.
+
+On définit un ensemble O d'entiers naturels (je noterai N l'ensemble
+de tous les naturels), une relation << sur les éléments de O, et une
+application |·| de O vers les ordinaux dénombrables, de la façon
+suivante :
+
+Pour simplifier les notations, je suppose que j'ai posé S(n)=2^n et
+L(n)=3·5^n.  (Les seules choses qui importent est que S et L soient
+des injections récursives des naturels vers les naturels, d'images
+disjointes et disjointes de {0}.)  De plus, je me fixe une fonction
+récursive universelle U : U est récursive (de N²->N) et pour toute
+fonction récursive f (pas forcément totale, c'est-à-dire, pas
+forcément définie sur tout indice) des naturels vers les naturels il
+existe un indice n tel que f=U(n,·).
+
+On met 0 dans O et |0|=0, et si n est dans O, S(n) est dans O et
+n<<S(n) et |S(n)|=|n|+1, et si e est tel que U(e,·) est totale et
+vérifie U(e,n) dans O pour tout n et U(e,n)<<U(e,n+1) pour tout n
+alors L(e) est dans O et U(e,n)<<L(e) pour tout n et |L(e)| est la
+borne supérieure des |U(e,n)|, et enfin si a<<b et b<<c dans O alors
+a<<c.
+
+(Cette définition doit se lire comme : on prend le plus petit ensemble
+O et la plus petite relation << qui vérifient les propriétés en
+question, et on définit |·| ensuite en remarquant que tout a bien un
+sens.)
+
+Exemples : |0|=0 (c'est dans la définition), |S(0)|=1, |S(S(0))|=2 et
+ainsi de suite (pour chaque naturel n, il existe une unique notation a
+dans O telle que |a|=n).  |L(e)|=\omega, où e est (l'indice pour la
+fonction universelle U choisie de) n'importe quelle fonction récursive
+totale qui prend des valeurs dans {0,S(0),S(S(0)),...} qui croissent
+strictement pour l'ordre << (i.e. 0<<S(0)<<S(S(0))<<...).  Évidemment,
+ça donne plein de a pour lesquels |a|=\omega, et pour chacun, on a
+|S(a)|=\omega+1, mais les différents a ne sont pas <<-comparables.
+
+L'idée à garder en tête, c'est que O est un ensemble de naturels
+absolument affreux et incalculable (techniquement, il paraît qu'il
+existe une fonction primitive récursive mettant les naturels en
+bijection avec les formules de l'arithmétique du premier ordre de
+telle façon que O soit mis en bijection avec les formules vraies) - en
+particulier, O n'est pas définissable dans le langage de
+l'arithmétique du premier ordre (il l'est, en revanche, dans
+l'arithmétique du second ordre puisque je l'ai défini comme « le plus
+petit ensemble [c'est-à-dire l'intersection de tous les ensembles] tel
+que gnagnagna »).  La relation <<, elle, est plutôt gentille : il
+existe une façon de prolonger << à une relation récursivement
+énumérable (mais pas forcément un ordre) sur les entiers, c'est assez
+évident à faire, et on s'arrange même pour que si b<<a pour cette
+relation étendue et que a est dans O alors b y est aussi.
+
+Il faut aussi voir que O est un arbre pour <<, c'est-à-dire que pour
+tout a dans O, l'ensemble des b de O tels que b<<a est bien ordonné ;
+et cet ensemble a d'ailleurs pour type d'ordre |a|.
+
+On appelle « ordinal dénotable » l'image par |·| d'un élément de O.
+On peut montrer qu'un ordinal est dénotable si et seulement si il est
+récursif / calculable, c'est-à-dire qu'il existe un bon ordre récursif
+sur une partie récursive de N qui a pour type l'ordinal en question
+(un sens est clair : si \alpha=|a|, alors \alpha est le type d'ordre
+de l'ensemble {b tq. b<<a} et on a la relation recherchée sur cet
+ensemble ; l'autre sens n'est pas bien dur).
+
+Le plus petit ordinal non dénotable, c'est-à-dire la borne supérieure
+des ordinaux dénotables (les |a| pour a dans O, donc), s'appelle
+l'ordinal de Church-Kleene (souvent noté \omega_1^{CK} ou quelque
+chose d'approchant ; bien remarquer que c'est un ordinal dénombrable,
+bien sûr, nonobstant le \omega_1 dans la notation).
+
+Voilà pour les rappels sur les faits de base.
+
+Une branche (sous-entendu : maximale) de O, c'est un sous-ensemble
+totalement ordonné (et donc bien ordonné) maximal de O.  La longueur
+de la branche, bien sûr, c'est l'ordinal (le type d'ordre) de
+celle-ci.  Voici deux faits qui me fascinent :
+
+* il existe des branches de O de longueur exactement \omega^\omega
+(mais c'est la plus petite longueur possible), et
+
+* il existe des branches de O de longueur exactement \omega_1^{CK}
+(mais pas de longueur plus grande, évidemment, par définition de
+l'ordinal de Church-Kleene).
+
+Je suis un peu perplexe quant à la difficulté de ces affirmations :
+est-ce que quelqu'un a les idées plus claires que moi et peut les
+expliquer correctement ?  (Est-ce que c'est, par exemple, c'est dans
+le cours de langage formel de première année ?)
+
+(Une chose est totalement claire, c'est que pour tout ordinal
+\alpha<\omega_1^{CK}, c'est-à-dire tout ordinal dénotable, il existe
+une branche de longueur *au moins* \alpha, puisque si |a|=\alpha alors
+{b tq. b<<a} est de longueur \alpha et se complète en une branche.)
+
+Est-ce qu'on peut caractériser exactement l'ensemble des longueurs des
+branches de O ?
+
+-------------------------------------------------------------------------
+
+From madore@clipper.ens.fr Sat Jan 22 18:51:58 2005
+Article: 643 of ens.forum.sciences.maths.avancees
+Subject: Godelisation iteree et inexhaustibilite (was: Re: notations ordinales...)
+
+Bon, je raconte un autre truc dans la même ligne d'idées.  Le but est
+d'expliquer ce qui se passe quand on essaie d'itérer le théorème de
+Gödel « de façon transfinie » : on part d'une théorie arithmétique T
+vraie et récursive (i.e., ses axiomes forment un ensemble récursif),
+disons T=Peano, et on ajoute l'énoncé que cette théorie est
+consistante (qui, d'après Gödel, n'est pas démontrable dans la
+théorie), puis l'énoncé que *cette* théorie est consistante, « et
+ainsi de suite » de façon transfinie.  Comment est-ce que ça
+s'arrête ?  La question est, en fait, hautement subtile, et ce sont
+Turing et Feferman qui l'ont résolue.
+
+Le truc, c'est qu'il y a de la poussière sous le tapis, même si ce
+n'est pas évident : la manière dont on Gödelise dépend de choix qu'on
+fait, qui peuvent être rendus canoniques, disons, pour les ordinaux
+successeurs, mais pas à tous les niveaux, et ces choix correspondent
+essentiellement à des branches de O.  C'est-à-dire qu'en fait on itère
+non pas sur les ordinaux (suffisamment petits, disons plus petits que
+l'ordinal de Church-Kleene) mais, en fait, sur les notations ordinales
+de Kleene.
+
+Je commence par expliquer un exemple qui illustre bien pourquoi les
+choses sont plus subtiles qu'on se l'imagine parfois (et notamment
+pourquoi le théorème d'incomplétude de Gödel, on ne saurait trop le
+souligner, s'applique non pas à une théorie récursivement énumérable
+mais à une théorie *récursivement énumérée*).  J'espère que mes
+explications un peu verbeuses seront claires.
+
+Prenons un énoncé Pi_1 qui est vrai (dans les vrais entiers naturels,
+hein ! quand je ne précise pas, « vrai » veut dire « vrai dans N », et
+ma théorie initiale est supposée être non seulement récursive mais
+aussi vraie dans N), c'est-à-dire de la forme (\forall n)(P(n)) où
+P(n), prédicat Delta_0 (c'est-à-dire essentiellement finitiste : tous
+les quantificateurs sont bornés), est vrai pour tout naturel n.  Bon,
+peut-être que ma théorie T démontre l'énoncé, auquel cas ce que je
+vais dire n'est pas très intéressant.  Mais peut-être qu'elle ne le
+démontre pas.  En fait, je peux toujours supposer (c'est-à-dire, à
+équivalence démontable dans T près pour (\forall n)(P(n))) que P(n)
+est de la forme « la machine de Turing <foo> ne termine pas en n
+étapes », et l'énoncé (\forall n)(P(n)) dit que la machine <foo> ne
+termine pas du tout.  Par ailleurs, j'ai une autre machine de Turing,
+<bar>, qui termine toujours, qui prend un naturel en entrée et renvoie
+le n-ième axiome de la théorie T.  Maintenant je fabrique une
+troisième machine de Turing, <foobar> qui fait la chose suivante :
+quand on lui passe un entier naturel n, elle exécute d'abord <foo> sur
+n étapes : si <foo> n'a pas terminé au bout de n étapes, elle exécute
+<bar> sur l'entier naturel n, et si <foo> a terminé (c'est-à-dire
+qu'on a réfuté P(n)) alors elle renvoie la conjonction de <bar>(n) et
+de l'affirmation, que je noterai Consis(Tfoobar), « la théorie
+composée de tous les axiomes énumérés par <foobar> est consistante »
+(ce n'est pas grave d'utiliser <foobar> dans la définition de <foobar>
+d'après les méthodes de Quine, et on sait qu'on peut coder la
+consistance d'une théorie récursivement énumérée).  Bon, maintenant,
+en vrai, on sait que P(n) est vrai pour tout n, donc <foo> ne termine
+jamais, donc <foobar> renvoie exactement les mêmes axiomes que <bar>.
+Et Consis(Tfoobar) est vrai, du coup : de fait, la théorie composée de
+tous les axiomes énumérés par <foobar>, c'est la théorie T, et elle
+est consistante.  Mais je n'appelle pas ça Consis(T), bêtement, parce
+que, dans la façon dont c'est formulé, c'est différent : il faut bien
+distinguer Consis(T) (ou Consis(Tbar), plutôt), qu'on construirait
+normalement, et Consis(Tfoobar) telle que je l'ai décrite.  Il se
+trouve que les deux affirmations sont vraies, mais Consis(Tfoobar) a
+(potentiellement) plus de conséquences.  En effet, je peux faire dans
+T le raisonnement suivant : si <foo> terminait (soit ¬P(n) pour un
+certain n), alors <foobar> renverrait l'axiome Consis(Tfoobar), donc
+Tfoobar prouverait Consis(Tfoobar), et par le théorème de Gödel ça
+signifie que Tfoobar est inconsistante, i.e., ¬Consis(Tfoobar).  Par
+contraposée, dans T, Consis(Tfoobar) prouve (\forall n)(P(n)).
+Moralité : *n'importe quel* énoncé Pi_1 vrai est (démontrablement dans
+T) conséquence d'un énoncé Consis(Tfoobar) pour une certaine
+énumération <foobar> des axiomes de T !  Ceci est un théorème de
+Turing.  En clair, le théorème de Gödel, non seulement il donne un
+énoncé Pi_1 vrai et non démontrable, mais il donne *tous* les énoncés
+Pi_1 vrais et non démontrables.  Scholie : Consis(T) ça ne veut rien
+dire, il faut dire très très précisément comment on énumère les
+axiomes de T.  Bon, quand même, si T est récursive (je veux dire, si
+ses axiomes sont un ensemble récursif), on peut choisir une fonction
+primitive récursive qui dit si un machin est un axiome de T ou pas, et
+à ce moment-là il y a un Consis(T) canonique (à équivalence
+démontrable dans T près, quoi).  Par défaut, c'est de ça qu'on parle.
+
+Revenons aux notations ordinales.  On construit par induction
+bien-fondée pour toute notation a (élément de O) une théorie T_a de la
+façon suivante.  Si a=S(b) (successeur), on appelle T_a la théorie T_b
+à laquelle on ajoute l'axiome Consis(T_a).  D'après ce que je viens
+d'expliquer, ça n'a pas grand sens, mais, en fait, il faut dire que la
+théorie T_a ce n'est pas juste un ensemble d'axiomes, c'est une
+récursive énumération explicite de ces axiomes, et, du coup,
+Consis(T_a) a bien un sens.  Pour a=0 on prend T_a=T.  Pour a=L(e) où
+e est le code d'une fonction récursivement énumérable U(e,·) qui
+énumère des notations ordinales b_i=U(e,i) vérifiant b_{i+1}>>b_i pour
+tout i, on prend pour T_a la théorie dont les axiomes sont ainsi
+énumérés (disons en énumérant diagonalement) par tous ceux des
+T_{b_i}.  Bref, c'est la réunion, mais ce l'est de façon explicitement
+énumérée.
+
+Bon, en fait, j'ai un peu triché, parce qu'on ne peut pas faire
+bêtement une récursion sur O vu que O n'est pas arithmétiquement
+définissable.  Mais l'idée c'est qu'on peut définir, et énumérer
+récursivement explicitement, une théorie T_a pour tout a entier
+naturel, pas seulement a dans O : si a est de la forme S(b) il n'y a
+pas de problème, si a=L(e) on fait ce que j'ai dit mais comme e n'est
+pas obligé de terminer tout le temps (parce qu'on n'est pas en train
+de supposer a dans O, là, donc peut-être que e fait des conneries) bah
+ce n'est pas grave, le truc pour énumérer les axiomes de T_a il fait
+ce qu'il peut et si jamais e ne termine pas il ne va pas terminer non
+plus.  Peut-être même que e va énumérer S(a)=S(L(e)), auquel cas la
+théorie T_a aura Consis(T_a) dans ses axiomes et elle sera donc
+inconsistante (une théorie récursivement énumérable consistante ne
+pouvant pas prouver sa propre consistance).  Mais bien sûr, si a est
+dans O, T_a est vraie et donc consistante (elle a N pour modèle).
+
+Bon, eh bien il y a un résultat de Feferman qui dit que *tout énoncé
+vrai* de l'arithmétique est un théorème d'une des théories T_a pour un
+a dans O.  (Et, du coup, plus précisément, il existe une branche de O
+de longueur maximale, c'est-à-dire \omega_1^{CK}, telle que la réunion
+des T_a sur cette branche soit une théorie - non récursivement
+énumérable, certes - qui prouve n'importe quel énoncé vrai de
+l'arithmétique.)  Ceci étant, ce n'est pas si intéressant que ça, en
+fait : parce que l'information qui consiste à savoir que l'énoncé est
+vrai, elle est cachée dans le fait que a est dans O : de fait, savoir
+décider si un naturel est dans O ou pas, c'est quelque chose
+d'exactement aussi difficile que de savoir décider si un énoncé
+arithmétique est vrai ou pas (l'ensemble des énoncés vrais de
+l'arithmétique du premier ordre, ou l'ensemble O, sont tous les deux
+« Pi^1_1-complets », ce qui veut dire à peu près ce que j'ai dit) - et
+c'est essentiellement ce que j'ai prouvé, là.
+
+Ensuite, on peut vouloir faire quelque chose d'un peu plus
+constructif, à savoir considérer des « progressions autonomes »,
+c'est-à-dire très approximativement qu'on demande, pour passer de T_b
+à T_a avec b<<a, que T_b « prouve que a est dans O » (ce qui ne veut
+rien dire, parce que O n'est pas arithmétiquement définissable, mais
+on peut dire quelque chose comme le fait que T_b prouve que l'ordre <<
+sous a est récursivement bien fondé).  Là les choses sont
+épistémologiquement beaucoup mieux fondées, mais je n'ai pas encore
+compris exactement ce à quoi on arrive au bout du compte.
+
+----------------------------------------------------------------------
+
+From madore@clipper.ens.fr Mon Jan 24 22:40:57 2005
+From: madore@clipper.ens.fr (Gro-Tsen)
+Subject: Re: Godelisation iteree et inexhaustibilite (was: Re: notations ordinales...)
+
+129.199.72.99 in litteris <ct39if$nm$1@clipper.ens.fr> scripsit:
+> Attends, si je comprends bien, tu dis que
+> - si l'on considère toutes les machines de Turing <foo> qui énumèrent
+>   les axiomes de T, les Consis(<foo>) ne sont pas tous démontrablement 
+>   (dans T) équivalents ; et tu donnes d'ailleurs un exemple
+> - mais, tu dis que ce n'est plus le cas si on considère les machines de
+>   Turing qui se contentent de décider si un axiome donné est dans T.
+> Et que donc, le deuxième point fournit pour une théorie T récursivement
+> énumérable, un Consis(T) canonique. C'est bien ça ?
+
+C'est effectivement ce que je pensais en écrivant mon message, mais en
+fait je me suis planté.  Pour s'en convaincre, on construit une
+machine qui doit déterminer si un axiome est dans T ou pas : elle fait
+la même chose que la machine « raisonnable » sauf sur une certaine
+suite infinie (récursive et sympa comme tout) d'affirmations
+trivialement fausses (du genre Faux&Faux&...&Faux), pour la m-ième
+desquelles elle va vérifier si P(n) est vrai pour tout n<=m et ensuite
+renvoyer « oui, ça fait partie des axiomes » si cette vérification
+échoue, « non, ça ne fait pas partie des axiomes » si effectivement
+ces P(n) sont vrais.  Du coup, affirmer la consistance de la théorie
+ainsi définie permet de démontrer P(n) pour tout n, alors que la
+fonction indicatrice des axiomes de la théorie est récursive et même
+primitive récursive.
+
+> Alors, moi, je me demande ce qui se passe si on itère ordinalement l'ajout
+> des Consis(.) avec ces Consis canoniques ? C'est possible, non ? Et alors,
+> décrit-on une branche de O de longuer omega_1^{CK} ?
+
+Eu égard à mon erreur que je viens d'expliquer, ce n'est pas la bonne
+question à poser.  La bonne question à poser, c'est ce qui se passe
+quand on considère des extensions autonomes.  Et apparemment, dans un
+certain sens que je ne comprends pas bien, l'ordinal jusqu'auquel on
+peut monter est l'ordinal « de Feferman-Schütte » \Gamma_0, (défini
+comme ceci : on définit h(\alpha,\beta) en appelant h(0,\beta) =
+\omega^\beta, et, si \alpha>0, h(\alpha,\beta) = le \beta-ième point
+fixe commun à tous les h(\gamma,·) pour \gamma<\alpha ; alors \Gamma_0
+est le plus petit point fixe de h(·,0) ; voir le message
+<cnalom$m0r$1@clipper.ens.fr> aka maths:10130 pour plus de
+précisions).
+
+> Si tu continues à t'intéresser à ça, tu peux poster le résultat de tes 
+> lectures dans forum ? Moi, ça m'intéresse en tout cas...
+
+Ouaip.  Si des gens veulent lire les articles dont il est question,
+outre le livre de Torkel Franzén intitulé *Inexhaustibility*, il y a
+deux articles notoires de S. Feferman :
+
+* Solomon Feferman, « Transfinite recursive progressions of axiomatic
+theories », *J. Symbolic Logic* 27 (1962) 259-316. [MR0172792 (30
+#3011)].
+
+* Solomon Feferman, « Systems of predicative Analysis », *J. Symbolic
+Logic* 29 (1964) 1-30. [MR0193006 (33 #1228)].
+
+Voir aussi <URL:
+http://math.stanford.edu/~feferman/papers/predicativity.pdf >.
+
+-------------------------------------------------------------------------
+
+From madore@clipper.ens.fr Mon Nov 15 17:33:26 2004
+Subject: l'ordinal de Howard
+
+Voici la définition d'un ordinal dénombrable plutôt rigolo, appelé
+l'« ordinal de (Bachmann-)Howard » (pour ceux qui connaissent,
+l'ordinal de Bachmann-Howard est strictement plus grand que l'ordinal
+de Feferman-Schütte, mais strictement plus petit que l'ordinal de
+Church-Kleene).  J'essaie de synthétiser les définitions que j'en ai
+lu çà ou là et de pondre quelque chose de vaguement compréhensible
+(quoique assez long).  (Si des gens peuvent me confirmer que ce que je
+dis a l'air de bien définir quelque chose de sensé...)
+
+J'appellerai comme d'habitude omega le plus petit ordinal infini, et
+j'appellerai par ailleurs Omega (plus léger que omega_1) le plus petit
+ordinal indénombrable.  On rappelle que si kappa est un cardinal
+régulier indénombrable (par exemple Omega, ou omega_2), une « fonction
+normale » sur kappa désigne une fonction kappa->kappa strictement
+croissante et continue.  On peut identifier une telle fonction avec
+son image, qu'elle énumère, qui est dite « partie normale » de kappa :
+c'est donc une partie fermée et non bornée (un « club ») de kappa.  Si
+f est une fonction normale, on peut considérer l'ensemble de ses
+points fixes (les alpha<kappa tels que f(alpha)=alpha), il y en a
+toujours (par exemple, la limite de 0, f(0), f(f(0)), etc., est
+précisément le plus petit point fixe de f) et ils forment un ensemble
+normal / clos cofinal, donc indicé par une fonction normale, qu'on
+peut appeler la fonction dérivée f' de f : c'est-à-dire que f'(alpha)
+est le alpha-ième point fixe (en comptant à partir de zéro) de la
+fonction f (en particulier, f'(0) est la limite de 0, f(0), etc.).
+
+Un exemple classique concerne la fonction f(alpha)=omega^alpha, qui
+est bien normale (sur n'importe quel cardinal régulier indénombrable).
+Le alpha-ième point fixe de f, soit f'(alpha), est appelé
+epsilon_alpha (donc epsilon_0 est le plus petit ordinal alpha tel que
+omega^alpha = alpha).
+
+Partant de cette fonction f-là, on est tenté de définir une fonction
+de deux arguments, f(gamma,alpha), pour gamma<Omega, par :
+
+* f(0,alpha) = f(alpha) = omega^alpha pour tout alpha<Omega,
+
+* f(gammma+1,·) = f(gamma,·)' (autrement dit, f(gamma+1,alpha) est le
+alpha-ième point fixe de la fonction f(gamma,·) ; en particulier,
+f(1,alpha) = epsilon_alpha pour tout alpha), et
+
+* pour delta ordinal limite, f(delta,·) est la fonction qui énumère
+l'intersection des images des f(gamma,·) pour gamma<delta,
+c'est-à-dire l'ensemble des points fixes communs aux f(gamma,·) pour
+tout gamma<delta.
+
+Attention !  Lorsque alpha>0, f(delta,alpha) n'est pas bêtement la
+limite des f(gamma,alpha) pour gamma<delta : en effet, tous les f(n,1)
+pour n<omega sont strictement inférieurs à f(omega,0), puisque
+f(omega,0) >= f(n+1,0) = f(n,f(n+1,0)) > f(n,1), donc la limite des
+f(n,1) est exactement f(omega,0), et pas f(omega,1).  Ça ne devrait
+pas paraître suprenant : après tout, la limite des gamma+1 pour
+gamma<delta n'est *pas* delta+1.)
+
+En revanche, f(alpha,0) définit bien une fonction continue de alpha,
+et (si f(0)>0, ce qui est manifestement le cas ici) strictement
+croissante, c'est-à-dire une fonction normale.
+
+Ce schéma f(·,·) s'appelle le schéma de Veblen.  L'ordinal alpha plus
+petit point fixe de la fonction normale f(alpha,0) est appelé
+l'ordinal de Feferman-Schütte, et il est déjà assez rigolo (beaucoup
+plus grand que epsilon_0 = f(1,0) ou epsilon_(epsilon_(epsilon_...)) =
+f(2,0)).  Mais ce n'est rien comparé à l'ordinal de Howard.
+
+Évidemment, on a envie de continuer à diagonaliser (et c'est en gros
+ce qu'on va faire).  Là, ça devient plus technique.  On pourrait
+définir g(alpha)=f(alpha,0) et recommencer à partir de là, puis itérer
+un peu pareil (ça définirait l'ordinal de Veblen), mais on veut faire
+ça de façon un peu plus systématique.
+
+L'idée, c'est de définir f(gamma,alpha) pour certains gamma
+indénombrables (mais pas de façon croissante en gamma, sinon
+évidemment on n'a plus de place dans Omega).  Par exemple, on va
+définir f(Omega,alpha) comme le alpha-ième point fixe de f(·,0) (donc
+f(Omega,0) est ce que je viens d'appeler l'ordinal de
+Feferman-Schütte), après quoi on définit sans problème
+f(Omega+gamma,alpha) pour tout gamma<Omega, sauf que f(Omega+delta,·)
+pour delta limite n'énumère pas les points fixes de *tous* les
+f(gamma,·) pour gamma<Omega+delta (ce serait absurde - parce qu'il n'y
+en a pas ! les f(gamma,0) sont cofinaux dans Omega pour gamma<Omega)
+mais seulement de ceux de la forme f(Omega+gamma,·).  Mais à cette
+petite correction près, la définition précédente se transpose très
+bien, et permet de définir f(Omega+gamma,·) pour tout gamma<Omega (si
+on veut, c'est la même définition qu'avant, en partant de la fonction
+f(Omega,·)).  On définit alors, sans surprise, f(Omega·2,alpha) comme
+le alpha-ième point fixe de beta->f(Omega+beta,0).  Maintenant, il
+s'agit de voir « jusqu'où on peut aller » comme ça.  La définition de
+ce « schéma de Bachmann » n'est pas aussi intrinsèque que celui de
+Veblen (elle fait intervenir des « séquences standard », voir plus
+loin), mais il va quand même jusqu'à un certain point.
+
+Faisons une petite digression sur les représentations en base Omega
+des ordinaux.
+
+Considérons l'ordinal epsilon_{Omega+1}, c'est-à-dire le plus petit
+point fixe strictement supérieur à Omega de la fonction
+alpha->omega^alpha.  On se convainc sans mal que c'est aussi le plus
+petit point fixe de alpha->Omega^alpha (explication : montrer que si
+alpha>Omega et alpha=omega^alpha alors alpha=Omega^alpha ; pour cela,
+on montre successivement que Omega+alpha=alpha, puis que
+Omega·alpha=alpha, et enfin que Omega^alpha=alpha).  Tout ordinal
+possède une représentation unique « en base Omega » de la forme
+Omega^{tau_0}·alpha_0 + ... + Omega^{tau_n}·alpha_n, où les alpha_i
+sont des ordinaux dénombrables non nuls et où les tau_i sont
+strictement décroissants (tau_0>tau_1>...>tau_n).  Lorsque l'ordinal
+alpha ainsi exprimé est strictement inférieur à epsilon_{Omega+1}, on
+peut dire que les tau_i sont strictement inférieurs à alpha (puisque
+epsilon_{Omega+1} est le plus petit point fixe de alpha->Omega^alpha).
+Par ailleurs, comme d'habitude, on peut choisir de formuler la
+représentation en base Omega d'un ordinal (quelconque) en l'écrivant
+comme une famille presque nulle d'ordinaux dénombrables : autrement
+dit, poser alpha[tau_i] = alpha_i avec les notations ci-dessus, et
+alpha[tau]=0 pour tout autre tau.  La cofinalité d'un alpha<omega_2 se
+détermine, à partir de son écriture en base Omega, comme ceci : si
+alpha[0] est non nul, la cofinalité est la sienne (donc dénombrable
+lorsque alpha et alpha[0] sont limites, et finie s'ils sont
+successeurs) ; sinon, on considère le plus petit « chiffre » non nul,
+alpha[tau] : si alpha[tau] est limite _ou_ si tau est limite de
+cofinalité dénombrable, alors alpha est de cofinalité dénombrable,
+sinon, alpha est de cofinalité indénombrable (exemples : Omega² ou
+Omega^{omega+1}·2 sont de cofinalité indénombrable, tandis que
+Omega^omega ou Omega³·epsilon_0 sont de cofinalité dénombrable).
+
+Revenons à nos moutons.
+
+On va définir f(gamma,·) pour tout gamma<epsilon_{Omega+1} en
+considérant gamma dans sa représentation en base Omega :
+
+* f(gamma,alpha) pour gamma<Omega a déjà été défini, et on garde cette
+définition.  Les définitions qui suivent sont censées être
+compatibles.
+
+* f(0,alpha) = omega^alpha.
+
+* f(gamma+1,alpha) = le alpha-ième point fixe de f(gamma,·).
+
+* Si delta est limite de cofinalité dénombrable, f(delta,·) énumère
+les points fixes communs à tous les f(gamma_alpha,·) (ou encore
+l'intersection de leurs images, cela revient au même) où gamma_alpha
+est une « séquence standard » qui tend vers delta, comme sera défini
+ci-dessous.
+
+* Si delta est limite de cofinalité indénombrable, f(delta,·) énumère
+les points fixes de alpha->f(gamma_alpha,0) où gamma_alpha est une
+« séquence standard » qui tend vers delta, comme sera défini
+ci-dessous.
+
+Restent à définir les séquences standards pour un ordinal limite, dans
+les deux cas où alpha est de cofinalité dénombrable et indénombrable,
+et c'est là que la représentation en base Omega va servir.
+
+Si delta est de la forme Omega·beta+delta[0] où delta[0] est non nul
+et dénombrable (et, obligatoirement, limite, puisque delta l'est),
+autrement dit si alpha *n'est pas* un multiple de Omega (et delta[0]
+est son reste par « division euclidienne » par Omega), alors on
+définit gamma_alpha comme Omega·beta+alpha pour tout alpha<delta[0] :
+c'est la séquence standard convergeant vers delta.  Ceci traite le cas
+où le dernier chiffre delta[0] de la représentation de delta en base
+Omega n'est pas nul.  (Exemple : la séquence standard pour
+Omega+epsilon_0, ce sera les Omega+alpha avec alpha<epsilon_0.)
+
+Sinon, si delta est de la forme Omega^tau·(Omega·beta + delta[tau])
+avec delta[tau] non nul, dénombrable et limite, autrement dit si le
+dernier chiffre non nul delta[tau] de l'écriture en base Omega de
+delta est limite, alors on définit la séquence standard gamma_alpha
+par Omega^tau·(Omega·beta + alpha) pour tout alpha<delta[tau].
+(Exemple : la séquence standard pour Omega·omega, ce sera les
+Omega·n avec n entier naturel.)
+
+Sinon, si delta est de la forme Omega^tau·(Omega·beta + delta[tau])
+avec delta[tau] = omega·psi + n où n est entier naturel non nul, et
+tau est de cofinalité dénombrable, autrement dit si le dernier chiffre
+non nul delta[tau] de delta en base Omega est successeur mais
+correspond à une puissance tau qui, elle, est limite de cofinalité
+dénombrable, alors on définit gamma_alpha comme Omega^tau ·
+(Omega·beta + omega·psi + (n-1)) + Omega^{tau_alpha} où tau_alpha est
+la séquence standard pour tau (noter que comme tau<delta puisque
+delta<epsilon_{Omega+1}, cette définition utilise bien un cas déjà
+défini !).  Par exemple, la séquence standard pour
+Omega^{Omega+omega}·2, c'est les Omega^{Omega+omega} + Omega^{Omega+n}
+avec n parcourant les entiers naturels.
+
+Voilà, ça ça devrait couvrir tous les cas où delta est limite de
+cofinalité dénombrable.  Maintenant les cas de cofinalité
+indénombrable : c'est plus simple : delta s'écrit Omega^tau ·
+(Omega·beta + delta[tau]) où delta[tau] (le dernier chiffre non nul,
+comme d'habitude) est successeur et tau est soit successeur soit
+lui-même limite de cofinalité indénombrable.  On écrit donc delta[tau]
+= omega·psi + n avec n entier naturel non nul.
+
+Si tau est successeur, disons tau=rho+1, alors on définit gamma_alpha
+comme Omega^tau · (Omega·beta + omega·psi + (n-1)) + Omega^rho·alpha
+avec alpha parcourant tous les ordinaux dénombrables.  Exemple : la
+séquence standard pour Omega²·3, c'est les Omega²·2 + Omega·alpha avec
+alpha parcourant les ordinaux dénombrables.
+
+Si tau est limite de cofinalité indénombrable, alors on définit
+gamma_alpha comme Omega^tau · (Omega·beta + omega·psi + (n-1)) +
+Omega^{tau_alpha} où tau_alpha est la séquence standard pour tau.
+Exemple : la séquence standard pour Omega^{Omega²}, c'est les
+Omega^{Omega·alpha} avec alpha parcourant les ordinaux dénombrables.
+
+Si je ne délire pas, ceci définit bien la séquence standard dans tous
+les cas.  Les notations sont un peu lourdingues, mais c'est bien « ce
+qu'on pense » à chaque fois.
+
+Maintenant, on se doute bien ce que c'est que l'ordinal de Howard :
+c'est la borne supérieure des f(Omega^{Omega^{Omega^...}},0).
+Évidemment, ça revient à définir une séquence standard (à savoir 1,
+Omega, Omega^Omega, Omega^{Omega^Omega}, etc.) qui tend vers
+epsilon_{Omega+1}, ce qui permettrait, du coup, de définir les
+notations jusqu'à epsilon_{Omega+2}, mais enfin, bon, il faut savoir
+s'arrêter un jour.  D'autant plus que je ne crois pas qu'on puisse,
+quoi qu'on fasse, continuer le schéma jusqu'au plus petit point fixe
+*de cofinalité indénombrable* de alpha->omega^alpha.
+
+--------------------------------------------------------------------
+
+From madore@clipper.ens.fr Mon May 21 18:26:00 2007
+Subject: Re: ordinal analysis
+
+Dam's in litteris <f2ser5$4m9$1@clipper.ens.fr> scripsit:
+> Est-ce que quelqu'un a une introduction au sujet?
+
+<URL: http://en.wikipedia.org/wiki/Large_countable_ordinals > (je suis
+un des auteurs) et les références y citées.
+
+> D'apres ce que j'ai compris, c'est une maniere de definir la "puissance"
+> d'une theorie logique (j'imagine qu'a une theorie on associe le plus petit
+> ordinal dont elle ne peut pas prouver l'existence).
+
+Plutôt (et plus précisément) : à une théorie on associe le plus petit
+ordinal alpha tel que la théorie ne montre l'induction transfinie pour
+aucune notation ordinale à la Kleene dont le (vrai) ordinal est alpha.
+Enfin, si je ne me trompe pas.  Rappelons que les notations ordinales
+sont des entiers naturels (codant un programme de machine de Turing
+qui génère des notations d'ordinaux plus petits) et que la difficulté
+est de savoir si une notation supposée est effectivement [la notation
+d'un] ordinal, c'est-à-dire de s'assurer qu'on a bien affaire à un bon
+ordre (c'est-à-dire de prouver l'induction transfinie jusqu'à cette
+hauteur).
+
+> Par exemple l'ordinal associe a l'arithmetique de Paeno est \epsilon_0 il me
+> semble,
+
+Oui : pour tout ordinal inférieur à epsilon_0 il existe une notation
+pour cet ordinal tel quel Peano prouve l'induction transfinie (pour
+n'importe quelle formule [arithmétique, forcément] fixée) jusqu'à
+cette notation, alors qu'il n'en existe aucune pour epsilon_0.
+
+>	  mais pour ZFC c'est quoi (j'ai dans l'idee que ce serait un cardinal
+> inaccessible. Mais je suis un peu confuse parce que il me semble que
+> 2^\aleph_0, qui "existe" dans ZFC peut tres bien etre faiblement
+> inaccessible (ca ne contredit pas ZFC)).
+
+Non, c'est forcément un ordinal dénombrable, et même un ordinal
+strictement inférieur au omega_1 de Church-Kleene.  Mais pour des
+raisons « évidentes » il n'est pas descriptible de façon utile (en
+gros le meilleur qu'on puisse décrire de façon sensée c'est la
+puissance ordinale de la théorie des ensembles de Kripke-Platek, et en
+l'occurrence c'est l'ordinal de Bachmann-Howard).
+
+Pour ZFC tu peux le décrire de façon complètement idiote (donc
+inutile) avec un truc du style : tu prends l'ensemble des paires (p,x)
+où x est un entier naturel et p est une démonstration dans ZFC qu'une
+certaine relation '<_p' est un bon ordre sur les entiers naturels
+(bon, faut peut-être chipoter sur ce que ça veut dire au juste, du
+style prendre une suite de preuves d'induction pour tous les énoncés
+arithmétiques ou je ne sais quoi) et on ordonne ça en mettant toutes
+les relations '<_p' bout à bout (sur x).  Manifestement tout ça peut
+se définir par une unique formule de l'arithmétique : en une seule
+formule tu peux tester que p est bien une preuve gnagnagna.
+Manifestement, ZFC ne peut pas prouver que l'ordre résultat est bien
+fondé, et pourtant une théorie plus forte ZFC+IC le prouve, donc ça te
+donne bien un ordinal, et ZFC prouve l'induction jusqu'à toute hauteur
+plus petite que cet ordinal.  Donc c'est exactement la force de ZFC.
+Enfin, y'a certainement plein d'imprécisions et de trucs à corriger
+dans ce que j'ai écrit, mais c'est l'idée.
+
+En tout cas, ce dont je suis sûr c'est qu'on peut donner une notation
+ordinale explicite pour la puissance de ZFC, mais cette notation est
+sans intérêt parce qu'elle fait juste intervenir un ordre sur les
+preuves de ZFC.  Alors que pour des théories plus faibles on a des
+notations ordinales plus intéressantes.
+
+> Et quand on dit par exemple que le theoreme de Goodstein a la puissance de
+> \epsiolon_0, ca veut dire quoi exactement?
+
+Le rajouter à Peano doit être équivalent à ajouter l'affirmation que
+<telle notation ordinale explicite définissant epsilon_0 de façon
+raisonnable et que je ne prends pas la peine de décrire> est un bon
+ordre (i.e., qu'on a l'induction transfinie pour toute formule).
+
+Par contre, je suis extrêmement flou sur la question de svoir quelle
+est la puissance ordinale de Peano+Consis(Peano) ou des trucs de ce
+genre.
+---------------------------------------------------------------------

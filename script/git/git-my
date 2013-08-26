@@ -1,0 +1,767 @@
+#!/usr/bin/env ruby
+#encoding: utf-8
+# vim: foldmethod=marker
+
+require 'dr/shell'
+require 'dr/git'
+require 'gli'
+include GLI::App
+include DR::ShellInclude
+logger.progname=$0
+
+GITScripts=Pathname.new(ENV['HOME'])+"script/git"
+GITDist=Pathname.new(ENV['HOME'])+"var/dist"
+
+program_desc 'Bundle my git extensions'
+#version "0.0.0"
+wrap_help_text :verbatim
+
+desc 'Set log level'
+arg_name 'log_level'
+default_value 'info'
+flag :log
+LOG_LEVELS = {
+  'debug' => Logger::DEBUG,
+  'info' => Logger::INFO,
+  'warn' => Logger::WARN,
+  'error' => Logger::ERROR,
+  'fatal' => Logger::FATAL,
+}
+
+desc 'Always use pager'
+switch :pager
+desc 'Never use pager'
+switch :'no-pager'
+
+$pageropt=nil
+pre do |global,command,options,args|
+  logger.level=LOG_LEVELS[global[:log]]
+
+  $pageropt=:always if global[:pager]
+  $pageropt=:never if global[:'no-pager']
+  true
+end
+
+class GLI::Commands::Help
+  alias orig_show_help show_help
+  #monkey patch help command to wrap the output inside a pager
+  def show_help(*args, &block)
+    DR::SHExtra.run_pager($pageropt)
+    orig_show_help(*args, &block)
+  end
+end
+
+# Contrib
+# Blame {{{1
+desc 'Blame (incremental)'
+long_desc "A cause du fonctionnement de git, git blame peut etre long pour un gros projet. blameview utilise l'option incremental de git blame pour updater à la volée le dernier commit ayant modifier une ligne (ie il affiche HEAD pour toutes les lignes, puis au fur et à mesure qu'il parcourt le DAG il update avec le commit ayant dernièrement touché cette ligne)."
+command :blameview do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"contrib/blameview.perl"]+args).shelljoin
+  end
+end
+#}}}1
+# Diffall {{{1
+desc 'Diff directory'
+long_desc <<EOS
+The git-diffall script provides a directory based diff mechanism
+for git.
+
+To determine what diff viewer is used, the script requires either
+the 'diff.tool' or 'merge.tool' configuration option to be set.
+
+This script is compatible with most common forms used to specify a
+range of revisions to diff:
+
+  1. git diffall: shows diff between working tree and staged changes
+  2. git diffall --cached [<commit>]: shows diff between staged
+     changes and HEAD (or other named commit)
+  3. git diffall <commit>: shows diff between working tree and named
+     commit
+  4. git diffall <commit> <commit>: show diff between two named commits
+  5. git diffall <commit>..<commit>: same as above
+  6. git diffall <commit>...<commit>: show the changes on the branch
+     containing and up to the second, starting at a common ancestor
+     of both <commit>
+
+Note: all forms take an optional path limiter [-- <path>*]
+
+The '--extcmd=<command>' option allows the user to specify a custom
+command for viewing diffs.  When given, configured defaults are
+ignored and the script runs $command $LOCAL $REMOTE.  Additionally,
+$BASE is set in the environment.
+EOS
+command :diffall do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"contrib/git-diffall"]+args).shelljoin
+  end
+end
+
+# Hash {{{1
+desc 'Shows hash prefixes'
+long_desc """
+This script displays the distribution of longest common hash prefixes.
+This can be used to determine the minimum prefix length to use
+for object names to be unique.
+"""
+command :hash do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"contrib/git-common-hash"]+args).shelljoin
+  end
+end
+
+# Mailmap {{{1
+desc 'Find mailmap candidates'
+long_desc 'Check if the same email address has different user name on it (meaning it would be nice in the .mailmap file)'
+command :mailmap do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"contrib/mailmap.pl"]+args).shelljoin
+  end
+end
+
+# New-workdir {{{1
+desc 'Create a new workdir from a repository'
+arg_name "<repository> <new_workdir> [<branch>]"
+long_desc """
+Create symlinks to the original repo:
+'config refs logs/refs objects info hooks packed-refs remotes rr-cache svn'
+Explicitly exclude index, HEAD and logs/HEAD from the list since they are
+purely related to the current working directory, and should not be shared.
+"""
+command :'new-workdir' do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"contrib/git-new-workdir"]+args).shelljoin
+  end
+end
+
+# Packs {{{1
+desc 'Give informations on packs'
+long_desc <<EOS
+  git-myinfo pack [-tree|-dump [-filenames]] packs
+* "all sizes" stats are across every object size in the file;
+  full sizes for base objects, and delta size for deltas.
+* "all path sizes" stats are across all object's "path sizes".
+  A path size is the sum of the size of the delta chain, including the
+  base object.  In other words, it's how many bytes need be read to
+  reassemble the file from deltas.
+* "tree sizes" are object sizes grouped into delta trees.
+* "tree path sizes" are path sizes grouped into delta trees.
+* "depths" should be obvious.
+
+|-tree|
+                          object size, path size
+  0 commit 031321c6...      803      803
+
+  0   blob 03156f21...     1767     1767
+  1    blob f52a9d7f...       10     1777
+  2     blob a8cc5739...       51     1828
+  3      blob 660e90b1...       15     1843
+  4       blob 0cb8e3bb...       33     1876
+  2     blob e48607f0...      311     2088
+     size: count 6 total 2187 min 10 max 1767 mean 364.50 median 51 std_dev 635.85
+path size: count 6 total 11179 min 1767 max 2088 mean 1863.17 median 1843 std_dev 107.26
+
+|-dump|
+prints out "sha1 size pathsize depth" for each sha1 in lexical order.
+000079a2eaef17b7eae70e1f0f635557ea67b644 30 472 7
+00013cafe6980411aa6fdd940784917b5ff50f0a 44 1542 4
+000182eacf99cde27d5916aa415921924b82972c 499 499 0
+
+|-filename| add to which file the blob correspond"
+EOS
+
+command :packs do |c|
+  c.desc 'Describe the content of the packs in a tree like manner'
+  c.switch :tree
+  c.desc 'Find to which file the blob correspond'
+  c.switch :filenames
+  c.desc 'Dump the sha1 of the objects insided the packs'
+  c.switch :dump
+  c.action do |global_options,options,args|
+    opts=[]
+    opts.unshift('-tree') if options[:tree]
+    opts.unshift('-filenames') if options[:filenames]
+    opts.unshift('-dump') if options[:dump]
+    DR::Git.cd_to_toplevel
+
+    DR::SHExtra.run_pager($pageropt)
+    if args.empty?
+      exec "git verify-pack -v .git/objects/pack/*.idx | '#{GITScripts+"contrib/packinfo.pl"}' #{opts.shelljoin}"
+    else
+      exec "git verify-pack -v #{args.shelljoin} | '#{GITScripts+"contrib/packinfo.pl"}' #{opts.shelljoin}"
+    end
+  end
+end
+
+# Resurrect {{{1
+desc 'Try to resurrect a deleted branch'
+arg_name "[-a] [-r] [-m] [-t] [-n] [-b <newname>] <name>"
+long_desc <<EOS
+git resurrect [-a] [-r] [-m] [-t] [-n] [-b <newname>] <name>
+--
+b,branch=            save branch as <newname> instead of <name>
+a,all                same as -l -r -m -t
+k,keep-going         full rev-list scan (instead of first match)
+l,reflog             scan reflog for checkouts (enabled by default)
+r,reflog-merges      scan for merges recorded in reflog
+m,merges             scan for merges into other branches (slow)
+t,merge-targets      scan for merges of other branches into <name>
+n,dry-run            don't recreate the branch"
+
+git-resurrect attempts to find traces of a branch tip
+called <name>, and tries to resurrect it.  Currently, the reflog is
+searched for checkout messages, and with -r also merge messages.  With
+-m and -t, the history of all refs is scanned for Merge <name> into
+other/Merge <other> into <name> (respectively) commit subjects, which
+is rather slow but allows you to resurrect other people's topic
+branches.
+EOS
+
+command :resurrect do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"contrib/git-resurrect.sh"]+args).shelljoin
+  end
+end
+
+# Subtree {{{1
+desc 'Merge subtrees together and split repository into subtrees'
+arg_name 'add/pull/push/merge/split ...'
+long_desc File.read(GITScripts+"contrib/git-subtree.txt")
+command :subtree do |c|
+  ENV["PATH"]+=":"+(GITScripts+"contrib").to_s
+  c.action do |global_options,options,args|
+    puts ([GITScripts+"contrib/git-subtree.sh"]+args).shelljoin
+    exec ([GITScripts+"contrib/git-subtree.sh"]+args).shelljoin
+  end
+end
+
+# Rerere-train {{{1
+desc 'Prime rerere database from existing merge commits'
+arg_name '<rev-list>'
+command :'rerere-train' do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"contrib/rerere-train.sh"]+args).shelljoin
+  end
+end
+
+# }}}1
+# Remote-hg {{{1
+desc 'Remote hg helper'
+long_desc 'Just copy to your ~/bin, or anywhere in your $PATH.
+Then you can clone with:
+git clone hg::/path/to/mercurial/repo/
+
+With git my, you just need to do git my hg path/to/mercurial/repo/
+or git my hg -- path/to/mercurial/repo args-options-to-clone
+
+Lastly, one can use
+git my hg --inside path/to/mercurial/repo1 path2 ... to clone inside these hg repos
+'
+arg_name 'path to hg repo'
+command :'hg' do |c|
+  c.desc 'Clone inside the hg repo'
+  c.switch :inside
+  c.action do |global_options,options,args|
+    ENV['PATH']+=":#{ENV['HOME']}/script/git/contrib"
+    if options[:inside]
+      args.each do |arg|
+        hgdir=Pathname.new(arg)
+        gitdir=hgdir+".git"
+        system ["git", "clone", "--bare", "hg::#{hgdir}", gitdir].shelljoin
+        puts "git config -f #{gitdir+"config"} core.bare false"
+        system "git config -f #{gitdir+"config"} core.bare false"
+      end
+    else
+      hgdir=args.shift
+      exec (["git", "clone", "hg::#{hgdir}"]+args).shelljoin
+    end
+  end
+end
+# }}}1
+
+# Scripts 
+# Changelog {{{1
+desc 'Output changelog from git log'
+command :changelog do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"scripts/changelog.rb"]+args).shelljoin
+  end
+end
+
+# Churn {{{1
+desc 'Number of commits modifying each files'
+arg_name '<git log arguments>'
+command :churn do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"scripts/git-churn"]+args).shelljoin
+  end
+end
+
+# log remote {{{1
+desc 'Shows diff between current branch and its remote'
+arg_name 'local[=HEAD] remote'
+long_desc 'Provides a nice output of logs between locate..remote and remote..local'
+command :diffbranch do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"scripts/git-divergence"]+args).shelljoin
+  end
+end
+
+# Diverge {{{1
+desc 'Find when two branches first diverged'
+arg_name 'upstream[=master] local[=HEAD]'
+command :diverge do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"scripts/diverge"]+args).shelljoin
+  end
+end
+# Quickstats {{{1
+desc 'Statistics by authors'
+arg_name '-- [-s since -e before -w -C -M]'
+long_desc """
+  -s time: --after time
+  -e time: --before time
+  -w: word diff
+  -M: activate move detection
+  -C: activate copy detection
+Warning: do not play nice with mailmaps
+"""
+command :stats do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec(([GITScripts+"scripts/git-stats.sh"]+args).shelljoin)
+  end
+end
+
+# Up, Reup {{{1
+desc 'pull current branch and show new commits'
+long_desc '"git my up" will detect if rebase is the default and will switch to "reup" mode automatically. Add "-b" if you want to use "reup" ponctually, and "--no-rebase" to prevent "git pull" from using rebase. The poing of calling "reup" rather than letting "pull" find the default "merge/rebase" mode is that "reup" will stash, rebase current branch and show diffstat.'
+arg_name '<pulloptions>'
+command :up do |c|
+  c.desc 'Use rebase rather than pull'
+  c.switch :b
+  c.action do |global_options,options,args|
+    if options[:b]
+      #DR::SHExtra.run_pager($pageropt)
+      exec ([GITScripts+"scripts/git-reup"]+args).shelljoin
+    else
+      exec ([GITScripts+"scripts/git-up"]+args).shelljoin
+    end
+  end
+end
+
+desc 'stash, rebase current branch and show diffstat'
+arg_name '<pulloptions>'
+command :reup do |c|
+  c.action do |global_options,options,args|
+    #DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"scripts/git-reup"]+args).shelljoin
+  end
+end
+
+# Runcmd {{{1
+desc 'run command on git revisions'
+arg_name 'start_ref end_ref command'
+command :runcmd do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"scripts/git-run-command-on-git-revisions"]+args).shelljoin
+  end
+end
+# }}}1
+# Blametree {{{1
+desc 'like blame, but for a tree'
+arg_name 'revs'
+command :blame_tree do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"scripts/blame-tree"]+args).shelljoin
+  end
+end
+
+# }}}1
+
+# Dist
+# Stats {{{1
+desc 'Statistics (html)'
+long_desc """
+-c option=value
+Override a default configuration value. Defaults can be seen by running gitstats without parameters.
+Default config values:
+{'linear_linestats': 1, 'style': 'gitstats.css', 'commit_end': 'HEAD', 'max_authors': 20, 'commit_begin': '', 'max_ext_length': 10, 'project_name': '', 'authors_top': 5, 'merge_authors': {}, 'max_domains': 10}
+-authors_top 
+  How many top authors to show.
+-commit_begin, commit_end
+  Specify a commit range to generate statistics from. You can specify only commit_end limit statistics to a certain commit or another branch.
+-linear_linestats
+  When enabled, the lines of code statistics are collected from linear history.
+The downside is that commits of long feature branches appear only at the point
+where a merge commit is made.
+  If disabled (old behaviour), the problem is that if two branches contain the
+same changes (for example, removal of same lines), the statistics get skewed.
+  Defaults to on.
+-max_authors
+  How many authors to show in the list of authors.
+-max_domains
+  How many domains to show in domains by commits.
+-max_ext_length
+  Maximum file extension length.
+-project_name
+  Project name to show on the generated pages. Default is to use basename of the repository directory.
+-style
+  CSS stylesheet to use.
+"""
+arg_name '[opts] <repo dir> <output dir>'
+command :statshtml do |c|
+  c.action do |global_options,options,args|
+    #DR::SHExtra.run_pager($pageropt)
+    exec ([GITDist+"gitstats/gitstats"]+args).shelljoin
+  end
+end
+
+# Merged {{{1
+desc 'Shows merge status of topic branches'
+arg_name 'heads'
+long_desc """
+git-show-merges: a simple script to show you which topic branches have been
+merged into the current branch, and which haven't. (Or, specify the set of
+merge branches you're interested in on the command line.)
+"""
+
+command :merged do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITDist+"git-mainline/bin/git-show-merges"]+args).shelljoin
+  end
+end
+
+# Publish {{{1
+desc 'Publish branch'
+arg_name '[-d -n] <branch> [repository]'
+long_desc """
+git-publish-branch: a simple script to ease the unnecessarily complex task
+of 'publishing' a branch, i.e., taking a local branch, creating a reference
+to it on a remote repo, and setting up the local branch to track the remote
+one, all in one go. you can even delete that remote reference.
+
+'-d' signifies deletion. <branch> is the branch to publish, and
+[repository] defaults to 'origin'. The remote branch name will be the same
+as the local branch name. Don't make life unnecessarily complex for
+yourself.
+'-n' dry run
+"""
+
+command :publish do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITDist+"git-mainline/bin/git-publish-branch"]+args).shelljoin
+  end
+end
+
+# Rank {{{1
+desc 'Rank contributors according to size of diff'
+arg_name '[-v -o -h]'
+long_desc """
+git-rank-contributors: a simple script to trace through the logs and rank
+contributors by the total size of the diffs they're responsible for. A
+change counts twice as much as a plain addition or deletion.
+
+Output may or may not be suitable for inclusion in a CREDITS file. Probably
+not without some editing, because people often commit from more than one
+address.
+
+-v: verbose
+-o: obfuscate
+-h: htmlize
+"""
+
+command :statsdiff do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITDist+"git-mainline/bin/git-rank-contributors"]+args).shelljoin
+  end
+end
+
+# Wtf {{{1
+desc 'Shows state of the repository topic branches'
+arg_name '[branch+] [options]'
+
+long_desc <<EOS
+git-wtf displays the state of your repository in a readable, easy-to-scan
+format. It's useful for getting a summary of how a branch relates to a
+remote server, and for wrangling many topic branches.
+
+git-wtf can show you:
+- How a branch relates to the remote repo, if it's a tracking branch.
+- How a branch relates to integration branches, if it's a feature branch.
+- How a branch relates to the feature branches, if it's an integration branch.
+
+KEY:
+() branch only exists locally
+{} branch only exists on a remote repo
+[] branch exists locally and remotely
+
+x merge occurs both locally and remotely
+~ merge occurs only locally
+  (space) branch isn't merged in
+
+If [branch] is not specified, git-wtf will use the current branch. The possible
+[options] are:
+
+  -l, --long          include author info and date for each commit
+  -a, --all           show all branches across all remote repos, not just
+                      those from origin
+  -A, --all-commits   show all commits, not just the first 5
+  -s, --short         don't show commits
+  -k, --key           show key help
+  -r, --relations     show relation to features / integration branches
+      --dump-config   print out current configuration and exit
+
+git-wtf uses some heuristics to determine which branches are integration
+branches, and which are feature branches. (Specifically, it assumes the
+integration branches are named "master", "next" and "edge".) If it guesses
+incorrectly, you will have to create a .git-wtfrc file.
+
+To start building a configuration file, run "git-wtf --dump-config >
+.git-wtfrc" and edit it. The config file is a YAML file that specifies the
+integration branches, any branches to ignore, and the max number of commits to
+display when --all-commits isn't used.  git-wtf will look for a .git-wtfrc file
+starting in the current directory, and recursively up to the root.
+
+IMPORTANT NOTE: all local branches referenced in .git-wtfrc must be prefixed
+with heads/, e.g. "heads/master". Remote branches must be of the form
+remotes/<remote>/<branch>.
+EOS
+
+command :wtf do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITDist+"git-mainline/bin/git-wtf"]+args).shelljoin
+  end
+end
+
+#}}}1
+
+# Divers
+# Authors {{{1
+desc 'Shows list of authors (ranking by number of commits)'
+arg_name '<log args>'
+command :authors do |c|
+  c.desc 'Shows emails'
+  c.switch :email, :e
+  c.action do |global_options,options,args|
+    DR::SHExtra.run_pager($pageropt)
+    if options[:email]
+      exec "git log '--pretty=format:%aN <%aE>' #{args.shelljoin} | sort | uniq -c | sort -rn"
+    else
+      exec "git log --pretty=format:%aN #{args.shelljoin} | sort | uniq -c | sort -rn"
+    end
+  end
+end
+
+# grb {{{1
+desc 'Manipulates published branches'
+long_desc 'TODO'
+command :grb do |c|
+  c.action do |global_options,options,args|
+    exec ([GITDist+"git_remote_branch/bin/grb"]+args).shelljoin
+  end
+end
+#}}}1
+
+# Mine
+# Cc {{{1
+desc 'Find who contributed on a patched line'
+arg_name 'patch_files'
+command :cc do |c|
+  c.action do |global_options,options,args|
+    pwd=Pathname.pwd
+    args.each_with_index do |a,i|
+      a=Pathname.new(a)
+      args[i]=pwd+a if a.relative?
+    end
+    DR::Git.cd_to_toplevel
+    DR::SHExtra.run_pager($pageropt)
+    exec ([GITScripts+"git-mycc"]+args).shelljoin
+  end
+end
+
+# Current-branch {{{1
+desc 'Print current branch'
+long_desc <<EOS
+  -a: use git rev-parse if on a detached head
+  -l: print long branch name (ie with refs/heads)
+  --remote: give the remote associated to the current branch (ex: origin)
+  --upstream: give the upstream branch (ex: refs/remotes/origin/master)
+  --rebase: say if a pull will rebase rather than merge
+EOS
+command :'current-branch' do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"git-current-branch"]+args).shelljoin
+  end
+end
+
+# Deploy {{{1
+desc 'Deploy repository'
+arg_name 'upstream'
+long_desc <<EOS
+  -l|-local: local git dir (default to current dir) 
+  -u|-upstream: upstream git dir (if not specified take \$1)
+  -b|-branch: the local branch to push (default to master)
+  -rb|-remote-branch: where to push it (default to damien/\$branch)
+  -ub|-upstream-branch: the upstream branch to update (default to master)
+  -rebase: rebase rather than merge upstreambranch into branch
+  -nopull: don't pull only push
+  -pullopt opt: do our own pull
+  -pushopt opt: do our own push
+  -lc|-local-commit [(all)|update|yes|no|none]
+  -lo|-local-opt: the local commit options
+  -rc|-remote-commit [(all)|update|yes|no|none]
+  -ro|-remote-opt: the remote commit options
+
+  COMMIT MODES:
+  - all: add all files in the directory (git add -AN && git commit -a)
+  - update: git commit -a
+  - yes: only commit
+  - no: no commit, but still show diff
+  - none: do nothing
+
+  git mydeploy update branch, and then push it to remotebranch. It then
+  update upstreambranch with remotebranch. This allow to push into a non
+  bare repository where upstreambranch should give the deployed data.
+
+  By default, branch is updated with upstreambranch, but by specifying
+  -pullopt the user can use it's own pull. The same with pushing (but we
+  still assume the push will be in remotebranch)."
+EOS
+command :deploy do |c|
+  c.action do |global_options,options,args|
+    DR::SHExtra.escape_pager
+    exec ([GITScripts+"git-mydeploy"]+args).shelljoin
+  end
+end
+
+# Empty {{{1
+desc 'Create empty commits and trivial merges'
+arg_name "[-b branch] create/merge ..."
+long_desc <<EOS
+    git myempty [-b branch] create parents
+    Create an empty commits with parents 'parents' ('parents' can be empty)
+    If branch is specified create branch on this commit and checkout"
+
+    git myempty [-b branch] merge branches
+    Create a trivial merge (-s ours) against branches. 
+    If branches is empty use HEAD.
+    If branch is specified checkout on branch and create the merge in branch."
+EOS
+command :empty do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"git-myempty"]+args).shelljoin
+  end
+end
+
+# Patch {{{1
+desc 'Manage patches'
+arg_name 'git-mypatch [-n[ame]/-up[stream]/-cc/-dir/-dirfrom/-dirto] format/send/sent/toresend check apply/applied/toreapply'
+long_desc <<EOS
+  - git mypatch format [-n name|] [-up upstream] args
+    Apply format-patch args, and save it in 'name'. 'upstream' can be used
+    to explain against what branch the patches are to be applied. As an
+    optimization, if args=branch, then we use branch as the upstream
+    description. Note: in most case, args will be upstrea..name
+  - git mypatch send [-cc] [-n name|]
+    Send patches in name, eventually applying the git-mycc as cc-cmd if -cc
+    is given as parameters
+  - git mypatch sent/toresend [-n name|]
+    mv patches from 'tosend' to 'sent' or back in toresend
+  
+  - git mypatch apply [-n name|name]
+    apply patches in name
+  - git mypatch applied/toreapply [-n name|name]
+    mv patches from 'toapply' to 'applied' or back in toreapply
+  
+  - git mypatch check [-n name|name]
+    Check if the patches in name apply on the workdir (usually won't be the
+    case if there is one of them that depend on another). Also check for
+    whitespace error
+  
+  |-dir|: change the patchdir 11patch-upstream
+  |-dirfrom|: change the default tosend/toapply
+  |-dirto|: change the default sent/applied
+EOS
+command :patch do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"git-mypatch"]+args).shelljoin
+  end
+end
+
+# Squash {{{1
+desc 'Update and squash branch'
+arg_name 'git-mypatch [-n[ame]/-up[stream]/-cc/-dir/-dirfrom/-dirto] format/send/sent/toresend check apply/applied/toreapply'
+long_desc <<EOS
+  git-mysquash [-svn|-g|-nopush|-nopull] branch upstream
+  git-mysquash [-svn|-g|-nopush|-nopull] [-to] upstream
+  git-mysquash [-svn|-g|-nopush|-nopull] -from branch
+  Squash branch on top of upstream (use HEAD for branch/upstream by default
+  if one is not specified, use svn for upstream by default if |-svn| is
+  used)
+  1) pull upstream
+  2) merge upstream in branch
+  3) squash merge branch in upstream
+  4) merge the squash in branch
+  5) push upstream
+  |-g|: don't edit commit
+  |-svn|: use git-svn for pulling/pushing upstream
+  |-nopull/-nopush|: don't do (1) resp (5)
+EOS
+command :squash do |c|
+  c.action do |global_options,options,args|
+    exec ([GITScripts+"git-mysquash"]+args).shelljoin
+  end
+end
+
+# Test {{{1
+desc 'Create a git test dir'
+arg_name 'dir'
+long_desc <<EOS
+EOS
+command :test do |c|
+  c.action do |global_options,options,args|
+    exit_now! "Specify a dir!" if args.empty?
+    dir=Pathname.new(args.first)
+    exit_now! "#{dir} exist!" if dir.exist?
+    log_and_do(Logger::INFO,:mkdir_p,dir)
+    Dir.chdir(dir)
+    execute= <<-EOS
+    git init
+    echo a > a
+    git add a
+    git commit -am 'Adding a'
+    echo b > b
+    git add b
+    git commit -am 'Adding b'
+    git checkout -b noconflict
+    echo new line >> a
+    echo c > c
+    git add c
+    git commit -am 'Adding c, new line to a'
+    git checkout master
+    git checkout -b conflict
+    echo 'Conlict on b' > b
+    git commit -am 'Changing line on b'
+    git checkout master
+    echo new line on b >> b
+    echo d > d
+    git add d
+    git commit -am 'Adding d, new line to b'
+    EOS
+    exec execute
+  end
+end
+# }}}1
+
+exit run(ARGV)

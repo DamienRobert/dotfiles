@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# list optional dependencies of installed packages
+#
+
+for i in $(pacman -Qq)
+do
+    deps="$(pacman -Qi ${i} | awk '/Optional/,/Required/' | grep -v "Required" | sed -e 's/Optional Deps[ ]*://g' -e 's/^[ ]*/ /')"
+    if [ "$deps" != " None" ]; then
+        echo "$i"
+	  IFS='
+'
+          for dep in $deps; do
+	    prog=`echo $dep | cut -d ':' -f 1 | cut -d ' ' -f 2`
+	    pacman >/dev/null -Qs $prog || echo "$dep"
+	  done
+        echo ""
+    fi
+done

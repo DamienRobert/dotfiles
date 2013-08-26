@@ -1,0 +1,11 @@
+[Unit]
+Description=gpg-agent
+ConditionFileIsExecutable=/usr/bin/gpg-agent
+
+[Service]
+ExecStart=/usr/bin/gpg-agent --daemon --use-standard-socket
+Type=forking
+Restart=always
+
+[Install]
+WantedBy=basic.target

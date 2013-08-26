@@ -1,0 +1,14 @@
+#!/bin/sh
+echo "Overwrite etc-$HOSTNAME config files by the values in sys"
+echo "Note than normally you want to generate them from etc-generate!"
+echo "Are you sure?"
+read
+
+( cd local/etc-$HOSTNAME
+find * -type f -exec sh -c "sudo cp /etc/{} {};" \;
+sudo chown -R `id -u`:`id -g` .
+)
+
+#sudo cp -r /etc/NetworkManager/system-connections/* NetworkManager/system-connections/
+sudo cp -r /etc/network.d/* ../network.d
+#sudo chown -R `id -u`:`id -g` NetworkManager

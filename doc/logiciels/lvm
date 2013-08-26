@@ -1,0 +1,23 @@
+#lvm:
+modprobe dm-mod
+
+pvcreate /dev/sda1
+pvdisplay
+
+vgcreate MainGroup /dev/sda1
+vgdisplay
+
+lvcreate -C y -L 512M MainGroup -n swap
+  #The -C y is used to create a contiguous partition, which means that your swap space does not get partitioned over one or more disks nor over non-contiguous physical extents.
+lvcreate -L 5G MainGroup -n slash
+lvcreate -L 10G MainGroup -n home
+#lvcreate -l +100%FREE MainGroup -n home
+lvdisplay
+
+modprobe dm-mod
+vgscan
+vgchange -ay
+
+mkswap /dev/mapper/MainGroup-swap
+mkfs.ext4 /dev/mapper/MainGroup-slash
+mkfs.ext4 /dev/mapper/MainGroup-home

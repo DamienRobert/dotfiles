@@ -1,0 +1,3 @@
+gconftool-2 --type boolean --set /desktop/gnome/peripherals/keyboard/xkb/overrideSettings false
+
+gconftool-2 --type boolean --set /apps/gnome_settings_daemon/plugins/keyboard false

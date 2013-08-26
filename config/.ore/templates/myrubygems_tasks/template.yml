@@ -1,0 +1,11 @@
+disable:
+  - gem_package_task
+  - jeweler_tasks
+  - bundler_tasks
+  - rubygems_tasks
+
+ignore:
+  - .yardoc/
+
+development_dependencies:
+  rubygems-tasks: ~> 0.2

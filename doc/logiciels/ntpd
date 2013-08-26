@@ -1,0 +1,3 @@
+ntpq -np #configured peers
+ntpd -qg #replacement of ntpdate
+hwclock -w #store new time into computer time

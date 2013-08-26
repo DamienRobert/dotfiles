@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+
+while (<>) {
+  chomp;
+  @list = split(//, $_);
+  print (reverse (@list), "\n");
+}

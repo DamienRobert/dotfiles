@@ -1,0 +1,108 @@
+#!/bin/sh
+
+##Set gnome conf: gnome2
+##gconftool-2 --type bool --set /apps/nautilus/preferences/show_desktop false
+#gconftool-2 --type string --set /desktop/gnome/session/required_components/windowmanager fvwm
+
+#GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.session session-name gnome-fvwm
+#gnome-fallback lance polkit-gnome lui meme
+
+#GSETTINGS_BACKEND=dconf gsettings set org.gnome.settings-daemon.plugins.power button-hibernate 'interactive'
+#gsettings list-recursively org.gnome.settings-daemon.plugins.power
+#hibernate, suspend, poweroff, interactive
+
+conftool=gconftool-2
+terminal=gnome-terminal
+case $MYHOSTNAME in
+  imb )
+ if [ -e /usr/bin/mate-about ]; then
+  conftool=mateconftool-2
+  terminal=mate-terminal
+  $conftool --type string --set /desktop/mate/session/required_components/windowmanager fvwm
+  #informatique.os.linux: 36881
+  $conftool --type bool --set /desktop/mate/peripherals/keyboard/xkb/overrideSettings false
+ fi
+;;
+esac
+
+. $MYFILES/.xgeometry
+$conftool --type string --set /apps/$terminal/profiles/Default/font "$FONTTYPE $GNOMEFONTSIZE"
+$conftool --type int --set /apps/$terminal/profiles/Default/default_size_columns "$HORIZ"
+$conftool --type int --set /apps/$terminal/profiles/Default/default_size_rows "$GNOMEVERT"
+
+###### gnome3 ########
+GSETTINGS_BACKEND=dconf 
+export GSETTINGS_BACKEND
+# fallback mode
+gsettings set org.gnome.desktop.session session-name gnome-fallback
+
+#pour régler l'action d'appuyer sur le bouton power
+gsettings set org.gnome.settings-daemon.plugins.power button-power 'interactive'
+gsettings set org.gnome.settings-daemon.plugins.power idle-dim-battery false
+gsettings set org.gnome.settings-daemon.plugins.power lid-close-ac-action 'blank'
+gsettings set org.gnome.settings-daemon.plugins.power lid-close-battery-action 'blank'
+
+gsettings set org.gnome.desktop.background show-desktop-icons true
+
+#gnome-terminal
+$conftool --type string --set /apps/$terminal/keybindings/full_screen '<Control>F11'
+$conftool --type string --set /apps/$terminal/keybindings/help '<Control>F1'
+$conftool --type string --set /apps/$terminal/keybindings/detach_tab '<Control><Shift>d'
+$conftool --type string --set /apps/$terminal/keybindings/reset '<Control>F8'
+$conftool --type string --set /apps/$terminal/keybindings/reset_and_clear '<Control>F9'
+$conftool --type string --set /apps/$terminal/keybindings/set_terminal_title '<Control>F10'
+$conftool --type string --set /apps/$terminal/keybindings/toggle_menubar '<Control>F12'
+
+$conftool --type bool --set /apps/$terminal/global/use_menu_accelerators "false"
+$conftool --type bool --set /apps/$terminal/profiles/Default/default_show_menubar "false"
+$conftool --type int --set /apps/$terminal/profiles/Default/scrollback_lines '1024'
+#$conftool --type string --set /apps/$terminal/profiles/Default/background_color "LemonChiffon"
+$conftool --type string --set /apps/$terminal/profiles/Default/background_color "#FFFFFFFFDDDD"
+$conftool --type string --set /apps/$terminal/profiles/Default/foreground_color "#000000000000"
+$conftool --type bool --set /apps/$terminal/profiles/Default/silent_bell "true"
+$conftool --type bool --set /apps/$terminal/profiles/Default/use_system_font "false"
+$conftool --type bool --set /apps/$terminal/profiles/Default/use_custom_default_size "true"
+$conftool --type bool --set /apps/$terminal/profiles/Default/use_theme_colors "false"
+$conftool --type string --set "/apps/$terminal/profiles/Default/cursor_blink_mode" "off"
+
+#gnome-tweak-tool #pour régler le suspend quand on ferme le clapot
+## on peut le faire directement par gsettings
+
+#valeur par défaut:
+#gconftool-2 --set "/apps/gnome-terminal/profiles/Default/palette" --type string "#2E2E34343636:#CCCC00000000:#4E4E9A9A0606:#C4C4A0A00000:#34346565A4A4:#757550507B7B:#060698209A9A:#D3D3D7D7CFCF:#555557575353:#EFEF29292929:#8A8AE2E23434:#FCFCE9E94F4F:#72729F9FCFCF:#ADAD7F7FA8A8:#3434E2E2E2E2:#EEEEEEEEECEC"
+#Foreground-color: #000000000000
+#Background-color: #FFFFFFFFDDDD
+#Sur imb: palette: 000000000000:#CCCC00000000:#4E4E9A9A0606:#C4C4A0A00000:#34346565A4A4:#757550507B7B:#060698209A9A:#D3D3D7D7CFCF:#555557575353:#EFEF29292929:#8A8AE2E23434:#FCFCE9E94F4F:#72729F9FCFCF:#ADAD7F7FA8A8:#3434E2E2E2E2:#EEEEEEEEECEC
+
+## #http://xorcode.com/guides/solarized-vim-eclipse-ubuntu/
+## gconftool-2 --set "/apps/gnome-terminal/profiles/Default/use_theme_background" --type bool false
+## gconftool-2 --set "/apps/gnome-terminal/profiles/Default/use_theme_colors" --type bool false
+## gconftool-2 --set "/apps/gnome-terminal/profiles/Default/palette" --type string "#070736364242:#D3D301010202:#858599990000:#B5B589890000:#26268B8BD2D2:#D3D336368282:#2A2AA1A19898:#EEEEE8E8D5D5:#00002B2B3636:#CBCB4B4B1616:#58586E6E7575:#65657B7B8383:#838394949696:#6C6C7171C4C4:#9393A1A1A1A1:#FDFDF6F6E3E3" 
+## #black version:
+## #gconftool-2 --set "/apps/gnome-terminal/profiles/Default/background_color" --type string "#00002B2B3636"
+## #gconftool-2 --set "/apps/gnome-terminal/profiles/Default/foreground_color" --type string "#65657B7B8383"
+## #light version
+## gconftool-2 --set "/apps/gnome-terminal/profiles/Default/background_color" --type string "#FDFDF6F6E3E3" 
+## gconftool-2 --set "/apps/gnome-terminal/profiles/Default/foreground_color" --type string "#00002B2B3636"
+
+echo "Lancer gnome-session-properties pour l'autostart, eventuellement gnome-tweak-tool"
+echo "gnome-session-properties"
+
+##################################################################
+# Exemple de session:
+# File: /usr/share/gnome-session/sessions/xmonad.session
+# [GNOME Session]
+# Name=Xmonad session
+# RequiredComponents=gnome-panel;gnome-settings-daemon;
+# RequiredProviders=windowmanager;notifications;
+# DefaultProvider-windowmanager=xmonad
+# DefaultProvider-notifications=notification-daemon
+# 
+# Pour la rajouter dans gdm
+# File: /usr/share/xsessions/xmonad-gnome-session.desktop
+# [Desktop Entry]
+# Name=Xmonad GNOME
+# Comment=Tiling window manager
+# TryExec=/usr/bin/gnome-session
+# Exec=gnome-session --session=xmonad
+# Type=XSession

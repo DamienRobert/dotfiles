@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# git-addremove
+git add .
+git ls-files --deleted | xargs git rm
+
+# rem: nowadays one can use git add -A
+# or git add -u if we only want to update files already tracked

@@ -1,0 +1,1 @@
+zdump -v /etc/localtime |grep 2007

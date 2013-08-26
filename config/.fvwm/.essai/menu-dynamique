@@ -1,0 +1,6 @@
+                   AddToFunc MakeMissingDirectoryMenu
+                   + I Exec fvwm_make_directory_menu.sh $0
+
+                   AddToMenu SomeMenu
+                   + MissingSubmenuFunction MakeMissingDirectoryMenu
+                   + "Root directory" Popup /

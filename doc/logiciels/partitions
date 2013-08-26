@@ -1,0 +1,61 @@
+Disque layout:
+
+1 track contient des secteurs (c'est un cercle dans le disque)
+1 disque contient plusieurs heads
+1 cylindre c'est un ensemble tracks égal au nombre de heads
+
+Typiquement:
+255 heads, 63 sectors/track
+-> un cylindre a 63*255=16065 secteurs
+1 secteur fait 512 bytes -> un cylindre fait 8225280B=8032.5kiB, 
+                            un track 32256B=31.5kiB
+
+Sur numenor fdisk me dit: 30401 cylinders, total 488397168 sectors
+or 30401*16065 = 488392065 on voit qu'il reste des secteurs qui ne peuvent
+pas tenir dans un cylindre (en fait il n'y a en vrai pas un nombre entier
+de cylindres)
+
+En pratique les secteurs modernes font 4096 bytes, mais les disques
+annoncent toujours des secteurs virtuels de 512 bytes, donc il vaut mieux
+aligner les partitions sur un nombre de secteur divisible par 8. J'imagine
+que s'aligner sur les tracks c'est bien, donc il faut s'aligner sur
+63*8 secteurs = 504 secteurs, soit 252 kiB... Hum d'après les articles que
+je lis, on s'en fout des tracks, ils recommandent d'aligner sur 1MO=2048
+secteurs, qui est bien divisible par 8. (Update: c'est à cause des ssd qui
+se font effacer par blocks de 256KB ou 512KB)
+
+(Autre terme: 1 block=1024 bytes ou 512 bytes suivant qui l'utilise...)
+
+
+fdisk: fdisk donne le nombre de blocks (1 block = 1024 bytes)
+255 heads, 63 sectors/track, 30401 cylinders, total 488397168 sectors
+Units = sectors of 1 * 512 = 512 bytes
+   Device Boot      Start         End      Blocks   Id  System
+   /dev/sda1   *          63   488392064   244196001   83  Linux
+
+
+sfdisk donne le nombre de cylindres
+Units = cylinders of 8225280 bytes, blocks of 1024 bytes, counting from 0
+   Device Boot Start     End   #cyls    #blocks   Id  System
+   /dev/sda1   *      0+  30400   30401- 244196001   83  Linux
+
+cfdisk -P s parle en secteurs 
+cfdisk -P t parle en head/sect/cyl (sachant que les heads et cylindres
+commencent à 0, mais pas les secteurs)
+         ---Starting----      ----Ending-----    Start     Number of
+ # Flags Head Sect  Cyl   ID  Head Sect  Cyl     Sector    Sectors
+-- ----- ---- ---- ----- ---- ---- ---- ----- ----------- -----------
+ 1  0x80    1    1     0 0x83  254   63 30400          63   488392002
+Comme on peut le voir, on commence au secteur 63 (premier secteur de la
+deuxième head), et on termine au dernier secteur de la dernière HEAD (la
+255e) du 30401e cylindre.
+
+C'est un peu confusant: fdisk et sfdisk font commencer les secteurs (quand
+on parle globalement) à 0. Donc le secteur 63 est le 64e secteur.
+cfdisk quand il dit cyl 0 head 1 secteur 1, il s'agit du premier cylindre,
+2eme tête, 1er secteur, soit le secteur 63 (donc le 64e secteur). OUF!
+
+cfdisk rajoute une * quand la partition n'est pas alignée sur un cylindre,
+mais combiner alignement sur un cylindre et sur 8 secteurs impose de faire
+des trucs de 8032.5kiB, ce qui est pénible, ça n'a pas l'air important.
+

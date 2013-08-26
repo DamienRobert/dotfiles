@@ -1,0 +1,12 @@
+<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/">
+<os:ShortName>National and Local Weather Forecast, Hurricane, Radar and Report</os:ShortName>
+<os:Description>National and Local Weather Forecast, Hurricane, Radar and Report</os:Description>
+<os:InputEncoding>UTF-8</os:InputEncoding>
+<os:Image width="16" height="16">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACNElEQVQ4jZ2SMUgbYRTH3w1FaofSYpbaoEgGDxRBAsESEYu9tqIuhSiOBcHBgrgEpEsRI4miWElSA0YSYjCK0sXATbaDBkJBMKM6ecuBIIEMLrlfh0+jQgutw4938N3/976790Qb2OIu8j6neJdFjE2kN6PoSSP+FFpXEvGtId4E0hFHtIEtZGgHGdq5LzA2kb6Nv4c7V28Ff+z+L+H2KCLG5v1uvRnEn7qtvjVF56qiPYroMURfVjQGdvGO52kb26vVtrE9xJ+iMbCLy8igdSXRP2wj7VFcRgbfcI5nvgSaZwH5FP3FRfmKquNwUb7i1Cpj2RVcRgazcE44eYR3PE+xZDM4ZdbOT60yntdJ5HF/lsbALsdnlwS+/MRlZDg+u2Tk8w8su4JZOCe4dIhZOKdYspleKfK8M8Zo0ORldwKRnjSP3mQ5PrtkcMpE9BjZ/AnFkl0LmYVzsvkTTq0yrf1pNHcIaZhB3BFE/Cnq+zZuBS1fmV4pUnUcJiIHZPMnVB2H0aC6/tuPO8jTGV68ilOnLyJaV5L6vg0su1ITDE6ZVB0H33CO4NIhVcfhZXeCcPIIy66wvl3Csiv4hnNKIP4UE5ED9af1GC4jQ3DpkCfeb7T2p5mc3UfzLFCnLzI5u8/6domRie9oTXNIbTn0mJpxR1w9uyNqzi3zSMOMGllzWH37NZo7hNQ26+523SyJvozmWVDhlnklaA6jNc0p3CHkf8M1gTt0LeiIP6hzTXDz4kP5DXbGJSnPQyf2AAAAAElFTkSuQmCC</os:Image>
+<SearchForm>http://www.weather.com/</SearchForm>
+<os:Url type="text/html" method="GET" template="http://www.weather.com/search/enhancedlocalsearch">
+  <os:Param name="where" value="{searchTerms}"/>
+  <os:Param name="loctypes" value="1003%2C1001%2C1000%2C1%2C9%2C5%2C11%2C13%2C19%2C20"/>
+  <os:Param name="from" value="hdr_localsearch"/>
+</os:Url>
+</SearchPlugin>

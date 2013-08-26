@@ -1,0 +1,32 @@
+#!/bin/zsh
+#original:
+#https://bbs.archlinux.org/viewtopic.php?id=69589
+# pour les icones: /usr/share/icons/gnome/16x16/status
+
+ponymix "$@"
+
+icon_name=""
+
+display_volume=$(ponymix get-volume)
+muted=$(ponymix is-muted)
+
+if [[ $muted == true ]]; then
+   icon_name="audio-volume-muted"
+fi
+
+if [[ $icon_name == "" ]]; then
+    if [[ $display_volume == "0" ]]; then
+        icon_name="audio-volume-muted"
+    else
+        if [[ $display_volume -lt "33" ]]; then
+            icon_name="audio-volume-low"
+        else
+            if [[ $display_volume -lt "67" ]]; then
+                icon_name="audio-volume-medium"
+            else
+                icon_name="audio-volume-high"
+            fi
+        fi
+    fi
+fi
+notify-send " " -t 1 -i $icon_name -h int:value:$display_volume -h string:synchronous:volume

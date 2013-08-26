@@ -1,0 +1,35 @@
+#!/bin/sh
+
+action=$1; shift
+case $action in
+  fetch )
+    for i in "$@"; do
+      echo "====== vcsupdate for $i ======";
+      ( cd "$i";
+      if [ -d .git ]; then git fetch --all; fi
+      )
+    done
+    ;;
+  update )
+    for i in "$@"; do
+      echo "====== vcsupdate for $i ======";
+      ( cd "$i";
+      if [ -d .git ]; then git pull; fi
+      if [ -d .hg ]; then hg pull -u; fi
+      if [ -d .svn ]; then svn update; fi
+      )
+    done
+    ;;
+  list )
+    for i in "$@"; do
+      if [ -d "$i/.git" ]; then echo "$i: git"; fi
+      if [ -d "$i/.hg" ]; then  echo "$i: hg" ; fi
+      if [ -d "$i/.svn" ]; then echo "$i: svn"; fi
+      if [ -d "$i/.bzr" ]; then echo "$i: bzr"; fi
+      if [ -d "$i/.svk" ]; then echo "$i: bzk"; fi
+    done
+    ;;
+  * )
+    echo "$0 list/update dirs"
+    ;;
+esac

@@ -1,0 +1,215 @@
+Calcul sur les corps algébriquement clos
+========================================
+
+MR2578343 (2011d:13043)  Steel, Allan K.  Computing with algebraically
+closed fields.
+ J. Symbolic Comput.  45  (2010),  no. 3, 342--372.
+
+MR2041106 (2005b:12016)  Steel, Allan . A new scheme for computing
+with algebraically closed fields.
+ Algorithmic number theory (Sydney, 2002),
+ 491--505, Lecture Notes in Comput. Sci., 2369, Springer, Berlin,
+2002.
+
+For primary decomposition:
+MR2167699 (2006f:13023)  Steel, Allan . Conquering inseparability:
+primary decomposition and multivariate factorization over algebraic
+function fields of positive characteristic.
+ J. Symbolic Comput.  40  (2005),  no. 3, 1053--1075.
+
+Exposés introductifs
+====================
+
+http://arxiv.org/pdf/1210.7459v1.pdf
+  The Work of John Tate (Milne)
+  A l'air super intéressant! 
+
+http://arxiv.org/abs/math/0210184
+   An introduction to the theory of p-adic representations
+   Laurent Berger
+
+http://arxiv.org/abs/math/0009145v1
+  On the Galois Theory of Grothendieck
+  Un cours sur la version de Grothendick de la théorie de Galois
+http://websites.math.leidenuniv.nl/algebra/GSchemes.pdf
+  Pareil, théory de Galois des schémas, par Lenstra
+
+http://hal.archives-ouvertes.fr/hal-00749232
+  Approche formelle à la manière de Neukirch de la Théorie $\ell$-adique du
+  corps des classes
+
+http://arxiv.org/abs/1302.5834
+ From Sheaf Cohomology to the Algebraic de Rham Theorem
+
+http://www.math.harvard.edu/~mazur/preprints/meaning_error.pdf
+  Finding meaning in error terms (Barry Mazur)
+  Sur la conjecture de Sato-Tate
+
+Preprints
+=========
+
+http://arxiv.org/abs/1210.1684
+ Theta functions and algebraic curves with automorphisms
+ (a l'air d'avoir des trucs intéressants sur Thomae en genre plus grand)
+
+http://eprint.iacr.org/2012/551
+ Faster Pairing Computation on Jacobi quartic Curves with High-Degree Twists
+
+http://fr.arxiv.org/pdf/1210.1451v1
+   On the Complexity of the Multivariate Resultant
+
+http://arxiv.org/abs/1210.5838
+   Torsion points on Jacobian varieties via Anderson's p-adic soliton theory
+
+http://hal.archives-ouvertes.fr/hal-00749232
+  Approche formelle à la manière de Neukirch de la Théorie $\ell$-adique du
+  corps des classes
+
+http://arxiv.org/abs/1211.1152
+   A Universal Formula for the j-Invariant of the Canonical Lifting
+
+http://arxiv.org/abs/1211.4387
+    Isogénies horizontales et classes d'isogénie de variétés abéliennes
+    Nicolas Ratazzi (Submitted on 19 Nov 2012)
+  The goal of this article is twofold. First we obtain a horizontal
+  isogenies theorem (in the spirit of Frey-Jarden) for a certain (large)
+  class of abelian varieties on a number field $K$. Secondly we apply this
+  result in order to obtain a "radical caracterization", following
+  Hall-Perucca, of the isogenies classes of abelian varieties in the
+  preceeding class. Precisely we obtain a result for the abelian varieties
+  faithfully of type GSp, a class containing the abelian varieties A/K of
+  dimension 2 or odd and generic (such that the endomorphism ring is Z).
+
+http://eprint.iacr.org/2012/670
+ Two is Greater than One
+ (implémentation des surfaces de Kummer)
+
+http://arxiv.org/abs/1211.6900
+ Explicit Kummer varieties of hyperelliptic Jacobian threefolds
+
+http://hal.inria.fr/hal-00756838
+  Square root algorithms for the number field sieve (Emmanuel Thomé)
+
+http://arxiv.org/abs/1212.5884
+ On Jaconian Kummer surfaces Kenji Koike
+     We give explicit equations of smooth Jacobian Kummer surfaces of
+     degree 8 by theta functions. As byproducts, we can write down
+     Rosenhain's 80 hyperplanes and 32 lines on these Kummer surfaces
+     explicitly. 
+
+http://arxiv.org/abs/1212.5883
+ On a generalization of Deuring's results Ken-ichi Sugiyama
+     Using the Dieudonne theory we will study a reduction of an abelian
+     variety of complex multiplication. Our results may be regarded as a
+     generalization of a classical theorem due to Deuring for a CM-elliptic
+     curve. We will also discuss a sufficient condition that is a proper
+     smooth curve with CM to be maximal. 
+
+http://arxiv.org/abs/1301.5672
+ Class polynomials for nonholomorphic modular functions
+ Jan Hendrik Bruinier, Ken Ono, Andrew V. Sutherland
+
+http://eprint.iacr.org/2013/075
+ Improved Security for a Ring-Based Fully Homomorphic Encryption Scheme
+  Joppe W. Bos and Kristin Lauter and Jake Loftus and Michael Naehrig
+
+http://eprint.iacr.org/2013/095
+ A new index calculus algorithm with complexity $L(1/4+o(1))$ in very small
+ characteristic
+  Antoine Joux
+
+http://eprint.iacr.org/2013/373
+ Injective Encoding to Elliptic Curves
+ Pierre-Alain Fouque and Antoine Joux and Mehdi Tibouchi
+
+http://eprint.iacr.org/2013/372
+  Practical Bootstrapping in Quasilinear Time
+  Jacob Alperin-Sheriff and Chris Peikert
+
+http://arxiv.org/abs/1201.2124
+ Integral Tate modules and splitting of primes in torsion fields of elliptic curves
+  Let $E$ be an elliptic curve over a finite field $k$, and $\ell$ a
+  prime number different from the characteristic of $k$. In this paper
+  we consider the problem of finding the structure of the Tate module
+  $T_\ell(E)$ as an {\it integral} Galois representations of $k$. We
+  show that the characteristic polynomial of the arithmetic Frobenius
+  and the $j$-invariant of $E$ suffice to this purpose in almost all
+  cases. Hilbert Class Polynomials of imaginary quadratic orders play
+  an important role. We give an application to the splitting of primes
+  in torsion fields arising from elliptic curves over number fields. 
+
+http://arxiv.org/abs/1306.5102
+ Frobenius lifts and point counting for smooth curves
+ Amnon Besser, François-Renaud Escriva, Rob de Jeu
+     We describe an algorithm to compute the zeta-function of a proper,
+     smooth curve over a finite field, when the curve is given together
+     with some auxiliary data. Our method is based on computing the matrix
+     of the action of a semi-linear Frobenius on the first cohomology group
+     of the curve by means of Serre duality. The cup product involved can
+     be computed locally, after first computing local expansions of a
+     globally defined lift of Frobenius. The resulting algorithm's
+     complexity is softly cubic in the field degree, which is also the case
+     with Kedlaya's algorithm in the hyperelliptic case. 
+
+http://arxiv.org/abs/1109.6278
+ On the number of elliptic curves with prescribed isogeny or torsion group over number fields of prime degree
+ Filip Najman
+   Let $p$ be a prime and $K$ a number field of degree $p$. We count the
+   number of elliptic curves, up to $\bar{K}$-isomorphism, having a
+   prescribed property, where this property is either that the curve
+   contains a fixed torsion group as a subgroup, or that it has an isogeny
+   of prescribed degree. We also study the following question: for a given
+   $n$ such that $|Y_0(n)(\Q)|>0$, does every elliptic curve over $K$ with
+   an $n$-isogeny have a quadratic twist with torsion $\Z/n\Z$ as a
+   subgroup? We prove that this is true only for the cases $n=2,3,4,6$ and
+   for the pairs $(n,K)=(11, \Q(\zeta_{11})^+)$ and $(n,K)=(14,
+   \Q(\zeta_{7})^+)$. 
+
+http://arxiv.org/abs/0908.2198
+ The Berlekamp-Massey Algorithm and the Euclidean Algorithm: a Closer Link
+
+http://arxiv.org/abs/1212.5883
+ On a generalization of Deuring's results (Ken-ichi Sugiyama)
+    Using the Dieudonne theory we will study a reduction of an abelian
+    variety of complex multiplication. Our results may be regarded as a
+    generalization of a classical theorem due to Deuring for a CM-elliptic
+    curve. We will also discuss a sufficient condition that is a proper
+    smooth curve with CM to be maximal. 
+
+http://eprint.iacr.org/2012/485
+Cryptology ePrint Archive: Report 2012/485
+  Exploiting Collisions in Addition Chain-based Exponentiation Algorithms
+  Neil Hanley and HeeSeok Kim and Michael Tunstall
+    Abstract: Public key cryptographic algorithms are typically based on group
+    exponentiation algorithms, and many algorithms have been proposed in the
+    literature based on addition chains. We describe attacks based on
+    collisions of variables manipulated in group operations extending attacks
+    described in the literature. These collisions are visible where one is able
+    to acquire information through some suitable side channel that provides a
+    trace during the computation of a group exponentiation algorithm. For
+    example, through measuring the instantaneous power consumption or the
+    electromagnetic emanations of a microprocessor. The advantage of our
+    attacks over previous work is that the attacks can be applied to a single
+    trace and do not require any knowledge of the input to the exponentiation
+    algorithm. Moreover, we prove that our attacks are applicable to all
+    addition chain-based exponentiation algorithms. This means that a side
+    channel resistant implementation of a group exponentiation will require
+    countermeasures that introduce enough noise that an attack is not
+    practical. 
+
+http://arxiv.org/abs/1308.1970
+ Index conditions and cup-product maps on abelian varieties
+    We study questions surrounding cup-product maps which arise from
+    pairs of non-degenerate line bundles on an abelian variety. Important
+    to our work is Mumford's index theorem which we use to prove that
+    non-degenerate line bundles exhibit positivity analogous to that of
+    ample line bundles. As an application we determine the asymptotic
+    behaviour of families of cup-product maps and prove that vector
+    bundles associated to these families are asymptotically globally
+    generated. To illustrate our results we provide several examples. For
+    instance, we construct families of cup-product problems which result
+    in a zero map on a one dimensional locus. We also prove that the
+    hypothesis of our results can be satisfied, in all possible
+    instances, by a particular class of simple abelian varieties.
+    Finally, we discuss the extent to which Mumford's theta groups are
+    applicable in our more general setting. 

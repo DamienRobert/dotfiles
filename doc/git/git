@@ -1,0 +1,345 @@
+# vim: set foldmethod=marker:
+### Blobs, trees, commits, tags objects ###{{{1
+|git hash-object|: 
+  compute the hash
+  use -w to write the object into the database
+|git unpack-file|
+  create a file from a blob
+
+|git write-tree| fait un objet de type tree de l'index
+|git mktree|
+  Reads standard input in non-recursive ls-tree output format, and creates a tree object.
+|git commit-tree| fait un objet de type commit depuis le tree
+
+|git mktag|
+  To create a tag object
+         git mktag < signature_file
+         object <sha1>
+         type <typename>
+         tag <tagname>
+         tagger <tagger>
+         followed by some optional free-form message
+
+### Manipulating the index ################### {{{1
+
+git add/git rm
+--------------
+git rm file #remove from index and working dir
+git rm --cached file #remove from index 
+Options: -f to remove even if change not commited
+
+git add file: add file to index
+git add -u file: add file only if already in index
+  git add -u default to git add -u .: update all files in index
+git add -A: like -u but use all files in working dir
+  => add new files, update all files, rm files that were removed
+git add -N: only add the file to the index, not the content
+
+git add --refresh: refresh the file in the index
+
+git mv/git cp
+
+git clean: Remove untracked files from the working tree.
+
+|git update-index|: update index from working dir
+
+### Commits and refs ###################### {{{1
+git init
+  (can be launched again in a non empty environnement to change default settingslike putting it to bare, or using --seperate-git-dir, or changing the shared option...)
+
+git commit:
+-----------
+  $ tree=$(git write-tree)
+  $ commit=$(echo 'Initial commit' | git commit-tree $tree)
+  $ git update-ref HEAD $commit
+
+git citool: git gui commit version
+
+git branch #List, create, or delete branches.
+=> `git remote` to put shortcut to remote branches
+git tag    #tags
+=> git verify-tag signed-tag #check the tag signature
+
+git revert  #revert the commits
+
+git stash #"temp" commits
+
+|git fmt-merge-msg|
+  Produce a merge commit message, to be used when commiting after a git merge
+|git patch-id|
+  Compute unique ID (essantially the sha1) of a patch
+  (allows to check for duplicate patch)
+|git stripspace|
+  Remove unnecessary whitespace (for text like commit, notes, tags, branchs description)
+
+|git symbolic-ref|
+  git symbolic-ref ploum show where ploum points to
+  git symbolic-ref ploum plam makes ploum a symbolic ref to plam
+|git update-ref|
+  fait pointer HEAD sur l'objet commit
+  git update-ref ref ploum store ploum in ref (possibly deferencing symb refs)
+  git update-ref ref ploum plam is the same but verify that ref was equal to plam before updating it
+|git show-ref|
+  show references in a local repo
+|git name-rev committish| 
+  find symbolic name for committish
+git describe: give a nice description of a commitish 
+(use annoted tags by defaut, pass --all to use all refs)
+    git describe --all HEAD~2 ->  heads/branch-3-g6a4285d
+    git name-rev HEAD~2       -> HEAD~2 list~2
+    donc HEAD~2 est 3 commits après branch, ou 2 commits avant list
+    git describe --contains show tags that contains the commit, so is simmilar to name-rev
+|git check-ref-format| 
+  ensure that a ref is well formed
+
+### Moving around ################### {{{1
+
+git checkout:
+-------------
+  git read-tree BRANCH
+  git checkout-index -u -a
+  git update-ref HEAD BRANCH  
+|git read-tree|: lit un tree dans l'index; -u pour updater le working dir
+               -m pour merger, --reset équivalent à -m, mais enlève les
+               unmerged entries au lieu de fail
+               -i: faire l'opération même si l'index ou le wd sont dirty
+|git checkout-index|: update le wd from the index
+  -u: pour updater le stat info des files checked out
+  -a: check out all files
+
+git reset:
+----------
+(à la différence de git checkout, git reset ne change pas HEAD, mais ce qui est *pointé* par HEAD!)
+  git read-tree --reset COMMIT (--mixed)
+  git update-index --refresh   (--mixed)
+  git checkout-index -u -a     (--hard)
+  git update-ref $(git symbolic-ref HEAD) COMMIT   (--soft)
+Options: --soft just reset the head to COMMIT
+         --mixed: resets the index but not the wd
+         --hard: reset index and wd
+         --keep: comme --hard, mais ne change que les files qui ont changé
+         entre COMMIT et HEAD (si une telle file a des local change par rapport à HEAD, abort)
+         --merge: comme --hard, mais ne change que les files qui ont changé
+         entre COMMIT et HEAD (si une telle file a des local change par rapport à *l'index* abort, sauf si index=commit=head). 
+         L'idée de reset --merge est de reverter un merge, donc on suppose
+         que les fichiers qui ont changé par rapport à HEAD, mais qui sont
+         égal à l'index, viennent du résultat du merge et qu'on peut les
+         reverter. Si la version commit= la version head, alors index
+         devrait être égal à la version head, d'où le abort si ce n'est pas
+         le cas. (voir expert pour plus de détails)
+
+### Merging ####################### {{{1
+
+git merge mybranch:
+-------------------
+  mb=$(git merge-base HEAD mybranch) # |git merge-base|: best ancestor
+  git read-tree -m -u $mb HEAD mybranch
+  git merge-index git-merge-one-file -a
+  |git merge-index|: Run a merge for files needing merging
+  |git merge-one-file|: Default helper command to run a three-way file merge.
+      (to be launched by git merge-index)
+
+git merge-file: pour faire des three way merges sur des fichier à la main
+git mergetool: lancer un merge externe
+
+git rebase: move branches around
+
+git cherry-pick:  Apply the changes introduced by some existing commits.
+git cherry: to see which commit was applied by Upstream
+  git cherry upstream: regarde tous les commits qui ont divergés depuis upstream, calcule leur pach-id, et si ce patch-id n'a pas été appliqué, output le commit
+
+git merge-tree: comme git read-tree -m, mais ne modifie pas l'index, donne le résultat sur STDOUT
+
+git rerere: record commit operation to replay it
+
+### Info ######################### {{{1
+gitk: gui for log infos
+
+git status 
+
+git show:
+---------
+Wrapper autour de |git cat-files -p| (for blobs), |git ls-tree| (for trees), git diff-tree --cc (for commits)
+ex: git show tag, git show tag^{commit}, git show tag^{tree}
+
+git grep
+
+git show-branch: show branches information
+ex: git show-branch --topo-order --more=4
+
+|git ls-files|: show files in index
+
+git log
+-------
+git log
+git log -n 3 #3 derniers commits
+git log since..until
+git log --follow file #history following renames
+git log --source file #
+Options: --after=date, --before=date, --author/--commiter=pattern
+         --since/--until=date
+         --(no-)merges: print only merge, --first-parent (follow only first
+         parent)
+         --all: show log for all refs in .git/refs
+         --branches(=pattern), --tags, --remotes: show log for all refs in  
+            .git/refs/{heads,tags,remotes}
+         -g: walk reflog
+         --merge: only show log for files that are unmerged
+
+git shortlog: summarizes git log output
+  -e: add email
+  => use .mailmap to coalesce commits
+  ex: Real Foo Bar <foo@bar.org> <foo_false@bar.org> to replace the author matching foo_false by Real Foo Bar
+
+git whatchanged: essentially like git log, with different defauts
+  by defaut show raw diffs, does not show merge commits (unless -m is added, in which case it show a diff for each merge parent)
+  (git log -p -m is the same as git whatchanged -p -m for the examples i tried)
+  I find git log --stat or git log --name-status more readable than git whatchanged
+
+=> |git for-each-ref|: output informations for each ref
+
+git blame ploum: show which lines correspond to which commit
+  => also use .mailmap
+(git annotate: like git blame but with slightly different output, used for compatibility)
+
+git diff:
+---------
+git diff -> |git diff-files -p|: diff between index and working dir
+git diff HEAD -> |git diff-index -p HEAD|: diff between the working dir and HEAD
+git diff --cached HEAD -> |git diff-index --cached HEAD|: diff between the index and HEAD
+git diff TAG HEAD -> |git diff-tree -p TAG HEAD|: diff between HEAD and TAG
+     (rmq: git diff-tree HEAD is equivalent to git diff-tree HEAD^ HEAD)
+Options: --stat: stat
+         --summary: list newly added, deleted, renamed and copied files
+
+man gitdiffcore pour la génération des diffs
+git difftool: lancer un diff externe
+
+### Import /Export ################ {{{1
+git bundle create/git bundle uncreate: like git push/pull but in an offline way
+git fast-export/git fast-import: like bundle, but in a human readable
+  format, so can also filter things
+
+git filter-branch: filtre les commits existants         
+  ex: git filter-branch --tree-filter 'rm supersecretfile' HEAD
+
+git archive: create an archive from an index
+ => git get-tar-commit-id (extract the commit from the archive)
+
+git am (appliquer un ensemble de commits dans une mailbox) 
+    => |git apply| (appliquer un patch)
+git format-patch #apply/send patches by email
+  git imap-send: send patch by git format-patch to imap folder
+  git send-email: send the patch by git format-patch by email
+  |git mailinfo|
+    Extracts patch and authorship from a single e-mail message
+  |git mailsplit|
+     Simple Unix mbox splitter program
+  (used by git am)
+
+git fetch
+git push/git pull
+
+  git request-pull start url [end]: generates a summary of pending changes
+
+git clone #clone locally
+
+git svn #bidirect link git <-> svn
+
+|git ls-remote|
+       Displays references available in a remote repository along with the
+      associated commit IDs.
+
+|git daemon|
+  A really simple server for git repositories
+|git fetch-pack|
+  git-fetch-pack - Receive missing objects from another repository
+  (used by git fecth)
+  => |git upload-pack|
+      Send objects packed back to git-fetch-pack
+|git send-pack|
+   Push objects over git protocol to another repository
+   (used by git push)
+   =>  |git receive-pack|
+        Receive what is pushed into the repository
+|git http-backend|
+  Server side implementation of Git over HTTP
+|git update-server-info|
+  Update auxiliary info file to help dumb servers
+  (info/refs, objects/info/packs)
+|git http-fetch|
+  Download from a remote git repository via HTTP
+|git http-push|
+  Push objects over HTTP/DAV to another repository
+|git parse-remote|
+  Routines to help parsing remote repository access parameters
+|git shell|
+  Restricted login shell for Git-only SSH access
+  (see gitolite for a higher level program)
+|git upload-archive|
+  Send archive back to git-archive
+  (called by git archive --remote)
+
+### Housekeeping ################## {{{1
+git fsck, git fsck --lost-found
+git gc
+ => |git prune-packed|: remove object already in packed files
+git repack #pack objects
+ => |git verify-pack| to verify packs
+git pack-refs: pack refs (heads and tags)
+git prune: prune all unreachable objects
+git reflogs: recover unreachable objects
+
+git relink: hardlink common object in different git repositories
+git count-objects: count the place taken by unpacked objects
+  #options: -v -> get the space by packed object, and how much gc can gain
+
+|git pack-objects|
+  create a pack of object list
+|git unpack-objects|
+  unpack the objects in the pack
+|git pack-redundant|
+  show packs which are redondant
+|git show-index|
+  print what is in a pack index
+  (this is a subset of what is given in git verify-pack -v)
+|git index-pack|
+  create the index from a packed archive
+
+### Divers ################################### {{{1
+git config: set git options / |git var|: see git variable
+git gui #gui...
+git instaweb #browse git repo via html
+  #man gitweb
+
+git rev-parse: parse references
+git rev-list: list commit objects 
+
+git replace foo bar: 
+  adds a replace reference in .git/refs/replace/`sha1 foo` to `sha1 bar`
+
+git submodule: using submodules (sub git controlled dir)
+ => use .git/.gitmodules
+
+|git column|
+  Display data in column
+
+|git sh-setup|
+  Helper sh functions used when writting porcelain scripts
+
+man 5 gitattributes: 
+  specify if a file is a text/binary, how to diff them, how to
+  merge them..
+|git check-attr| pour les lire
+
+man 5 gitignore: 
+  ignore files
+
+man 7 gitnamespaces: 
+  name spaces in git, simulate having multiple repository, but
+  store all the objects in the same .git. Only the refs differs
+  (GIT_NAMESPACE=foo => they are stored in .git/refs/namespaces/foo)
+
+man 5 gitrepository-layout
+ex: info/grafts to record fake commit ancestry information
+#}}}

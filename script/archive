@@ -1,0 +1,117 @@
+#!/bin/zsh
+help() {
+  echo "archive dir: compress dir into a .tax.xz
+archive -u foo: unarchive foo
+
+OPTIONS:
+  -r|-rm: in compression mode ask to remove the dir
+          in decompression mode ask (or not in -rm) to remove foo"
+  exit 1
+}
+
+UNARCHIVE=
+REMOVE=
+TEMP=
+TMPDIR="/tmp/xz"
+OPTIONS=()
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -u ) shift ;  UNARCHIVE=true  ;;
+    -tmp) shift; TEMP=true ;;
+    -tmpdir) TMPDIR=$1; shift; TEMP=true ;;
+    -r ) shift; REMOVE="true" ;;
+    -rm ) shift; REMOVE="force" ;;
+    -*) OPTIONS=($OPTIONS $1); shift ;;
+    -h|-help|--help ) shift; help ;;
+    *) break;;
+  esac
+done
+
+doremove() {
+  file=$1
+  case $REMOVE in
+    true ) rm -i $file;;
+    force ) rm $file;;
+  esac
+}
+
+if [[ -z $UNARCHIVE ]]; then
+  for name in "$@"; do
+    DIR=${name%/}
+    XZFILE="$DIR.tar.xz"
+    echo "***** Archiving $DIR in $XZFILE *********"
+    if [[ -f $XZFILE ]]; then
+      echo "!! $XZFILE exist, rm it? (^C to abort)"
+      rm -i $XZFILE
+    fi
+    tar cvf - $DIR | xz $OPTIONS - > $XZFILE
+    xz -l $XZFILE
+
+    if [[ -n $REMOVE ]]; then
+      echo "!! Erase dir $DIR? (^C to abort)"
+      read a;
+      rm -rf "$DIR"
+    fi
+  done
+
+else
+  if [[ -n $TEMP ]]; then
+    #extra files to /tmp
+    mkdir -p $TMPDIR
+    for i in "$@"; do
+      TARGET="${i:t:r}"
+      case "$i" in
+        *.tar* ) 
+          TARGET=${TARGET:t:r}
+          DIR=$TMPDIR/$TARGET
+          mkdir -p $DIR
+          echo "-- $DIR --"
+          tar xvf $i -C $DIR;;
+        *.xz) 
+          FILE=$TMPDIR/$TARGET
+          echo "-- $FILE --"
+          unxz --keep --stdout "$i" > $FILE ;;
+        *) echo "'$i' cannot be extracted" 1>&2; continue ;;
+      esac
+    done
+
+  else
+    setopt extended_glob noclobber
+    for i in "$@"; do
+      if [[ ! -f $i && "$i" == (#s)(https|http|ftp)://* ]] ; then
+        if check_com curl; then
+          WGET_CMD="curl -L -k -s"
+        elif check_com wget; then
+          WGET_CMD="wget -q --no-check-certificate"
+        else
+          print "ERROR: neither wget nor curl is installed" >&2
+          continue
+        fi
+        print "-- Downloading '$i' --"
+        ${=WGET_CMD} "$i"
+      fi
+      if [[ -f $i ]] ; then
+        TARGET="${i:t:r}"
+        echo "-- Extracting archive '$i' --"
+        case "$i" in
+          *.zip|*.jar) unzip "$i" -d $TARGET ;;
+          *.rar ) unrar e -ad $i ;;
+          *.tar* ) tar xvf $i ;; 
+          *.tgz ) tar xvf $i ;; 
+          *.gz) gunzip -c "$i" > $TARGET ;;
+          *.bz2) bunzip2 -c "$i" > $TARGET ;;
+          *.xz) unxz --keep "$i" ;;
+          *.lzma) unlzma --keep "$i" ;;
+          *.lzh) lha x "$i" ;;
+          *.Z) uncompress "$i" ;;
+          *deb) ar -x $i ;;
+          *.7z) 7za x "$i" ;;
+          *) echo "'$i' cannot be extracted" 1>&2; continue ;;
+        esac
+        (( $? == 0 )) && doremove $i
+      fi
+    done
+  fi
+fi

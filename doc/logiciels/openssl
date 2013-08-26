@@ -1,0 +1,4 @@
+#dumper un certificat
+openssl s_client -connect www.eleves.ens.fr:443 < /dev/null
+gnutls-cli --print-cert -p 443 www.eleves.ens.fr < /dev/null
+

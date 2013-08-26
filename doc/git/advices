@@ -1,0 +1,192 @@
+       advice.*
+           These variables control various optional help messages designed to
+           aid new users. All advice.*  variables default to true, and you can
+           tell Git that you do not need help by setting these to false
+
+==========================================================================
+           pushNonFastForward
+               Set this variable to false if you want to disable
+               pushNonFFCurrent, pushNonFFDefault, and pushNonFFMatching
+               simultaneously.
+
+           pushNonFFCurrent
+               Advice shown when git-push(1) fails due to a non-fast-forward
+               update to the current branch.
+
+static const char message_advice_pull_before_push[] =
+  N_("Updates were rejected because the tip of your current branch is behind\n"
+     "its remote counterpart. Merge the remote changes (e.g. 'git pull')\n"
+     "before pushing again.\n"
+     "See the 'Note about fast-forwards' in 'git push --help' for details.");
+
+
+           pushNonFFDefault
+               Advice to set push.default to upstream or current when you ran
+               git-push(1) and pushed matching refs by default (i.e. you did
+               not provide an explicit refspec, and no push.default
+               configuration was set) and it resulted in a non-fast-forward
+               error.
+
+  N_("Updates were rejected because a pushed branch tip is behind its remote\n"
+     "counterpart. If you did not intend to push that branch, you may want to\n"
+     "specify branches to push or set the 'push.default' configuration variable\n"
+     "to 'simple', 'current' or 'upstream' to push only the current branch.");
+
+           pushNonFFMatching
+               Advice shown when you ran git-push(1) and pushed matching refs
+               explicitly (i.e. you used :, or specified a refspec that isn’t
+               your current branch) and it resulted in a non-fast-forward
+               error.
+
+  N_("Updates were rejected because a pushed branch tip is behind its remote\n"
+     "counterpart. Check out this branch and merge the remote changes\n"
+     "(e.g. 'git pull') before pushing again.\n"
+     "See the 'Note about fast-forwards' in 'git push --help' for details.");
+
+======================================================================
+           statusHints
+               Show directions on how to proceed from the current state in the
+               output of git-status(1) and in the template shown when writing
+               commit messages in git-commit(1).
+
+git status
+# On branch master
+# You have unmerged paths.
+#   (fix conflicts and run "git commit")
+#
+# Changes to be committed:
+#
+#       modified:   b
+#       deleted:    e
+#       new file:   c
+#
+# Unmerged paths:
+#   (use "git add <file>..." to mark resolution)
+#
+#       both modified:      a
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   b
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       d
+
+git status
+# On branch master
+# All conflicts fixed but you are still merging.
+#   (use "git commit" to conclude merge)
+
+git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       modified:   a
+(git reset a marche aussi)
+
+Par contraste:
+
+git status --short --branch
+(master|●4✚2)
+## master
+D  a
+R  b -> bb
+ M c
+A  e
+AM f
+?? g
+
+Avec un merge conflict sur c et un merge réussi sur d
+git st                                    (master|●1✖1✚1)
+## master
+UU c
+M  d
+
+========================================================================
+           commitBeforeMerge
+               Advice shown when git-merge(1) refuses to merge to avoid
+               overwriting local changes.
+
+  if (advice_commit_before_merge)
+    msg = "Your local changes to the following files would be overwritten by %s:\n%%s"
+      "Please, commit your changes or stash them before you can %s.";
+  else
+    msg = "Your local changes to the following files would be overwritten by %s:\n%%s";
+
+===========================================================================
+           resolveConflict
+               Advices shown by various commands when conflicts prevent the
+               operation from being performed.
+
+	error("'%s' is not possible because you have unmerged files.", me);
+	if (advice_resolve_conflict)
+		/*
+		 * Message used both when 'git commit' fails and when
+		 * other commands doing a merge do.
+		 */
+		advise(_("Fix them up in the work tree,\n"
+			 "and then use 'git add/rm <file>' as\n"
+			 "appropriate to mark resolution and make a commit,\n"
+			 "or use 'git commit -a'."));
+
+============================================================================
+           implicitIdentity
+               Advice on how to set your identity configuration when your
+               information is guessed from the system username and domain
+               name.
+
+N_("Your name and email address were configured automatically based\n"
+"on your username and hostname. Please check that they are accurate.\n"
+"You can suppress this message by setting them explicitly:\n"
+"\n"
+"    git config --global user.name \"Your Name\"\n"
+"    git config --global user.email you@example.com\n"
+"\n"
+"After doing this, you may fix the identity used for this commit with:\n"
+"\n"
+"    git commit --amend --reset-author\n");
+
+static const char empty_amend_advice[] =
+N_("You asked to amend the most recent commit, but doing so would make\n"
+"it empty. You can repeat your command with --allow-empty, or you can\n"
+"remove the commit entirely with \"git reset HEAD^\".\n");
+
+static const char empty_cherry_pick_advice[] =
+N_("The previous cherry-pick is now empty, possibly due to conflict
+resolution.\n"
+"If you wish to commit it anyway, use:\n"
+"\n"
+"    git commit --allow-empty\n"
+"\n"
+"Otherwise, please use 'git reset'\n");
+
+=======================================================================
+           detachedHead
+               Advice shown when you used git-checkout(1) to move to the
+               detach HEAD state, to instruct how to create a local branch
+               after the fact.
+
+	"Note: checking out '%s'.\n\n"
+	"You are in 'detached HEAD' state. You can look around, make experimental\n"
+	"changes and commit them, and you can discard any commits you make in this\n"
+	"state without impacting any branches by performing another checkout.\n\n"
+	"If you want to create a new branch to retain commits you create, you may\n"
+	"do so (now or later) by using -b with the checkout command again. Example:\n\n"
+	"  git checkout -b new_branch_name\n\n";
+
+========================================================================
+           amWorkDir
+               Advice that shows the location of the patch file when git-am(1)
+               fails to apply it.
+
+   dotest="$GIT_DIR/rebase-apply"
+   if test "$(git config --bool advice.amworkdir)" != false
+    then
+      eval_gettextln 'The copy of the patch that failed is found in:
+   $dotest/patch'
+    fi

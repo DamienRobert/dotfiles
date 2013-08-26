@@ -1,0 +1,60 @@
+Mathjax reference:
+http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference
+
+=====================================================================
+http://mathoverflow.net/questions/140046/what-are-the-local-properties-of-scheme-preserved-under-global-sections
+
+What are the local properties of scheme preserved under global sections?
+
+Let (P) be a property of rings. I call (P) local when (P) satisfy these two
+conditions:
+- if A is a ring satisfying (P), then the distinguished rings A_f also
+  satisfy (P).
+- If Spec A is covered by distinguished open Spec A_i with the A_i having
+  (P), then A satisfy (P).
+
+Now if (P) is local, then it is natural to extend the property (P) to
+schemes by saying that a scheme X has property (P) iff for all open affines
+Spec A of X, A has property (P).
+
+By definition of locality, then
+- a ring A satisfy (P) iff Spec A satisfy (P)
+- a scheme X satisfy (P) iff X can be covered by affines open Spec A_i with
+  A_i satisfying (P)
+
+Likewise in the relative setting, local properties of morphisms of rings
+allow to define a corresponding notion for morphisms of schemes.
+
+[I have to point out that sometimes extending a local property (P) of rings
+to schemes this way is called (locally P), and a scheme X is said to have
+property (P) when X is locally P and satisfy some finiteness condition.
+For instance X is noetherian when it is locally noetherian and
+quasi-compact; a morphism is of finite presentation when it is locally of
+finite presentation and quasi-compact + quasi-separated.]
+
+Now while this is a standard construction explained in all textbooks, it is
+harder to find references for what happen to the global section of non
+affine open subschemes.
+
+Indeed, if X has a local property (P), then an open scheme U has also
+property (P), but Spec O_X(U) may not have (P) when U is not affine.
+
+For instance:
+- X is noetherian does not mean that each ring of sections O_X(U) is
+  noetherian
+  (An example is given by the union of two disjoints plane in projective
+  space P^3_k
+  cf http://sma.epfl.ch/~ojangure/nichtnoethersch.pdf)
+- X is finitely generated (say over a field) does not mean that each
+  ring of sections O_X(U) is finitely generated
+  (Same example as above, see also http://math.stanford.edu/~vakil/files/nonfg.pdf)
+- X -> Spec A is flat does not mean that O_X(X) is flat over A.
+  (cf http://mathoverflow.net/questions/65267/global-sections-of-flat-scheme-also-flat)
+
+However there are properties that hold for sections over any open subschemes:
+- If X is reduced, then for every open subscheme U, O_X(U) is reduced
+- If X is integral, then for every open subscheme U, O_X(U) is integral
+
+I am interested to what happen with other properties (P). I am also
+interested to what happen in the relative case: if a morphism X->Y has
+property (P), then does Spec_Y(X) -> Y also has (P)?

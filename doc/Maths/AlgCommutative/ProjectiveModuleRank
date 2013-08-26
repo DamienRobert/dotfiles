@@ -1,0 +1,29 @@
+C'est faux. Pour des raisons évidentes, il faut au moins supposer que
+l'anneau est réduit. Il me semble que cette question avait déjà été posée
+récemment, j'ai la flemme de retrouver. Alors, comme c'est trivial, je le
+refais : par EGA 4 §8, on peut supposer que l'anneau A est local. Soit r
+l'entier tel que M tenseur k(p) soit de dimension r pour tout idéal
+premier p. Par Nakayama, on trouve un morphisme surjectif f:A^r -> M ; pour
+tout idéal premier p de A, la flèche induite k(p)^r -> M tenseur k(p) est
+surjective, mais comme M tenseur k(p) est de dimension r, c'est aussi
+injectif ; cela implique que le noyau de f est contenu dans p^r ; ceci
+est vrai pour tout idéal premier, l'intersection des idéaux premiers de A
+est le nilradical, qui est nul, l'intersection des p^r est donc 0, f est
+injective.
+
+> Il me semble qu'on a la réciproque, cad (quitte à se ramener à une
+> composante connexe) que si r est constant, alors M est projectif.
+
+Il faut faire des hypothèses supplémentaires. Si A n'est pas réduit, on
+peut prendre M=A/Nilradical, ce n'est pas un A-module projectif.
+Maintenant, supposons A réduit. Avec Nakayama et les sorites sur les
+modules de présentation finie (EGA 4 §8), quitte à passer aux ouverts
+d'un recouvrement, on peut supposer que l'on a un morphisme surjectif
+A^r -> M tel que les flèches induites après tensorisation avec k(p) soient
+bijectives pour tout idéal premier p. Notons K le noyau de A^r -> M ;
+dire que A^r tenseur k(p) -> (A^r/K) tenseur k(p) est injectif, cela
+revient à demander que K tenseur k(p) -> A^r tenseur k(p) soit nul, si je
+ne m'abuse, cela signifie que K est contenu dans (p)^r. On applique cela
+à tous les idéaux premiers pour dire que K est contenu dans
+l'intersection des (p)^r, c'est-à-dire (Nilradical)^r qui est nul par
+hypothèse, cela montre que K=0, M est donc libre de rang r.

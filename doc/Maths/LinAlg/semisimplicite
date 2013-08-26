@@ -1,0 +1,56 @@
+Soit P le polynome car d'une matrice M agissant sur V, P_0 le polynôme minimal.
+
+Si P_0=\prod Q_i^e_i, par localisation V est isomorphe à la somme des V_i,
+où sur V_i on a localisé en Q_i, ie V_i=Ker Q_i^e_i(X)
+
+- V_i est simple ssi e_i = 1
+- V simple ssi P_0=P et P_0 irréductible
+- V est semi simple ssi e_i = 1 pour tout i.
+
+Drunford:
+M = D + N uniquement où D semi-simple et N nilpotent avec D, N commutant.
+et D et N sont des polynômes en M
+
+Th: M et N sont semblabes dans k ssi M-XI et N-XI sont équivalentes dans
+k[X], ie ssi elles ont même invariants de similitudes.
+
+Cyclicité
+=========
+M est une matrice compagnon <=> P_0=P <=> Il y a un
+seul facteur invariant <=> V est cyclique
+<=> le commutant de M sont les polynômes en M.
+<=> (k infini) il n'y a qu'un nombre fini de sous-espaces stables
+
+Pour tout M Com(Com(M))=Poly(M)
+
+ex: simple => cyclique
+
+En résumé: soit A=k[X]/P_0. Si A est simple (=A corps = P_0 irréd),
+l'action est simple; si A est semi-simple (ie multiplicités 1), l'action
+est semi-simple, si P_0 est le seul invariant (ie P=P_0) l'action est de rang 1.
+
+Jordan
+======
+Si R est un facteur invariant, C_R la matrice compagnon,
+C_R=(C_R_i^f_i). Si R_i=(X-lambda), R_i^f_i est la matrice de Jordan
+associée.
+Inversement, si on se donne une décomposition en facteurs irréducibles
+Q_i^g_i, on a R_1=Q_1^f_1 Q_2^f_2 où f_1 est la plus grande puissance de
+Q_1 qui apparaît et ainsi de suite.
+=> M est cyclique ssi pour toute valeur propre λ il n'y a qu'un seul
+bloc de jordan
+
+Sous-espaces stables
+====================
+
+Par localisation, on peut se ramener à un polynôme minimal ayant un seul
+facteur irréducible. (Car si on a un espace stable V, il est isomorphe à
+somme des V_i où V_i est le localisé en P_i, ie le Ker P_i^n_i).
+
+Soit donc V d'invariant P^n_1, P^n_2, ... où P est irréductible, j'utilise
+la notation (n_1,n_2,...) pour V.
+Si V=A/P^nA (A=k[X]), alors clairement on a comme sous-espaces invariants
+P^iA/P^nA i=n-1,...,0, de plus en plus grands et contenant les précédents.
+Ce sont les seuls (un sous espace invariant correspond à un idéal de
+A/P^nA, ie un idéal de A contenant P^n, donc comme on est principal, ce
+sont P^{n-1},...).
