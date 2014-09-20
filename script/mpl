@@ -1,0 +1,71 @@
+#!/bin/zsh
+help() {
+	echo "mpl [--slow --sub sub] movie
+	play movie (--slow if the computer is too slow to activate framedrop and faster decompression)  
+mpl -a|--audio music
+	play music without video"
+	exit 1
+}
+
+[[ $# -eq 0 ]] && help
+slow=
+audio=
+sub=
+
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		-h|-help|--help ) shift ; help ;;
+		-a | --audio ) shift; audio=t ;;
+		-sub|--sub ) shift; sub=$1; shift ;;
+		--alsa ) shift; usealsa=t ;;
+		*) break;;
+	esac
+done
+
+PROG=mplayer
+[[ -x /usr/bin/mpv ]] && PROG=mpv
+case $PROG in
+	mplayer)
+		OPTS=(-ass)
+		;;
+	mpv)
+		OPTS=('--sub-ass')
+		;;
+esac
+
+if [[ -n $audio ]]; then
+	OPTS=($OPTS --vo=null)
+else
+	OPTS=($OPTS --cache=8192)
+fi
+if [[ -n $slow ]]; then
+	#OPTS=($OPTS -lavdopts fast:skiploopfilter=all -framedrop -hardframedrop)
+	OPTS=($OPTS --vd-lavc-fast --vd-lavc-skiploopfilter=all --framedrop=hard)
+fi
+if [[ -n $usealsa ]]; then
+	OPTS=($OPTS --ao="alsa:device=hw=0.0")
+fi
+
+if [[ -x /usr/bin/omxplayer && -z $audio ]]; then
+	PROG=omxplayer
+	OPTS=(--font /usr/share/fonts/TTF/FreeSans.ttf --italic-font /usr/share/fonts/TTF/FreeSansOblique.ttf)
+fi
+
+if [[ -n $sub ]]; then
+	case $PROG in
+		omxplayer)
+			OPTS=($OPTS --subtitle $sub)
+			;;
+		mpv)
+			OPTS=($OPTS "--sub-file=$sub")
+			;;
+		mplayer)
+			OPTS=($OPTS -sub $sub)
+			;;
+	esac
+fi
+
+echo $PROG $OPTS "$@"
+exec $PROG $OPTS "$@"

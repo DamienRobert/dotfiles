@@ -12,6 +12,7 @@ SECOND=VGA-0
 case $MYHOSTNAME in
   Numenor)  SECOND="HDMI-0";;
   Feanor)  MAIN="DP2" SECOND="HDMI1";;
+  Valinor)  MAIN="eDP-1" SECOND="VGA-1";;
 esac
 
 case $1 in

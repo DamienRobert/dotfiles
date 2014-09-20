@@ -1,5 +1,6 @@
 # latex #
 #########
+*.cls
 *.aux
 *.log
 *.toc
@@ -12,9 +13,8 @@
 *.nav
 *.run.xml
 *.snm
-out/
-.fdb_latexmk
-.synctex.gz
+*.fdb_latexmk
+*.synctex.gz
 *.pdf
 *.pdf2
 *.PDF
@@ -22,7 +22,6 @@ out/
 *.eps
 *.dvi
 *-blx.bib
-*fdb_latexmk
 *.idx
 *.lof
 *.ilg
@@ -34,6 +33,7 @@ out/
 *.dot
 *.fls
 *.dat
+out/
 
 #don't backup
 *.bak
@@ -78,6 +78,8 @@ out/
 *.sfd
 *.otf
 
+# html
+*.html
 
 # Merge #
 *.orig
@@ -87,15 +89,11 @@ out/
 .hg
 #.git
 
-####################
-latex/OthersExamples/
-latex/essais
-texmf/
+# Medias #
+*.mp3
+*.avi
+*.mkv
+
+### Custom ###
 llncs.cls
-**/mika/dessins/
-
-.old-unison/
-
-**/lfant/raweb/
-**/gforge/mpc/
-**/gforge/inria-doc-style/
+lfant/raweb/

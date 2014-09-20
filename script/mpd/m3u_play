@@ -1,0 +1,14 @@
+#!/bin/zsh
+#parse a m3u file to play it with mplayer
+
+typeset -a LIST;
+for i in "$@"; do
+  IFS='
+'
+  for j in `cat $i`; do
+    if [ $j[1] = "#" ]; then continue; fi
+    LIST=($LIST $j)
+  done
+done
+echo $LIST
+mpl -a $LIST

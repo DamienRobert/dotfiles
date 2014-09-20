@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+DSLASH=$(findfs LABEL=slash || ${DISK}1)
+[[ -n $DSLASH ]] || exit 1
+DHOME=$(findfs LABEL=home)
+
+#mount on $TARGET_DIR
+mount $DSLASH $TARGET_DIR &&
+mkdir -p $TARGET_DIR/boot $TARGET_DIR/home &&
+{
+  [[ $DSLASH != ${DISK}1 ]] && mount ${DISK}1 $TARGET_DIR/boot
+  [[ -n $DHOME ]] && mount $DHOME $TARGET_DIR/home
+}

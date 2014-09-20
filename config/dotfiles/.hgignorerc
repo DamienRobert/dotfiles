@@ -1,0 +1,25 @@
+syntax: glob
+*~
+
+syntax: regexp
+(.*/)?\#[^/]*\#$
+
+# syntax: regexp
+# (.*/)?\.[^/]*\.swp$
+
+syntax: glob
+.*.swp
+.*.swo
+.svn/*
+*.aux
+*.log
+*.toc
+*.tmp
+*.bbl
+*.out
+*.blg
+*.thm
+*.orig
+*.pdf
+*.pyc
+.git/*

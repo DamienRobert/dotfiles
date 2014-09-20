@@ -1,0 +1,62 @@
+infocmp: pour comparer (ou afficher) des terminfos
+tput: pour afficher le caractère
+tic: pour compiler une terminfo
+(installe dans ~/.terminfo/)
+
+Normalement pour changer le titre, il faut faire:
+  tput hs && print -Pn "$(tput tsl)New title$(tput fsl)"
+(tput hs pour vérifier si le term a une status line)
+Malheureusement sur archlinux screen-256color ne définit pas tsl et fsl,
+donc il faut faire à la main
+  print -Pn "\e]2;Title\a"
+( print -Pn "\e]0;Title\a" a l'air de marcher aussi)
+screen-256color-s a justement cette propriété en plus par rapport à
+screen-256color
+
+screen-256color-bce a par rapport à screen-256color la propriété background
+color erase qui permet de reseter le term avec la couleur voulue par le
+terminal, cf http://sunaku.github.io/vim-256color-bce.html
+
+tmux
+====
+
+tmux peut envoyer les échappements Ctrl-Fleches de xterm si on spécifie:
+  setw -g xterm-keys on
+mais pour que les applications puissent interpréter ça il faut changer la
+terminfo, c'est ce que fait xterm-screen-256color.src dans 
+~config/files/terminfo que j'ai compilé avec tic dans ~dotfiles/.terminfo
+
+Pour changer le nom d'une tab, il faut utiliser
+  print -Pn "\ekTabName\e\\", comme dans screen
+ça correspond à #W
+Pour changer le hardstatus, il faut faire:
+  print -Pn "\e_ \e\\"
+ou les alias (cf Operating System Command in man screen)
+  print -Pn "\e]2; \a"
+  print -Pn "\e]0; \a"
+ça correspond à #T
+
+tmux/screen envoit ça au terminal contenant (avec set-titles on/hardstatus
+on)
+
+Note: quand tmux utilise set-titles on, le problème avec
+xterm/xfce4-terminal c'est que xterm-256color n'a pas les tsl et fsl, donc
+il faut le donner à tmux: 
+  set-option -g terminal-overrides "*:tsl=\e]2;,*:fsl=\\007"
+(update: non si TERM commence par xterm il rajoute ça tout seul)
+
+Remarque: tmux ajoute les capabilities suivantes au terminal quand TERM=xterm*
+  Cr: (string) \033]112\007
+  Cs: (string) \033]12;%p1%s\007
+  fsl: (string) \007
+  Ms: (string) \033]52;%p1%s;%p2%s\007
+  Se: (string) \033[2 q
+  Ss: (string) \033[%p1%d q
+  tsl: (string) \033]0;
+  XT: (flag) true
+
+Example:
+in ~/config/files/terminfo I copied the terminfo in archlinux of
+screen-256color* and xterm-256color.
+I added xterm-screen-256color which uses screen-256-color-bce-s but also
+add some xterm escape characters

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" /><title>WPA supplicant - ArchWiki</title>
+<meta name="generator" content="MediaWiki 1.22.6" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="ArchWiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.archlinux.org/api.php?action=rsd" />
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html" />
+<link rel="alternate" type="application/atom+xml" title="ArchWiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="canonical" href="/index.php/WPA_supplicant" />
+<link rel="stylesheet" href="https://wiki.archlinux.org/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cskins.archlinux&amp;only=styles&amp;skin=archlinux&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/skins/archlinux/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/archlinux/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+
+<script src="https://wiki.archlinux.org/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=archlinux&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"WPA_supplicant","wgTitle":"WPA supplicant","wgCurRevisionId":307229,"wgRevisionId":307229,"wgArticleId":2078,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Wireless Networking"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"WPA_supplicant","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgRedirectedFrom":"WPA_Supplicant"});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function(){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"archlinux","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"vector-simplesearch":1,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":
+0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function(){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});},{},{});
+/* cache key: archwiki:resourceloader:filter:minify-js:7:85c90aa16eaeef41f8c16fb94950cfbf */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-WPA_supplicant skin-archlinux action-view">
+
+<div id="archnavbar"><!-- Arch Linux global navigation bar -->
+	<div id="archnavbarlogo">
+		<p><a id="logo" href="http://www.archlinux.org/"></a></p>
+	</div>
+	<div id="archnavbarmenu">
+		<ul id="archnavbarlist">
+			<li id="anb-home"><a href="http://www.archlinux.org/">Home</a></li><li id="anb-packages"><a href="http://www.archlinux.org/packages/">Packages</a></li><li id="anb-forums"><a href="https://bbs.archlinux.org/">Forums</a></li><li id="anb-wiki" class="anb-selected"><a href="https://wiki.archlinux.org/">Wiki</a></li><li id="anb-bugs"><a href="https://bugs.archlinux.org/">Bugs</a></li><li id="anb-aur"><a href="https://aur.archlinux.org/">AUR</a></li><li id="anb-download"><a href="http://www.archlinux.org/download/">Download</a></li>		</ul>
+	</div>
+</div><!-- #archnavbar -->
+
+<div id="globalWrapper">
+<div id="column-content"><div id="content" class="mw-body-primary" role="main">
+	<a id="top"></a>
+	
+	<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">WPA supplicant</span></h1>
+	<div id="bodyContent" class="mw-body">
+		<div id="siteSub">From ArchWiki</div>
+		<div id="contentSub">(Redirected from <a href="/index.php?title=WPA_Supplicant&amp;redirect=no" title="WPA Supplicant">WPA Supplicant</a>)</div>
+		<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+		<!-- start content -->
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div style="float:right; clear:right; width:25%; margin: 0 0 0.5em 0.5em;"><p style="background:#333; color:white; padding:0.2em; border-bottom:5px #08c solid; margin:0; text-align:center; font-weight:bold;">Related articles</p><ul style="list-style-type:none; margin:0; padding:0.3em;">
+<li style="padding:0.4em 0; line-height:1;"><a href="/index.php/Network_configuration" title="Network configuration">Network configuration</a></li>
+<li style="padding:0.4em 0; line-height:1;"><a href="/index.php/Wireless_network_configuration" title="Wireless network configuration">Wireless network configuration</a></li>
+</ul></div>
+<p><a rel="nofollow" class="external text" href="http://hostap.epitest.fi/wpa_supplicant/">wpa_supplicant</a> is a cross-platform WPA <a href="http://en.wikipedia.org/wiki/Supplicant_(computer)" class="extiw" title="wikipedia:Supplicant (computer)">supplicant</a> with support for WEP, WPA and WPA2 (<a href="http://en.wikipedia.org/wiki/IEEE_802.11i" class="extiw" title="wikipedia:IEEE 802.11i">IEEE 802.11i</a> / RSN (Robust Secure Network)). It is suitable for both desktop and laptop computers and even embedded systems.
+</p><p><i>wpa_supplicant</i> is the IEEE 802.1X/WPA component that is used in the client stations. It implements key negotiation with a WPA Authenticator and it controls the roaming and IEEE 802.11 authentication/association of the wireless driver.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Installation"><span class="tocnumber">1</span> <span class="toctext">Installation</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Starting"><span class="tocnumber">2</span> <span class="toctext">Starting</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#systemd"><span class="tocnumber">2.1</span> <span class="toctext">systemd</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#dhcpcd"><span class="tocnumber">2.2</span> <span class="toctext">dhcpcd</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Manually"><span class="tocnumber">2.3</span> <span class="toctext">Manually</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="#Configuration"><span class="tocnumber">3</span> <span class="toctext">Configuration</span></a>
+<ul>
+<li class="toclevel-2 tocsection-7"><a href="#wpa_passphrase"><span class="tocnumber">3.1</span> <span class="toctext">wpa_passphrase</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="#Specifying_driver"><span class="tocnumber">3.2</span> <span class="toctext">Specifying driver</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-9"><a href="#Using_wpa_cli"><span class="tocnumber">4</span> <span class="toctext">Using wpa_cli</span></a>
+<ul>
+<li class="toclevel-2 tocsection-10"><a href="#Adding_a_new_network_using_wpa_cli"><span class="tocnumber">4.1</span> <span class="toctext">Adding a new network using wpa_cli</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="#Action_script"><span class="tocnumber">4.2</span> <span class="toctext">Action script</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-12"><a href="#See_also"><span class="tocnumber">5</span> <span class="toctext">See also</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Installation">Installation</span></h2>
+<p>Install <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wpa_supplicant">wpa_supplicant</a></span> from the <a href="/index.php/Official_repositories" title="Official repositories">official repositories</a>.
+</p><p>Optionally install also <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wpa_supplicant_gui">wpa_supplicant_gui</a></span>, which provides <i>wpa_gui</i>, a graphical front-end for <i>wpa_supplicant</i>.
+</p>
+<h2><span class="mw-headline" id="Starting">Starting</span></h2>
+<p>This section describes common methods of starting <i>wpa_supplicant</i>, pick one that suits you best.
+</p>
+<h3><span class="mw-headline" id="systemd">systemd</span></h3>
+<p><i>wpa_supplicant</i> provides multiple service files:
+</p>
+<ul>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">wpa_supplicant.service</code> - uses <a href="/index.php/D-Bus" title="D-Bus">D-Bus</a>, recommended for <a href="/index.php/NetworkManager" title="NetworkManager">NetworkManager</a> users.
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">wpa_supplicant@.service</code> - accepts the interface name as an argument and starts the <i>wpa_supplicant</i> daemon for this interface. It reads the configuration file in <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant/wpa_supplicant-<i>interface</i>.conf</code>.
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">wpa_supplicant-nl80211@.service</code> - also interface specific, but explicitly forces the <code style="display:inline-block; padding: 0.1em 0.3em;">nl80211</code> driver (see below). The configuration file path is <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant/wpa_supplicant-nl80211-<i>interface</i>.conf</code>.
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">wpa_supplicant-wired@.service</code> - also interface specific, uses the <code style="display:inline-block; padding: 0.1em 0.3em;">wired</code> driver. The configuration file path is <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant/wpa_supplicant-wired-<i>interface</i>.conf</code>.
+</li>
+</ul>
+<h3><span class="mw-headline" id="dhcpcd">dhcpcd</span></h3>
+<p><a href="/index.php/Dhcpcd" title="Dhcpcd">dhcpcd</a> contains a hook (enabled by default) to automatically launch <i>wpa_supplicant</i> on wireless interfaces. It is started only if:
+</p>
+<ul>
+<li> no <i>wpa_supplicant</i> process is already listening on that interface.
+</li>
+<li> a <i>wpa_supplicant</i> configuration file exists. <i>dhcpcd</i> checks <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant.conf</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant/wpa_supplicant.conf</code> by default, but a custom path can be set by adding <code style="display:inline-block; padding: 0.1em 0.3em;">env wpa_supplicant_conf=<i>configuration_file_path</i></code> into <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/dhcpcd.conf</code>.
+</li>
+</ul>
+<h3><span class="mw-headline" id="Manually">Manually</span></h3>
+<p><i>wpa_supplicant</i> accepts multiple command line arguments, notably:
+</p>
+<ul>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">-B</code> - fork into background
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">-c <i>filename</i></code> - path to configuration file
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">-i <i>interface</i></code> - interface to listen on
+</li>
+</ul>
+<p>See <code style="display:inline-block; padding: 0.1em 0.3em;">man 8 wpa_supplicant</code> for the full argument list. For example, the common usage is:
+</p>
+<pre># wpa_supplicant -B -i <i>interface</i> -c <i>configuration_file</i>
+</pre>
+<h2><span class="mw-headline" id="Configuration">Configuration</span></h2>
+<p><span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wpa_supplicant">wpa_supplicant</a></span> provides a reference configuration file located at <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant/wpa_supplicant.conf</code> which contains detailed documentation for all the available options and their utilisation, as well as examples. Consider making a backup of it first, because some of the methods decribed below for automatically adding network configurations to <code style="display:inline-block; padding: 0.1em 0.3em;">wpa_supplicant.conf</code> will strip all comments from the file.
+</p><p>In its simplest form, a configuration file requires only a network configuration block. For example:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">/etc/wpa_supplicant/foobar.conf</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">network={
+    ssid="..."
+}</pre>
+<p>Once you have a configuration file, you can <a href="#Starting">start</a> the <i>wpa_supplicant</i> daemon as described in the previous section and connect to the wireless network, using a <a href="/index.php/Network_configuration#Static_IP_Address" title="Network configuration">static IP</a> or <a href="/index.php/Network_configuration#Dynamic_IP_Address" title="Network configuration">DHCP</a>.
+</p>
+<h3><span class="mw-headline" id="wpa_passphrase">wpa_passphrase</span></h3>
+<p>A network configuration can be automatically generated using the <i>wpa_passphrase</i> tool and added to the configuration file. This is useful for connecting to secured networks requiring a passphrase. For example:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ wpa_passphrase <i>essid</i> <i>passphrase</i></pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">network={
+    ssid="<i>essid</i>"
+    #psk="<i>passphrase</i>"
+    psk=f5d1c49e15e679bebe385c37648d4141bc5c9297796a8a185d7bc5ac62f954e3
+}</pre>
+<p>Some unusually complex passphrases may require input from a file:
+</p>
+<pre>$ wpa_passphrase <i>essid</i> &lt; <i>passphrase.txt</i>
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>Both <i>wpa_supplicant</i> and <i>wpa_passphrase</i> can be combined to associate with almost all WPA2 (Personal) networks:
+<pre># wpa_supplicant -B -i <i>interface</i> -c &lt;(wpa_passphrase <i>essid</i> <i>passphrase</i>)
+</pre>
+</div>
+<h3><span class="mw-headline" id="Specifying_driver">Specifying driver</span></h3>
+<p>You might need to specify a driver to be used. For a list of supported drivers see the output of <code style="display:inline-block; padding: 0.1em 0.3em;">wpa_supplicant -h</code>.
+</p>
+<ul>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">nl80211</code> is the current standard, but not all wireless chip's modules support it.
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">wext</code> is currently deprecated, but still widely supported.
+</li>
+</ul>
+<p>Use the <code style="display:inline-block; padding: 0.1em 0.3em;">-D</code> switch to specify the driver:
+</p>
+<pre># wpa_supplicant -B -i <i>interface</i> -c <i>configuration_file</i> -D <i>driver</i>
+</pre>
+<h2><span class="mw-headline" id="Using_wpa_cli">Using wpa_cli</span></h2>
+<p><i>Wpa_supplicant</i> can be controlled manually at runtime, by using the <i>wpa_cli</i> utility. To enable <i>wpa_cli</i>, the <i>wpa_supplicant</i> daemon must be configured to create a "control interface" (socket) by setting the <i>ctrl_interface</i> variable in the <i>wpa_supplicant</i> configuration file (default location <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant/wpa_supplicant.conf</code>).
+</p><p>The user will also need to be given access to this socket, by specifying which <a href="/index.php/Users_and_groups" title="Users and groups">group</a> has access to it. A new group might be created for this purpose, and users added to it, or an already existing group can be used - typically <code style="display:inline-block; padding: 0.1em 0.3em;">wheel</code>.
+</p><p>The following setting will create the socket in <code style="display:inline-block; padding: 0.1em 0.3em;">/run/wpa_supplicant/</code> and allow the members of group <code style="display:inline-block; padding: 0.1em 0.3em;">wheel</code> to access it:
+</p>
+<pre>ctrl_interface=DIR=/run/wpa_supplicant GROUP=wheel
+</pre>
+<p>It is possible to modify the <i>wpa_supplicant</i> configuration file itself through the <i>wpa_cli</i>. This is useful for manually adding new networks to the roaming configuration file without needing to restart the <i>wpa_supplicant</i> daemon. To enable this, in the configuration file set the <i>update_config</i> variable to 1:
+</p>
+<pre>update_config=1
+</pre>
+<p>The <i>wpa_supplicant</i> daemon must be running, before <i>wpa_cli</i> can start (see <a href="#Starting">#Starting</a> for details). Then start 
+</p>
+<pre>$ wpa_cli
+</pre>
+<p>It will look for the control socket at the location given in the configuration file, or the location can be set manually with the <code style="display:inline-block; padding: 0.1em 0.3em;">-p</code> option). You can specify the interface that will be configured with the <code style="display:inline-block; padding: 0.1em 0.3em;">-i</code> option, otherwise the first found wireless interface managed by <i>wpa_supplicant</i> will be used.
+</p><p>When <i>wpa_cli</i> is invoked, an interactive prompt (<code style="display:inline-block; padding: 0.1em 0.3em;">&gt;</code>) will appear. The prompt has tab completion and descriptions of completed commands.
+</p>
+<h3><span class="mw-headline" id="Adding_a_new_network_using_wpa_cli">Adding a new network using wpa_cli</span></h3>
+<p>To scan for available networks, enter "scan" at the <code style="display:inline-block; padding: 0.1em 0.3em;">&gt;</code> prompt. A notification will appear when the scan is complete:
+</p>
+<pre>&gt; scan
+OK
+&lt;3&gt;CTRL-EVENT-SCAN-RESULTS
+&gt;
+</pre>
+<p>Then enter "scan_results" to display them:
+</p>
+<pre>&gt; scan_results
+bssid / frequency / signal level / flags / ssid
+00:00:00:00:00:00 2462 -49 [WPA2-PSK-CCMP][ESS] MYSSID
+11:11:11:11:11:11 2437 -64 [WPA2-PSK-CCMP][ESS] ANOTHERSSID
+&gt;
+</pre>
+<p>To associate with <i>MYSSID</i>, tell <i>wpa_supplicant</i> about it. Each network in the configuration file is indexed numerically, beginning with zero. If you add a new network, it will be assigned a new number accordingly.
+</p>
+<pre>&gt; add_network
+0
+&gt;
+</pre>
+<p>Use this number to specify which network your settings apply to. For a new network, set its SSID, in quotes:
+</p>
+<pre>&gt; set_network 0 ssid "<i>MYSSID</i>"
+OK
+&gt;
+</pre>
+<p>Even if your access point is not is protected, the cli apparently still requires a <a href="http://en.wikipedia.org/wiki/Pre-shared_key" class="extiw" title="wikipedia:Pre-shared key">PSK</a>, again in quotes. The passkey must be 8-63 characters.:
+</p>
+<pre>&gt; set_network 0 psk "<i>passkey</i>"
+OK
+&gt;
+</pre>
+<p>Enable it:
+</p>
+<pre>&gt; enable_network 0
+OK
+&gt;
+</pre>
+<p>And write the changes to the configuration file:
+</p>
+<pre>&gt; save_config
+OK
+&gt;
+</pre>
+<h3><span class="mw-headline" id="Action_script">Action script</span></h3>
+<p><i>wpa_cli</i> can run in daemon mode and execute a specified script based on events from <i>wpa_supplicant</i>. Two events are supported: <code style="display:inline-block; padding: 0.1em 0.3em;">CONNECTED</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">DISCONNECTED</code>. Some <a href="/index.php/Environment_variables" title="Environment variables">environment variables</a> are available to the script, see <code style="display:inline-block; padding: 0.1em 0.3em;">man 8 wpa_cli</code> for details.
+</p><p>The following example will use <a href="/index.php/Desktop_notifications" title="Desktop notifications">desktop notifications</a> to notify the user about the events:
+</p>
+<pre>
+#!/bin/bash
+
+case "$2" in
+    CONNECTED)
+        notify-send "WPA supplicant: connection established";
+       &#160;;;
+    DISCONNECTED)
+        notify-send "WPA supplicant: connection lost";
+       &#160;;;
+esac
+</pre>
+<p>Remember to make the script executable, then use the <code style="display:inline-block; padding: 0.1em 0.3em;">-a</code> to pass the script path to <i>wpa_cli</i>:
+</p>
+<pre>$ wpa_cli -a <i>path_to_script</i>
+</pre>
+<h2><span class="mw-headline" id="See_also">See also</span></h2>
+<ul>
+<li> <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Documentation/wpa_supplicant">Kernel.org wpa_supplicant documentation</a>
+</li>
+</ul>
+
+<!-- 
+NewPP limit report
+CPU time usage: 0.087 seconds
+Real time usage: 0.097 seconds
+Preprocessor visited node count: 475/1000000
+Preprocessor generated node count: 1295/1000000
+Post‐expand include size: 5900/2097152 bytes
+Template argument size: 1892/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key archwiki:pcache:idhash:2078-0!*!0!!en!*!* and timestamp 20140501194741
+ -->
+</div><div class="printfooter">
+Retrieved from "<a href="https://wiki.archlinux.org/index.php?title=WPA_supplicant&amp;oldid=307229">https://wiki.archlinux.org/index.php?title=WPA_supplicant&amp;oldid=307229</a>"</div>
+		<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/index.php/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="/index.php/Category:Wireless_Networking" title="Category:Wireless Networking">Wireless Networking</a></li></ul></div></div>		<!-- end content -->
+				<div class="visualClear"></div>
+	</div>
+</div></div>
+<div id="column-one">
+	<h2>Navigation menu</h2>
+	<div id="p-cactions" class="portlet" role="navigation">
+		<h3>Views</h3>
+		<div class="pBody">
+			<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/index.php/WPA_supplicant" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk"><a href="/index.php/Talk:WPA_supplicant" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-viewsource"><a href="/index.php?title=WPA_supplicant&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li>
+				<li id="ca-history"><a href="/index.php?title=WPA_supplicant&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal" role="navigation">
+		<h3>Personal tools</h3>
+		<div class="pBody">
+			<ul>
+				<li id="pt-createaccount"><a href="/index.php?title=Special:UserLogin&amp;returnto=WPA+supplicant&amp;type=signup">Create account</a></li>
+				<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=WPA+supplicant" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo" role="banner">
+<a href="/index.php/Main_page" style="background-image: url(/skins/archlinux/archlogo.png);" title="Visit the main page"></a>
+	</div>
+	<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage-description"><a href="/index.php/Main_page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+				<li id="n-categories"><a href="/index.php/Table_of_contents">Categories</a></li>
+				<li id="n-portal"><a href="/index.php/Getting_involved" title="Various ways Archers can contribute to the community">Getting involved</a></li>
+				<li id="n-currentevents"><a href="/index.php/ArchWiki:News" title="The latest lowdown on the wiki">Wiki news</a></li>
+				<li id="n-randompage"><a href="/index.php/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet" role="search">
+		<h3><label for="searchInput">Search</label></h3>
+		<div id="searchBody" class="pBody">
+			<form action="/index.php" id="searchform">
+				<input type='hidden' name="title" value="Special:Search"/>
+				<input type="search" name="search" placeholder="Search" title="Search ArchWiki [f]" accesskey="f" id="searchInput" />
+				<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+				<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+			</form>
+		</div>
+	</div>
+	<div class="generated-sidebar portlet" id="p-interaction" role="navigation">
+		<h3>interaction</h3>
+		<div class='pBody'>
+			<ul>
+				<li id="n-help"><a href="/index.php/Category:Help" title="Wiki navigation, reading, and editing help">Help</a></li>
+				<li id="n-Contributing"><a href="/index.php/ArchWiki:Contributing">Contributing</a></li>
+				<li id="n-recentchanges"><a href="/index.php/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+				<li id="n-Recent-talks"><a href="https://wiki.archlinux.org/index.php/Special:RecentChanges?namespace=0&amp;invert=1" rel="nofollow">Recent talks</a></li>
+				<li id="n-newpages"><a href="/index.php/Special:NewPages">New pages</a></li>
+				<li id="n-Reports"><a href="/index.php/ArchWiki:Reports">Reports</a></li>
+				<li id="n-Requests"><a href="/index.php/ArchWiki:Requests">Requests</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb" role="navigation">
+		<h3>Tools</h3>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/index.php/Special:WhatLinksHere/WPA_supplicant" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="/index.php/Special:RecentChangesLinked/WPA_supplicant" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+				<li id="t-specialpages"><a href="/index.php/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+				<li id="t-print"><a href="/index.php?title=WPA_supplicant&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+				<li id="t-permalink"><a href="/index.php?title=WPA_supplicant&amp;oldid=307229" title="Permanent link to this revision of the page">Permanent link</a></li>
+				<li id="t-info"><a href="/index.php?title=WPA_supplicant&amp;action=info">Page information</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-lang" class="portlet" role="navigation">
+		<h3>In other languages</h3>
+		<div class="pBody">
+			<ul>
+				<li class="interwiki-es"><a href="https://wiki.archlinux.org/index.php/WPA_supplicant_(Espa%C3%B1ol)" title="WPA supplicant – español" lang="es" hreflang="es">Español</a></li>
+				<li class="interwiki-it"><a href="https://wiki.archlinux.org/index.php/WPA_supplicant_(Italiano)" title="WPA supplicant – italiano" lang="it" hreflang="it">Italiano</a></li>
+				<li class="interwiki-ru"><a href="https://wiki.archlinux.org/index.php/WPA_Supplicant_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)" title="WPA Supplicant – русский" lang="ru" hreflang="ru">Русский</a></li>
+				<li class="interwiki-zh-cn"><a href="https://wiki.archlinux.org/index.php/WPA_Supplicant_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" title="WPA Supplicant – 中文（中国大陆）‎" lang="zh-CN" hreflang="zh-CN">中文（中国大陆）‎</a></li>
+			</ul>
+		</div>
+	</div>
+</div><!-- end of the left (by default at least) column -->
+<div class="visualClear"></div>
+<div id="footer" role="contentinfo">
+	<ul id="f-list">
+		<li id="lastmod"> This page was last modified on 27 March 2014, at 07:16.</li>
+		<li id="copyright">Content is available under <a class="external" rel="nofollow" href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+		<li id="privacy"><a href="/index.php/ArchWiki:Privacy_policy" title="ArchWiki:Privacy policy">Privacy policy</a></li>
+		<li id="about"><a href="/index.php/ArchWiki:About" title="ArchWiki:About">About ArchWiki</a></li>
+		<li id="disclaimer"><a href="/index.php/ArchWiki:General_disclaimer" title="ArchWiki:General disclaimer">Disclaimers</a></li>
+	</ul>
+</div>
+</div>
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+mw.loader.state({"site":"ready"});
+}</script>
+<!-- Served in 0.160 secs. --></body></html>

@@ -2,21 +2,31 @@
 
 QUALITY=25 #smaller is better
 AUDIOQUALITY=6 #smaller is better
-AUDIOCOPY=false
-MOVIE=false
+AUDIO="mp3"
 EXT="avi"
-VIDEOOPT=(-c:v libx264 -preset veryslow -tune film -threads 0 -vf hqdn3d)
+REMOVE=
+#TODO: try libx265
+VIDEOOPT=(-c:v libx264 -preset veryslow -tune film -threads 0)
+VF="hqdn3d"
 
 while true;
 do
-  case "$1" in
+  case $1 in
     -- ) break ;;
-    -q ) shift; QUALITY="$1"; shift  ;;
-    -aq ) shift; AUDIOQUALITY="$1"; shift  ;;
-    -acopy ) shift; AUDIOCOPY="true";  ;;
-    -movie ) shift; MOVIE="true"; AUDIOQUALITY=3; EXT="mkv" ;;
+    -q ) shift; QUALITY=$1; shift  ;;
+    -aq ) shift; AUDIOQUALITY=$1; shift  ;;
+    -acopy ) shift; AUDIO="copy"  ;;
+    -movie ) shift; AUDIO="vorbis"; AUDIOQUALITY=3; EXT="mkv" ;;
     #activate vorbis rather than lame, higher is better here for
     #AUDIOQUALITY
+    -scale ) shift; VF+=",scale=iw/2:ih/2" ;;
+    -mts ) shift; VF+=",scale=1024:576"
+           QUALITY=23 #scale down but improve quality 
+           ;;
+    -ss|-t) #time options
+      VIDEOOPT+=($1 $2); shift; shift ;;
+    -f ) shift; REMOVE=1 ;;
+    -* ) VIDEOOPT=($VIDEOOPT $1); shift ;;
     *) break;;
   esac
 done
@@ -24,29 +34,27 @@ done
 extract() {
   OUTPUT="$1.x264-working.$EXT"
   FINAL="$1.x264.$EXT"
-  if [ ! -e "$FINAL" ]; then
-    if [ "x$AUDIOCOPY" = "xtrue" ]; then
-      allnice ffmpeg -i "$@" \
-        $VIDEOOPT \
-        -crf "$QUALITY" "$OUTPUT"
-    elif [ "x$MOVIE" = "xtrue" ]; then
-      allnice ffmpeg -i "$@" \
-        $VIDEOOPT \
-        -c:a libvorbis -compression_level 2 -q:a $AUDIOQUALITY \
-        -crf "$QUALITY" "$OUTPUT"
-      #Rem: pour le dvd->mkv, -scodec copy pour copier les sous-titres, -sn
-      #pour les enlever, -s 380x288 pour réduire la taille
-      #rem: pour libvorbis, higher=better, le défaut est 3
-    else
-      allnice ffmpeg -i "$@" \
-        $VIDEOOPT \
-        -c:a libmp3lame -compression_level 2 -q:a $AUDIOQUALITY \
-        -crf "$QUALITY" "$OUTPUT"
-    fi
-    [ "$?" = "0" ] && mv "$OUTPUT" "$FINAL"
+  if [[ ! -e $FINAL || -n $REMOVE ]]; then
+    case $AUDIO in
+      copy) AUDIOOPT=() ;;
+      vorbis) AUDIOOPT=(-c:a libvorbis -compression_level 2) ;;
+        #Rem: pour le dvd->mkv, -scodec copy pour copier les sous-titres, -sn
+        #pour les enlever, -s 380x288 pour réduire la taille
+        #rem: pour libvorbis, higher=better, le défaut est 3
+      mp3) AUDIOOPT=(-c:a libmp3lame -compression_level 2) ;;
+    esac
+    OPTS=()
+    [[ -n $VF ]] && OPTS+=(-vf $VF)
+    OPTS+=($VIDEOOPT $AUDIOOPT -q:a $AUDIOQUALITY)
+    OPTS+=(-crf $QUALITY)
+    echo allnice ffmpeg -i "$@" $OPTS $OUTPUT
+    allnice ffmpeg -i "$@" $OPTS $OUTPUT
+    [[ $? -eq 0 ]] && mv $OUTPUT $FINAL
+  else
+    echo "$FINAL already exists"
   fi
 }
 
 for i in "$@"; do
-  extract "$i"
+  extract $i
 done

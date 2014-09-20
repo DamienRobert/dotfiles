@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+#we write to fstab if nothing is already written
+grep -v '#' $TARGET_DIR/etc/fstab || genfstab -p -U $TARGET_DIR >> $TARGET_DIR/etc/fstab

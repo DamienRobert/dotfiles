@@ -1,2 +1,2 @@
-ssh-keygen -b 256 -t ecdsa -C"$(id -un)@$(hostname)-$(date --rfc-3339=date)"
-ssh-keygen -b 2048 -t rsa -C"$(id -un)@$(hostname)-$(date --rfc-3339=date)"
+ssh-keygen -b 256 -t ecdsa -C"$(id -un)@$(hostname)-$(date --iso-8601=date)"
+ssh-keygen -b 2048 -t rsa -C"$(id -un)@$(hostname)-$(date --iso-8601=date)"

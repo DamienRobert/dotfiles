@@ -1,0 +1,5 @@
+#compdef git-cd
+
+root=$(git rev-parse --show-toplevel)
+_message "$root"
+_path_files -/ -W $root 

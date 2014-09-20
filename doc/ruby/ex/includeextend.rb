@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -w
+#!/usr/bin/env ruby
 
 ## Usage of include and extend
 module Ploum
@@ -73,6 +73,7 @@ class Module
 end
 
 module B
+  #include methods in A.eigenclass into B.eigenclass
   include_module_methods A
 end
 #cf aussi: https://github.com/banister/include_complete

@@ -1,0 +1,86 @@
+Cf aussi RedBook
+Rem: Si X,Y irréd normales (ou intègres?), f est bijectif, alors k(Y)
+\subset k(X) est radicielle, et X s'identifie à la normalisée de Y dans
+k(X), ie f:Y->X est fini. (J. Dieudonné, Cours de géométrie algébrique,
+tome 2, P.U.F., 1974; $5.3, Prop 5)
+(Il doit y avoir trop d'hypothèses parce qu'avec f bijectif ça me dit X
+isomorphe à Y)
+
+http://en.wikipedia.org/wiki/Zariski%27s_connectedness_theorem
+
+Suppose that f is a proper surjective morphism of varieties from X to Y
+such that the function field of Y is separably closed in that of X. Then
+Zariski's connectedness theorem says that the inverse image of any normal
+point of Y is connected. An alternative version says that if f is proper
+and f_*(O(X)) = O(Y) then f is surjective and the inverse image of any
+point of Y is connected.
+
+=> Stein factorisation:
+    Let X be a scheme, S a locally noetherian scheme and f: X \to S a proper morphism. Then one can write
+        f = g \circ f'
+    where g: S' \to S is a finite morphism and f': X \to S' is a proper morphism so that f'_* \mathcal{O}_X = \mathcal{O}_{S'}.
+The existence of this decomposition itself is not difficult. (see below) But, by Zariski's connectedness theorem, the last part in the above says that the fiber f'^{-1}(s) is connected for any s \in S. It follows:
+Corollary: For any s \in S, the set of connected components of the fiber f^{-1}(s) is in bijection with the set of points in the fiber g^{-1}(s).
+
+FOAG:
+
+Stein factorisation
+===================
+
+Tout morphisme propre X->Y (de schémas loc noeth) peut se factoriser comme
+un morphisme O-connecté suivi d'un morphisme fini Y'->Y. Le morphisme
+O-connecté X->Y' étant propre, les fibres sont connexes par Zariski.
+
+Zariski main thm
+=================
+
+Thm:
+Si X->Y est un morphisme propre (X,Y loc noeth), alors 
+- X_0={points isolés dans leurs fibres} est ouvert
+- X_0 est ouvert dans Y', avec Y'->Y fini.
+
+Si f: X->Y (noeths) est séparé de type fini, alors f est une immersion
+ouverte dans Y' propre sur Y, donc on peut aussi appliquer le th précédent.
+
+Th: The Noetherian conditions in Theorem 29.6.1 can be relaxed (see
+[Gr-EGA, IV3 .8.12.6] or [GW, Thm. 12.73]): if π : X → Y is a separated
+morphism of finite type, and Y is quasicompact and quasiseparated, then the
+set of points X0 isolated in their fiber is open in X, and for every
+quasicompact open subset U of X0 , there is a factorization
+such that β:Y'->Y is finite, γ|U is a quasicompact open embedding, and γ^−1
+(γ(U)) = U.
+
+Ex: Si X->Y est quasi fini, alors X se factorise comme un ouvert de Y',
+Y'->Y fini. Si de plus f est birationel et Y normal (et X intègre), Y'=Y et
+X->Y est une immersion ouverte. Si de plus f est une bij, c'est un iso.
+
+Résumé:
+======
+
+Stein:
+Si X->Y est un morphisme propre (Y loc noeth), alors il existe Y'->Y fini
+tel que X->Y' soit propre et O-connexe (ie f_*(O(X))=O(Y)).
+Zariski: un morphisme propre et O-connexe X->Y' est surjectif et la
+préimage d'un point de Y' est connexe.
+
+Ex:
+- Si X->Y est propre et surjectif, X,Y variétés irréductibles et k(Y) \subset k(X) est int. close, alors la préimage d'un point normal de Y est connexe.
+En particulier si X->Y est birationnel propre, alors la préimage d'un point normal de Y est connexe.
+
+Zariski:
+Si X->Y est un morphisme propre (X,Y loc noeth), alors X_0={points isolés dans leurs fibres} est ouvert et il existe Y'->Y fini/ X_0 est ouvert dans Y'
+
+Ex: 
+- Si f: X->Y (noeths) est séparé de type fini, alors f est une immersion
+ouverte dans X' propre sur Y, donc on peut aussi appliquer le th précédent.
+- Si f: X->Y est quasi fini, alors X est un ouvert de Y'.
+  Si f quasi fini et de plus birationel et Y normal (et X intègre), Y'=Y ie f
+  immersion ouverte.
+  Si f bijectif et birationel et Y normal, f est un iso.
+
+Donc si f birationel + f propre: préimage d'un point normal de Y est connexe
+         (+séparée)  + f quasi-fini, Y normal: f immersion ouverte
+                     + f bij, Y normal: f iso
+
+See http://mathoverflow.net/questions/78696/is-there-an-intuitive-reason-for-zariskis-main-theorem
+for an intuitive geometric meaning.

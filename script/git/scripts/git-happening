@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+# Adapted from git-aliae https://github.com/ConradIrwin/git-aliae
+# A little script to show you who's working on what.
+# Prints out a list of branches on 'origin' (or the remote you name)
+#
+# For each branch shows you who last committed to it, and when.
+#
+# It first prints branches that have already been merged into master (in pink),
+# and then branches that have not yet been merged (in green).
+#
+# I find it useful to go around and garbage collect the merged branches from
+# time to time.
+
+remote=${1:-origin}
+cur=$(git current-branch -a)
+
+show() {
+  format="* $open${branch#remotes/$remote/}$close: %Cgreen%cr %C(bold blue)<%aN>%Creset %s"
+  git --no-pager log -1 --format=$format $branch
+}
+
+for branch in $(git branch -a --merged $cur) # | grep -v 'shelf\|HEAD' | sed -n "/remotes\\/$remote/p")
+do
+    #open="%C(magenta)[3m"
+    #close="[0m"
+    open="%C(magenta)"
+    close="%Creset"
+
+    #echo "$(git log -1 --format="* %C(red)%aN%Creset ($open${branch#remotes/$remote/}$close)  %Creset%cr%Creset" $branch)"
+		show
+done
+
+for branch in $(git branch -a --no-merged $cur) # | tr -d '*' | grep -v 'shelf\|HEAD' | sed -n "/remotes\\/$remote/p")
+do
+    open="%C(red)"
+    close="%Creset"
+
+    #echo "$(git log -1 --format="* %C(red)%aN%Creset ($open${branch#remotes/$remote/}$close)  %Creset%cr%Creset %s" $branch)"
+		show
+done

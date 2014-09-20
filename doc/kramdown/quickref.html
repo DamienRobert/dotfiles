@@ -1,0 +1,1222 @@
+<!doctype html>
+<html xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Thomas Leitner" />
+    <meta name="copyright" content="2009-2013 Thomas Leitner" />
+    <meta name="description" content="kramdown is a fast, pure-Ruby Markdown-superset converter" />
+    <meta name="keywords" content="ruby, kramdown, markdown, text markup" />
+    <link href="default.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="news.atom" type="application/atom+xml" rel="alternate" />
+    <script src="http://kramdown.rubyforge.org/MathJax/MathJax.js" type="text/javascript"></script>
+    <title>Quick Reference | kramdown</title>
+  </head>
+  <body>
+    <header>
+      <hgroup>
+        <h1 id="logo"><a href="index.html" title="Homepage">kramdown</a></h1>
+        <h2 id="slogan">fast, pure-Ruby Markdown-superset converter</h2>
+      </hgroup>
+
+      <nav>
+        <ul><li class="webgen-menu-level1"><a href="index.html" hreflang="en">Home</a></li><li class="webgen-menu-level1"><a href="installation.html" hreflang="en">Installation</a></li><li class="webgen-menu-level1"><a href="documentation.html" hreflang="en">Documentation</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><a href="quickref.html" hreflang="en">Quick Reference</a></li><li class="webgen-menu-level1"><a href="syntax.html" hreflang="en">Syntax</a></li></ul>
+      </nav>
+    </header>
+
+    <div id="wrapper">
+      
+
+      <aside>
+        <h1>Contents</h1>
+
+<ul><li class="webgen-menu-level1"><a href="#quick-reference">Quick Reference</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="#block-level-elements---main-structural-elements">Block-level Elements - Main Structural Elements</a><ul><li class="webgen-menu-level2"><a href="#paragraphs">Paragraphs</a></li><li class="webgen-menu-level2"><a href="#headers">Headers</a></li><li class="webgen-menu-level2"><a href="#blockquotes">Blockquotes</a></li><li class="webgen-menu-level2"><a href="#code-blocks">Code Blocks</a></li><li class="webgen-menu-level2"><a href="#horizontal-rules">Horizontal Rules</a></li><li class="webgen-menu-level2"><a href="#lists">Lists</a></li><li class="webgen-menu-level2"><a href="#definition-lists">Definition Lists</a></li><li class="webgen-menu-level2"><a href="#tables">Tables</a></li><li class="webgen-menu-level2"><a href="#html-elements">HTML elements</a></li><li class="webgen-menu-level2"><a href="#block-attributes">Block Attributes</a></li><li class="webgen-menu-level2"><a href="#extensions">Extensions</a></li></ul></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="#span-level-elements---text-modifiers">Span-Level Elements - Text Modifiers</a><ul><li class="webgen-menu-level2"><a href="#emphasis">Emphasis</a></li><li class="webgen-menu-level2"><a href="#links-and-images">Links and Images</a></li><li class="webgen-menu-level2"><a href="#inline-code">Inline Code</a></li><li class="webgen-menu-level2"><a href="#footnotes">Footnotes</a></li><li class="webgen-menu-level2"><a href="#abbreviations">Abbreviations</a></li><li class="webgen-menu-level2"><a href="#html-elements-1">HTML Elements</a></li><li class="webgen-menu-level2"><a href="#inline-attributes">Inline Attributes</a></li></ul></li></ul>
+
+
+        <h2>News</h2>
+
+<p>The latest version of kramdown is <span class="inline-important">1.2.0</span> and it was released
+on <span class="inline-important">2013-08-31</span></p>
+
+<p>More <a href="news.html">news</a>…</p>
+
+<h2>Support kramdown</h2>
+
+<p>If you like kramdown and would like to support it, you are welcome to make a small
+donation (PayPal or Pledgie) -- it will surely be appreciated! Thanks!</p>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="99HUWKWPMUHWG">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+<a href='http://www.pledgie.com/campaigns/16657'><img alt='Click here to lend your support to: kramdown and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16657.png?skin_name=chrome' border='0' /></a>
+
+<h2>Sponsors</h2>
+
+<p>GROSSWEBER provides <a href="http://grossweber.com/b/kramdown" target="_blank">software
+development consulting and training services</a>. <em>We like to work on open source. We use it heavily.
+We love kramdown!</em></p>
+
+      </aside>
+
+      <div id="content">
+        <h1 id="quick-reference">Quick Reference</h1>
+
+<p>Below are examples of all available structural elements that can be used in a kramdown text. Since
+the kramdown syntax is a superset of the Markdown syntax, only a small part of the available syntax
+is not available in standard Markdown syntax. Note, that only the most basic syntax information is
+given. However, a link to the detailed syntax for each element is provided (which also details the
+differences to the standard Markdown syntax). The quick reference is for version <strong>1.1.0</strong> of the syntax documentation.</p>
+
+<p>kramdown has two main classes of elements: block and span-level elements. Block-level elements are
+used to create paragraphs, headers, lists and so on whereas span-level elements are used to markup
+text phrases as emphasized, as a link and so on.</p>
+
+<p>All examples below feature the kramdown source, the converted HTML source (shown when hovering over
+the kramdown source) and the output as it appears in the browser. This looks like this:</p>
+
+<table class="kdexample">
+<tr>
+<td><pre class="kdexample-before"><code>kramdown example code</code></pre></td>
+<td><pre class="kdexample-after-source"><code>Example code converted to HTML</code></pre>
+<div class="kdexample-after-live" style="clear:none">
+Live browser view of example code
+</div>
+</td>
+</tr>
+</table>
+
+<h1 id="block-level-elements---main-structural-elements">Block-level Elements - Main Structural Elements</h1>
+
+<h2 id="paragraphs">Paragraphs</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#paragraphs">&rarr; Syntax for paragraphs</a>
+</div>
+
+<p>Consecutive lines of text are considered to be one paragraph. As with other block level elements you
+have to add a blank line to separate it from the following block-level element:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>The first paragraph.
+
+Another paragraph
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;The first paragraph.&lt;/p&gt;
+
+&lt;p&gt;Another paragraph&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>The first paragraph.</p>
+
+<p>Another paragraph</p>
+</div></td></tr></table>
+
+<p>Explicit line breaks in a paragraph can be made by using two spaces or two backslashes at the end of a line:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is a paragraph  
+which contains a hard line break.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is a paragraph&lt;br /&gt;
+which contains a hard line break.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is a paragraph<br />
+which contains a hard line break.</p>
+</div></td></tr></table>
+
+<h2 id="headers">Headers</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#headers">&rarr; Syntax for headers</a>
+</div>
+
+<p>kramdown supports Setext style headers and atx style headers. A header must always be preceded by a
+blank line except at the beginning of the document:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>First level header
+==================
+
+Second level header
+-------------------
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;h1&gt;First level header&lt;/h1&gt;
+
+&lt;h2&gt;Second level header&lt;/h2&gt;
+
+</code></pre><div class="kdexample-after-live"><h1>First level header</h1>
+
+<h2>Second level header</h2>
+</div></td></tr></table>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code># H1 header
+
+## H2 header
+
+### H3 header
+
+#### H4 header
+
+##### H5 header
+
+###### H6 header
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;h1&gt;H1 header&lt;/h1&gt;
+
+&lt;h2&gt;H2 header&lt;/h2&gt;
+
+&lt;h3&gt;H3 header&lt;/h3&gt;
+
+&lt;h4&gt;H4 header&lt;/h4&gt;
+
+&lt;h5&gt;H5 header&lt;/h5&gt;
+
+&lt;h6&gt;H6 header&lt;/h6&gt;
+
+</code></pre><div class="kdexample-after-live"><h1>H1 header</h1>
+
+<h2>H2 header</h2>
+
+<h3>H3 header</h3>
+
+<h4>H4 header</h4>
+
+<h5>H5 header</h5>
+
+<h6>H6 header</h6>
+</div></td></tr></table>
+
+<p>If you set the option <code>auto_ids</code> to <code>false</code> (for example, by using the <code>options</code> extension, see
+<a href="#extensions">Extensions</a>), then the automatic header ID generation is turned off:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>{::options auto_ids=&quot;false&quot; /}
+
+# A header without an ID
+</code></pre></td><td><pre class="kdexample-after-source"><code>
+&lt;h1&gt;A header without an ID&lt;/h1&gt;
+
+</code></pre><div class="kdexample-after-live">
+<h1>A header without an ID</h1>
+</div></td></tr></table>
+
+<h2 id="blockquotes">Blockquotes</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#blockquotes">&rarr; Syntax for blockquotes</a>
+</div>
+
+<p>A blockquote is started using the <code>&gt;</code> marker followed by an optional space; all following lines that
+are also started with the blockquote marker belong to the blockquote. You can use any block-level
+elements inside a blockquote:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>&gt; A sample blockquote.
+&gt;
+&gt; &gt;Nested blockquotes are
+&gt; &gt;also possible.
+&gt;
+&gt; ## Headers work too
+&gt; This is the outer quote again.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;blockquote&gt;
+  &lt;p&gt;A sample blockquote.&lt;/p&gt;
+
+  &lt;blockquote&gt;
+    &lt;p&gt;Nested blockquotes are
+also possible.&lt;/p&gt;
+  &lt;/blockquote&gt;
+
+  &lt;h2&gt;Headers work too&lt;/h2&gt;
+  &lt;p&gt;This is the outer quote again.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</code></pre><div class="kdexample-after-live"><blockquote>
+  <p>A sample blockquote.</p>
+
+  <blockquote>
+    <p>Nested blockquotes are
+also possible.</p>
+  </blockquote>
+
+  <h2>Headers work too</h2>
+  <p>This is the outer quote again.</p>
+</blockquote>
+</div></td></tr></table>
+
+<p>You may also be lazy with the <code>&gt;</code> markers as long as there is no blank line:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>&gt; This is a blockquote
+continued on this
+and this line.
+
+But this is a separate paragraph.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;blockquote&gt;
+  &lt;p&gt;This is a blockquote
+continued on this
+and this line.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;But this is a separate paragraph.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><blockquote>
+  <p>This is a blockquote
+continued on this
+and this line.</p>
+</blockquote>
+
+<p>But this is a separate paragraph.</p>
+</div></td></tr></table>
+
+<h2 id="code-blocks">Code Blocks</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#code-blocks">&rarr; Syntax for code blocks</a>
+</div>
+
+<p>kramdown supports two different code block styles. One uses lines indented with either four spaces
+or one tab whereas the other uses lines with tilde characters as delimiters – therefore the content
+does not need to be indented:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is a sample code block.
+
+    Continued here.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is a sample code block.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Continued here.
+&lt;/code&gt;&lt;/pre&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is a sample code block.</p>
+
+<pre><code>Continued here.
+</code></pre>
+</div></td></tr></table>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>~~~~~~
+This is also a code block.
+~~~
+Ending lines must have at least as
+many tildes as the starting line.
+~~~~~~~~~~~~
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;pre&gt;&lt;code&gt;This is also a code block.
+~~~
+Ending lines must have at least as
+many tildes as the starting line.
+&lt;/code&gt;&lt;/pre&gt;
+
+</code></pre><div class="kdexample-after-live"><pre><code>This is also a code block.
+~~~
+Ending lines must have at least as
+many tildes as the starting line.
+</code></pre>
+</div></td></tr></table>
+
+<p>The following is a code block with a language specified:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>~~~ ruby
+def what?
+  42
+end
+~~~
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;what?&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#00D&quot;&gt;42&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre><div class="kdexample-after-live"><div><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">what?</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#00D">42</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+</div></td></tr></table>
+
+<h2 id="horizontal-rules">Horizontal Rules</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#horizontal-rules">&rarr; Syntax for horizontal rules</a>
+</div>
+
+<p>It is easy to insert a horizontal rule in kramdown: just use three or more asterisks, dashes or
+underscores, optionally separated by spaces or tabs, on an otherwise blank line:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>* * *
+
+---
+
+  _  _  _  _
+
+---------------
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+</code></pre><div class="kdexample-after-live"><hr />
+
+<hr />
+
+<hr />
+
+<hr />
+</div></td></tr></table>
+
+<h2 id="lists">Lists</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#lists">&rarr; Syntax for lists</a>
+</div>
+
+<p>kramdown supports ordered and unordered lists. Ordered lists are started by using a number followed
+by a period, a space and then the list item text. The content of a list item consists of block-level
+elements. All lines which have the same indent as the text of the line with the list marker belong
+to the list item:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>1. This is a list item
+2. And another item
+2. And the third one
+   with additional text
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;ol&gt;
+  &lt;li&gt;This is a list item&lt;/li&gt;
+  &lt;li&gt;And another item&lt;/li&gt;
+  &lt;li&gt;And the third one
+with additional text&lt;/li&gt;
+&lt;/ol&gt;
+
+</code></pre><div class="kdexample-after-live"><ol>
+  <li>This is a list item</li>
+  <li>And another item</li>
+  <li>And the third one
+with additional text</li>
+</ol>
+</div></td></tr></table>
+
+<p>As with block quotes, you may be lazy when using the list item marker:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>* A list item
+with additional text
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;ul&gt;
+  &lt;li&gt;A list item
+with additional text&lt;/li&gt;
+&lt;/ul&gt;
+
+</code></pre><div class="kdexample-after-live"><ul>
+  <li>A list item
+with additional text</li>
+</ul>
+</div></td></tr></table>
+
+<p>As the content consists of block-level elements you can do things like the following:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>1.  This is a list item
+
+    &gt; with a blockquote
+
+    # And a header
+
+2.  Followed by another item
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;This is a list item&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;with a blockquote&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;h1&gt;And a header&lt;/h1&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Followed by another item&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</code></pre><div class="kdexample-after-live"><ol>
+  <li>
+    <p>This is a list item</p>
+
+    <blockquote>
+      <p>with a blockquote</p>
+    </blockquote>
+
+    <h1>And a header</h1>
+  </li>
+  <li>
+    <p>Followed by another item</p>
+  </li>
+</ol>
+</div></td></tr></table>
+
+<p>Nested lists are also easy to create:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>1. Item one
+   1. sub item one
+   2. sub item two
+   3. sub item three
+2. Item two
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;ol&gt;
+  &lt;li&gt;Item one
+    &lt;ol&gt;
+      &lt;li&gt;sub item one&lt;/li&gt;
+      &lt;li&gt;sub item two&lt;/li&gt;
+      &lt;li&gt;sub item three&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Item two&lt;/li&gt;
+&lt;/ol&gt;
+
+</code></pre><div class="kdexample-after-live"><ol>
+  <li>Item one
+    <ol>
+      <li>sub item one</li>
+      <li>sub item two</li>
+      <li>sub item three</li>
+    </ol>
+  </li>
+  <li>Item two</li>
+</ol>
+</div></td></tr></table>
+
+<p>Lists can occur directly after other block-level elements, however, there has to be at least one
+blank line if you want to follow a paragraph with a list:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is a paragraph.
+1. This is NOT a list.
+
+1. This is a list!
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is a paragraph.
+1. This is NOT a list.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;This is a list!&lt;/li&gt;
+&lt;/ol&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is a paragraph.
+1. This is NOT a list.</p>
+
+<ol>
+  <li>This is a list!</li>
+</ol>
+</div></td></tr></table>
+
+<p>Unordered lists are started by using an asterisk, a dash or a plus sign (they can be mixed) and a
+space. Apart from that unordered lists follow the same rules as ordered lists:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>* Item one
++ Item two
+- Item three
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;ul&gt;
+  &lt;li&gt;Item one&lt;/li&gt;
+  &lt;li&gt;Item two&lt;/li&gt;
+  &lt;li&gt;Item three&lt;/li&gt;
+&lt;/ul&gt;
+
+</code></pre><div class="kdexample-after-live"><ul>
+  <li>Item one</li>
+  <li>Item two</li>
+  <li>Item three</li>
+</ul>
+</div></td></tr></table>
+
+<h2 id="definition-lists">Definition Lists</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#definition-lists">&rarr; Syntax for definition lists</a>
+</div>
+
+<p>A definition list works similar to a normal list and is used to associate definitions with terms.
+Definition lists are started when a normal paragraph is followed by a line starting with a colon and
+then the definition text. One term can have many definitions and multiple terms can have the same
+definition. Each line of the preceding paragraph is assumed to contain one term, for example:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>term
+: definition
+: another definition
+
+another term
+and another term
+: and a definition for the term
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;dl&gt;
+  &lt;dt&gt;term&lt;/dt&gt;
+  &lt;dd&gt;definition&lt;/dd&gt;
+  &lt;dd&gt;another definition&lt;/dd&gt;
+  &lt;dt&gt;another term&lt;/dt&gt;
+  &lt;dt&gt;and another term&lt;/dt&gt;
+  &lt;dd&gt;and a definition for the term&lt;/dd&gt;
+&lt;/dl&gt;
+
+</code></pre><div class="kdexample-after-live"><dl>
+  <dt>term</dt>
+  <dd>definition</dd>
+  <dd>another definition</dd>
+  <dt>another term</dt>
+  <dt>and another term</dt>
+  <dd>and a definition for the term</dd>
+</dl>
+</div></td></tr></table>
+
+<p>If you insert a blank line before a definition (note: there must only be one blank line between the
+terms and the first definition), the definition will be wrapped in a paragraph:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>term
+
+: definition
+: definition
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;dl&gt;
+  &lt;dt&gt;term&lt;/dt&gt;
+  &lt;dd&gt;
+    &lt;p&gt;definition&lt;/p&gt;
+  &lt;/dd&gt;
+  &lt;dd&gt;definition&lt;/dd&gt;
+&lt;/dl&gt;
+
+</code></pre><div class="kdexample-after-live"><dl>
+  <dt>term</dt>
+  <dd>
+    <p>definition</p>
+  </dd>
+  <dd>definition</dd>
+</dl>
+</div></td></tr></table>
+
+<p>Each term can be styled using span-level elements and each definition is parsed as block-level
+elements, i.e. you can use any block-level in a definition. Just use the same indent for the lines
+following the definition line:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This *is* a term
+
+: This will be a para
+
+  &gt; a blockquote
+
+  # A header
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;dl&gt;
+  &lt;dt&gt;This &lt;em&gt;is&lt;/em&gt; a term&lt;/dt&gt;
+  &lt;dd&gt;
+    &lt;p&gt;This will be a para&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;a blockquote&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;h1&gt;A header&lt;/h1&gt;
+  &lt;/dd&gt;
+&lt;/dl&gt;
+
+</code></pre><div class="kdexample-after-live"><dl>
+  <dt>This <em>is</em> a term</dt>
+  <dd>
+    <p>This will be a para</p>
+
+    <blockquote>
+      <p>a blockquote</p>
+    </blockquote>
+
+    <h1>A header</h1>
+  </dd>
+</dl>
+</div></td></tr></table>
+
+<h2 id="tables">Tables</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#tables">&rarr; Syntax for tables</a>
+</div>
+
+<p>kramdown supports a syntax for creating simple tables. A line starting with a pipe character (<code>|</code>)
+starts a table row. However, if the pipe characters is immediately followed by a dash (<code>-</code>), a
+separator line is created. Separator lines are used to split the table header from the table body
+(and optionally align the table columns) and to split the table body into multiple parts. If the
+pipe character is followed by an equal sign (<code>=</code>), the tables rows below it are part of the table
+footer.</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>| A simple | table |
+| with multiple | lines|
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;A simple&lt;/td&gt;
+      &lt;td&gt;table&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;with multiple&lt;/td&gt;
+      &lt;td&gt;lines&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+</code></pre><div class="kdexample-after-live"><table>
+  <tbody>
+    <tr>
+      <td>A simple</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <td>with multiple</td>
+      <td>lines</td>
+    </tr>
+  </tbody>
+</table>
+</div></td></tr></table>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>| Header1 | Header2 | Header3 |
+|:--------|:-------:|--------:|
+| cell1   | cell2   | cell3   |
+| cell4   | cell5   | cell6   |
+|----
+| cell1   | cell2   | cell3   |
+| cell4   | cell5   | cell6   |
+|=====
+| Foot1   | Foot2   | Foot3
+{: rules=&quot;groups&quot;}
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;table rules=&quot;groups&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Header1&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Header2&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Header3&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell2&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell4&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell5&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell6&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell2&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell4&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell5&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell6&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Foot1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Foot2&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Foot3&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;
+
+</code></pre><div class="kdexample-after-live"><table rules="groups">
+  <thead>
+    <tr>
+      <th style="text-align: left">Header1</th>
+      <th style="text-align: center">Header2</th>
+      <th style="text-align: right">Header3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">cell1</td>
+      <td style="text-align: center">cell2</td>
+      <td style="text-align: right">cell3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">cell4</td>
+      <td style="text-align: center">cell5</td>
+      <td style="text-align: right">cell6</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: left">cell1</td>
+      <td style="text-align: center">cell2</td>
+      <td style="text-align: right">cell3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">cell4</td>
+      <td style="text-align: center">cell5</td>
+      <td style="text-align: right">cell6</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td style="text-align: left">Foot1</td>
+      <td style="text-align: center">Foot2</td>
+      <td style="text-align: right">Foot3</td>
+    </tr>
+  </tfoot>
+</table>
+</div></td></tr></table>
+
+<h2 id="html-elements">HTML elements</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#html-blocks">&rarr; Syntax for HTML blocks</a>
+</div>
+
+<p>kramdown allows you to use block-level HTML tags (<code>div</code>, <code>p</code>, <code>pre</code>, …) to markup whole blocks of
+text – just start a line with a block-level HTML tag. kramdown syntax is normally not processed
+inside an HTML tag but this can be changed with the <code>parse_block_html</code> option. If this options is
+set to <code>true</code>, then the content of a block-level HTML tag is parsed by kramdown either as block
+level or span-level text, depending on the tag:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>&lt;div style=&quot;float: right&quot;&gt;
+Something that stays right and is not wrapped in a para.
+&lt;/div&gt;
+
+{::options parse_block_html=&quot;true&quot; /}
+
+&lt;div&gt;
+This is wrapped in a para.
+&lt;/div&gt;
+&lt;p&gt;
+This can contain only *span* level elements.
+&lt;/p&gt;
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;div style=&quot;float: right&quot;&gt;
+Something that stays right and is not wrapped in a para.
+&lt;/div&gt;
+
+&lt;div&gt;
+  &lt;p&gt;This is wrapped in a para.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;
+This can contain only &lt;em&gt;span&lt;/em&gt; level elements.
+&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><div style="float: right">
+Something that stays right and is not wrapped in a para.
+</div>
+
+<div>
+  <p>This is wrapped in a para.</p>
+</div>
+<p>
+This can contain only <em>span</em> level elements.
+</p>
+</div></td></tr></table>
+
+<h2 id="block-attributes">Block Attributes</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#block-ials">&rarr; Syntax for block IALs</a>
+</div>
+<div class="kdsyntaxlink"><a href="syntax.html#attribute-list-definitions">&rarr; Syntax for ALDs</a>
+</div>
+
+<p>You can assign any attribute to a block-level element. Just directly follow the block with a <em>block
+inline attribute list</em> (or short: block IAL). A block IAL consists of a left curly brace, followed
+by a colon, the attribute definitions and a right curly brace. Here is a simple example which sets the
+<code>title</code> attribute of a block quote:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>&gt; A nice blockquote
+{: title=&quot;Blockquote title&quot;}
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;blockquote title=&quot;Blockquote title&quot;&gt;
+  &lt;p&gt;A nice blockquote&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</code></pre><div class="kdexample-after-live"><blockquote title="Blockquote title">
+  <p>A nice blockquote</p>
+</blockquote>
+</div></td></tr></table>
+
+<p>As one often wants to set one or more CSS classes on an element, there is an easy shortcut:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>&gt; A nice blockquote
+{: .class1 .class2}
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;blockquote class=&quot;class1 class2&quot;&gt;
+  &lt;p&gt;A nice blockquote&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</code></pre><div class="kdexample-after-live"><blockquote class="class1 class2">
+  <p>A nice blockquote</p>
+</blockquote>
+</div></td></tr></table>
+
+<p>A shortcut for setting the ID is also provided. Just prefix the ID with a hash symbol:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>&gt; A nice blockquote
+{: #with-an-id}
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;blockquote id=&quot;with-an-id&quot;&gt;
+  &lt;p&gt;A nice blockquote&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</code></pre><div class="kdexample-after-live"><blockquote id="with-an-id">
+  <p>A nice blockquote</p>
+</blockquote>
+</div></td></tr></table>
+
+<p>Sometimes one wants to use the same attributes for many elements. kramdown allows you to define the
+attributes in one place with an <em>attribute list definition</em> (or short: ALD) and just reference this
+definition in a block IAL. An ALD has the same structure as a block IAL but the colon has to be
+replace with a colon, the reference name and another colon. By just using the reference name as-is
+in a block IAL, one can include the attributes of the referenced ALD:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>{:refdef: .c1 #id .c2 title=&quot;title&quot;}
+paragraph
+{: refdef}
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p class=&quot;c1 c2&quot; id=&quot;id&quot; title=&quot;title&quot;&gt;paragraph&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p class="c1 c2" id="id" title="title">paragraph</p>
+</div></td></tr></table>
+
+<p>The order in a block IAL or ALD is important because later defined attributes overwrite (with the
+exception of the shortcut for CSS classes) prior defined attributes:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>{:refdef: .c1 #id .c2 title=&quot;title&quot;}
+paragraph
+{: refdef .c3 title=&quot;t&quot; #para}
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p class=&quot;c1 c2 c3&quot; id=&quot;para&quot; title=&quot;t&quot;&gt;paragraph&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p class="c1 c2 c3" id="para" title="t">paragraph</p>
+</div></td></tr></table>
+
+<h2 id="extensions">Extensions</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#extensions">&rarr; Syntax for extensions</a>
+</div>
+
+<p>kramdown provides some less used functionality through a common syntax. This will allow the easy
+addition of other extensions if need arises. Currently, there are extensions for ignoring text (i.e.
+treating text as comment), for inserting arbitrary text as-is into the output and for setting
+kramdown options.</p>
+
+<p>Here is an example that shows how to insert comments into text:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is a paragraph
+{::comment}
+This is a comment which is
+completely ignored.
+{:/comment}
+... paragraph continues here.
+
+Extensions can also be used
+inline {::nomarkdown}**see**{:/}!
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is a paragraph
+&lt;!-- 
+This is a comment which is
+completely ignored.
+ --&gt;
+… paragraph continues here.&lt;/p&gt;
+
+&lt;p&gt;Extensions can also be used
+inline **see**!&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is a paragraph
+<!-- 
+This is a comment which is
+completely ignored.
+ -->
+… paragraph continues here.</p>
+
+<p>Extensions can also be used
+inline **see**!</p>
+</div></td></tr></table>
+
+<p>As one can see from the above example, the syntax for extensions is nearly identical to that of
+ALDs. However, there is no trailing colon after the extension name and the extension end tag needs a
+slash between the colon and the extension name. One can also use the short form of the end tag, i.e.
+<code>{:/}</code>. Attribute definitions can be specified on the start tag by separating them with a space from
+the extension name. Also, if the extension does not have a body, there needs to be a slash right
+before the closing brace:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>{::options auto_ids=&quot;false&quot; /}
+
+# Header without id
+</code></pre></td><td><pre class="kdexample-after-source"><code>
+&lt;h1&gt;Header without id&lt;/h1&gt;
+
+</code></pre><div class="kdexample-after-live">
+<h1>Header without id</h1>
+</div></td></tr></table>
+
+<h1 id="span-level-elements---text-modifiers">Span-Level Elements - Text Modifiers</h1>
+
+<h2 id="emphasis">Emphasis</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#emphasis">&rarr; Syntax for emphasis</a>
+</div>
+
+<p>Emphasis can be added to text by surrounding the text with either asterisks or underscores:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is *emphasized*,
+_this_ too!
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is &lt;em&gt;emphasized&lt;/em&gt;,
+&lt;em&gt;this&lt;/em&gt; too!&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is <em>emphasized</em>,
+<em>this</em> too!</p>
+</div></td></tr></table>
+
+<p>Strong emphasis can be done by doubling the delimiters:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is **strong**,
+__this__ too!
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is &lt;strong&gt;strong&lt;/strong&gt;,
+&lt;strong&gt;this&lt;/strong&gt; too!&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is <strong>strong</strong>,
+<strong>this</strong> too!</p>
+</div></td></tr></table>
+
+<p>The form with the asterisks can also be used to markup parts of words:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This w**ork**s as expected!
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This w&lt;strong&gt;ork&lt;/strong&gt;s as expected!&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This w<strong>ork</strong>s as expected!</p>
+</div></td></tr></table>
+
+<h2 id="links-and-images">Links and Images</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#links-and-images">&rarr; Syntax for links and images</a>
+</div>
+
+<p>A simple link can be created by surrounding the text with square brackets and the link URL with
+parentheses:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>A [link](http://kramdown.rubyforge.org)
+to the kramdown homepage.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;A &lt;a href=&quot;http://kramdown.rubyforge.org&quot;&gt;link&lt;/a&gt;
+to the kramdown homepage.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>A <a href="http://kramdown.rubyforge.org">link</a>
+to the kramdown homepage.</p>
+</div></td></tr></table>
+
+<p>You can also add title information to the link:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>A [link](http://kramdown.rubyforge.org &quot;hp&quot;)
+to the homepage.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;A &lt;a href=&quot;http://kramdown.rubyforge.org&quot; title=&quot;hp&quot;&gt;link&lt;/a&gt;
+to the homepage.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>A <a href="http://kramdown.rubyforge.org" title="hp">link</a>
+to the homepage.</p>
+</div></td></tr></table>
+
+<p>There is another way to create links which does not interrupt the text flow. The URL and title are
+defined using a reference name and this reference name is then used in square brackets instead of
+the link URL:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>A [link][kramdown hp]
+to the homepage.
+
+[kramdown hp]: http://kramdown.rubyforge.org &quot;hp&quot;
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;A &lt;a href=&quot;http://kramdown.rubyforge.org&quot; title=&quot;hp&quot;&gt;link&lt;/a&gt;
+to the homepage.&lt;/p&gt;
+
+
+</code></pre><div class="kdexample-after-live"><p>A <a href="http://kramdown.rubyforge.org" title="hp">link</a>
+to the homepage.</p>
+
+</div></td></tr></table>
+
+<p>If the link text itself is the reference name, the second set of square brackets can be omitted:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>A link to the [kramdown hp].
+
+[kramdown hp]: http://kramdown.rubyforge.org &quot;hp&quot;
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;A link to the &lt;a href=&quot;http://kramdown.rubyforge.org&quot; title=&quot;hp&quot;&gt;kramdown hp&lt;/a&gt;.&lt;/p&gt;
+
+
+</code></pre><div class="kdexample-after-live"><p>A link to the <a href="http://kramdown.rubyforge.org" title="hp">kramdown hp</a>.</p>
+
+</div></td></tr></table>
+
+<p>Images can be created in a similar way: just use an exclamation mark before the square brackets. The
+link text will become the alternative text of the image and the link URL specifies the image source:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>An image: ![gras](img/image.jpg)
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;An image: &lt;img src=&quot;img/image.jpg&quot; alt=&quot;gras&quot; /&gt;&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>An image: <img src="img/image.jpg" alt="gras" /></p>
+</div></td></tr></table>
+
+<h2 id="inline-code">Inline Code</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#code-spans">&rarr; Syntax for code spans</a>
+</div>
+
+<p>Text phrases can be easily marked up as code by surrounding them with backticks:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>Use `Kramdown::Document.new(text).to_html`
+to convert the `text` in kramdown
+syntax to HTML.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;Use &lt;code&gt;Kramdown::Document.new(text).to_html&lt;/code&gt;
+to convert the &lt;code&gt;text&lt;/code&gt; in kramdown
+syntax to HTML.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>Use <code>Kramdown::Document.new(text).to_html</code>
+to convert the <code>text</code> in kramdown
+syntax to HTML.</p>
+</div></td></tr></table>
+
+<p>If you want to use literal backticks in your code, just use two or more backticks as delimiters. The
+space right after the beginning delimiter and the one right before the closing delimiter are ignore:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>Use backticks to markup code,
+e.g. `` `code` ``.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;Use backticks to markup code,
+e.g. &lt;code&gt;`code`&lt;/code&gt;.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>Use backticks to markup code,
+e.g. <code>`code`</code>.</p>
+</div></td></tr></table>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#footnotes">&rarr; Syntax for footnotes</a>
+</div>
+
+<p>Footnotes can easily be used in kramdown. Just set a footnote marker (consists of square brackets
+with a caret and the footnote name inside) in the text and somewhere else the footnote definition (which
+basically looks like a reference link definition):</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is a text with a
+footnote[^1].
+
+[^1]: And here is the definition.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is a text with a
+footnote&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;And here is the definition. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is a text with a
+footnote<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>And here is the definition. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+</div></td></tr></table>
+
+<p>The footnote definition can contain any block-level element, all lines following a footnote
+definition indented with four spaces or one tab belong to the definition:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is a text with a
+footnote[^2].
+
+[^2]:
+    And here is the definition.
+
+    &gt; With a quote!
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is a text with a
+footnote&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+
+      &lt;p&gt;And here is the definition.&lt;/p&gt;
+
+      &lt;blockquote&gt;
+        &lt;p&gt;With a quote!&lt;/p&gt;
+      &lt;/blockquote&gt;
+      &lt;p&gt;&lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is a text with a
+footnote<sup id="fnref:2"><a href="#fn:2" class="footnote">1</a></sup>.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:2">
+
+      <p>And here is the definition.</p>
+
+      <blockquote>
+        <p>With a quote!</p>
+      </blockquote>
+      <p><a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+</div></td></tr></table>
+
+<p>As can be seen above the footnote name is only used for the anchors and the numbering is done
+automatically in document order.  Repeated footnote markers will link to the same footnote
+definition.</p>
+
+<h2 id="abbreviations">Abbreviations</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#abbreviations">&rarr; Syntax for abbreviations</a>
+</div>
+
+<p>Abbreviations will work out of the box once you add an abbreviation definition. So you can just
+write the text and add the definitions later on.</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is an HTML
+example.
+
+*[HTML]: Hyper Text Markup Language
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is an &lt;abbr title=&quot;Hyper Text Markup Language&quot;&gt;HTML&lt;/abbr&gt;
+example.&lt;/p&gt;
+
+
+</code></pre><div class="kdexample-after-live"><p>This is an <abbr title="Hyper Text Markup Language">HTML</abbr>
+example.</p>
+
+</div></td></tr></table>
+
+<h2 id="html-elements-1">HTML Elements</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#html-spans">&rarr; Syntax for HTML spans</a>
+</div>
+
+<p>HTML is not only supported on the block-level but also on the span-level:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is &lt;span style=&quot;color: red&quot;&gt;written in
+red&lt;/span&gt;.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is &lt;span style=&quot;color: red&quot;&gt;written in
+red&lt;/span&gt;.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is <span style="color: red">written in
+red</span>.</p>
+</div></td></tr></table>
+
+<h2 id="inline-attributes">Inline Attributes</h2>
+
+<div class="kdsyntaxlink"><a href="syntax.html#span-ials">&rarr; Syntax for span IALs</a>
+</div>
+
+<p>As with a block-level element you can assign any attribute to a span-level elements using a <em>span
+inline attribute list</em> (or short: span IAL). A span IAL has the same syntax as a block IAL and must
+immediately follow the span-level element:</p>
+
+<table class="kdexample"><tr><td><pre class="kdexample-before"><code>This is *red*{: style=&quot;color: red&quot;}.
+</code></pre></td><td><pre class="kdexample-after-source"><code>&lt;p&gt;This is &lt;em style=&quot;color: red&quot;&gt;red&lt;/em&gt;.&lt;/p&gt;
+
+</code></pre><div class="kdexample-after-live"><p>This is <em style="color: red">red</em>.</p>
+</div></td></tr></table>
+
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+    <footer>
+      <div class="float-left">Copyright © 2009-2013 Thomas Leitner</div>
+      <div class="float-right">Generated by <a href="http://webgen.rubyforge.org">webgen</a></div>
+    </footer>
+
+    <!-- Start of StatCounter Code -->
+    <script type="text/javascript">
+      var sc_project=4267845;
+      var sc_invisible=1;
+      var sc_partition=46;
+      var sc_click_stat=1;
+      var sc_security="41321455";
+    </script>
+
+    <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script>
+    <noscript><div class="statcounter">
+        <a title="web counter" class="statcounter" href="http://www.statcounter.com/free_hit_counter.html">
+          <img class="statcounter" src="http://c.statcounter.com/4267845/0/41321455/1/" alt="web counter" />
+        </a>
+    </div></noscript>
+    <!-- End of StatCounter Code -->
+
+  </body>
+</html>

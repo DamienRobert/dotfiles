@@ -1,0 +1,25 @@
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/usr/bin/nologin
+daemon:x:2:2:daemon:/sbin:/usr/bin/nologin
+mail:x:8:12:mail:/var/spool/mail:/usr/bin/nologin
+ftp:x:14:11:ftp:/srv/ftp:/usr/bin/nologin
+http:x:33:33:http:/srv/http:/usr/bin/nologin
+mpd:x:45:45::/var/lib/mpd:/bin/true
+uuidd:x:68:68:uuidd:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+avahi:x:84:84:Avahi daemon:/:/usr/bin/nologin
+ntp:x:87:87:Network Time Protocol:/var/lib/ntp:/usr/bin/nologin
+mysql:x:89:89::/var/lib/mysql:/usr/bin/nologin
+nobody:x:99:99:nobody:/:/usr/bin/nologin
+polkitd:x:102:102:Policy Kit Daemon:/:/usr/bin/nologin
+lxdm:x:121:121:Lightweight X11 Display Manager:/var/lib/lxdm:/sbin/nologin
+colord:x:124:124::/var/lib/colord:/usr/bin/nologin
+deluge:x:125:125:Deluge user:/srv/deluge:/usr/bin/nologin
+rtkit:x:133:133:RealtimeKit:/proc:/sbin/nologin
+systemd-journal-gateway:x:191:191:systemd-journal-gateway:/:/usr/bin/nologin
+systemd-timesync:x:192:192:systemd-timesync:/:/usr/bin/nologin
+systemd-network:x:193:193:systemd-network:/:/usr/bin/nologin
+lightdm:x:620:620:Light Display Manager:/var/lib/lightdm:/sbin/nologin
+git:x:999:997:git daemon user:/:/bin/bash
+dams:x:1000:100:Damien Robert:/home/dams:/bin/zsh
+dina:x:1001:100:Blandine Belin:/home/dina:/bin/bash

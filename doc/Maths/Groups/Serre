@@ -1,0 +1,229 @@
+Serre, Groupe Finis
+===================
+
+Théorème 1.2 (Jordan-Holder): le gradué (lié à une filtration maximale)
+d'un groupe ne dépend pas de la filtration (à permutation près)
+
+Sylows
+======
+
+- Si H subset G, il existe un sylow S de G tel que S \inter H soit Sylow de
+  H.
+- Si de plus H est distingué, alors
+  - Pour tout Sylow S, S\inter H est un sylow de H
+  - Les sylow de G/H sont l'image des Sylows de G
+  - (Frattini) Si Q est un Sylow de H, alors H.N_G(Q)=G
+    => Si H contient N_G(S) alors N_G(H)=H
+    => N_G(N_G(S))=N_G(S)
+
+Fusion
+======
+
+Si X et Y sont dans le centre de S et sont conjugués par g, alors il existe 
+n \in N_G(S) tels que nxn^-1=g x g^-1, en particulier X et Y sont conjugués
+par n.
+
+Th 2.14 (Alperin): x et y \in S sont conjugués dans G <=> x et y sont
+équivalents pour la relation "localement conjugués"
+
+Résolubilité
+============
+
+(i) H contient D(G) <=> H est normal et G/H abélien
+
+Prop: <=>
+(i) G résoluble de classe n
+(ii) \exist A abélien normal tel que G/A soit résoluble de classe n-1
+(iii) \exist une suite G=G_0 \supset ... G_n={1} avec G_i normal et
+G_i/G_{i+1} abélien
+(iv) comme (iii) mais on suppose seulement G_{i+1} normal dans G_i
+
+Suite centrale descendante:
+[C^i(G), C^j(G)] \subset C^{i+j}(G)
+On a D^n(G) \subset C^2^n(G), ie nilpotent => résoluble
+
+Prop: G est nilpotent de classe <=n+1 ssi G est une extension centrale d'un
+groupe nilpotent de classe <=n
+
+Cor: si G est nilpotent, N_G(H) > H si H < G.
+
+Th 3.10: Kolchin
+Si G \subset GL(V) est nilpotent, il existe un drapeau complet tel que G
+soit inclus dans les matrices triangulaires avec des 1 sur la diagonale.
+(Rem les matrices triangulaires sont résolubles, celles avec les 1 sur la
+diagonale nilpotente)
+
+Th 3.14: <=>
+(i) G nilpotent
+(ii) G est produit de p-groupes
+(iii) Pour tout p, G a un unique p-Sylow
+
+Cor 3.12: si G est un p-groupe d'ordre p^n
+- H d'ordre p^{n-1} est normal
+- On a une filtration où les indices sont p
+- Si H < G, H est contenu dans un groupe d'ordre p^{n-1}
+
+Frattini
+========
+
+Déf: \phi(G)=\intersection ss-groupes maximaux de G
+
+S engendre G ssi S engdre G/\phi(G)
+
+Th 3.18,3.19
+\phi(G) est nilpotent; si G est un p-groupe c'est [G,G].G^p
+
+Application: 
+G est commutatif/nilpotent/résoluble ssi tout ss-gp engendré par x,y \in G
+l'est.
+
+Cohomologie
+===========
+
+Th 4.3: Les extensions de G par A sont en bijection avec H^2(G,A). (A abélien)
+
+Th 4.1: Les classes de conjugaison (par A ou G) des sections de E qui sont
+des homomorphismes est un torseur sous l'action de H^1(G,A)
+
+Th 4.6: Si |G|=m, et x \in H^n(G,A) (n>0) alors m.x=0
+En particulier, si m est un automorphisme de A, H^n(G,A)=0 pour n>0
+
+Cor 4.9: si G et A sont d'ordres premiers entre eux:
+- Toute extension E de G par A est triviale
+- Deux sections-homomorphismes de G sont conjugués par un élément de A
+
+Th 4.10 (Zashenhaus)
+1->A->E->G->1 (A non supposé abélien), A et G d'ordres premiers entre eux
+(i) G a une section dans E, ie E est le produit semi-direct de A et G
+(ii) Si A ou G est résoluble, les sections sont conjugués par un élément de
+E (ou même de A)
+
+Th 4.12 (relêvement d'homomorphisme)
+1->A->E->G_1->1, et G_2 -> G_1 un morphisme, si G_2 et A sont d'ordre
+premiers alors G_2->G_1 se relève en G_2->A
+Si de plus A ou G_2 résoluble les relevés sont conjugués par un élément de A.
+
+Application: si on a une représentation de G dans GL(Z/pZ), alors elle se
+relève à GL(Z_p)
+
+Groupes de Hall
+===============
+
+Th 5.1 (Hall)
+G a des groupes de Hall <=> G est résoluble
+Dans ce cas tout \Pi sous-groupe est contenu dans un groupe de Hall (en
+particulier les groupes de Hall sont conjugués)
+
+Cor (Burnside): un groupe d'ordre p^a q^b est résoluble.
+
+Sous-groupes permutables
+------------------------
+
+Lemme 5.5: A.B=B.A <=> AB est un sous-groupe de G.
+(Rem si A est distingué c'est toujours le cas, AB c'est la préimage de
+l'image de B dans G/A)
+
+Lemme 5.7: <=>
+(i) A.B=G
+(i') B.A=G
+(ii) G opère transitivement sur G/AxG/B
+(iii) [G fini] (G:A \inter B)=(G:A)(G:B)
+(iii') [G fini] (G:A \inter B)>=(G:A)(G:B)
+Rem: (G:A) et (G:B) sont premiers entre eux => A.B=G
+
+Groupes de Frobenius
+====================
+
+Th 6.1 (Jordan) H<G
+On a |union des conjugués de H| <= |G|-(|G|/|H|-1)
+
+Cor: - si H rencontre toutes les classes de conjugaison, H=G
+     - si G opère transitivement sur X (|X|>1) alors il existe g sans
+       points fixes
+
+Déf: H est de Frobenius si l'inégalité du th 6.1 est une égalité, ie ssi H
+et ses conjugués sont d'intersection triviales.
+
+Th 6.3: Si H est de Frobenius, il existe N normal complémentaire de H, ie 
+G=N.H (N est l'ensemble des éléments non conjugués à H)
+
+Th 6.7: N est nilpotent
+
+Transfert
+=========
+H <= G.
+
+Ver: G^ab -> H^ab est un morphisme
+
+Cor 7.3: si phi: H^ab -> A est un morphisme stable par conjugaison dans G, alors
+\phi(Ver(h))=\phi(h)^n où n=(G:H)
+
+Th 7.7: S p-Sylow de G, \phi: S -> A p groupe abélien
+\phi se prolonge sur G ssi \phi est stable par conjugaison dans G, et dans
+ce cas le prolongement est donné par \phi(Ver(g))^{1/n}
+
+Th 7.8: si S p-Sylow abélien, l'image de Ver est l'ensemble des éléments de
+S dans le centre de N_G(S)
+
+Th 7.9: Soit S un p-Sylow abélien non trivial, et supposons que G n'est pas
+de quotients cyclique d'ordre p. Soit N=N_G(S)
+(i) Le groupe des éléments de S fixés par N (ie dans le centre de N) est trivial
+(ii) Si r est le rang de S (nb min de générateurs), il existe un nombre
+premier l (\ne p) divisant (N:S) et \prod_{i=1}^{r} (p^i-1)
+(Rem: si S_p={x \in S/ x^p=1}, alors S_p est un F_p ev de dim r)
+
+Caractères
+==========
+
+V ev-complexe, \rho: G -> GL(V)
+
+Déf: \chi c'est la trace de la représentation \rho
+
+Prop: - \chi est centrale
+      - \chi_V*(s)=\chi_V(s^-1)
+
+Th: si \pi = 1/|G| \sum g.x, alors \pi est un projecteur sur V^G,
+- V=V^G + \Ker \pi
+- dim V^G=Tr(\pi)=1/|G| \sum \chi(g)
+
+Cor: - Si V->>V', tout élément de V'^G est image d'un élément de V^G
+- Si V' \subset V est stable par G, il admet un supplémentaire stable par G
+- Toute représentation est somme de rep irréductibles
+
+Th A.6 (Lemme de Schur)
+Si f est un G-morphisme de V_1 dans V_2 irréd alors
+- soit V_1 non iso à V_2 et f=0
+- sinon ils sont isos et f est une homothétie
+
+Déf: <f,g>=1/|G| \sum f(s) g(s^-1)
+
+Th A.7 (orthogonalité des caractères)
+<\chi,\chi'>=1 si V=V', \chi=\chi', 0 sinon
+
+Cor: 
+- les caractères des reps irréd sont linéaire indépendants
+- Si V une rep, V=\sum V_i décomp en irréd, W rep irréd, alors le nombre de
+  V_i iso à W et égal à <\chi_V,\chi_W>
+  En particulier il ne dépend pas de la décomp
+
+Th A.11: les caractères irréductibles de G forment une base des fonctions
+centrales. En particulier il y en a h, le nombre de classes de conjugaison.
+
+Rem: Si r est la représentation régulière, r=\sum_i=1^h \chi_i(1)\chi_i
+D'où |G|=r(1)=\sum \chi_i(1)^2
+
+Prop A.13: les valeurs de \chi sont des entiers algébriques
+
+Th A.15: si \chi irréd, de dim n=\chi(1)
+f centrale sur G à valeurs dans les entiers algébriques
+alors 1/n \sum f(s)\chi(s) est algébrique
+En particulier c(s)\chi(s)/n est algébrique où c(s) est le cardinal de la
+classe de conjugaison de s
+
+Cor: - n=\chi(1)=dim V (V irréd) divise |G|
+- Si c(s) est premier à n, alors \chi(s)/n est entier algébrique et s'il
+  est non nul alors \rho(s) est une homothétie
+
+Applications (A.6 et A.7): th de Burnside et de Frobenius
+Th A.20: si s\in G \ {1} / c(s)=p^m, p premier.
+Alors il existe N normal < G / s soit dans le centre de G/N.

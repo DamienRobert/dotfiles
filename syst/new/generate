@@ -1,0 +1,71 @@
+#!/bin/zsh
+#Usage: ./generate virtual && rsync -vaczP --delete-after ~/mine/syst/new/local/$NAME/ root@$HOST:$DIR/
+
+. $HOME/.initvars
+eval $($MYFILES/00COMPUTERS.rb --export=computer:all,syst $1)
+name=$COMPUTER[hostname]
+[[ -z $name ]] && exit 1
+
+cd ~/mine/syst/new
+DEST="$HOME/mine/syst/@comps/$name/@init"
+echo "Generating in $DEST"
+rm -rf $DEST
+mkdir -p $DEST
+cp -a scripts $DEST
+
+USERS=()
+DISK=$SYST[bootdisk]
+FS=$SYST[fs]
+INITPKGS=($(~/syst/pkgs/packages.rb -l --init get-all $name))
+PKGS=($(~/syst/pkgs/packages.rb -l get-all $name))
+LOCALE_LANG="en_US.UTF-8"
+LANGS=($LOCALE_LANG)
+TIMEZONE="UTC"
+if [[ $SYST[lang] == "fr" ]]; then
+	LANGS+=fr_FR.UTF-8
+	TIMEZONE=Europe/Paris
+fi
+
+DIR=/root/init
+RUNDIR=$DIR/scripts
+
+type extraenv && extraenv()
+
+cat <<EOS >$DEST/scripts/ZZvars
+DIR=$DIR
+RUNDIR=$RUNDIR
+TARGET_DIR=/mnt
+
+NEWHOSTNAME=$COMPUTER[hostname]
+HOSTSSH=$COMPUTER[sshu]
+BOOTLOADER=$SYST[bootloader]
+
+DISK=$DISK
+ROOT_PARTITION=${DISK}1
+FS=$FS
+LOCALE_LANG=$LOCALE_LANG
+TIMEZONE=$TIMEZONE
+BOOTBACKUP=t
+
+USERS=$USERS
+INITPKGS=($INITPKGS)
+PKGS=($PKGS)
+LANGS=($LANGS)
+EOS
+
+. $DEST/scripts/ZZvars
+case $BOOTLOADER in
+	gummiboot)
+		cp -a EFI $DEST
+		;;
+esac
+
+for user in $USERS; do
+	mkdir -p $DEST/users
+	[[ -d users/$user ]] && cp -a -L users/$user $DEST/users/
+done
+
+~/mine/syst/generate/generate.rb --init --dest=$DEST/slash $name
+
+cp ~/mine/script/pacman/aur ~/mine/syst/generate/copydir $DEST/scripts
+cp AAinit 00install $DEST

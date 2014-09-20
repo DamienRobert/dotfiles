@@ -27,8 +27,7 @@ Produits
 Soit X et Y des variétés irréductibles affines d'anneaux R et S;
 - XxY est une variété affine irréd d'anneau R \tens S
 - Une base de XxY est donné par \sum f_i(x)g_i(y) \ne 0
-- O_(x,y) est la localisation de O_x \tens O_y en l'idéal max m_x O_y+O_x
-  m_y
+- O_(x,y) est la localisation de O_x \tens O_y en l'idéal max m_x O_y+O_x m_y
 
 Variété séparée
 ---------------
@@ -152,6 +151,7 @@ Lemme de Chow:
 Soit X une variété complète sur un corps alg clos k. Alors il existe une
 variété projective Y (\subset P^n) et un morphisme birationel surjectif
 f: X->Y.
+(Extension: If X is a scheme that is proper over a noetherian base S, then there exists a projective S-scheme X' and S-morphism f: X' \to X that induces f^{-1}(U) \simeq U for some open dense subset U. )
 
 Schémas
 =======
@@ -615,7 +615,11 @@ Ex: X/k (k corps) est étale ssi X est l'union finie de points x_i=Spec(k_i)
 avec k_i/k extension algébrique finie et séparable.
 
 Prop: 
-- f est étale ssi \Omega_X/Y=0
+- f est étale ssi \Omega_X/Y=0 [Update: Plus exactement \Omega_X/Y=0
+  implique X->Y est unramified. Si f est de la forme canonique
+  R[X_1,...,X_n]/(f_1,...,f_m), \Omega_X/Y=0 ssi rank de la Jacobienne est
+  n. Dans ce cas f est non ramifié. Si m=n alors de plus f est plat, donc f
+  est bien étale.]
 - le pullback d'un morphisme étale est étale. En particulier les fibres
   d'un point y sont données par un nombre fini d'extensions alg
   finies séparables de k(y).
@@ -862,6 +866,7 @@ Th (Zariski's main theorem)
    Soit X/k une variété normale et f:Y->X un morphisme birationnel
    quasi-fini. Alors f est une immersion ouverte (ie f induit un iso avec un
    ouvert de X).
+[Rem: si de plus f propre, alors f est un iso.]
 2) Forme topologique:
    Soit X une variété complexe normale, x \in X un point fermé, S le lieu
    singulier. Alors il existe une base U_j de voisinages complexes de x
@@ -875,6 +880,8 @@ Th (Zariski's main theorem)
    Soit f:Y->X un morphisme quasi-fini de variétés sur k.
    Alors il existe une immersion ouvert Y \subset Y' dans une variété Y'
    telle que f se prolonge en un morphisme fini g:Y'->X.
+[Rem: Stack Project 33.31.7: Si f:Y->X est quasi fini, alors il existe un
+ouvert U de X tel que f^-1(U)->U soit fini]
 5) Théoreme de connexité:
    Soit X/k une variété, x \in X un point fermé normal.
    Soit f:Y->X un morphisme birationnel propre. Alors f^-1(x) est connexe

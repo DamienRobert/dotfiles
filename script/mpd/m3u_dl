@@ -1,0 +1,10 @@
+#!/bin/sh
+#download m3us from url
+
+URL=$1
+#NAME=${2:-`basename "$URL"`}
+#A bit better:
+NAME=${2:-`echo "$URL" | sed 's/.*\b\([^.]\+\.[^.]\+\)\/.*/\1/'`}
+echo "Download m3u in $URL in $NAME"
+get_http_links "$URL" |grep m3u > "$NAME.list"
+get_http_links -dl "$NAME.list" "$NAME"

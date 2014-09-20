@@ -1,0 +1,13 @@
+#!/bin/sh
+name=$1
+shift
+unxz "${name}_archive"*.xz
+archivemail --include-flagged --no-compress --suffix "_archive_%Y-%m-%d" "$@" "$name"
+xz -9 "${name}_archive"*
+#myarchivemail ploum --date '2013-01-01'
+
+## With current archie names:
+#archivemail --date 2013-07-01 --include-flagged --no-compress --suffix "_archive_%Y-%m-%d" --output-dir . ~/Mail/phare/ML
+#unxz $name*.xz
+#cat les deux archives, changer le nom
+#re xz

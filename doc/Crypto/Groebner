@@ -10,28 +10,39 @@ Complexité dans le pire cas: 2^2^O(n)
 Th: pour tout corps K il exist un syst de n poly en n variables de degré D
 tel que la base de Groebner (pour tout ordre admissible) contienne un poly
 de degré D^2^n.
+(Rem de Pierre-Jean: c'est le cas pour un système affine; si on a un
+système homogène de n poly en n variables de dim 0, on est intersection
+complète donc on a une suite régulière donc on est en borne de Macauley
+pour grevlex et même l'ordre lexico est au pire en D^n).
 
 Cas des systèmes de dimension 0
 ===============================
 
 Si le système n'admet qu'un nombre fini de solutions, la complexité est de
-d^O(n^2) où d est le degré maximum d'un élément de l'idéal.
+d^O(n^2) où d est le degré maximum d'un élément de l'idéal (pour mettre en
+groebner lexicographique).
+[Référence: http://homepages.math.uic.edu/~jan/mcs563/lec10.pdf
+Grobner Basis Conversion, Theorem 5.1]
 
 Prop: Le système est de dim 0 ssi pour tout x_i il existe dans la base de
 Grobner un polynôme dont le terme de tête soit une puissance de x_i.
 
-Prop: Si F est un système affine, F_h le système homogéne, G_h une base de
+Prop 1.3.5: Si F est un système affine, F_h le système homogéne, G_h une base de
 Grobner de F_h, alors l'affinisé de G_h est une base de Grobne de F.
+
+Attention: G_h n'est pas forcément de même dimension que F_h, c'est parce
+que l'idéal homogène n'est pas forcément engendré par l'homogénéisé d'un
+système de générateur (il faut saturer l'idéal, ie regarder ce qui se passe
+à l'infini).
 
 Méthode de Macauley: (I homogène) représenter l'idéal I_d en exprimant les
 t*f_i tels que t*f_i soit de degré d sur la base de S_d. (C'est la
-généralisation de la matrice de Sylvester à plusieurs polynômes). Le
-résultant est le ppcm des déterminants de la matrice de Macauley en degré
-d=\sum (deg f_i-1)+1.
+généralisation de la matrice de Sylvester à plusieurs polynômes). 
+Le résultant est le ppcm des déterminants de la matrice de Macauley en degré
+d=\sum (deg f_i-1)+1. (Pour des polynômes génériques F_i)
 
-Th: Si les F_i sont génériques, le résultant R est homogène, irréductible, de
-degré \prod deg F_i/deg F_j en les coefficients de F_j. Il existe une
-solution non triviale de F_i=0 ssi R=0.
+Prop 1.4.3: Si les F_i sont génériques, le résultant R est homogène, irréductible, de
+degré deg F_1 deg F_2 ... deg F_n /deg F_j en les coefficients de F_j. Il existe une solution non triviale de F_i=0 ssi R=0.
 
 Algo de Lazard: partir de la matrice de Macauley en degré d, et faire du
 Gauss, on retrouve une base de Grobner jusqu'au degré d. En particulier, en
@@ -42,6 +53,7 @@ FGLM
 ====
 
 Si un idéal à D solutions, FGLM se fait en O(nD^3).
+(Update: cf Gaudry-Faugère-... O(nD^w))
 
 Fonction de Hilbert
 ===================
@@ -63,6 +75,11 @@ degrés d_i ici). Alors pour tout idéal (avec les même d_i), on a HS>=G; on
 conjecture que G=\prod (1-z^d_i)/(1-z)^n. Si m<=n on peut prouver que c'est
 vrai (prendre une suite régulière).
 
+Spaenlehauer, Corollary 1.66: 
+If I ⊂ K[X] is a 0-dimensional homogeneous ideal, then i_reg (I) = deg(HS
+K[X]/I)+ 1. Moreover, for any monomial ordering i_reg (I) bounds the
+degree of all polynomial in a minimal homogeneous Grobner basis of I.
+
 Suite régulière
 ===============
 
@@ -73,33 +90,54 @@ g_{h+1}=f_{h+1}; ...
 Tel que I=(g_1,...,g_m), et (g_1,...,g_h) soit régulière;
 (de plus c'est vrai pour tout coefficients ? sauf un nombre fini)
 
-Pr: k[x_0,...,x_m] est de Cohen-Macauley.
+Pr: k[x_0,...,x_n] est de Cohen-Macauley.
 
 Th: Si f_1,...,f_m est une suite rég de poly homogènes;
 1) l'idéal I est de dim n-m
+(et inversement si l'idéal I est de dim n-m alors on est "intersection
+complète" dans l'anneau régulier k[x_0,...,x_n] donc les f_i forment une
+suite régulière)
 2) La série de Hilbert est \prod_i=1^m (1-z^d_i)  / (1-z)^n
 (inversement si I a une telle série de Hilbert les f_i sont une suite rég)
 3) Une permutation des f_i reste régulière
 4) L'indice de régularité est la borne de Macauley
+  d=\sum (deg f_i-1)+1.
 5) Presque toute suite est régulière: l'ensemble des suites de pol de deg
    d_i qui sont régulières est un ouvert non vide de Zariski.
 
 Cas générique:
-Si le système est de dim 0 donné par une suite régulière f_i de degré d_i,
+Si le système est de dim 0 *homogène* 
 alors pour l'ordre grevlex, et pour presque tout changement de variable
 linéaire; le degré maximum des polynômes intervenant dans la base de
 Grobner est donné par la borne de Macauley \sum_i=1^m (deg f_i-1)+1; et le
 calcul de la base de Groebner est polynômial en d^n.
+[Pr de Pierre-Jean: via une combinaison linéaire aléatoire, les codim
+premiers polynômes sont réguliers donc on a la borne de Macauley. Les
+autres polynômes n'augmentent pas l'indice de régularité car ils diminuent
+le nombre de solutions]
 
-Attention: il existe des suites régulières où le degré maximal peut être
-d^n (en fait ça dépend bcp de l'ordre grevlex choisit).
+Attention: en dim>0 il existe des suites régulières où le degré maximal
+peut être d^n (en fait ça dépend si l'ordre grevlex choisit met les
+variables en position de Noether).
 
 De manière plus précise:
-Th: Si les variables x_1, ..., x_n mettent les f_i en position de Noether,
+Th 1.8.2 (et discussion après; dim >=0): 
+Si les variables x_1, ..., x_n mettent les f_i en position de Noether,
 alors le degré maximum est la borne de Macauley (ie il n'y a pas besoin de
-faire un changement linéaire de variable)
+faire un changement linéaire de variable quand on est en pos de Noether)
 (Interprétation Grobner de la position de noether: pour l'ordre grevlex, et
 pour tout i, il existe n_i tel que x_i^n_i \in LeadingTerms(I))
+
+Point de vu de Pierre-Jean:
+- on peut prendre une combinaison linéaire des polynômes pour que les c
+  premiers soient réguliers (c=codim)
+- en dimension 0 on a la borne de Macauley; et les équations rajoutées ne
+  sont pas embettantes car elles ne forment pas des points immergés
+- en dimension >0, même si on a une suite régulière il faut qu'elle soit en
+  position de Noether pour que ça se passe bien (ie un changement aléatoire
+  des coordonées, ie une transformation projective linéaire).
+  Les équations rajoutées après peuvent être embêtantes à cause des points
+  immergés.
 
 Plus précisément, le nombre de poly de degré d de la base de Groebner est
 majoré par g(d) qui donne la série génératrice:
@@ -131,7 +169,7 @@ Calcul des solutions
 ====================
 
 Soit f_i homogène de degré d pour simplifier. Quitte à faire un changement
-de variable, on peut supposer que les n premiers sont réguliers (en
+de variable, on peut supposer que les n premiers sont réguliers (et en
 position de Noether) donc on raisonne là-dessus (une fois qu'on a les
 solutions pour f_1,...,f_n, il suffit de sélectionner parmis celles qui
 vérifient aussi f_{n+1}...=0). 
@@ -140,5 +178,32 @@ Ce système a un degré <=d^n.
 La borne de Macauley est nd-n+1.
 On calcule donc la matrice de Macauley en degré D=nd-n+1; c'est (n+D-1;D).
 Bornons hyper salement la taille par (nd)^n/n!<=(nd)^n et on obtient une
-borne en (nd)^{wn} pour grevlex, puis du FGLM par nd^{3n}; pour au final un
-coût pour Lex en (nd)^{3n}
+borne en (nd)^{wn} pour grevlex, puis du FGLM par nd^{3n} (update: 
+n d^{wn}); pour au final un coût pour Lex en (nd)^{3n} (update: (nd)^{wn})
+
+De manière plus précise (cf Pierre-Jean):
+on a un idéal homogène engendré par m éléments f_i de degrés d_i; d=d_max.
+Quitte à faire une combinaison aléatoire, on a une suite réguliere des n
+premiers éléments, et la borne de Macauley est donc de nd-n+1. On peut donc
+calculer la matrice de Macauley en cette borne pour les m polynomes (en
+pratique donc on a pas besoin de vraiment faire la combinaison linéaire car
+on mettra cette matrice en forme échelon).
+Rappel: une matrice AxB de rang r se met en forme échelon en
+O(ABr^{w-2}). Donc on a un coût en m*Polynôme(n^d).
+
+Plus de détails dans la thèse de Lakschman pour une intersection complète: on a le O(d^n)
+Raffiné dans la thèse d'Amir Ashemi (étudiant de Lazard-Giusti) en O(d_0^n)
+où d_0 est la moyenne arithmétique des d_i. On est pas encore à la borne de
+Bézout des \prod d_i, ie de la moyenne géométrique à la puissance n.
+
+Rajouter des équations affecte juste par un facteur linéaire (car on
+rajoute des lignes à la matrices de Macauley). D'après la thèse de Bardet
+si on rajoute une équation (et qu'on est semi-régulier) on peut même
+gagner un facteur 2 sur la borne de Macauley. Par contre par rapport au
+degré de l'idéal on perd beaucoup car rajouter des équations peut beaucoup
+baisser le degré par rapport à la borne de Bézout.
+
+Example: calcul d'une base de Grobner lexico pour A[l] en thêta:
+n^g variables, O(n^g) équations de degré 2, O(n^g) équations de degré l^2;
+système final de degré l^{2g}.
+On est polynômial en O(l^{2O(n^g)}).

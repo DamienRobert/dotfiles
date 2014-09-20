@@ -1,0 +1,18 @@
+#!/usr/bin/zsh
+
+extraenv() {
+USERS=(root provision:provision)
+}
+
+cd ~/mine/syst/new
+. ./generate packer
+
+rm $DEST/scripts/{0*,10mount,40*}
+cp extra/{00one_partition,88clean_pacman,89clean_root,99reboot} $DEST/scripts
+
+TDEST=$HOME/opt/vagrant/packer-arch/
+mkdir -p $TDEST
+echo "! cp and tar in $TDEST"
+cp -a "$DEST" "$TDEST/init"
+tar cvJf "$TDEST/init.tar.xz" -C $TDEST init
+rm -rf "$TDEST/init"

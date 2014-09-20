@@ -1,0 +1,8 @@
+#Start docker
+ssd start docker.service
+#Get infos on server
+sudo docker info
+#Search an image
+sudo docker search archlinux
+#Download image
+sudo docker pull base/archlinux

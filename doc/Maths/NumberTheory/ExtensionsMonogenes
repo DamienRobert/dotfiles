@@ -1,0 +1,59 @@
+Rappel: Corps Locaux
+
+A noeth int clos dans K=Frac A, L/K ext finie, B cloture intégrale.
+1) Si A algèbre de type finie sur un corps ou A anneau de valuation
+   discrète complet, alors B/A est fini.
+2) Si A Dedekind alors B Dedekind (même si B/A n'est pas fini, mais la
+   preuve est plus compliquée)
+
+Ext Monogène
+============
+
+Soit (A,m) local, B=A[X]/f
+Soit f=\prod g_i^e_i dans k=A/m et g_i un relevé dans B.
+
+Prop: les idéaux maximaux de B sont exactement les (m,g_i)
+
+Th:
+- Si A anneau de valuation discrète, f est irréductible modulo m,
+  alors B est à valuation discrète d'idéal max mB et de corps résiduel
+  k[X]/f de degré n, et B est de ramification 1.
+  En particulier, si K=Frac A, f est irréductibel dans K[X] et B est la
+  fermeture intégrale de A dans L=K[X]/f.
+- Réciproquement, si A est à valuation discrète, de corps de fractions K,
+  L/K ext finie de degré n, B fermeture intégrale de A dans L.
+  Supposons B de valuation discrète, de corps résiduel l de degré n sur k.
+  Soit x \in B tel que l=k(x), et f le polynôme caractéristique de x sur K.
+  Alors B est isomorphe à A[X]/f (ie B est engendrée par x).
+
+Rappel:
+Si A anneau de valuation discrète, f=X^n+\sum a_i X^i est d'Eisenstein si 
+f mod m = X^n et a_0 est une uniformisante.
+Ie a_i \in m et a_0 \not\in m^2.
+
+Th:
+- Si A est de valuation discrète, et f d'Eisenstein
+  alors B est à valuation discrète d'idéal max (m,x)=(x) et de corps résiduel k,
+  et B est de ramification n.
+  En particulier, si K=Frac A, f est irréductible dans K[X] et B est la
+  fermeture intégrale de A dans L=K[X]/f.
+- Réciproquement, si A est à valuation discrète, de corps de fractions K,
+  L/K ext finie de degré n, B fermeture intégrale de A dans L.
+  Supposons B de valuation discrète, d'indice de ramification n sur A.
+  Soit x \in B une uniformisante, et f le polynôme caractéristique de x sur K.
+  Alors f est d'Eisenstein, et B est isomorphe à A[X]/f (ie B est engendrée
+  par x).
+
+Th: (B cloture intégrale de A dans L, L/K finie)
+Supposons que B soit de valuation discrète (ex: c'est le cas si A complet),
+et le corps résiduel l est séparable sur k.
+Alors B est monogène sur A.
+
+Pr: 
+- Si \pi est une uniformisante de B et x \in B génère l sur k, on a une
+  base de B/A donnée par x^i \pi^j, i<f et j<e
+- On peut trouver x tel que \pi=R(x) où R est un polynôme unitaire de degré
+  f, à coefficients dans A.
+[En particulier on retrouve que dans le cas totalement ramifié, B est
+engendré par l'uniformisante, et dans le cas non ramifié, B est engendré
+par n'importe quel générateur de l/k]

@@ -20,5 +20,5 @@ else
   File.open(tmp.path, "w+") do |f|
     f.puts $stdin.read
   end
-  exec "open #{tmp.path}"
+  exec "firefox #{tmp.path}"
 end

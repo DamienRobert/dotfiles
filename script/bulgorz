@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+#reverse characters in each lines
 while (<>) {
   chomp;
   @list = split(//, $_);

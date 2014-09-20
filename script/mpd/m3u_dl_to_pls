@@ -1,0 +1,8 @@
+#!/bin/sh
+#download m3u from url and convert them to .pls
+
+URL="$1"
+NAME=${2:-`echo "$URL" | sed 's/.*\b\([^.]\+\.[^.]\+\)\/.*/\1/'`}
+
+~/script/mpd/m3u_dl "$URL" "$NAME"
+~/script/mpd/playlist_generate "$NAME"/*.m3u "$NAME.pls"

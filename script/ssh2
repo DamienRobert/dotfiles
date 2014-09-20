@@ -2,31 +2,29 @@
 #ssh2 active les features interactives: ControlMaster, ServerAliveInterval
 
 help() {
-  echo "$0 -(no)CM -443 -SAI"
+  echo "$0 -(no)CM -ssl -SAI"
   exit 1
 }
 
 SSH_OPT=(-o 'ControlMaster auto' -o 'ControlPath "/tmp/%l_%r@%h:%p"' -o 'ControlPersist yes' -o 'ServerAliveInterval=30')
 
-#SSH_COMMAND="screen -S ssh -RR"
-
 while true;
 do
   case "$1" in
     -- ) break ;;
-    -v ) shift; VERBOSE="true";; 
-    -CM ) shift; SSH_OPT=($SSH_OPT -o 'ControlMaster auto' \
+    -V ) shift; VERBOSE="true";;
+    -CM ) shift; SSH_OPT+=(-o 'ControlMaster auto' \
   -o 'ControlPath "/tmp/%l_%r@%h:%p"' \
   -o 'ControlPersist yes') 
     ;;
-    -noCM ) shift; SSH_OPT=($SSH_OPT -o 'ControlMaster=no') ;;
-    -ssl ) shift; SSH_OPT=($SSH_OPT -o 'ProxyCommand=ssh -W %h:%p phare2') ;;
-    -SAI ) shift; SSH_OPT=($SSH_OPT -o 'ServerAliveInterval=30') ;;
-    -noSAI ) shift; SSH_OPT=($SSH_OPT -o 'ServerAliveInterval=0') ;;
-    -nohost ) shift; SSH_OPT=($SSH_OPT -o 'UserKnownHostsFile=/dev/null' -o 'StrictHostKeyChecking=no') ;;
-
-    #-noScreen ) shift; SSH_COMMAND="" ;;
+    -noCM ) shift; SSH_OPT+=(-o 'ControlMaster=no') ;;
+    -ssl ) shift; SSH_OPT+=(-o 'ProxyCommand=ssh -W %h:%p phare2') ;;
+    -SAI ) shift; SSH_OPT+=(-o 'ServerAliveInterval=30') ;;
+    -noSAI ) shift; SSH_OPT+=(-o 'ServerAliveInterval=0') ;;
+    -nohost ) shift; SSH_OPT+=(-o 'UserKnownHostsFile=/dev/null' -o 'StrictHostKeyChecking=no') ;;
+    -proxy ) shift; proxy=$1; shift; SSH_OPT+=(-o "ProxyCommand=ssh -W %h:%p $proxy") ;;
     -h) help ;;
+    -*) SSH_OPT+=$1; shift ;;
     *) break;;
   esac
 done

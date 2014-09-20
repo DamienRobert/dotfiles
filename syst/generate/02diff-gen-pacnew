@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sudo meld /etc/"$1" /etc/"$1".pacnew ~/mine/syst/generate/slash/etc/"$1" 

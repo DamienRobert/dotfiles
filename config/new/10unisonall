@@ -1,6 +1,0 @@
-#!/bin/zsh
-# sync all non personnal computers
-
-COMPUTERS=(phare 4a bbq mygale)
-myunisonsync -t sync $COMPUTERS
-myunisonsync -ta -cat $COMPUTERS

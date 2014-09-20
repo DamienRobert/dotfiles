@@ -7,7 +7,7 @@
   git ls-files, git grep
 
 # Infos
-  git log, git whatchanged, shortlog
+  git log, shortlog
   git blame, git bisect
   git notes
 
@@ -22,9 +22,9 @@
   git checkout
 
 # Diff/Merge files
-  git diff, git merge-file
+  git diff, git merge, git rerere
   git difftool, git mergetool
-  git merge-tree, git rerere
+  (git read-tree, merge-tree, git merge-file)
 
 # Manipulating history
   git cherry, git cherry-pick

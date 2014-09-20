@@ -1,0 +1,21 @@
+#!/bin/zsh
+#Usage: git-setrebase [topics]
+#git-setrebase branch upstream set branch to track upstream
+#--merge: set branch to merge upstream rather than rebase on top
+
+REBASE=true
+
+while true;
+do
+  case "$1" in
+    -- ) shift; break ;;
+    --merge ) shift; REBASE=false ;; #set merge rather than rebasetrue
+    *) break;;
+  esac
+done
+
+. ~/mine/script/git/git-topic-helper
+gth_topic "$@"
+
+git config "branch.${gth_local}.rebase" $REBASE
+[[ -n $UPSTREAM ]] && git branch --set-upstream-to $gth_remote $gth_local

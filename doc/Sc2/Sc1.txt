@@ -1,0 +1,689 @@
+4 pool: 4 pool, 3 drone, quand 100 gold  (ou pool a 500/750)-> scout
+5 pool: 5 pool 4 drone, scout quand on veut
+6 pool: 6pool, 6drone, 6ov, scout quand pool a 500/750
+7 pool: 7 pool, 6 drone, 7ov, 7drone, 8 lings, 12 hatch
+
+mondi 9overspeed:
+9 over pool
+10 gaz, drone
+12 lings -> 16/17
+16 hatch, 2 drones 17 hatch (faire 17 ov avant si on ne compte pas  perdre les lings)
+
+-----------------
+zvp: http://www.teamliquid.net/forum/viewmessage.php?topic_id=60307
+t bo: http://www.teamliquid.net/forum/viewmessage.php?topic_id=55187
+bbs: http://www.teamliquid.net/forum/viewmessage.php?topic_id=13891
+chill fpvod: http://www.teamliquid.net/forum/viewmessage.php?topic_id=63621
+
+gosuamer: http://sc.gosugamers.net/thread/174619
+knicknack: http://www.freewebs.com/iamknickknack/iiimybuilds.htm
+twotimer: http://www.blizzforums.com/showthread.php?t=772
+
+------------
+strats:
+3hatch mutas + ultra build:
+12hatch
+11pool
+14hatch
+16gas
+15over
+(standard much )
+First 100 gas goes to lair, start evolution chamber as soon as possible
+after lair starts
++1 carapace as soon as evo finishes
+Get around 10-12 mutalisks and harass etc., research ling speed while
+harassing
+Once I've reached my desired mutalisk mark, I start to pump lings like no
+tomorrow and set up a s1ck a$$ flank!!1!
+I try to secure third gas at a usual timing, queens nest once third gas
+secured, and then hive ASAP
+I then add another evo chamber when hive finishes and start crack+ultra
+cavern
++2 as soon as +1 finishes, start melee as soon as second evo finishes
+ultra armor first, then speed.
+*I notice that a dropship will always arrive at this timing, I don't know if
+it's standard but I like to have scourge in place at each hatch just in case
+Because i've been pumping lings+drones since my muta popped, I have quite
+the gas stockpile which I can use for ultra+defiler should it become
+necessary.
+From here on I try to keep up macro/micro while abusing my massive upgrade
+advantage <3
+
+http://starcraft.strategy-gaming.com/sc/viewtopic.php?t=2654
+
+Explanation:
+Start off as normal, 12 hatch FE or whatever economy build you please.
+Go 3 Hatch muta (gas at ~15-16).
+Get an evo up as soon as you build lair, and get carparace.
+Spire up asap, follow up with 9-12 mutas (In the replay I only got 7, I
+think).
+Harass the shit out of him, and while doing this get ling speed and pump
+lings like crazy.
+Start setting up a flank with these lings; In my game this wasn't the case,
+the terran decided to park his army at my main, but you get the idea.
+Expo again, I would have done it earlier if there were no marines at my
+doorstep. If all goes well the expo will be running at high capacity just as
+you get your tech finished.
+Try to pick off firebats with your harass, as your army will only consist of
+Muta/Ling. Firebats crush your lings easily and can fuck up this crucial
+stage.
+So pretty much you bury his army in lings, but don't get aggresive yet.
+Scout alot and harass with your muta as much as you can while you wait for
+your tech.
+After your 3rd base is running with a gas, get hive quicklike. Follow up
+with another evo. You should have upgraded carparace again sometime ago.
+Get Ultra Den asap, Ling upgrades and Melee upgrade as well. Since you have
+been mining gas all the while, while only pumping lings, you have alot of
+gas, which you can invest in defiler/ultra.
+Mop up the game with the upgrade advantage and unexpected ultra/ling. Get
+scourge for vessels, as well.
+That's pretty much all there is to it, and since my lurker micro is subpar,
+I think this is the best strategy for players like me.
+
+Short Guide:
+
+- 12 Hatch (Expo)
+- 12 Pool
+- ~14 Hatch
+- ~16 Gas
+- Lair with first 100 Gas
+- Evo up asap, get Carparace
+- Spire
+- Get sunkens/ovies and start preparing to hatch muta
+- Pump lings/drones and get Ling speed while harassing
+- Flank his army with Muta/Ling
+- Get a 3rd gas expo
+- Queen's nest and Hive asap
+- 2nd Evo, get melee, you should be teching Carparace 2
+- Get ultra upgrades and defiler den
+- Win the game with superior mobility and upgrade advantage
+
+
+A few things can cost you the game:
+- Losing the Muta/Ling battle,
+- Losing an expo
+- Getting timing pushed in a transition phase (for example before muta or
+  before hive)
+- Of course generally making mistakes BO-wise and micro-wise.
+
+----------------------------
+FE:
+since you scout after 8 pylon early @ your expo, you should find zerg very
+fast. if you do not see him on the first position you have to forge first.
+
+if you see 12 hatch, you can nexus, and then possibly gate, cannon, assim,
+pylon.
+
+if you see 9 pool speed, you can make 2 cannons.
+
+if you see 10 pool, you can make a cannon, then nex, then another can and
+usually be ok.
+
+12 pool you can nexus then cannons, I think.
+
+basically, after you scouted him just keep an eye on his pool and his larve
+to see if he's making a lot of lings and how fast he's making them. you have
+to warp in a cannon right before lings hatch to be safe, but usually zerg
+will go for your probe first so you have time Can't really take that risk
+though.
+
+--
+It's slightly positional too.
+Vs 12 hatch 11 pool you can get away with 13 nex 14 gate 15 forge in most
+spots, especially if you delay with scout probe.
+Vs 12 pool you can get away with 13 nex 13 forge if you delay at all with
+probe or if it's cross positions on python.
+Vs overpool you can get away with forge, nexus, cannon if you delay with
+probe or it's cross positions. Given you can block their exp with probe most
+the time you can delay. Other greedy varieties include 1 cannon nex, all of
+course very game dependent. It also depends on whether he has taken gas. I
+will often 1 cannon, gateway + 2 probes walling vs no gas because he's not
+going to run through and a wall around the cannon (gateway completes it)
+holds it nicely.
+Vs 9 pool you pretty much have to 2 cannon then nex.
+Vs a 4 pool you can get cannons in time if your forge is on 10. On Blue
+Storm I recommend sending the probe out to forge on 10 even though most the
+time (any time except 9 pool) you'll have to send it back again.
+
+On Python you can scout for the overlord on 9 psi which allows you to scout
+the zerg the first time 2/3 the time.
+
+Of course it depends on the opponent and how willing they are to play "catch
+the probe". Obviously if there is an overlord over your nat he will see
+you're not cannoning and attack immediately. Game sense is hugely important
+here.
+
+---------------------
+
+References: <fvadvc$5oi$1@clipper.ens.fr> <g4l19e$k3t$1@clipper.ens.fr>
+X-Censorship: 
+Reply-To: 
+Organization: 
+Subject: Re: Starcraft bo
+Expires: 
+Followup-To: 
+Newsgroups: ens.forum.loisirs.jeux.video
+X-Start-date: Fri, 18 Jul 2008 10:56:13 +0200 
+From: robert@clipper.ens.fr (Dam's)
+
+>Bluh blih Dam's bloh (loisirs.jeux.video:3558) ploum ploum:
+>
+>Donc comme promis dans mon post précédent, les embranchements suite à
+>l'ouverture. Comme je l'ai expliqué, je vais forcément être plus vague et ne
+>pas donner un bo en terme de pop, sauf pour certains pour me forcer à
+>arriver à être aussi rapide que ce que je l'ai vu executer :-)
+>
+>Je vais être un peu synthétique car je veux pas trop passer de temps dessus,
+>et ce post est essentiellement pour moi afin d'avoir une référence :-) Si
+>vous voulez plus de détail sur un build, n'hésitez pas à demander!
+>
+>> ** Protoss:
+>
+>Comme je l'ai dit je ne les connais pas trop, les build suivant sont tirées
+>des vidéos que j'ai mise sur le 4a :-)
+>
+>* PvZ
+>
+>- le standard, c'est fe: 8 pylon devant le natural. Puis nexus + forge +
+>  gate
+>+ canon si on scoute du 12 hatch, forge + canon + nexus + gate si on scoute
+>du 9pool, forge + 2canons + nexus + gate si on scoute du 9speedpool, en
+>étant près à ramener 3 probes pour bloquer les canons et empêcher les
+>speedlings de passer. Ensuite on fait un zealot + core, un dragoon une fois
+>que le core est fini pour faire fuir l'ov qui traine dans la base, et un
+>stargate -> corsair  pour scouter le zerg et harasser les ov. En fait il y a
+>
+>3 branchements possibles: 1) all-ground: on fait 3-4 gates avec zealot, on
+>upgrade le +1 zealot dans la forge, ainsi que le speed, et on attaque avec
+>un control groupe de zealot une fois que les upgrade sont finies.
+>2) sair + ground: on fait qqs sair comme précedemment, mais on continue de
+>produire des zealots et on teche reaver pour l'harass et aider les zealots.
+>3) double stargate + harass: consiste à faire 2 stargates et pomper des
+>sairs continument, avec le +1 air attack pour zoinxer les overlord. Souvent
+>utilisé si on scoute que le zerg fait des mutas. Ensuite on tech dt ou
+>reaver pour le harass.
+>
+>Dans tous les cas le but c'est de prendre une troisième base et d'empêcher
+>le zerg d'en prendre une quatrième (normalement contre fe pour se rattraper
+>il prend 2 bases).
+>
+>Exemple de fe contre du 12hatch:
+>8pylon at nat -> scout
+>14nexus, 15forge at nat (pour le wall), 16 pylon in main (pour les batiments
+>de tech), 17gateway at nat (finir le wall), 18 canon, 19 gas et main, 23
+>core. Faire zealot + dragoon, stargate, prendre le gas dans le nat assez
+>rapidement (vers 30 de pop).
+>
+> - Sinon un build que Nony utilise, 2 gate -> dt+sair:
+> 8p 10g 12g 13zealot 15p 22p   Attaquer avec les 5 zealots, quand le 6ème et
+> le 7ème vont arriver pour tenir la rampe. Normalement le zerg qui a scouté
+> le double gate a fait de quoi se défendre, et part sur du macro pour
+> rattraper son retard (à la différence du protoss il ne peut pas continuer à
+> faire des drones, il doit complétement switcher lings pour défendre contre
+> les zealots). Continuer à faire des zealots, ainsi que 
+> 28a 33/33 core + pylon, puis stargate puis citadel. Attaquer dès que le sair
+> sort (normalement on a un nouveau control group de zealot), puis expand en
+
+On a 8 zealots.
+
+> utilisant les dark templar pour la tenir/harasser le pauvre zerg. 
+Faire forge pour canons.
+
+> 
+> * PvT:
+> 
+> - PvT fast reaver:
+> 8p 10g 11a 13core 15p 20 fake range (s'il y a un scv dans la base, en
+> attendant que le dragoon le tue), 21 robo, 24p ... shuttle, 31 bay 39p
+> (faire 2 zealots, normalement il y a 3 goons), 40 obs, 42range, le reaver
+> commencé dès la bay doit finir par là, le mettre dans le shuttle avec le
+> premier zealot, attendre la sorti du second zealot pour partir à l'attaque.
+> 47 gateway, ou nexus si il n'y a pas de rush en représaille.
+
+8p10g12a13core15p 17goon 20fakerange 21 robo 22goon 24pylon 26goon
+29shuttle 21bay 31pylon 33reaver 39p 37zealot 40obs 40zealot 42 range
+observers
+47 gateway or nexus
+
+>- PvT zealot harass:
+>8p 10g 12a 13pylon 13zealot 18 core
+
+Standard 2 goons:
+8p 10g 12a 14core 15p 17goon 20range 21 goon 24pylon 25gate goon
+
+rush1: range-> mass
+... 15g 15p 15goon 17range et 2goons, 21 pylon et 2goons
+
+rush2: mass->range:
+13core -> 1 probe on gas
+14g 14p 14goon -> 1 probe on gas
+17goon -> 1 probe on gas
+19goon, range 21 goon 23/25 pylon+goon
+>
+>* PvP:
+>- standard 2 gates goon (permet de résister à du 2gate zealot):
+>8p 10g 12a 13z 16p 17core 18z 22p 22dragoon 25g dragoons... 29 range+pylon
+>- une variation (3 zealots au lieu de 2):
+>8p 10g 12p 13z 16a 20core 24p 25g ... range 35 robo...
+>
+>
+> - fast reaver:
+> 8p 10g 12a 13z 16p 17core 22p 27 range 28p 31robo 35g 36p 39obs -> observer puis
+> shuttle puis bay puis reaver + reaver ou bien au lieu de 35g faire shuttle +
+> observatory puis obs puis reaver et après la gateway).
+> Bien sûr faire des goon quand on a de l'argent.
+
+8p10g scout 12a 13z 16p 18core 19z 22p 24goon 28p 29goon 31robo (2z2g) 35g
+36p 39observatory 43 pylon 50shuttly 52bay reaver+reaver
+
+> - fast reaver avec shuttle speed (si l'adversaire est loin)
+> 8p 10g 12a 13z 16p 17core 22p 27range 28p 31robo 
+comme précedemment
+36p 38observatory+goon+probe+41bay 42p 45observers 47shuttlespeed then 2
+gates
+
+> 36p 39obs 41bay 42p
+> 45observatory 47 shuttle speed 
+> Et dans le robo on fait shuttle -> obs -> reaver + reaver. Ensuite 2 gates
+> puis nexus, ou nexus puis 2 gates si le harass a bien marché. 
+> 
+> On constate que le début des 2 builds sont identiques, en fait il suffit de
+> placer les batiments le plus vite possible tout en maintenant des probe
+> constamment et des goons dès qu'on peut, mais tu verras si tu l'essaie que
+> tu vas avoir l'impression de pas avoir assez de sous (en tout cas c'est ce
+> qui m'arrive :-) parce que j'oublie de construire des probes continuement).
+> 
+>> ** Terran
+> 
+> - TvP
+> ça j'en ai déjà pas mal parlé, il y a soit les deux fact rush: joyo
+> rush/gundam rush/nada rush suivant le nombre d'add-on, soit le 1 fact fe: le
+> fd avec tank+vult+mine ou le classique tank + siege + fe (surtout utilisé
+> derrière un wall). Il y a aussi les plus rares: biorush avec des proxy rax,
+> ou bien fast starport pour faire du tank drop ou vulture drop, mais je ne
+> connais pas les bo.
+> 
+> Un mot sur le walling: 1 supply à gauche du cc laisse passer les marine mais
+> pas les zealots. A droite ça laisse passer les zealots. 1 supply en dessus
+> d'un autre ne laisse passer personne, 1 à droite d'un autre laisse passer
+> les rines et pas les zealots. Par rapport à la rax, mettre le supply à
+> gauche et en bas laisse passer tout le monde, à droite les marines, et en
+> haut personne. Décaler d'un cran conserve la même propriété. Par exemple:
+>   s   s
+>   r  r   ne laise passer personne ou r la rax et s le supply
+> alors que 
+>             s
+>   r s     r   ne laisse passer que les marines (je laisse un espace car
+> c'est comme ça que ça apparait quand on pose le truc, bien sur il faut
+> coller le plus possible).
+> 
+> Enfin les lings passent là où les marines passent, et peut-être aussi des
+> endroits où ils ne passent pas. Mais le wall est surtout important pour le
+> TvP. Une dernière remarque, d'après ce qui précède quand on ne walle pas,
+> pour se protéger du zealot harass on peut faire le build suivant:
+>    s
+>   s   ça laisse passer les marines et pas les zealots, et les oblige à faire
+> un plus long chemin pour contourner.
+> 
+> - TvT
+> là aussi il y a pleins de build: une fact fe, 2 facts, 1 fact 2 ports. Un
+> truc marrant est le suivant: envoyer un scv super tôt, repérer la base de
+> l'adversaire, et construire une rax chez lui, une rax chez soit comme un
+> build normal, puis l'attaquer faire un bunker etc. L'astuce c'est de le
+> scouter sans être vu, pour celà on peut regarder les minerais (et pas plus!)
+> et voir s'ils diminuent.
+> 
+> Quelques détails sur le 1fact fe:
+> 9supply 11 rax 11 gas 16 fact
+> faire 1/2 rines, cc (dans la base si on sait pas trop ce que l'autre fait)
+> quand la fact fini, +1 vult. Supply at 26/26. Faire le shop quand la vult
+> sort.
+> Ensuite faire une fact + armory (en calibrant pour que l'armory finnisse en
+> même temps que la 2 fact), puis des tanks + goliath. Faire le siege mode
+> quelque part par là, puis une académie + scan pour se préparer contre
+> d'éventuels wraith. 
+> Après faut faire un starport pour faire des dropship pour aider à la
+> mobilité. En TvT, à la différence du TvP, on ne fait pas de vult + tank, on
+> fait des tanks + gol. En effet les tanks c'est le principal, mais c'est long
+> donc on utilise les dropship pour arriver plus rapidement, et les gol
+> servent à contrer les dropship adverses (+ des vults c'est bien contre des
+> small units à cause de leur dégats, mais les tanks c'est pas des small units
+> donc des gols c'est mieux).
+> 
+> Il y a un build qui fait des vults: en gros c'est 2 fact + double upgrade ->
+> contain l'autre T avec les mines et en profiter pour expand, mais il est dur
+> à faire car faut pas rater la transition vers du tank + goliath.
+> 
+> T v Z:
+> j'ai déjà parlé des rush: bunker rush (à faire quand le zerg pose sa
+> 12hatch), BBS (en proxy, attaquer quand le zerg pose sa 12hatch), spark
+> build (3 rax +1attack, attaquer quand zerg a son lair mais pas encore ses
+> mutas).
+> 
+> Mais le build le plus courant est le 1rax fe:
+> 9s 11rax 13s 17/18cc 19gaz (ou 21 bunker+23 gaz s'il y a des lings qui
+> trainent)
+> Ensuite acad puis 2 rax. Il est super important de faire académie avant de
+> faire plus de rax, car les firebats sont les seuls moyens de tenir contre
+> mass lings (je l'ai appris à mes dépends contre adrien :-)). Ensuite ne pas
+> oublier l'ebay, et faire des turrets vers 50 de pop (et avant en cas de 2
+> hath mutas plutôt que 3 hatch mutas).
+> Un build un peu plus gourmand, ou on retarde les 2 rax supplémentaires:
+> par ex: 26 acad, 31 ebay, 38rax 39 rax.
+> On fait l'e-bay avant pour chercher le +1, ça imite un peu le spark build
+> mais avec une fe avant. Ca permet de tuer le zerg s'il ne fait pas assez de
+> sunken (le +1 arrive un peu avant ses mutas en cas de 3hatch mutas), et ça
+> permet de beaucoup mieux résister à l'harass mutas. Par contre c'est
+> beaucoup plus dangereux si le zerg fait lurker plutôt que mutas.
+> 
+>> ** Zergs!!!
+> 
+> Ah enfin ma race principale! Les zergs ont une éco toute bizarre, du coup il
+> y a pleins de bo possibles!
+> 
+> - ZvT
+> J'en ai déjà parlé:
+>  
+>>  * vs T
+>> Là le truc standard c'est le 3 hatch muta popularisé par Savior:
+>> 12 hatch
+>> 11 pool
+>> 13/14 hatch
+>> 16 extractor
+>> 16 ov
+>> lair dès que possible, speed ensuite
+> 
+> C'est cool le ZvT, car il y a besoin d'apprendre que celui là :-)
+> Note sur la 4ème hatch: si le T fe, on a besoin que d'un sunken et on peut
+> la poser tôt, parfois même avant la spire. Sinon il faut au moins 3 sunken,
+> et on pose le hydra den avant la 4ème hatch.
+> 
+> On peut avoir des mutas plus tôt en prenant le gaz plutôt:
+> 12 hatch 11 pool 13 hatch 12 extractor 15 ov 27ov
+> extractor + spire + ling speed
+> on arrive à 33-35 de pop (suivant le nombre de sunk) -> 8 mutas.
+> Den, ov, exp.
+> 
+> Avec ce build on ne fait que 2 lings pour scouter, donc faut pas les perdre!
+> 
+>> 2 hatch mutas (si on est super bon avec les mutas):
+> Déjà expliqué.
+> 
+> Le double expo vs fe Terran:
+> - 12 hatch, 11 pool, 14 hatch at hidden third
+> - lings + gas -> lair + speedlings
+> - sunken
+> - 4th hatch when spare money
+> - hydra den at 50% lair
+> - lurkers, 2nd gas + evo
+> - expo, snd evo, spire....
+> Bon c'est un build risqué, et je ne l'ai jamais essayé donc je sais pas trop
+> ce qu'il vaut. C'est juste pour le noter quelque part :-)
+> 
+> Tant que j'y suis je vais détailler le 3hatch mutas (il y a pleins de
+> légères variations, je vais en détailler encore une différente complétement)
+> - 9 ov (drone scout éventuel suivant la map quand l'ov est à 50%).
+> - 12 hatch (at expo) 11 pool
+> - 13-15 hatch
+> a) no drone scout:
+>   - 14 ext
+>   - 13 4 lings
+>   - 16 ov
+> b) drone scout:
+>   - 14 four lings
+>   - 16 ov
+>   - 17 extractor
+> [make a creep if 2 rax]
+> - lair quand 100 gas, puis ling speed, puis 2nd ext
+> - ov avec la première larva de la 3th hatch
+> - 28 ov
+> - whore drone
+> - spire
+> - 35 hydra den
+> - 35 2 ov -> 9 mutas
+> - lurker upgrade puis expansion
+> (si on a fait que 1/2 sunk, expand avant lurker upgrade).
+> 
+> La défense: contre 1 rax fe:
+> faire des lings de temps en temps jusqu'à en avoir 12 (pour le backdoor si
+> il sort). Une fois qu'il a des medics/fireboat faire 1 sunken + creep
+> colony. 
+> Contre 2 rax or sunk break: seulement des sunks:
+> 1 après les 4 lings
+> 2ème après le 2nd gas
+> 3ème juste avant la spire
+> 4ème s'il a grande armée.
+> 
+> - ZvZ:
+> je n'ai pas beaucoup d'expérience là dessus. IL y a toujours le 9pool,
+> 9poolspeed, 12 hatch, 12 pool...
+> L'hybride (je me suis trompé dans mon post précédent), c'est
+> 13 pool 12 gaz 13 hatch (enfin je crois).
+> 
+> Quelques autres build, assez "macro":
+> 12 hatch (main ou nat), 11 pool, 10 gaz, drone jusqu'à 12 -> ling
+> faire sunken en cas de 9 pool adverse
+> 
+> 12 hatch (at main), 11 gaz, 12 pool, drone jusqu'à 14, sunken 
+> encore plus d'éco, mais encore plus risqué...
+> 
+> - ZvP
+> alors là je n'ai que des bo contre un protoss qui fe, vu que les pros ne
+> font que ça en PvZ. Quel dommage qu'adrien ne fasse pas pareil!
+> 
+> Les rush:
+> 6 pool, 6 drone -> scout
+> 9/9 lings
+> extractor tricks -> 10/9 lings
+> ov
+> 
+> le 6 pool permet d'annihilier une fe, et ne donne pas une éco horrible
+> horrible si le protoss n'a pas fe et contre, si on arrive à faire des
+> dégats.
+> 
+> Hydra rush:
+> 9 overpool
+> 9 ext -> ling speed, pull drones off gaz
+> 9 -> 6 lings
+> 15 hatch + mine back gaz
+> 16 den (-> range + speed)
+> 16 ov
+> 
+> Le but de faire speedling, c'est de tuer le probe qui est dans la base, puis
+> d'empêcher le protoss de scouter. On fait mass hydras, et on attaque quand
+> il voit ça (typiquement quand son sair arrive), avant qu'il n'ait le temps
+> de faire pleins de canon à son natural. Le speed pour les lings arrive un
+> peu après le timing pour reprendre du gaz, dans ce cas il suffit d'attendre
+> un peu d'avoir tuer le probe, ça va juste retarder les upgrade, pas le
+> nombre d'hydras.
+> 
+> 
+> Les macro build:
+> 4 hatch spire:
+> 12 expand (ie hatch at expansion) 11 pool 13 hatch (ou 15 expand si on a
+> déjà scouté le fe)
+> 14: four lings
+> 17 extractor
+> 18 hatch 18 ov 18 lair 
+> ling upgrade avec les 100 prochains gaz
+> 21 overlord, 24 extractor
+> spire quand lair fini (~30 supply)
+> 
+> Une variation en overpool:
+> 9 overpool, 11 expand, 13 expand, 13 gaz
+> 26 hatch, spire, 35 expand
+> quand spire arrive: 2nd extractor + hydra den
+> 
+> 5 hatch hydras: (plus efficace quand la troisième expansion est plus
+> proche):
+> 12 expand 11 pool 13 hatch or 15 expand
+> 14: four lings
+> 16 ov 21 hatch 21 extractor 21 ov
+> 5th hatch when 300 mins and no larva
+> Lair with 100 gas (~32 supply) + 2nd gas
+> Ling speed next 100 gas (~36 supply)
+> hydra den 50 gas (~38 supply)
+>   -> speed upgrade (~44 supply) + ov speed
+> range upgrade + spire + third gas
+> lurker upgrade
+> 3th expand
+> (s'il n'y a pas de 3th gas, prendre la troisième exp plus vite et ne pas
+> faire de switch mutas. Les mutas servent à snipper les ht qui font bobo aux
+> hydras).
+> 
+> Bifurcations:
+> * spire vs zealot push: 
+> cut drones at 35 supply
+> make many mutas (+7)
+> 2 sunken on every choke
+> hydra + 3th gaz + lurker
+> 5th hatch expand
+> * spire vs stargate + ground
+> 5th hatch, luker + scourge, one sunken by choke
+> * spire vs stargate + robo
+> hydra speed + range + burrow
+> +1 air armor (eventuellement faire des devourers)
+> * hydra vs zealot push:
+> 1/2 sunken, defend and get 9 mutas
+> * hydra vs sair + ground: still mutas switch and tech lurkers
+> * hydra vs sair + robo: air armor + burrow, 3th gas asap.
+> 
+> Bon bien sûr il n'y a pas besoin d'apprendre ça par coeur, mais ça donne une
+> idée des bifurcations possibles.
+> 
+> Les "mondragon"-build: ce sont des macro builds ou l'objectif est d'avoir
+> des upgrade le plus vite possible, et de faire des harass avec les zerglins
+> et leurs upgrades:
+> 
+> standard 12 hatch:
+> 12 expand 11 pool 14expand 17-22 hatch(ou expand si on ne l'a pas déjà fait)
+> gaz après la 4ème hatch, evo quand hatch fini -> +1 carapace
+> ling speed
+> Lair
+> (faire des lings quand besoin).
+> 
+> 9overspeed run by:
+> 9 overpool
+> 9 extracor
+> 6 lings + speed (pull drones off gaz)
+> 16/17 expand
+> 17 ov 17 hatch
+> gaz + evo (ou 19 hatch)
+> 
+> une fois qu'on a un groupe de lings et speed, on essaie de passer le choke
+> du protoss à son natural pour faire bobo à son main.
+> 
+> Quelques continuations:
+> * lurkers:
+> 4 hatch + gaz (suivant les build précédents)
+> +1 carapace
+> lair/ling speed
+> 2nd gaz (mettre 1hatch sur drones, 3 hatch sur lings)
+> den when lair 50%
+> - lurkers/ ov speed /spire/ 2nd evo
+> 
+> * 4 hatch hydras:
+> 4 hatch + gaz
+> den + hydras + hydras speed
+> 2nd gaz
+> lair
+> hydra range / 2nd evo / ling speed
+> expand
+> quand lair fini: ov speed + lurkers
+> 
+> * 5 hatch hydras:
+> 5 hatch + 2 gas
+> hydra den -> speed
+> hydras
+> dual evo + expo
+> 
+> * 5 hatch lings/lurkers -> ultras:
+> 5 hatch + 2 gaz
+> dual evo and hydra den
+> lair / speedlings
+> some hydras vs sair + lings
+> lurkers, ...
+> 
+> Bref encore une fois pas besoin d'appendre par coeur, mais ça donne une idée
+> de ce qui est le plus important suivant les différents branchements (si on
+> fait hydra pas besoin d'avoir le +1 carapace si tôt, alors qu'avec des lings
+> c'est plus important).
+> 
+> Personnellement, je préfère les macro build précédents, qui font les upgrade
+> plus tard et se concentrent plus sur avoir pleins d'unités, je préfère avoir
+> beaucoup d'unités faibles, c'est plus dans l'esprit zerg.
+> 
+> Et justement ça tombe bien, jaedong a inventé un build ultime qui combine
+> l'avantage du 4hatch mutas et 5hatch hydra:
+> 
+> 5 hatch double tech:
+> 12 expand 11 pool 13 expand 12 gaz
+> (ou 9 overpool 11 expand 13 expand 12 gaz)
+> whore drone, lair + speedlings
+> spire when lair finishes
+> 4th hatch (4hatch, 3 bases)
+> 
+> 1) vs zealot push
+> 9-11 mutas
+> 5th expand, den
+> ov speed+ hydra speed then lurkers 
+> 
+> 2) vs stargate:
+> 
+> 5hatch (3bases), den after
+> den and spire finishes at the same time -> 6 scourges to counter the sair +
+> scout
+> (faire des hydras si nécessaire, mais tant que les lings + scourges suffisent
+> à tenir face au sol et à l'air, continuer de faire des drones.)
+> 
+> a) vs mass sairs:
+> upgrade ov speed, speed then range then lurker
+> 6th hatch at expand
+> 
+> b) vs sairs + ground
+> ov speed, hydra speed then lurkers
+> 
+> dans ces deux cas, on fait ov speed et hydra speed, et après on fait 2/3
+> evos (suivant qu'on a ouvert hatch ou pool) pour les upgrade, puis 6th/7th
+> hatch.
+> 
+> 
+> 
+> L'idée est la suivante: en prenant le gaz à 12, la spire arrive à temps pour
+> le premier corsair éventuel. On scoute ce que fait l'adversaire, son core
+> fini un peu avant la fin de notre lair, et on regarde s'il fait stargate ou
+> des gates (-> zealot push). Dans ce dernier cas, on prend le second gaz dès
+> que possible, et on part sur du 4 hatch mutas pour contrer son push.
+> 
+> S'il fait un stargate, ça ne sert à rien de partir sur du mutas, ça sera
+> contrable trop facilement par ses sairs. On fait 6 scourges pour contrer ses
+> premiers sairs et scouter. S'il est parti sur du sair, on part sur du
+> scourge + hydras, donc on peut prendre le 2nd gaz plus tard, quand la spire
+> fini. Ca permet de poser une 5ème hatch. S'il part sur du mass sairs +
+> harass, penser à rechercher burrow. 
+
+Rem: avec le operpool speed, on fait 4 drones avant que le gaz finisse, du
+coup on a 12 drones quand on prend le gaz. Donc à adapter pour du
+speed/overspeed.
+> 
+> Quelques guides:
+> http://www.teamliquid.net/forum/viewmessage.php?topic_id=73150&currentpage=5
+> pour le build que je viens de décrire.
+> 
+> http://www.teamliquid.net/forum/viewmessage.php?topic_id=73150
+> pour les mondragon-build et 
+> http://www.teamliquid.net/forum/viewmessage.php?topic_id=73314
+> pour les continuations 
+> (de manière plus générale le premier guide est très détaillé pour le ZvP, et
+> le second est un guide pour le Zv*).
+> 
+> http://www.teamliquid.net/forum/viewmessage.php?topic_id=72062
+> pour les macros build standards (4hatch mutas, 5hatch hydras)
+> http://www.gosugamers.net/starcraft/thread.php?id=162995
+> pour le 3hatch muta en ZvT
+> http://www.teamliquid.net/forum/viewmessage.php?currentpage=1&topic_id=65435
+> du mid game en ZvT
+> 
+> -- 
+> pfiuuuu
+

@@ -1,0 +1,47 @@
+#!/usr/bin/perl -w
+#http://thread.gmane.org/gmane.comp.version-control.git/110369/focus=110383
+#needs to be run on git-root
+
+sub parse_hunk_header {
+  my ($line) =  @_;
+  my ($o_ofs, $o_cnt, $n_ofs, $n_cnt) =
+      $line =~ /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/;
+  $o_cnt = 1 unless defined $o_cnt;
+  $n_cnt = 1 unless defined $n_cnt;
+  return ($o_ofs, $o_cnt, $n_ofs, $n_cnt);
+}
+
+sub get_blame_prefix {
+  my ($line) =  @_;
+  $line =~ /^([0-9a-f]+\s+\([^\)]+\))/ or die "bad blame output: $line";
+  return $1;
+}
+
+my ($oldrev, $newrev) =  @ARGV;
+open($diff, '-|', 'git', '--no-pager', 'diff', $oldrev, $newrev) or die;
+
+my ($pre, $post);
+my $filename;
+while (<$diff>) {
+  if (m{^diff --git ./(.*) ./\1$}) {
+    $filename = $1;
+  } elsif (m{^(\+\+\+|---) ./$filename$}) {
+    # ignore
+  } elsif (m{^@@}) {
+    my ($o_ofs, $o_cnt, $n_ofs, $n_cnt)
+      = parse_hunk_header($_);
+    my $o_end = $o_ofs + $o_cnt;
+    my $n_end = $n_ofs + $n_cnt;
+    open($pre, '-|', 'git', 'blame', "-L$o_ofs,$o_end",
+         $oldrev, '--', $filename) or die;
+    open($post, '-|', 'git', 'blame', "-L$n_ofs,$n_end",
+         $newrev, '--', $filename) or die;
+  } elsif (m{^ }) {
+    print get_blame_prefix(scalar <$pre>), "\t", $_;
+    scalar <$post>; # discard
+  } elsif (m{^\-}) {
+    print get_blame_prefix(scalar <$pre>), "\t", $_;
+  } elsif (m{^\+}) {
+    print get_blame_prefix(scalar <$post>), "\t", $_;
+  } 
+}

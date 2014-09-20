@@ -1,0 +1,5 @@
+Alternatives:
+- coffeescript (1 to 1 mapper with more ruby/python like syntax)
+  icedcoffeescript = coffeescript + await/defer control
+- typescript (strict superset, closely looks like future ecma 6.0 script)
+- dart (google new langage)

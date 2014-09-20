@@ -1,0 +1,39 @@
+- .gnomerc: executé par gdm suelement en version <2.4
+- .dmrc: utilisé par certains dm pour se souvenir de la dernière session
+  (gdm3 ne le lit pas)
+
+Avec un *dm: les sessions sont lues dans /usr/share/xsessions. Avec gnome3
+(ou 2 récent) il faut en plus que le wm spécifié par gsettings soit visible
+dans .local/share/applications.
+
+Sur ArchLinux:
+- /etc/lightdm/Xsession:
+  - lit .profile et .xprofile
+  - merge .Xresources
+  - loade .Xkbmap
+  - lance les scripts dans /etc/X11/xinit/xinitrc.d/*
+- /etc/xdg/xfce4/xinitrc:
+  - mets en place des trucs xdg
+  - lit .Xdefaults, .config/xfce4/Xft.xrdb, .config/xfce4/Xcursor.xrdb et
+    .Xresources
+  - lance xfce4-session (ou alors l'émule si xfce4-session n'existe pas)
+
+- .xsession:
+  - DESKTOP_SESSION="xsession"
+  - lance .xinitrc "$@"
+- .xinitrc:
+  - a un mode failsafe
+  - check s'il est lancé depuis la console et dans ce cas source
+    /etx/X11/xinit/.Xresources, /etc/xprofile et
+    lance les scripts dans /etc/X11/xinit/xinitrc.d/*
+  - source .xprofile (qui sette $DM)
+  - détermine ce qu'il faut lancer (s'il n'y a pas d'arguments utiliser $DM)
+
+- .xprofile
+  - set DM (soit $DESKTOP_SESSION, ou alors le premier argument, ou alors
+    $DEFAULTDM specifié dans ~/.xprops [c'est le cas aussi si DM=xsession])
+  - lit .Xresources, .Xresources.local, .Xkbmap
+  - execute systemctl --user
+  - lance d'autres programmes en fonction de DM
+
+Rem: le lancement standard lightdm -> xfce4 -> .xprofile va lire .Xresources 3 fois...

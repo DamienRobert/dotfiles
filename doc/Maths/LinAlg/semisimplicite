@@ -2,6 +2,7 @@ Soit P le polynome car d'une matrice M agissant sur V, P_0 le polynôme minimal.
 
 Si P_0=\prod Q_i^e_i, par localisation V est isomorphe à la somme des V_i,
 où sur V_i on a localisé en Q_i, ie V_i=Ker Q_i^e_i(X)
+De plus, si P=\prod Q_i^n_i, alors dim V_i=n_i
 
 - V_i est simple ssi e_i = 1
 - V simple ssi P_0=P et P_0 irréductible
@@ -16,6 +17,7 @@ k[X], ie ssi elles ont même invariants de similitudes.
 
 Cyclicité
 =========
+
 M est une matrice compagnon <=> P_0=P <=> Il y a un
 seul facteur invariant <=> V est cyclique
 <=> le commutant de M sont les polynômes en M.
@@ -31,26 +33,47 @@ est semi-simple, si P_0 est le seul invariant (ie P=P_0) l'action est de rang 1.
 
 Jordan
 ======
-Si R est un facteur invariant, C_R la matrice compagnon,
-C_R=(C_R_i^f_i). Si R_i=(X-lambda), R_i^f_i est la matrice de Jordan
-associée.
-Inversement, si on se donne une décomposition en facteurs irréducibles
-Q_i^g_i, on a R_1=Q_1^f_1 Q_2^f_2 où f_1 est la plus grande puissance de
-Q_1 qui apparaît et ainsi de suite.
-=> M est cyclique ssi pour toute valeur propre λ il n'y a qu'un seul
-bloc de jordan
 
-Sous-espaces stables
-====================
+Les facteurs invariants de (C_P C_Q) sont (P \wedge Q, P \vee Q).
+Corollaire: si P=\Prod P_i avec les P_i premiers entre eux, alors C_P est
+semblable à (C_P_i)
 
-Par localisation, on peut se ramener à un polynôme minimal ayant un seul
-facteur irréducible. (Car si on a un espace stable V, il est isomorphe à
-somme des V_i où V_i est le localisé en P_i, ie le Ker P_i^n_i).
+Soit maintenant R=\prod R_i^f_i un facteur invariant, C_R la matrice compagnon,
+alors C_R est semblabe à (C_R_i^f_i). 
 
-Soit donc V d'invariant P^n_1, P^n_2, ... où P est irréductible, j'utilise
-la notation (n_1,n_2,...) pour V.
-Si V=A/P^nA (A=k[X]), alors clairement on a comme sous-espaces invariants
-P^iA/P^nA i=n-1,...,0, de plus en plus grands et contenant les précédents.
-Ce sont les seuls (un sous espace invariant correspond à un idéal de
-A/P^nA, ie un idéal de A contenant P^n, donc comme on est principal, ce
-sont P^{n-1},...).
+Ex: Si R_i=(X-lambda), C_(R_i^f_i) est semblabe à la matrice de Jordan usuelle.
+
+Inversement, si on se donne une décomposition en facteurs de Jordan
+Q_i^g_i, alors on les classes par blocks croissants:
+Q_1^g_1 Q_2^g_2 ...
+Q_1^g'_1 Q_2^g'_2 ...
+et on lit les facteurs invariants sur les lignes.
+
+Exemple: a un block de Jordan Q_1, Q_1^2, Q_1^2, Q_2^3, Q_2^4 correspond
+les invariants Q_1, Q_1^2 Q_2^3, Q_1^2 Q_2^4.
+
+=> M est cyclique ssi pour toute valeur propre λ (ou généralement chaque
+irréductible) il n'y a qu'un seul bloc de jordan.
+
+Sous-espaces stables d'un endomorphisme cyclique
+================================================
+
+On a P=P_0=\Prod P_i^n_i, et V est de rang 1 est isomorphe à A=k[X]/P(X).
+Les sous-espaces invariants de V correspondent aux idéaux de A, ie aux
+facteurs de P(X). Ie ce sont exactement les \Ker P_i^g_i (g_i \leq n_i), cet
+espace étant de dimension \Sum g_i deg P_i (car c'est le degré de l'anneau
+quotient).
+
+Commutant/Bicommutant
+=====================
+
+- Com(Com(u))=k[u]/(u)
+
+- Si u commute avec v, alors u stabilise Ker v et Im v.
+  Si v est une projection, u commute avec v <=> u stabilise Ker v et Im v.
+  Ie les décompositions V=V_1+V_2 stables par u sont en bijection avec les
+  projections p (p^2=p) de Com(u)
+
+Si A=k[X]/P(X) est un produit d'anneau (par exemple on peut voir ça en
+localisant), alors les idempotents de A fournissent des projections p sur V
+qui commutent avec u (car p=R(u)).

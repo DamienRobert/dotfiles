@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" /><title>Wireless network configuration - ArchWiki</title>
+<meta name="generator" content="MediaWiki 1.22.6" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="ArchWiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.archlinux.org/api.php?action=rsd" />
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html" />
+<link rel="alternate" type="application/atom+xml" title="ArchWiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://wiki.archlinux.org/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cskins.archlinux&amp;only=styles&amp;skin=archlinux&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/skins/archlinux/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/archlinux/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+
+<script src="https://wiki.archlinux.org/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=archlinux&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Wireless_network_configuration","wgTitle":"Wireless network configuration","wgCurRevisionId":312896,"wgRevisionId":312896,"wgArticleId":1010,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Wireless Networking"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Wireless_network_configuration","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function(){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"archlinux","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"vector-simplesearch":1,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":
+0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function(){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});},{},{});
+/* cache key: archwiki:resourceloader:filter:minify-js:7:85c90aa16eaeef41f8c16fb94950cfbf */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Wireless_network_configuration skin-archlinux action-view">
+
+<div id="archnavbar"><!-- Arch Linux global navigation bar -->
+	<div id="archnavbarlogo">
+		<p><a id="logo" href="http://www.archlinux.org/"></a></p>
+	</div>
+	<div id="archnavbarmenu">
+		<ul id="archnavbarlist">
+			<li id="anb-home"><a href="http://www.archlinux.org/">Home</a></li><li id="anb-packages"><a href="http://www.archlinux.org/packages/">Packages</a></li><li id="anb-forums"><a href="https://bbs.archlinux.org/">Forums</a></li><li id="anb-wiki" class="anb-selected"><a href="https://wiki.archlinux.org/">Wiki</a></li><li id="anb-bugs"><a href="https://bugs.archlinux.org/">Bugs</a></li><li id="anb-aur"><a href="https://aur.archlinux.org/">AUR</a></li><li id="anb-download"><a href="http://www.archlinux.org/download/">Download</a></li>		</ul>
+	</div>
+</div><!-- #archnavbar -->
+
+<div id="globalWrapper">
+<div id="column-content"><div id="content" class="mw-body-primary" role="main">
+	<a id="top"></a>
+	
+	<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Wireless network configuration</span></h1>
+	<div id="bodyContent" class="mw-body">
+		<div id="siteSub">From ArchWiki</div>
+		<div id="contentSub"></div>
+		<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+		<!-- start content -->
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div style="float:right; clear:right; width:25%; margin: 0 0 0.5em 0.5em;"><p style="background:#333; color:white; padding:0.2em; border-bottom:5px #08c solid; margin:0; text-align:center; font-weight:bold;">Related articles</p><ul style="list-style-type:none; margin:0; padding:0.3em;">
+<li style="padding:0.4em 0; line-height:1;"><a href="/index.php/Network_configuration" title="Network configuration">Network configuration</a></li>
+<li style="padding:0.4em 0; line-height:1;"><a href="/index.php/Software_access_point" title="Software access point">Software access point</a></li>
+<li style="padding:0.4em 0; line-height:1;"><a href="/index.php/Ad-hoc_networking" title="Ad-hoc networking">Ad-hoc networking</a></li>
+<li style="padding:0.4em 0; line-height:1;"><a href="/index.php/Internet_sharing" title="Internet sharing">Internet sharing</a></li>
+</ul></div>
+<p>Configuring wireless is a two-part process; the first part is to identify and ensure the correct driver for your wireless device is installed (they are available on the installation media, but often have to be installed explicitly), and to configure the interface. The second is choosing a method of managing wireless connections. This article covers both parts, and provides additional links to wireless management tools.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Device_driver"><span class="tocnumber">1</span> <span class="toctext">Device driver</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Check_the_driver_status"><span class="tocnumber">1.1</span> <span class="toctext">Check the driver status</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Installing_driver.2Ffirmware"><span class="tocnumber">1.2</span> <span class="toctext">Installing driver/firmware</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="#Wireless_management"><span class="tocnumber">2</span> <span class="toctext">Wireless management</span></a>
+<ul>
+<li class="toclevel-2 tocsection-5"><a href="#Manual_setup"><span class="tocnumber">2.1</span> <span class="toctext">Manual setup</span></a>
+<ul>
+<li class="toclevel-3 tocsection-6"><a href="#Getting_some_useful_information"><span class="tocnumber">2.1.1</span> <span class="toctext">Getting some useful information</span></a></li>
+<li class="toclevel-3 tocsection-7"><a href="#Interface_activation"><span class="tocnumber">2.1.2</span> <span class="toctext">Interface activation</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="#Access_point_discovery"><span class="tocnumber">2.1.3</span> <span class="toctext">Access point discovery</span></a></li>
+<li class="toclevel-3 tocsection-9"><a href="#Operating_mode"><span class="tocnumber">2.1.4</span> <span class="toctext">Operating mode</span></a></li>
+<li class="toclevel-3 tocsection-10"><a href="#Association"><span class="tocnumber">2.1.5</span> <span class="toctext">Association</span></a></li>
+<li class="toclevel-3 tocsection-11"><a href="#Getting_an_IP_address"><span class="tocnumber">2.1.6</span> <span class="toctext">Getting an IP address</span></a></li>
+<li class="toclevel-3 tocsection-12"><a href="#Custom_startup_scripts.2Fservices"><span class="tocnumber">2.1.7</span> <span class="toctext">Custom startup scripts/services</span></a>
+<ul>
+<li class="toclevel-4 tocsection-13"><a href="#Manual_wireless_connection_at_boot_using_systemd_and_dhcpcd"><span class="tocnumber">2.1.7.1</span> <span class="toctext">Manual wireless connection at boot using systemd and dhcpcd</span></a></li>
+<li class="toclevel-4 tocsection-14"><a href="#Systemd_with_wpa_supplicant_and_static_IP"><span class="tocnumber">2.1.7.2</span> <span class="toctext">Systemd with wpa_supplicant and static IP</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-15"><a href="#Automatic_setup"><span class="tocnumber">2.2</span> <span class="toctext">Automatic setup</span></a>
+<ul>
+<li class="toclevel-3 tocsection-16"><a href="#Netctl"><span class="tocnumber">2.2.1</span> <span class="toctext">Netctl</span></a></li>
+<li class="toclevel-3 tocsection-17"><a href="#Wicd"><span class="tocnumber">2.2.2</span> <span class="toctext">Wicd</span></a></li>
+<li class="toclevel-3 tocsection-18"><a href="#NetworkManager"><span class="tocnumber">2.2.3</span> <span class="toctext">NetworkManager</span></a></li>
+<li class="toclevel-3 tocsection-19"><a href="#WiFi_Radar"><span class="tocnumber">2.2.4</span> <span class="toctext">WiFi Radar</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-20"><a href="#Troubleshooting"><span class="tocnumber">3</span> <span class="toctext">Troubleshooting</span></a>
+<ul>
+<li class="toclevel-2 tocsection-21"><a href="#Rfkill_caveat"><span class="tocnumber">3.1</span> <span class="toctext">Rfkill caveat</span></a></li>
+<li class="toclevel-2 tocsection-22"><a href="#Regulatory_domain"><span class="tocnumber">3.2</span> <span class="toctext">Regulatory domain</span></a></li>
+<li class="toclevel-2 tocsection-23"><a href="#Observing_Logs"><span class="tocnumber">3.3</span> <span class="toctext">Observing Logs</span></a></li>
+<li class="toclevel-2 tocsection-24"><a href="#Power_saving"><span class="tocnumber">3.4</span> <span class="toctext">Power saving</span></a></li>
+<li class="toclevel-2 tocsection-25"><a href="#Failed_to_get_IP_address"><span class="tocnumber">3.5</span> <span class="toctext">Failed to get IP address</span></a></li>
+<li class="toclevel-2 tocsection-26"><a href="#Connection_always_times_out"><span class="tocnumber">3.6</span> <span class="toctext">Connection always times out</span></a>
+<ul>
+<li class="toclevel-3 tocsection-27"><a href="#Lowering_the_rate"><span class="tocnumber">3.6.1</span> <span class="toctext">Lowering the rate</span></a></li>
+<li class="toclevel-3 tocsection-28"><a href="#Lowering_the_txpower"><span class="tocnumber">3.6.2</span> <span class="toctext">Lowering the txpower</span></a></li>
+<li class="toclevel-3 tocsection-29"><a href="#Setting_rts_and_fragmentation_thresholds"><span class="tocnumber">3.6.3</span> <span class="toctext">Setting rts and fragmentation thresholds</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-30"><a href="#Random_disconnections"><span class="tocnumber">3.7</span> <span class="toctext">Random disconnections</span></a>
+<ul>
+<li class="toclevel-3 tocsection-31"><a href="#Cause_.231"><span class="tocnumber">3.7.1</span> <span class="toctext">Cause #1</span></a></li>
+<li class="toclevel-3 tocsection-32"><a href="#Cause_.232"><span class="tocnumber">3.7.2</span> <span class="toctext">Cause #2</span></a></li>
+<li class="toclevel-3 tocsection-33"><a href="#Cause_.233"><span class="tocnumber">3.7.3</span> <span class="toctext">Cause #3</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-34"><a href="#Troubleshooting_drivers_and_firmware"><span class="tocnumber">4</span> <span class="toctext">Troubleshooting drivers and firmware</span></a>
+<ul>
+<li class="toclevel-2 tocsection-35"><a href="#Ralink"><span class="tocnumber">4.1</span> <span class="toctext">Ralink</span></a>
+<ul>
+<li class="toclevel-3 tocsection-36"><a href="#rt2x00"><span class="tocnumber">4.1.1</span> <span class="toctext">rt2x00</span></a></li>
+<li class="toclevel-3 tocsection-37"><a href="#rt3090"><span class="tocnumber">4.1.2</span> <span class="toctext">rt3090</span></a></li>
+<li class="toclevel-3 tocsection-38"><a href="#rt3290"><span class="tocnumber">4.1.3</span> <span class="toctext">rt3290</span></a></li>
+<li class="toclevel-3 tocsection-39"><a href="#rt3573"><span class="tocnumber">4.1.4</span> <span class="toctext">rt3573</span></a></li>
+<li class="toclevel-3 tocsection-40"><a href="#rt5572"><span class="tocnumber">4.1.5</span> <span class="toctext">rt5572</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-41"><a href="#Realtek"><span class="tocnumber">4.2</span> <span class="toctext">Realtek</span></a>
+<ul>
+<li class="toclevel-3 tocsection-42"><a href="#rtl8192cu"><span class="tocnumber">4.2.1</span> <span class="toctext">rtl8192cu</span></a></li>
+<li class="toclevel-3 tocsection-43"><a href="#rtl8192e"><span class="tocnumber">4.2.2</span> <span class="toctext">rtl8192e</span></a></li>
+<li class="toclevel-3 tocsection-44"><a href="#rtl8188eu"><span class="tocnumber">4.2.3</span> <span class="toctext">rtl8188eu</span></a></li>
+<li class="toclevel-3 tocsection-45"><a href="#rtl8723be"><span class="tocnumber">4.2.4</span> <span class="toctext">rtl8723be</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-46"><a href="#Atheros"><span class="tocnumber">4.3</span> <span class="toctext">Atheros</span></a>
+<ul>
+<li class="toclevel-3 tocsection-47"><a href="#ath5k"><span class="tocnumber">4.3.1</span> <span class="toctext">ath5k</span></a></li>
+<li class="toclevel-3 tocsection-48"><a href="#ath9k"><span class="tocnumber">4.3.2</span> <span class="toctext">ath9k</span></a>
+<ul>
+<li class="toclevel-4 tocsection-49"><a href="#ASUS"><span class="tocnumber">4.3.2.1</span> <span class="toctext">ASUS</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-50"><a href="#Intel"><span class="tocnumber">4.4</span> <span class="toctext">Intel</span></a>
+<ul>
+<li class="toclevel-3 tocsection-51"><a href="#ipw2100_and_ipw2200"><span class="tocnumber">4.4.1</span> <span class="toctext">ipw2100 and ipw2200</span></a></li>
+<li class="toclevel-3 tocsection-52"><a href="#iwlegacy"><span class="tocnumber">4.4.2</span> <span class="toctext">iwlegacy</span></a></li>
+<li class="toclevel-3 tocsection-53"><a href="#iwlwifi"><span class="tocnumber">4.4.3</span> <span class="toctext">iwlwifi</span></a></li>
+<li class="toclevel-3 tocsection-54"><a href="#Disabling_LED_blink"><span class="tocnumber">4.4.4</span> <span class="toctext">Disabling LED blink</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-55"><a href="#Broadcom"><span class="tocnumber">4.5</span> <span class="toctext">Broadcom</span></a></li>
+<li class="toclevel-2 tocsection-56"><a href="#Other_drivers.2Fdevices"><span class="tocnumber">4.6</span> <span class="toctext">Other drivers/devices</span></a>
+<ul>
+<li class="toclevel-3 tocsection-57"><a href="#Tenda_w322u"><span class="tocnumber">4.6.1</span> <span class="toctext">Tenda w322u</span></a></li>
+<li class="toclevel-3 tocsection-58"><a href="#orinoco"><span class="tocnumber">4.6.2</span> <span class="toctext">orinoco</span></a></li>
+<li class="toclevel-3 tocsection-59"><a href="#prism54"><span class="tocnumber">4.6.3</span> <span class="toctext">prism54</span></a></li>
+<li class="toclevel-3 tocsection-60"><a href="#ACX100.2F111"><span class="tocnumber">4.6.4</span> <span class="toctext">ACX100/111</span></a></li>
+<li class="toclevel-3 tocsection-61"><a href="#zd1211rw"><span class="tocnumber">4.6.5</span> <span class="toctext">zd1211rw</span></a></li>
+<li class="toclevel-3 tocsection-62"><a href="#hostap_cs"><span class="tocnumber">4.6.6</span> <span class="toctext">hostap_cs</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-63"><a href="#ndiswrapper"><span class="tocnumber">4.7</span> <span class="toctext">ndiswrapper</span></a></li>
+<li class="toclevel-2 tocsection-64"><a href="#compat-drivers-patched"><span class="tocnumber">4.8</span> <span class="toctext">compat-drivers-patched</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-65"><a href="#See_also"><span class="tocnumber">5</span> <span class="toctext">See also</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Device_driver">Device driver</span></h2>
+<p>The default Arch Linux kernel is <i>modular</i>, meaning many of the drivers for machine hardware reside on the hard drive and are available as <a href="/index.php/Kernel_modules" title="Kernel modules">modules</a>. At boot, <a href="/index.php/Udev" title="Udev">udev</a> takes an inventory of your hardware and loads appropriate modules (drivers) for your corresponding hardware, which will in turn allow creation of a network <i>interface</i>.
+</p><p>Some wireless chipsets also require firmware, in addition to a corresponding driver. Many firmware images are provided by the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=linux-firmware">linux-firmware</a></span> package which is installed by default, however, proprietary firmware images are not included and have to be installed separately. This is described in <a href="#Installing_driver.2Ffirmware">#Installing driver/firmware</a>.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>Udev is not perfect. If the proper module is not loaded by udev on boot, simply <a href="/index.php/Kernel_modules#Loading" title="Kernel modules">load it manually</a>. Note also that udev may occasionally load more than one driver for a device, and the resulting conflict will prevent successful configuration. Make sure to <a href="/index.php/Kernel_modules#Blacklisting" title="Kernel modules">blacklist</a> the unwanted module.</div>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>Though not strictly required, it's a good idea to first install user-space tools mentioned in <a href="#Manual_setup">#Manual setup</a>, especially when some problem should appear.</div>
+<h3><span class="mw-headline" id="Check_the_driver_status">Check the driver status</span></h3>
+<p>To check if the driver for your card has been loaded, check the output of the <code style="display:inline-block; padding: 0.1em 0.3em;">lspci -k</code> or <code style="display:inline-block; padding: 0.1em 0.3em;">lsusb -v</code> command, depending on if the card is connected by PCI(e) or USB. You should see that some kernel driver is in use, for example:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ lspci -k</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+06:00.0 Network controller: Intel Corporation WiFi Link 5100
+	Subsystem: Intel Corporation WiFi Link 5100 AGN
+	Kernel driver in use: iwlwifi
+	Kernel modules: iwlwifi
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>If the card is a USB device, running <code style="display:inline-block; padding: 0.1em 0.3em;">dmesg | grep usbcore</code> should give something like <code style="display:inline-block; padding: 0.1em 0.3em;">usbcore: registered new interface driver rtl8187</code> as output.</div>
+<p>Also check the output of <code style="display:inline-block; padding: 0.1em 0.3em;">ip link</code> command to see if a wireless interface (<a href="/index.php/Network_configuration#Device_names" title="Network configuration">usually</a> it starts with the letter "w", e.g. <code style="display:inline-block; padding: 0.1em 0.3em;">wlp2s1</code>) was created. Then bring the interface up with <code style="display:inline-block; padding: 0.1em 0.3em;">ip link set <i>interface</i> up</code>. For example, assuming the interface is <code style="display:inline-block; padding: 0.1em 0.3em;">wlan0</code>:
+</p>
+<pre># ip link set wlan0 up
+</pre>
+<p>If you get this error message: <code style="display:inline-block; padding: 0.1em 0.3em;">SIOCSIFFLAGS: No such file or directory</code>, it most certainly means that your wireless chipset requires a firmware to function.
+</p><p>Check kernel messages for firmware being loaded:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ dmesg | grep firmware</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+[   7.148259] iwlwifi 0000:02:00.0: loaded firmware version 39.30.4.1 build 35138 op_mode iwldvm
+</pre>
+<p>If there is no relevant output, check the messages for the full output for the module you identified earlier (<code style="display:inline-block; padding: 0.1em 0.3em;">iwlwifi</code> in this example) to identify the relevant message or further issues:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ dmesg | grep iwlwifi</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+[   12.342694] iwlwifi 0000:02:00.0: irq 44 for MSI/MSI-X
+[   12.353466] iwlwifi 0000:02:00.0: loaded firmware version 39.31.5.1 build 35138 op_mode iwldvm
+[   12.430317] iwlwifi 0000:02:00.0: CONFIG_IWLWIFI_DEBUG disabled
+...
+[   12.430341] iwlwifi 0000:02:00.0: Detected Intel(R) Corporation WiFi Link 5100 AGN, REV=0x6B
+</pre>
+<p>If the kernel module is successfully loaded and the interface is up, you can skip the next section.
+</p>
+<h3><span class="mw-headline" id="Installing_driver.2Ffirmware">Installing driver/firmware</span></h3>
+<p>Check the following lists to discover if your card is supported:
+</p>
+<ul>
+<li> The <a rel="nofollow" class="external text" href="https://help.ubuntu.com/community/WifiDocs/WirelessCardsSupported">Ubuntu Wiki</a> has a good list of wireless cards and whether or not they are supported either in the Linux kernel or by a user-space driver (includes driver name).
+</li>
+<li> <a rel="nofollow" class="external text" href="http://linux-wless.passys.nl/">Linux Wireless Support</a> and The Linux Questions' <a rel="nofollow" class="external text" href="http://www.linuxquestions.org/hcl/index.php?cat=10">Hardware Compatibility List</a> (HCL) also have a good database of kernel-friendly hardware.
+</li>
+<li> The <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Devices">kernel page</a> additionally has a matrix of supported hardware.
+</li>
+</ul>
+<p>If your wireless card is listed above, follow the <a href="#Troubleshooting_drivers_and_firmware">#Troubleshooting drivers and firmware</a> subsection of this page, which contains information about installing drivers and firmware of some specific wireless cards. Then <a href="#Check_the_driver_status">check the driver status</a> again.
+</p><p>If your wireless card is not listed above, it is likely supported only under Windows (some Broadcom, 3com, etc). For these, you can try to use <a href="#ndiswrapper">ndiswrapper</a>.
+</p>
+<h2><span class="mw-headline" id="Wireless_management">Wireless management</span></h2>
+<p>Assuming that your drivers are installed and working properly, you will need to choose a method of managing your wireless connections. The following subsections will help you decide.
+</p><p>Procedure and tools required will depend on several factors:
+</p>
+<ul>
+<li> The desired nature of configuration management; from a completely manual command line procedure to an automated solution with graphical front-ends.
+</li>
+<li> The encryption type (or lack thereof) which protects the wireless network.
+</li>
+<li> The need for network profiles, if the computer will frequently change networks (such as a laptop).
+</li>
+</ul>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>
+<ul>
+<li> Whatever is your choice, <b>you should try to connect using the manual method first</b>. This will help you understand the different steps that are required and troubleshoot possible problems.
+</li>
+<li> If possible (e.g. if you manage your Wi-Fi access point), try connecting with no encryption, to check that everything works. Then try using encryption, either WEP (simple to configure, but crackable in a matter of seconds), WPA or WPA2.
+</li>
+</ul>
+</div>
+<p>The following table shows the different methods that can be used to activate and manage a wireless connection, depending on the encryption and management types, and the various tools that are required. Although there may be other possibilities, these are the most frequently used:
+</p>
+<table class="wikitable">
+<tr>
+<th> Management method </th>
+<th> Interface activation </th>
+<th> Wireless connection management <br />(/=alternatives) </th>
+<th> Assigning IP address <br />(/=alternatives)
+</th></tr>
+<tr>
+<td> <a href="#Manual_setup">Manually managed</a>, <br />with no or WEP encryption </td>
+<td> <a href="/index.php/Core_utilities#ip" title="Core utilities">ip</a> </td>
+<td> <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=iw">iw</a></span> / <a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wireless_tools">iwconfig</a> </td>
+<td> <a href="/index.php/Core_utilities#ip" title="Core utilities">ip</a> / <a href="/index.php/Dhcpcd" title="Dhcpcd">dhcpcd</a> / <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=dhclient">dhclient</a></span>
+</td></tr>
+<tr>
+<td> <a href="#Manual_setup">Manually managed</a>, <br />with WPA or WPA2 PSK encryption </td>
+<td> <a href="/index.php/Core_utilities#ip" title="Core utilities">ip</a> </td>
+<td> <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=iw">iw</a></span> / <a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wireless_tools">iwconfig</a> + <a href="/index.php/WPA_supplicant" title="WPA supplicant">wpa_supplicant</a> </td>
+<td> <a href="/index.php/Core_utilities#ip" title="Core utilities">ip</a> / <a href="/index.php/Dhcpcd" title="Dhcpcd">dhcpcd</a> / <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=dhclient">dhclient</a></span>
+</td></tr>
+<tr>
+<td> <a href="#Automatic_setup">Automatically managed</a>, <br />with network profiles support </td>
+<td colspan="3" align="center"> <a href="/index.php/Netctl" title="Netctl">netctl</a>, <a href="/index.php/Wicd" title="Wicd">Wicd</a>, <a href="/index.php/NetworkManager" title="NetworkManager">NetworkManager</a>, etc.<br />
+<p>These tools pull in the required dependencies from the list of packages in the manual method.
+</p>
+</td></tr></table>
+<h3><span class="mw-headline" id="Manual_setup">Manual setup</span></h3>
+<p>Just like other network interfaces, the wireless ones are controlled with <i>ip</i> from the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=iproute2">iproute2</a></span> package.
+</p><p>You will need to install a basic set of tools for managing the wireless connection, either:
+</p>
+<dl>
+<dd><ul>
+<li><span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=iw">iw</a></span> - the current nl80211 standard, but not all wireless chip's modules support it
+</li>
+</ul>
+</dd>
+<dd>or
+<ul>
+<li><span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wireless_tools">wireless_tools</a></span> - currently deprecated, but still widely supported.
+</li>
+</ul>
+</dd>
+</dl>
+<p>And for WPA/WPA2 encryption, you will also need:
+</p>
+<dl>
+<dd><ul>
+<li><span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wpa_supplicant">wpa_supplicant</a></span>
+</li>
+</ul>
+</dd>
+</dl>
+<p>The table below gives an overview of comparable commands for <code style="display:inline-block; padding: 0.1em 0.3em;">iw</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">wireless_tools</code> (see <a rel="nofollow" class="external autonumber" href="http://wireless.kernel.org/en/users/Documentation/iw/replace-iwconfig">[1]</a> for more examples). These user-space tools work extremely well and allow complete manual control of wireless connection.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>
+<ul>
+<li> Examples in this section assume that your wireless device is <code style="display:inline-block; padding: 0.1em 0.3em;">wlan0</code> and that you are connecting to <code style="display:inline-block; padding: 0.1em 0.3em;"><i>your_essid</i></code> wifi access point. Replace both accordingly. 
+</li>
+<li> Note that most of the commands have to be executed with <a href="/index.php/Users_and_groups" title="Users and groups">root permissions</a>. Executed with normal user rights, some of the commands (e.g. <i>iwlist</i>), will exit without error but not produce the correct output either, which can be confusing.
+</li>
+</ul>
+</div> 
+<table class="wikitable">
+<tr>
+<th> <i>iw</i> command
+</th>
+<th> <i>wireless_tools</i> command
+</th>
+<th> Description
+</th></tr>
+<tr>
+<td> iw dev wlan0 link
+</td>
+<td> iwconfig wlan0
+</td>
+<td> Getting link status.
+</td></tr>
+<tr>
+<td> iw dev wlan0 scan
+</td>
+<td> iwlist wlan0 scan
+</td>
+<td> Scanning for available access points.
+</td></tr>
+<tr>
+<td> iw dev wlan0 set type ibss
+</td>
+<td> iwconfig wlan0 mode ad-hoc
+</td>
+<td> Setting the operation mode to <i>ad-hoc</i>.
+</td></tr>
+<tr>
+<td> iw dev wlan0 connect <i>your_essid</i>
+</td>
+<td> iwconfig wlan0 essid <i>your_essid</i>
+</td>
+<td> Connecting to open network.
+</td></tr>
+<tr>
+<td> iw dev wlan0 connect <i>your_essid</i> 2432
+</td>
+<td> iwconfig wlan0 essid <i>your_essid</i> freq 2432M
+</td>
+<td> Connecting to open network specifying channel.
+</td></tr>
+<tr>
+<td> iw dev wlan0 connect <i>your_essid</i> key 0:<i>your_key</i>
+</td>
+<td> iwconfig wlan0 essid <i>your_essid</i> key <i>your_key</i>
+</td>
+<td> Connecting to WEP encrypted network using hexadecimal key.
+</td></tr>
+<tr>
+<td> iw dev wlan0 connect <i>your_essid</i> key 0:<i>your_key</i>
+</td>
+<td> iwconfig wlan0 essid <i>your_essid</i> key s:<i>your_key</i>
+</td>
+<td> Connecting to WEP encrypted network using ASCII key.
+</td></tr>
+<tr>
+<td> iw dev wlan0 set power_save on
+</td>
+<td> iwconfig wlan0 power on
+</td>
+<td> Enabling power save.
+</td></tr></table>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>Depending on your hardware and encryption type, some of these steps may not be necessary. Some cards are known to require interface activation and/or access point scanning before being associated to an access point and being given an IP address. Some experimentation may be required. For instance, WPA/WPA2 users may try to directly activate their wireless network from step <a href="#Association">#Association</a>.</div>
+<h4><span class="mw-headline" id="Getting_some_useful_information">Getting some useful information</span></h4>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>See <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Documentation/iw">official documentation</a> of the <i>iw</i> tool for more examples.</div>
+<ul>
+<li> First you need to find the name of wireless interface. You can do it with following command:
+</li>
+</ul>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ iw dev</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+phy#0
+	Interface <b>wlan0</b>
+		ifindex 3
+		wdev 0x1
+		addr 12:34:56:78:9a:bc
+		type managed
+		channel 1 (2412 MHz), width: 40 MHz, center1: 2422 MHz
+</pre>
+<ul>
+<li> To check link status, use following command. Example output when not connected to an AP:
+</li>
+</ul>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ iw dev wlan0 link</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+Not connected.
+</pre>
+<p>When connected to an AP, you will see something like:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ iw dev wlan0 link</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+Connected to 12:34:56:78:9a:bc (on wlan0)
+	SSID: MyESSID
+	freq: 2412
+	RX: 33016518 bytes (152703 packets)
+	TX: 2024638 bytes (11477 packets)
+	signal: -53 dBm
+	tx bitrate: 150.0 MBit/s MCS 7 40MHz short GI
+
+	bss flags:	short-preamble short-slot-time
+	dtim period:	1
+	beacon int:	100
+</pre>
+<ul>
+<li> You can get statistic information, such as the amount of tx/rx bytes, signal strength etc., with following command:
+</li>
+</ul>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">$ iw dev wlan0 station dump</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+Station 12:34:56:78:9a:bc (on wlan0)
+	inactive time:	1450 ms
+	rx bytes:	24668671
+	rx packets:	114373
+	tx bytes:	1606991
+	tx packets:	8557
+	tx retries:	623
+	tx failed:	1425
+	signal:  	-52 dBm
+	signal avg:	-53 dBm
+	tx bitrate:	150.0 MBit/s MCS 7 40MHz short GI
+	authorized:	yes
+	authenticated:	yes
+	preamble:	long
+	WMM/WME:	yes
+	MFP:		no
+	TDLS peer:	no
+</pre>
+<h4><span class="mw-headline" id="Interface_activation">Interface activation</span></h4>
+<p><i>(Usually not required)</i>
+</p><p>Some cards require that the kernel interface be activated before you can use <i>iw</i> or <i>wireless_tools</i>:
+</p>
+<pre># ip link set wlan0 up
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>If you get errors like <code style="display:inline-block; padding: 0.1em 0.3em;">RTNETLINK answers: Operation not possible due to RF-kill</code>, make sure that hardware switch is <i>on</i>. See <a href="#Rfkill_caveat">#Rfkill caveat</a> for details.</div>
+<p>To verify that the interface is up, inspect the output of the following command:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;"># ip link show wlan0</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+3: wlan0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state DOWN mode DORMANT group default qlen 1000
+    link/ether 12:34:56:78:9a:bc brd ff:ff:ff:ff:ff:ff
+</pre>
+<p>The <code style="display:inline-block; padding: 0.1em 0.3em;">UP</code> in <code style="display:inline-block; padding: 0.1em 0.3em;">&lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt;</code> is what indicates the interface is up, not the later <code style="display:inline-block; padding: 0.1em 0.3em;">state DOWN</code>.
+</p>
+<h4><span class="mw-headline" id="Access_point_discovery">Access point discovery</span></h4>
+<p>See what access points are available:
+</p>
+<pre># iw dev wlan0 scan | less
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>If it displays <code style="display:inline-block; padding: 0.1em 0.3em;">Interface doesn't support scanning</code>, then you probably forgot to install the firmware. In some cases this message is also displayed when not running <i>iw</i> as root.</div>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>Depending on your location, you might need to set the correct <a href="#Regulatory_domain">regulatory domain</a> in order to see all available networks.</div>
+<p>The important points to check:
+</p>
+<ul>
+<li> <b>SSID:</b> the name of the network.
+</li>
+<li> <b>Signal:</b> is reported in a wireless power ratio in dbm (e.g. from -100 to 0). The closer the negative value gets to zero, the better the signal. Observing the reported power on a good quality link and a bad one should give an idea about the individual range. 
+</li>
+<li> <b>Security:</b> it is not reported directly, check the line starting with <code style="display:inline-block; padding: 0.1em 0.3em;">capability</code>. If there is <code style="display:inline-block; padding: 0.1em 0.3em;">Privacy</code>, for example <code style="display:inline-block; padding: 0.1em 0.3em;">capability: ESS Privacy ShortSlotTime (0x0411)</code>, then the network is protected somehow.
+<ul>
+<li> If you see an <code style="display:inline-block; padding: 0.1em 0.3em;">RSN</code> information block, then the network is protected by <a href="http://en.wikipedia.org/wiki/Robust_Security_Network" class="extiw" title="wikipedia:Robust Security Network">Robust Security Network</a> protocol, also known as WPA2.
+</li>
+<li> If you see an <code style="display:inline-block; padding: 0.1em 0.3em;">WPA</code> information block, then the network is protected by <a href="http://en.wikipedia.org/wiki/Wi-Fi_Protected_Access" class="extiw" title="wikipedia:Wi-Fi Protected Access">Wi-Fi Protected Access</a> protocol.
+</li>
+<li> In the <code style="display:inline-block; padding: 0.1em 0.3em;">RSN</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">WPA</code> blocks you may find the following information:
+<ul>
+<li> <b>Group cipher:</b> value in TKIP, CCMP, both, others.
+</li>
+<li> <b>Pairwise ciphers:</b> value in TKIP, CCMP, both, others. Not necessarily the same value than Group cipher.
+</li>
+<li> <b>Authentication suites:</b> value in PSK, 802.1x, others. For home router, you'll usually find PSK (<i>i.e.</i> passphrase). In universities, you are more likely to find 802.1x suite which requires login and password. Then you will need to know which key management is in use (e.g. EAP), and what encapsulation it uses (e.g. PEAP). Find more details at <a href="http://en.wikipedia.org/wiki/Authentication_protocol" class="extiw" title="wikipedia:Authentication protocol">Wikipedia:Authentication protocol</a> and the sub-articles.
+</li>
+</ul>
+</li>
+<li> If you do not see neither <code style="display:inline-block; padding: 0.1em 0.3em;">RSN</code> nor <code style="display:inline-block; padding: 0.1em 0.3em;">WPA</code> blocks but there is <code style="display:inline-block; padding: 0.1em 0.3em;">Privacy</code>, then WEP is used.
+</li>
+</ul>
+</li>
+</ul>
+<h4><span class="mw-headline" id="Operating_mode">Operating mode</span></h4>
+<p><i>(Optional, but may be required)</i>
+</p><p>At this step you might need to set the proper operating mode of the wireless card. More specifically, if you are going to connect an <a href="/index.php/Ad-hoc_networking" title="Ad-hoc networking">ad-hoc network</a>, you need to set the operating mode to <code style="display:inline-block; padding: 0.1em 0.3em;">ibss</code>:
+</p>
+<pre># iw dev wlan0 set type ibss
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>Changing the operating mode on some cards might require the wireless interface to be <i>down</i> (<code style="display:inline-block; padding: 0.1em 0.3em;">ip link set wlan0 down</code>).</div>
+<h4><span class="mw-headline" id="Association">Association</span></h4>
+<p>Depending on the encryption, you need to associate your wireless device with the access point to use and pass the encryption key.
+</p>
+<ul>
+<li> <b>No encryption</b>
+</li>
+</ul>
+<pre># iw dev wlan0 connect <i>your_essid</i>
+</pre>
+<ul>
+<li> <b>WEP</b>
+</li>
+</ul>
+<p>using a hexadecimal or ASCII key (the format is distinguished automatically, because a WEP key has a fixed length):
+</p>
+<pre># iw dev wlan0 connect <i>your_essid</i> key 0:<i>your_key</i>
+</pre>
+<p>using a hexadecimal or ASCII key, specifying the third set up key as default (keys are counted from zero, four are possible):
+</p>
+<pre># iw dev wlan0 connect <i>your_essid</i> key d:2:<i>your_key</i>
+</pre>
+<ul>
+<li> <b>WPA/WPA2</b>
+</li>
+</ul>
+<p>You need to edit the <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant.conf</code> file as described in <a href="/index.php/WPA_Supplicant" title="WPA Supplicant" class="mw-redirect">WPA_Supplicant</a> and according to what you got from <a href="#Access_point_discovery">#Access point discovery</a>. Then, issue this command:
+</p>
+<pre># wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf
+</pre>
+<p>This is assuming your device uses the <code style="display:inline-block; padding: 0.1em 0.3em;">wext</code> driver. If this does not work, you may need to adjust these options.
+If connected successfully, continue in a new terminal (or quit <code style="display:inline-block; padding: 0.1em 0.3em;">wpa_supplicant</code> with <code style="display:inline-block; padding: 0.1em 0.3em;">Ctrl+c</code> and add the <code style="display:inline-block; padding: 0.1em 0.3em;">-B</code> switch to the above command to run it in the background). <a href="/index.php/WPA_Supplicant" title="WPA Supplicant" class="mw-redirect">WPA_Supplicant</a> contains more information and troubleshooting.
+</p><p>Regardless of the method used, you can check if you have associated successfully:
+</p>
+<pre># iw dev wlan0 link
+</pre>
+<h4><span class="mw-headline" id="Getting_an_IP_address">Getting an IP address</span></h4>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>See <a href="/index.php/Network_configuration#Configure_the_IP_address" title="Network configuration">Network configuration#Configure the IP address</a> for more examples. This part is identical.</div>
+<p>Finally, provide an IP address to the network interface. Simple examples are:
+</p>
+<pre># dhcpcd wlan0
+</pre>
+<p>or
+</p>
+<pre># dhclient wlan0
+</pre>
+<p>for DHCP, or
+</p>
+<pre># ip addr add 192.168.0.2/24 dev wlan0
+# ip route add default via 192.168.0.1
+</pre>
+<p>for static IP addressing.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong><a href="/index.php/Dhcpcd" title="Dhcpcd">dhcpcd</a> contains a hook (enabled by default) to automatically launch <a href="/index.php/WPA_supplicant" title="WPA supplicant">WPA supplicant</a> on wireless interfaces. It is started only if a configuration file at <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant.conf</code> exists and no <i>wpa_supplicant</i> process is listening on that interface. In most cases, you do not need to create any <a href="#Manual_wireless_connection_at_boot_using_systemd_and_dhcpcd">custom service</a>, just enable <code style="display:inline-block; padding: 0.1em 0.3em;">dhcpcd@<i>interface</i></code>.</div>
+<h4><span class="mw-headline" id="Custom_startup_scripts.2Fservices">Custom startup scripts/services</span></h4>
+<p>Although the manual configuration method will help troubleshoot wireless problems, you will have to re-type every command each time you reboot. You can also quickly write a shell script to automate the whole process, which is still a quite convenient way of managing network connection while keeping full control over your configuration. You can find some examples in this section.
+</p>
+<h5><span class="mw-headline" id="Manual_wireless_connection_at_boot_using_systemd_and_dhcpcd">Manual wireless connection at boot using systemd and dhcpcd</span></h5>
+<p>This example uses <a href="/index.php/Systemd" title="Systemd">systemd</a> for start up, <a href="/index.php/WPA_supplicant" title="WPA supplicant">WPA supplicant</a> for connecting, and <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=dhcpcd">dhcpcd</a></span> for assigning an IP address.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>Make sure that <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wpa_supplicant">wpa_supplicant</a></span> is installed and create <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant.conf</code>. See <a href="/index.php/WPA_supplicant" title="WPA supplicant">WPA supplicant</a> for details.</div>
+<p>Create a systemd unit, e.g <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/systemd/system/network-wireless@.service</code>:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">/etc/systemd/system/network-wireless@.service</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+[Unit]
+Description=Wireless network connectivity (%i)
+Wants=network.target
+Before=network.target
+BindsTo=sys-subsystem-net-devices-%i.device
+After=sys-subsystem-net-devices-%i.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStart=/usr/bin/ip link set dev %i up
+ExecStart=/usr/bin/wpa_supplicant -B -i %i -c /etc/wpa_supplicant.conf
+ExecStart=/usr/bin/dhcpcd %i
+
+ExecStop=/usr/bin/ip link set dev %i down
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+<p>Test the new unit by starting it, passing the name of the interface (wlan0):
+</p>
+<pre># systemctl start network-wireless@wlan0.service
+</pre>
+<p>Then enable the unit to make it start on boot:
+</p>
+<pre># systemctl enable network-wireless@wlan0.service
+</pre>
+<h5><span class="mw-headline" id="Systemd_with_wpa_supplicant_and_static_IP">Systemd with wpa_supplicant and static IP</span></h5>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>Make sure that <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wpa_supplicant">wpa_supplicant</a></span> is installed and create <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/wpa_supplicant.conf</code>. See <a href="/index.php/WPA_supplicant" title="WPA supplicant">WPA supplicant</a> for details.</div>
+<p>First create configuration file for the <a href="/index.php/Systemd" title="Systemd">systemd</a> service, replace <code style="display:inline-block; padding: 0.1em 0.3em;"><i>interface</i></code> with proper interface name:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">/etc/conf.d/network-wireless@<i>interface</i></pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+address=192.168.0.10
+netmask=24
+broadcast=192.168.0.255
+gateway=192.168.0.1
+</pre>
+<p>Create a systemd unit file:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">/etc/systemd/system/network-wireless@.service</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+[Unit]
+Description=Wireless network connectivity (%i)
+Wants=network.target
+Before=network.target
+BindsTo=sys-subsystem-net-devices-%i.device
+After=sys-subsystem-net-devices-%i.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=/etc/conf.d/network-wireless@%i
+
+ExecStart=/usr/bin/ip link set dev %i up
+ExecStart=/usr/bin/wpa_supplicant -B -i %i -c /etc/wpa_supplicant.conf
+ExecStart=/usr/bin/ip addr add ${address}/${netmask} broadcast ${broadcast} dev %i
+ExecStart=/usr/bin/ip route add default via ${gateway}
+
+ExecStop=/usr/bin/ip addr flush dev %i
+ExecStop=/usr/bin/ip link set dev %i down
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+<p>Enable the unit and start it, passing the name of the interface:
+</p>
+<pre># systemctl enable network-wireless@wlan0.service
+# systemctl start network-wireless@wlan0.service
+</pre>
+<h3><span class="mw-headline" id="Automatic_setup">Automatic setup</span></h3>
+<p>There are many solutions to choose from, but remember that all of them are mutually exclusive; you should not run two daemons simultaneously. The following table compares the different connection managers, additional notes are in subsections below.
+</p>
+<table class="wikitable">
+<tr>
+<th> Connection manager </th>
+<th> Network <br />profiles <br />support </th>
+<th> Roaming <br />(auto connect dropped <br />or changed location) </th>
+<th> <a href="http://en.wikipedia.org/wiki/point-to-point_protocol" class="extiw" title="wikipedia:point-to-point protocol">PPP</a> support <br />(e.g. 3G modem) </th>
+<th> Official <br />GUI </th>
+<th> Console tools
+</th></tr>
+<tr>
+<td> <a href="/index.php/Connman" title="Connman">Connman</a> </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> No </td>
+<td> <code style="display:inline-block; padding: 0.1em 0.3em;">connmanctl</code>
+</td></tr>
+<tr>
+<td> <a href="/index.php/Netctl" title="Netctl">Netctl</a> </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> No </td>
+<td> <code style="display:inline-block; padding: 0.1em 0.3em;">netctl</code>,<code style="display:inline-block; padding: 0.1em 0.3em;">wifi-menu</code>
+</td></tr>
+<tr>
+<td> <a href="/index.php/NetworkManager" title="NetworkManager">NetworkManager</a> </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> <code style="display:inline-block; padding: 0.1em 0.3em;">nmcli</code>
+</td></tr>
+<tr>
+<td> <a href="/index.php/Wicd" title="Wicd">Wicd</a> </td>
+<td> Yes </td>
+<td> Yes </td>
+<td> No </td>
+<td> Yes </td>
+<td> <code style="display:inline-block; padding: 0.1em 0.3em;">wicd-curses</code>
+</td></tr></table>
+<h4><span class="mw-headline" id="Netctl">Netctl</span></h4>
+<p><i>netctl</i> is a replacement for <i>netcfg</i> designed to work with systemd. It uses a profile based setup and is capable of detection and connection to a wide range of network types. This is no harder than using graphical tools.
+</p><p>See: <a href="/index.php/Netctl" title="Netctl">Netctl</a>
+</p>
+<h4><span class="mw-headline" id="Wicd">Wicd</span></h4>
+<p>Wicd is a network manager that can handle both wireless and wired connections. It is written in Python and Gtk with fewer dependencies than NetworkManager, making it an ideal solution for lightweight desktop users.
+</p><p>See: <a href="/index.php/Wicd" title="Wicd">Wicd</a>
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong><a href="/index.php/Wicd" title="Wicd">wicd</a> may cause excessive dropped connections with some drivers, while <a href="/index.php/NetworkManager" title="NetworkManager">NetworkManager</a> might work better.</div>
+<h4><span class="mw-headline" id="NetworkManager">NetworkManager</span></h4>
+<p>NetworkManager is an advanced network management tool that is enabled by default in most popular GNU/Linux distributions. In addition to managing wired connections, NetworkManager provides worry-free wireless roaming with an easy-to-use GUI program for selecting your desired network.
+</p><p>See: <a href="/index.php/NetworkManager" title="NetworkManager">NetworkManager</a>
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>GNOME's <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=network-manager-applet">network-manager-applet</a></span> also works under <a href="/index.php/Xfce" title="Xfce">Xfce</a> if you install <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/xfce4-xfapplet-plugin/">xfce4-xfapplet-plugin</a></span> (available in the <a href="/index.php/Arch_User_Repository" title="Arch User Repository">AUR</a>) first. Additionally, there are applets available for <a href="/index.php/KDE" title="KDE">KDE</a>.</div>
+<h4><span class="mw-headline" id="WiFi_Radar">WiFi Radar</span></h4>
+<p>WiFi Radar is a Python/PyGTK2 utility for managing wireless (and <b>only</b> wireless) profiles. It enables you to scan for available networks and create profiles for your preferred networks.
+</p><p>See: <a href="/index.php/Wifi_Radar" title="Wifi Radar">Wifi Radar</a>
+</p>
+<h2><span class="mw-headline" id="Troubleshooting">Troubleshooting</span></h2>
+<p>This section contains general troubleshooting tips, not strictly related to problems with drivers or firmware. For such topics, see next section.
+</p>
+<div style="text-align: center; margin-bottom: 1em; overflow:hidden;">
+<table class="notice noprint toc" id="out_of_date" style="background: &#123;&#123;&#123;backgroundcolor}}}; border-color: &#123;&#123;&#123;bordercolor}}}; width: 100%">
+<tr>
+<td style="background-color: &#123;&#123;&#123;signalcolor}}}; width: 100px"> <a href="/index.php/File:Tango-dialog-warning.png" class="image"><img alt="Tango-dialog-warning.png" src="/images/d/d8/Tango-dialog-warning.png" width="48" height="48" /></a>
+</td>
+<td>  <b>This article or section is out of date.</b> <div style="font-size: 90%"><b>Reason:</b> Commands in following subsections need updating according to <a href="/index.php/ArchWiki:Requests#wireless_tools_-.3E_iw" title="ArchWiki:Requests">wireless_tools -&gt; iw</a> transition. (<a rel="nofollow" class="external text" href="https://wiki.archlinux.org/index.php/Talk:Wireless_network_configuration">Discuss</a>)</div>
+</td>
+<td style="background-color: &#123;&#123;&#123;signalcolor}}}; width: 100px"> <a href="/index.php/File:Tango-dialog-warning.png" class="image"><img alt="Tango-dialog-warning.png" src="/images/d/d8/Tango-dialog-warning.png" width="48" height="48" /></a>
+</td></tr></table>
+</div>
+<h3><span class="mw-headline" id="Rfkill_caveat">Rfkill caveat</span></h3>
+<p>Many laptops have a hardware button (or switch) to turn off wireless card, however, the card can also be blocked by kernel. This can be handled by <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=rfkill">rfkill</a></span>. Use <i>rfkill</i> to show the current status:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;"># rfkill list</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+0: phy0: Wireless LAN
+	Soft blocked: yes
+	Hard blocked: yes
+</pre>
+<p>If the card is <i>hard-blocked</i>, use the hardware button (switch) to unblock it. If the card is not <i>hard-blocked</i> but <i>soft-blocked</i>, use the following command:
+</p>
+<pre># rfkill unblock wifi
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>It is possible that the card will go from <i>hard-blocked</i> and <i>soft-unblocked</i> state into <i>hard-unblocked</i> and <i>soft-blocked</i> state by pressing the hardware button (i.e. the <i>soft-blocked</i> bit is just switched no matter what). This can be adjusted by tuning some options of the <code style="display:inline-block; padding: 0.1em 0.3em;">rfkill</code> <a href="/index.php/Kernel_modules" title="Kernel modules">kernel module</a>.</div>
+<p>More info: <a rel="nofollow" class="external free" href="http://askubuntu.com/questions/62166/siocsifflags-operation-not-possible-due-to-rf-kill">http://askubuntu.com/questions/62166/siocsifflags-operation-not-possible-due-to-rf-kill</a>
+</p>
+<h3><span class="mw-headline" id="Regulatory_domain">Regulatory domain</span></h3>
+<p>Since the legally allowed wireless channels are different according to the geographic region where a device is used, each wireless driver is set to a region, the so-called regulatory domain. 
+</p><p>For example, the <code style="display:inline-block; padding: 0.1em 0.3em;">iwl3945</code> driver is by default configured to only work with networks on channels 1-11. Higher frequency bands are not allowed in some parts of the world (e.g. the US). In the EU however, channels 12 and 13 are used quite commonly (and Japan allows for channel 14). If the regulatory domain is set to e.g. US, then networks using higher channels will not show up in the scan. Likewise, the operation of 5 Mhz modes may be inhibited, if not using the correct regulatory domain. 
+</p><p>It is possible to configure the <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/developers/Documentation/cfg80211">cfg80211</a> kernel module to use specific regulatory domain by adding e.g. <code style="display:inline-block; padding: 0.1em 0.3em;">options cfg80211 ieee80211_regdom=EU</code> to <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/modprobe.d/modprobe.conf</code>. See <a href="/index.php/Kernel_modules" title="Kernel modules">Kernel modules</a> for details on configuration and the <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/developers/Regulatory/">regulatory</a> documentation for more information. 
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>Check the <code style="display:inline-block; padding: 0.1em 0.3em;">Frequencies:</code> block in the output of <code style="display:inline-block; padding: 0.1em 0.3em;">iw list</code> to see which frequencies are allowed for your card.</div>
+<p>An alternative configuration would be installing the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=crda">crda</a></span> package and editing <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/conf.d/wireless-regdom</code> (the file is actually provided by <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=wireless-regdb">wireless-regdb</a></span> which is a dependency of <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=crda">crda</a></span>).
+</p>
+<h3><span class="mw-headline" id="Observing_Logs">Observing Logs</span></h3>
+<p>A good first measure to troubleshoot is to analyze the system's logfiles first. In order not to manually parse through them all, it can help to open a second terminal/console window and watch the kernels messages with 
+</p>
+<pre>$ dmesg -w
+</pre>
+<p>while performing the action, e.g. the wireless association attempt. 
+</p><p>When using a tool for network management, the same can be done for systemd with 
+</p>
+<pre># journalctl -f 
+</pre>
+<p>The individual tools used in this article further provide options for more detailed debugging output, which can be used in a second step of the analysis, if required.
+</p>
+<h3><span class="mw-headline" id="Power_saving">Power saving</span></h3>
+<p>See <a href="/index.php/Power_saving#Network_interfaces" title="Power saving">Power saving#Network interfaces</a>.
+</p>
+<h3><span class="mw-headline" id="Failed_to_get_IP_address">Failed to get IP address</span></h3>
+<ul>
+<li> If getting an IP address repeatedly fails using the default <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=dhcpcd">dhcpcd</a></span> client, try installing and using <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=dhclient">dhclient</a></span> instead. Do not forget to select <i>dhclient</i> as the primary DHCP client in your <a href="#Automatic_setup">connection manager</a>!
+</li>
+</ul>
+<ul>
+<li> If you can get an IP address for a wired interface and not for a wireless interface, try disabling the wireless card's power saving features:
+</li>
+</ul>
+<pre># iwconfig wlan0 power off
+</pre>
+<ul>
+<li> If you get a timeout error due to a <i>waiting for carrier</i> problem, then you might have to set the channel mode to <code style="display:inline-block; padding: 0.1em 0.3em;">auto</code> for the specific device:
+</li>
+</ul>
+<pre># iwconfig wlan0 channel auto
+</pre>
+<p>Before changing the channel to auto, make sure your wireless interface is down. After it has successfully changed it, you can bring the interface up again and continue from there.
+</p>
+<h3><span class="mw-headline" id="Connection_always_times_out">Connection always times out</span></h3>
+<p>The driver may suffer from a lot of tx excessive retries and invalid misc errors for some unknown reason, resulting in a lot of packet loss and keep disconnecting, sometimes instantly. Following tips might be helpful.
+</p>
+<h4><span class="mw-headline" id="Lowering_the_rate">Lowering the rate</span></h4>
+<p>Try setting lower rate, for example 5.5M:
+</p>
+<pre># iwconfig wlan0 rate 5.5M auto
+</pre>
+<p>Fixed option should ensure that the driver does not change the rate on its own, thus making the connection a bit more stable:
+</p>
+<pre># iwconfig wlan0 rate 5.5M fixed
+</pre>
+<h4><span class="mw-headline" id="Lowering_the_txpower">Lowering the txpower</span></h4>
+<p>You can try lowering the transmit power as well. This may save power as well:
+</p>
+<pre># iwconfig wlan0 txpower 5
+</pre>
+<p>Valid settings are from <code style="display:inline-block; padding: 0.1em 0.3em;">0</code> to <code style="display:inline-block; padding: 0.1em 0.3em;">20</code>, <code style="display:inline-block; padding: 0.1em 0.3em;">auto</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">off</code>.
+</p>
+<h4><span class="mw-headline" id="Setting_rts_and_fragmentation_thresholds">Setting rts and fragmentation thresholds</span></h4>
+<p>Default iwconfig options have rts and fragmentation thresholds off. These options are particularly useful when there are many adjacent APs or in a noisy environment.
+</p><p>The minimum value for fragmentation value is 256 and maximum is 2346. In many windows drivers the maximum is the default value:
+</p>
+<pre># iwconfig wlan0 frag 2346
+</pre>
+<p>For rts minimum is 0, maximum is 2347. Once again windows drivers often use maximum as the default:
+</p>
+<pre># iwconfig wlan0 rts 2347
+</pre>
+<h3><span class="mw-headline" id="Random_disconnections">Random disconnections</span></h3>
+<h4><span class="mw-headline" id="Cause_.231">Cause #1</span></h4>
+<p>If dmesg says <code style="display:inline-block; padding: 0.1em 0.3em;">wlan0: deauthenticating from MAC by local choice (reason=3)</code> and you lose your Wi-Fi connection, it is likely that you have a bit too aggressive power-saving on your Wi-Fi card<a rel="nofollow" class="external autonumber" href="http://us.generation-nt.com/answer/gentoo-user-wireless-deauthenticating-by-local-choice-help-204640041.html">[2]</a>. Try disabling the wireless card's power-saving features:
+</p>
+<pre># iwconfig wlan0 power off
+</pre>
+<p>See <a href="/index.php/Power_saving" title="Power saving">Power saving</a> for tips on how to make it permanent (just specify <code style="display:inline-block; padding: 0.1em 0.3em;">off</code> instead of <code style="display:inline-block; padding: 0.1em 0.3em;">on</code>).
+</p><p>If your card does not support <code style="display:inline-block; padding: 0.1em 0.3em;">iwconfig wlan0 power off</code>, check the <b>BIOS</b> for power management options. Disabling PCI-Express power management in the BIOS of a Lenovo W520 resolved this issue.
+</p>
+<h4><span class="mw-headline" id="Cause_.232">Cause #2</span></h4>
+<p>If you are experiencing frequent disconnections and dmesg shows messages such as 
+</p><p><code style="display:inline-block; padding: 0.1em 0.3em;">ieee80211 phy0: wlan0: No probe response from AP xx:xx:xx:xx:xx:xx after 500ms, disconnecting</code>
+</p><p>try changing the channel bandwidth to <code style="display:inline-block; padding: 0.1em 0.3em;">20MHz</code> through your router's settings page.
+</p>
+<h4><span class="mw-headline" id="Cause_.233">Cause #3</span></h4>
+<p>On some laptop models with hardware rfkill switches (e.g., Thinkpad X200 series), due to wear or bad design, the switch (or its connection to the mainboard) might become loose over time resulting in seemingly random hardblocks/disconnects when you accidentally touch the switch or move the laptop.
+There is no software solution to this, unless your switch is electrical and the BIOS offers the option to disable the switch.
+If your switch is mechanical (most are), there are lots of possible solutions, most of which aim to disable the switch: Soldering the contact point on the mainboard/wifi-card, glueing or blocking the switch, using a screw nut to tighten the switch or removing it altogether.
+</p>
+<h2><span class="mw-headline" id="Troubleshooting_drivers_and_firmware">Troubleshooting drivers and firmware</span></h2>
+<p>This section covers methods and procedures for installing kernel modules and <i>firmware</i> for specific chipsets, that differ from generic method.
+</p><p>See <a href="/index.php/Kernel_modules" title="Kernel modules">Kernel modules</a> for general informations on operations with modules.
+</p>
+<h3><span class="mw-headline" id="Ralink">Ralink</span></h3>
+<h4><span class="mw-headline" id="rt2x00">rt2x00</span></h4>
+<p>Unified driver for Ralink chipsets (it replaces <code style="display:inline-block; padding: 0.1em 0.3em;">rt2500</code>, <code style="display:inline-block; padding: 0.1em 0.3em;">rt61</code>, <code style="display:inline-block; padding: 0.1em 0.3em;">rt73</code>, etc). This driver has been in the Linux kernel since 2.6.24, you only need to load the right module for the chip: <code style="display:inline-block; padding: 0.1em 0.3em;">rt2400pci</code>, <code style="display:inline-block; padding: 0.1em 0.3em;">rt2500pci</code>, <code style="display:inline-block; padding: 0.1em 0.3em;">rt2500usb</code>, <code style="display:inline-block; padding: 0.1em 0.3em;">rt61pci</code> or <code style="display:inline-block; padding: 0.1em 0.3em;">rt73usb</code> which will autoload the respective <code style="display:inline-block; padding: 0.1em 0.3em;">rt2x00</code> modules too.
+</p><p>A list of devices supported by the modules is available at the project's <a rel="nofollow" class="external text" href="http://rt2x00.serialmonkey.com/wiki/index.php/Hardware">homepage</a>.
+</p>
+<dl>
+<dt> Additional notes
+</dt>
+</dl>
+<ul>
+<li> Since kernel 3.0, rt2x00 includes also these drivers: <code style="display:inline-block; padding: 0.1em 0.3em;">rt2800pci</code>, <code style="display:inline-block; padding: 0.1em 0.3em;">rt2800usb</code>.
+</li>
+<li> Since kernel 3.0, the staging drivers <code style="display:inline-block; padding: 0.1em 0.3em;">rt2860sta</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">rt2870sta</code> are replaced by the mainline drivers <code style="display:inline-block; padding: 0.1em 0.3em;">rt2800pci</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">rt2800usb</code><sup><a rel="nofollow" class="external autonumber" href="https://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commitdiff;h=fefecc6989b4b24276797270c0e229c07be02ad3">[3]</a></sup>.
+</li>
+<li> Some devices have a wide range of options that can be configured with <code style="display:inline-block; padding: 0.1em 0.3em;">iwpriv</code>. These are documented in the <a rel="nofollow" class="external text" href="http://web.ralinktech.com/ralink/Home/Support/Linux.html">source tarballs</a> available from Ralink.
+</li>
+</ul>
+<h4><span class="mw-headline" id="rt3090">rt3090</span></h4>
+<p>For devices which are using the rt3090 chipset it should be possible to use <code style="display:inline-block; padding: 0.1em 0.3em;">rt2800pci</code> driver, however, is not working with this chipset very well (e.g. sometimes it's not possible to use higher rate than 2Mb/s).
+</p><p>The best way is to use the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/rt3090-dkms/">rt3090-dkms</a></span> driver from <a href="/index.php/AUR" title="AUR" class="mw-redirect">AUR</a>. Make sure to <a href="/index.php/Kernel_modules#Blacklisting" title="Kernel modules">blacklist</a> the <code style="display:inline-block; padding: 0.1em 0.3em;">rt2800pci</code> module and setup the <code style="display:inline-block; padding: 0.1em 0.3em;">rt3090sta</code> module to <a href="/index.php/Kernel_modules#Loading" title="Kernel modules">load</a> at boot.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>This driver also works with rt3062 chipsets. Also the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/rt3090/">rt3090</a></span> package is not supported by the latest kernel and has been orphaned <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/rt3090-dkms/">rt3090-dkms</a></span> should be used instead. </div>
+<h4><span class="mw-headline" id="rt3290">rt3290</span></h4>
+<p>The rt3290 chipset is recognised by the kernel <code style="display:inline-block; padding: 0.1em 0.3em;">rt2800pci</code> module. However, some users experience problems and reverting to a patched Ralink driver seems to be beneficial in these <a rel="nofollow" class="external text" href="https://bbs.archlinux.org/viewtopic.php?id=161952">cases</a>.
+</p>
+<h4><span class="mw-headline" id="rt3573">rt3573</span></h4>
+<p>New chipset as of 2012. It may require proprietary drivers from Ralink. Different manufacturers use it, see the <a rel="nofollow" class="external text" href="https://bbs.archlinux.org/viewtopic.php?pid=1164228#p1164228">Belkin N750 DB wireless usb adapter</a> forums thread.
+</p>
+<h4><span class="mw-headline" id="rt5572">rt5572</span></h4>
+<p>New chipset as of 2012 with support for 5 Ghz bands. It may require proprietary drivers from Ralink and some effort to compile them. At the time of writing a how-to on compilation is available for a DLINK DWA-160 rev. B2 <a rel="nofollow" class="external text" href="http://bernaerts.dyndns.org/linux/229-ubuntu-precise-dlink-dwa160-revb2">here</a>.
+</p>
+<h3><span class="mw-headline" id="Realtek">Realtek</span></h3>
+<h4><span class="mw-headline" id="rtl8192cu">rtl8192cu</span></h4>
+<p>The driver is now in the kernel, but many users have reported being unable to make a connection although scanning for networks does work.
+</p><p>The <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/dkms-8192cu/">dkms-8192cu</a></span> package in the AUR may be a better choice for some users.
+</p>
+<h4><span class="mw-headline" id="rtl8192e">rtl8192e</span></h4>
+<p>The driver is part of the current kernel package. The module initialization may fail at boot giving this error message:
+</p>
+<pre>rtl819xE:ERR in CPUcheck_firmware_ready()
+rtl819xE:ERR in init_firmware() step 2
+rtl819xE:ERR!!! _rtl8192_up(): initialization is failed!
+r8169 0000:03:00.0: eth0: link down
+</pre>
+<p>A workaround is to simply unload the module:
+</p>
+<pre># modprobe -r r8192e_pci
+</pre>
+<p>and reload the module (after a pause):
+</p>
+<pre># modprobe r8192e_pci
+</pre>
+<h4><span class="mw-headline" id="rtl8188eu">rtl8188eu</span></h4>
+<p>Some dongles, like the TP-Link TL-WN725N v2 (not sure, but it seems that uses the rtl8179 chipset), use chipsets compatible with this driver. In order to use it you have to install the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/dkms-8188eu/">dkms-8188eu</a></span> package in the AUR.
+</p>
+<h4><span class="mw-headline" id="rtl8723be">rtl8723be</span></h4>
+<div style="text-align: center; margin-bottom: 1em; overflow:hidden;">
+<table class="notice noprint toc" id="poorwriting" style="background: &#123;&#123;&#123;backgroundcolor}}}; border-color: &#123;&#123;&#123;bordercolor}}}; width: 100%">
+<tr>
+<td style="background-color: &#123;&#123;&#123;signalcolor}}}; width: 100px"> <a href="/index.php/File:Tango-mail-mark-junk.png" class="image"><img alt="Tango-mail-mark-junk.png" src="/images/e/e7/Tango-mail-mark-junk.png" width="48" height="48" /></a>
+</td>
+<td>  <b>This article or section is poorly written.</b> <div style="font-size: 90%"><b>Reason:</b> This belongs to the <a href="/index.php/AUR" title="AUR" class="mw-redirect">AUR</a>, then there can be only simple reference to install the package. (<a rel="nofollow" class="external text" href="https://wiki.archlinux.org/index.php/Talk:Wireless_network_configuration">Discuss</a>)</div>
+</td>
+<td style="background-color: &#123;&#123;&#123;signalcolor}}}; width: 100px"> <a href="/index.php/File:Tango-mail-mark-junk.png" class="image"><img alt="Tango-mail-mark-junk.png" src="/images/e/e7/Tango-mail-mark-junk.png" width="48" height="48" /></a>
+</td></tr></table>
+</div>
+<p>The driver for this card is designated to be entered into the Linux kernel as a part of version 3.15.  Until version 3.15 is released, the kernel module for the card can be downloaded from <a rel="nofollow" class="external text" href="https://github.com/lwfinger/rtl8723be">lwfinger's github</a>.  If git is not installed, please install it.
+</p>
+<pre>$ cd ~/temp
+$ git clone <a rel="nofollow" class="external free" href="https://github.com/lwfinger/rtl8723be.git">https://github.com/lwfinger/rtl8723be.git</a>
+$ cd rtl8723be
+$ make
+# make install
+# modprobe rtl8723be
+</pre>
+<p>When running <code style="display:inline-block; padding: 0.1em 0.3em;">make</code>, some users may encounter a compile error based on the kernel version.  If, and only if you encounter a compile error:
+</p>
+<pre>$ nano rtl8723be/trx.c
+</pre>
+<p>On line 621, change the line 
+</p>
+<pre>if ((_ieee80211_is_robust_mgmt_frame(hdr)) &amp;&amp;
+</pre>
+<p>to
+</p>
+<pre>if ((ieee80211_is_robust_mgmt_frame(hdr)) &amp;&amp;
+</pre>
+<p>Save, then cd back to the main rtl8723be directory and continue from <code style="display:inline-block; padding: 0.1em 0.3em;">make install</code>
+Additionally, some users may encounter errors with powersave on this card.  This is shown with occasional disconnects that are not recognized by high level network managers (netctl, NetworkManager).  This error can be confirmed by running <code style="display:inline-block; padding: 0.1em 0.3em;">$ dmesg -w</code> or <code style="display:inline-block; padding: 0.1em 0.3em;">$ journalctl -f</code> and looking for output related to powersave and the rtl8723be module.  If you are having this issue, you need to add a kernel option:
+</p>
+<pre># nano /etc/modprobe.d/rtl8723be.conf
+</pre>
+<p>Add this line to the new file:
+</p>
+<pre>#Prevents the WiFi card from automatically sleeping and halting connection
+options rtl8723be fwlps=0
+</pre>
+<p>That should rectify any issues with firmware powersaving.
+</p>
+<h3><span class="mw-headline" id="Atheros">Atheros</span></h3>
+<p>The <a rel="nofollow" class="external text" href="http://madwifi-project.org/">MadWifi team</a> currently maintains three different drivers for devices with Atheros chipset:
+</p>
+<ul>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">madwifi</code> is an old, obsolete driver. Not present in Arch kernel since 2.6.39.1<sup><a rel="nofollow" class="external autonumber" href="https://mailman.archlinux.org/pipermail/arch-dev-public/2011-June/020669.html">[4]</a></sup>.
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">ath5k</code> is newer driver, which replaces the <code style="display:inline-block; padding: 0.1em 0.3em;">madwifi</code> driver. Currently a better choice for some chipsets, but not all chipsets are supported (see below)
+</li>
+<li> <code style="display:inline-block; padding: 0.1em 0.3em;">ath9k</code> is the newest of these three drivers, it is intended for newer Atheros chipsets. All of the chips with 802.11n capabilities are supported.
+</li>
+</ul>
+<p>There are some other drivers for some Atheros devices. See <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Drivers/Atheros#PCI_.2F_PCI-E_.2F_AHB_Drivers">Linux Wireless documentation</a> for details.
+</p>
+<h4><span class="mw-headline" id="ath5k">ath5k</span></h4>
+<p>External resources:
+</p>
+<ul>
+<li> <a rel="nofollow" class="external free" href="http://wireless.kernel.org/en/users/Drivers/ath5k">http://wireless.kernel.org/en/users/Drivers/ath5k</a>
+</li>
+<li> <a rel="nofollow" class="external free" href="http://wiki.debian.org/ath5k">http://wiki.debian.org/ath5k</a>
+</li>
+</ul>
+<p>If you find web pages randomly loading very slow, or if the device is unable to lease an IP address, try to switch from hardware to software encryption by loading the <code style="display:inline-block; padding: 0.1em 0.3em;">ath5k</code> module with <code style="display:inline-block; padding: 0.1em 0.3em;">nohwcrypt=1</code> option. See <a href="/index.php/Kernel_Modules#Setting_module_options" title="Kernel Modules" class="mw-redirect">Kernel Modules#Setting module options</a> for details.
+</p><p>Some laptops may have problems with their wireless LED indicator flickering red and blue. To solve this problem, do:
+</p>
+<pre># echo none &gt; /sys/class/leds/ath5k-phy0::tx/trigger
+# echo none &gt; /sys/class/leds/ath5k-phy0::rx/trigger
+</pre>
+<p>For alternatives, see <a rel="nofollow" class="external text" href="https://bugzilla.redhat.com/show_bug.cgi?id=618232">this bug report</a>.
+</p>
+<h4><span class="mw-headline" id="ath9k">ath9k</span></h4>
+<p>External resources:
+</p>
+<ul>
+<li> <a rel="nofollow" class="external free" href="http://wireless.kernel.org/en/users/Drivers/ath9k">http://wireless.kernel.org/en/users/Drivers/ath9k</a>
+</li>
+<li> <a rel="nofollow" class="external free" href="http://wiki.debian.org/ath9k">http://wiki.debian.org/ath9k</a>
+</li>
+</ul>
+<p>In the unlikely event that you have stability issues that trouble you, you could try using the <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Download">compat-wireless</a> package.
+An <a rel="nofollow" class="external text" href="https://lists.ath9k.org/mailman/listinfo/ath9k-devel">ath9k mailing list</a> exists for support and development related discussions.
+</p>
+<h5><span class="mw-headline" id="ASUS">ASUS</span></h5>
+<p>With some ASUS laptops (tested with ASUS U32U series), it could help to add <code style="display:inline-block; padding: 0.1em 0.3em;">options asus_nb_wmi wapf=1</code> to <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/modprobe.d/asus_nb_wmi.conf</code> to fix rfkill-related issues.
+</p>
+<h3><span class="mw-headline" id="Intel">Intel</span></h3>
+<h4><span class="mw-headline" id="ipw2100_and_ipw2200">ipw2100 and ipw2200</span></h4>
+<p>These modules are fully supported in the kernel, but they require additional firmware. Depending on which of the chipsets you have, <a href="/index.php/Pacman" title="Pacman">install</a> either <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=ipw2100-fw">ipw2100-fw</a></span> or <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=ipw2200-fw">ipw2200-fw</a></span>. Then <a href="/index.php/Kernel_modules#Manual_module_handling" title="Kernel modules">reload</a> the appropriate module.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>You may use the following <a href="/index.php/Kernel_modules#Setting_module_options" title="Kernel modules">module options</a>:
+<ul>
+<li> use the <code style="display:inline-block; padding: 0.1em 0.3em;">rtap_iface=1</code> option to enable the radiotap interface
+</li>
+<li> use the <code style="display:inline-block; padding: 0.1em 0.3em;">led=1</code> option to enable a front LED indicating when the wireless is connected or not
+</li>
+</ul>
+</div>
+<h4><span class="mw-headline" id="iwlegacy">iwlegacy</span></h4>
+<p><a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Drivers/iwlegacy">iwlegacy</a> is the wireless driver for Intel's 3945 and 4965 wireless chips. The firmware is included in the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=linux-firmware">linux-firmware</a></span> package.
+</p><p><a href="/index.php/Udev" title="Udev">udev</a> should load the driver automatically, otherwise load <code style="display:inline-block; padding: 0.1em 0.3em;">iwl3945</code> or <code style="display:inline-block; padding: 0.1em 0.3em;">iwl4965</code> manually. See <a href="/index.php/Kernel_modules#Loading" title="Kernel modules">Kernel modules#Loading</a> for details.
+</p>
+<h4><span class="mw-headline" id="iwlwifi">iwlwifi</span></h4>
+<p><a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Drivers/iwlwifi">iwlwifi</a> is the wireless driver for Intel's current wireless chips, such as 5100AGN, 5300AGN, and 5350AGN. See the <a rel="nofollow" class="external text" href="http://wireless.kernel.org/en/users/Drivers/iwlwifi#Supported_Devices">full list of supported devices</a>. The firmware is included in the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=linux-firmware">linux-firmware</a></span> package.
+</p><p>If you have problems connecting to networks in general or your link quality is very poor, try to disable 802.11n and enable software encryption:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">/etc/modprobe.d/iwlwifi.conf</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">options iwlwifi 11n_disable=1
+options iwlwifi swcrypto=1</pre>
+<p>In case this does not work for you, you may try disabling power saving for your wireless adapter. For a permanent solution, add a new udev rule:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">/etc/udev/rules.d/80-iwlwifi.rules</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">ACTION==&quot;add&quot;, SUBSYSTEM==&quot;net&quot;, ATTR{address}==&quot;&lt;your_mac_address&gt;&quot;, RUN+=&quot;/usr/bin/iw dev %k set power_save off&quot;</pre>
+<h4><span class="mw-headline" id="Disabling_LED_blink">Disabling LED blink</span></h4>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>This works with the <code style="display:inline-block; padding: 0.1em 0.3em;">iwlegacy</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">iwlwifi</code> drivers.</div>
+<p>The default settings on the module are to have the LED blink on activity. Some people find this extremely annoying. To have the LED on solid when Wi-Fi is active, you can use the <a href="/index.php/Systemd#Temporary_files" title="Systemd">systemd-tmpfiles</a>:
+</p>
+<pre style="margin-bottom: 0; border-bottom:none; padding-bottom:0.8em;">/etc/tmpfiles.d/phy0-led.conf</pre>
+<pre style="margin-top: 0; border-top-style:dashed; padding-top: 0.8em;">
+w /sys/class/leds/phy0-led/trigger - - - - phy0radio
+</pre>
+<p>Run <code style="display:inline-block; padding: 0.1em 0.3em;">systemd-tmpfiles --create phy0-led.conf</code> for the change to take effect, or reboot.
+</p><p>To see all the possible trigger values for this LED:
+</p>
+<pre># cat /sys/class/leds/phy0-led/trigger
+</pre>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>If you do not have <code style="display:inline-block; padding: 0.1em 0.3em;">/sys/class/leds/phy0-led</code>, you may try to use the <code style="display:inline-block; padding: 0.1em 0.3em;">led_mode="1"</code> <a href="/index.php/Kernel_modules#Setting_module_options" title="Kernel modules">module option</a>. It should be valid for both <code style="display:inline-block; padding: 0.1em 0.3em;">iwlwifi</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">iwlegacy</code> drivers.</div>
+<h3><span class="mw-headline" id="Broadcom">Broadcom</span></h3>
+<p>See <a href="/index.php/Broadcom_wireless" title="Broadcom wireless">Broadcom wireless</a>.
+</p>
+<h3><span class="mw-headline" id="Other_drivers.2Fdevices">Other drivers/devices</span></h3>
+<h4><span class="mw-headline" id="Tenda_w322u">Tenda w322u</span></h4>
+<p>Treat this Tenda card as an <code style="display:inline-block; padding: 0.1em 0.3em;">rt2870sta</code> device. See <a href="#rt2x00">#rt2x00</a>.
+</p>
+<h4><span class="mw-headline" id="orinoco">orinoco</span></h4>
+<p>This should be a part of the kernel package and be installed already.
+</p><p>Some Orinoco chipsets are Hermes II. You can use the <code style="display:inline-block; padding: 0.1em 0.3em;">wlags49_h2_cs</code> driver instead of <code style="display:inline-block; padding: 0.1em 0.3em;">orinoco_cs</code> and gain WPA support. To use the driver, <a href="/index.php/Kernel_modules#Blacklisting" title="Kernel modules">blacklist</a> <code style="display:inline-block; padding: 0.1em 0.3em;">orinoco_cs</code> first.
+</p>
+<h4><span class="mw-headline" id="prism54">prism54</span></h4>
+<p>The driver <code style="display:inline-block; padding: 0.1em 0.3em;">p54</code> is included in kernel, but you have to download the appropriate firmware for your card from <a rel="nofollow" class="external text" href="http://linuxwireless.org/en/users/Drivers/p54#firmware">this site</a> and install it into the <code style="display:inline-block; padding: 0.1em 0.3em;">/usr/lib/firmware</code> directory.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>There's also older, deprecated driver <code style="display:inline-block; padding: 0.1em 0.3em;">prism54</code>, which might conflict with the newer driver (<code style="display:inline-block; padding: 0.1em 0.3em;">p54pci</code> or <code style="display:inline-block; padding: 0.1em 0.3em;">p54usb</code>). Make sure to <a href="/index.php/Kernel_modules#Blacklisting" title="Kernel modules">blacklist</a> <code style="display:inline-block; padding: 0.1em 0.3em;">prism54</code>.</div>
+<h4><span class="mw-headline" id="ACX100.2F111">ACX100/111</span></h4>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #FFDDDD; border: thin solid #DDBBBB; overflow: hidden;"><strong> Warning: </strong>The drivers for these devices <a rel="nofollow" class="external text" href="https://mailman.archlinux.org/pipermail/arch-dev-public/2011-June/020669.html">are broken</a> and do not work with newer kernel versions.</div>
+<p>Packages: <code style="display:inline-block; padding: 0.1em 0.3em;">tiacx</code> <code style="display:inline-block; padding: 0.1em 0.3em;">tiacx-firmware</code> (deleted from official repositories and AUR)
+</p><p>See <a rel="nofollow" class="external text" href="http://sourceforge.net/apps/mediawiki/acx100/index.php?title=Main_Page">official wiki</a> for details.
+</p>
+<h4><span class="mw-headline" id="zd1211rw">zd1211rw</span></h4>
+<p><a rel="nofollow" class="external text" href="http://zd1211.wiki.sourceforge.net/"><code style="display:inline-block; padding: 0.1em 0.3em;">zd1211rw</code></a> is a driver for the ZyDAS ZD1211 802.11b/g USB WLAN chipset, and it is included in recent versions of the Linux kernel. See <a rel="nofollow" class="external autonumber" href="http://www.linuxwireless.org/en/users/Drivers/zd1211rw/devices">[5]</a> for a list of supported devices. You only need to <a href="/index.php/Pacman" title="Pacman">install</a> the firmware for the device, provided by the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=zd1211-firmware">zd1211-firmware</a></span> package.
+</p>
+<h4><span class="mw-headline" id="hostap_cs">hostap_cs</span></h4>
+<p><a rel="nofollow" class="external text" href="http://hostap.epitest.fi/">Host AP</a> is a Linux driver for wireless LAN cards based on Intersil's Prism2/2.5/3 chipset. The driver is included in Linux kernel.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD; overflow: hidden;"><strong> Note: </strong>Make sure to <a href="/index.php/Kernel_modules#Blacklisting" title="Kernel modules">blacklist</a> the <code style="display:inline-block; padding: 0.1em 0.3em;">orinico_cs</code> driver, it may cause problems.</div>
+<h3><span class="mw-headline" id="ndiswrapper">ndiswrapper</span></h3>
+<p>Ndiswrapper is a wrapper script that allows you to use some Windows drivers in Linux. See the compatibility list <a rel="nofollow" class="external text" href="http://ndiswrapper.sourceforge.net/mediawiki/index.php/List">here</a>. You will need the <code style="display:inline-block; padding: 0.1em 0.3em;">.inf</code> and <code style="display:inline-block; padding: 0.1em 0.3em;">.sys</code> files from your Windows driver. Be sure to use drivers appropriate to your architecture (x86 vs. x86_64).
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDFFDD; border: thin solid #BBDDBB; overflow: hidden;"><strong> Tip: </strong>If you need to extract these files from an <code style="display:inline-block; padding: 0.1em 0.3em;">*.exe</code> file, you can use <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/?name=cabextract">cabextract</a></span>.</div>
+<p>Follow these steps to configure ndiswrapper.
+</p><p>1. Install <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/ndiswrapper/">ndiswrapper</a></span> package from the <a href="/index.php/AUR" title="AUR" class="mw-redirect">AUR</a>
+</p><p>2. Install the driver to <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/ndiswrapper/*</code>
+</p>
+<pre># ndiswrapper -i filename.inf
+</pre>
+<p>3. List all installed drivers for ndiswrapper
+</p>
+<pre>$ ndiswrapper -l
+</pre>
+<p>4. Let ndiswrapper write its configuration in <code style="display:inline-block; padding: 0.1em 0.3em;">/etc/modprobe.d/ndiswrapper.conf</code>:
+</p>
+<pre># ndiswrapper -m
+# depmod -a
+</pre>
+<p>Now the ndiswrapper install is almost finished; follow the instructions on <a href="/index.php/Kernel_modules#Loading" title="Kernel modules">Kernel modules#Loading</a> to automatically load the module at boot.
+</p><p>The important part is making sure that ndiswrapper exists on this line, so just add it alongside the other modules. It would be best to test that ndiswrapper will load now, so:
+</p>
+<pre># modprobe ndiswrapper
+# iwconfig
+</pre>
+<p>and <i>wlan0</i> should now exist. Check this page if you are having problems:
+<a rel="nofollow" class="external text" href="http://ndiswrapper.sourceforge.net/joomla/index.php?/component/option,com_openwiki/Itemid,33/id,installation/">Ndiswrapper installation wiki</a>.
+</p>
+<h3><span class="mw-headline" id="compat-drivers-patched">compat-drivers-patched</span></h3>
+<div style="text-align: center; margin-bottom: 1em; overflow:hidden;">
+<table class="notice noprint toc" id="out_of_date" style="background: &#123;&#123;&#123;backgroundcolor}}}; border-color: &#123;&#123;&#123;bordercolor}}}; width: 100%">
+<tr>
+<td style="background-color: &#123;&#123;&#123;signalcolor}}}; width: 100px"> <a href="/index.php/File:Tango-dialog-warning.png" class="image"><img alt="Tango-dialog-warning.png" src="/images/d/d8/Tango-dialog-warning.png" width="48" height="48" /></a>
+</td>
+<td>  <b>This article or section is out of date.</b> <div style="font-size: 90%"><b>Reason:</b> <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/compat-drivers-patched/">compat-drivers-patched</a></span> has reached end-of-life, <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/backports-patched/">backports-patched</a></span> should be used instead (<a rel="nofollow" class="external text" href="https://wiki.archlinux.org/index.php/Talk:Wireless_network_configuration">Discuss</a>)</div>
+</td>
+<td style="background-color: &#123;&#123;&#123;signalcolor}}}; width: 100px"> <a href="/index.php/File:Tango-dialog-warning.png" class="image"><img alt="Tango-dialog-warning.png" src="/images/d/d8/Tango-dialog-warning.png" width="48" height="48" /></a>
+</td></tr></table>
+</div>
+<p>Patched compat wireless drivers correct the "fixed-channel -1" issue, whilst providing better injection. Please install the <span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/compat-drivers-patched/">compat-drivers-patched</a></span> package from the <a href="/index.php/Arch_User_Repository" title="Arch User Repository">AUR</a>.
+</p><p><span style="font-family: monospace"><a rel="nofollow" class="external text" href="https://aur.archlinux.org/packages/compat-drivers-patched/">compat-drivers-patched</a></span> does not conflict with any other package and the modules built reside in <code style="display:inline-block; padding: 0.1em 0.3em;">/usr/lib/modules/<i>your_kernel_version</i>/updates</code>.
+</p><p>These patched drivers come from the <a rel="nofollow" class="external text" href="http://wireless.kernel.org/">Linux Wireless project</a> and support many of the above mentioned chips such as:
+</p>
+<pre>ath5k ath9k_htc carl9170 b43 zd1211rw rt2x00 wl1251 wl12xx ath6kl brcm80211
+</pre>
+<p>Supported groups:
+</p>
+<pre>atheros ath iwlagn rtl818x rtlwifi wl12xx atlxx bt
+</pre>
+<p>It is also possible to build a specific module/driver or a group of drivers by editing the <a href="/index.php/PKGBUILD" title="PKGBUILD">PKGBUILD</a>, particularly uncommenting the <b>line #46</b>. Here is an example of building the atheros group:
+</p>
+<pre>scripts/driver-select atheros
+</pre>
+<p>Please read the package's <a href="/index.php/PKGBUILD" title="PKGBUILD">PKGBUILD</a> for any other possible modifications prior to compilation and installation.
+</p>
+<h2><span class="mw-headline" id="See_also">See also</span></h2>
+<ul>
+<li> <a rel="nofollow" class="external text" href="http://wireless.kernel.org/">The Linux Wireless project</a>
+</li>
+<li> <a rel="nofollow" class="external text" href="http://aircrack-ng.org/doku.php?id=install_drivers">Aircrack-ng guide on installing drivers</a>
+</li>
+</ul>
+
+<!-- 
+NewPP limit report
+CPU time usage: 0.393 seconds
+Real time usage: 0.404 seconds
+Preprocessor visited node count: 2689/1000000
+Preprocessor generated node count: 5639/1000000
+Post‐expand include size: 59809/2097152 bytes
+Template argument size: 30231/2097152 bytes
+Highest expansion depth: 8/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key archwiki:pcache:idhash:1010-0!*!0!!en!2!* and timestamp 20140501122525
+ -->
+</div><div class="printfooter">
+Retrieved from "<a href="https://wiki.archlinux.org/index.php?title=Wireless_network_configuration&amp;oldid=312896">https://wiki.archlinux.org/index.php?title=Wireless_network_configuration&amp;oldid=312896</a>"</div>
+		<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/index.php/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="/index.php/Category:Wireless_Networking" title="Category:Wireless Networking">Wireless Networking</a></li></ul></div></div>		<!-- end content -->
+				<div class="visualClear"></div>
+	</div>
+</div></div>
+<div id="column-one">
+	<h2>Navigation menu</h2>
+	<div id="p-cactions" class="portlet" role="navigation">
+		<h3>Views</h3>
+		<div class="pBody">
+			<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/index.php/Wireless_network_configuration" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk"><a href="/index.php/Talk:Wireless_network_configuration" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-viewsource"><a href="/index.php?title=Wireless_network_configuration&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li>
+				<li id="ca-history"><a href="/index.php?title=Wireless_network_configuration&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal" role="navigation">
+		<h3>Personal tools</h3>
+		<div class="pBody">
+			<ul>
+				<li id="pt-createaccount"><a href="/index.php?title=Special:UserLogin&amp;returnto=Wireless+network+configuration&amp;type=signup">Create account</a></li>
+				<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=Wireless+network+configuration" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo" role="banner">
+<a href="/index.php/Main_page" style="background-image: url(/skins/archlinux/archlogo.png);" title="Visit the main page"></a>
+	</div>
+	<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage-description"><a href="/index.php/Main_page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+				<li id="n-categories"><a href="/index.php/Table_of_contents">Categories</a></li>
+				<li id="n-portal"><a href="/index.php/Getting_involved" title="Various ways Archers can contribute to the community">Getting involved</a></li>
+				<li id="n-currentevents"><a href="/index.php/ArchWiki:News" title="The latest lowdown on the wiki">Wiki news</a></li>
+				<li id="n-randompage"><a href="/index.php/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet" role="search">
+		<h3><label for="searchInput">Search</label></h3>
+		<div id="searchBody" class="pBody">
+			<form action="/index.php" id="searchform">
+				<input type='hidden' name="title" value="Special:Search"/>
+				<input type="search" name="search" placeholder="Search" title="Search ArchWiki [f]" accesskey="f" id="searchInput" />
+				<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+				<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+			</form>
+		</div>
+	</div>
+	<div class="generated-sidebar portlet" id="p-interaction" role="navigation">
+		<h3>interaction</h3>
+		<div class='pBody'>
+			<ul>
+				<li id="n-help"><a href="/index.php/Category:Help" title="Wiki navigation, reading, and editing help">Help</a></li>
+				<li id="n-Contributing"><a href="/index.php/ArchWiki:Contributing">Contributing</a></li>
+				<li id="n-recentchanges"><a href="/index.php/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+				<li id="n-Recent-talks"><a href="https://wiki.archlinux.org/index.php/Special:RecentChanges?namespace=0&amp;invert=1" rel="nofollow">Recent talks</a></li>
+				<li id="n-newpages"><a href="/index.php/Special:NewPages">New pages</a></li>
+				<li id="n-Reports"><a href="/index.php/ArchWiki:Reports">Reports</a></li>
+				<li id="n-Requests"><a href="/index.php/ArchWiki:Requests">Requests</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb" role="navigation">
+		<h3>Tools</h3>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/index.php/Special:WhatLinksHere/Wireless_network_configuration" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="/index.php/Special:RecentChangesLinked/Wireless_network_configuration" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+				<li id="t-specialpages"><a href="/index.php/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+				<li id="t-print"><a href="/index.php?title=Wireless_network_configuration&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+				<li id="t-permalink"><a href="/index.php?title=Wireless_network_configuration&amp;oldid=312896" title="Permanent link to this revision of the page">Permanent link</a></li>
+				<li id="t-info"><a href="/index.php?title=Wireless_network_configuration&amp;action=info">Page information</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-lang" class="portlet" role="navigation">
+		<h3>In other languages</h3>
+		<div class="pBody">
+			<ul>
+				<li class="interwiki-cs"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(%C4%8Cesky)" title="Wireless Setup – česky" lang="cs" hreflang="cs">Česky</a></li>
+				<li class="interwiki-de"><a href="https://wiki.archlinux.de/title/(W)LAN_und_Arch_Linux" title="(W)LAN und Arch Linux – Deutsch" lang="de" hreflang="de">Deutsch</a></li>
+				<li class="interwiki-el"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(%CE%95%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC)" title="Wireless Setup – Ελληνικά" lang="el" hreflang="el">Ελληνικά</a></li>
+				<li class="interwiki-es"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(Espa%C3%B1ol)" title="Wireless Setup – español" lang="es" hreflang="es">Español</a></li>
+				<li class="interwiki-fr"><a href="http://wiki.archlinux.fr/Wifi" title="Wifi – français" lang="fr" hreflang="fr">Français</a></li>
+				<li class="interwiki-it"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(Italiano)" title="Wireless Setup – italiano" lang="it" hreflang="it">Italiano</a></li>
+				<li class="interwiki-ja"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(%E6%97%A5%E6%9C%AC%E8%AA%9E)" title="Wireless Setup – 日本語" lang="ja" hreflang="ja">日本語</a></li>
+				<li class="interwiki-nl"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(Nederlands)" title="Wireless Setup – Nederlands" lang="nl" hreflang="nl">Nederlands</a></li>
+				<li class="interwiki-ro"><a href="http://wiki.archlinux.ro/index.php/Wireless" title="Wireless – română" lang="ro" hreflang="ro">Română</a></li>
+				<li class="interwiki-ru"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)" title="Wireless Setup – русский" lang="ru" hreflang="ru">Русский</a></li>
+				<li class="interwiki-th"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(%E0%B9%84%E0%B8%97%E0%B8%A2)" title="Wireless Setup – ไทย" lang="th" hreflang="th">ไทย</a></li>
+				<li class="interwiki-tr"><a href="http://archtr.org/wiki/index.php?title=Kablosuz_ba%C4%9Flant%C4%B1" title="Kablosuz bağlantı – Türkçe" lang="tr" hreflang="tr">Türkçe</a></li>
+				<li class="interwiki-zh-cn"><a href="https://wiki.archlinux.org/index.php/Wireless_Setup_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" title="Wireless Setup – 中文（中国大陆）‎" lang="zh-CN" hreflang="zh-CN">中文（中国大陆）‎</a></li>
+			</ul>
+		</div>
+	</div>
+</div><!-- end of the left (by default at least) column -->
+<div class="visualClear"></div>
+<div id="footer" role="contentinfo">
+	<ul id="f-list">
+		<li id="lastmod"> This page was last modified on 1 May 2014, at 12:25.</li>
+		<li id="copyright">Content is available under <a class="external" rel="nofollow" href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+		<li id="privacy"><a href="/index.php/ArchWiki:Privacy_policy" title="ArchWiki:Privacy policy">Privacy policy</a></li>
+		<li id="about"><a href="/index.php/ArchWiki:About" title="ArchWiki:About">About ArchWiki</a></li>
+		<li id="disclaimer"><a href="/index.php/ArchWiki:General_disclaimer" title="ArchWiki:General disclaimer">Disclaimers</a></li>
+	</ul>
+</div>
+</div>
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+mw.loader.state({"site":"ready"});
+}</script>
+<!-- Served in 0.051 secs. --></body><!-- Cached/compressed 20140501123542 -->
+</html>

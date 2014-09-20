@@ -1,0 +1,107 @@
+#!/bin/zsh
+
+#Give tools to save trees in the reflog, like git stash does
+#Most of the code is taken directly from git-stash.sh
+#with Copyright (c) 2007, Nanako Shiraishi
+
+. ~/mine/script/git/git-topic-helper
+. $(git --exec-path)/git-sh-setup
+cd_to_toplevel
+
+prog=$(basename $0)
+die() {
+	echo "$@"
+	exit 1
+}
+
+get_branch() {
+	branch=$1
+	[[ -n $baseref ]] && branch="$baseref/$branch"
+}
+
+clear_stash () {
+	get_branch $1
+	if current=$(git rev-parse --verify $branch 2>/dev/null)
+	then
+		echo "Deleting $branch"
+		git update-ref -d $branch $current
+	else
+		die "Nothing stored in $branch"
+	fi
+}
+
+store_stash () {
+	get_branch $1
+	shift
+  gth_branch "$@"
+	w_commit=$gth_branch
+	stash_msg=$gth_rest
+	[[ -z $stash_msg ]] && stash_msg="Created via \"$prog $@\"."
+
+	# Make sure the reflog for stash is kept.
+	[[ -n $baseref ]] && mkdir -p "$GIT_DIR/logs/$baseref"
+	: >>"$GIT_DIR/logs/$branch"
+	echo "Store $w_commit in $branch"
+	git update-ref -m "$stash_msg" $branch $w_commit
+	ret=$?
+	[[ $ret != 0 ]] && die "Cannot update $branch with $w_commit"
+	return $ret
+}
+
+have_stash () {
+	get_branch $1
+	git rev-parse --verify $branch >/dev/null 2>&1
+}
+
+list_stash () {
+	have_stash "$@" || die "No store in $1"
+	get_branch $1
+	shift
+	git log --format="%gd: %gs" -g "$@" $branch --
+}
+
+show_stash () {
+	get_branch $1; shift
+	git show "$@" $branch
+}
+
+drop_stash () {
+	basebranch=$1
+	get_branch $basebranch
+	if [[ -n $2 ]]; then
+		REV=$2
+	  [[ -n $baseref ]] && REV="$baseref/$REV"
+	else
+		REV="$branch@{0}"
+	fi
+
+	git reflog delete --updateref --rewrite $REV &&
+		echo "Dropped $REV in $branch" ||
+		die "$REV: Could not drop reflog entry"
+
+	# clear_stash if we just dropped the last stash entry
+	git rev-parse --verify "$branch@{0}" >/dev/null 2>&1 || clear_stash $basebranch
+}
+
+baseref="refs/reflog-store"
+while true;
+do
+  case "$1" in
+    -- ) shift; break ;;
+    --baseref) shift; baseref=$1; shift ;;
+    *) break;;
+  esac
+done
+
+# Main command set
+case "$1" in
+#argument: branch
+clear) shift; clear_stash "$@" ;;
+list) shift; list_stash "$@" ;;
+#arguments: branch, 'commit', ['stash message']
+store) shift; store_stash "$@" ;;
+#arguments: branch, 'commit'
+drop) shift; drop_stash "$@" ;;
+show) shift; show_stash "$@" ;;
+*) list_stash "$@" ;;
+esac

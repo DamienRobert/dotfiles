@@ -1,0 +1,3 @@
+fullhistory() {
+  fc -l 0 -1
+}

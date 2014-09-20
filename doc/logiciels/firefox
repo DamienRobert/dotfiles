@@ -1,0 +1,6 @@
+Pdf
+===
+
+Modifier le programme qui ouvre les pdf: Preferences -> Applications -> pdf
+Si les pdf sont dl automatiquement, régler ça en enlevant mimetypes.rdf du
+profil

@@ -1,9 +1,10 @@
-#!/bin/sh                                                                       
+#!/bin/sh
 #print all google request in sessionstore.js
-                                                                                
-PLACES=/tmp/places.sqlite                                                       
-cp -f $HOME/.mozilla/firefox/*default/places.sqlite $PLACES
-                                                                                
-sqlite3 $PLACES "SELECT DISTINCT url FROM moz_places WHERE url LIKE 'http://%.google%/search%' ORDER BY url ;" | \
-perl -MURI::Escape -nle "next unless /^http\:\/\/[a-z.]*\.google\.[a-z.]*\/search.*[?&]q=([^&]+)(&.*)?$/; \$_ = uri_unescape(\$1); s/\+/ /g; print;" | sort -u          
 
+PLACES=/tmp/places.sqlite
+FILE="$@"
+[ -z $FILE ] && FILE=$(ls -t $HOME/.mozilla/firefox/*default/places.sqlite | sed q)
+cp -f  $FILE $PLACES
+
+sqlite3 $PLACES "SELECT DISTINCT url FROM moz_places WHERE url LIKE '%://%.google%/search%' ORDER BY url ;" | \
+perl -MURI::Escape -nle "next unless /^https?\:\/\/[a-z.]*\.google\.[a-z.]*\/search.*[?&]q=([^&]+)(&.*)?$/; \$_ = uri_unescape(\$1); s/\+/ /g; print;" | sort -u

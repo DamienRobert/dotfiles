@@ -1,0 +1,91 @@
+A abélien, G groupe.
+
+Une extension E est une suite exacte:
+0->A->E->G->1
+
+Deux extensions E_1 et E_2 sont congruentes s'il existe un iso de E_1 dans
+E_2 qui induit l'idendité sur A et G; elles sont pseudo-congruentes si il
+existe un iso de E_1 dans E_2 qui induisent des isos sur A et G (ie que les
+deux suites exactes soient isomorphes).
+
+On a une strate des extensions donnée par G->Aut(A).
+[Rem: si A n'est pas abélien, une extension induit un morphisme de G dans
+Out(A)=Aut(A)/Inner(A)]
+L'action de G dans A étant fixée, les extensions à congruence près forment
+un groupe isomorphe à H^2(G,A).
+
+Pour savoir si deux cocycles correspondent à deux extensions
+pseudo-congruentes, cf
+http://mathoverflow.net/questions/161950/group-extensions-isomorphic-as-groups?rq=1
+http://groupprops.subwiki.org/wiki/Group_extension_problem#Finding_all_pseudo-congruence_classes_for_a_given_action
+1) Aut Ax Aut G agit déjà sur Hom(G,Aut A):
+s'il existe un automorphisme alpha:A->A et beta:G->G on va définir
+(beta g).(alpha m)=alpha (g.m)
+ie il va falloir regarder les extensions pour les actions dans cette orbite
+2) Si on se restreint au stabilisateur, le sous-groupe
+Aut_0 A x Aut_0 G va agir sur le H^2(G,A), l'orbite denant les extensions
+(pour l'action fixée) modulo pseudo-congruence.
+[explicitement si f est l'élément de Hom(G,Aut A) que l'on s'est fixé,
+Aut_0 A c'est le centralisateur de f, et Aut_0 G ce sont les automorphismes
+\beta tels que f(\beta(g))=\beta(g))].
+-> En particulier pour l'action triviale, le H^2 est partitionné sous Aut AxAut G.
+
+Contre-Exemples
+===============
+
+1) 
+Il existe des groupes abéliens qui forment deux extensions non pseudo-congruentes
+http://mathoverflow.net/questions/35649/extensions-isomorphic-as-groups-but-not-congruent-or-pseudo-congruent/35662#35662
+http://groupprops.subwiki.org/wiki/Series-equivalent_not_implies_automorphic_in_finite_abelian_group
+
+Autrement dit il peut exister deux sous groupes isomorphes A_1 et A_2 d'un
+groupe abélien E, tel qu'il n'existe aucun automorphisme de E envoyant A_1
+sur A_2
+
+2)
+Il existe des extensions non triviales qui sont isomorphes en tant que
+groupe à une extension triviale:
+http://math.stackexchange.com/questions/131881/group-extensions/131895#131895
+cf aussi: le thread ens.forum.sciences.maths.avancees:2882
+(Attention: dans l'exemple les deux extensions formées correspondent à des
+actions différentes de G dans A; est-ce qu'on peut trouver un exemple où on
+prend la même action, et construire deux extensions E_1 et E_2, avec E_1
+scindée et pas E_2, mais E_1 isomorphe en tant que groupe à E_2?)
+
+3) 
+http://mathoverflow.net/questions/42174/can-a-module-be-an-extension-in-two-real
+ly-different-ways/42309#42309
+
+Si A et G sont abéliens de type fini et que l'action est triviale (i.e., E
+est abélien), alors si E est isomorphe à AxG alors l'extension est scindée.
+Ceci marche sur les modules de type fini sur un anneau commutatif noethérien
+cf: http://projecteuclid.org/euclid.kjm/1250524308
+
+Autrement dit ça répond négativement à la question posée dans 2) dans le
+cas abélien (fini)
+
+4) Il faut donc chercher un exemple non commutatif: cf sciences.maths.avancees:2887
+Où on voit Z/2ZxD_8 comme une extension non split de D_8 par Z/2Z.
+
+Concernant les lifts
+====================
+
+http://mathoverflow.net/questions/130770/can-group-cohomology-be-interpreted-as-an-obstruction-to-lifts?rq=1
+
+In your setup, the extension C→B→B/C
+represents a cohomology class u∈H^2(B/C;C). The homomorphism ϕ:A→B/C admits a lift ϕ¯:A→B if and only if ϕ∗(u)∈H^2(A;C) is zero.
+
+To see this, note that the induced map on second cohomology is given by pullback of extensions, so ϕ∗(u) is represented by the bottom row in the diagram
+C→B→B/C
+∥ ↑ ↑
+C→E→A
+Now splittings of the bottom row correspond to liftings of ϕ.
+
+Cas non abélien
+===============
+
+http://mathoverflow.net/questions/129414/extensions-with-trivial-induced-outer-action?rq=1
+Let E be a group extension such that the induced outer action ψ:G→Out(N) is trivial (ie E=N C_E(N))
+
+Work of Eilenberg and Mac Lane (as summarized in Brown's book "Cohomology of Groups", Section IV.6) shows that extensions as above are classified by H2(G;C), where C denotes the centre of N regarded as a trivial G-module, and therefore by central extensions of the form
+C↪A↠G.

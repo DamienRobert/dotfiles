@@ -19,4 +19,3 @@ swapoff -a && swapon -a
 echo -e "\nOutput of free after:"
 free
 exit 0
-

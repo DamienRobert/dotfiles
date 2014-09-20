@@ -1,0 +1,219 @@
+#!/bin/zsh
+GITDIR=$(git rev-parse --git-dir)
+
+#git update-worktree [--cached/--index] [--reset/--keep-unmerged,--ff] tree
+#git update-worktree --merge [--index,--keep-unmerged,--ff] tree
+#git update-worktree --tmp-index program
+#git update-worktree --merge-recursive common old new
+#unmerged=$(git ls-files -u) && git update worktree --restore-unmerged $unmerged
+
+#git update-worktree tree does a read-tree of tree
+#git update-worktree --ff topic does a read-tree -m (a fast-forward) of the current worktree to topic
+
+#By default we only work on the worktree [*]
+#with --index we also let the changes propagate to the index
+#with --cached we only work on the index (this is added for consistency,
+#  since we could call git-read-tree directly with the right options)
+#  but this can be usefull with --keep-unmerged
+#--reset/--keep-unmerged: do a reset
+#--ff: do a fast forward
+#
+#With --merge: we do a three way merge.
+#Special mode: git --merge --ff --index target rather than
+#letting the index as it is after the merge, we fastforward to the target
+#--co is a shortcut for --merge --ff --index --keep-unmerged
+#Ex: git update-worktree --co -> like git checkout -m without updating HEAD
+#		 git update-worktree --merge --keep-unmerged -> don't update the index, except for files that did not merge succesfully
+#		 git update-worktree --merge --index -> do a git merge-recursive with the goal, leave the index as it is updated afterwards
+#Remark on git checkout: it does the equivalent of git update-worktree --index
+#tree, and if there is a conflict and -m is passed as an option it does the
+#equivalent of git update-worktree --co tree. Lastly git checkout -f is
+#equivalent go git update-worktree --index --reset.
+#
+#git update-worktree --tmp-index program: run a program with GIT_INDEX_FILE=.git/index.tmp
+#git update-worktree --merge-recursive common old new: play with git-merge-recursive, can pass INDEX or WORKTREE
+#git update worktree --restore-unmerged $unmerged: restore unmerged paths in index
+#
+#Global option: --no-autostash, don't store the current tree in a stash
+#
+#[*] we could do that by doing 
+#  index=$(git-commit-tree)
+#  git-read-tree -u ...
+#  git-read-tree -m $index
+#or by doing
+#  TMPFILE=.git/index.tmp
+#  cp $GIT_INDEX_FILE .git/index.tmp
+#  GIT_INDEX_FILE=$TMPFILE git read-tree -u ...
+#we choose the second option, this let the unmerged entries in the index.
+
+autostash=t #we autostash the current worktree to save it
+autostashref=autostash
+temp= #do we launch a command with a temp index?
+mergerecursive= #play with merge-recursive
+restoreunmerged= #reput unmerged files in the index
+indexmode= #do we update the index?
+merge= #do we emulate git checkout -m
+ff= #do we call git read-tree ploum plam
+readtreeoptdef=('-v')
+readtreeopt='-m'
+resetkeepunmerged= #special mode: we reset the index, but keep the unmerged entries. The code comes from git checkout
+#This has two meaning:
+#- we update the index, but keep the current
+#unmerged entries. This only makes sense with --reset
+#- with -merge, when we update the index at the end, we keep the unmerged
+#files produced by the 3 way merge conflict. This only makes sense with
+#--ff
+while true;
+do
+	case "$1" in
+		-- ) shift; break ;;
+		--no-autostash ) shift; autostash= ;;
+		--index ) shift; indexmode="index" ;;
+		--cached ) shift; indexmode="cached" ;;
+		-m|--merge ) shift; merge=1 ;;
+		--tmp-index ) shift; temp=1 ;;
+		--merge-recursive ) shift; mergerecursive=1 ;;
+		--restore-unmerged ) shift; restoreunmerged=1 ;;
+		--ff ) shift; ff=1 ;;
+		--reset ) readtreeopt="--reset"; shift ;;
+		--keep-unmerged ) shift; resetkeepunmerged=1 ;;
+		--co ) shift; resetkeepunmerged=1;ff=1;merge=1;indexmode="index" ;;
+		-h|--help) shift; help ;;
+		*) break;;
+	esac
+done
+
+readtreeopts=($readtreeoptdef $readtreeopt)
+[[ $indexmode != "cached" ]] && readtreeopts+=('-u' --exclude-per-directory=.gitignore)
+
+abort() {
+	echo "$@"
+	exit 1
+}
+
+#restore unmerged files (given in argument) in the index
+restoreunmerged() {
+	unmerged=$1
+	if [[ -n $unmerged ]]; then
+		#we have a list of unmerged files to put back to the index
+		#the z40 serves to first remove them (from stage 0), before adding them
+		#back in their different stages
+		#From git-checkout.sh
+		(
+			z40=0000000000000000000000000000000000000000
+			echo "$unmerged" |
+			sed -e 's/^[0-7]* [0-9a-f]* /'"0 $z40 /"
+			echo "$unmerged"
+		) | git update-index --index-info
+	fi
+}
+
+#do a readtree, but keep unmerged entries if $resetindexkeepunmerged is set
+doreadtree() {
+	if [[ -n $resetkeepunmerged ]]; then
+		unmerged=$(git ls-files -u)
+	fi
+	git read-tree "$@"
+	if [[ -n $resetkeepunmerged ]]; then
+		restoreunmerged $unmerged
+	fi
+}
+
+#reset index but keep unmerged entries if $resetindexkeepunmerged is set
+resetindex() {
+	doreadtree $readtreeoptdef --reset "$@"
+}
+
+recursivemerge() {
+	branchcommon=$1
+	#recursivemerge gets the revision in short form, but we need them in long
+	#form in the eval GITHEAD_.... step so that it can find their names
+	branch1=$(git rev-parse $2)
+	branch2=$(git rev-parse $3)
+	#$4,$5,$6 should be the names of $1,$2,$3
+	#we want to go from branch1 to branch2, knowing that the common ancestor
+	#is common (usually we want to do a git read-tree --reset -u branch1
+	#before because git merge-recursive will complain if branch1!=index or
+	#worktree)
+	echo "$1 $2 $3"
+	echo git merge-recursive $4 -- $5 $6
+	#GITHEAD_$branch should contain the name of $branch
+	eval GITHEAD_$branch1='$5' &&
+	eval GITHEAD_$branch2='$6' &&
+	export GITHEAD_$branch1 GITHEAD_$branch2 &&
+	git merge-recursive $branchcommon -- $branch1 $branch2
+	#Note: git merge-recursive update the index with the merged entries
+	#afterwards
+}
+
+doautostash() {
+	[[ -n $autostash ]] && git my stash -- --ref $autostashref dosave -u >/dev/null
+}
+
+. ~/mine/script/git/git-topic-helper
+
+if [[ -n $temp ]]; then
+	gth_tmp_index
+	exec "$@"
+fi
+
+doautostash
+if [[ -n $mergerecursive ]]; then
+	gth_special_branches "$@"
+	branchcommon=$gth_branches_rev[1];
+	branch1=$gth_branches_rev[2];
+	branch2=$gth_branches_rev[3];
+	namebranchcommon=$gth_branches[1];
+	namebranch1=$gth_branches[2];
+	namebranch2=$gth_branches[3];
+
+	recursivemerge $branchcommon $branch1 $branch2 $namebranchcommon $namebranch1 $namebranch2
+	exit $?
+fi
+
+if [[ -n $restoreunmerged ]]; then
+	unmerged="$@"
+	restoreunmerged $unmerged
+	exit $?
+fi
+
+if [[ -n $merge ]]; then
+	[[ $indexmode == "cached" ]] && abort "--merge and --cached is incompatible"
+	[[ -z $indexmode ]] && index=$(git write-tree)
+	gth_topic "$@"
+
+	#From git-checkout.sh
+	# Save the working tree, and do a three-way.
+	git diff-files --name-only | git update-index --remove --stdin &&
+		work=$(git write-tree) && 
+		git read-tree $readtreeoptdef --reset -u $gth_remote_rev || exit
+	#we update the index and worktree to $gth_remote because the startpoint
+	#of git-recursive needs to be equal to the index and worktree, otherwise
+	#it thinks the files were changed
+
+	recursivemerge $gth_local_rev $gth_remote_rev $work $gth_local $gth_remote WORKTREE
+
+	if [[ -n $ff && $indexmode == "index" ]]; then
+		#special mode: we update the index to $gth_remote
+		resetindex $gth_remote_rev
+		exit $?
+	fi
+	if [[ -z $indexmode ]]; then
+		#restore the index
+		resetindex $index
+		exit $?
+	fi
+
+else
+	if [[ -z $indexmode ]]; then
+		[[ -n $resetkeepunmerged ]] && abort "--keep-unmerged is useless without --index or --cached"
+		gth_tmp_index
+	fi
+	if [[ -n $ff ]]; then
+		gth_topic "$@"
+		doreadtree $readtreeopts $gth_local_rev $gth_remote_rev
+	else
+		gth_branch "$@"
+		doreadtree $readtreeopts $gth_branch_rev
+	fi
+fi

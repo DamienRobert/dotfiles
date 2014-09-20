@@ -1,1 +1,20 @@
 Usefull scripts found on the web.
+
+# 822par: reflow mail message, keeping headers valid
+# browser:  pipe html to a browser
+# dups: Finds duplicate adjacent words.
+# ftail: tail -f in perl
+# gcalc.py: A command-line interface to the Google calculator.
+# gdefine.py: script to query Google for definitions of words
+# man.cx: Open manpage <topic> on http://man.cx.
+# pydftk: Rewrite of stapler
+# pym: A Macro Preprocessor Based on Python
+# rb-magic-comment: Add the unicode magic comment to ruby files.
+# swaptop: show most swap-using processes
+# ticker: like tail -f, but show size of files rather than content
+# unicode-find.pl: uni pattern, list unicode symbols matching pattern
+# unicode-normalize.pl: Normalize utf-8 input.
+# unicodeprop.pl: informations about an unicode character
+# urlmonitor: print out the URLs requested system wide on the main network interface
+# utf82names.pl: convert an unicode character to its name
+# zombies: list all zombies and their parents to kill

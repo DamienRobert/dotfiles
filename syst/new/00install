@@ -1,0 +1,46 @@
+#!/bin/zsh
+#0* configure fs (/)
+#1* mount (/)
+#2* pacstrap (/)
+#3* configuration (arch-chroot)
+#4* extra configuration (requiring systemd running)
+#5* backups (arch-chroot)
+#6* full install (arch-chroot)
+#8* clean up (arch-chroot)
+#9* clean up (/)
+
+FORCE=t
+while true;
+do
+  case "$1" in
+    -- ) break;;
+    -f ) shift; FORCE=t;;
+    -n ) shift; FORCE=;;
+    *) break;;
+  esac
+done
+
+. /root/init/scripts/ZZvars
+
+$RUNDIR/.launch $RUNDIR/ZZvars "0*" "1*" "2*" || exit 1
+[[ -n $FORCE ]] && rm -rf "$TARGET_DIR/$DIR"
+[[ -d "$TARGET_DIR/$DIR" ]] || cp -a $DIR "$TARGET_DIR/$DIR"
+
+arch-chroot $TARGET_DIR "$RUNDIR/.launch" $RUNDIR 3 || exit 1
+
+if [[ -n $(echo $RUNDIR/4*(N)) ]]; then
+	cat >$TARGET_DIR/etc/systemd/system/initboot.service <<EOF
+[Unit]
+Description=Initial configuration script
+
+[Service]
+ExecStart=$RUNDIR/.launch $RUNDIR/ZZvars $RUNDIR/4*
+ExecStartPost=/usr/bin/systemctl poweroff
+Type=oneshot
+EOF
+	systemd-nspawn -bD $TARGET_DIR systemd.unit=initboot.service || exit 1
+fi
+
+arch-chroot $TARGET_DIR "$RUNDIR/.launch" $RUNDIR/ZZvars "5*" "6*" "7*" "8*" || exit 1
+
+$RUNDIR/.launch $RUNDIR/ZZvars "9*" || exit 1

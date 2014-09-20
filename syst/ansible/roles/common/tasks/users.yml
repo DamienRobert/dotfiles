@@ -1,0 +1,20 @@
+---
+# This playbook handles user creation and access rights.
+
+- name: create user dams
+  user: name=dams comment="Damien Robert"
+    uid=1000 group=users groups=wheel,systemd-journal
+  tags: bootstrap
+
+- name: add ssh pubkey to authorized_keys for user dams
+  authorized_key: user=dams key="{{ item }}"
+  with_file:
+    - ssh/dams/id_ed25519.pub
+    - ssh/dams/id_rsa.pub
+  tags: bootstrap
+
+- name: grant full sudo rights to group wheel
+  copy: src=etc/sudoers.d/01_wheel dest=/etc/sudoers.d/01_wheel
+    owner=root group=root mode=0440
+    validate='visudo -cf %s'
+  tags: bootstrap

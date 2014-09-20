@@ -1,0 +1,24 @@
+#!/bin/zsh
+#From packer-arch: https://github.com/elasticdog/packer-arch
+
+#clearing partition table
+/usr/bin/sgdisk --zap ${DISK}
+
+#destroying magic strings and signatures
+/usr/bin/dd if=/dev/zero of=${DISK} bs=512 count=2048
+/usr/bin/wipefs --all ${DISK}
+
+ROOT_PARTITION="${DISK}1"
+
+#clearing partition table
+/usr/bin/sgdisk --zap ${DISK}
+
+#destroying magic strings and signatures
+/usr/bin/dd if=/dev/zero of=${DISK} bs=512 count=2048
+/usr/bin/wipefs --all ${DISK}
+
+#creating 'slash' partition
+/usr/bin/sgdisk --new=1:0:0 -c '0:slash' -t '0:8300' -u 4f68bce3-e8cd-4db1-96e7-fbcaf984b709 --attributes=1:set:2 ${DISK}
+
+/usr/bin/mkfs.ext4 -F -m 0 -q -L slash ${ROOT_PARTITION}
+/usr/bin/mount -o noatime,errors=remount-ro ${ROOT_PARTITION} ${TARGET_DIR}

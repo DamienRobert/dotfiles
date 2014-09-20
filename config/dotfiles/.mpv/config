@@ -1,0 +1,42 @@
+# Write your default config options here!
+
+[protocol.dvd]
+profile-desc="profile for dvd:// streams"
+alang=en
+slang=en
+
+[default]
+hwdec=auto
+
+# try to use high quality opengl output, with standard opengl, classic xv, and wayland as fallbacks
+# note: opengl has numerous quality/performance trade-off options.
+# as per the mpv(1), "opengl-hq" is just an alias for "opengl:lscale=lanczos2:dither-depth=auto:fbo-format=rgb16"
+vo=opengl-hq,opengl,xv,wayland
+
+ao=pulse,alsa,oss
+
+# prefer using 5.1 channels audio (defaults to 2 - see mpv --channels=help) 
+# mixing is handled by libavcodec unless using "--af-add=pan" (see below)
+#audio-channels=5.1
+
+# disable screensaver
+stop-screensaver="yes"
+
+# correct pitch when speed is faster or slower than 1.0
+af=scaletempo
+
+# allow to seek in a file which is still downloading whilst watching it
+# from manpage:"this switch has no effect in the typical case" (usually done automatically by demuxers)
+# idx=yes
+
+# allow to increase the maximal volume to 600%
+#softvol-max=600
+
+# skip displaying some frames to maintain A/V sync on slow systems
+#framedrop=yes
+#
+# scale the subtitles to the 3% of the screen size
+# sub-scale=3
+
+# set the window title using the media filename (see Property Expansion section of mpv(1))
+#title="${filename}"

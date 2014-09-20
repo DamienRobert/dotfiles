@@ -1,0 +1,1 @@
+grep -v "nameserver .*\:" /etc/resolv.conf > /etc/resolv.conf-pdnsd

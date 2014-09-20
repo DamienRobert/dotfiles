@@ -1,4 +1,60 @@
+PvsNP
+=====
+
+- http://math.stackexchange.com/questions/141448/what-are-the-prerequisites-in-order-to-pursue-the-p-vs-np-problem
+- http://terrytao.wordpress.com/2009/08/01/pnp-relativisation-and-multiple-choice-exams/
+- http://blog.computationalcomplexity.org/2014/09/richard-lipton-wins-knuth-prize.html
+  #Richard Karp and Lipton showed that if NP has non-uniform polynomial-size circuits then the polynomial-time hierarchy collapses.
+
+# Gower's blog
+
+- Non determinacy serie:
+http://gowers.wordpress.com/2013/08/23/determinacy-of-borel-games-i/
+- Natural proof:
+http://gowers.wordpress.com/2013/10/03/how-not-to-prove-that-p-is-not-equal-to-np/
+- Polymath 9:
+http://gowers.wordpress.com/2013/10/24/what-i-did-in-my-summer-holidays/
+-> http://gowers.tiddlyspace.com/#[[Does%20P%3DNP%3F]]
+-> (in comments of http://gowers.wordpress.com/2013/11/03/dbd1-initial-post/)
+   http://cstheory.stackexchange.com/questions/19621/p-poly-vs-np-separation-based-on-circuit-trees-instead-of-dags
+- End of Polymath 9:
+http://gowers.wordpress.com/2014/01/09/dbd2-success-of-a-kind/
+
+#Links on Deolalikar flawed proof:
+- http://www.scottaaronson.com/blog/?p=458 (Eight Signs A Claimed P≠NP Proof Is Wrong)
+-> http://rjlipton.wordpress.com/2010/08/12/fatal-flaws-in-deolalikars-proof/#comment-5368
+-> http://michaelnielsen.org/polymath1/index.php?title=Deolalikar_P_vs_NP_paper#Issues_with_random_k-SAT
+- http://gowers.wordpress.com/2010/08/13/could-anything-like-deolalikars-strategy-work/
+- http://rjlipton.wordpress.com/2010/08/11/deolalikar-responds-to-issues-about-his-p%E2%89%A0np-proof/#comment-5101
+
+# Unique Game Problem
+http://www.wired.com/2014/08/subhash-khot-nevanlinna-prize/
+
+# Shtetl-Optimized
+- Is the P vs. NP problem ill-posed? (Answer: no.)
+http://www.scottaaronson.com/blog/?p=1948
+(Interesting links in the comments:
+Particularly in regard to P vs NP, candidates for propositions that are (in
+Scott’s phrase) “just as interesting as the original P vs NP question if
+not more interesting” are discussed at-length in the (again well-rated)TCS
+StackExchange question “Are runtime bounds in P decidable? (answer: no)”,
+which catalyzed the (also well-rated) TCS StackExchange community wiki “Do
+the undecidable attributes of P pose an obstruction to deciding P versus
+NP? (answer: maybe)”.)
+
+David Madore
+============
+
+http://www.madore.org/~david/weblog/2014-08.html#d.2014-08-20.2219
+Quelques horreurs mathématiques (autour du 17e problème de Hilbert)
+
+David Monniaux
+==============
+
 http://david.monniaux.free.fr/dotclear/index.php/post/2012/02/04/Terminaison-de-la-fonction-d-Ackermann
+
+Terrence Tao
+============
 
 http://terrytao.wordpress.com/2012/10/28/van-kampens-theorem-via-covering-spaces/
 http://terrytao.wordpress.com/2012/11/20/the-closed-graph-theorem-in-various-categories/
@@ -6,26 +62,107 @@ http://terrytao.wordpress.com/2013/04/12/the-theorems-of-frobenius-and-suzuki-on
 http://terrytao.wordpress.com/2013/05/24/a-fourier-analytic-proof-of-frobeniuss-theorem/?utm_source=feedly
 http://terrytao.wordpress.com/2013/07/19/the-riemann-hypothesis-in-various-settings/
 http://terrytao.wordpress.com/2013/01/13/matrix-identities-as-derivatives-of-determinant-identities/
+http://terrytao.wordpress.com/2013/12/11/mertens-theorems/
+http://terrytao.wordpress.com/2014/05/02/the-bombieri-stepanov-proof-of-the-hasse-weil-bound/
+http://terrytao.wordpress.com/2014/05/13/dworks-proof-of-rationality-of-the-zeta-function-over-finite-fields/
+http://terrytao.wordpress.com/2014/06/05/when-is-correlation-transitive/
+http://terrytao.wordpress.com/2014/06/28/algebraic-probability-spaces/
+http://terrytao.wordpress.com/2014/07/07/the-subspace-theorem-approach-to-siegels-theorem-on-integral-points-on-curves-via-nonstandard-analysis/
+
+Gowers
+======
+
+* Basis analysis
+
+http://gowers.wordpress.com/2014/02/22/differentiating-power-series/
+http://gowers.wordpress.com/2014/02/11/taylors-theorem-with-the-lagrange-form-of-the-remainder/
+http://gowers.wordpress.com/2014/03/02/how-do-the-power-series-definitions-of-sin-and-cos-relate-to-their-geometrical-interpretations/
+
+* ICM 2014
+
+http://gowers.wordpress.com/2014/08/20/khot-laudatio/
+  Unique Game Conjecture
+http://gowers.wordpress.com/2014/08/25/icm2014-emmanuel-cands-plenary-lecture/
+http://gowers.wordpress.com/2014/08/26/icm2014-barak-guralnick-brown/
+
+Kowalski
+========
 
 http://blogs.ethz.ch/kowalski/2012/11/14/trace-functions-ii-examples/
+http://blogs.ethz.ch/kowalski/2014/01/01/three-little-things-i-learnt-recently/
+  (Un corps de carac !=2 a un "square root morphism" ssi -1 n'est pas un carré)
+http://blogs.ethz.ch/kowalski/2014/05/01/normalizers-everywhere/
+  \xi^a H\xi^b = H <=> \xi^{a+b}\in H and \xi^{(a,b)}\in N(H), where (a,b) is the gcd of a and b. In particular, for all pairs (a,b) where a and b are coprime, the condition above implies that \xi belongs to the normalizer of H.
+
+Geometry and the imagination
+============================
+
+http://lamington.wordpress.com/2013/11/20/kahler-manifolds-and-groups-part-1/
+http://lamington.wordpress.com/2013/11/25/kahler-manifolds-and-groups-part-2/
+Intro on Kahler manifolds (and the properties of complex abelian varieties
+that arise as their Kahler structure):
+http://math.bu.edu/people/jsweinst/Teaching/MA843Fall13/Lecture6VariationsOfHS.pdf (Kahler manifolds and variations of Hodge structures)
+
+http://lamington.wordpress.com/2014/05/26/div-grad-curl-and-all-this/
+Notes: http://math.uchicago.edu/~dannyc/courses/riem_geo_2013/riem_geo_notes.pdf
+       http://math.uchicago.edu/~dannyc/courses/minimal_surfaces_2014/minimal_surfaces_notes.pdf
+
+Ars Mathematica
+===============
+
+http://www.arsmathematica.net/2012/11/25/its-my-turn/
+  a proof of the Snake Lemma appeared in a 1980 romantic comedy, It’s My Turn
+http://www.arsmathematica.net/2013/04/11/applications-of-cosheaves/
+  Un bouquin sur sheaves and cosheaves et leurs applications dans les
+  réseaux
+http://www.arsmathematica.net/2013/12/30/nonassociative-algebras/
+http://www.arsmathematica.net/2013/07/09/linear-bestiary-of-francois-pottier/
+
+Categories
+==========
 
 http://sbseminar.wordpress.com/2012/11/16/the-canonical-model-structure-on-cat/
+http://sbseminar.wordpress.com/2014/05/26/what-makes-the-monster-lie-algebra-special/
+  # Monster representation and relations on coefficients of the J-invariant
 
-=====================================================================
+http://qchu.wordpress.com/2013/09/28/cartesian-closed-categories-and-the-lawvere-fixed-point-theorem/
+http://qchu.wordpress.com/2013/06/09/operations-and-lawvere-theories/
+  #polynomials with coefficients in a commutative ring R are precisely the
+  #morphisms in the Lawvere theory of commutative R-algebras, cf
+  #http://mathoverflow.net/questions/171724/why-are-polynomials-so-useful-in-mathematics
+
+http://johncarlosbaez.wordpress.com/2014/02/06/categories-in-control/
+  - des slides sur les liens entre graphes et théorie des catégories
+  Donne aussi des pointeurs sur les papiers suivants très intéressants:
+  - http://arxiv.org/abs/0908.2469 (A Prehistory of n-Categorical Physics)
+  - http://arxiv.org/abs/0903.0340 (Physics, Topology, Logic and Computation: A Rosetta Stone)
+
+Divers
+======
+
+http://amathew.wordpress.com/tag/flatness/
+=> Une preuve que a formally smooth morphism of noetherian rings (which is essentially of finite type) = flat+smooth fibers.
+
+http://modular.math.washington.edu/129/ant/html/node84.html
+=> Strong approximation theorem (in number fields)
+
+Complexity
+==========
+
+https://rjlipton.wordpress.com/2014/08/26/who-invented-pointers-amortized-complexity-and-more/
+http://rjlipton.wordpress.com/2014/09/02/enriching-the-frankl-conjecture/
+
+Références
+==========
+
 Mindmap de sites de maths
 http://www.mindomo.com/view?m=38cc4f6a467acbfde4be796e68399450
 
 http://cring.adeel.ru/cgit.cgi/
 (the commutative ring project)
+
 http://cringproject.wordpress.com/
 (associated blog)
 
-http://math216.wordpress.com/
-(introduction to scheme, very nice reference 700p)
-
-http://math.columbia.edu/~dejong/wordpress/
-(stack project blog, *the* english reference in algebraic geometry, fill
-the gap from EGA which was in French)
-
-http://www.tac.mta.ca/tac/reprints/articles/3/tr3.pdf
-Un livre sur les catégories abéliennes
+http://www.bourbaki.ens.fr/
+Le séminaire bourbaki (text+vidéo)

@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+cd ~/Photos/all
+
+setopt extended_glob
+dolink() {
+  SEL=$1
+  DIR=$2
+  for file in $DIR/2*(/); do
+    base=$(basename $file)
+    ln -ns $file $base@$SEL
+  done
+}
+
+for dir in ../Photos_de_Damien/^Samsung*; do
+  dolink D $dir
+done
+
+for dir in ../Photos_de_Damien/Samsung*; do
+  dolink S $dir
+done
+
+dolink B ../Photos_de_Blandine
+dolink F ../Photos_de_autres/Famille
+dolink G ../Photos_de_autres/Gaetan_Bisson

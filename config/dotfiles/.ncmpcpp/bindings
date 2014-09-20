@@ -1,0 +1,60 @@
+def_key "k"
+  scroll_up
+def_key "j"
+  scroll_down
+#can use "m"
+def_key "K"
+  move_sort_order_up
+def_key "K"
+  move_selected_items_up
+#was "n"
+def_key "J"
+  move_sort_order_down
+def_key "J"
+  move_selected_items_down
+
+#was reverse_selection
+def_key "v"
+  stop
+#was clear_playlist
+def_key "c"
+  pause
+#was move_sort_order_down, move_selected_items_down
+def_key "n"
+  next
+#was seek_backward
+def_key "b"
+  previous
+#was toggle_crossfade
+def_key "x"
+  seek_forward
+#was toggle_find_mode
+def_key "w"
+  seek_backward
+
+#was "v"
+def_key "V"
+  reverse_selection
+#was "V"
+def_key "d"
+  remove_selection
+#was "c"
+def_key "ctrl_d"
+  clear_playlist
+#was "x"
+def_key "X"
+  toggle_crossfade
+#was "X"
+def_key "ctrl_x"
+  set_crossfade
+def_key "W"
+  toggle_find_mode
+#was pause
+#def_key "p"
+#  toggle_display_mode
+
+#"." works too
+def_key ";"
+  next_found_item
+
+#Now free: <(previsou),>(next),f(forward),m(move up),p(pause),s(stop)

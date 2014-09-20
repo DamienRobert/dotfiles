@@ -1,19 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 #
 # list optional dependencies of installed packages
 #
 
-for i in $(pacman -Qq)
-do
-    deps="$(pacman -Qi ${i} | awk '/Optional/,/Required/' | grep -v "Required" | sed -e 's/Optional Deps[ ]*://g' -e 's/^[ ]*/ /')"
-    if [ "$deps" != " None" ]; then
-        echo "$i"
-	  IFS='
-'
-          for dep in $deps; do
-	    prog=`echo $dep | cut -d ':' -f 1 | cut -d ' ' -f 2`
-	    pacman >/dev/null -Qs $prog || echo "$dep"
-	  done
-        echo ""
-    fi
-done
+class String
+  def readlist
+    return open("| #{self}").read.split("\n")
+  end
+end
+allpackages="pacman -Qq".readlist
+
+allpackages.each do |pkg|
+	info=`pacman -Qi "#{pkg}"`
+	opts=""
+	info.lines do |l|
+		if l =~ /Optional Deps/ ... l=~ /Required By/
+			next if l =~ /Required By/
+			l.sub!(/^(Optional Deps\s*:)?\s*/,'')
+			opts +="- #{l}" unless l =~ /\[installed\]|None/
+		end
+	end
+	print pkg+":\n"+opts unless opts.empty?
+end

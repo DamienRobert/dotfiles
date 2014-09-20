@@ -1,0 +1,19 @@
+#!/usr/bin/zsh
+
+# pacgrep -- search arch package contents
+# 21nov2011  +chris+
+# 08dec2011  +chris+
+pacgrep() {
+  PATTERN=${1:?pattern missing}
+  shift
+  pacman -Qlq "$@" | xargs grep -d skip -e "$PATTERN"
+}
+
+#Completion:
+#_pacgrep() {
+#  _pacman  # force autoload
+#  _arguments : '1:pattern:' '*:package:_pacman_completions_installed_packages'
+#}
+#compdef _pacgrep pacgrep
+
+pacgrep "$@"

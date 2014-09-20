@@ -1,0 +1,117 @@
+devtools (sudo pacman -S devtools)
+========
+https://projects.archlinux.org/devtools.git/
+
+https://wiki.archlinux.org/index.php/DeveloperWiki:Building_in_a_Clean_Chroot
+
+arch-nspawn: thin wrapper around systemd-nspawn, doing some
+pacman-specific stuff like copying config from the host and binding
+the cache.
+
+Used by:
+- mkarchroot: builds the chroot using pacstrap
+- makechrootpkg: like makepkg but in the chroot
+- archbuild: build a package, use mkarchroot and makechrootpkg
+
+#check packages
+- Feanor /var/abs $ finddeps openssh #packages depending on openssh
+  ./extra/vinagre (makedepends)
+  ./extra/vinagre (optdepends)
+  ./extra/cvs (optdepends) ...
+- Feanor ~/opt/arch/pkgs/dest $ find-libdeps openssh-6.5p1-1-x86_64.pkg.tar.xz 
+  libc.so=6-64
+  libcrypto.so=1.0.0-64 ...
+- Feanor ~/opt/arch/pkgs/pkgbuild/openssh $ checkpkg openssh-6.5p1-1-x86_64.pkg.tar.xz
+==> No soname differences for openssh.
+(checks if the built package has a soname difference compared to the
+current package in archlinux's mirror)
+- lddd: look for ldd of binaries of PATH and report missing libraries
+
+#TU stuff (use nymeria.archlinux.org)
+- commitpkg: commit PKGBUILD
+- archco/archrm: wrappers for svn co, svn rm
+- archrelease: release .tar.xz?
+- rebuildpkgs ~/chroot readline bash foo bar baz (check if packages rebuild correctly)
+
+Usage
+-----
+* Usage: arch-nspawn [options] working-dir [systemd-nspawn arguments]
+  A wrapper around systemd-nspawn. Provides support for pacman.
+   options:
+      -C <file>     Location of a pacman config file
+      -M <file>     Location of a makepkg config file
+      -c <dir>      Set pacman cache (is then bind mounted readonly)
+      -h            This message
+
+Ex: arch-nspawn /opt/archchroot/root ls
+
+* Usage: mkarchroot [options] working-dir [package-list | app]
+ options:
+    -C <file>     Location of a pacman config file
+    -M <file>     Location of a makepkg config file
+    -c <dir>      Set pacman cache
+
+Ex: mkarchroot /opt/archchroot/root base-devel
+
+* Usage: makechrootpkg [options] -r <chrootdir> [--] [makepkg args]
+   Run this script in a PKGBUILD dir to build a package inside a
+   clean chroot. Arguments passed to this script after the
+   end-of-options marker (--) will be passed to makepkg.
+  
+   The chroot dir consists of the following directories:
+   <chrootdir>/{root, copy} but only "root" is required
+   by default. The working copy will be created as needed
+  
+  The chroot "root" directory must be created via the following
+  command:
+      mkarchroot <chrootdir>/root base-devel
+  
+  Default makepkg args: -s --noconfirm -L --holdver
+  (       -s, --syncdeps:
+           Install missing dependencies using pacman. When build-time or
+           run-time dependencies are not found, pacman will try to resolve
+           them. If successful, the missing packages will be downloaded and
+           installed.
+           -L: log
+           --holdver: When using VCS sources (PKGBUILD(5)) any currently checked out source will not be updated to the latest revision.
+  )
+  
+  Flags:
+  -h         This help
+  -c         Clean the chroot before building
+  -d <dir>   Bind directory into build chroot as read-write
+  -D <dir>   Bind directory into build chroot as read-only
+  -u         Update the working copy of the chroot before building
+             This is useful for rebuilds without dirtying the pristine
+             chroot
+  -r <dir>   The chroot dir to use
+  -I <pkg>   Install a package into the working copy of the chroot
+  -l <copy>  The directory to use as the working copy of the chroot
+             Useful for maintaining multiple copies
+             Default: dams
+  -n         Run namcap on the package
+  -T         Build in a temporary directory
+
+Ex: arch-nspawn $CHROOT/root pacman -Syu
+    /var/abs/core/openssh $ makechrootpkg -c -r $CHROOT
+    (-> mount bind $CHROOT/root into $CHROOT/dams and build the package in
+    $CHROOT/dams)
+
+* Usage: archbuild [options] -- [makechrootpkg args]
+      -c         Recreate the chroot before building
+      -r <dir>   Create chroots in this directory
+  Default makechrootpkg args: -c -n
+
+Ex: /var/abs/core/openssh $ sudo testing-x86_64-build -r /opt/archbuildchroot
+
+arch-install-scripts
+====================
+
+pacstrap
+
+archiso
+=======
+
+mkarchiso: helpers to create a bootable cd
+
+cf aussi: archboot

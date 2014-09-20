@@ -1,0 +1,3 @@
+#!/bin/zsh
+sudo ln -snf /run/systemd/resolv/resolv.conf /etc/resolv.conf
+#TODO under arch-chroot resolv.conf is bind mounted, need to unmount it first

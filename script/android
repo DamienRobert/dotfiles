@@ -1,4 +1,4 @@
 #!/bin/sh
 
-. "$MYFILES/.i18n"
+. "$HOME/.config/locale.conf"
 exec "$SHELL"

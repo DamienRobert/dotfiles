@@ -7,3 +7,8 @@ cp -r new /mnt/root/new
 chroot /mnt bash
 #pacman-db-upgrade
 #pacman -Syy
+
+#From archwiki:
+#mount -t proc proc proc/
+#mount --rbind /sys sys/
+#mount --rbind /dev dev/

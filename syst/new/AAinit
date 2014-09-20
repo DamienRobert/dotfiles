@@ -1,0 +1,39 @@
+#0) On SERVER: Generate script
+#edit 00COMPUTERS.rb
+NAME=current
+~/syst/new/generate $NAME
+. ~/mine/syst/@comps/$NAME/@init/scripts/ZZvars
+
+#1) On HOST: Set up net connection
+loadkeys fr
+loadkeys fr-latin9 #too hard to type if not in fr mode...
+dhcpcd
+wifi-menu
+#pacman -Sy vim
+
+#2) Get the install scripts
+#a) HOST -> SERVER: copier la clé ssh
+SERVER=imb
+rsync -vaczP $SERVER:syst/new/local/$NAME $DIR
+cp -a $DIR/users/dams/.ssh /root/
+
+#b) SERVER -> HOST
+#On HOST:
+systemctl start sshd.service
+passwd #set root passwd
+#On SERVER:
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@$HOSTSSH
+rsync -vaczP --delete-after ~/mine/syst/@comps/$NAME/@init/ root@$HOSTSSH:$DIR/
+ssh root@$HOSTSSH
+#if needed put a reverse ssh link
+#ssh -fNT root@$HOST -R 44022:localhost:22
+#To regenerate:
+#./generate $NAME && rsync -vaczP --delete-after ~/mine/syst/new/local/$NAME/ root@$HOSTSSH:$DIR/
+
+#3) On HOST: Launch the scripts
+/root/init/00install
+
+## If needed, once 'dams' account is set up
+# ~/mine/syst/generate/11gendiffcommit
+# ~/mine/syst/MBR/00save #save partition
+# ~/mine/config/infos/00savedata # ip address + blkid

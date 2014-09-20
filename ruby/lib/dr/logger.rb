@@ -1,5 +1,5 @@
 # vim: foldmethod=marker
-#From methadone
+#From methadone (cli_logger.rb, cli_logging.rb, last import: v1.3.1-2-g9be3b5a)
 require 'logger'
 
 module DR
@@ -84,12 +84,12 @@ module DR
     # +log_device+:: device where all log messages should go, based on level
     # By default, this is Logger::Severity::WARN
     # +error_device+:: device where all error messages should go.  
-    def initialize(log_device=$stdout,error_device=$stderr)
+    def initialize(log_device=$stdout,error_device=$stderr,
+                   split_log:log_device.tty? && error_device.tty?)
       super(log_device)
       @stderr_logger = Logger.new(error_device)
 
-      @split_logs = log_device.tty? && error_device.tty?
-
+      @split_logs = split_log
       self.level = Logger::Severity::INFO
       @stderr_logger.level = DEFAULT_ERROR_LEVEL
 
@@ -139,7 +139,7 @@ module DR
   #       def doit
   #         debug("About to doit!")
   #         if results
-  #           info("We did it!"
+  #           info("We did it!")
   #         else
   #           error("Something went wrong")
   #         end
@@ -153,9 +153,6 @@ module DR
   module CLILogging
 
     extend self
-    def self.included(k)
-      k.extend(self)
-    end
 
     # Access the shared logger.  All classes that include this module
     # will get the same logger via this method.
@@ -180,17 +177,6 @@ module DR
 
     alias logger= change_logger
 
-    # pass-through to <tt>logger.debug(progname,&block)</tt>
-    def debug(progname = nil, &block); logger.debug(progname,&block); end
-    # pass-through to <tt>logger.info(progname,&block)</tt>
-    def info(progname = nil, &block); logger.info(progname,&block); end
-    # pass-through to <tt>logger.warn(progname,&block)</tt>
-    def warn(progname = nil, &block); logger.warn(progname,&block); end
-    # pass-through to <tt>logger.error(progname,&block)</tt>
-    def error(progname = nil, &block); logger.error(progname,&block); end
-    # pass-through to <tt>logger.fatal(progname,&block)</tt>
-    def fatal(progname = nil, &block); logger.fatal(progname,&block); end
-
     LOG_LEVELS = {
       'debug' => Logger::DEBUG,
       'info' => Logger::INFO,
@@ -213,23 +199,36 @@ module DR
     #
     #     go!
     #
-    def use_log_level_option
-      on("--log-level LEVEL",LOG_LEVELS,'Set the logging level',
-                                        '(' + LOG_LEVELS.keys.join('|') + ')',
-                                        '(Default: info)') do |level|
-        @log_level = level
-        logger.level = level
-      end
-    end
+    #def use_log_level_option
+    #  on("--log-level LEVEL",LOG_LEVELS,'Set the logging level',
+    #                                    '(' + LOG_LEVELS.keys.join('|') + ')',
+    #                                    '(Default: info)') do |level|
+    #    @log_level = level
+    #    logger.level = level
+    #  end
+    #end
 
     #log the action and execute it
     #Severity is Logger:: DEBUG < INFO < WARN < ERROR < FATAL < UNKNOWN
-    def log_and_do(severity, *args, &block) 
+    def log_and_do(severity, *args, definee: self, &block) 
       msg="log_and_do #{args} on #{self}"
       msg+=" with block #{block}" if block
       logger.add(severity,msg)
-      self.send(*args, &block)
+      definee.send(*args, &block)
     end
+  end #}}}
+
+  #Include this in place of CLILogging if you prefer to use
+  #info directly rather than logger.info
+  module CLILoggingShortcuts #{{{
+    extend self
+    include CLILogging
+
+    def debug(progname = nil, &block); logger.debug(progname,&block); end
+    def info(progname = nil, &block); logger.info(progname,&block); end
+    def warns(progname = nil, &block); logger.warn(progname,&block); end
+    def error(progname = nil, &block); logger.error(progname,&block); end
+    def fatal(progname = nil, &block); logger.fatal(progname,&block); end
   end
   #}}}
 end

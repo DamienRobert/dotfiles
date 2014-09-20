@@ -1,0 +1,45 @@
+Get UID of blocks:
+$ blkid
+/dev/sda: LABEL="linux-home" UUID="32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e"
+UUID_SUB="efec281f-9720-462e-a916-d074f5f85cb2" TYPE="btrfs" 
+/dev/sdb1: SEC_TYPE="msdos" UUID="9D37-7B22" TYPE="vfat" PARTLABEL="UEFI"
+PARTUUID="2b1dec6b-73c5-435e-bee7-29fe64b90e93" 
+/dev/sdb2: UUID="382E89A02E895830" TYPE="ntfs" PARTLABEL="Windows"
+PARTUUID="48faf05a-38c7-4157-a5ec-4af142a91bfc" 
+/dev/sdb3: LABEL="linux-home" UUID="32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e"
+UUID_SUB="68ab821c-da77-43c4-a266-09a4ce6b1b5c" TYPE="btrfs"
+PARTLABEL="Linux-raid" PARTUUID="44242e86-a23d-4fdb-be59-821bcff28d8f" 
+/dev/sdb4: LABEL="linux-root" UUID="ba8d1474-88ec-4342-a63d-e4d4732511af"
+UUID_SUB="c274b3ce-72e3-4155-96dd-9e5084bb55ad" TYPE="btrfs"
+PARTLABEL="Linux-Main" PARTUUID="986178da-85b0-4a7c-a0ec-600adfa32be7" 
+/dev/sdc: LABEL="large" UUID="33e81fa8-6a49-4294-8bc9-bf6295ac39d1"
+UUID_SUB="fb505410-ae35-4d0a-a9bb-d28899bfa422" TYPE="btrfs" 
+
+Feanor /large $ findfs LABEL=large
+/dev/sdc
+
+#The labels defined in mkfs are labels for the filesystem, not to confuse with
+#the PARTLABEL defined in sgdisk for the gpt partitions. This is the same
+#difference as UUID (uid of the fs) vs PARTUUID (uid of the gpt partition)
+sgdisk -n 1:0:+100M -c '0:boot' -t ef00 -u c12a7328-f81f-11d2-ba4b-00a0c93ec93b --attributes=1:set:2 ...
+mkfs.ext4 -L label
+
+lsblk
+=====
+
+See also lsblk -f to list the partitions:
+Feanor ~ $ lsblk -f                                                        ⚡34
+NAME   FSTYPE LABEL      UUID                                 MOUNTPOINT
+sda    btrfs  linux-home 32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e 
+sdb                                                           
+├─sdb1 vfat              9D37-7B22                            /boot
+├─sdb2 ntfs              382E89A02E895830                     
+├─sdb3 ntfs              8C20B7DA20B7C98A                     
+├─sdb4 btrfs  linux-home 32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e /home
+└─sdb5 btrfs  linux-root ba8d1474-88ec-4342-a63d-e4d4732511af /
+sdc    btrfs  large      33e81fa8-6a49-4294-8bc9-bf6295ac39d1 /large
+
+/etc/fstab
+==========
+
+UUID=... for uuids, LABEL=... for fslabel and PARTLABEL=... for gpt labels

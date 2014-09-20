@@ -844,6 +844,9 @@ A::C.get_const # => "outer"
 ####################################################################
 http://stackoverflow.com/questions/2687276/scope-of-constants-in-ruby-modules
 #nice examples of metaprogramming too
+
+#très bien expliqué ici:
+http://cirw.in/blog/constant-lookup
 }}}1
 
 # Functions {{{1
@@ -893,4 +896,36 @@ http://yugui.jp/articles/846
 Une implémentation des classes/modules de ruby en ruby:
 https://gist.github.com/4009812
 (cloné dans ClassModules)
+
+https://www.ruby-forum.com/topic/571597#966293
+Ploum.singleton_class.superclass == Ploum.superclass.singleton_class
++ more details on virtual and proxy classes
+On top there is also the following code for the "double include problem":
+
+  class Module
+    alias :old_include :include
+    def include other
+      old_include other
+      if self.class == Module
+        this = self
+        ObjectSpace.each_object Module do |mod|
+          mod.module_eval do include this end if mod < self
+        end
+      end
+    end
+  end
+  module Z
+    def x; "x"; end
+  end
+  #whith the new include, this forces Array to include Z too
+  #otherwise it does not work because Z is not in the proxy classes of Array, since Array mix in Enumerable before Enumerable includes Z.
+  module Enumerable
+    include Z
+  end
+  a = [1,2,3,4,5]
+  p a.x  # => "x"
+
+
+http://www.hokstad.com/ruby-object-model
+Notes on the implementation of ruby object model in MRI
 }}}1

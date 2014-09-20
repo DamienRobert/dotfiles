@@ -17,12 +17,12 @@ end
 def plam(x)
   z=x+x
   puts "z is #{z}"
+  # start a REPL session
   binding.pry
   puts "next: z is #{z}"
   return z
 end
 
-# start a REPL session
 #binding.pry
 puts ploum
 

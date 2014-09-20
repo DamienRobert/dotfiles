@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# vim: ft=ruby
+require 'config/process_files'
+require 'config/computers'
+
+$VERBOSE=2 #warnings
+include DR::CLILogging
+logger.level=Logger::INFO
+logger.progname=$0
+
+
+def generate(computer)
+	puts "## -> eruby files (type=#{computer})"
+	outdir=Pathname.new(ENV['HOME'])
+	indir=Pathname.new(DR::Computer::CFGFILES)+"generate/eruby"
+	computer=DR::Computer.new(computer)
+	DR::Process.process_dir(computer,indir,outdir, autogenerate:true,keep_backup:true)
+end
+
+case ARGV[0]
+when nil 
+	list = ['current']
+else
+	list=ARGV
+end
+list.each do |l|
+	generate(l)
+end

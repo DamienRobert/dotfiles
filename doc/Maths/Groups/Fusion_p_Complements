@@ -1,0 +1,100 @@
+Transfert et Fusion:
+-------------------
+cf http://for.mat.bham.ac.uk/P.J.Flavell/fusion.pdf
+
+O^p et O_p'
+-----------
+
+Déf: O_p'(G) and O^p(G)
+O_p'(G) est le plus grand sous-groupe normal de G de card premier à p
+O^p(G) est le plus petit sous-groupe normal de G / G/O^p soit un p-groupe.
+On a O_p'(G) <= O^p(G)
+
+Th: <=>
+- G a un p-complément normal
+- O^p(G)=O_p'(G)
+- Le produit de deux p'-éléments est un p'-élément
+- Tout p'-élément est dans O_p'(G)
+- L'intersection de O^p(G) avec un Sylow est l'indentité.
+Dans ce cas le complément normal est donné par O^p(G)=O_p'(G)
+
+Rem: Si G a un p-complément normal, alors les ss-groupes et les quotients
+aussi.
+
+Rem: 
+- O_p' et O^p sont caractéristiques
+- O_p' est engendré par les q-Sylows, q \ne p, ou encore par les
+  p'-éléments, ou encore par les <g^p^m, g \in G> où |G|=p^m alpha
+- O^p(O^p(G))=O^p(G), O_p'(G/O_p'(G))=1
+- G' O^p(G) est le plus petit sous-groupe normal dont le quotient est un
+  p-groupe abélien
+- Si P est un p-Sylow, G=P O^p(G)
+
+Fusion
+------
+
+Déf: H controle la fusion dans P par rapport à G ssi deux éléments de P
+conjugués dans G le sont déjà dans H.
+
+Ex: si P p-Sylow abélien, alors N_G(P) contrôle la fusion de P.
+
+Rem (Lemme 5.5): N_G(P) contrôle la fusion de P ssi pour tout x \in P,
+C_G(x) agit transitivement sur les p-Sylows contenant x.
+
+Th 5.7: Si N_H(P) controle la fusion de P pour tout p-groupe local H de G,
+P p-sylow de H, alors N_G(P) contrôle la fusion de P où P p-Sylow de G.
+
+(Rappel: un groupe local est le normalisateur ou le centralisateur d'un
+p-groupe)
+
+Th (fusion, 4.10): Si P<=H est un p-groupe de Sylow de G dont H contrôle la
+fusion; alors G/G'O^p(G) = H/H'O^p(H)
+(Si H ne contrôle pas la fusion alors on a juste un épimorphisme 
+G/G'O^p(G) <<- H/H'O^p(H))
+
+Examples 
+- (exo 14): si P \inter P^g \ne 1 => P=P^g, alors
+N_G(P) contrôle la fusion de P par rapport à G.
+Si de plus N_G(P)=P (ie P \inter P^g est toujours d'intersection nulle si g
+\not \in P), alors P controle la fusion de P donc G a un p-complément.
+C'est la version du th de Frobenius prouvé dans Serre.
+- (exo 19): Si W est faiblement clos dans P (ie le seul conjugué de W
+  inclus dans P est W), et W est dans le centre de P, alors
+  N_G(W) controle la fusion de P.
+  On retrouve le cas P abélien mentionné plus haut.
+
+Burnside
+--------
+
+Th de Burnside:
+Si P est dans le centre de son normalisateur, G a un p-complément.
+
+Cor: Si p est le plus petit facteur premier de |G| et P un p-Sylow est
+cyclique, alors G a un p-complément
+
+Pr: N_G(P)/C_G(P) s'injecte dans Aut(P); comme P est abélien P contient
+C_G(P) donc N_G(P)/C_G(P) est un p'-groupe. Si P est cyclique, Aut P est de
+card p^(m-1) (p-1) donc N_G(P)/C_G(P) a un ordre divisant p-1, donc est
+trivial par hypothèse sur p, donc on peut appliquer Burnside.
+
+Frobenius
+---------
+
+Th 5.1 (Cas abélien)
+Let P ∈ Sylp (G) and suppose that P is abelian. Set N = N_G(P). Then the following hold:
+(a) N controls fusion in P with respect to G.
+(b) G/G' O^p(G) = N/N' O^p(N), that is, N controls abelian p-factor groups.
+(c) G has a normal p-complement if and only if N has a normal p-complement.
+That is, N controls normal p-complements in G.
+
+Pr: On a vu (a) et on sait que (a)=>(b). Pour (c) on vérifie que si N a un
+p-complément normal, P est dans le centre de N et donc on peut appliquer
+Burnside.
+
+Th 5.10 Frobenius’ Normal p-Complement Theorem Let P ∈ Sylp (G). The
+following are equivalent.
+(a) G has a normal p-complement.
+(b) Every p-local subgroup of G has a normal p-complement.
+(c) P controls fusion in P with respect to G. In other words, any two elements
+of P that are conjugate in G are already conjugate in P .
+(d) Pour tout p-groupe Q non-trivial, N_G(Q)/C_G(Q) est un p-groupe.

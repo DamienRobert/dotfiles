@@ -67,6 +67,7 @@ Normalisation
 
 Si R \subset S, f \in R[x] unitaire, f=gh dans S[x] avec g,h unitaires.
 Alors les coeffs de g et h sont entiers sur R.
+Donc si R est int. clos dans S, g,h \in R[x]
 
 - La normalisation commute à la localisation
 - La normalisation d'une variété affine X est une variété affine finie au
@@ -108,7 +109,7 @@ blowup de X le long de Y. Z -> X est donc un iso sur X\Y.
 La préimage de Y dans Z correspond à B_IR/IB_I R=gr_I R, qui est le cône
 tangent.
 
-Si M=M_0 > M_1 > ... est une filtration I-stable ssi B_I M est fini sur B_I M.
+Si M=M_0 > M_1 > ... est une filtration I-stable ssi B_I M est fini sur B_I R.
 En particuliar, gr_I M est alors fini sur gr_I R.
 
 Artin-Rees: si M' \subset M modules finis, R noetherien. Si M a une

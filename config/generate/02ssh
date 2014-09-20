@@ -1,0 +1,23 @@
+#!/bin/zsh
+echo "## -> ssh (~/.ssh/authorized_keys)"
+
+SSHDIR="$HOME/.ssh"
+AUTHFILE="$SSHDIR/authorized_keys"
+rm $AUTHFILE
+touch $AUTHFILE
+echo "#Generated: @$(date --iso-8601=seconds)" >>$AUTHFILE
+
+cat $SSHDIR/id_ed25519.pub >> $AUTHFILE
+cat $SSHDIR/id_ecdsa.pub >> $AUTHFILE
+[[ $MYHOSTTYPE != "perso" ]] && cat $SSHDIR/id_rsa.pub >> $AUTHFILE
+
+case $MYHOSTTYPE in
+	phare)
+		cat $SSHDIR/id_androidkey.pub >> $AUTHFILE
+		;;
+esac
+case $MYHOSTNAME in
+	plafrim)
+		cat $SSHDIR/id_dsa.pub >> $AUTHFILE
+		;;
+esac

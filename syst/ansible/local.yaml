@@ -1,0 +1,8 @@
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: copy
+      #copy: src=/tmp/ploum dest=/tmp/plim
+      synchronize: src=/tmp/ploum/ dest=/tmp/plim/
+      synchronize: src=../generate/local/Feanor/ dest=/tmp/plim/

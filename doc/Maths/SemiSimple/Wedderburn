@@ -1,0 +1,68 @@
+Algèbres Semi Simples
+=====================
+
+* http://en.wikipedia.org/wiki/Artin%E2%80%93Wedderburn_theorem
+
+An (Artinian [en particulière une K-alg de dim finie]) semisimple ring R is
+isomorphic to a product of finitely many ni-by-ni matrix rings over
+division rings Di, for some integers ni, both of which are uniquely
+determined up to permutation of the index i. In particular, any simple left
+or right Artinian ring is isomorphic to an n-by-n matrix ring over a
+division ring D, where both n and D are uniquely determined.
+
+It follows from the Jordan–Hölder theorem that, while the decomposition
+into a direct sum of irreducible subrepresentations may not be unique, the
+irreducible pieces have well-defined multiplicities. In particular, a
+representation of a finite group over a field of characteristic zero is
+determined up to isomorphism by its character.
+
+Ex: http://en.wikipedia.org/wiki/Maschke%27s_theorem
+    Maschke's Theorem. Let G be a finite group and K a field whose characteristic does not divide the order of G. Then K[G], the group algebra of G, is semisimple.
+    De manière équivalente les G-modules sont semi-simples.
+
+http://en.wikipedia.org/wiki/Representation_theory_of_finite_groups
+    Theorem. C[G] ≅ \sum_V \bar{V}\otimes_G V where the sum is taken over the inequivalent G-irreducible representations V.
+
+* http://en.wikipedia.org/wiki/Central_simple_algebra
+
+A centrale simple sur K, alors A= M_n(S), S à division.
+(centrale/K veut dire que Z(A)=K)
+S à division, k corps maximal inclus dans S, alors
+S est de dim m^2 sur k et S \tens k = M_m(S) (ie k splitting field de A).
+
+Indice A := Degree S := m.
+Exposant A=Ordre(S) dans le groupe de Brauer.
+Exposant A | Indice A.
+
+- If S is a simple subalgebra of a central simple algebra A then dim_K S divides dim-K A.
+- If D is a central division algebra over K for which the index has prime factorisation
+    indice(D) = \prod_{i=1}^r p_i^{m_i}
+  then D has a tensor product decomposition
+     D = \otimes_{i=1}^r D_i
+  where each component Di is a central division algebra of index p_i^{m_i},
+  and the components are uniquely determined up to isomorphism.
+
+
+* http://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem
+
+Let A and B be simple rings, and let k be the centre of B.
+Suppose further that the dimension of B over k is finite, i.e. that B is a
+central simple algebra. Then given k-algebra homomorphisms
+    f, g : A → B
+there exists a unit b in B such that for all a in A[1][2]
+    g(a) = b · f(a) · b^−1.
+In particular, every automorphism of a central simple k-algebra is an inner
+automorphism.
+
+Ex: http://en.wikipedia.org/wiki/Schur%27s_lemma
+If M and N are two simple modules over a ring R, then any homomorphism f: M
+→ N of R-modules is either invertible or zero. In particular, the
+endomorphism ring of a simple module is a division ring.
+
+Schur's lemma is frequently applied in the following particular case. Suppose that R is an algebra over the field C of complex numbers and M = N is a finite-dimensional simple module over R. Then Schur's lemma says that the endomorphism ring of the module M is a division ring; this division ring contains C in its center, is finite-dimensional over C and is therefore equal to C. Thus the endomorphism ring of the module M is "as small as possible".
+ie si V G-irréd, End_G(V)=\C.
+
+Generalisation: A module is said to be strongly indecomposable if its endomorphism ring is a local ring. For the important class of modules of finite length, the following properties are equivalent (Lam 2001, §19):
+  -  A module M is indecomposable;
+  -  M is strongly indecomposable;
+  -  Every endomorphism of M is either nilpotent or invertible.

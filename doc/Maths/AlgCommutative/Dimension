@@ -1,0 +1,161 @@
+Systèmes de paramètres
+======================
+
+Si I=(x_1,...,x_m) alors codim I <=m (et même si P minimal sur I, codim P<=m);
+réciproquement, si P premier de codim m, alors il existe x_1,...,x_m tel
+que P soit minimal sur I=(x_1,...,x_m)
+
+Séquences régulières
+====================
+{x_1,...,x_m} \subset I idéal strict de R est régulière si
+x_i est non diviseur de zéro sur R/(x_1,...,x_{i-1})
+
+depth(I)=longueur d'une (=de toutes) séquence régulière maximale
+
+Prop: Si R local et depth I=(x_1,...,x_m)=m, alors x_1,...,x_m est
+régulière.
+
+Th: depth(I)<=codim(I)
+    (et même <= tout chaine maximale qui va d'un premier minimal au dessus
+    de I à un idéal associé)
+Cor: si depth I=(x_1,...,x_m)=m, alors codim I=m
+
+Si (R,m) local, {x_1,...,x_n} \subset m, alors
+dim R/(x_1,...,x_n)>=dim R - n
+Si x_i régulière, il y a égalité.
+
+Prop: (R,m) régulier ssi depth(m)=dim R = codim m; et dans ce cas toute
+base de m/m^2 est une séquence régulière de longueur dim R.
+
+Intersection complète
+=====================
+
+S est intersection complète si S=R/I où R est régulier et I engendré par
+une séquence régulière. S est alors Cohen-Macauley.
+
+Prop: Si S est intersection complète, alors pour toute surjection R->>S avec R
+régulier, le noyau I est engendré par une séquence régulière.
+
+Ex: 
+- les variétés lisses sont localement intersection complètes
+(car localement ce sont des anneaux réguliers; si on les plonge dans un
+espace vectoriel affine, l'idéal de définition est localement engendré par
+un suite régulière par ce qui précède)
+
+Si I=(x_1,...,x_n) alors depth I<=codim I<=n. 
+Si R est Cohen-Macauley, alors depth I=codim I et s'il
+y a égalité codim I=n, alors x_1,...,x_n est régulière.
+
+Ex: Si S est factoriel, idéal de codimension 1=idéal principal, donc
+toutes les hypersurfaces sont engendrées par un élément.
+
+Dimensions
+==========
+
+Th de la fibre: (R,m)->(S,n) morphisme local
+dim S<=dim S/mS+ dim R; avec égalité si going down (ex: S/R plat)
+
+Rem: On a toujours codim_S mS <= codim_R m (regarder les systèmes de
+paramètres), ce qui donne l'interprétation géométrique ci-après pour les
+variétés. *Attention*: codim_S mS n'est pas égal à dim S_m!
+
+Th d'altitude de Nagata:
+R \subset T anneau intègres, T/R de type fini.
+Alors dim T_p <= dim R_p + dim fibre générique.
+Si R univ caténaire et p est dans l'image de Spec T, on a égalité, et même
+pour tout Q maximal dans la préimage de p:
+dim T_Q=dim R_p + dim fibre générique
+
+Si Q premier dans T au-dessus de p, on a toujours
+dim T_Q+dim T_P/QT_P <= dim R_p + dim fibre générique
+(car le terme de gauche est <= dim T_P).
+Mais si R est univ caténaire, on a égalité.
+
+Rem: dim fibre générique=deg tr_R(T)
+     dim T_P/QT_P = deg tr_{R/P}(T/Q)
+
+Passage à un idéal max:
+----------------------
+
+Si Q \subset R est un premier minimal et les idéaux maximaux sont denses,
+alors par prime avoidance il existe P dans R maximal tel que le seul idéal
+minimal de R_P soit Q_P.
+
+Interprétation géométrique
+--------------------------
+
+Soit f:Y->X un morphisme de schémas, W \subset X irréductible, Z une
+composante irréductible de f^-1(W) dominant W.
+Alors dim Z >= dim W + dim fibre générique (=dim Y-dim X)
+            (= si f(Z) rencontre un certain ouvert, par platitude générique)
+
+Joujou avec les fibres
+----------------------
+(cf GeoAlg/Dimension où ce passage est mieux expliqué)
+
+S/R de types finis, R univ caténaire, Sp/pSp non vide.
+
+1) Q idéal max de Sp/pSp, on a (th de la fibre):
+dim S_Q/pS_Q >= dim S_Q - dim R_p (= si plat)
+
+Or dim S_Q-dim R_p= dim fibre générique (th d'altitude)
+Donc dim S_Q/p S_Q>= dim fibre générique (= si plat)
+(rem: ça se voit aussi via la semi continuité supérieure de dim f^-1 o f)
+
+Si de plus les points fermés sont denses, Q_0 premier minimal de S_p/pS_p,
+par la prop précédente il existe Q max, dim S_p/Q_0 S_p = dim S_Q/pS_Q
+Donc dim S_p/Q_0 S_p >= dim fibre générique (= si plat, on retrouve que
+toutes les composantes des fibres sont de dim la dim générique pour un
+morphisme plat)
+
+2) de plus, dans l'extension R/pR - S/Q_0 S, on a
+dim S/Q_0 S = dim R/pR+ dim fibre générique de cette extension (pour une variété
+ou une ext CM)
+     = dim S_p/Q_0S_p + dim R/pR
+D'où dim S/Q_0 S = dim R/pR + dim S_p/Q_0 S_p
+                 >= dimfibre générique + dim R/pR (= si plat)
+
+3) dim S/pS c'est le max des dim des composantes de f^-1(pbar)=Q_0 \union
+... Q_i
+dim S_p/pS_p c'est le max des composantes de f^-1(p), ie c'est le max des
+dimensions des fibres génériques des composantes précédentes
+
+Si R et S sont des variétés, dim S/Q_i=dim R/pR + dim fibre générique en
+Q_i (=dim S_p/Q_i Sp)
+Donc  dim S/pS=dim S_p/pS_p + dim R/pR
+
+Rappel: si f:Y->X, la fonction n(y)=dim f^-1(f(y)) est semi-cont
+supérieurement.
+ie: y/n(y)>=d est fermé
+ie: si q se spécialise en p, n(p)>=n(q)
+
+Examples
+========
+
+1) Projection de l'hyperbole: la fibre gén est de dim 0, mais la fibre en 0
+   est vide (le th de dim ne s'applique que si la fibre est non vide).
+   C'est plat.
+
+2) (x,y)->(xy,y). Dim fibre générique: 0, mais en (0,0) on a une droite:
+   saut de dimension. Ce n'est pas plat.
+
+3) Un exemple ou le going down fails:
+soit X un plan que l'on replie sur lui même entre deux droites A et B.
+Soit W une courbe dans X, qui intersecte A en Z0 et B en Z'0.
+Soit Z le point Z'0 mis sur A, et Z' le point Z0 mis sur B.
+Alors f^-1(f(W)) a pour composantes W, Z et Z' (dim 1, 0, 0)
+Aucune composante contenant Z ne s'envoit dans f(W) de manière dense, donc
+pas de going down, donc ce n'est pas plat (ce qui se voit aussi car les
+composantes ne sont pas équidimensionnelles)
+
+4) Si je combine 2) et 3), en repliant la droite verticale passant par 1 sur (0,0), on a que f^-1(0,0)=Oy \union 1.
+Les composantes irréd sont de dim != 1.
+
+
+5) Si P est un idéal premier (pas forcément maximal) dans un anneau local R, 
+et R->S est locale, alors si R est régulier on a codim PS <= codim P, mais
+ce n'est plus vrai dans le cas général. Ex (Exo 10.6 - Eisenbud):
+R=k[x,y,z,t]/(xs-yt), S=R/(x,y), P=(s,t) \subset R.
+codim P = 1 mais codim PS=2.
+(two planes in 4-space meeting in a point lie on the cone over a quadric
+surface)

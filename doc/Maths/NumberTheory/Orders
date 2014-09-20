@@ -1,0 +1,80 @@
+# Conducteur (Serre, Ch III $4)
+
+A Dedekind, B cloture dans une extension séparable L de K=Frac(A)
+C \subset B ayant même corps des fractions.
+
+Le conducteur f est le plus grand idéal de B inclus dans C
+                    l'annulateur du C-module B/C
+                    (B*:C*) ie {x \in L/ xC* \subset B*}
+Si C* est invertible (comme C-idéal fractionnaire), d'inverse c, alors
+f=c D_{B/A}^{-1}, ie c=D_{B/A}*f
+
+Rem ($6)
+Si L=K(x), et C=A[x], f le polynôme minimal de x, alors
+- C*=1/f'(x)A[x] est un module libre de base x^i/f'(x)
+- le conducteur est égal à f'(x) D_{B/A}^{-1}
+
+Rappel ($7)
+La différente D_{B/A} est l'annulateur du B-module monogène \Omega^1_A(B)
+
+# The conductor square
+
+cf Eisenbud Exo 11.15 et 11.16
+
+Si c est le conducteur de R dans sa normalisation S
+(ie l'annilateur de S/R; c est un idéal de R mais aussi de S), alors on a
+le produit fibré
+R   ->  S
+|       |
+R/C -> S/C
+
+Or pour un produit fibré (où R1->S est surjectif)
+R->R1
+|   |
+R2->S
+on a la suite de Mayer-Vietoris:
+0->U(R)->U(R1)+U(R2)->U(S)->Pic(R)->Pic(R1)+Pic(R2)
+
+# Cas d'un ordre
+
+http://mathoverflow.net/questions/32050/class-number-of-non-maximal-order-in-imaginary-quadratic-function-field
+
+There is a formula that works in all degrees, not just imaginary quadratic. In a global field K, let O be integral over Z or F[t] (F a finite field) and be "big", i.e., it has fraction field K. Let 𝔠 be the conductor ideal of O in its integral closure R. Then
+h(O)=h(R)/[R×:O×] φR(𝔠)/φO(𝔠),
+where φO(𝔠) is the number of units in O/𝔠 and φR(𝔠) is the number of units in R/𝔠. This is derived in Neukirch's alg. number theory book in the number field case, but it goes through to any one-dimensional Noetherian domain with a finite residue rings and a finite class group. In the imag. quadratic case the unit index [R×:O×] is 1 most of the time so you don't notice it.
+
+Both φR(𝔠) and φO(𝔠) can be written in the form N(𝔠)∏𝔭⊃𝔠(1−1/N(𝔭)), where the ideal norm N means the index in R or O and 𝔭 runs over primes in R or O for the two cases.
+
+# Critère de Dedekind
+(à ne pas confondre avec le critère de Dedekind qui dit que si (O_K:Z[x])
+n'est pas disible par p (en particulier si p^2 ne divise pas le
+discriminant de x), alors on peut lire la factorisation de p dans O_K en
+regardant la décomposition du pol min de x dans F_p.
+cf math.stanford.edu/~conrad/154Page/handouts/dedekindcrit.pdf
+  www.math.uconn.edu/~kconrad/.../dedekindf.pdf
+  and "Factoring ideals after Dedekind")
+
+Il s'agit d'un critère qui dit quand Z[x] \subset O_K est maximal
+localement en p. Cf 
+Henri Cohen, A course in computational number theory, Th 6.1.4
+http://books.google.fr/books?id=hXGr-9l1DXcC&pg=PA305&lpg=PA305&dq=dedekind+criteria&source=bl&ots=ywd5ENzIJg&sig=BG-2RDDhaN9weqU2r0NMPtbuOCo&hl=en&sa=X&ei=HjtlU6a2FOeK0AXK04HQBQ&redir_esc=y#v=onepage&q=dedekind%20criteria&f=false
+
+# Réseaux et idéaux
+
+http://mathoverflow.net/questions/17555/alternative-proof-of-unique-factorization-for-ideals-in-a-dedekind-ring/17667#comment55473_26178
+
+ Imaginary quadratic rings of integers are also nicer because in that case the inverse of an ideal class is the same as its complex conjugate. There's a simple proof of that fact here: math.umass.edu/~weston/oldpapers/cnf.pdf (theorem 2.13 on page 30); this is also the approach used in chapter 11 of Artin's /Algebra/. I don't know if this argument can be generalized to higher degree number fields; it seems like there would be difficulties extending this technique to non-Galois extensions of Q. –  Alison Miller May 27 '10 at 21:34
+
+ Alison and David: the correct involution to use on ideal classes which generalizes the inverse formula to higher degree is dual lattices. If K is a number field and L is a Z-lattice in K with dual lattice L' (I mean dual w.r.t. the trace-pairing K x K ---> Q, as used in defining the different ideal for instance) then the "master formula" is LL' = R(L)', where R(L) = {x in K : xL \subset L} is the order associated to L. Now in the special case that L = Z[a], R(L) = (1/f'(a))Z[a] for f = min. poly. of a over Q. Passing to Z[a]-ideal classes, the eqn. LL' = R(L)' becomes [L][L'] = [1]. –  KConrad May 28 '10 at 5:22
+
+ What's very special about the quadratic setting is that in a quadratic field all orders have the form Z[a] for some a, hence all Z-lattices L in the field are invertible fractional ideals relative to their natural associated order R(L), which is the only order w.r.t which the lattice could be an invertible fractional ideal at all. To emphasize that this is very special to the quadratic case, one can show that in every number field of degree greater than 2 there are infinitely many Z-lattices L that are not invertible as fractional R(L) ideals. :( –  KConrad May 28 '10 at 5:25
+
+http://mathoverflow.net/questions/137605/class-numbers-of-orders
+
+ @DavidSpeyer: Any (full) Z-lattice in a number field is a fractional ideal for its multiplier ring, so you can always interpret the lattice as a fractional ideal for an order. –  KConrad Jul 26 '13 at 10:45
+
+http://mathoverflow.net/questions/112250/orders-of-number-fields?rq=1
+
+ 4.) Is every ideal I of  also a proper -ideal as is the case for the maximal order? That is, has ring of multipliers R exactly . (The rings of multipliers R⊂K is the subring of elements α so that α⋅I⊂I). Certainly ⊂R.
+
+ For (4): if I is an inv. frac. O-ideal then I is a proper O-ideal. To say that the inv. frac. O-ideals are the proper O-ideals is equivalent to saying the Z-dual O^∨ is an invertible fractional O-ideal. This condition on the Z-dual is satisfied if O=Z[α] for an α, which covers all quad. orders, but if [K:Q]>2 there are inf. many orders O in K containing a noninv. fractional O-ideal s.t. R=O –  KConrad Nov 13 '12 at 7:44

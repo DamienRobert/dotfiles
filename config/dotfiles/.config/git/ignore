@@ -1,0 +1,77 @@
+# latex #
+#########
+#*.aux
+#*.log
+#*.toc
+#*.tmp
+#*.bbl
+#*.out
+#*.blg
+#*.thm
+#*.bcf
+#*.nav
+#*.run.xml
+#*.snm
+#.fdb_latexmk
+out/
+*.tex.project.vim
+.synctex.gz
+*.pdf
+*.ps
+*.dvi
+
+#documents
+*.odt
+*.doc
+*.xls
+*.ppt
+
+#no backup
+*.nobackup
+
+# Compiled source #
+###################
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.gz
+*.xz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+#gpg are usually best ignored
+*.gpg
+
+# Merge #
+*.orig
+
+#images
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+*.xpm
+*.pbm
+
+#fonts
+*.ttf
+*.otf
+
+# Other vcs #
+.svn
+.hg
+
+#my patches
+.patches/

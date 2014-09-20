@@ -1,0 +1,7 @@
+#Note: its better to use install_git.rb
+cd ~/opt/dist/git
+VERSION=$(git describe)
+PREFIX="$HOME/opt/packages/git-$VERSION"
+#export NO_CURL=true
+make prefix=$PREFIX
+make prefix=$PREFIX install

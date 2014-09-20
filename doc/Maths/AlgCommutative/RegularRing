@@ -1,0 +1,9 @@
+Th: (R,P) anneau local régulier, (A,Q) algèbre noeth sur R, PA \subset Q.
+Alors (i) A/R plat <=> depth(PA,A)=dim R
+      (ii) Si A est Cohen-Macauley, A/R plat <=> dim A=dim R+dim A/PA
+
+Th: (R,P) anneau local régulier, A/R fini, A équidim
+     A Cohen-Macauley <=> A R-module libre
+
+Rem: Module plat sur k[x_1,...,x_n]=>libre (Serre-Quillen)
+Donc si B/k[x_1,...,x_n] entier, B Cohen-Macauley <=> B libre

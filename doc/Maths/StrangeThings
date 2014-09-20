@@ -1,0 +1,14 @@
+- http://en.wikipedia.org/wiki/Exotic_R4
+R^4 a des structures exotiques, et c'est le seul R^n dans ce cas
+
+- Aut(S_n) est donné par les autos intérieurs, sauf pour n=6
+
+forum:alt.bavardage.maths#9657
+- La somme de Minkowski de deux convexes C^\infty dans
+le plan est C^6 mais pas forcément C^7 (en fait, elle est C^{20/3}, et
+l'exposant dépend de la dimension ; mais c'est moins surprenant si on
+dit ça, donc c'est un peu une arnaque).
+- il y a plein de résultats autour des groupes finis
+(où en général un truc exceptionnel décèle un groupe sporadique qui se
+cache), comme le fait que A_n a un multiplicateur de Schur égal à 2
+pour tout n sauf 6 ou 7 auquel cas il vaut 6.

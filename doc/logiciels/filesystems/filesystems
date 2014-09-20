@@ -1,0 +1,22 @@
+    ext3 can generally be avoided: it is often slower than ext4 or xfs, yet it has the more limited feature set; for example, it is a little more prone to fragmentation. However, its greatest limitation came in the form of the maximum volume size of “only” 16 TB: with todays drive capacities (up to 4 TB for a single drive), it will quickly give up. Moreover, to reach these capacities you had to increase its block size, and this will lead to greater wasted space. 
+    ext4 and xfs are two mature, reliable filesystems that can be used everywhere, form server space to laptop hard disk. Ext4 has very good write and metadata performances, but slightly lower read speed than xfs; 
+    btrfs is generally slower than ext4 or xfs, but it has many unique features (eg: snapshots). 
+
+In light of these considerations, for the general desktop Linux user I recommend the use of ext4 or xfs. Remember that ext4 great metadata handling should give you shorter waiting times when you are managing large number of small file – for example, during system updates. On the other hand, very good read speed and fragmentation resilience give xfs an edge in mostly-read tasks – which are the tasks commonly executed by home users.
+
+On server space, though, I really recommend EXT4: its performances with databases are very well balanced, leading to very good scores.
+
+Some words for btrfs: its main point is to be a feature rich filesystem, not the fastest one. These advanced features are built primarily for server environments; home users will rarely use the advanced btrfs capabilities to full extent. Anyway, it remain a very young filesystem: it is probably too much untested to be used to keep vital data and applications. Let it mature and then Linux users will have a very good, flexible filesystem.
+
+
+Note jfs: très stable, très peu CPU hungry
+
+Special fs
+==========
+
+ramfs, tmpfs (ramfs with more features), rootfs (for initrd extraction into
+ram): https://www.kernel.org/doc/Documentation/filesystems/ramfs-rootfs-initramfs.txt
+
+squashfs: SquashFS is a compressed read-only file system for Linux.
+It is often combined with a union mount filesystem, such as UnionFS or aufs
+http://en.wikipedia.org/wiki/SquashFS

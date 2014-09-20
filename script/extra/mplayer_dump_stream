@@ -1,0 +1,128 @@
+# vim: ft=zsh
+#!/bin/zsh
+help() {
+	echo "mymplayer -fps [--endpos|--writefps|--get] movie
+	Get/correct the fps setting of a movie	
+mymplayer -dump url
+	Read a stream and dump it"
+	exit 1
+}
+
+[[ $# -eq 0 ]] && help
+fps=
+dump=
+audio=
+
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		-h|-help|--help ) shift ; help ;;
+		-fps ) shift; fps=true ;;
+		-dump ) shift; dump=true ;;
+		-nocrash ) shift; nocrash=true ;;
+		*) break;;
+	esac
+done
+
+if [[ -n $fps ]]; then
+  ENDPOS=20;
+  WRITEFPS=;
+  GET=;
+  
+  while true;
+  do
+    case $1 in
+      -- ) break ;;
+      -e | --endpos ) shift; ENDPOS=$1; shift ;;
+      -w | --writefps ) shift; WRITEFPS=true ;;
+      -g | --get ) shift; GET=true ;;
+      *) break;;
+    esac
+  done
+  echo "ENDPOS: $ENDPOS";
+  
+  if [[ -n $GET ]];
+  then
+    mplayer -identify -nosound -vc dummy "$@" | grep "^ID_VIDEO_FPS=\|^ID_FILENAME=" 
+  else
+    for i in "$@";
+    do
+      mplayer  -identify -benchmark -vc null -vo null -nosound -endpos $ENDPOS $i;
+        FPS=
+        if [[ -n $WRITEFPS ]];
+        then 
+          echo "Enter the correct FPS of the movie:"
+          read FPS;
+          if [[ -n $FPS ]]; then
+            echo "fps=$FPS" >> "$i.conf"
+          fi
+        fi
+    done;
+  fi
+  exit 0
+fi
+
+if [[ -n $dump ]]; then
+  set -f
+  IFS='^M
+  '
+  # i.e. un caractère ^M, un espace et un retour à la ligne
+  case $1 in
+      http://*)  wget -O - $1;;
+      *://*) printf '%s\n' $1;;
+      *) cat "$1"; echo;;
+  esac | {
+      while read -r A; do
+          URL=
+          case $A in
+              rtsp://*) URL=$A;;
+              *href='"mms://'*)
+                  URL=${A#*href=\"}
+                  URL=${URL%\"*};;
+          esac
+          case $URL in
+              '') ;;
+              *) mplayer -dumpstream $URL
+          esac
+      done
+      }
+      exit 0
+fi
+
+if [[ -n $nocrash ]]; then
+  for movie in "$@"; do
+    #funnily with -ass some files that would crash do not crash anymore
+    mplayer -ass -cache 8192 -fs "$movie"
+    if [[ $? != 0 ]]; then 
+      mplayer "$movie"
+    fi
+  done
+  exit 0
+fi
+
+
+#						************************************************
+#						**** Your system is too SLOW to play this!	****
+#						************************************************
+#
+#Possible reasons, problems, workarounds:
+#- Most common: broken/buggy _audio_ driver
+#  - Try -ao sdl or use the OSS emulation of ALSA.
+#  - Experiment with different values for -autosync, 30 is a good start.
+#- Slow video output
+#  - Try a different -vo driver (-vo help for a list) or try -framedrop!
+#- Slow CPU
+#  - Don't try to play a big DVD/DivX on a slow CPU! Try some of the lavdopts,
+#		 e.g. -vfm ffmpeg -lavdopts lowres=1:fast:skiploopfilter=all.
+#- Broken file
+#  - Try various combinations of -nobps -ni -forceidx -mc 0.
+#- Slow media (NFS/SMB mounts, DVD, VCD etc)
+#  - Try -cache 8192.
+#- Are you using -cache to play a non-interleaved AVI file?
+#  - Try -nocache.
+#Read DOCS/HTML/en/video.html for tuning/speedup tips.
+#If none of this helps you, read DOCS/HTML/en/bugreports.html.
+
+# lowres=1 n'est pas reconnu sur archlinux ->
+#mplayer	-lavdopts fast:skiploopfilter=all -framedrop -hardframedrop -nocache

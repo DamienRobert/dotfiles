@@ -15,4 +15,3 @@ case "$1" in
 esac
  
 #exec gnome-session-save --gui
-

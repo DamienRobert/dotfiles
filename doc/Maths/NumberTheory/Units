@@ -23,7 +23,7 @@ si c'est un plongement complexe c'est |\phi_i(u)|^2.
   une racine de l'unité.
   [Pr: par ce qui précède il suffit de prouver que ||x||_j=1 pour tout
   plongement complexe j, mais ça vient du fait que les plongements
-  commutent à la conjugation pour un corps CM. Cf:
+  commutent à la conjugaison pour un corps CM. Cf:
   http://math.stackexchange.com/questions/39856/sums-of-roots-of-unity
   http://math.stackexchange.com/questions/4323/are-all-algebraic-integers-with-absolute-value-1-roots-of-unity]
   Application: si x \in Z[\zeta_n] est de valeur absolue 1, alors x est une

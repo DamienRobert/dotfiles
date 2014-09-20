@@ -1,0 +1,76 @@
+Control Master:
+http://unix.stackexchange.com/questions/24005/how-to-close-kill-ssh-controlmaster-connections-manually
+
+From the manual:
+
+    -O ctl_cmd
+    Control an active connection multiplexing master process. When the -O option is specified, the ctl_cmd argument is interpreted and passed to the master process. Valid commands are: check (check that the master process is running), forward (request forwardings without command execution), cancel (cancel forwardings), exit (request the master to exit), and stop (request the master to stop accepting further multiplexing requests).
+
+Older versions only have check and exit, but that's enough for your purpose.
+
+ssh -O check host.example.com
+
+If you want to delete all connections (not just the connection to a particular host) in one fell swoop, then fuser /tmp/ssh_mux_* or lsof /tmp/ssh_mux_* will list the ssh clients that are controlling each socket. Use fuser -HUP -k tmp/ssh_mux_* to kill them all cleanly (using SIGHUP as the signal is best as it lets the clients properly remove their socket).
+
+Multiple identities
+==================
+
+http://sealedabstract.com/code/github-ssh-with-multiple-identities-the-slightly-more-definitive-guide/
+
+It appears the order in which it tries keys is:
+1. agent identities
+2. -i arguments
+3. config files
+4. default (~/.ssh{identity,id_dsa,id_rsa})
+
+When, ideally, I would want it to be:
+1. -i arguments
+2. config files
+3. agent identities
+4. default
+
+But according to gmane.network.openssh.devel:20330 newer version of openssh
+already do that.
+
+Background
+==========
+-N  Do not execute a remote command.
+-n  Redirects  stdin from /dev/null
+-f  Requests  ssh to go to background just before command execution.
+    (implies -n)
+-T  Disable ptty
+
+ex: ssh -fNT -D 44000 ens
+ssh -f -R 
+
+Escape characters
+=================
+
+~.     Disconnect.
+~^Z    Background .
+~#     List forwarded connections.
+~&     Background ssh at logout when waiting for forwarded connection /
+       X11 sessions to terminate.
+~?     Display a list of escape characters.
+~B     Send  a BREAK to the remote system
+~C     Open command line.  Currently this allows the addition  of  port forwarding.
+~R     Request rekeying of the connection (only useful for SSH protocol
+       version 2 and if the peer supports it).
+~V     Decrease the verbosity (LogLevel) when errors are being  written
+       to stderr.
+~v     Increase  the verbosity (LogLevel) when errors are being written
+           to stderr.
+
+Ctl cmd
+=======
+
+-O ctl_cmd
+       Control  an active connection multiplexing master process.  When
+       the -O option is specified, the ctl_cmd argument is  interpreted
+       and passed to the master process.  Valid commands are: ``check''
+       (check that the master process is running), ``forward'' (request
+       forwardings  without command execution), ``cancel'' (cancel for‐
+       wardings), ``exit'' (request the master to exit),  and  ``stop''
+       (request  the  master  to  stop  accepting  further multiplexing
+       requests).
+ex: ssh -O exit ens

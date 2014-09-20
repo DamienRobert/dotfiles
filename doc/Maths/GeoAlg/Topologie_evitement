@@ -14,7 +14,7 @@ P_i0, contradiction.
 Interprétation géométrique:
 ==========================
 si E et F sont une collection d'espaces irréducibles d'un schéma affine, et
-q'un espace dans E ne contient pas un espace dans F, alors il existe un
+qu'un espace dans E ne contient pas un espace dans F, alors il existe un
 ouvert affine élémentaire qui intersecte chaque élément de F, mais aucun
 élément de E.
 

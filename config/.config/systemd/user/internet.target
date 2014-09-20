@@ -1,3 +1,0 @@
-[Unit]
-Description=Services needing internet
-AllowIsolate=yes

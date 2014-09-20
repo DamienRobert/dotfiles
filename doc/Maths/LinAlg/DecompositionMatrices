@@ -1,0 +1,187 @@
+http://en.wikipedia.org/wiki/Matrix_decomposition
+
+## LU decomposition
+    Applicable to: square matrix A
+    Decomposition: A=LU, where L is lower triangular and U is upper triangular
+    Related: the LDU decomposition is A=LDU, where L is lower triangular with ones on the diagonal, U is upper triangular with ones on the diagonal, and D is a diagonal matrix.
+    Related: the LUP decomposition is A=LUP, where L is lower triangular, U is upper triangular, and P is a permutation matrix.
+
+Any square matrix A admits an LUP factorization. If A is invertible, then it admits an LU (or LDU) factorization if and only if all its leading principal minors are nonsingular. If A is a singular matrix of rank k , then it admits an LU factorization if the first k leading principal minors are nonsingular, although the converse is not true.
+
+If a square, invertible matrix has an LDU factorization with all diagonal entries of L and U equal to 1, then the factorization is unique. In that case, the LU factorization is also unique if we require that the diagonal of L (or U) consists of ones.
+
+## Rank factorization
+
+    Applicable to: m-by-n matrix A of rank r
+    Decomposition: A=CF where C is an m-by-r full column rank matrix and F is an r-by-n full row rank matrix
+    Comment: The rank factorization can be used to compute the Moore-Penrose pseudoinverse of A, which one can applies to obtain all solutions of the linear system Ax=b.
+
+## Cholesky decomposition
+
+    Applicable to: square, symmetric, positive definite matrix A
+    Decomposition: A=U^TU, where U is upper triangular with positive diagonal entries
+    Comment: the Cholesky decomposition is unique
+    Comment: the Cholesky decomposition is also applicable for complex hermitian positive definite matrices
+    Comment: An alternative is the LDL decomposition which can avoid extracting square roots.
+
+## QR decomposition
+
+    Applicable to: m-by-n matrix A
+    Decomposition: A=QR where Q is an orthogonal matrix of size m-by-m, and R is an upper triangular matrix of size m-by-n
+    Comment: The QR decomposition provides an alternative way of solving the system of equations Ax=b without inverting the matrix A. The fact that Q is orthogonal means that Q^TQ=I, so that Ax=b is equivalent to Rx=Q^Tb, which is easier to solve since R is triangular.
+
+## Polar Decomposition
+
+The polar decomposition of a square complex matrix A is a matrix decomposition of the form A = UP
+where U is a unitary matrix and P is a positive-semidefinite Hermitian
+matrix. Intuitively, the polar decomposition separates A into a component
+that stretches the space along a set of orthogonal axes, represented by P,
+and a rotation represented by U.
+
+## Singular value decomposition
+
+    Applicable to: m-by-n matrix A.
+    Decomposition: A=UDV^H, where D is a nonnegative diagonal matrix, and U and V are unitary matrices, and V^H denotes the conjugate transpose of V (or simply the transpose, if V contains real numbers only).
+    Comment: The diagonal elements of D are called the singular values of A.
+    Comment: like the eigendecomposition below, the singular value decomposition involves finding basis directions along which matrix multiplication is equivalent to scalar multiplication, but it has greater generality since the matrix under consideration need not be square.
+
+# Composantes principales:
+
+http://en.wikipedia.org/wiki/Proper_orthogonal_decomposition
+
+PCA is mathematically defined as an orthogonal linear transformation
+that transforms the data to a new coordinate system such that the greatest
+variance by some projection of the data comes to lie on the first
+coordinate (called the first principal component), the second greatest
+variance on the second coordinate, and so on.
+
+The principal components transformation can also be associated with another matrix factorisation, the singular value decomposition (SVD) of X,
+X=U \Sigma W^T
+Here Σ is a n-by-p rectangular diagonal matrix of positive numbers σ(k), called the singular values of X; U is an n-by-n matrix, the columns of which are orthogonal unit vectors of length n called the left singular vectors of X; and W is a p-by-p whose columns are orthogonal unit vectors of length p and called the right singular vectors of X.
+
+In terms of this factorisation, X^T X=W \Sigma^2 W^T
+Comparison with the eigenvector factorisation of X^TX establishes that the right singular vectors W of X are equivalent to the eigenvectors of X^TX, while the singular values σ_k of X are equal to the square roots of the eigenvalues λ_k of X^TX.
+
+Using the singular value decomposition the score matrix T can be written
+T=XW=U\Sigma
+so each column of T is given by one of the left singular vectors of X multiplied by the corresponding singular value.
+
+Autrement dit on regarde la matrice symétrique X^T X=W \Sigma^2 W^T
+Le changement de variable T=XW donne la matrice T=U \Sigma
+ie l'élément de plus grande variance suivi d'une rotation
+donc les vecteurs T_i correspondent aux éléments de plus grande variance
+successives (via des projections orthogonales)
+
+===========================================================================
+
+# Orthogonal matrices:
+http://en.wikipedia.org/wiki/Orthogonal_matrix
+
+Si Q est orthogonale, il existe P orthogonale telle que
+P^-1 Q P= diag (R_1, ..., R_m, \pm 1, ..., \pm 1)
+où R_i est orthogonale de rang 2: 
+(cos \theta, -sin \theta (rotation)
+ sin \theta, cos \theta) ou
+(cos \theta, sin \theta (reflexion)
+ sin \theta, -cos \theta)
+
+A number of important matrix decompositions (Golub & Van Loan 1996) involve orthogonal matrices, including especially:
+
+    QR decomposition
+        M = QR, Q orthogonal, R upper triangular.
+    Singular value decomposition
+        M = UΣV^T, U and V orthogonal, Σ non-negative diagonal.
+    Eigendecomposition of a symmetric matrix (Decomposition according to Spectral theorem)
+        S = QΛQ^T, S symmetric, Q orthogonal, Λ diagonal.
+    Polar decomposition
+        M = QS, Q orthogonal, S symmetric non-negative definite.
+
+# Symmetric matrix
+http://en.wikipedia.org/wiki/Positive-definite_matrix
+
+Spectral theorem: S = QΛQ^T, S symmetric, Q orthogonal, Λ diagonal (réelle).
+
+## Simultaneous diagonalization
+
+A symmetric, and a symmetric and positive-definite matrix can be
+simultaneously diagonalized (in terms of simultaneous diagonalisation of
+two quadratic forms):
+Let M be a symmetric and N a symmetric and positive-definite matrix.
+X^T M X = Λ and X^T N X = I
+(but note that this is no longer an orthogonal diagonalization; because X
+may not be orthogonal. M and N are codiagonalisable via an orthogonal
+diagonalisation when they commute as usual).
+
+# Unitary matrix
+Unitary: U*=U^-1
+
+    U is diagonalizable; that is, U is unitarily similar to a diagonal matrix, as a consequence of the spectral theorem. Thus U has a decomposition of the form
+        U = VDV^*
+    where V is unitary and D is diagonal and unitary (so the values are of
+    modulus 1).
+
+# Hermition matrix
+A=A*
+    A=U D U^*, D diagonale hermitienne, ie réelle
+
+# Normal matrix
+Normal: AA*=A*A
+
+A is normal if and only if there exists a unitary matrix U
+such that
+    A=U D U^*
+where D is a diagonal matrix. Then, the entries of the diagonal of D are the eigenvalues of A. The column vectors of U are the eigenvectors of A and they are orthonormal. Unlike the Hermitian case, the entries of D need not be real.
+
+# Symplectic matrix
+http://en.wikipedia.org/wiki/Symplectic_matrix
+
+M^T \Omega M = \Omega
+où \Omega^T=-\Omega (skew-symmetric)
+
+Changement de base:
+    \Omega \mapsto A^T \Omega A
+    M \mapsto A^{-1} M A. 
+OPS que \Omega=(0 I; -I 0) ou que \Omega=\diag (0 1; -1 0)
+
+Rem: M est simmilaire à M^-1 donc si \lambda est valeur propre, 1/\lambda
+aussi, et \pm 1 est une valeur propre de multiplicité paire.
+Ie le poly caractéristique est un poly réciproque.
+
+Ex: http://mathoverflow.net/questions/123765/symplectic-block-diagonalization-of-a-real-symmetric-hamiltonian-matrix
+  # Réduction symplectique de matrices hamiltoniennes symmétriques
+
+http://gauss.uc3m.es/web/personal_web/fdopico/papers/SIMAX2009-symplectic.pdf
+Décomposition de matrices symplectiques en (A 0; 0 D), et (1 B; 0 1) (1 0; C
+1)
+
+========================================================================
+http://en.wikipedia.org/wiki/Smith_normal_form
+
+Let A be a nonzero m×n matrix over a principal ideal domain R. There exist invertible m \times m and n \times n-matrices S, T so that the product S A T is
+diag(d_1,...,d_r,0,...,0) with d_i \mid d_{i+1}
+
+-> Sur un corps donne la forme rang
+
+http://en.wikipedia.org/wiki/Hermite_normal_form
+
+* A matrix with integer entries is in Hermite normal form (HNF) if
+    All nonzero rows (rows with at least one nonzero element) are above any rows of all zeroes (all zero rows, if any, are at the bottom of the matrix).
+    The leading coefficient (the first nonzero entry from the left, also called the pivot) of a nonzero row is always strictly to the right of the leading coefficient of the row above it; moreover, it is positive.
+    All entries in a column above a leading entry are nonnegative and strictly smaller than the leading entry.
+    All entries in a column below a leading entry are zeroes (implied by the first two criteria).
+
+* Nonsingular square matrices
+In particular, a nonsingular square matrix with integer entries is in Hermite normal form (HNF) if
+  - it is upper triangular,
+  - its diagonal entries are positive,
+  - in every column, the entries above the diagonal are non-negative and smaller than the entry on the diagonal.
+
+* Existence and uniqueness of the Hermite normal form
+
+For every m×n matrix A with integer entries there is a unique m×n matrix H, in (HNF), with integer entries such that
+    H=UA with U ∈ GLn(Z)
+(i.e. U is unimodular).
+Equivalently, H is the unique matrix in (HNF) with integer entries that can be obtained from A by means of a finite sequence of elementary row operations over Z (the only admissible row multiplications are by ±1).
+
+-> Sur un corps donne la row echelon form
+http://en.wikipedia.org/wiki/Row_echelon_form

@@ -1,12 +1,31 @@
 #!/usr/bin/env ruby
 #encoding: utf-8
 #Inspired by git://github.com/olivierverdier/zsh-git-prompt.git
+
+#Usage:
+#gitstatus.rb [options] git_dirs
+#    -p, --[no-]prompt                To be used in shell prompt
+#                                     This ensure that color ansi sequence are escaped so that they are not counted as text by the shell
+#        --[no-]porcelain             Don't format the status but output it in a machine convenient format
+#    -s, --[no-]status                List file
+#                                     Print the output of git status additionally of what this program parse
+#    -c, --[no-]color                 Color output
+#                                     on by default
+#        --[no-]sequencer             Show sequencer data (and also look for bare directory)
+#                                     on by default
+#        --indent spaces              Indent to use if showing git status
+#                                     2 by default, 0 for empty ARGV
+#        --describe sha1/describe/contains/branch/match/all/magic
+#                                     How to describe a detached HEAD
+#                                     'magic' by default
+
+
 require "open3"
 require "pathname"
 require "shellwords"
 require "optparse"
 require "simplecolor"
-require "dr/git"
+#require "dr/git"
 SimpleColor.mix_in_string
 
 module GitStatus
@@ -18,7 +37,7 @@ module GitStatus
       if !@interrupted
         begin
           if Open3.respond_to?(:capture3) then
-            out, error, status=Open3.capture3(*args) 
+            out, error, status=Open3.capture3(*args)
             return out, status.success?
           else
             out = `#{args} 2>/dev/null`
@@ -38,7 +57,7 @@ module GitStatus
       return msg
     end
   end
-  
+
   class Git
     include GitStatus::Run
     attr_reader :msg
@@ -92,23 +111,29 @@ module GitStatus
     def describe_detached_head
       case $opts[:describe]
       when "sha1"
-        describe=(run "git rev-parse --short HEAD").chomp!
+        describe=(run "git rev-parse --short HEAD").chomp
       when "describe"
-        describe=(run "git describe HEAD").chomp!
+        describe=(run "git describe HEAD").chomp
       when "contains"
-        describe=(run "git describe --contains HEAD").chomp!
+        describe=(run "git describe --contains HEAD").chomp
       when "branch"
-        describe=(run "git describe --contains --all HEAD").chomp!
+        describe=(run "git describe --contains --all HEAD").chomp
       when "match"
-        describe=(run "git describe --tags --exact-match HEAD").chomp!
+        describe=(run "git describe --tags --exact-match HEAD").chomp
       when "all" #try --contains all, then --all
-        describe=(run "git describe --contains --all HEAD").chomp!
-        describe=(run "git describe --all HEAD").chomp! if describe.nil? or describe.empty?
+        describe=(run "git describe --contains --all HEAD").chomp
+        describe=(run "git describe --all HEAD").chomp if describe.nil? or describe.empty?
+      when "magic" 
+        describe1=(run "git describe --contains --all HEAD").chomp
+        describe2=(run "git describe --all HEAD").chomp
+        describe= describe1.length < describe2.length ? describe1 : describe2
+        describe=describe1 if describe2.empty?
+        describe=describe2 if describe1.empty?
       else
-        describe=(run($opts[:describe])).chomp!
+        describe=(run($opts[:describe])).chomp
       end
-      if describe.nil? or describe.empty?
-        describe=(run "git rev-parse --short HEAD").chomp!
+      if describe.empty?
+        describe=(run "git rev-parse --short HEAD").chomp
       end
       @branch=":#{describe}"
     end
@@ -116,7 +141,11 @@ module GitStatus
     def parse_head(head)
       @ahead=@behind=0
       if (head =~ /## Initial commit on (\S*)/) then
-       @branch="#{$1}…"
+       @branch=$1
+       if @branch =~ /(\S*)\.\.\./
+         @branch=$1
+       end
+       @branch+="…"
       elsif (head =~ /## (\S*) \(no branch\)/) then
         describe_detached_head
       elsif (head =~ /## (\S*)(.*)/) then
@@ -152,16 +181,16 @@ module GitStatus
         index = line[0];
         workdir = line[1];
         #puts "index: #{index}, workdir: #{workdir}"
-        if index=~/[DRAMT]/ then
+        if index=~/[DRAMTC]/ then
           @staged+=1
         end
-        if workdir=~ /[MT]/ then
+        if workdir=~ /[DMT]/ then
           @changed+=1
         end
-        if workdir=='?' && index=='?' then
+        if workdir=='?' || index=='?' then
           @untracked+=1
         end
-        if workdir=='U' && index=='U' then
+        if workdir=='U' || index=='U' then
           @conflicts+=1
         end
       end
@@ -257,7 +286,7 @@ module GitStatus
   end
 end
 
-$opts={:color => true, :indent => nil, :sequencer => true, :describe => "all"}
+$opts={:color => true, :indent => nil, :sequencer => true, :describe => "magic"}
 optparse = OptionParser.new do |opt|
   opt.banner= "#{File.basename($0)} [options] git_dirs"
   opt.on("-p", "--[no-]prompt", "To be used in shell prompt", "This ensure that color ansi sequence are escaped so that they are not counted as text by the shell") do |v|
@@ -278,7 +307,7 @@ optparse = OptionParser.new do |opt|
   opt.on("--indent spaces", Integer, "Indent to use if showing git status", "2 by default, 0 for empty ARGV") do |v|
     $opts[:indent]=v
   end
-  opt.on("--describe sha1/contains/branch/match/all", "How to describe a detached HEAD", "'all' by default") do |v|
+  opt.on("--describe sha1/describe/contains/branch/match/all/magic", "How to describe a detached HEAD", "'magic' by default") do |v|
     $opts[:describe]=v
   end
 end
@@ -286,6 +315,10 @@ optparse.parse!
 
 if !$opts[:color]
   SimpleColor.enabled=false
+end
+
+def prettify_dir(dir)
+  return dir.sub(/^#{ENV['HOME']}/,"~")
 end
 
 if $opts[:porcelain]
@@ -304,8 +337,8 @@ else
   end
   args.each do |dir|
     g=GitStatus::Git.new(dir)
-    puts "#{if dir then dir+": "; end}#{g.prompt}"
-    if $opts[:status]
+    puts "#{prettify_dir(dir)+": " if dir}#{g.prompt}"
+    if $opts[:status] and g.git?
       g.msg.lines.each do |line|
         print " "*$opts[:indent] + line
       end

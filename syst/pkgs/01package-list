@@ -1,0 +1,21 @@
+#!/bin/sh
+groups > groups-$MYHOSTNAME
+
+echo "== packages -Qdt for $MYHOSTNAME:"
+pacman -Qdt
+#-> pacman_feed -Qi pacman -Qqdt
+
+#-> eval $(./packages.rb rm-unused)
+#-> eval $(./packages.rb rm-extra)
+#-> eval $(./packages.rb rm) #both of the above
+#-> eval $(./packages.rb get) #install missing pkgs
+#-> eval $(./packages.rb pristine) #both of the above
+
+echo "== list of packages"
+./packages.rb >packages-"$MYHOSTNAME"
+echo "done (press a key)"
+read
+
+echo "== list of dependency"
+ ~/script/pacman/pacman_optdep > packagesopt-"$MYHOSTNAME"
+echo "done"

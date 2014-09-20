@@ -1,0 +1,122 @@
+Liens:
+http://mathoverflow.net/questions/167323/everywhere-differentiable-function-that-is-nowhere-monotonic
+http://math.stackexchange.com/questions/112067/how-discontinuous-can-a-derivative-be
+
+https://groups.google.com/forum/#!msg/sci.math/dZB-nWYPCCg/JMCoHhvkS4EJ
+ HISTORICAL ESSAY ON CONTINUITY OF DERIVATIVES 
+
+https://groups.google.com/forum/#!msg/sci.math/gLKVOmePExU/H3EQ0HVpoj4J
+ Set of discontinuities of a derivative 
+
+https://groups.google.com/forum/#!msg/sci.math/JSZiDgWxlPk/jolpTO7A2wUJ
+ References for Continuity Sets 
+
+https://groups.google.com/forum/#!msg/sci.math/8vp1XK0-KNg/UOmRLJmd0xsJ
+ ESSAY ON NON-DIFFERENTIABILITY POINTS OF MONOTONE FUNCTIONS 
+
+https://groups.google.com/forum/#!msg/sci.math/ZBCCYjtCSMA/19OUtU88RwAJ
+ HISTORICAL ESSAY ON F_SIGMA LEBESGUE NULL SETS 
+
+We say a real-valued function f is Baire one if f is the
+pointwise limit of some sequence of continuous functions.
+Examples of Baire one functions are functions with countably
+many points of continuity, semi-continuous functions,
+derivatives, and functions f:R^2 --> R that are separately
+continuous in each variable (but not necessarily functions
+from R^n to R for n > 2). A function is Baire two if it is
+a pointwise limit of Baire one functions.
+
+Given a function f:R --> R, we let C(f) and D(f) denote the sets
+of continuity and discontinuity points, respectively, of f.
+
+--------------------------------------------------------------
+cf https://groups.google.com/forum/#!msg/sci.math/JSZiDgWxlPk/jolpTO7A2wUJ
+
+THEOREM 1:  If f:R --> R is monotone (or even of
+            bounded variation), then D(f) is countable.
+
+THEOREM 1': If E is any countable subset of R, then
+            there exists a strictly increasing function
+            f:R --> R such that D(f) = E.
+
+THEOREM 2:  If f:R --> R is an arbitrary function, then
+            D(f) is an F_sigma subset of R.
+
+THEOREM 2': Given any F_sigma subset E of R, then there
+            exists a Baire two function f:R --> R such that
+            D(f) = E.
+
+REMARK: Very few, if any, of the references point out that
+        f can be chosen to be a Baire two function, but the
+        actual constructions are clearly Baire two functions.
+
+THEOREM 3:  If f:R --> R is a Baire one function, then D(f)
+            is an F_sigma meager (= first category) subset of R.
+
+REMARK: This implies that, for each Baire one function,
+        C(f) is dense in R, c-dense in R, and even co-meager
+        in every open interval.
+
+THEOREM 3': Given any F_sigma meager subset E of R, then
+            there exists a Baire one function such that
+            D(f) = E. In fact, f can be chosen to be
+            semi-continuous or to be a bounded derivative.
+
+REMARK: A meager F_sigma set can be c-dense in R, have a
+        measure zero complement, or to even have a Haudsorff
+        h-measure zero complement for any pre-assigned measure
+        function h.
+
+THEOREM 4:  If f:[a,b] --> R is Riemann integrable, then
+            D(f) is an F_sigma meager & measure zero subset
+            of R.
+
+THEOREM 4': Given any F_sigma meager & measure zero subset E
+            of [a,b], then there exists a Riemann integrable
+            function f:[a,b] --> R such that D(f) = E.
+
+--------------------------------------------------------------
+
+PROOFS OF 4 & 4':
+
+References omitted because this follows from Theorem 2
+and the fact -- whose proof can be found in most any real
+analysis text -- that a bounded function f:[a,b] --> R is
+Riemann integrable if and only if D(f) has measure zero.
+
+Regarding our more precise (and apparently stronger for one
+direction) version, note that any F_sigma measure zero set
+is a countable union of closed measure zero sets, and hence
+a countable union of nowhere dense sets.
+
+Interestingly, despite the ease in which this more precise
+version follows from results in virtually every graduate
+level real analysis text, I have not seen this more precise
+version explicitly stated outside of a handful of research
+papers. Rooij/Schikhof [44] comes the closest that I've seen.
+
+Their Exercise 6.I (p. 42) asks the reader to verify that every
+F_sigma measure zero set is meager and their Theorem 7.5 (p. 44)
+implies that D(f) is F_sigma. Even Oxtoby [40], which gives
+an extensive overview of various measure and category analogs,
+doesn't mention that D(f) is meager for a Riemann integrable f,
+despite having (1) a proof of the Riemann integrability
+continuity condition (pp. 33-34), (2) a proof that any D(f)
+set is F_sigma (p. 31), and (3) the observation that any
+F_sigma Lebesgue measure set is meager (bottom of p. 51).
+What makes this result more interesting is that for a Riemann
+integrable function f, D(f) is actually "infinitely smaller
+than" some meager-and-measure-zero sets. More precisely, there
+exists a set E such that E is meager and E has measure zero
+such that E cannot be covered by countably many F_sigma measure
+zero sets (the latter being the discontinuity sets of Riemann
+integrable functions). Thus, not only is it an understatement
+to describe the size of the discontinuity sets of Riemann
+integrable functions by saying they have measure zero (because
+they are also small in the Baire category sense), but it's even
+an understatement to describe their size by saying they are
+simultaneously measure zero and meager! For more about the size
+classification that discontinuity sets of Riemann integrable
+functions belong to, see the following post.
+HISTORICAL ESSAY ON F_SIGMA LEBESGUE NULL SETS
+http://groups.google.com/group/sci.math/msg/00473c4fb594d3d7

@@ -1,9 +1,0 @@
-systemd-cgls
-systemd-cgtop
-systemd-analyse blame
-
-sudo grep systemd-private /proc/*/mountinfo
-findmnt
-
-loginctl session-status
-loginctl show-session

@@ -1,0 +1,85 @@
+# vim: filetype=sh:
+[ -z "$_INITVARS" ] && . "$HOME/.initvars"
+
+case "$_INIT" in
+*e*)
+  mylog "session" "initenv ($0 $@) [already read]"
+  ;;
+*)
+  _INIT="${_INIT}e";
+  export _INIT
+  mylog "session" "initenv ($0 $@)"
+
+###### HOSTTYPE #####
+HOSTNAME="$HOST"
+[ -z "$HOSTNAME" ] && HOSTNAME=`hostname`
+[ -z "$UID" ] && UID=`id -u`
+[ -z "$GID" ] && GID=`id -g`
+MYTMP=/var/tmp
+MYTMPFS=/tmp
+[ -d "$HOME/tmp" ] && MYTMP="$HOME/tmp"
+XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/${UID}}"
+[ -d "$XDG_RUNTIME_DIR" ] || XDG_RUNTIME_DIR="$MYTMPFS"
+
+#MYHOST* are set in .initvars
+export MYHOSTNAME MYHOSTTYPE HOSTNAME
+export UID GID MYTMP MYTMPFS XDG_RUNTIME_DIR
+
+######  Reglages locaux ######
+if [ -d $XDG_RUNTIME_DIR ]; then
+  [ -z "$MPD_HOST" ] && MPD_HOST="$XDG_RUNTIME_DIR/mpd_sock"
+  export MPD_HOST
+  ## Stuff started by systemd ##
+  if [ -x /usr/bin/systemctl -a -d $XDG_RUNTIME_DIR ]; then
+    [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh_auth_sock"
+    [ -z "$DBUS_SESSION_BUS_ADDRESS" ] && DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/dbus/user_bus_socket"
+    export SSH_AUTH_SOCK DBUS_SESSION_BUS_ADDRESS
+  fi
+fi
+
+################### PATHS ##################
+PATH="$HOME/bin:$HOME/mine/bin:$HOME/opt/bin:$HOME/opt/arch/usr/bin:$PATH"
+MANPATH="$HOME/opt/man:$HOME/opt/arch/usr/share/man:$MANPATH"
+INFOPATH="$HOME/opt/info:$HOME/opt/arch/usr/share/info:$INFOPATH"
+# terminer par un colon rajoute le manpath genere par manpath
+CPATH="$HOME/opt/include:$HOME/opt/arch/usr/include:$CPATH"
+LD_LIBRARY_PATH="$HOME/opt/lib:$HOME/opt/arch/usr/lib:$LD_LIBRARY_PATH"
+LIBRARY_PATH="$LD_LIBRARY_PATH"
+PKG_CONFIG_PATH="$HOME/opt/lib/pkgconfig:$HOME/opt/arch/usr/share/pkgconfig:$HOME/opt/arch/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+RUBYLIB="$HOME/mine/ruby/lib:"
+GEM_HOME="$HOME/opt/pkgmgr/gems" #ruby
+
+export PATH MANPATH INFOPATH CPATH LIBRARY_PATH LD_LIBRARY_PATH PKG_CONFIG_PATH RUBYLIB GEM_HOME
+
+###### i18n #####
+unset LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
+      LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION
+[ -r $HOME/.config/locale.conf ] && . "$HOME/.config/locale.conf"
+export LANG LC_CTYPE 
+
+################ ENV VARS ###############
+TEXMFCNF=$HOME/latex/texmf/texmf-config/web2c: #TEX
+BIBTEX=bibtex
+export TEXMFCNF BIBTEX
+
+SHELL=`which zsh || which bash || which sh`
+EDITOR=`which vim`
+[ -x "$MYFILES/script/vi" ] && EDITOR="$MYFILES/script/vi"
+PAGER=`which less`
+DICTIONARY=francais
+VISUAL=`which gvim`
+[ -x "$MYFILES/script/gvi" ] && VISUAL="$MYFILES/script/gvi -f"
+SUDO_EDITOR="$EDITOR" #otherwise sudo use VISUAL
+LESS="-RMiqx2" # Options de less: -q:bell visuelle, -i: ignore case pour les search, -M: long prompt, -R: interpret ansi color code
+# rmq, si LESS n'est pas spécifié, dans git LESS est mis à FSRX.
+# -F: quit less  if content can fit on one screen
+# -X: Disables sending the termcap initialization and deinitialization strings  to  the  terminal.
+# -S: chop long line
+# -x2: set tabstop to 2
+export SHELL EDITOR VISUAL PAGER LESS DICTIONARY SUDO_EDITOR
+
+#enable mousewheel in gtk3 apps, cf https://bugs.archlinux.org/task/36427
+GDK_CORE_DEVICE_EVENTS=1
+export GDK_CORE_DEVICE_EVENTS
+;;
+esac

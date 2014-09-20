@@ -26,6 +26,9 @@
 - ploum "ahah 'lala
 - "ahah\"hihi\\ahah"
 - 'uhuh''ihih\ouhouh' #quoting ' need two '', \ don't need escaping
+- ploum plim plam: ahah #this is a hash
+- >
+ ploum plim plam: ahah #this is not
 
 ############################################################
 
@@ -100,6 +103,43 @@ application specific tag: !something |
   [ 2001-07-02, 2001-08-12,
     2001-08-14 ]
 
+--- #merge key
+# A merge key ('<<') can be used in a mapping to insert other mappings. If the value associated with the merge key is a mapping, each of its key/value pairs is inserted into the current mapping. 
+# death masks are?:
+#   sad: 2
+#   <<: {magnificent: 4}
+#
+#Is just like:
+#
+# death masks are?:
+#   sad: 2
+#   magnificent: 4
+
+login: &login
+   adapter: mysql
+   host: localhost
+   username: portly
+   password: 666HELL666
+
+development:
+   database: rails_dev
+   <<: *login
+
+test:
+   database: rails_test
+   <<: *login
+
+production:
+   database: rails_prod
+   <<: *login
+
+#hash
+---
+ploum.plam.plim: "ploum plam plim"
+ploum.plam.plom: "ploum plam plom"
+ploum.plum.plom: "ploum plum plom"
+plimo.plum.plom: "plimo plum plom"
+
 ###############################################
 # ASCII Art
 # new lines are conserved
@@ -135,6 +175,25 @@ application specific tag: !something |
 
   Hihi ohoh
 
+- |-
+    This text
+    with a - will strip the two empty lines and the line break
+
+
+- |+
+    This text
+    with a + will keep the two empty lines + the line break
+
+
+- | 
+    This text with default chopping
+    will keep the line break but will chop the two empty lines
+
+
+- |2
+    This set the indentation to two
+    so there are two spaces in each line
+
 --- #Default mode is folded, even inside quotes
 - A litteral
 
@@ -163,7 +222,43 @@ plain:
 quoted: "So does this
   quoted scalar.\n"
 
-! ahah: ohoh #empty tag means autodetect
+---
+#Tags:
+
+! ahah: ! [ohoh,! uhuh] #empty tag means autodetect str,seq,map
+#During parsing, nodes lacking an explicit tag are given a non-specific tag: “!” for non-plain scalars, and “?” for all other nodes. 
+#YAML processors should resolve nodes having the “!” non-specific tag as
+#“tag:yaml.org,2002:seq”, “tag:yaml.org,2002:map” or
+#“tag:yaml.org,2002:str” depending on their kind. This tag resolution
+#convention allows the author of a YAML character stream to effectively
+#“disable” the tag resolution process. By explicitly specifying a “!”
+#non-specific tag property, the node would then be resolved to a “vanilla”
+#sequence, mapping, or string, according to its kind. 
+#
+#    If a node has no tag property, it is assigned a non-specific tag that
+#    needs to be resolved to a specific one. This non-specific tag is “!”
+#    for non-plain scalars and “?” for all other nodes. This is the only
+#    case where the node style has any effect on the content information.
+#
+#    It is possible for the tag property to be explicitly set to the
+#    “!” non-specific tag. By convention, this “disables” tag
+#    resolution, forcing the node to be interpreted as
+#    “tag:yaml.org,2002:seq”, “tag:yaml.org,2002:map”, or
+#    “tag:yaml.org,2002:str”, according to its kind.
+#
+#    There is no way to explicitly specify the “?” non-specific
+#    tag. This is intentional.
+
+? ohoh : ploum #this is not a tag but a key mapping
+
+# Global
+%TAG ! tag:example.com,2000:app/
+---
+!foo "bar" #!<!foo> "bar"
+
+%TAG !e! tag:example.com,2000:app/
+---
+!e!foo "bar" #!<tag:example.com,2000:app/foo> "bar"
 
 %TAG ! tag:clarkevans.com,2002:
 --- !shape
@@ -179,6 +274,7 @@ quoted: "So does this
   start: *ORIGIN
   color: 0xFFEEBB
   text: Pretty vector drawing.
+- ! [normal, sequence]
 
 --- !<tag:clarkevans.com,2002:invoice>
 invoice: 34843
@@ -236,4 +332,4 @@ struct: !ruby/struct
 #   a_object: *id001
 #   number: 7
 
-# A merge key ('<<') can be used in a mapping to insert other mappings. If the value associated with the merge key is a mapping, each of its key/value pairs is inserted into the current mapping. 
+#cf also: http://www.yaml.org/YAML_for_ruby.html

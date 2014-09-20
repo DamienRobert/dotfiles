@@ -1,0 +1,8 @@
+---
+# This playbook bootstrap a virtual machine
+
+- name: apply common configuration to all nodes
+  hosts: all
+  sudo: yes
+  roles:
+    - common

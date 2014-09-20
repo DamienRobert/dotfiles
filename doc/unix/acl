@@ -19,7 +19,11 @@ the mask. This is what is printed by ll in the group permission.
   Effective permissions           r- 
 
 #default acl: the acl of new files
+default:name:rwx
 
+#Ex: allow a user to do stuff in a dir
+setfacl -Rm default:u:dina:rwx ploum
+setfacl -Rm u:dina:rwx ploum #affect existing files
 
 Example:
 =======

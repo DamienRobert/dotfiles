@@ -1,0 +1,81 @@
+#!/bin/zsh
+#Usage: git-topic-diverged [topics]
+#several methods to find when two topics first diverged (unlike git
+#merge-base which show the last diverged)
+
+#cf http://stackoverflow.com/questions/1527234/finding-a-branch-point-with-git/
+
+. ~/mine/script/git/git-topic-helper
+gth_topic "$@"
+topic=$gth_local
+upstream=$gth_remote
+
+#Solution from: http://stackoverflow.com/a/10849663
+#which is essentially the same as this one:
+#http://stackoverflow.com/a/1679654
+#this simply look at the first commit (in reverse topo-order that is not
+#the same, meaning it is the first point of divergence)
+branch_point_topo() {
+diff \
+     <( git rev-list "$topic" --reverse --topo-order ) \
+     <( git rev-list "$upstream" --reverse --topo-order) \
+       --unified=1 | sed -ne 's/^ //p' | head -1
+}
+
+#Solution from http://stackoverflow.com/a/4991675
+branch_point_firstparent() {
+diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "$topic") <(git rev-list --first-parent "$upstream") | head -1
+}
+
+# Solution from: http://stackoverflow.com/a/10821591
+# look at merge commit messages
+find_merge ()
+{
+    local selection extra
+    test "$2" && extra=" into $2"
+    shift; shift
+    git rev-list --min-parents=2 --grep="Merge branch '$1'$extra" --topo-order ${@:---all} | tail -1
+}
+
+branch_point_merge ()
+{
+    local first_merge second_merge merge
+    first_merge=$(find_merge $1 "" $1 $2)
+    second_merge=$(find_merge $2 $1 $first_merge)
+    merge=${second_merge:-$first_merge}
+
+    if [ "$merge" ]; then
+        git merge-base $merge^1 $merge^2
+    else
+        git merge-base $1 $2
+    fi
+}
+
+#find last time topic was merged in upstream
+last_merge() {
+  topicrev=$(git rev-parse --verify $topic)
+  git rev-list --parents $upstream | grep -m1 "[a-f0-9]\+ [a-f0-9]\+ $topicrev" | cut -d' ' -f 1
+}
+
+echo "First point of diverge between '$topic' and '$upstream' using"
+echo "- graph topology:"
+#this look at the first difference in the log (in reverse order) of topic
+#and upstream. This show the first point of divergence topologically
+branch_point_topo
+echo "- first parents:"
+#this look at the first commit that is the same in the ancestors of topic
+#and upstream. This only takes into account the first parent, so that's why
+#its different from merge-base
+branch_point_firstparent
+echo "- merge commit messages:"
+#this look at the merge message to see the oldest topic was merged in
+#upstream, and it report merge-base of that
+branch_point_merge $topic $upstream
+
+echo ""
+echo "Last time '$topic' was merged in '$upstream':"
+#    o-o-M'-o-M-U
+#       /    /
+#    o-T----'
+# Will show M
+last_merge

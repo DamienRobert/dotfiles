@@ -5,9 +5,18 @@ testdisk
   again when these symptoms are caused by faulty software, certain types of
   viruses or human error (such as accidentally deleting a Partition Table).
   Partition table recovery using TestDisk is really easy. 
+foremost: 
+  Foremost is a console program to recover files based on their headers,
+  footers, and internal data structures. This process is commonly referred
+  to as data carving.
 
 ddrescue #projet gnu
 dd_rescue #un autre similaire
 -> comme dd mais permet de continuer en cas d'erreur
+
+dd_rhelp: wrapper around dd_rescue
+   http://www.kalysto.org/utilities/dd_rhelp/index.en.html
+   -> ddrescue is better than dd_rescue+dd_rhelp
+
 http://ubuntu-rescue-remix.org/node/51:
 ddrescue est mieux (mais dd_rescue permet d'aller en arrière explicitement)

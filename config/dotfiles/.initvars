@@ -1,0 +1,26 @@
+#vim: ft=sh
+_INITVARS=t
+
+MYFILES="${MYFILES-$HOME/mine}"
+CFGFILES="${CFGFILES-$MYFILES/config}"
+DOTFILES="${DOTFILES-$CFGFILES/dotfiles}"
+
+MYHOSTNAME=$HOSTNAME
+MYHOSTTYPE=
+MYHOSTFILE="$CFGFILES/hosttype.local"
+[ -f "$MYHOSTFILE" ] && . "$MYHOSTFILE"
+
+if [ -z "$MYTMP" ]; then
+  MYTMP=/var/tmp
+  [ -d "$HOME/tmp" ] && MYTMP="$HOME/tmp"
+fi
+
+LOGDIR="$MYTMP/mylogs"
+[ -d "$LOGDIR" ] || mkdir -p "$LOGDIR"
+
+mylog() {
+  file="$1"; shift;
+  LOGFILE="$LOGDIR/$file"
+  [ -f "$LOGFILE" ] || touch $LOGFILE
+  echo "@`date --iso-8601=seconds` - $@" >> $LOGFILE
+}

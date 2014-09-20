@@ -1,0 +1,17 @@
+http://tex.stackexchange.com/questions/50069/how-to-change-white-background-of-an-included-pdf-to-transparent
+
+I'm not sure about turning anything to transparent in a PDF. PDF is not an image format, so I guess the only way is to remove the background object entriely from the pages. You could do that manually (on every page) with Acrobat professional (and probably also some free pdf editors), but if you're lucky, the following may work:
+
+    Convert your PDF into something readable with qpdf -qdf file.pdf file-redable.pdf.
+
+    Look in there for the background object. (Luck needed at this point) More often than not, it will look somewhat like this:
+
+    10 765.75 591.75 -729.75 re
+    f
+
+    That is, a filled rectangle large enough to cover the whole page.
+
+    Experimentally remove it.
+    Fix the resulting pdf with fix-qdf file-redable.pdf.
+    Try whether it worked ;-)
+    If you found the right object to remove, you can remove it in all places simultaneously with sed, for instance.

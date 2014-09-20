@@ -1,0 +1,5 @@
+---
+# This playbook contains the default variables common to all nodes.
+
+sshd_listenaddress:
+  - "{{ ansible_default_ipv4.address }}"

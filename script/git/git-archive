@@ -1,0 +1,27 @@
+#!/bin/zsh
+#inspired by https://github.com/visionmedia/git-extras/blob/master/bin/git-archive-file
+#Usage: git-archive [branch]
+#create an archive of the branch on the current directory
+
+EXT=tar.xz
+# extract current branch name
+BRANCH=$1
+[[ -z $BRANCH ]] && BRANCH=$(git current-branch -a)
+
+ARCHIVE_NAME=$(basename $(git rev-parse --show-toplevel))
+
+echo Building archive on branch \"$BRANCH\"
+# get a version string, so archives will not be overwritten when creating
+# many of them
+VERSION=$(git describe --always --tags $BRANCH)
+if [[ $VERSION == $BRANCH ]]; then
+  FILENAME=${ARCHIVE_NAME}_${BRANCH}.$EXT
+else
+  FILENAME=${ARCHIVE_NAME}_${BRANCH}_${VERSION}.$EXT
+fi
+
+OUTPUT=$(pwd)/$FILENAME
+git archive --format tar $BRANCH | xz > $OUTPUT
+
+# also display size of the resulting file
+xz -l $FILENAME

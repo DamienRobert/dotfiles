@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 # List all the dependency of a package
+# (use pactree instead)
 typeset -A walked_nodes
 result=( )
 

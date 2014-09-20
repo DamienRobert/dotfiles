@@ -1,0 +1,39 @@
+ssh gitolite@durin help
+
+#disable push temporarly (for backups for instance)
+ssh gitolite@durin writable -h
+
+#set description of a wild repo
+ssh gitolite@durin desc -h
+
+#get info on permission
+ssh gitolite@durin info -lc -ld
+
+#set permission of created wild repos
+ssh gitolite@durin perms -h
+
+Ex:
+- ssh gitolite@durin info -lc -ld
+    '-lc'       lists creators as an additional field at the end.
+    '-ld'       lists description as an additional field at the end.
+
+     C  CREATOR/..*
+ R W    DamienRobert/test       DamienRobert    Testing repository
+ R W    avisogenies
+ R W    gitolite-admin          Gitolite admin repository
+ R W    testing
+
+- ssh gitolite@durin perms -l avisogenies-paper
+  ssh git@git.math.cnrs.fr perms -l plm/drobert/lfant
+
+- git remote add durin ssh://gitolite@durin/$(basename $PWD)
+  git push --all durin
+  git remote add mathrice git@git.math.cnrs.fr:plm/drobert/$(basename $PWD)
+  git push --all mathrice
+
+#à la main sur vesath:
+git remote add origin ssh://vesath/home/robert/git/$(basename $PWD)
+ssh vesath git init --bare git/$(basename $PWD)
+git push --all
+git fetch origin
+git branch --set-upstream-to origin/master

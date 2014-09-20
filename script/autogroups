@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+#From: http://felipec.wordpress.com/2013/11/04/init/
+# -> https://gist.github.com/felipec/7303244
+
+$autogroups = {}
+
+Dir.glob('/proc/*').each do |e|
+  pid = File.basename(e).to_i
+  next if pid == 0
+  cmdline = File.read(e + '/cmdline').split("\0")
+  cmdline = cmdline.first.split(" ") if cmdline.size == 1
+  next if cmdline.empty?
+  tmp = File.read(e + '/autogroup')
+  if tmp =~ %r{^/autogroup-(\d+) nice (\d)+$}
+    autogroup = $1+" ("+$2+")"
+  else
+    autogroup = nil
+  end
+  $autogroups[autogroup] ||= []
+  $autogroups[autogroup] << [pid, cmdline]
+end
+
+$autogroups.each do |group, values|
+  puts '------------ '+group+' -------------'
+  values.each do |pid, cmd|
+    printf("%s\t%s\n", pid, cmd.join(' ')) if cmd
+  end
+end
+puts '------------------------------------------------------------------------------'

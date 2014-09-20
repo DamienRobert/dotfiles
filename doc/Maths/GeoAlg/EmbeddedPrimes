@@ -67,6 +67,7 @@ ces points génériques, alors s(x)=0 pour tout x, donc s nilpotente. Plus
 généralement, si x n'appartient pas au support de s, alors s(y)=0 pour tout
 x->y.
 [Pr: si s|x=0, alors s(x)=0, donc pour tout x->y s(y)=0]
+)
 En particulier, si X est réduit, les seuls assassins de O_X sont les points
 génériques.)
 - L'application \Gamma(U,M)->\prod_{assassins dans U} M_p est une injection

@@ -1,6 +1,7 @@
 #Abelian Varieties
 ==================
 
+http://mathoverflow.net/questions/6482/moduli-stack-of-principally-polarized-abelian-varieties
 http://mathoverflow.net/questions/108945/defining-isogenies-over-smaller-fields
 http://mathoverflow.net/questions/108918/nonsingular-zeroes-are-algebraic
 http://mathoverflow.net/questions/109248/on-simple-factors-of-modular-jacobians-endomorphism-ring-and-simplicity-of-mod-p
@@ -20,6 +21,38 @@ http://math.stackexchange.com/questions/219027/affine-algebraic-varieties-define
 http://math.stackexchange.com/questions/210022/affine-space-over-non-algebraically-closed-field
 http://mathoverflow.net/questions/139118/what-does-the-jacobian-of-a-curve-tell-us-about-the-curve
 http://mathoverflow.net/questions/139338/compactifying-the-space-of-indecomposable-abelian-varieties
+http://mathoverflow.net/questions/140791/a-frustrating-cohomology-class-on-the-moduli-of-abelian-surfaces
+http://mathoverflow.net/questions/142069/p-stabilization-of-siegel-modular-forms
+  #On modular correspondance and modular curves
+http://mathoverflow.net/questions/146653/average-rank-of-elliptic-curves-excluding-those-of-low-rank
+http://mathoverflow.net/questions/147195/some-special-complex-tori
+http://mathoverflow.net/questions/152986/katz-mazur-for-abelian-varieties
+http://mathoverflow.net/questions/160811/what-is-exceptional-about-the-prime-numbers-2-and-3
+  #On an abelian varieties of dimension d, bad primes p will be p≤2d+1
+  #On elliptic curves this give p=3, 5 (ref to Serre-Tate article)
+http://mathoverflow.net/questions/164495/possible-counterexample-to-a-theorem-assuming-langs-conjecture
+http://mathoverflow.net/questions/55953/torsion-points-in-abelian-varieties-over-number-fields
+http://mathoverflow.net/questions/159650/poincare-bundle-and-weil-pairing-for-abelian-schemes
+  #Poincaré bundle and Cartier duality for Abelian schemes (references to
+  #FGA explained and Oort's book "Commutative group schemes")
+http://mathoverflow.net/questions/173141/computing-tamagawa-numbers-for-jacobians-of-hyperelliptic-curves
+
+#Algebra
+========
+
+http://mathoverflow.net/questions/143326/polynomiality-of-functions-over-residue-rings
+http://mathoverflow.net/questions/157084/does-every-commutative-variety-of-algebras-have-a-cogenerator
+http://mathoverflow.net/questions/515/rings-over-which-every-module-is-free
+http://mathoverflow.net/questions/157974/varieties-where-every-algebra-is-free
+http://mathoverflow.net/questions/159021/groups-which-are-only-defined-up-to-conjugation
+  #Galois theory and connected groupoids, an alg closure is fixing a point on this groupoid
+http://mathoverflow.net/questions/160986/rings-for-which-no-polynomial-induces-the-zero-function
+http://mathoverflow.net/questions/7558/when-is-a-commutative-ring-the-limit-of-its-local-rings/7582#7582
+http://mathoverflow.net/questions/42430/two-questions-about-finiteness-of-ideal-classes-in-abstract-number-rings
+http://mathoverflow.net/questions/69037/categorical-definition-of-the-ideal-product-within-the-category-of-rings
+http://mathoverflow.net/questions/164516/the-existence-of-non-trivial-homomorphisms-prod-n-1-infty-mathbbz-bigo
+http://mathoverflow.net/questions/26651/is-there-a-simple-method-to-test-a-local-ring-to-be-cohen-macaulay
+http://mathoverflow.net/questions/176276/when-is-i-otimes-a-hata-cong-i-hata
 
 #Algebraic Geometry
 ===================
@@ -35,6 +68,8 @@ http://mathoverflow.net/questions/114032/restriction-of-sheaf
 http://mathoverflow.net/questions/78696/is-there-an-intuitive-reason-for-zariskis-main-theorem
 http://mathoverflow.net/questions/94838/emptyness-of-a-projective-variety
 http://mathoverflow.net/questions/65267/global-sections-of-flat-scheme-also-flat
+http://mathoverflow.net/questions/112781/about-the-definition-of-flat-morphism-flat-sheaf
+  #However, in the case of finite (or more generally affine) morphism, F is flat over Y if and only if f∗F is flat over Y. This is because is ϕ:A→B is a ring homomorphism and if M is a B-module, then M if flat over A if and only if for any prime ideal 𝔮 of B, M𝔮 is flat over A𝔭 where 𝔭=ϕ^{−1}(𝔮). 
 http://mathoverflow.net/questions/106745/characteristic-zero-and-characteristic-p-in-algebraic-geometry
 http://mathoverflow.net/questions/117238/how-to-calculate-zeroth-crystalline-cohomology
 http://mathoverflow.net/questions/117890/is-kx-1-ldots-to-kx-1-ldots-a-flat-morphism
@@ -58,6 +93,63 @@ http://mathoverflow.net/questions/28553/extra-principal-cartier-divisors-on-non-
 http://mathoverflow.net/questions/64294/gluing-along-closed-subschemes
   #when is a pushout of schemes in the category of locally ringed spaces a scheme
 http://mathoverflow.net/questions/16235/what-properties-define-open-loci-in-excellent-schemes?rq=1
+http://mathoverflow.net/questions/141480/when-is-descent-the-same-as-formal-geometry
+  #the question has a link to a nice survey on how to do Galois descent
+  #using corings
+http://mathoverflow.net/questions/13616/a-book-on-locally-ringed-spaces
+  #A locally ringed space is nothing but a local ring object (in the
+  #internal sense) in a category of sheaves over a topological space, which
+  #happens to be an example of a topos.
+  #+ Some nice references
+  #+ See also:
+  http://mathoverflow.net/questions/2314/several-topos-theory-questions
+  http://ncatlab.org/nlab/show/scheme
+http://mathoverflow.net/questions/153602/is-stackiness-transitive-and-a-couple-other-basic-questions-about-stacks
+http://mathoverflow.net/questions/48527/why-open-immersion-rather-than-open-embedding
+http://mathoverflow.net/questions/56591/what-are-the-monomorphisms-in-the-category-of-schemes
+http://mathoverflow.net/questions/109/what-do-epimorphisms-of-commutative-rings-look-like
+http://mathoverflow.net/questions/56564/what-are-the-epimorphisms-in-the-category-of-schemes
+http://math.stackexchange.com/questions/399892/what-is-the-definition-of-surjective-morphism-of-schemes
+http://mathoverflow.net/questions/144873/faithful-flatness-for-maps-of-formal-power-series-rings?rq=1
+http://mathoverflow.net/questions/1788/does-finitely-presented-mean-always-finitely-presented-answered-yes/16457#16457
+  #Very nice answer by BConrad:
+  #General Principle: If everything used can be "described" with only finitely many elements of the base ring, the objects all descend to a noetherian subring (such as Z-subalgebra generated by the finitely many elements used in the "description") and if we increase it a bit the morphisms also descend (need to kill off some relations), and if we increase it some more we can also descend all "reasonable" properties (flatness, smoothness, radiciel, surjectivity, etc.). This last step is by far the most subtle (for things like flatness). In the end, it always comes down to the fact that if something vanishes in a direct limit then it vanishes somewhere always the way, and if a direct limit of rings is 0 then the rings eventually vanish (track whether or not 1=0). 
+http://mathoverflow.net/questions/6732/what-functor-does-grassmannian-represent
+http://mathoverflow.net/questions/158769/a-curious-identity-related-to-finite-fields
+  #Nice answer by Elkies on K3 surfaces
+http://mathoverflow.net/questions/159449/why-is-naive-definition-of-non-commutative-spectrum-bad
+http://mathoverflow.net/questions/161934/quillens-motivation-of-higher-algebraic-k-theory
+  #Nice references to K-theory
+http://mathoverflow.net/questions/162098/down-to-earth-expositions-of-hodge-theory
+http://mathoverflow.net/questions/163086/do-most-degree-d-morphisms-of-pn-have-smooth-critical-locus
+http://mathoverflow.net/questions/117229/etale-site-is-useful-examples-of-using-the-small-fppf-site/117435#117435
+http://mathoverflow.net/questions/122953/smooth-projective-varieties-of-picard-number-one/
+http://mathoverflow.net/questions/118387/connectedness-principle-in-algebraic-geometry/
+http://mathoverflow.net/questions/106560/philosophy-behind-mochizukis-work-on-the-abc-conjecture
+  #Nice discussions on anabelian geometry
+http://mathoverflow.net/questions/27197/local-complete-intersections-which-are-not-complete-intersections
+  #complete intersection: defined by c equations (c=codim)
+  #loc complete intersection: local ring whose completion is a quotient of
+  #a regular local ring by a regular sequence
+  #This is indeed locally a local (in a Zariski neighboorhood) complete intersection:
+  #http://math.stackexchange.com/questions/726937/what-does-it-mean-geometrically-for-a-variety-to-be-locally-a-complete-intersect
+http://mathoverflow.net/questions/9751/is-every-smooth-affine-curve-isomorphic-to-a-smooth-affine-plane-curve
+http://mathoverflow.net/questions/54876/geometric-meaning-of-cohen-macaulay-schemes
+http://mathoverflow.net/questions/78696/is-there-an-intuitive-reason-for-zariskis-main-theorem
+http://mathoverflow.net/questions/172350/a-short-proof-for-dimrt-dimr1
+  #an elementary caracterisation of the dimension of a ring
+http://mathoverflow.net/questions/19420/what-mistakes-did-the-italian-algebraic-geometers-actually-make
+http://mathoverflow.net/questions/176863/history-of-the-connection-between-riemann-surfaces-and-complex-algebraic-curves
+http://mathoverflow.net/questions/177427/is-there-an-algorithm-to-write-down-the-27-lines-of-a-cubic-surface
+http://mathoverflow.net/questions/179194/a-question-about-zariski-dense-arguments
+
+#Algebraic Topology
+===================
+
+http://mathoverflow.net/questions/149021/why-not-a-roadmap-for-homotopy-theory-and-spectra
+http://mathoverflow.net/questions/153277/why-should-i-care-about-topological-modular-forms
+http://mathoverflow.net/questions/163921/is-there-a-homology-theory-that-gives-a-necessary-and-sufficient-condition-for
+http://mathoverflow.net/questions/177461/how-much-of-homotopy-theory-can-be-done-using-only-finite-topological-spaces
 
 #Analyse
 ========
@@ -67,6 +159,32 @@ http://math.stackexchange.com/questions/235689/pointwise-existence-of-radon-niko
 http://mathoverflow.net/questions/126923/image-of-l1-under-the-fourier-transform
 http://mathoverflow.net/questions/66377/why-is-differentiating-mechanics-and-integration-art
 http://mathoverflow.net/questions/66462/which-functions-of-one-variable-are-derivatives
+http://mathoverflow.net/questions/140628/on-the-universal-property-of-the-completion-of-an-ordered-field
+http://mathoverflow.net/questions/5892/what-is-convolution-intuitively?newsletter=1&nlcode=187216|6421
+http://mathoverflow.net/questions/1977/why-is-the-gradient-normal
+http://mathoverflow.net/questions/148866/is-there-a-function-defined-on-real-numbers-which-is-continuous-from-the-left-b
+  #une fonction continue à gauche est continue n.e.
+http://mathoverflow.net/questions/152605/generalization-of-darbouxs-theorem
+http://mathoverflow.net/questions/152823/is-a-function-with-nowhere-vanishing-derivatives-analytic
+  #réponse: oui!
+http://mathoverflow.net/questions/152834/relating-the-roots-of-polynomials-to-the-solution-sets-of-certain-functional-equ
+  #really nice proof, using Pringsheim's theorem: If the power series h(z)=∑∞n=0anzn has non-negative coefficients and radius of convergence ρ then ρ is a singularity of the function h
+http://mathoverflow.net/questions/153542/geometric-interpretation-of-the-half-derivative
+http://mathoverflow.net/questions/156799/which-smooth-compactly-supported-functions-are-convolutions
+http://mathoverflow.net/questions/157475/prove-that-there-exists-n-in-mathbbn-such-that-fn-has-at-least-n1-ze
+http://mathoverflow.net/questions/123411/using-a-quadratic-kernel-instead-of-a-linear-kernel-in-the-laplace-transform
+http://mathoverflow.net/questions/38019/zeros-of-gradient-of-positive-polynomials
+http://mathoverflow.net/questions/159423/sobolev-spaces-and-geometry
+http://mathoverflow.net/questions/72419/a-good-book-of-functional-analysis
+http://mathoverflow.net/questions/163711/i-would-like-to-have-a-counter-example-that-peanos-theorem-does-not-apply-to-sp
+http://mathoverflow.net/questions/164048/what-can-be-said-about-the-fourier-transforms-of-characteristic-functions
+http://mathoverflow.net/questions/167323/everywhere-differentiable-function-that-is-nowhere-monotonic
+  #-> Link to
+  http://math.stackexchange.com/questions/112067/how-discontinuous-can-a-derivative-be
+  #with nice examples of badly behaved derivative
+http://mathoverflow.net/questions/50548/approximating-polynomials-in-rx-using-integer-valued-polynomials
+http://mathoverflow.net/questions/50657/the-closures-in-c0-mathbbr-mathbbr-of-the-set-of-integer-valued-polyn
+http://mathoverflow.net/questions/171733/is-it-possible-to-express-int-sqrtx-sqrtx-sqrtx1dx-in-elementary-fun
 
 #Category
 =========
@@ -81,6 +199,17 @@ http://mathoverflow.net/questions/139388/example-of-an-unnatural-isomorphism
   #(Point wise isomorphic functors that are not isomorphics)
 http://mathoverflow.net/questions/139645/applications-of-lawveres-fixed-point-theorem
 http://mathoverflow.net/questions/136478/can-the-lawvere-fixed-point-theorem-be-used-to-prove-the-brouwer-fixed-point-the
+http://mathoverflow.net/questions/152242/examples-of-toposes-for-analysts
+http://mathoverflow.net/questions/169187/what-non-categorical-applications-are-there-of-homotopical-algebra
+http://mathoverflow.net/questions/170319/what-if-anything-unifies-stable-homotopy-theory-and-grothendiecks-six-functor
+http://mathoverflow.net/questions/177037/why-do-lie-algebras-pop-up-from-a-categorical-point-of-view
+
+#Complex analysis
+=================
+
+http://mathoverflow.net/questions/135819/what-is-a-branched-riemann-surface-with-cuts
+  #include a reference on Riemann surfaces and cuts
+  #cf aussi: http://math.berkeley.edu/~teleman/math/Riemann.pdf
 
 #Computer Science
 =================
@@ -88,12 +217,49 @@ http://mathoverflow.net/questions/136478/can-the-lawvere-fixed-point-theorem-be-
 http://cstheory.stackexchange.com/questions/2708/complexity-of-greatest-common-divisor-gcd
 http://cs.stackexchange.com/questions/43/language-theoretic-comparison-of-ll-and-lr-grammars
 (cf forum.sciences.informatique:2692)
+http://mathoverflow.net/questions/157409/n2-and-two-counter-machines
+http://mathoverflow.net/questions/160265/analogues-of-p-vs-np-in-the-history-of-mathematics
+http://cstheory.stackexchange.com/questions/11691/does-p-contain-languages-whose-existence-is-independent-of-pa-or-zfc-tcs-commu
+http://mathoverflow.net/questions/164931/computability-of-brauer-groups
+http://mathoverflow.net/questions/168619/is-it-easy-to-produce-hard-to-color-graphs
+http://mathoverflow.net/questions/180370/a-method-for-making-a-graph-bipartite
+
+Counter-Examples
+================
+
+http://math.stackexchange.com/questions/80802/discrete-set-inside-a-compact-space
+  #un discret fermé dans un compact est fini, mais ce n'est pas forcémment le cas si on ne le suppose plus fermé
 
 #Crypto
 =======
 
 http://crypto.stackexchange.com/questions/6395/why-is-blum-goldwasser-not-ind-cca-2-secure
 http://crypto.stackexchange.com/questions/6444/why-are-the-constants-so-simple-in-keccak
+
+#Differential Geometry
+======================
+
+http://mathoverflow.net/questions/149657/distinct-manifolds-with-the-same-configuration-spaces
+http://mathoverflow.net/questions/150335/are-there-some-other-notions-of-curvature-which-measure-how-space-curves
+http://mathoverflow.net/questions/151166/a-function-composed-with-itself-produces-the-identity
+http://mathoverflow.net/questions/158299/is-a-left-topological-group-which-is-a-manifold-a-topological-group
+http://mathoverflow.net/questions/176629/if-there-is-a-dense-geodesic-are-almost-all-geodesics-equidistributed-dense
+http://mathoverflow.net/questions/58696/why-study-lie-algebras
+http://mathoverflow.net/questions/177653/does-every-compact-manifold-exhibit-an-almost-global-chart
+http://mathoverflow.net/questions/179853/vanishing-eigenvalues-of-jacobian
+
+#Elliptic Curves
+================
+
+http://mathoverflow.net/questions/148559/isogeny-classes-and-reduction-types-of-elliptic-curves-at-primes-of-bad-reductio
+http://mathoverflow.net/questions/146622/pic-of-the-stack-of-elliptic-curves-vs-pic-of-the-coarse-space
+http://mathoverflow.net/questions/146382/legendre-relation-for-elliptic-curves
+http://mathoverflow.net/questions/149686/is-the-perimeter-of-an-ellipse-with-integer-axes-irrational
+http://mathoverflow.net/questions/149702/difference-of-j-invariant-values-and-the-abc-conjecture
+http://mathoverflow.net/questions/154655/theres-something-strange-about-sqrtd-bigj-tau-1728-big
+  #Gross-Zagier
+http://mathoverflow.net/questions/159126/is-the-modularity-theorem-currently-effective
+http://mathoverflow.net/questions/166098/s-integral-points-of-an-elliptic-curve-with-s-of-positive-density
 
 #Galois
 =======
@@ -108,11 +274,30 @@ http://mathoverflow.net/questions/30030/galois-group-as-a-sheaf/30038#30038
  #donne un lien vers: http://front.math.ucdavis.edu/0902.3464
  #("Universal covering spaces and fundamental groups in algebraic geometry
  #as schemes")
+http://mathoverflow.net/questions/20771/in-what-sense-if-any-does-the-cohomology-of-profinite-groups-commute-with-proj
+  #Galois cohomology as continuous cohomology or as direct limit of the
+  #finite galois cohomology (for the finite extensions)
+
+#Graphs
+=======
+
+http://mathoverflow.net/questions/141355/graphs-in-which-every-spanning-tree-is-an-independency-tree
+ #contains some links to caracterisations of some properties of graph
+ #according to the spanning trees they have
 
 #Groups
 =======
 
 http://mathoverflow.net/questions/139493/epimorphisms-mathbbz-mathbbn-to-mathbbz-mathbbn-are-split
+http://mathoverflow.net/questions/145026/the-non-simplicity-of-so4-and-a-4?newsletter=1&nlcode=187216|6421
+http://mathoverflow.net/questions/150949/in-any-lie-group-with-finitely-many-connected-components-does-there-exist-a-fin
+http://mathoverflow.net/questions/153740/why-we-need-to-study-representations-of-matrix-groups
+http://mathoverflow.net/questions/156156/how-can-classifying-irreducible-representations-be-a-wild-problem
+http://mathoverflow.net/questions/159401/group-cohomology-without-g-modules-a-k-a-what-does-this-bar-construction-compu
+http://mathoverflow.net/questions/160071/fractal-like-structures-arising-from-the-action-of-a-group-on-mathbbz2
+http://mathoverflow.net/questions/163694/subgroups-of-sl-3-mathbbz-that-are-finitely-generated-zariski-dense-infi
+http://mathoverflow.net/questions/167349/when-is-s-n-times-s-m-a-subgroup-of-s-p
+#For a finite group G, let m(G) denote the smallest degree of a faithful permutation representation of G. Let X1,X2,…Xt be finite simple groups with possibly some of the Xi being Abelian: then m(X1×X2×…×Xt)=∑ti=1m(Xi).
 
 #Gro-tsen:
 =========
@@ -121,6 +306,12 @@ http://mathoverflow.net/questions/108949/various-definitions-of-recursion-from-o
 http://mathoverflow.net/questions/72800/every-real-function-has-a-dense-set-on-which-its-restriction-is-continuous
 http://mathoverflow.net/questions/79535/constructing-the-surreal-numbers-as-iterated-hahn-series
 http://mathoverflow.net/questions/72590/maximal-domain-of-holomorphy-of-a-series
+http://mathoverflow.net/questions/156301/distribution-of-digits-of-pq-adic-idempotents-aka-automorphic-numbers
+
+#Hilbert (and Banach) Spaces
+===========================
+
+http://mathoverflow.net/questions/76604/trab-trba-part-2
 
 #Interesting Questions
 =====================
@@ -134,6 +325,23 @@ http://mathoverflow.net/questions/127476/analogy-between-the-exterior-power-and-
 http://mathoverflow.net/questions/138454/a-property-of-the-unit-circle
 http://mathoverflow.net/questions/138193/is-there-a-cheap-proof-of-power-savings-for-exponential-sums-over-finite-fields
 http://mathoverflow.net/questions/139140/are-there-infinitely-many-integer-polynomials-dominated-by-en-on-all-of-mat
+
+#Linear algebra
+===============
+
+http://mathoverflow.net/questions/140598/basis-removal-gives-a-basis
+  #There is a theorem about the number of bases of a general matroid:
+http://mathoverflow.net/questions/141378/is-this-lemma-in-elementary-linear-algebra-new
+  #This feels like a statement from projective geometry. ℙ(V)⊆ℙ(A⊗B) somehow "intersects enough" ℙ(A)×ℙ(B) so that dim(ℙ(V))≥dim(ℙ(A)×ℙ(B)).
+http://mathoverflow.net/questions/13526/geometric-interpretation-of-trace
+http://mathoverflow.net/questions/157472/smallest-non-zero-eigenvalue-of-a-0-1-matrix
+http://mathoverflow.net/questions/163797/properties-to-have-matrices-that-commute-in-mathrmgl-n-mathbb-c
+http://mathoverflow.net/questions/173088/a-possible-extension-of-a-determinant-inequality
+http://math.stackexchange.com/questions/23899/formulas-for-the-top-coefficients-of-the-characteristic-polynomial-of-a-matrix
+http://mathoverflow.net/questions/32133/expressing-adja-as-a-polynomial-in-a
+  + http://mathoverflow.net/questions/29271/algebraic-geometry-used-externally-in-problems-without-obvious-algebraic-stru/29359#29359
+  # How to prove Caylay-Hamilton and related identities from a geoalg point of view
+http://mathoverflow.net/questions/89069/should-the-formula-for-the-inverse-of-a-2x2-matrix-be-obvious/89079#89079
 
 #Logic
 ======
@@ -156,6 +364,35 @@ http://mathoverflow.net/questions/114083/why-skolemization
 http://mathoverflow.net/questions/139589/does-zf-imply-a-weak-version-of-hahn-banach
 http://mathoverflow.net/questions/24047/ultrafilters-and-automorphisms-of-the-complex-field
 http://mathoverflow.net/questions/78819/does-godels-incompleteness-theorem-admit-a-converse
+http://mathoverflow.net/questions/142395/is-the-field-of-constructible-numbers-known-to-be-decidable
+http://mathoverflow.net/questions/150835/does-fermats-last-theorem-hold-in-the-ordinals
+http://mathoverflow.net/questions/153092/can-we-decide-whether-small-computer-programs-halt
+http://mathoverflow.net/questions/48014/can-a-problem-be-simultaneously-polynomial-time-and-undecidable/48031#48031
+http://mathoverflow.net/questions/152787/can-an-infinite-number-of-mathematicians-guess-the-number-in-a-box-with-only-one
+http://mathoverflow.net/questions/153745/latest-stand-of-core-model-theory
+http://mathoverflow.net/questions/154554/when-does-the-choice-of-the-generic-matter
+http://mathoverflow.net/questions/155558/what-is-the-definition-of-a-large-cardinal-axiom
+http://mathoverflow.net/questions/156030/how-large-can-2-aleph-omega-be
+http://mathoverflow.net/questions/156940/godels-constructible-universe-in-infinitary-logics-a-possible-approach-to-hod
+http://mathoverflow.net/questions/157111/weak-forms-of-the-axiom-of-choice
+http://mathoverflow.net/questions/160512/is-the-notion-of-fixed-point-property-for-topological-spaces-an-absolute-notion
+http://mathoverflow.net/questions/161227/linear-maps-between-arbitrarily-chosen-vectors-of-vector-spaces-v-and-w
+http://mathoverflow.net/questions/161434/do-all-linear-orders-in-this-class-have-computable-copies
+http://mathoverflow.net/questions/161673/canonical-model-for-neg-mathsfch-and-omega-logic
+http://mathoverflow.net/questions/162651/pathological-behavior-of-borel-sets
+http://mathoverflow.net/questions/1924/what-are-some-reasonable-sounding-statements-that-are-independent-of-zfc
+http://mathoverflow.net/questions/163007/applications-of-really-large-numbers
+http://mathoverflow.net/questions/164148/is-there-a-computable-ordinal-encoding-the-proof-strength-of-zf-is-it-knowable
+http://mathoverflow.net/questions/165338/why-isnt-this-a-computable-description-of-the-ordinal-of-zf
+http://mathoverflow.net/questions/169033/is-the-invariant-subspace-problem-arithmetic
+http://mathoverflow.net/questions/173090/how-much-of-gch-do-we-need-to-guarantee-well-ordering-of-continuum
+http://mathoverflow.net/questions/179065/is-there-a-hereditary-construction-for-l
+http://mathoverflow.net/questions/179640/are-the-quaternions-not-uncountably-categorical
+  #Reference: https://people.maths.ox.ac.uk/zilber/inf-to-finite.pdf
+  #"Perfect infinities and finite approximation" sur l'utilisation de la
+  #théorie des modèles en Physique
+http://mathoverflow.net/questions/179790/is-fixed-point-property-for-posets-preserved-by-products
+http://mathoverflow.net/questions/179611/construction-of-nonmeasurable-sets
 
 #Meta
 =====
@@ -169,6 +406,71 @@ http://mathoverflow.net/questions/127045/fixed-point-theorems
 http://mathoverflow.net/questions/139607/what-are-some-deep-theorems-and-why-are-they-considered-deep
 http://mathoverflow.net/questions/4994/fundamental-examples
   #Very nice overview with link to other related meta questions!
+http://mathoverflow.net/questions/69251/is-mac-lane-still-the-best-place-to-learn-category-theory?newsletter=1&nlcode=187216|6421
+  #References to \infty-category and give a link to
+  #http://math.harvard.edu/~lurie/papers/moduli.pdf
+http://mathoverflow.net/questions/16829/what-are-your-favorite-instructional-counterexamples
+http://mathoverflow.net/questions/141157/inference-using-topological-data-analysis-is-it-worth-it-for-a-regular-statisti
+  #Give a reference for TDA and is use in stats
+http://mathoverflow.net/questions/23478/examples-of-common-false-beliefs-in-mathematics?newsletter=1&nlcode=187216|6421
+  #lots of wtf counterexamples...
+http://mathoverflow.net/questions/148574/how-did-gauss-and-contemporaries-think-of-modular-forms
+http://mathoverflow.net/questions/35468/widely-accepted-mathematical-results-that-were-later-shown-wrong
+http://mathoverflow.net/questions/24913/quick-proofs-of-hard-theorems
+http://mathoverflow.net/questions/10535/ways-to-prove-the-fundamental-theorem-of-algebra
+http://mathoverflow.net/questions/149737/what-is-the-crucial-difference-the-maynard-tao-approach-and-goldston-pintz-yildi
+http://mathoverflow.net/questions/42/which-are-the-best-mathematics-journals-and-what-are-the-differences-between-th
+http://mathoverflow.net/questions/8846/proofs-without-words
+http://mathoverflow.net/questions/152580/recreational-mathematics-where-to-search
+http://mathoverflow.net/questions/152405/examples-of-major-theorems-with-very-hard-proofs-that-have-not-dramatically-impr
+http://mathoverflow.net/questions/153069/mathematical-research-published-in-the-form-of-poems
+http://mathoverflow.net/questions/44244/what-recent-discoveries-have-amateur-mathematicians-made
+http://mathoverflow.net/questions/153302/teaching-homology-via-everyday-examples
+ -> http://mathoverflow.net/questions/60108/occurrences-of-cohomology-in-other-disciplines-and-or-nature/99237#99237
+ -> http://ncatlab.org/davidcorfield/show/intuitions+about+cohomology
+ #nice examples, like carrying is a 2-cocycle
+http://mathoverflow.net/questions/100033/interesting-mathematical-documentaries
+http://mathoverflow.net/questions/154017/counterexamples-in-universal-algebra
+http://mathoverflow.net/questions/2556/real-world-applications-of-mathematics-by-arxiv-subject-area
+http://mathoverflow.net/questions/157562/the-most-important-facts-modern-surveys-and-readable-introductions-to-p-adic-c
+http://mathoverflow.net/questions/157489/felix-klein-on-infinitesimals
+http://mathoverflow.net/questions/1714/best-online-mathematics-videos
+http://mathoverflow.net/questions/129759/modern-mathematical-achievements-accessible-to-undergraduates
+http://mathoverflow.net/questions/38639/thinking-and-explaining
+http://mathoverflow.net/questions/31879/are-there-other-nice-math-books-close-to-the-style-of-tristan-needham
+  #nice visual books
+http://mathoverflow.net/questions/879/most-interesting-mathematics-mistake
+  #How not to prove the Poincaré conjecture:
+  #http://math.berkeley.edu/~stall/notPC.pdf
+http://mathoverflow.net/questions/82087/grothendiecks-manuscript-on-topology
+http://mathoverflow.net/questions/29006/counterexamples-in-algebra
+http://mathoverflow.net/questions/168917/mistakes-in-mathematics-false-illusions-about-conjectures
+http://mathoverflow.net/questions/145065/work-of-plenary-speakers-at-icm-2014
+http://mathoverflow.net/questions/13638/which-popular-games-are-the-most-mathematical
+http://mathoverflow.net/questions/172246/how-does-one-find-out-whats-happening-in-contemporary-mathematics-research?newsletter=1&nlcode=187216|6421
+http://mathoverflow.net/questions/175833/what-recent-programmes-to-alter-highly-entrenched-mathematical-terminology-have
+http://mathoverflow.net/questions/176425/rediscovery-of-lost-mathematics
+http://mathoverflow.net/questions/176472/negative-impact-of-wrong-or-non-rigorous-proofs
+http://mathoverflow.net/questions/176975/examples-of-famous-workhorse-theorems
+http://mathoverflow.net/questions/99506/blackbox-theorems
+
+#Misc
+=====
+
+http://mathoverflow.net/questions/149770/derived-polyhedra-and-polytopes
+http://mathoverflow.net/questions/153059/distribution-of-the-evaluation-at-a-non-trivial-root-of-1-of-polynomials-with
+http://mathoverflow.net/questions/154629/can-a-unit-square-be-cut-into-rectangles-that-tile-a-rectangle-with-irrational-s
+http://mathoverflow.net/questions/159309/entropy-in-elimination-theory-or-a-brief-remark-by-gelfand-kapranov-zelevinsky
+http://mathoverflow.net/questions/159903/paradoxes-in-mathbbrn
+http://mathoverflow.net/questions/161121/who-first-defined-simply-connected-reference
+http://mathoverflow.net/questions/163348/did-nash-prove-that-every-game-or-every-symmetric-game-has-a-symmetric-equilibri
+http://mathoverflow.net/questions/162836/why-was-john-nashs-1950-game-theory-paper-such-a-big-deal
+http://mathoverflow.net/questions/151773/structures-that-turn-out-to-exhibit-a-symmetry-even-though-their-definition-does
+http://mathoverflow.net/questions/168888/who-invented-diagrammatic-algebra
+http://mathoverflow.net/questions/9754/magic-trick-based-on-deep-mathematics
+http://mathoverflow.net/questions/178139/examples-of-unexpected-mathematical-images
+http://mathoverflow.net/questions/178021/examples-of-research-on-how-people-perceive-mathematical-objects
+http://mathoverflow.net/questions/180846/results-true-in-a-dimension-and-false-for-higher-dimensions
 
 #Number Theory
 ==============
@@ -189,11 +491,78 @@ http://mathoverflow.net/questions/117394/applications-of-iwasawa-theory
 http://mathoverflow.net/questions/10124/the-factorial-of-1-2-3
 http://mathoverflow.net/questions/140147/factoring-gaussian-integers
 http://mathoverflow.net/questions/16735/is-a-non-analytic-proof-of-dirichlets-theorem-on-primes-known-or-possible
+http://mathoverflow.net/questions/1420/whats-the-best-proof-of-quadratic-reciprocity
+http://mathoverflow.net/questions/145145/on-the-solvable-octic-x8-x729x229-0?newsletter=1&nlcode=187216|6421
+http://mathoverflow.net/questions/85204/ring-of-witt-vectors-and-p-adics
+ #the field of rings vectors of \bar{F_p} is the completion of the maximal
+ #unramified extension of Q_p
+http://mathoverflow.net/questions/150428/state-of-knowledge-of-anbn-cndn-vs-anbncn-dnenfn
+  #diophantine equation and conjectures of Bombieri, Lang, Vojta (Answer by Silverman)
+http://mathoverflow.net/questions/152680/generating-primes-via-composition-of-polynomials
+http://mathoverflow.net/questions/154152/does-hasse-minkowski-help-to-produce-nontrivial-rational-solutions
+http://mathoverflow.net/questions/81626/is-strong-approximation-difficult
+http://mathoverflow.net/questions/156338/history-of-quaternion-algebras
+http://mathoverflow.net/questions/158378/a-translation-of-the-cantor-set-contained-in-the-irrationals
+  #answer talks about normal numbers in base b
+http://mathoverflow.net/questions/158075/monstrous-moonshine-for-thompson-group-th
+http://mathoverflow.net/questions/159136/gross-zagier-formulae-outside-of-number-theory
+http://mathoverflow.net/questions/132731/does-zhangs-theorem-generalize-to-3-or-more-primes-in-an-interval-of-fixed-le
+  #work by Maynard and Tao
+http://mathoverflow.net/questions/161836/ramanujans-pi-formulas-with-a-twist
+http://mathoverflow.net/questions/161820/current-status-on-langlands-program
+http://mathoverflow.net/questions/161944/was-vinogradovs-1937-proof-of-the-three-prime-theorem-effective
+http://mathoverflow.net/questions/136959/kummer-theory-isomorphism-and-kummer-extensions
+http://mathoverflow.net/questions/19692/is-the-abc-conjecture-known-to-imply-the-riemann-hypothesis/19694#19694
+http://mathoverflow.net/questions/163274/are-the-primes-normally-distributed-or-is-this-the-riemann-hypothesis
+http://mathoverflow.net/questions/17211/to-what-extent-does-spec-r-determine-spec-of-the-witt-vector-ring-over-r
+http://mathoverflow.net/questions/47920/what-does-the-theta-divisor-of-a-number-field-know-about-its-arithmetic
+http://mathoverflow.net/questions/163515/how-to-prove-that-every-polynomial-in-an-infinite-family-is-irreducible-over-q
+  #a nice answer by Elkies
+http://mathoverflow.net/questions/164129/improving-known-bounds-for-pierce-expansions-cash-prize
+http://mathoverflow.net/questions/164084/is-anything-known-about-which-numbers-appear-in-the-continued-fraction-expansion
+http://mathoverflow.net/questions/165185/distribution-of-a2-alpha-b2
+http://mathoverflow.net/questions/165809/how-strong-is-this-conjecture-z-nz-is-generated-by-small-elements
+http://mathoverflow.net/questions/165884/is-there-an-ehrhart-polynomial-for-gaussian-integers
+http://mathoverflow.net/questions/165797/class-groups-of-orders
+http://mathoverflow.net/questions/166297/is-weils-bound-for-kloosterman-sums-ever-attained
+http://mathoverflow.net/questions/166088/irrationality-measure-of-log2-log6
+http://mathoverflow.net/questions/88539/sums-of-rational-squares
+http://mathoverflow.net/questions/167939/proportion-of-irreducible-polynomials-p-such-that-mathbf-zx-p-is-the-ri
+http://mathoverflow.net/questions/168952/is-my-field-algebraically-closed
+  #Contains a proof that an exact sequence 1→A^G→E→G→1 splits
+http://mathoverflow.net/questions/173414/conjecture-on-irrational-algebraic-numbers
+http://mathoverflow.net/questions/173633/the-conjecture-of-montgomery-and-soundararajan-on-primes-in-short-intervals-emp
+http://mathoverflow.net/questions/176798/function-field-analogy-and-global-absolute-geometry
+http://mathoverflow.net/questions/176822/not-lonely-runners
+http://mathoverflow.net/questions/177481/is-any-particular-algebraic-number-known-to-have-unbounded-continued-fraction-co
+  #Nice observations on continued fractions over Q(i) and the relative Roth
+  #theorem over this field
+http://mathoverflow.net/questions/179360/fx-is-irreducible-but-fxn-is-reducible
+  # incidentally this shows that if f (any monic irreducible polynomial) is cyclotomic , then f(Xp) is reducible for all but finitely many primes p, while if f is not cyclotomic (and ≠X), then f(Xp) is irreducible for all but finitely many primes p
+http://mathoverflow.net/questions/179637/probing-the-generalization-of-the-abc-conjecture-to-more-than-3-variables
+http://mathoverflow.net/questions/180035/what-are-reasons-to-believe-that-e-is-not-a-period
+
+#Physic
+=======
+
+http://mathoverflow.net/questions/150742/is-langlands-reciprocity-somehow-analogous-to-the-wave-particle-duality-of-quant
+http://mathoverflow.net/questions/99643/why-does-bosonic-string-theory-require-26-spacetime-dimensions
+http://mathoverflow.net/questions/167441/calabi-yau-cohomology
 
 #Proba
 ======
 
 http://mathoverflow.net/questions/139804/distribution-of-roots-of-complex-polynomials
+http://mathoverflow.net/questions/146463/what-is-entropy-really
+http://mathoverflow.net/questions/163657/unexpected-sqrt3
+http://mathoverflow.net/questions/118481/the-probability-for-a-symmetric-matrix-to-be-positive-definite/
+http://mathoverflow.net/questions/37151/what-are-the-big-problems-in-probability-theory
+http://mathoverflow.net/questions/177364/escape-the-zombie-apocalypse
+
+#Representation
+===============
+
+http://mathoverflow.net/questions/152774/fomin-kirillov-algebras-and-schubert-calculus
 
 #Topology
 =========
@@ -202,3 +571,17 @@ http://mathoverflow.net/questions/139668/vector-bundle-trivial-over-every-compac
 http://mathoverflow.net/questions/5351/whats-an-example-of-a-space-that-needs-the-hahn-banach-theorem
   #Nice examples of dual of l^1 and l^\infinity under different axioms of
   #logic
+http://mathoverflow.net/questions/155634/is-there-an-analog-of-sperners-lemma-for-the-hopf-invariant
+http://mathoverflow.net/questions/156290/origin-of-spectral-sequences-in-algebraic-topology
+  #Nice infos on spectral sequences and \infinity-categories
+http://mathoverflow.net/questions/162359/an-equivalence-relation-for-norms
+http://mathoverflow.net/questions/163181/for-which-maps-s1-to-s1-is-the-winding-number-defined
+http://mathoverflow.net/questions/165850/good-covers-of-manifolds
+http://mathoverflow.net/questions/165853/is-schauders-conjecture-resolved
+http://mathoverflow.net/questions/175800/which-sets-occur-as-boundaries-of-other-sets-in-topological-spaces
+http://mathoverflow.net/questions/176227/topological-transversality
+
+#Vulgarisation
+==============
+
+http://mathoverflow.net/questions/1977/why-is-the-gradient-normal

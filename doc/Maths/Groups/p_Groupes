@@ -1,0 +1,83 @@
+Un p-groupe est Nilpotent.
+
+* Un groupe d'ordre p est isomorphe à Z/pZ.
+
+* Un groupe d'ordre p^2 est abélien
+
+Pr: le centre est non trivial, et si G/Z est non trivial alors G/Z est
+cyclique car d'ordre p. Mais une extension centrale d'un groupe cyclique
+est abélienne, donc G est abélien.
+
+Groupes d'ordre p^3
+===================
+
+On a 3 groupes abéliens et 2 groupes non abéliens.
+
+Cf www.math.uconn.edu/~kconrad/blurbs/grouptheory/groupsp3.pdf
+
+Lemma 1. Let p be prime and G be a nonabelian group of order p^3 with
+center Z. Then #Z = p, G/Z = Z/pZ × Z/pZ, and [G, G] = Z.
+
+Proof. Since G has p-power size, its center is nontrivial. That means #Z =
+p, p^2 , or p^3 . Since G is nonabelian, #Z \ne p^3. For any group G, if
+G/Z is cyclic then G is abelian. So our G has G/Z noncyclic, which means
+#(G/Z) = p, so #Z \ne p^2 . The only choice left is #Z = p. The group G/Z
+therefore has size p^2 . Up to isomorphism the only groups of order p^2 are
+Z/(p^2) and Z/(p) × Z/(p). Since G/Z is noncyclic, G/Z = Z/(p) × Z/(p).
+Since G/Z is abelian, [G, G] ⊂ Z, so [G, G] = Z because [G, G] is
+nontrivial (G is not abelian) and #Z = p.
+
+Cas p=2
+-------
+On a G = D_4 (le groupe dihédral) ou H_8 (les quaternions)
+
+Cas p impair
+------------
+On a G=matrices triangulaires sup de M_3(F_p) avec des 1 sur la diagonale
+(ie G=(Cp×Cp) ⋊ Cp)
+ou G=(1+pm, b; 0, 1) dans M_2(F_p) où m, b \in Z/p^2Z.
+(ie G= (Cp^2) ⋊ Cp)
+[Rem: si p=2 ces groupes sont isomorphes]
+
+http://www.weddslist.com/groups/misc/pcubed.html
+------------------------------------------------
+
+For every prime p, there are five non-isomorphic groups of order p^3. Three
+are Abelian, these are Cp^3, Cp^2×Cp, and Cp×Cp×Cp. Two are non-Abelian. The
+rest of this page is about the non-Abelian groups.
+
+Non-Abelian Groups of order p^3
+--------------------------------
+
+For any prime p, we can imagine three non-Abelian groups of order p^3:
+
+    (Cp×Cp) ⋊ Cp ; (Cp^2) ⋊ Cp ; Cp ↑ (Cp×Cp) 
+
+However, for all values of p, there turn out to be only two. Which two depends on whether p is even or odd.
+
+Non-Abelian Groups of order p^3, p an even prime; i.e. of order 8
+------------------------------------------------------------------
+
+For p=2, the two groups (C2×C2)⋊C2 and C4⋊C2 are isomorphic. This is the group usually known as D8 (or by some authors as D4). It can be presented as either
+    < a, b | a^4, b^2, abab >
+or as
+    < a, b, t | a^2, b^2, t^2, atb^3t, bta^3t >
+It has five elements of order 2, falling into two equivalence classes of sizes one and four, and two elements of order four.
+
+However C2 ↑ (C2×C2) is another group of order eight, with no analogue for higher values of p. This is the quaternion group. It can be presented as
+    < i, j | i^4, j^4, iji^3j, i^2j^2 >
+It has one elements of order 2, and six elements of order four forming a single equivalence class.
+
+Non-Abelian Groups of order p^3, p an odd prime
+----------------------------------------------
+
+For every odd prime p, (Cp×Cp) ⋊ Cp is a group which can be presented as
+    < a, b | ap2, bp, babp-1ap2-p-1 >
+It has p^2-1 elements of order p, which fall into two equivalence classes, of sizes p-1 and p^2-p; and p^3-p^2 elements of order p^2, forming a single equivalence class.
+
+For every odd prime p, there is also a group (Cp^2) ⋊ Cp. It has p^3-1 elements of order p, which fall into three equivalence classes, of sizes p-1, p^2-p, and p^3-p^2. Cp ↑ (Cp×Cp) can be interpreted in various ways, but each of them is isomorphic to one of (Cp×Cp) ⋊ Cp, (Cp^2) ⋊ Cp, or Cp2 × Cp. 
+
+Summary
+-------
+p       Cp^2 ⋊ Cp        (Cp×Cp) ⋊ Cp    [Cp ↑ (Cp×Cp)]
+2       C4⋊C2  ≅  D8  ≅  (C2×C2)⋊C2     Q8

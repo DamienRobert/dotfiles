@@ -1,0 +1,2 @@
+#GENERATE WHEN @computer.name=~/packer/
+%provision ALL=(ALL) NOPASSWD: ALL

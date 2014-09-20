@@ -1,0 +1,11 @@
+How to get syntax highlighting for a muttrc.erb (for instance) for eruby in
+vi, by order of priority:
+
+- #vim: set ft=eruby.muttrc
+- In one of the first four lines, put
+# eruby_subtype=muttrc
+- If the subtype is given by an extension (like .sh), then call the file
+  ploum.sh.erb 
+- Finally it uses the variable
+  g:eruby_default_subtype (set to "html" by default)
+

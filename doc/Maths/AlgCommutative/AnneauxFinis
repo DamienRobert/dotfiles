@@ -1,0 +1,17 @@
+https://groups.google.com/forum/#!search/Gaetan$20Chevenier/fr.sci.maths/7rkPQxKxknE/eioYJRhjgEQJ
+
+  Il est d'ailleurs amusant de voir que plus faiblement: si A est un
+anneau fini réduit (sans éléments nilpotents) c'est un produit de corps
+finis (et il est donc commutatif). J'en ai trouvée une preuve élémentaire,
+ c'est pourquoi je me permet de poster. Elle utilise le fait que tout
+monoide fini non nécéssairement unitaire contient un idempotent (pas
+difficile), et que dans tout anneau réduit les idempotents sont centraux (si
+e est idempotent: e^2=e, remarquer que pour tout x, ex(e-1) et (e-1)xe sont de
+carrés nuls, donc nuls). On conclut de la manière suivante, par récurrence
+sur le cardinal de A, A fini réduit: si il existe un diviseur de 0, le
+monoide qu'il engendre contient un idempotent e différent de 0 et 1, mezalor
+e est central et donc A est isomorphe à eA x (1-e)A, avec eA et (1-e)A
+strictement plus petits.
+
+PS: ce résultat découlerait de la théorie de wedderburn sur les anneaux
+semisimples artiniens. 

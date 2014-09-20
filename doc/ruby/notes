@@ -2,6 +2,19 @@
 #:call SyntaxRange#Include('@begin=ruby@','@end=ruby@', 'ruby', 'NonText')
 #ou ,shl
 
+# Verbose output in ruby {{{
+
+Problem: #!/usr/bin/env ruby -w
+does not work because env tries to launch 'ruby -w'.
+Solution: #!/usr/bin/env ruby
+BEGIN {$VERBOSE=true}
+ou 
+# #!/bin/sh
+exec ruby -x "$0" "$@"
+#!ruby -w
+... ruby script goes here
+# }}}
+
 # Assignement {{{1
 
 An assignment expression may have one or more lvalues and one or more rvalues.
@@ -102,7 +115,7 @@ key difference being that each argument is a new line with puts.
 
 3) Same difference between file.write or file.print and file.puts
 Rem: n=IO.write("ploum") give the number of char written
-whilte IO.print("ploum","plam") can take several arguments but have no
+while IO.print("ploum","plam") can take several arguments but have no
 return value
 
 4) Cf aussi display (public method of class Object) and inspect:
@@ -121,6 +134,8 @@ inspect => string
 
 (la différence entre inspect et display sont le type de retour, ie un
 string pour inspect vs effet de bord pour display)
+
+So: port.write(obj) vs obj.display(port)
 
 5) lines=IO.readlines(sep=$/): read lines in an array
    IO.read: read all of the file, IO.read(10) reads 10 char
@@ -509,6 +524,13 @@ BottomTwo: @@A =1, @@B=3, @@C=3
 # List comprehension {{{1
 =================
 @begin=ruby@
+
+#http://stackoverflow.com/questions/4769004/learning-python-from-ruby-differences-and-similarities
+values=[1,16,2,17]
+values.select {|v| v > 15}.map {|v| v * v}
+#more idiomatic:
+values.map{|v| v*v if v > 15}.compact
+
 #http://stackoverflow.com/questions/310426/list-comprehension-in-ruby
 class Array
   def lc(&block)
@@ -519,6 +541,17 @@ end
 [1,2,3].lc{|d| ['a','b'].lc{|ch| d.to_s+ch if ch =='a'} if d>=2}
 
 #http://c2.com/cgi/wiki?PythonVsRubyCodeExamples
+module Enumerable
+   def compact_map( comp=nil )
+     inject( [] ) do |ary,item|
+       t = yield item
+       ( ary << t unless t == comp ) || ary
+     end
+   end
+end
+values.compact_map { |v| v*v if v > 15} #=> [256, 289]
+values.compact_map(256) { |v| v*v if v > 15} #=> [nil, nil, 289]
+
 #Une version plus plate et plus puissante
 module Enumerable
   def comprehend(args = [], result=[], &block)
@@ -532,6 +565,10 @@ module Enumerable
     result
   end
 end
+[values].comprehend { |v| v*v if v > 15}
+[0..2,0..2,0..2].comprehend { | *x | x if x.uniq.count == x.count  }
+#=> [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]]
+
 #Comparaison:
   [0..2,0..2,0..2].comprehend { |x,y,z| [x,y,z] if x != y && y != z } 
   (0..2).to_a.lc {|x| (0..2).to_a.lc {|y| [x,y] if x != y }}
@@ -579,9 +616,85 @@ Cf aussi:
 https://gist.github.com/3356675 #haskell like madness
 https://github.com/postmodern/combinatorics
 }}}1
+# Enumerator and lazy {{{1
+http://patshaughnessy.net/2013/4/3/ruby-2-0-works-hard-so-you-can-be-lazy
+#}}}1
+
+#Keywords{{{
+Remarque: différence entre blocks et lambda
+Les variables des blocks sont optionelles, on peut en passer autant qu'on
+veut, alors que les lambda se comportent comme les méthodes
+
+a=Proc.new do |ploum| ploum end => #<Proc:0xb369614@(pry):49>
+a.arity => 1
+a.parameters => [[:opt, :ploum]]
+a.call("ploum") => "ploum"
+a.call("ploum","plam") => "ploum"
+a.call() => nil
+
+a=lambda do |ploum,plim="lal",*plam| ploum end
+=> #<Proc:0xb22d534@(pry):41 (lambda)>
+a.arity => -2
+a.parameters => [[:req, :ploum], [:opt, :plim], [:rest, :plam]]
+
+For keywords the algorithm seems to be, for |*args,**keywords|:
+we construct args as before, putting things like 'a: 2' or '1=>3' in an
+hash as usual. If the last argument is a hash, then take all symbol in the
+hash to go in **keywords, the rest is appended in *args
+
+a.call("ploum","plim", d:3, e:4, "plim" => 5, "plam"=> 2, :ploum =>2, 2=>7)
+["ploum", "plim", {"plim"=>5, "plam"=>2, 2=>7}] #args
+{:d=>3, :e=>4, :ploum=>2} #keywords
+a.call({"plim"=>"plam", ploum: 0})
+[{"plim"=>"plam"}]
+{:ploum=>0}
+
+Remark: once we put individual hash like elements, we can't switch back to
+normal elements
+a.call(ploum: 1, 0)
+SyntaxError: unexpected ')', expecting =>
+
+The same for function definition:
+a=lambda do |ploum,plam="lal",*plim,plom:"lul",**plum| p [ploum, plam,plim,plom,plum] end
+we need to put ploum: "lul", after *plim
+
+[50] pry(main)> a.arity
+=> -2
+[51] pry(main)> a.parameters
+=> [[:req, :ploum],
+ [:opt, :plam],
+ [:rest, :plim],
+ [:key, :plom],
+ [:keyrest, :plum]]
+
+When calling a function, *args expand the array args into arguments, and
+**opts expand the hash opts into keywords (an error is raised if a key in
+opts is not a symbol):
+def f(**keys) p keys end
+a={ploum: "plam", plim: "plom"}
+f(a) # => {:ploum=>"plam", :plim=>"plom"}
+f(**a) # => {:ploum=>"plam", :plim=>"plom"}
+}}}
 
 ===================================================================
 # Divers {{{1
+# Range conditions
+
+[Range conditions] turn on when the condition in the first part of the
+range becomes true, and turn off when the condition in the second part
+becomes true. 
+
+#this version print 'start' to 'end' (included)
+while line = gets
+  puts line if line =~ /start/ .. line =~ /end/
+end
+Rem: la version inclusive matche les deux conditions sur la même ligne, ce
+qui fait que une ligne 'start ploum end' sera affichée, et l'automate sera
+à nouveau en position false. Pour éviter ça utiliser la version exclusive:
+while line = gets
+  puts line if line =~ /start/ ... line =~ /end/
+end
+
 #enlever des variables
 remove_instance_variable
 remove_class_variable
@@ -630,9 +743,9 @@ execute le begin une fois quand même
 Exception:
 begin
   ploum
-rescue plim
+rescue plim #Exception => e
 else plam #pas d'exception
-ensure plouf #exectue quoi qu'il arrive
+ensure plouf #execute quoi qu'il arrive
 end
 
 ex rescue RuntimeError, SystemExit, Interrupt, StandardError, Exception...
@@ -677,9 +790,9 @@ a=catch(:ploum) # a=>"ahah"
 __END__
 Everything after is stored in DATA
 About DATA… I just discovered that it is just a File associated with the
-current script opened for reading and “seeked” after __END__. Try this:
+current script opened for reading and “seeked” after __END__.
 
-Interpolating strings:
+# Interpolating strings:
 (% est un raccourci pour sprintf)
 
     mystring = "There are %<thing1>s and %<thing2>s here."
@@ -693,6 +806,14 @@ Interpolating strings:
     "%-5s: %08x" % [ "ID", self.object_id ]   #=> "ID   : 200e14d6"
     "foo = %{foo}" % { :foo => 'bar' }        #=> "foo = bar"
 
+# Evaluating keyword arguments into instance variables:
+http://stackoverflow.com/questions/18876592/set-ruby-2-0-keyword-arguments-with-attr-accessor-on-initialize
+
+# clone vs dup
+http://stackoverflow.com/questions/10183370/whats-the-difference-between-rubys-dup-and-clone-methods
+
+En gros clone copie exactement l'objet (y compris les singleton methods et
+l'aspect frozen), alors que dup copie plutôt les données.
 #}}}1
 
 Time  {{{1
@@ -785,3 +906,18 @@ Also add things like now=Time.current, now+1.year
 
 Pour la manipulation de fichiers:
 cf FileUtils, Pathname, Dir
+
+Ruby 2.0: http://globaldev.co.uk/2013/03/ruby-2-0-0-in-detail/
+          http://blog.marc-andre.ca/2013/02/23/ruby-2-by-example/
+main: http://banisterfiend.wordpress.com/2010/11/23/what-is-the-ruby-top-level/
+
+Ruby and C bindings:
+http://stackoverflow.com/tags/ruby-c-api/info
+http://www.ruby-doc.org/docs/ProgrammingRuby/html/ext_ruby.html
+
+Some nice tricks:
+http://www.rubyinside.com/21-ruby-tricks-902.html
+
+Fun ruby programs:
+git clone https://github.com/tric/trick2013
+

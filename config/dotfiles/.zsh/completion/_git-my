@@ -1,0 +1,82 @@
+#compdef git-my
+#description My own wrapper script
+
+#this need to be put on its own file so that git completion system can find it.
+#putting it as a function in _mygit is not enough, because the function is
+#only defined when there is an attempt to complete 'git-my'. If I first try
+#to complete 'g my', it won't find this function yet.
+
+local curcontext=$curcontext state line ret=1
+_arguments -C \
+   '(-*)--help[help]' \
+   '--log=[set log level]:log level:' \
+   '--no-pager[Never use pager]' \
+   '---pager[Always use pager]' \
+  '1: :->command' \
+  '*:: :->args' && ret=0
+
+case $state in
+  command) _values "commands" $(git-my help -c) && ret=0 ;;
+  args)
+    case $line[1] in
+      squash )
+        _arguments \
+          '-h[help]' \
+          "-g[don't edit commit]" \
+          '--svn[svn mode]' \
+          '--no-push' \
+          '--no-pull' \
+          '--push' \
+          '--pull' \
+          '--merge' \
+          '--svn' \
+          '--after[action after merge]:squash merge action:_command_names' \
+          '--opt[extra option]:extra option' \
+          '--prepare' \
+          '--finish' \
+          '*:Branches:__git_branch_names'
+        ;;
+      deploy)
+        local committype; committype=(all update yes no none)
+        _arguments \
+        {-l,--local}'[local git dir]:directory:_files -/' \
+        {-u,--upstream}'[upstream git dir]:directory:_files -/' \
+        {-b,--branch}'[the local branch to push]:branch:__git_branch_names' \
+        {-rb,--remote-branch}'[name of remote branch]:remote branch:' \
+        {-ub,--upstream-branch}'[the upstream branch to update]:upstream branch:' \
+        "--rebase[rebase rather than merge upstreambranch into branch]" \
+        "--no-pull[don't pull only push]" \
+        "--pull-opt[custom pull options]:pull options:" \
+        "--push-opt[custom push options]:push options:" \
+        {-lc,--local-commit}"[what do we commit?]:commit type:($committype)" \
+        {-lo,--local-opt}"[local commit options]:commit options:" \
+        {-rc,--remote-commit}"[what do we commit in remote?]:commit type:($committype)" \
+        {-ro,--remote-opt}"[remote commit options]:commit options:" \
+        "*:remote:_files -/"
+        ;;
+      patch)
+        _arguments \
+          '--cc[use git-mycc as cc-cmd]' \
+          '--dir[patch directory (11patch-upstream by default)]' \
+          '--dir-from[action directory (tosend/toapply)]' \
+          '--dir-to[action directory (sent/applied)]' \
+          '1:Action:(format send sent resend check apply applied reapply)' \
+          '*:: :_normal'
+        ;;
+      trivial)
+        _arguments \
+          {-t,--tree}'[tree to commit]:tree:__git_branch_names' \
+          {-b,-B,--branch}'[branch to work on]:branch:__git_branch_names' \
+          {-g,--go}"[don't edit commit messages]" \
+          '--ff[fast forward current branch]' \
+          '--no-date[use date=EPOCH]' \
+          '--merge[do a trivial merge]' \
+          "--prepare-merge[prepare the trivial merge but don't commit]" \
+          '--ours[do a trivial ours merge]' \
+          '--theirs[do a trivial theirs merge]' \
+          "--no-commit[don't commit the trivial merge]" \
+          '*:Branches:__git_branch_names'
+        ;;
+    esac
+esac
+return ret

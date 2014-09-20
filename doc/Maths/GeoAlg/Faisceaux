@@ -87,5 +87,5 @@ Si de plus F est flasque, c'est exact à droite.
 
 Dans le cas des modules quasi-cohérents, si Z est défini localement sur un
 ouvert affine U par l'idéal I,
-H^0_Z(F) est défini comme le sous-module module (0:I^\infty) du module F(U).
-Cf PrimaryDecomposition/EmbeddedPrimes
+H^0_Z(F) est défini comme le sous-module (0:I^\infty) du module F(U).
+Cf PrimaryDecomposition/EmbeddedPrimes ou Hartshorne Exo II.5.6

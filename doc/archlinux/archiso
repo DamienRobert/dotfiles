@@ -1,0 +1,46 @@
+Building the iso
+=================
+
+sudo /usr/share/archiso/configs/releng/build.sh -v
+
+(Rem: this generate an hybrid iso, meaning it works both on a cdrom and an
+usb stick
+https://plus.google.com/105696767572828808697/posts/iwT51iMjayQ
+)
+
+Installing the iso on an usb stick
+==================================
+
+https://wiki.archlinux.org/index.php/USB_flash_installation_media#Preparing_the_USB_flash_drive
+
+# Using dd
+
+dd bs=4M if=/path/to/archlinux.iso of=/dev/sdx && sync
+
+# Using manual formatting
+
+mkdir -p /mnt/{iso,usb}
+mount -o loop archlinux-2014.09.03-dual.iso /mnt/iso
+mount /dev/sdXn /mnt/usb
+cp -a /mnt/iso/* /mnt/usb
+sync
+umount /mnt/iso
+  * To boot either a label or an UUID to select the partition to boot from is required. By default the label ARCH_2014XX (with the appropriate release month) is used. Thus, the partition’s label has to be set accordingly, for example using gparted. Alternatively, you can change this behaviour by altering the lines ending by archisolabel=ARCH_2014XX in files /mnt/usb/arch/boot/syslinux/archiso_sys32.cfg and archiso_sys64.cfg, as well as /mnt/usb/loader/entries/archiso-x86_64.conf or similar for a 32-bit ISO (the last being useful only, if you want to boot the USB flash device from an EFI system). To use an UUID instead, replace those portions of lines with archisodevice=/dev/disk/by-uuid/YOUR-UUID. The UUID can be retrieved with blkid -o value -s UUID /dev/sdXn.
+Warning: Mismatching labels or wrong UUID prevents booting from the created medium.
+  * Syslinux is already preinstalled in /mnt/usb/arch/boot/syslinux. Install it completely to that folder by following Syslinux#Manual_install. Instructions are reproduced here for convenience:
+    - Overwrite the existing syslinux modules (*.c32 files) present in the USB (from the ISO) with the ones from the syslinux package. This is necessary to avoid boot failure because of a possible version mismatch.
+    - extlinux --install /mnt/usb/arch/boot/syslinux
+    - Unmount the partition (umount /mnt/usb) and install the MBR or GPT partition table to the USB device as described in the page mentioned.
+    - Mark the partition as active (or “bootable”).
+
+->
+DEV="/dev/sdd"
+SUBDEV="$DEV1"
+sudo mkfs.vfat -F32 $SUBDEV -n ARCH_201307
+sudo mount $SUBDEV /mnt/tmp
+sudo mount ~/large/Isos/archlinux-2013.07.01-dual.iso /mnt/loop 
+sudo cp -a /mnt/loop* /mnt/iso/
+cd /mnt/tmp/arch/boot/syslinux
+sudo extlinux --install .
+sudo umount /mnt/tmp
+sudo dd bs=440 conv=notrunc count=1 if=/usr/lib/syslinux/mbr.bin of=$DEV

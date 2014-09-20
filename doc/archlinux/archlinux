@@ -1,0 +1,47 @@
+#Some common tasks done in archlinux
+
+Users
+=====
+cf aussi ~syst/new/scripts/24users
+
+#les groupes (en pratique il vaut mieux laisser logind faire)
+sudo usermod -a -G network dams
+#avec systemd je n'ai besoin d'être dans aucun groupe
+#à part sshc (cf sshd),network and power (cf polkit)
+sudo usermod -G wheel,systemd-journal,sshc,power,network dams
+#pour raspberry:
+sudo usermod -a -G audio dams
+
+#dina
+sudo useradd -m -g users -s /bin/bash dina
+sudo passwd dina
+
+#git user for repository sharing
+sudo useradd -m -g nobody -G sshc -s /bin/bash repos
+sudo mkdir ~repos/.ssh
+sudo cp ~/.ssh/authorized_keys ~repos/.ssh/
+
+Systemd
+=======
+
+systemd-analyse
+systemd-analyse blame
+systemd-analyze plot > /tmp/plot.svg
+systemd-cgls
+
+Divers
+======
+
+#ntfs
+sudo mount -t ntfs-3g /dev/sda4 /mnt/windows -o uid=1000,fmask=0113,gid=100,users
+
+#acl
+sudo setfacl -m u:dams:r /var/log/auth.log
+
+#convert to ext4
+tune2fs -O extents,uninit_bg,dir_index /dev/the_partition
+fsck -fDp /dev/the_partition 
+
+#extents
+find /home -xdev -type f -print0 | xargs -0 chattr +e
+find /home -xdev -type d -print0 | xargs -0 chattr +e

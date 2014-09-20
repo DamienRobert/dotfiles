@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+# This is the sshd server system-wide configuration file.
+# See sshd_config(5) for more information.
+
+{% for address in sshd_listenaddress %}
+ListenAddress {{ address }}
+{% endfor %}
+PermitRootLogin no
+AuthorizedKeysFile .ssh/authorized_keys
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes
+PrintMotd no
+UsePrivilegeSeparation sandbox
+PermitUserEnvironment yes
+UseDNS no
+Subsystem sftp /usr/lib/ssh/sftp-server

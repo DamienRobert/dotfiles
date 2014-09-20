@@ -1,0 +1,18 @@
+* http://mathoverflow.net/questions/65941/generating-the-symplectic-group
+
+->  Have you already tried to use the relations in Stanek's (freely available) paper http://www.ams.org/journals/proc/1963-014-05/S0002-9939-1963-0153748-8/S0002-9939-1963-0153748-8.pdf
+
+(Note: they are given in a better form in 
+http://link.springer.com/article/10.1007%2FBF01433472#page-1
+    Joan S. Birman
+Mathematische Annalen
+1971, Volume 191, Issue 1, pp 59-68
+On Siegel's modular group.)
+
+The top answer gives an explicit presentation for Sp_4(\Z), from
+BENDER, P. “Presentation of Symplectic Group Sp(4,Z) with 2 Generatrices and 8 Definitive Relations.” Journal of Algebra 65, no. 2 (1980): 328-331.
+
+* http://mathoverflow.net/questions/123634/reference-on-generators-of-subgroups-of-symplectic-groups
+
+-> give generators for \Gamma_0(n) for g=2
++ a ref to a theorem by Baas-Milnor-Serre

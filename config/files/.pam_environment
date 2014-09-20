@@ -1,0 +1,7 @@
+PAGER     DEFAULT=less
+LESS      DEFAULT="-RMiqx2"
+#PATH      DEFAULT=${HOME}/bin:${HOME}/mine/bin:${HOME}/opt/bin:${PATH}
+#RUBYLIB   DEFAULT=${HOME}/mine/ruby/lib:
+#GEM_HOME  DEFAULT=${HOME}/opt/pkgmgr/gems
+LC_CTYPE  DEFAULT=en_US.UTF-8
+LANG      DEFAULT=POSIX

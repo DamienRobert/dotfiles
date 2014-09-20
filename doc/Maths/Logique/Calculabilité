@@ -1,9 +1,15 @@
+Arithmétique
+------------
+
 Hiérarchie arithmétique: Delta_n= Sigma_n \inter Pi_n
 (Pi_n commencer par pour tout, Sigma_n commencer par il existe).
 
 Delta_1 est équivalent à récursif, Sigma_1 à récursivement énumérable.
 Plus généralement le th de Post dit que le n ième jump de Turing 0^n est
 équivalent à Delta_n, et Sigma_n sont les ensembles re sur 0^n.
+
+Hyperarithmétique
+-----------------
 
 Si O est l'ensemble des notations ordinales de Kleene, on peut généraliser
 le jump de Turing en faisant de l'induction sur le pb de l'arrêt le long de
@@ -24,6 +30,9 @@ Deta^1_1, et Pi^1_1 c'est l'équivalent des ensembles hyperrécursivement
 énumérable (par exemple c'est donner par une machine avec comme hyperoracle
 l'hyperjump), ou encore c'est équivalent aux notations de Kleene O.
 
+Constructible
+-------------
+
 Pour aller plus loin que la hiérarchie hyperarithmétique, on peut par exemple
 utiliser les espaces L_alpha de Gödel: L_0=vide ou ensembles
 héréditairement fini (on va prendre le dernier, ça ne change pas L_1), et
@@ -38,33 +47,38 @@ Ca permet de généraliser le turing jump au delà de w^1_CK.
 
 Plus généralement, L_alpha \inter P(w_0) prolonge la hiérarchie analytique
 ramifiée.. Comme ça on va jusqu'au plus petit ordinal beta_0 tel que
-L_beta_0 \inter P(w_0) ne croit plus, qui est en gros le plus grand ordinal
+L_beta_0 \inter P(w_0) ne croit plus (on a alors un modèle de
+l'arithmétique du second ordre), qui est en gros le plus grand ordinal
 où la calculabilité n'utilise que des parties de N et pas des parties de
 parties.
 
+- A alpha récursivement énumérable = Sigma_1 sur L_alpha
+- A alpha récursif=A et sont complémentaire sont alpha-re
+(ou encore des grands whiles sur alpha)
+
+Résumé sur les ensembles hyperarithmétiques
+-------------------------------------------
+
 Pour résumer: Delta^1_1 = hyperarithmétique = saut de turing jusqu'à w_1^CK
 = calculable avec le turing jump comme hyperoracle (ou l'hyperoracle qui
-donné f:N->N tesrte si 0 \in Im(f)) = w_1^CK récursive = L_w_1^CK \inter
+donné f:N->N teste si 0 \in Im(f)) = w_1^CK récursive = L_w_1^CK \inter
 P(w_0)
 
 On a Degrés de turing <- Turing jumps: 0, 0^2, ...
 Contenus dans l'hyperdegré, et l'hyperjump: 0^w_1^CK, 0^w_2^CK...
-Attention: hyperdegré/A <=> w_1^CK[A]-calculabilité or w_1^CK[A] dépend de
-A. Done la notion (relative) d'hyperdegré n'est pas la même que pour la
+Attention: hyperdegré/A <=> w_1^CK[A]-calculabilité/A or w_1^CK[A] dépend de
+A. Donc la notion (relative) d'hyperdegré n'est pas la même que pour la
 w_1^CK-calculabilité. (Alors que w_0[A]=w_0, donc
-calculabilité=w_0-calculabilité=degré de turing).
+arithmétique=calculabilité=w_0-calculabilité=degré de turing).
 
 Rappel: l'hypersaut = machines hyperarithmétiques ne terminant pas
 (relativement à A), ou
 encore les notations ordinales (relativement à A), ou encore w_1^CK[A]...
 Ainsi w_2^CK=w_1^CK[w_1^CK]=O (notations ordinales)=machines
 hyperarithmétiques ne terminant pas.
---------------------
-A alpha récursivement énumérable = Sigma_1 sur L_alpha
-A alpha récursif= A et alpha/A sont alpha-re
-(ou encore des grands whiles sur alpha)
--------------------
+
 Grands ordinaux:
+---------------
 
 Un ordinal alpha est admissible ssi la alpha-calculabilité ne donne pas
 d'ordinaux plus grand que alpha ssi L_alpha est un modèle de Kripke-Plateck
@@ -81,7 +95,7 @@ sigma plus petit ordinal stable (ie stable pour tout delta-calcul) = c'est
 le plus petit ordinal non absolu = le plus petit ordinal non Delta^1_2.
 
 En particulier f:w_0->w_0 est Delta^1_2 = f est sigma-calculable = f est
-delta calculable pour un ordinal delta.
+delta calculable pour un ordinal delta < sigma.
 
 ============ Construire des grands nombres ================
 http://www.madore.org/~david/weblog/2013-01-16-grands-nombres.html#d.2013-01-16.2104

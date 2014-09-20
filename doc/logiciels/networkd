@@ -1,0 +1,43 @@
+#cf https://bbs.archlinux.org/viewtopic.php?pid=1393759,
+#ou http://dabase.com/blog/Good_riddance_netctl/
+
+    Okay, so I'll walk you through this since there is really not a whole
+    lot of documentation on the subject.  This assumes that your NIC is
+    wlan0, your SSID is MyNetwork, and the password is
+    SuperSecretPassphrase.
+
+    You need to create a wpa_supplicant-wlan0.conf.  So use wpa_passphrase
+    to generate one:
+
+    # wpa_passphrase MyNetwork SuperSecretPassphrase > /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+
+    Enable it so that it runs on boot:
+
+    # systemctl enable wpa_supplicant@wlan0
+
+    Now make a file at /etc/systemd/network/00-wireless-dhcp.network (it
+    can really be named whatever you want):
+
+    [Match]
+    Name=wlan0
+
+    [Network]
+    DHCP=yes
+
+    Now ensure that systemd-networkd.service is enabled.
+
+    # systemctl enable systemd-networkd.service
+    [Rem: I think it is started by default by systemd]
+
+    Reboot, and it should be working.
+
+    Edit4: I forgot to mention that you also need to ensure that
+    /etc/resolv.conf is a symlink to /run/systemd/network/resolv.conf.  As
+    a hack (since I don't use systemd-networkd regularly) I have the
+    following:
+
+    $ cat /etc/systemd/system/systemd-networkd.service.d/resolv.conf
+    [Service]
+    ExecStartPost=/usr/bin/ln -sf /run/systemd/network/resolv.conf /etc/resolv.conf
+    ExecStopPost=/usr/bin/rm /etc/resolv.conf
+    ExecStopPost=/usr/bin/touch /etc/resolv.conf 

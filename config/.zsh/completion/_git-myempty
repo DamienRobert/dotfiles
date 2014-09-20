@@ -1,6 +1,0 @@
-#compdef git-myempty
-
-_arguments \
-  '-b[branch to work on]:branch:__git_branch_names' \
-  '1:Action:(create merge)' \
-  '*:Branches:__git_branch_names'

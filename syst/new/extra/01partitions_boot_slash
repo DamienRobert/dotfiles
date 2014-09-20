@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+sgdisk -n 1:0:+100M -c '0:boot' -t '0:ef00' -u c12a7328-f81f-11d2-ba4b-00a0c93ec93b --attributes=1:set:2 \
+  -n 2:0:0 -c '0:slash' -t '0:8300' -u 4f68bce3-e8cd-4db1-96e7-fbcaf984b709 $DISK

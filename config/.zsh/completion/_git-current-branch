@@ -1,9 +1,0 @@
-#compdef git-current-branch
-#description Show current branch
-
-    _arguments \
-      '-a[use git rev-parse if no branch is found]' \
-      '-l[output long branch name]' \
-      '--remote[output name of remote]' \
-      '--upstream[output name of upstream]' \
-      '--rebase[show value of merge.rebase]'

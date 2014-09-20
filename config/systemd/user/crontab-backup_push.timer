@@ -1,0 +1,11 @@
+[Unit]
+Description=Git backup push Timer
+PartOf=internet.target
+ConditionPathIsDirectory=%h/backups/gitbackup
+
+[Timer]
+OnBootSec=30min
+OnUnitActiveSec=3h
+
+[Install]
+WantedBy=internet.target

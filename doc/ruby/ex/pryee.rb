@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pry-exception_explorer'
+require 'pry-rescue'
 
 def alpha
   name = "john"
@@ -17,7 +17,7 @@ def gamma(x)
   puts "2 * x = #{2 * x}"
 end
 
-EE.wrap do
+Pry.rescue do
   alpha
 end
 

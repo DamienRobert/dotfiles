@@ -1,0 +1,122 @@
+#!/usr/bin/perl
+#From: http://xyne.archlinux.ca/scripts/pacman/
+#The script accepts two optional arguments. The first is the number of months to keep all messages (default: 6). The second argument is the path to the log file (default: /etc/pacman.log). The number of months are counted from the last timestamp in the log.
+#
+#The script tracks messages associated with installations, upgrades and removals for each package. All messages younger than the specified number of months are kept. Older messages are kept for the last installation or upgrade of each package. The following messages are never removed:
+#
+#[*-*-* *:*] installed * (*)
+#[*-*-* *:*] upgraded * (* -> *)
+#[*-*-* *:*] removed * (*)
+#[*-*-* *:*] synchronizing package lists
+#[*-*-* *:*] starting full system upgrade.
+#
+#The script does not overwrite the log. It only prints the filtered log to STDOUT. The user should redirect the log to a separate file then compare it with the original log before overwriting it with the filtered log. Do not redirect the output directly to the log! You will overwrite it.
+use strict;
+use warnings;
+
+
+my $months = shift // 6;
+my $fpath = shift // '/var/log/pacman.log';
+
+my $regex = qr/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (installed \S+|upgraded \S+|removed \S+|synchronizing package lists|starting full system upgrade)/;
+
+
+open (my $fh, '<', $fpath) or die $!;
+
+my %entry_to_msg = ();
+my %pkgname_to_entry = ();
+my $last_timestamp = '';
+
+my $msg = '';
+
+
+foreach my $line (<$fh>)
+{
+  if ($line =~ m/$regex/)
+  {
+    $last_timestamp = $1;
+    my $entry = $2;
+    if ($entry =~ m/^(?:installed|upgraded|removed) (\S+)/)
+    {
+      my $pkgname = $1;
+      if (exists($pkgname_to_entry{$pkgname}))
+      {
+        my $k = $pkgname_to_entry{$pkgname};
+        delete $pkgname_to_entry{$pkgname};
+        delete $entry_to_msg{$k}
+      }
+      if ($msg)
+      {
+        $entry_to_msg{$line} = $msg;
+        $pkgname_to_entry{$pkgname} = $line
+      }
+    }
+    $msg = ''
+  }
+  else
+  {
+    $msg .= $line
+  }
+}
+
+
+
+seek($fh,0,0);
+
+$last_timestamp = &parse_timestamp($last_timestamp);
+my $filter = 1;
+
+foreach my $line (<$fh>)
+{
+  if ($filter)
+  {
+    if ($line =~ m/$regex/)
+    {
+      my ($timestamp,$entry) = ($1,$2);
+      my $keep_msg = &keep_message( $months,$last_timestamp,&parse_timestamp($timestamp) );
+      $filter = not $keep_msg;
+      if
+      (
+        $entry =~ m/^(?:installed|upgraded) (\S+)/
+        and
+        defined($entry_to_msg{$line})
+      )
+      {
+        print $entry_to_msg{$line}
+      }
+      elsif
+      (
+        $entry =~ m/^removed (\S+)/
+        and
+        defined($entry_to_msg{$line})
+        and
+        $keep_msg
+      )
+      {
+        print $entry_to_msg{$line}
+      }
+      print $line
+    }
+  }
+  else
+  {
+    print $line;
+  }
+}
+
+close $fh;
+
+
+
+
+sub parse_timestamp
+{
+  return [$_[0] =~ m/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/]
+}
+
+sub keep_message
+{
+  my ($months, $a, $b) = @_;
+  my $dt = ($a->[0] - $b->[0]) * 12 + ($a->[1] - $b->[1]);
+  return (($dt < $months) or ($dt == $months and ($a->[2] <= $b->[2])))
+}

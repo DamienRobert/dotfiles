@@ -1,0 +1,18 @@
+# Install packages
+install_package 00Packages/Fonts/MyriadPro-Basic . -v
+
+# Remove packages
+remove_package 00Packages/Fonts/MinionPro . 
+
+# MyPackages
+#!/bin/sh
+orig=00Packages/MyPackages
+squel.pl  -v -squel "$orig" -ln "$@" `find "$orig" -type l` .;
+
+# Install MyPackages, other version
+install_package 00Packages/MyPackages .
+
+# Autoinst Example
+#TEXMF=$HOME/.texmf-var/00Packages/AdobeGaramondPro/
+autoinst --encoding T1,LY1 --titling --inferiors --fractions  ~/Fonts/\[Monotype\ Imaging\]\ Adobe\ Type\ Collection\ OpenType\ Edition/Adobe\ Fonts/Adobe\ Open\ Type\ Collection/Garamd*/*.otf
+#récupérer les résultats dans .texlive2009/texmf/var

@@ -1,0 +1,84 @@
+Forward Secrecy
+===============
+
+DHE/ECDHE: Diffie-Hellman Epheremal
+
+Authenticity+Integrity
+======================
+
+HMAC
+  http://en.wikipedia.org/wiki/Hash-based_message_authentication_code
+  As with any MAC, it may be used to simultaneously verify both the data integrity and the authentication of a message.
+  \textit{HMAC}(K, m) = H \left( (K \oplus opad) | H((K \oplus ipad) | m)\right)
+  ie  MAC = H(key ∥ H(key ∥ message))
+
+Poly1305
+  http://en.wikipedia.org/wiki/Poly1305-AES
+  Poly1305-AES is a cryptographic message authentication code (MAC) written
+  by Daniel J. Bernstein. It can be used to verify the data integrity and
+  the authenticity of a message.
+
+Confidentiality+Authenticity+Integrity
+======================================
+
+AES-GSM
+  http://en.wikipedia.org/wiki/Galois/Counter_Mode
+  It is an authenticated encryption algorithm designed to provide both data authenticity (integrity) and confidentiality.
+  Galois Message Authentication Code (GMAC) is an authentication-only variant of the GCM which can be used as an incremental message authentication code
+
+CCM
+  http://en.wikipedia.org/wiki/CCM_mode
+  As the name suggests, CCM mode combines the well-known counter mode of encryption with the well-known CBC-MAC mode of authentication.
+  http://en.wikipedia.org/wiki/CBC-MAC
+
+Symmetric Key Crypto
+====================
+
+AES
+ Block code cipher
+
+ChaCha20
+  http://en.wikipedia.org/wiki/Salsa20
+  Stream cipher
+  (Chacha20 is a variant of Salsa20
+  ChaCha is the basis of the BLAKE hash function, a finalist in the NIST hash function competition, and BLAKE2 successor tuned for even higher speed. It also defines a variant using 16 64-bit words (1024 bits of state), with correspondingly adjusted rotation constants.)
+
+Block Cipher modes
+==================
+
+http://en.wikipedia.org/wiki/Block_cipher_modes_of_operation#Cipher-block_chaining_.28CBC.29
+
+Public Key
+==========
+
+curve-25519 (for ECDH)
+
+Certificates
+============
+
+http://en.wikipedia.org/wiki/Comparison_of_TLS_implementations
+Key exchange algorithms (certificate-only)
+  RSA, DHE-RSA, DHE-DSS, ECDH-ECDSA, ECDHE-ECDSA, ECDH-RSA, ECDHE-RSA
+
+Encryption algorithms
+  AES-CBC/CCM/GCM
+  Chacha20/Poly1305
+
+SSH
+===
+
+Ciphers (default)
+  aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,
+  aes128-gcm@openssh.com,aes256-gcm@openssh.com,
+  chacha20-poly1305@openssh.com,
+  aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,
+  aes256-cbc,arcfour
+KexAlgorithms (default)
+  curve25519-sha256@libssh.org,
+  ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-
+  sha2-nistp521,
+  diffie-hellman-group-exchange-sha256,
+  diffie-hellman-group-exchange-sha1,
+  diffie-hellman-group14-sha1,
+  diffie-hellman-group1-sha1
+Authentification: id_dsa, id_rsa, id_ecdsa, id_ed25519

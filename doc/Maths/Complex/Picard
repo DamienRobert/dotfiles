@@ -1,0 +1,15 @@
+http://en.wikipedia.org/wiki/Picard_theorem
+
+    Little Picard Theorem: If a function f : C → C is entire and non-constant, then the set of values that f(z) assumes is either the whole complex plane or the plane minus a single point.
+
+    Great Picard's Theorem: If an analytic function f has an essential singularity at a point w, then on any punctured neighborhood of w, f(z) takes on all possible complex values, with at most a single exception, infinitely often.
+
+    Great Picard's Theorem (meromorphic version): If M is a Riemann surface, w a point on M, P1(C) = C ∪ {∞} denotes the Riemann sphere and f : M\{w} → P1(C) is a holomorphic function with essential singularity at w, then on any open subset of M containing w, the function f(z) attains all but at most two points of P1(C) infinitely often.
+
+The following conjecture is related to "Great Picard's Theorem":[1]
+
+    Conjecture: Let {U1, ..., Un} be a collection of open connected subsets of C that cover the punctured unit disk D \ {0}. Suppose that on each Uj there is an injective holomorphic function fj, such that dfj = dfk on each intersection Uj ∩ Uk. Then the differentials glue together to a meromorphic 1-form on D.
+
+It is clear that the differentials glue together to a holomorphic 1-form g dz on D \ {0}. In the special case where the residue of g at 0 is zero the conjecture follows from the "Great Picards's Theorem".
+
+

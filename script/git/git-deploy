@@ -1,0 +1,193 @@
+#!/bin/zsh
+help() {
+  echo "git-mydeploy upstream: deploying script"
+  echo "  OPTIONS:
+  -l|--local: local git dir (default to current dir) 
+  -u|--upstream: upstream git dir (if not specified take \$1)
+  -b|--branch: the local branch to push (default to master)
+  -rb|--remote-branch: where to push it (default to damien/\$branch)
+  -ub|--upstream-branch: the upstream branch to update (default to master)
+  --rebase: rebase rather than merge upstreambranch into branch
+  --no-pull: don't pull
+  --no-push: don't push
+  --only-push: only push
+  --pull-opt opt: do our own pull
+  --push-opt opt: do our own push
+  -lc|--local-commit [(all)|update|yes|no|none]
+  -lo|--local-opt: the local commit options
+  -rc|--remote-commit [(all)|update|yes|no|none]
+  -ro|--remote-opt: the remote commit options
+
+  COMMIT MODES:
+  - all: add all files in the directory (git add -AN && git commit -a)
+  - update: git commit -a
+  - yes: only commit
+  - no: no commit, but still show diff
+  - none: do nothing
+
+  git mydeploy does:
+  1) Commit branch in local, commit upsterambranch in remote.
+  2) Pull upstreambranch into branch.
+  3) Push branch into remotebranch.
+  4) Merge (--ff-only) upstreambranch with remotebranch. 
+  This allow to push into a non bare repository where upstreambranch should
+  give the deployed data.
+
+  By default, branch is updated with upstreambranch, but by specifying
+  --pull-opt the user can use it's own pull. The same with pushing (but we
+  still assume the push will be in remotebranch)."
+
+exit 0 }
+
+branch=master
+remotebranch= #where do I push $branch
+upstreambranch=master #which upstream branch I synchronize
+LOCAL=$(pwd)
+REMOTE=
+commitlocal=all
+commitremote=all
+commitoptlocal=
+commitoptremote=
+pullaction="script"
+pushaction="script"
+onlypush=
+rebase=
+
+while true;
+do
+  case "$1" in
+   -- ) shift; break ;;
+  -l|--local ) shift; LOCAL=$1; shift ;;
+  -u|--upstream ) shift; REMOTE=$1; shift ;;
+  -b|--branch ) shift; branch=$1; shift ;;
+  -rb|--remote-branch ) shift; remotebranch=$1; shift ;;
+  -ub|--upstream-branch ) shift; upstreambranch=$1; shift ;;
+  -lc|--local-commit ) shift; commitlocal=$1; shift ;;
+  -lo|--local-opt ) shift; eval "commitoptlocal=($1)"; shift ;;
+  -rc|--remote-commit ) shift; commitremote=$1; shift ;;
+  -ro|--remote-opt ) shift; eval "commitoptremote=($1)"; shift ;;
+  --rebase ) shift; rebase="yes";;
+  --no-pull ) shift; pullaction="no";;
+  --no-push ) shift; pushaction="no";;
+  --only-push ) shift; onlypush=1;;
+  --pull-opt ) shift; pullaction="custom"; eval "pullopt=($1)"; shift ;; #the = construction construct an array from each word of the string
+  --push-opt ) shift; pushaction="custom"; eval "pushopt=($1)"; shift ;;
+  -h|-help|--help|-* ) help ;;
+    *) break;;
+  esac
+done
+
+[[ -z "$REMOTE" ]] && REMOTE=$1
+[[ -z "$REMOTE" ]] && echo "No upstream specified" && help
+[[ -z "$remotebranch" ]] && remotebranch="damien/$branch"
+
+quietdiff() {
+  git diff --quiet
+  if [[ $? -ne 0 ]]; then
+    git diff 
+  fi
+}
+
+isclean() {
+  git diff-files --quiet --ignore-submodules -- && \
+  git diff-index --cached --quiet HEAD --ignore-submodules --
+}
+
+docommit() {
+  commit=
+  case $1 in
+    local ) opt=($commitoptlocal); commit=$commitlocal ;;
+    remote ) opt=($commitoptremote); commit=$commitremote ;;
+  esac
+  echo "(commit options: $opt)"
+  case $commit in
+    #the empty file hash is
+    #e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+    all ) git add -AN && quietdiff && git commit $opt -a ;;
+    update ) quietdiff && git commit $opt -a ;;
+    yes ) quietdiff && git commit $opt ;;
+    no ) quietdiff  ;;
+    * ) ;;
+  esac
+}
+
+preparecommit() {
+  commitdir=
+  commitbranch=
+  case $1 in
+    local ) commitbranch=$branch; commitdir=$LOCAL ;;
+    remote ) commitbranch=$upstreambranch; commitdir=$REMOTE ;;
+  esac
+  cd $commitdir
+  git checkout $commitbranch || exit 1
+  if ! isclean; then
+    docommit $1 || exit 1
+  fi
+}
+
+pullaction() {
+  case $pullaction in
+    script ) 
+      pullopt=
+      [[ -n "$rebase" ]] && pullopt=(--rebase)
+      pullopt=($pullopt $REMOTE $upstreambranch)
+    ;;
+  esac
+  echo "### On local: Pulling via git pull $pullopt"
+  git pull $pullopt
+}
+
+pushaction() {
+  case $pushaction in
+    script ) 
+      pushopt=($pushopt $REMOTE "$branch:$remotebranch")
+      ;;
+  esac
+  echo "### On local: Pushing via git push $pushopt"
+  git push $pushopt
+}
+
+fetchatend() {
+  #if pullaction is custom, it is probably because we are tracking
+  #upstreambranch. So after updating it, we must pull it again to be sure
+  #we are up to date
+  case $pullaction in
+    custom )
+      cd $LOCAL &&
+      echo "### On local: Pulling again via git pull --ff-only $pullopt to be up to date" &&
+      git checkout $branch &&
+      git pull --ff-only $pullopt
+      ;;
+  esac
+}
+
+echo "Synchronizing local $branch on remote $upstreambranch via $remotebranch"
+
+if [[ -z $onlypush ]]; then
+  #commiting my repo
+  echo "### Commiting $branch on local $LOCAL"
+  preparecommit 'local'
+  
+  #commiting deployed repo
+  echo "### Commiting $upstreambranch on remote $REMOTE"
+  preparecommit 'remote'
+  
+  if [[ $pullaction != "no" ]]; then
+    # merge remote into local 
+    cd $LOCAL &&
+    git checkout $branch &&
+    pullaction
+    [[ $? != 0 ]] && exit 1
+  fi
+fi
+
+if [[ $pushaction != "no" ]]; then
+  # deploy remote then update the local repo so that it know that the fast
+  # forward worked
+  pushaction &&
+  cd $REMOTE &&
+  echo "### On remote, updating $upstreambranch with $remotebranch" &&
+  git checkout $upstreambranch &&
+  git merge --ff-only $remotebranch &&
+  fetchatend
+fi

@@ -1,35 +1,119 @@
-#!/bin/sh
+#!/bin/zsh
+
+autoload -Uz colors && colors
+
+mklist() {
+	list=($@)
+	[[ $# -eq 0 ]] && list=( . )
+	namelist=()
+	for folder in $list; do
+		foldername=${folder/$HOME/'~'}
+		namelist+=$foldername
+	done
+}
+
+msg() {
+	msg="${fg[yellow]}=====${fg[yellow]} $1"
+	[[ $folder != "." ]] && msg+=" for $foldername"
+	msg+=" =====${reset_color}";
+	echo -e $msg
+}
+
+doaction() {
+	for ((i=1; i <= $#list; i++)) do
+		folder=$list[i]
+		foldername=$namelist[i]
+		case $action in
+			fetch )
+				if [[ -d $folder && -d $folder/.git ]]; then 
+					msg "fetch"
+					( cd $folder
+					git fetch --all -p
+					)
+				fi
+				;;
+			update )
+				if [[ -d $folder ]]; then 
+					msg "update $AUTO"
+					( cd $folder;
+					if git rev-parse 2>/dev/null; then 
+						if [[ -n $AUTO ]]; then
+							#update svn if it exists, otherwise update master
+							if [[ -d $(git rev-parse --git-dir)/svn ]]; then
+								git my update svn
+							else
+								git my update master
+							fi
+						else
+							#update current branch
+							#(note: git my update now automatically correctly updates svn
+							#branches)
+							git my update
+						fi
+					fi
+					if [[ -d .hg ]]; then hg pull -u; fi
+					if [[ -d .svn ]]; then svn update; fi
+					)
+				fi
+				;;
+			list )
+				if [[ -d "$folder/.git" ]]; then echo "$foldername: git"; fi
+				if [[ -d "$folder/.hg"  ]]; then echo "$foldername: hg" ; fi
+				if [[ -d "$folder/.svn" ]]; then echo "$foldername: svn"; fi
+				if [[ -d "$folder/.bzr" ]]; then echo "$foldername: bzr"; fi
+				if [[ -d "$folder/.svk" ]]; then echo "$foldername: bzk"; fi
+				;;
+			action )
+				if [[ -d $folder ]]; then 
+				  msg "action: $command"
+					( 
+					cd $folder
+					eval $command
+					)
+				fi
+				;;
+		esac
+	done
+}
 
 action=$1; shift
 case $action in
-  fetch )
-    for i in "$@"; do
-      echo "====== vcsupdate for $i ======";
-      ( cd "$i";
-      if [ -d .git ]; then git fetch --all; fi
-      )
-    done
-    ;;
-  update )
-    for i in "$@"; do
-      echo "====== vcsupdate for $i ======";
-      ( cd "$i";
-      if [ -d .git ]; then git pull; fi
-      if [ -d .hg ]; then hg pull -u; fi
-      if [ -d .svn ]; then svn update; fi
-      )
-    done
-    ;;
-  list )
-    for i in "$@"; do
-      if [ -d "$i/.git" ]; then echo "$i: git"; fi
-      if [ -d "$i/.hg" ]; then  echo "$i: hg" ; fi
-      if [ -d "$i/.svn" ]; then echo "$i: svn"; fi
-      if [ -d "$i/.bzr" ]; then echo "$i: bzr"; fi
-      if [ -d "$i/.svk" ]; then echo "$i: bzk"; fi
-    done
-    ;;
-  * )
-    echo "$0 list/update dirs"
-    ;;
+	status )
+		#this case is special because I want to call gitstatus.rb only once
+		#since ruby can be a bit slow
+		OPTS=()
+		while true; do
+			case $1 in
+				-- ) shift; break ;;
+				-*) OPTS+=$1; shift ;;
+				*) break;;
+			esac
+		done
+		mklist "$@"
+		gitstatus.rb $OPTS $list
+		exit 0
+		;;
+	update )
+		AUTO=
+		while true; do
+			case $1 in
+				-- ) shift; break ;;
+				--auto) shift; AUTO="--auto" ;;
+				*) break;;
+			esac
+		done
+		;;
+	action )
+		command=$1
+		shift
+		;;
+	list | fetch )
+		#no preparation to do
+		;;
+	* )
+		echo "$0 list/update/fetch/status/action dirs"
+		;;
 esac
+
+mklist "$@"
+doaction

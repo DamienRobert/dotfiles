@@ -1,0 +1,306 @@
+#!/usr/bin/env ruby
+
+require 'maildir'
+require 'mail'
+require 'mail_extract'
+require 'pathname'
+require "optparse"
+require 'simplecolor'
+require 'dr/encoding'
+require 'cgi'
+
+SimpleColor.mix_in_string
+
+module MailCheck
+	@default_maildirs=Pathname.glob(Pathname.new(ENV['HOME'])+'Mail/*/Inbox/')
+
+	class << self
+		attr_accessor :default_maildirs
+	end
+
+	class MailBox
+		attr_accessor :mailbox
+
+		def initialize(mailbox)
+			@mailbox=::Maildir.new(mailbox,false) #do not create cur,tmp,new dirs
+		end
+
+		def to_s
+			@mailbox.path
+		end
+
+		def check
+			@mailbox.list(:new)
+		end
+	end
+
+	class MailDirs
+		attr_accessor :maildirs
+
+		def initialize(maildirs=MailCheck.default_maildirs)
+			@maildirs=maildirs.map {|m| MailBox.new(m)}
+		end
+
+		def check
+			newmails={}
+			@maildirs.each do |m|
+				newmails[m]=m.check
+			end
+			return newmails
+		end
+
+		def self.nbmails(maildirs)
+			maildirs.values.inject(0) {|sum,x| sum+x.length}
+		end
+	end
+
+	module Format
+		def self.emphasize(text)
+			if $opts[:notify]
+				"<b>#{text}</b>"
+			else
+				text.color(:bold)
+			end
+		end
+
+		def self.mail_body(mail)
+			charset=mail.charset
+			if mail.multipart?
+				part = mail.parts.select { |p| p.content_type =~ /text\/plain/ }.first rescue nil
+				part = mail.parts.select { |p| p.content_type =~ /text\/html/ }.first rescue nil if part.nil?
+				mail=part unless part.nil?
+			end
+			case mail.content_type 
+			when /text\/plain/
+				message = mail.body.decoded
+				charset=mail.charset if mail.charset
+				message.force_encoding(charset) if charset
+				#convert to UTF-8
+				message=DR::Encoding.to_utf8(message)
+
+				#message.gsub!(/(^ *|>.*)\n/,'') #filter
+				message=MailExtract.parse(message)
+			when /text\/html/
+				message = mail.body.decoded
+				#IO.popen("lynx -dump -stdin", "r+") {|pipe|
+				IO.popen("w3m -dump -T text/html", "r+") {|pipe|
+					pipe.puts message
+					pipe.close_write
+					message=pipe.read
+				}
+				#Usually html messages are spam so I reduce the size
+				message=message.split("\n").first(10).join("\n")
+			else
+				return ""
+			end
+
+			if $opts[:notify]
+				message=CGI::escapeHTML(message)
+			end
+			message=message.chomp+"\n\n" unless message.empty?
+			return message
+		end
+
+		def self.mail_format(mail)
+			case mail
+				when Maildir::Message
+					mail=File.read(mail.path)
+				when String,Pathname
+					mail=File.read(mail)
+			end
+			begin
+				mail=Mail.new(mail)
+			rescue Exception => e
+				warn "Error in reading mail: #{e}"
+				#Force the encoding, cf https://github.com/mikel/mail/issues/736
+				mail=Mail.new(DR::Encoding.to_utf8(mail))
+			end
+			begin
+				from=mail.from
+				subject=mail.subject
+				date=mail.date
+			rescue Exception => e
+				warn "Error in parsing mail headers: #{e}"
+				raise e
+			end
+			if $opts[:notify]
+				format="&lt;<i>#{CGI::escapeHTML(from.join(" "))}</i>&gt; #{CGI::escapeHTML(subject)}\n"
+			else
+				format="<#{from.join(" ").color(:red)}> #{subject.color(:green)} (#{date.to_s.color(:yellow)})\n"
+			end
+			if $opts[:body]
+				begin
+					format+=Format.mail_body(mail)
+				rescue Exception => e
+					warn "Error in parsing mail body: #{e}"
+					raise e
+				end
+			end
+			return format
+		end
+
+		def self.mailbox_format(mailbox, emphasize=true)
+			name=mailbox.to_s
+			name=name.sub(/^#{ENV['HOME']}\/Mail\//,'').sub(/(\/new)\/$/,'')
+			if emphasize then
+				name=Format.emphasize(name)
+			end
+			return name
+		end
+
+		def self.maildirs_format(maildirs)
+			format=""
+			maildirs.each do |k,v|
+				if !v.empty?
+					format+=Format.mailbox_format(k)+"\n"
+					v.map do |m|
+						begin
+							format+="- "+ Format.mail_format(m)
+						rescue Exception => e
+							warn "Error in formatting #{k}->#{m}: #{e}"
+						end
+					end
+				end
+			end
+			return format
+		end
+
+		def self.maildirs_summary(maildirs)
+			format=""
+			maildirs.each do |k,v|
+				if !v.empty? or $opts[:read]
+					format+="- "+Format.mailbox_format(k,false)+": "+v.length.to_s+"\n"
+					#format+="#{v.length} new messages.\n"
+				end
+			end
+			return format
+		end
+
+		def self.maildirs_print(maildirs)
+			nbmails=MailDirs.nbmails(maildirs)
+			if $opts[:summary]
+				format=Format.maildirs_summary(maildirs)
+				if nbmails > 0 or $opts[:read]
+					format=Format.emphasize("New mails: #{nbmails}") + 
+						 "\n"+format
+				end 
+			else
+				format=Format.maildirs_format(maildirs)
+			end
+			if $opts[:notify]
+				if nbmails == 0
+				 system("notify-send -t 2 -i mail-read ' '") if $opts[:read]
+				else
+					system('notify-send', '-i', 'mail-unread', ' ', format)
+				end
+			else
+				puts format
+			end
+		end
+
+		def self.inotify_format(event)
+			mbox=Pathname.new(event.watcher.path)
+			mail=mbox+event.name
+			return Format.mailbox_format(mbox)+": "+
+				Format.mail_format(mail)
+		end
+
+		def self.inotify_print(event)
+			format=Format.inotify_format(event)
+			if $opts[:notify]
+				system('notify-send', '-i', 'mail-unread', ' ', format)
+			else
+				puts format
+			end
+		end
+
+		def self.maildirs()
+		end
+	end
+end
+
+$opts={:color => true, :notify => false, :read => true,
+ :status => false, :summary => false, :daemon => false, :body => false,
+:tray => false}
+optparse = OptionParser.new do |opt|
+	opt.banner= "#{File.basename($0)} [options] maildirs"
+	opt.on("-c", "--[no-]color", "Color output", "on by default") do |v|
+		$opts[:color]=v
+	end
+	opt.on("-c", "--[no-]color", "Color output", "on by default") do |v|
+		$opts[:color]=v
+	end
+	opt.on("--notify", "Notify output") do |v|
+		$opts[:notify]=v
+		$opts[:color]=!v
+	end
+	opt.on("-q", "quiet", "do not show when mail is read") do |v|
+		$opts[:quiet]=v
+	end
+	opt.on("--[no-]read", "read mails", "show when all mail is read, on by default") do |v|
+		$opts[:read]=v
+	end
+	opt.on("-s", "--summary", "summary", "show only amount of new mails") do |v|
+		$opts[:summary]=v
+	end
+	opt.on("--status", "exit status 1 if new mail") do |v|
+		$opts[:status]=v
+	end
+	opt.on("--daemon", "Demon mode") do |v|
+		$opts[:daemon]=v
+	end
+	opt.on("--body", "Show body of messages") do |v|
+		$opts[:body]=v
+	end
+	opt.on("--tray", "Launch in systray") do |v|
+		$opts[:tray]=v
+	end
+end
+optparse.parse!
+if !$opts[:color]
+	SimpleColor.enabled=false
+end
+
+include MailCheck
+
+paths=ARGV
+if paths.empty?
+	paths=MailCheck.default_maildirs
+end
+paths.map! {|p| Pathname.new(p).expand_path}
+
+if $opts[:tray]
+	require 'gtk2'
+	require 'dr/gtk'
+	$opts[:notify]=true
+
+	si=Gtk::StatusIcon.new
+	si.stock=Gtk::Stock::FILE
+
+	#left click
+	si.signal_connect('activate'){|icon| }
+elsif $opts[:daemon]
+	require 'rb-inotify'
+	notifier = INotify::Notifier.new
+	paths.each do |path|
+		notifier.watch((path+"new/").to_s, :moved_to, :create, :onlydir) do |event|
+			Format.inotify_print(event)
+		end
+	end
+	loop do
+		notifier.process
+	end
+else
+	m=MailDirs.new(paths)
+	msgs=m.check
+	
+	if $opts[:status]
+		if MailDirs.nbmails(msgs) == 0
+			exit 0
+		else
+			exit 1
+		end
+	else
+		Format.maildirs_print(msgs)
+	end
+end

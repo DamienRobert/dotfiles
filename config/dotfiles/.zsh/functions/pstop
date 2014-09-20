@@ -1,0 +1,6 @@
+# pstop -- ps with top-like output
+# 16aug2011  +chris+
+pstop() {
+  ps -eo pid,user,pri,ni,vsz,rsz,stat,pcpu,pmem,time,comm --sort -pcpu |
+    head "${@:--n 20}"
+}

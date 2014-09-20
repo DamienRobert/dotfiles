@@ -1,7 +1,0 @@
-#!/bin/sh
-#used by 00update... pour les fichiers 'squel'
-
-orig=$1
-shift
-
-~/progs/linkutils/install_package -a -s "$MYFILES" "$orig" "$HOME" 

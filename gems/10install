@@ -1,0 +1,17 @@
+#!/usr/bin/zsh
+. $HOME/.initvars
+
+readconfig="$MYFILES/ruby/lib/dr/readconfig.rb"
+eval $($MYFILES/00COMPUTERS.rb --export=install)
+
+MAINT="$HOME/mine/maint"
+eval $($MAINT/gems.rb get-all)
+
+if [[ -n ${(M)INSTALL:#gems-full} ]]; then
+	pip2 install --user $($readconfig -j $MAINT/gems/pip2)
+fi
+
+if [[ -n ${(M)INSTALL:#gems-extra} ]]; then
+	npm install -g $($readconfig -j $MAINT/gems/npm)
+	cpanm $($readconfig -j $MAINT/gems/cpanm)
+fi

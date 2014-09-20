@@ -1,0 +1,1 @@
+ansible -v all -m raw -a 'ln -snf /run/systemd/resolve/resolv.conf /etc/resolv.conf; /usr/bin/pacman -S --noconfirm python2' --sudo

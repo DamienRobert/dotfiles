@@ -29,12 +29,6 @@ Premiers associés
 
 Ass M c'est les idéaux premiers annulant un élément de M.
 
-Concrètement, pour définir B_x(X) on prend U affine contenant x et i:U->A^n
-immersion fermée / i(x)=0; i(U) définie par l'idéal I. B_x(X) est l'union
-de X\{x} et de la cloture de q^-1 [i(U) \ 0] dans B_n. Plus précisément,
-soit I_i* l'idéal de k[X_i,X_1/X_i,...,X_n/X_i] défini par les f / f*X_i^N \in I pour N>>0. I_i* et I_j* induisent le même idéal dans B_n,i \inter B_n,j, donc les I_i* définissent un idéal cohérent I*, et donc un fermé U*.
-Alors B_x(X) est le recollement de U* et de X\{x} via leurs sous-ouverts
-isomorphes U* \ U* \inter E et U \ {x}.
 Th:  - Ass M est fini, contient tous les idéaux premiers minimaux sur ann(M)
      - L'union des premiers dans ass M = {0} union {les zéros diviseurs sur M}
      - Ass M commute à la localisation

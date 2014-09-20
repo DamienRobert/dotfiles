@@ -7,22 +7,59 @@ mkfs.btrfs -L label -m raid1 -d raid1 /dev/sdb /dev/sdc
 See subvolumes:
 sudo btrfs subvolume list -atu /
 
-Get UID of blocks:
-$ blkid
-/dev/sda: LABEL="linux-home" UUID="32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e"
-UUID_SUB="efec281f-9720-462e-a916-d074f5f85cb2" TYPE="btrfs" 
-/dev/sdb1: SEC_TYPE="msdos" UUID="9D37-7B22" TYPE="vfat" PARTLABEL="UEFI"
-PARTUUID="2b1dec6b-73c5-435e-bee7-29fe64b90e93" 
-/dev/sdb2: UUID="382E89A02E895830" TYPE="ntfs" PARTLABEL="Windows"
-PARTUUID="48faf05a-38c7-4157-a5ec-4af142a91bfc" 
-/dev/sdb3: LABEL="linux-home" UUID="32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e"
-UUID_SUB="68ab821c-da77-43c4-a266-09a4ce6b1b5c" TYPE="btrfs"
-PARTLABEL="Linux-raid" PARTUUID="44242e86-a23d-4fdb-be59-821bcff28d8f" 
-/dev/sdb4: LABEL="linux-root" UUID="ba8d1474-88ec-4342-a63d-e4d4732511af"
-UUID_SUB="c274b3ce-72e3-4155-96dd-9e5084bb55ad" TYPE="btrfs"
-PARTLABEL="Linux-Main" PARTUUID="986178da-85b0-4a7c-a0ec-600adfa32be7" 
-/dev/sdc: LABEL="large" UUID="33e81fa8-6a49-4294-8bc9-bf6295ac39d1"
-UUID_SUB="fb505410-ae35-4d0a-a9bb-d28899bfa422" TYPE="btrfs" 
+Copy on write
+=============
 
-Feanor /large $ findfs LABEL=large
-/dev/sdc
+https://btrfs.wiki.kernel.org/index.php/FAQ#Can_copy-on-write_be_turned_off_for_data_blocks.3F
+https://wiki.archlinux.org/index.php/Btrfs#Copy-On-Write_.28CoW.29
+- For a device, mount it with nodatacow
+- For a folder, use `chattr +C folder`, the files inside will then have the '+C' attributes on
+  (Works for newly created files. For others we need to recreate them, cf the script https://github.com/stsquad/scripts/blob/master/uncow.py)
+Example for a raw image:
+  touch vm-image.raw
+  chattr +C vm-image.raw
+  fallocate -l10g vm-image.raw
+
+Defrag
+======
+
+Defrag the journal: (speed-up systemd boot)
+btrfs filesystem defrag /var/log/journal/*/*
+
+Defrag full disk
+sudo btrfs filesystem defrag -rv /
+
+From: https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
+Btrfs supports online defragmentation. To defragment the metadata of the root folder do:
+    btrfs filesystem defragment /
+This will not defragment the entire file system. For more information read this page on the btrfs wiki.
+To defragment the entire file system verbosely:
+    btrfs filesystem defragment -r -v /
+Note: The command above will defragment only file data. To defragment directory metadata for every directory in the file system, run this command:
+    find / -xdev -type d -print -exec btrfs filesystem defragment '{}' \;
+
+Other commands
+==============
+
+#balance
+ What does "balance" do?
+btrfs filesystem balance is an operation which simply takes all of the data and metadata on the filesystem, and re-writes it in a different place on the disks, passing it through the allocator algorithm on the way. It was originally designed for multi-device filesystems, to spread data more evenly across the devices (i.e. to "balance" their usage). This is particularly useful when adding new devices to a nearly-full filesystem.
+Due to the way that balance works, it also has some useful side-effects:
+    If there is a lot of allocated but unused data or metadata chunks, a balance may reclaim some of that allocated space. This is the main reason for running a balance on a single-device filesystem.
+    On a filesystem with damaged replication (e.g. a RAID-1 FS with a dead and removed disk), it will force the FS to rebuild the missing copy of the data on one of the currently active devices, restoring the RAID-1 capability of the filesystem. 
+
+#scrub
+btrfs scrub is used to scrub a btrfs filesystem, which will reading all data from all disks and verifying checksums. 
+
+Slow mount times
+================
+
+Slow mount times are usually caused by large log trees and fragmented
+metadata. Try the autodefrag mount option and btrfs fi defrag -clzo -t 2M
+-r /home (defragment files over 2M in size, recompress with lzo,
+recursively), btrfs balance start /home (and wait for btrfs-endio-wri to
+calm down or check with balance status, this takes some time)
+If those don't help enough, try checking (but not repairing) the device
+with btrfsck, and, if it's clean, clear the logs with btrfs-zero-image
+after backing up the metadata with btrfs-image (consult the btrfs mailing
+list or IRC first, I am not an expert in this).

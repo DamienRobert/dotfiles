@@ -1,0 +1,2 @@
+# minimal setup to have correct PATH
+. "$HOME/mine/config/dotfiles/.initenv"

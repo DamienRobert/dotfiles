@@ -1,0 +1,50 @@
+#!/bin/zsh
+
+echo "## -> dosymlinks"
+#do standard symlinks and dirs in $HOME
+
+. $CFGFILES/.dolink
+
+#Create dirs
+cd
+mkdir -p -m 700 data tmp .vim_backup
+cp -rn $CFGFILES/squel/* ~/
+
+DOLINK_FOLLOW=t
+for file in data/*(/N) ; do
+  if [[ file != "WorkData" && file != "home" && file != "large" ]]; then
+    do_link $file
+  fi
+done
+LINKS=(perso/{posts,website} 
+	pro/{magma,Work} pro/dist/{gforge,mathrice} 
+	mine/{config,doc,maint,progs,ruby,script,syst,config/dotfiles}
+	latex/texmf)
+for link in $LINKS; do
+	do_link $link
+done
+
+DOLINK_FOLLOW=
+do_link .vim/vimrc .vimrc
+do_link .config/git/config .gitconfig
+
+mkdir -p -m 700 data tmp .subversion/auth
+cd .subversion/auth
+do_link ../../$CFGFILESNAME/files/.subversion/auth/svn.simple
+
+#do not erase symlinks if I set them manually
+DOLINK_NOCLOBBER=t
+cd
+do_link /run/user/$UID/gvfs .gvfs
+do_link /run/media/$USER media
+
+if [[ -e ~/data ]]; then
+	cd ~/data
+	do_link ../home
+	do_link home/large
+fi
+if [[ -e ~/large ]]; then
+	cd ~/large
+	do_link ../home
+	do_link home/data
+fi

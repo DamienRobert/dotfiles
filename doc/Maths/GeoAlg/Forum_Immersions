@@ -92,3 +92,69 @@ des conditions suffisantes - mais j'ai l'impression qu'un éclatement
 auquel cas il montre que la disjonction de ces deux conditions n'est
 pas nécessaire pour être un épimorphisme universel.
 
+==========================================================================
+
+Est-ce qu'un sous-schéma affine d'un schéma affine est une localisation?
+------------------------------------------------------------------------
+
+* sciences.maths.avances:1830
+
+Rémy, dans le message (sciences.maths.avancees:1828), a écrit :
+> Si le schéma d'arrivée admet un point générique, mettons, tu as un morphisme
+> naturel de R dans l'anneau de fractions de A en raison des inclusions
+> Spec (Frac A) -> Spec R -> Spec A. Est-ce que à partir de là R n'est pas
+> forcément une localisation de A ?
+
+Non, c'est faux. Si A est un anneau de Dedekind (anneau intègre noethérien
+de dimension 1 dont les localisés en les idéaux maximaux sont des anneaux
+de valuation discrète), alors tout ouvert de Spec A est affine (ce serait
+un peu long à justifier proprement, mais en gros, c'est trivial à vérifier
+pour les localisés de A (anneaux de valuation discrète), par EGA 4 §8, cela
+s'étend à des vrais voisinages ouverts). Il reste à trouver un anneau de
+Dedekind A et un ouvert de Spec A qui ne soit pas de la forme D(f) pour f
+dans A. Prenons un anneau de Dedekind dont le groupe de Picard ne soit pas
+de torsion (prendre une courbe elliptique sur C et enlever un point), soit
+m un idéal maximal dont la classe dans le groupe de Picard soit d'ordre
+infini. Spec A - {m} est un ouvert de Spec A, mais ce n'est pas un ouvert
+de la forme D(f). Si c'était le cas, le lieu des zéros (i.e. le diviseur de
+f) ne contiendrait que m, div f serait un multiple de m, ce qui
+impliquerait qu'il existerait un entier n>=0 tel que div f = m^n, ce qui
+contredirait le fait que m^n ne soit pas principal.
+
+>                                   En tout cas, ça a l'air de marcher pour
+> l'espace affine.
+
+Pour l'espace affine, cela doit être bon. Je n'ai plus la référence précise
+en tête (peut-être rechercher "pureté de Zariski-Nagata" dans un SGA), mais
+il me semble que sous des hypothèses convenables, le fermé complémentaire
+d'une immersion ouverte affine est purement de codimension 1. Si U est un
+ouvert affine d'un espace affine A^n, U est le complémentaire de la réunion
+d'un nombre fini de sous-variétés de codimension 1 dans A^n. Comme
+k[T_1,...,T_n] est factoriel, toute telle sous-variété est une hypersurface
+i.e. un Z(f_i), l'ouvert U est alors D(f_1...f_k).
+
+* sciences.maths.avancees:1832
+
+Rémy, dans le message (sciences.maths.avancees:1831), a écrit :
+> Hum, j'imagine que ça se généralise à beaucoup de choses localement
+> factorielles... Si tout est, mettons, lisse, on a le résultat ?
+
+Euh, j'utilise la factorialité de façon globale.
+
+J'ai retrouvé la référence. C'est SGA 6 II 2.2.6 qui dit que si X est un
+schéma localement noethérien, U un ouvert tel que U -> X soit un morphisme
+affine, alors les composantes irréductibles de X-U sont de codimension 0 ou
+1 [l'idée est de montrer que si A est un anneau local noethérien de
+dimension >=2, alors le complémentaire du point fermé dans Spec A n'est pas
+un schéma affine (en montrant qu'il a de la cohomologie cohérente)].
+
+Si A est un anneau noethérien et intègre, pour que tout ouvert affine de
+Spec A soit de la forme D(f), il suffit donc que A soit factoriel.
+
+* cf aussi /home/dams/Papiers/Maths/GeoAlg/monos_platsaffines.pdf
+DANIEL LAZARD Autour de la platitude
+Chapitre IV.5.
+
+Th: Soit U un ouvert d'un schéma affine noethérien Spec(A). Si \Gamma(U)
+est un A-module plat, alors Spec(\Gamma(U)) s'identifie à un ouvert affine
+de Spec(A) contenant U.

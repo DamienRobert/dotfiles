@@ -1,0 +1,240 @@
+# vim: foldmethod=marker ft=text
+
+#-- Raccourcis globaux--# {{{
+
+Menus: Win-F7... Win-F12
+       Win-F1
+  ControlWin-F1, F7,F8,F9,F10: MainMenus
+
+(Shift+Control/Win/Meta) 8-9-0: fenetres (xterm,screen,gnome)
+Win+Shift 1-4: mini fenetres screen -> ul, dl, ur, dr
+
+ControlWin E: Quick start
+ControlWin Z: Menus programmes
+  ShiftWin Z: pareil mais le menu en bas à gauche
+  Pareil avec s/Z/W pour les menus anglais
+
+# }}}
+
+#-- Raccourcis pour le desktop --# {{{
+
+Changer l'écran: Win+Fleche, Page*, (Home, End: centrer, Return: prev)
+Rajouter Meta pour du demi scroll sur les fleches; pour défiler sur les
+page*
+
+ControlWin O pour scroll
+  ShiftWin O pour scroll reverse
+
+windows-tab pour aller d'une fenêtre à la suivante (sans les shaded)
++Control: inclus les shaded
++Shift only les shaded
+
+meta tab pour une liste de windows (sans les iconic)
++Control: inclus les iconic
++Shift only les iconic
+
+Shift+Win+Fleche pour le focus dans la direction
+Shift+Win+Page* pour le warp next ou prior
+Shift+Win+Debut/Fin pour le warp next ou prior sur la desk
+   rajouter control pour le faire partout
+
+Windows list:
+Win-F2: pour tout avoir
+  +control pour un menu pour générer tout type possible
+ControlWin-A pour tout avoir sur le desk
+Control+Win Q,S,D pour la page, desk, tout (non iconic)
+  Shift+Win Q,S,D pour les iconic
+
+ShiftWin R: Console Current Page
+  ControlWin R: Console
+  MetaWin R: ConsoleUneLigne
+ShiftWin P: FvwmPager
+  ControlWin P: Menu fvwm functions
+ShiftWin I: Toggle layer conky
+  ControlWin I: toggle l'apparence de conky
+
+ControlWin+Clavier num -> Wrappe le curseur sur l'écran
+# }}}
+
+# Transparency {{{
+ControlWin Insert/Delete: transparency
+#}}}
+
+# {{{ Warp cursor in screen 
+WinControl + KeyPad
+# }}}
+
+#-- Raccourcis pour les fenêtres--# {{{
+Win Space/Backspace: avant/arrière plan
+MetaWin Backspace/Return/Space: layers de la fenetre
+ControlWin Backspace/Return/Space: Shade (toggle)/Restore/Stick menu
+
+ControlWin+ fleches/Page*/Début/Fin: changement de page avec la fenetre
+
+Win Insert/Delete: changer la taille
+  +shift: en activant le toggle maximize
+  +control: menu Move/Resiz
+Shift Win +hjkl: maximize dans la direction
+  +m,;: maximize
+  +g: maximize off
+  +f: commit le maximize
+Control Win +hjkl: bouge dans la direction
+  +m,;: move
+  +g: centre
+  +f: PlaceAgain
+
+Win+Clavier Num: warpe le curseur dans la fenetre
+
+#Les boutons de la fenetre
+Win+F3: BMenu
+  +F4: Delete
+     +Control: Menu Delete
+  +F5: Iconify
+     +Control: Menu Iconify
+  +F6: maximize
+     +Control: Menu Maximize
+     +Shift: Maximize verticalement
+     +Meta: ewhiwa
+     +Control (+Shift/Meta): Maximize horizontablement
+# }}}
+
+#--changer le mode de fonctionnement--# {{{
+
+#changer le focus policy
+
+ControolWin+ U/I: Yes/No floppy focus
+ControlWin +T/Y: Yes/No: title
+# }}}
+
+# La souris {{{
+
+Win+ClickGauche
+  + Control: Scroll reverse
+  + Shift: Scrool
+  + Meta: FvwmPager
+
+Win+ClickDroit
+  +Meta: Windows list sur la page (ATTENTION: sur une fenetre ça la
+     resize!, cf binding plus loin)
+  +Control: sur le desk
+  +Shift: partout
+Click droit sur fond d'écran: windows list
+
+Win+ClickMilieu
+  +Control: FvwmPager
+  +Shift: Programmes
+  +Meta: QuickStart
+
+Win+molette: wrappe de windows sur la page
+  +shift: change de desk
+  +control: change de page
+
+#c'est inconsistant parce que j'ai supprime le bouton 2
+# modificateurs pour les boutons
+bouton delete
+  Control: close
+  Shift: destroy
+bouton icone
+  Control: Shade
+bouton Maximize
+  Shift: maximize vert
+  control: maximize horiz
+    +Meta: pareil, mais avec le ewmhiwa
+  win: commit le maximize
+
+Cliquer sur une fenetre:
+  Partout: win click gauche -> raise and move
+           win click droit -> lower and resize
+	     + meta ->  resize instantanément à là où est la souris
+	   win click milieu -> move
+  Sur titre + bord : click gauche -> raise and move (resize sur bord)
+           click droit -> lower and resize
+           click milieu -> move	
+# }}}
+
+#changer les bindings {{{
+WinCtrl+Escape: toggler les bindings
+Win-Escape pour les desactiver temporairement
+CtrlMeta+Escape: défaut de fvwm en cas de fonction en attente
+#}}}
+
+#mpc {{{
+ControlWin+
+  c: pause
+  v: play
+  b: prev
+  n: next
+  x/w: forward/backward
+#}}}
+
+# Les menus {{{
+MainMenu:
+  accessible par Control-Win+F1
+
+  MainWindowMenu
+    accessible par Win+F1
+
+    Shade
+    Layers
+    Sticky
+      accessibles par ControlWin+space
+    Change Page
+
+    Move
+    Resize
+      accessibles par ControlWin+space/Insert/Delete
+    Maximize
+      accessible par Control+F6
+    Resize Maximize
+    Iconfiy
+    Close
+      accessibles par ControlWin+F5/F4
+
+    Move Pointer
+    Place Again replacer les fenetres, faire venir sur l'écran,
+	modules de placement
+	accessible par Win+F7
+
+  MainDesktopMenu
+    Windows List
+    Focus
+    Change Page
+    Move Pointer
+    Scroll: scroller/ add scrollbar
+      accessible par Win+F8
+    PlaceAgain: cf main window menu
+    Iconify: cf main window menu
+    UnIconify
+
+  MainSessionMenu
+    FvwmFuncMenu
+      accessible par ControlWin+P 
+    RefreshMenu: voir aussi MainStyleMenu (win+F9)
+    SaveSession
+    RestartSession
+    QuitSession
+      accessibles par Win+F10/F11/F12
+
+  MainStyleMenu: mouse focus/titre/destroy style/ refresh menu
+    accessible par Win+F9
+
+
+### Les menus dans menus.fvwm (des menus plus simples, indépendants de bindings.fvwm)
+Quick start: 
+  accessible par ControlWin+E et ShiftWin+Click Milieu
+Programmes:
+  (attention, MenuQuit dans programme n'est pas égal à QuitMenu...)
+  accessible par Control/Meta Win+Z/W et MetaWin+Click Milieu
+Menu Fenetre
+  accessible par Win+F3 et click sur le bouton
+# }}}
+
+# XFCE {{{
+Ctrl-Alt-l: dm-tool lock
+XF86Mail: exo-open --launch MailReader
+XF86WWW: exo-open --launch WebBrowser
+XF86Display/Super-p: xfce4-display-settings --minimal
+Alt-F1: xfce4-popup-applicationsmenu
+Alt-F2: xfce4-appfinder --collapsed
+Alt-F3: xfce4-appfinder
+# }}}

@@ -1,0 +1,114 @@
+#!/usr/bin/zsh
+
+while true;
+do
+  case "$1" in
+    -- ) shift; break ;;
+    --phone ) shift; PHONE=1 ;;
+    --xavier ) shift; XAVIER=1 ;;
+    *) break;;
+  esac
+done
+
+PHOTODIR=$1
+[[ -z $PHOTODIR ]] && PHOTODIR=$(pwd)
+[[ -d $PHOTODIR ]] || mkdir -p $PHOTODIR || exit 1
+
+msg() {
+  echo "# Photos: $NEXT to $LAST"
+  echo "# Videos: $NEXTVID to $LASTVID"
+  echo "# Dir: $PHOTODIR (press a key to continue)"
+  read a
+}
+updatecur() {
+  echo "#$PHOTODIR ($(date --iso-8601=seconds))" >> $CURFILE
+  echo "CURRENT=$LAST\nCURVID=$LASTVID" >> $CURFILE
+}
+transfert() {
+  rsync -vazP "$@"
+}
+missing() {
+	[[ -z $LAST ]] && LAST=$CURRENT
+	[[ -z $LASTVID ]] && LASTVID=$CURVID
+}
+
+if [[ -n $PHONE ]]; then #get photos from phone
+  #CAMERAPHOTO="$HOME/Downloads/Camera Roll"
+  #CAMERAVIDEOS="$HOME/Downloads/camera-multi"
+  #CAMERAPHOTO="$HOME/.gvfs/mtp:host=%5Busb%3A005%2C006%5D/Card/DCIM/Camera"
+  #Copy using pcmanfm the DCIM folder to /tmp
+  CAMERAPHOTO="/tmp/DCIM/Camera"
+  CAMERAVIDEOS=$CAMERAPHOTO
+  CURFILE="$HOME/Photos/Photos_de_Damien/SamsungGalaxyS3Mini/00current"
+  . $CURFILE
+
+  NEXT=$CURRENT
+  NEXTVID=$CURVID
+  LAST=$(basename "$(ls $CAMERAPHOTO/*.jpg | tail -n 1)")
+  LASTVID=$(basename "$(ls $CAMERAVIDEOS/*.mp4 | tail -n 1)")
+  missing
+  msg
+
+  TOTRANSFERT=()
+  for photo in $CAMERAPHOTO/*.jpg(N); do
+    if [[ "$(basename "$photo")" > $NEXT ]]; then
+      TOTRANSFERT+=$photo
+    fi
+  done
+  if [[ -d $CAMERAVIDEOS ]]; then #sometimes I erase the videos
+  	for video in $CAMERAVIDEOS/*.mp4(N); do
+  	  if [[ "$(basename "$video")" > $NEXTVID ]]; then
+  	    TOTRANSFERT+=$video
+  	  fi
+  	done
+  fi
+
+  transfert $TOTRANSFERT $PHOTODIR
+  updatecur
+  exit 0
+fi
+
+function photonum() {
+  local name
+  name=$1
+  name=${name#P}
+  name=${name%.JPG}
+  name=${name%.RW2} #in case it was an RW2
+  echo $name
+}
+
+CAMERADIR=$HOME/media/9016-4EF8
+#[[ -n $XAVIER ]] && CAMERADIR=/mnt/ploum
+[[ -n $XAVIER ]] && CAMERADIR=$HOME/media/F84E-1690
+
+CAMERAPHOTO=$CAMERADIR/DCIM
+CAMERAVIDEOS=$CAMERADIR/PRIVATE/AVCHD/BDMV
+
+CURFILE=$HOME/Photos/LF1/00current
+[[ -n $XAVIER ]] && CURFILE=$HOME/Photos/Photos_de_Blandine/00current
+
+. $CURFILE
+
+NEXT=$(($CURRENT+1))
+NEXTVID=$(($CURVID+1))
+NEXTVID=$(printf %05d $NEXTVID)
+LAST=$(ls $CAMERAPHOTO/*_PANA | tail -n 1)
+LAST=$(basename $LAST)
+LAST=$(photonum $LAST)
+LASTVID=$(ls $CAMERAVIDEOS/STREAM | tail -n 1)
+LASTVID=$(basename $LASTVID)
+LASTVID=${LASTVID%.MTS}
+missing
+msg
+
+if [[ $NEXT -le $LAST ]]; then
+  echo "# Copying photos"
+  transfert $CAMERAPHOTO/*_PANA/P{$NEXT..$LAST}.{JPG,RW2}(N) $PHOTODIR
+fi
+if [[ $NEXTVID -le $LASTVID ]]; then
+  echo "# Copying videos"
+  transfert $CAMERAVIDEOS/STREAM/{$NEXTVID..$LASTVID}.MTS(N) $PHOTODIR
+  transfert $CAMERAVIDEOS/CLIPINF/{$NEXTVID..$LASTVID}.CPI(N) $PHOTODIR
+fi
+updatecur
+echo "# umount $CAMERADIR"

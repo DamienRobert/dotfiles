@@ -1,0 +1,10 @@
+Si le sous-titre est trop rapide:
+   --sub-speed=25/23.976`  plays  frame  based  subtitles
+   which  have been loaded assuming a framerate of 23.976
+   at 25 FPS.
+Si le sous-titre est trop lent:
+   --sub-speed=23.976/25
+(expérimentalement c'est inversé par rapport à la doc)
+
+Décodage vidéo hardware (qui utilise peu de batterie, contrairement à
+vdpau): --vo=vaapi

@@ -1,0 +1,154 @@
+#!/bin/zsh
+# From: https://github.com/msysgit/msysgit/blob/master/share/msysGit/merging-rebase.sh
+# Commit: 9c1c7680d4827fa55092f78646d43de3ed1a1ab3
+#
+# Rebase 'master' on top of an upstream branch (defaults to 'junio/next'),
+# retaining "fast-forwardability" by "merging" (with the "ours" strategy) the
+# previous state on top of the current upstream state.
+#
+# options:
+#  --dry-run
+#     do not perform the rebase but only display the revisions selected
+#
+#  --graph
+#     as for dry-run but display the commits as a graph
+#
+#  --cherry
+#     as for --dry-run but display the commits using cherry notation to mark
+#     commits that are suitable for upstream consideration.
+SUBDIRECTORY_OK=true
+. "$(git --exec-path)/git-sh-setup" ""
+require_clean_work_tree "mysquash" "Please commit or stash them"
+
+force=
+dryrun=
+graph=
+cherry=
+theirs=
+while [[ $# -gt 0 ]]
+do
+	case "$1" in
+	-f|--force)
+		force=t
+		;;
+	-s|--show|-d|--dry-run)
+		dryrun=t
+		;;
+	-g|--graph)
+		dryrun=t
+		graph=--graph
+		;;
+	-c|--cherry)
+		dryrun=t
+		cherry=--cherry
+		;;
+	-t|--theirs)
+		theirs=t
+		;;
+	-h|--help)
+		cat >&2 << EOF
+Usage: $0 [options] [<upstream>]
+
+Options:
+-t|--theirs	Use a --theirs merge
+-s|--show	show which commits would be cherry-picked
+-g|--graph	like --show, but with the commit graph
+-c|--cherry	like show, but try to leave out commits that were applied upstream
+EOF
+		exit 1
+		;;
+	-*)
+		echo "Unknown option: $1" >&2
+		exit 1
+		;;
+	*)
+		break
+		;;
+	esac
+	shift
+done
+
+. ~/mine/script/git/git-topic-helper
+gth_topic "$@"
+
+HEAD_NAME=$gth_local
+TO=$gth_remote
+FROM_SHA1=$gth_local_rev
+TO_SHA1=$gth_remote_rev
+
+if [[ -z $force && -z $(git rev-list $gth_local..$TO) ]]
+then
+	echo "Nothing new in $TO; To force a rebase, use --force" >&2
+	exit 1
+fi
+
+# Find old merging rebase, if any
+# in this case we want to rebase only the commits from
+# $mergebase..$gth_local
+
+. ~/mine/script/git/.squashmergebase
+findmergebase $gth_local $TO
+
+RANGE=${REBASING_BASE-$TO}..$gth_local
+if [[ -n $dryrun ]]
+then
+	git log --oneline $graph $cherry --boundary $RANGE
+	exit
+fi
+
+# Fake our own editor to inject initial steps into the edit script
+TODO_EXTRA="$(git rev-parse --git-dir)/.todo-extra"
+TMP_EDITOR="$(git rev-parse --git-dir)/.rebasing-editor.sh" &&
+echo > $TMP_EDITOR && chmod a+x $TMP_EDITOR
+
+if [[ -z $theirs ]]; then
+	BASE_MESSAGE=
+	if [[ -n $mergebase ]]
+	then
+		BASE_MESSAGE=" using $(git rev-parse --short $mergebase) as base."
+	fi
+	printf "%s\n\n%s%s" "Start the merging-rebase to $TO" \
+	"This commit starts the rebase of $HEAD_NAME ($FROM_SHA1)
+to $TO ($TO_SHA1)" \
+	"$BASE_MESSAGE" > "$TODO_EXTRA.msg"
+	cat > "$TODO_EXTRA" << EOF
+# Start the merging rebase:
+# Reset to $TO and ...
+exec git reset --hard $TO
+# ... fake-merge current $HEAD_NAME
+exec git merge -s ours -m "\$(cat "$TODO_EXTRA.msg")" $FROM_SHA1
+
+# Patches to rebase:
+EOF
+
+	cat >> $TMP_EDITOR << EOF &&
+#!/bin/sh
+case "\$1" in
+*/git-rebase-todo)
+	# prepend the initialising commands
+	cat "\$1" >> "$TODO_EXTRA" &&
+	mv "$TODO_EXTRA" "\$1"
+esac &&
+exec "$(git var GIT_EDITOR)" "\$@"
+EOF
+
+# Rebase!
+	GIT_EDITOR=$TMP_EDITOR GIT_SEQUENCE_EDITOR=$TMP_EDITOR git rebase --autosquash --preserve-merges -i ${mergebase:-$TO} $gth_local
+
+else
+	git my trivial -- --merge --theirs -m "Trivial merge from '$TO' (for the rebase on '$HEAD_NAME')" --go $TO
+	cat > "$TODO_EXTRA" << EOF
+
+# Update branch $HEAD_NAME with the rebase:
+exec git checkout $gth_local && git merge --ff HEAD@{1}
+EOF
+	cat >> $TMP_EDITOR << EOF &&
+#!/bin/sh
+case "\$1" in
+*/git-rebase-todo)
+	cat "$TODO_EXTRA" >> "\$1"
+esac &&
+exec "$(git var GIT_EDITOR)" "\$@"
+EOF
+	GIT_EDITOR=$TMP_EDITOR GIT_SEQUENCE_EDITOR=$TMP_EDITOR git rebase --autosquash --preserve-merges -i --onto $gth_local ${mergebase:-$TO} $gth_local^
+fi

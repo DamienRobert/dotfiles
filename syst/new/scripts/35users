@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+user() {
+	USERNAME=$1
+	PASSWD=$2
+	case $USERNAME
+		root) ;; #do nothing
+		dams)
+			sudo groupadd -g 2000 sshc #do not pollutes normal groups gid
+			sudo useradd -u 1000 -m --comment "Damien Robert" -G users,wheel,systemd-journal,sshc -s /bin/zsh $USER
+			#vérifier que /bin/zsh est dans /etc/shells
+			;;
+		dina)
+			sudo useradd -m --comment "Blandine Belin" -G users $USER ;;
+		provision)
+			sudo useradd -u 1500 -m --comment "$USERNAME" -G users $USER ;;
+		*)
+			sudo useradd -m --comment "$USERNAME" -G users $USER ;;
+	esac
+	if [[ -n $PASSWD ]]; then
+		case $PASSWD
+			\$*) sudo usermod --password $PASSWD $USER ;; #assume this is a hash
+			*) sudo useradd --password $PASSWD $USER ;;
+		esac
+	fi
+}
+
+for USER in $USERS; do
+	case $USER in
+		*:*)
+			split=(${(s/:/)USER})
+			user $split[1] $split[2]
+			;;
+		*)
+			user $USER
+			;;
+	esac
+	if [[ -d $DIR/users/$USER ]]; then
+		$RUNDIR/copydir -u root -c "${USER}:users" "$DIR/users/$USER" "/home/$USER"
+	fi
+done

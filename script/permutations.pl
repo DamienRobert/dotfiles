@@ -3,6 +3,8 @@ use strict;
 
 sub help { 
   print STDERR <<EOHelp;
+  permutations.pl word wordlist look for all (sub)-permutations of word
+  that are in wordlist.
 EOHelp
 };
 

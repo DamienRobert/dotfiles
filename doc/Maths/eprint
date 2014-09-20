@@ -34,16 +34,46 @@ http://arxiv.org/abs/math/0009145v1
 http://websites.math.leidenuniv.nl/algebra/GSchemes.pdf
   Pareil, théory de Galois des schémas, par Lenstra
 
-http://hal.archives-ouvertes.fr/hal-00749232
-  Approche formelle à la manière de Neukirch de la Théorie $\ell$-adique du
-  corps des classes
-
 http://arxiv.org/abs/1302.5834
  From Sheaf Cohomology to the Algebraic de Rham Theorem
 
 http://www.math.harvard.edu/~mazur/preprints/meaning_error.pdf
   Finding meaning in error terms (Barry Mazur)
   Sur la conjecture de Sato-Tate
+
+http://arxiv.org/abs/1309.0441
+   Undecidability in number theory
+        These lecture notes cover classical undecidability results in
+        number theory, Hilbert's 10th problem and recent developments
+        around it, also for rings other than the integers. It also contains
+        a sketch of the authors result that the integers are universally
+        definable in the rationals. 
+
+http://arxiv.org/abs/1309.1968
+ An elementary approach to dessins d'enfants and the Grothendieck-Teichmüller group Pierre Guillot
+     We give an account of the theory of dessins d'enfants which is both
+     elementary and self-contained. We describe the equivalence of many
+     categories (graphs embedded nicely on surfaces, finite sets with
+     certain permutations, certain field extensions, and some classes of
+     algebraic curves), some of which are naturally endowed with an action
+     of the absolute Galois group of the rational field. We prove that the
+     action is faithful. Eventually we prove that this absolute Galois
+     group embeds into the Grothendieck-Teichm\"uller group $GT_0$
+     introduced by Drinfel'd. There are explicit approximations of $GT_0$
+     by finite groups, and we hope to encourage computations in this area.
+     Our treatment includes a result which has not appeared in the
+     literature yet: the Galois action on the subset of regular dessins
+     - that is, those exhibiting maximal symmetry -- is also faithful. 
+
+http://www.rzuser.uni-heidelberg.de/~ci3/brhano.pdf
+The Brauer-Hasse-Noether theorem in historical perspective
+by Peter Roquett
+  Très intéressant!
+
+http://arxiv.org/abs/0809.4221
+ An elementary illustrated introduction to simplicial sets
+ Greg Friedman
+    This is an expository introduction to simplicial sets and simplicial homotopy theory with particular focus on relating the combinatorial aspects of the theory to their geometric/topological origins. It is intended to be accessible to students familiar with just the fundamentals of algebraic topology. 
 
 Preprints
 =========
@@ -109,10 +139,6 @@ http://arxiv.org/abs/1301.5672
  Class polynomials for nonholomorphic modular functions
  Jan Hendrik Bruinier, Ken Ono, Andrew V. Sutherland
 
-http://eprint.iacr.org/2013/075
- Improved Security for a Ring-Based Fully Homomorphic Encryption Scheme
-  Joppe W. Bos and Kristin Lauter and Jake Loftus and Michael Naehrig
-
 http://eprint.iacr.org/2013/095
  A new index calculus algorithm with complexity $L(1/4+o(1))$ in very small
  characteristic
@@ -168,14 +194,6 @@ http://arxiv.org/abs/1109.6278
 http://arxiv.org/abs/0908.2198
  The Berlekamp-Massey Algorithm and the Euclidean Algorithm: a Closer Link
 
-http://arxiv.org/abs/1212.5883
- On a generalization of Deuring's results (Ken-ichi Sugiyama)
-    Using the Dieudonne theory we will study a reduction of an abelian
-    variety of complex multiplication. Our results may be regarded as a
-    generalization of a classical theorem due to Deuring for a CM-elliptic
-    curve. We will also discuss a sufficient condition that is a proper
-    smooth curve with CM to be maximal. 
-
 http://eprint.iacr.org/2012/485
 Cryptology ePrint Archive: Report 2012/485
   Exploiting Collisions in Addition Chain-based Exponentiation Algorithms
@@ -213,3 +231,133 @@ http://arxiv.org/abs/1308.1970
     instances, by a particular class of simple abelian varieties.
     Finally, we discuss the extent to which Mumford's theta groups are
     applicable in our more general setting. 
+
+http://arxiv.org/abs/1305.2428
+ Integral Models of $X_0(N)$ and Their Degrees 
+ Goran Mui\' c
+     In this paper we compute the degree of a curve which is the image of a
+     mapping $z\longmapsto (f(z): g(z): h(z))$ constructed out of three
+     linearly independent modular forms of the same even weight $\ge 4$
+     into $\mathbb P^2$. We prove that in most cases this map is a
+     birational equivalence and defined over $\mathbb Z$. We use this to
+     construct models of $X_0(N)$, $N\ge 2$, using modular forms in
+     $M_{12}(\Gamma_0(N))$ with integral $q$--expansion. The models have
+     degree equal to $\psi(N)$ (a classical Dedekind psi function). When
+     genus is at least one, we show the existence of models constructed
+     using cuspidal forms in $S_4(\Gamma_0(N))$ of degree $\le \psi(N)/3$
+     and in $S_6(\Gamma_0(11))$ of degree 4. As an example of a different
+     kind, we compute the formula for the total degree i.e., the degree
+     considered as a polynomial of two (independent) variables of the
+     classical modular polynomial (or the degree of the canonical model of
+     $X_0(N)$). 
+
+http://eprint.iacr.org/2013/532
+ On a Relation between the Ate Pairing and the Weil Pairing for Supersingular Elliptic Curves
+ Takakazu Satoh
+ Abstract: The hyperelliptic curve Ate pairing provides an efficient way to
+ compute a bilinear pairing on the Jacobian variety of a hyperelliptic
+ curve. We prove that, for supersingular elliptic curves with embedding
+ degree two, square of the Ate pairing is nothing but the Weil pairing.
+ Using the formula, we develop an X-coordinate only pairing inversion
+ method. However, the algorithm is still infeasible for cryptographic size
+ problems. 
+
+http://arxiv.org/abs/1309.7675
+ Finiteness of the Tate-Shafarevich Groups for Elliptic Curves over the Field of Rational Numbers
+
+http://eprint.iacr.org/2013/075
+ Improved Security for a Ring-Based Fully Homomorphic Encryption Scheme
+ Joppe W. Bos and Kristin Lauter and Jake Loftus and Michael Naehrig
+ Abstract: In 1996, Hoffstein, Pipher and Silverman introduced an efficient lattice based encryption scheme dubbed NTRUEnc. Unfortunately, this scheme lacks a proof of security. However, in 2011, Stehle and Steinfeld showed how to modify NTRUEnc to reduce security to standard problems in ideal lattices. In 2012, Lopez-Alt, Tromer and Vaikuntanathan proposed a fully homomorphic scheme based on this modified system. However, to allow homomorphic operations and prove security, a non-standard assumption is required. In this paper, we show how to remove this non-standard assumption via techniques introduced by Brakerski and construct a new fully homomorphic encryption scheme from the Stehle and Steinfeld version based on standard lattice assumptions and a circular security assumption. The scheme is scale-invariant and therefore avoids modulus switching and the size of ciphertexts is one ring element. Moreover, we present a practical variant of our scheme, which is secure under stronger assumptions, along with parameter recommendations and promising implementation results. Finally, we present an approach for encrypting larger input sizes by extending ciphertexts to several ring elements via the CRT on the message space. 
+
+http://eprint.iacr.org/2014/094
+ Faster Bootstrapping with Polynomial Error
+Jacob Alperin-Sheriff and Chris Peikert
+Abstract: \emph{Bootstrapping} is a technique, originally due to Gentry (STOC 2009), for ``refreshing'' ciphertexts of a somewhat homomorphic encryption scheme so that they can support further homomorphic operations. To date, bootstrapping remains the only known way of obtaining fully homomorphic encryption for arbitrary unbounded computations.
+Over the past few years, several works have dramatically improved the efficiency of bootstrapping and the hardness assumptions needed to implement it. Recently, Brakerski and Vaikuntanathan~(ITCS~2014) reached the major milestone of a bootstrapping algorithm based on Learning With Errors for \emph{polynomial} approximation factors. Their method uses the Gentry-Sahai-Waters~(GSW) cryptosystem~(CRYPTO~2013) in conjunction with Barrington's ``circuit sequentialization'' theorem~(STOC~1986). This approach, however, results in \emph{very large} polynomial runtimes and approximation factors. (The approximation factors can be improved, but at even greater costs in runtime and space.)
+In this work we give a new bootstrapping algorithm whose runtime and associated approximation factor are both \emph{small} polynomials. Unlike most previous methods, ours implements an elementary and efficient \emph{arithmetic} procedure, thereby avoiding the inefficiencies inherent to the use of boolean circuits and Barrington's Theorem. For $2^{\lambda}$ security under conventional lattice assumptions, our method requires only a \emph{quasi-linear} $\Otil(\lambda)$ number of homomorphic operations on GSW ciphertexts, which is optimal (up to polylogarithmic factors) for schemes that encrypt just one bit per ciphertext. As a contribution of independent interest, we also give a technically simpler variant of the GSW system and a tighter error analysis for its homomorphic operations. 
+
+http://eprint.iacr.org/2014/043
+  Elligator Squared: Uniform Points on Elliptic Curves of Prime Order as Uniform Random Strings
+
+http://eprint.iacr.org/2014/119
+  Breaking `128-bit Secure' Supersingular Binary Curves (or how to solve discrete logarithms in $\F_{2^{4 \cdot 1223}}$ and $\F_{2^{12 \cdot 367}}$)
+  Robert Granger and Thorsten Kleinjung and Jens Zumbr\"agel
+
+http://eprint.iacr.org/2014/130
+  Selecting Elliptic Curves for Cryptography: An Efficiency and Security Analysis
+  Joppe W. Bos and Craig Costello and Patrick Longa and Michael Naehrig
+
+http://eprint.iacr.org/2014/134
+  Kummer strikes back: new DH speed records
+  Daniel J. Bernstein and Chitchanok Chuengsatiansup and Tanja Lange and Peter Schwabe
+  Abstract: This paper introduces high-security constant-time variable-base-point Diffie--Hellman software using just 274593 Cortex-A8 cycles, 91460 Sandy Bridge cycles, 90896 Ivy Bridge cycles, or 72220 Haswell cycles. The only higher speed appearing in the literature for any of these platforms is a claim of 60000 Haswell cycles for unpublished software performing arithmetic on a binary elliptic curve.
+  The new speeds rely on a synergy between (1) state-of-the-art formulas for genus-2 hyperelliptic curves and (2) a modern trend towards vectorization in CPUs. The paper introduces several new techniques for efficient vectorization of Kummer-surface computations. 
+
+http://eprint.iacr.org/2014/147
+  The Multiple Number Field Sieve for Medium and High Characteristic Finite Fields
+  Razvan Barbulescu and Cécile Pierrot
+  Abstract: In this paper, we study the discrete logarithm problem in medium and high characteristic finite fields. We propose a variant of the Number Field Sieve (NFS) based on numerous number fields. Our improved algorithm computes discrete logarithms in $\mathbb{F}_{p^n}$ for the whole range of applicability of NFS and lowers the asymptotic complexity from $L_{p^n}(1/3, (128/9)^{1/3})$ to $L_{p^n}(1/3, (2^{13} /3^6)^{1/3})$ in the medium characteristic case, and from $L_{p^n} (1/3, (64/9)^{1/3})$ to $L_{p^n}(1/3,((92 + 26\sqrt{13})/27))^{1/3})$ in the high characteristic case. 
+
+http://eprint.iacr.org/2013/582
+The Special Number Field Sieve in $\F _{p^{n}}$, Application to Pairing-Friendly Constructions
+Antoine Joux and Cécile Pierrot
+Abstract: In this paper, we study the discrete logarithm problem in finite fields related to pairing-based curves. We start with a precise analysis of the state-of-the-art algorithms for computing discrete logarithms that are suitable for finite fields related to pairing-friendly constructions. To improve upon these algorithms, we extend the Special Number Field Sieve to compute discrete logarithms in $\F_{p^{n}}$, where $p$ has an adequate sparse representation. Our improved algorithm works for the whole range of applicability of the Number Field Sieve. 
+
+http://eprint.iacr.org/2014/158
+   Point compression for the trace zero subgroup over a small degree extension field
+  Elisa Gorla and Maike Massierer
+  Abstract: Using Semaev's summation polynomials, we derive a new equation for the $\mathbb{F}_q$-rational points of the trace zero variety of an elliptic curve defined over $\mathbb{F}_q$. Using this equation, we produce an optimal-size representation for such points. Our representation is compatible with scalar multiplication. We give a point compression algorithm to compute the representation and a decompression algorithm to recover the original point (up to some small ambiguity). The algorithms are efficient for trace zero varieties coming from small degree extension fields. We give explicit equations and discuss in detail the practically relevant cases of cubic and quintic field extensions. 
+
+http://hal.archives-ouvertes.fr/hal-00953501
+Sparse Gröbner Bases: the Unmixed Case
+Jean-Charles Faugere 1, Pierre-Jean Spaenlehauer 2, Jules Svartz 1
+(18/01/2014)
+Toric (or sparse) elimination theory is a framework developped during the last decades to exploit monomial structures in systems of Laurent polynomials. Roughly speaking, this amounts to computing in a \emph{semigroup algebra}, \emph{i.e.} an algebra generated by a subset of Laurent monomials. In order to solve symbolically sparse systems, we introduce \emph{sparse Gröbner bases}, an analog of classical Gröbner bases for semigroup algebras, and we propose sparse variants of the $F_5$ and FGLM algorithms to compute them. Our prototype ''proof-of-concept'' implementation shows large speed-ups (more than 100 for some examples) compared to optimized (classical) Gröbner bases software. Moreover, in the case where the generating subset of monomials corresponds to the points with integer coordinates in a normal lattice polytope $\polytope\subset\R^n$ and under regularity assumptions, we prove complexity bounds which depend on the combinatorial properties of $\polytope$. These bounds yield new estimates on the complexity of solving $0$-dimensional systems via Gröbner bases when all polynomials share the same Newton polytope (\emph{unmixed case}). For instance, we generalize the bound $\min(n_1,n_2)+1$ on the maximal degree in a Gröbner basis of a $0$-dimensional bilinear system with blocks of variables of sizes $(n_1,n_2)$ to the multilinear case: $\sum n_i - \max(n_i)+1$. We also propose a variant of Fröberg's conjecture which allows us to estimate the complexity of solving overdetermined sparse systems. Finally, our complexity results apply in the dense (usual) case and, as a surprising by-product, we prove that restrictive assumptions in usual complexity estimates of classical inhomogeneous Gröbner bases algorithms can be removed.
+
+http://arxiv.org/abs/1404.0161
+ Predicting zero reductions in Gröbner basis computations
+  Christian Eder
+
+http://arxiv.org/abs/1405.1988
+ Very strong approximation for certain algebraic varieties
+Qing Liu, Fei Xu
+    Let F be a global field. In this work, we show that the Brauer-Manin condition on adelic points for subvarieties of a torus T over F cuts out exactly the rational points, if either F is a function field or, if F is the field of rational numbers and T is split. As an application, we prove a conjecture of Harari-Voloch over global function fields which states, roughly speaking, that on any rational hyperbolic curve, the local integral points with the Brauer-Manin condition are the global integral points. Finally we prove for tori over number fields a theorem of Stoll on adelic points of zero-dimensional subvarieties in abelian varieties. 
+
+http://eprint.iacr.org/2014/346
+Time-Memory Trade-offs for Index Calculus in Genus 3
+Kim Laine and Kristin Lauter
+Abstract: In this paper, we present a variant of Diem's $\widetilde{O}(q)$ index calculus algorithm to attack the discrete logarithm problem (DLP) in Jacobians of genus 3 non-hyperelliptic curves over a finite field $\mathbb{F}_q$. We implement this new variant in C++ and study the complexity in both theory and practice, making the logarithmic factors and constants hidden in the $\widetilde{O}$-notation precise. Our variant improves the computational complexity at the cost of a moderate increase in memory consumption, but we also improve the computational complexity even when we limit the memory usage to that of Diem's original algorithm. Finally, we examine how parallelization can help to reduce both the memory cost per computer and the running time for our algorithms. 
+
+http://eprint.iacr.org/2014/379
+Hyper-and-elliptic-curve cryptography
+Daniel J. Bernstein and Tanja Lange
+Abstract: This paper introduces "hyper-and-elliptic-curve cryptography", in which a single high-security group supports fast genus-2-hyperelliptic-curve formulas for variable-base-point single-scalar multiplication (e.g., Diffie--Hellman shared-secret computation) and at the same time supports fast elliptic-curve formulas for fixed-base-point scalar multiplication (e.g., key generation) and multi-scalar multiplication (e.g., signature verification). 
+
+http://eprint.iacr.org/2014/385
+Jacobian Coordinates on Genus 2 Curves
+Huseyin Hisil and Craig Costello
+Abstract: This paper presents a new projective coordinate system and new explicit algorithms which together boost the speed of arithmetic in the divisor class group of genus 2 curves. The proposed formulas generalise the use of Jacobian coordinates on elliptic curves, and their application improves the speed of performing cryptographic scalar multiplications in Jacobians of genus 2 curves over prime fields by an approximate factor of 1.25x. For example, on a single core of an Intel Core i7-3770M (Ivy Bridge), we show that replacing the previous best formulas with our new set improves the cost of generic scalar multiplications from 243,000 to 195,000 cycles, and drops the cost of specialised GLV-style scalar multiplications from 166,000 to 129,000 cycles. 
+
+http://eprint.iacr.org/2014/424
+Constructing Abelian Surfaces for Cryptography via Rosenhain Invariants
+Craig Costello and Alyson Deines-Schartz and Kristin Lauter and Tonghai Yang
+Abstract: This paper presents an algorithm to construct cryptographically strong genus 2 curves and their Kummer surfaces via Rosenhain invariants and related Kummer parameters. The most common version of the complex multiplication (CM) algorithm for constructing cryptographic curves in genus 2 relies on the well-studied Igusa invariants and Mestre's algorithm for reconstructing the curve. On the other hand, the Rosenhain invariants typically have much smaller height, so computing them requires less precision, and in addition, the Rosenhain model for the curve can be written down directly given the Rosenhain invariants. Similarly, the parameters for a Kummer surface can be expressed directly in terms of rational functions of theta constants. CM-values of these functions are algebraic numbers, and when computed to high enough precision, LLL can recognize their minimal polynomials. Motivated by fast cryptography on Kummer surfaces, we investigate a variant of the CM method for computing cryptographically strong Rosenhain models of curves (as well as their associated Kummer surfaces) and use it to generate several example curves at different security levels that are suitable for use in cryptography. 
+
+http://eprint.iacr.org/2014/430
+Revisiting the Gentry-Szydlo Algorithm
+H. W. Lenstra and A. Silverberg
+Abstract: We put the Gentry-Szydlo algorithm into a mathematical framework, and show that it is part of a general theory of ``lattices with symmetry''. For large ranks, there is no good algorithm that decides whether a given lattice has an orthonormal basis. But when the lattice is given with enough symmetry, we can construct a provably deterministic polynomial time algorithm to accomplish this, based on the work of Gentry and Szydlo. The techniques involve algorithmic algebraic number theory, analytic number theory, commutative algebra, and lattice basis reduction. This sheds new light on the Gentry-Szydlo algorithm, and the ideas should be applicable to a range of questions in cryptography. 
+
+http://eprint.iacr.org/2014/571
+How to manipulate curve standards: a white paper for the black hat
+Daniel J. Bernstein and Tung Chou and Chitchanok Chuengsatiansup and Andreas H\"ulsing and Tanja Lange and Ruben Niederhagen and Christine van Vredendaal
+Abstract: This paper analyzes the cost of breaking ECC under the following assumptions: (1) ECC is using a standardized elliptic curve that was actually chosen by an attacker; (2) the attacker is aware of a vulnerability in some curves that are not publicly known to be vulnerable.
+This cost includes the cost of exploiting the vulnerability, but also the initial cost of computing a curve suitable for sabotaging the standard. This initial cost depends upon the acceptability criteria used by the public to decide whether to allow a curve as a standard, and (in most cases) also upon the chance of a curve being vulnerable.
+This paper shows the importance of accurately modeling the actual acceptability criteria: i.e., figuring out what the public can be fooled into accepting. For example, this paper shows that plausible models of the “Brainpool acceptability criteria” allow the attacker to target a one-in-a-million vulnerability. 
+
+ Computing on the Edge of Chaos: Structure and Randomness in Encrypted Computation
+
+http://eprint.iacr.org/2014/610
+Craig Gentry
+This survey, aimed mainly at mathematicians rather than practitioners, covers recent developments in homomorphic encryption (computing on encrypted data) and program obfuscation (generating encrypted but functional programs). Current schemes for encrypted computation all use essentially the same "noisy" approach: they encrypt via a noisy encoding of the message, they decrypt using an "approximate" ring homomorphism, and in between they employ techniques to carefully control the noise as computations are performed. This noisy approach uses a delicate balance between structure and randomness: structure that allows correct computation despite the randomness of the encryption, and randomness that maintains privacy against the adversary despite the structure. While the noisy approach "works", we need new techniques and insights, both to improve efficiency and to better understand encrypted computation conceptually. 

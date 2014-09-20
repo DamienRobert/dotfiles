@@ -1,0 +1,50 @@
+#!/bin/zsh
+
+action=
+#d: decrypt, c: crypt, ca: crypt all folders, l: list packets
+#gpgcrypt -c folder -r ploum; gpgcrypt -ca folder1 folder2
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		-d ) shift; action=d ;;
+		-c ) shift; action=c ;;
+		-ca ) shift; action=ca ;;
+		-l ) shift; action=l ;;
+		-v ) shift; action=lv ;;
+		*) break;;
+	esac
+done
+
+cleanup() {
+	echo "!! Remove $1? (press a key)"
+	read a
+	rm -rf $1
+}
+
+case $action in
+	d)
+		gpg -d "$@" |tar xvf -
+		;;
+	''|l)
+		for file in $@; do
+			echo $file
+			gpg --list-packets --list-only $file
+		done
+		;;
+	lv)
+		for file in $@; do
+			echo $file
+			gpg --list-packets -v $file
+		done
+		;;
+	c)
+		dir=$1; shift
+		tar cvfJ - $dir | gpg "$@" -e > $dir.tar.xz.gpg
+		cleanup $dir
+		;;
+	ca)
+		tar cvfJ - "$@" | gpg -r master -e > $1.tar.xz.gpg
+		cleanup $1
+		;;
+esac

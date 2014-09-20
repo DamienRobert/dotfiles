@@ -1,0 +1,184 @@
+# vim: ft=zsh
+#this can be sourced
+#Usage:
+#gth_get_branch_name #name a branch
+#gth_branch #find a branch
+#gth_topic #find topic branches
+#gth_tmp_index #set up a tmp index file in .git/index.tmp
+#gth_special_branches #find a branches, but handle WORKTREE and INDEX
+
+#Options:
+gth_only_full_branch= #only process branches that resolve to a real branch (not a detached head)
+gth_verify=true #verify that branches resolve correctly
+gth_local_branch= #when given one parameter, takes it as the local branch rather than the remote branch
+gth_default_remote=UPSTREAM #default remote if one is not configured, the special value UPSTREAM means to use the upstream of the local branch
+gth_default_local=CURRENT #the special value CURRENT means the branch pointed by HEAD
+gth_default_branch=CURRENT #for gth_branch, special values: CURRENT/UPSTREAM
+
+function gth_ensure_valid_ref() {
+  if [[ -n $gth_verify ]]; then
+    for rev in $@; do
+      git rev-parse --verify $rev >/dev/null || { echo "Wrong revision: $rev"; exit 1; }
+    done
+  fi
+}
+
+function gth_get_branch_name() {
+  if [[ -n $gth_only_full_branch ]]; then
+    git rev-parse --symbolic-full-name "$@"
+  else
+    git current-branch -a --name "$@"
+  fi
+}
+
+function gth_get_rev() {
+  git rev-parse --short $1
+}
+
+function gth_auto_local_branch() {
+  if [[ $gth_default_local == CURRENT ]]; then
+    gth_local=$(git current-branch -a)
+  else
+    gth_local=$gth_default_local
+  fi
+}
+function gth_auto_remote_branch() {
+  if [[ $gth_default_remote == UPSTREAM ]]; then
+    gth_remote=$(gth_get_branch_name $gth_local@{u})
+  else
+    gth_remote=$gth_default_remote
+  fi
+}
+function gth_auto_branch() {
+  case $gth_default_branch in
+    CURRENT )
+      gth_branch=$(git current-branch -a)
+      ;;
+    UPSTREAM )
+      gth_branch=$(gth_get_branch_name $(git current-branch -a)@{u})
+      ;;
+  esac
+}
+
+#finds a branch
+#if not provide use gth_default_branch to find it
+function gth_branch() {
+  while true;
+  do
+    case "$1" in
+      -- ) shift; break ;;
+      --gth-verify ) shift; gth_verify=1;  ;;
+      --no-gth-verify ) shift; gth_verify= ;;
+      --gth-fullbranch ) shift; gth_only_full_branch=1 ;;
+      --no-gth-fullbranch ) shift; gth_only_full_branch= ;;
+      -*) gth_rest+=$1; shift ;;
+      *) break;;
+    esac
+  done
+  if [[ $# -gt 0 && $1 != "--" ]]; then
+    gth_branch=$1; shift
+  else
+    gth_auto_branch
+  fi
+  gth_rest+=($@)
+	gth_branch_rev=$(gth_get_rev $gth_branch)
+  gth_ensure_valid_ref $gth_branch
+}
+
+#gth_topic local upstream rest
+#gth_topic upstream -- rest
+function gth_topic() {
+  gth_rest=()
+  while true;
+  do
+    case "$1" in
+      -- ) shift; break ;;
+      --gth-from ) shift; gth_local=$1; shift ;;
+      --gth-to ) shift; gth_remote=$1; shift ;;
+      --gth-verify ) shift; gth_verify=1;  ;;
+      --no-gth-verify ) shift; gth_verify= ;;
+      --gth-fullbranch ) shift; gth_only_full_branch=1 ;;
+      --no-gth-fullbranch ) shift; gth_only_full_branch= ;;
+      -*) gth_rest+=$1; shift ;;
+      *) break;;
+    esac
+  done
+  #get the current branch and its upstream
+  if [[ -n $gth_local && -n $gth_remote ]]; then
+    : #do nothing
+  elif [[ -n $gth_local && -z $gth_remote ]]; then
+    #is the remote also given?
+    if [[ $# -gt 0 && $1 != "--" ]]; then
+      gth_remote=$1; shift
+    else
+      gth_auto_remote_branch
+    fi
+  elif [[ -z $gth_local && -n $gth_remote ]]; then
+    #is the local also given?
+    if [[ $# -gt 0 && $1 != "--" ]]; then
+      gth_local=$1; shift
+    else
+      gth_auto_local_branch
+    fi
+  else
+    if [[ $# -gt 0 && $1 != "--" ]]; then
+      gth_local=$1; shift
+      if [[ $# -gt 0 && $1 != "--" ]]; then
+        #we have 2 args
+        gth_remote=$1; shift
+      else
+        #we have only one arg
+        if [[ -n $gth_local_branch ]]; then
+          gth_auto_remote_branch
+        else
+          #the arg given was actually for gth_remote
+         gth_remote=$gth_local
+          gth_local=
+          gth_auto_local_branch
+        fi
+      fi
+    else
+      #we have no args
+      gth_auto_local_branch
+      gth_auto_remote_branch
+    fi
+  fi
+  [[ $# -gt 0 && $1 == "--" ]] && shift
+  gth_rest+=($@)
+	gth_local_rev=$(gth_get_rev $gth_local)
+	gth_remote_rev=$(gth_get_rev $gth_remote)
+  gth_ensure_valid_ref $gth_local $gth_remote
+}
+
+function gth_tmp_index() {
+  local GITDIR=$(git rev-parse --git-dir)
+  local TMPINDEX=$GITDIR/index.tmp
+  cp ${GIT_INDEX_FILE-"$GITDIR/index"} $TMPINDEX
+  export GIT_INDEX_FILE=$TMPINDEX
+  git update-index --refresh >/dev/null
+}
+
+#get a branch, and if the branch is INDEX or WORKTREE provides a tree with
+#current index/worktree
+function gth_special_branches() {
+  gth_branches=()
+  gth_branches_rev=()
+  local branch branch_rev
+  for branch in "$@"; do
+    case $branch in
+      INDEX)
+        branch=$(git write-tree)
+        ;;
+      WORKTREE)
+        branch=$(
+        gth_tmp_index
+        git diff-files --name-only | git update-index --remove --stdin &&
+          git write-tree
+        )
+        ;;
+    esac
+		branch_rev=$(gth_get_rev $branch)
+    gth_branches+=$branch
+    gth_branches_rev+=$branch_rev
+  done
+}

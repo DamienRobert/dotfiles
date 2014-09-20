@@ -1,0 +1,102 @@
+Actions
+=======
+
+G agit sur G/H transitivement.
+Le stabilisteur de x est xHx^-1
+Récip, si G agit sur X, l'orbite de x est isomorphe à G/Stab(x).
+
+G agit par conjugation sur H. Le stabilisateur est le normalisateur N de H,
+ie le nb de conjugués de H = [G:N].
+
+Si G agit sur X, #X=\sum_orbites [G:Stab(a)]
+#G * #Orbites = \sum_g Points fixes de g
+
+Centre
+======
+
+- Le centre est un ss-groupe caractéristique.
+- Si G/Z(G) est cyclique, G est abélien
+
+Ordre p, Indice p
+=================
+
+Soit p le plus petit diviseur premier de #G
+- Si H est distingué d'ordre p, H est inclus dans Z(G)
+- Si H est d'indice p, H est distingué
+
+Pr: 1) On fait agir G par conjugaison sur H, comme Aut(H)=p-1 l'image de G
+est triviale
+2) On fait agir G sur G/H, on obtient un morphisme de G dans S_p dont le
+   noyau est l'intersection des gHg^-1. Mais par hypothèse sur p, ce noyau
+   doit contenir H, donc le noyau = H et H est distingué.
+
+p-groupes
+=========
+
+Si G p-groupe agit sur X, alors #X=#X^G mod p (points fixes)
+
+Corollaire
+- Z(G) est non trivial.
+- G est nilpotent
+- G contient un p-groupe distingué d'ordre p^m pour tout p^m | #G
+
+Sylow
+=====
+
+G a tjrs au moins un p-Sylow, de plus ils sont tous conjugés.
+Si #G=p^n m alors le nombre de p-Sylow est congru à 1 mod p et divise m.
+
+Corollaire (Cauchy)
+Si p | #G, G contient un élément d'ordre p.
+
+Application: si l'une des conditions suivante est satisfaites
+1. p^n ne divise pas (m-1)!
+2. p>m
+3. aucun des diviseurs de m n'est congru à 1 mod p
+Alors G n'est pas simple (pour 2 ou 3, il y a un unique p-sylow, qui est
+donc distingué).
+
+Pr: pour 1, si k est le nombre de p-sylow, on a un morphisme de G dans S_k,
+mais par hypothèse #G ne divise pas m! donc il ne divise pas k! donc il y a
+un noyau.
+
+Application: Si H est distingué et contient un p-Sylow, il les contient
+tous.
+
+Groupes symétriques
+==================
+
+- A_n est simple, et le seul groupe distingué de S_n pour n>=5
+- Si H est d'indice n dans S_n, alors H=S_{n-1}
+  De plus si n != 4 ou 6, alors il n'y en a que n.
+- Aut(S_n)=Int(S_n) sauf si n=6
+
+Transfert
+=========
+
+Le transfert est une application de G dans H/D(H) pour H sous-groupe de G.
+
+Th de Burnside
+--------------
+Si P est un p-Sylow contenu dans le centre de son normalisateur, P possède
+un p-complément, ie G= N \prod P (N distingué dans G).
+
+Burnside (1911, Theorem II, section 243) showed that if a Sylow p-subgroup of a group G is in the center of its normalizer then G has a normal p-complement. This implies that if p is the smallest prime dividing the order of a group G and the Sylow p-subgroup is cyclic, then G has a normal p-complement.
+
+Th de Frobenius (étend Burnside):
+--------------
+http://en.wikipedia.org/wiki/Normal_p-complement
+http://groupprops.subwiki.org/wiki/Frobenius%27_normal_p-complement_theorem
+cf aussi Fusion_p_Complement
+
+Th: <=>
+(i) G has a normal p-complement
+(ii) The normalizer of every non-trivial p-subgroup has a normal p-complement
+(iii) For every p-subgroup Q, the group NG(Q)/CG(Q) is a p-group.
+(iv) G has a p-Sylow subgroup P that is conjugacy-closed in G: any two elements of P that are conjugate in G are conjugate in P. 
+
+Z/nZ*
+=====
+
+- Z/p^nZ* = Z/p^(n-1)p Z = Z/\phi(p^n)Z pour p > 2
+- Z/2^n Z = Z/2Z x Z/2^{n-2}Z

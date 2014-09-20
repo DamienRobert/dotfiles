@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use MIME::Base64;
+
+die "Usage: $0 url key [ off size key file ]\n" unless @ARGV >= 2;
+my ($url, $key) = @ARGV;
+$key =~ s/_/\//g;
+$key = decode_base64($key);
+$url = $url . substr(encode_base64(substr($key, 0, 14)), 0, 19) . ".utfs0";
+my $nulliv = "0" x 32;
+if (@ARGV == 2) {
+  my $hexkey = unpack "H*", substr($key, 14, 16);
+  open my $f, "curl -s $url | " .
+    "openssl aes-128-cbc -d -K $hexkey -iv $nulliv 2> /dev/null |"
+    or die;
+  read $f, my $dummy, 16;
+  while (1) {
+    read $f, my $fe, 46 or die;
+    my ($magic, $off, $size, $mtime, $key, $plen) = unpack "a4Q>Q>Q>a16S>", $fe;
+    last unless $magic eq "FILE";
+    my $l = ((46 + $plen + 15) & ~15) - 46;
+    read $f, my $name, $l or die;
+    $name = substr($name, 0, $plen);
+    printf "%12d %12d %.22s %s\n", $off, $size, encode_base64($key), $name;
+  }
+} elsif (@ARGV == 6) {
+  my (undef, undef, $off, $size, $key, $file) = @ARGV;
+  my $hexkey = unpack "H*", decode_base64($key . "==");
+  my $rsize = ($size + 16 + 15) & ~15;
+  my $end = $off + $rsize - 1;
+  $ENV{OUT_FILE} = $file;
+  system "curl -r ${off}-${end} $url | " .
+    "openssl aes-128-cbc -d -K $hexkey -iv $nulliv -nopad 2> /dev/null |" .
+    "tail -c +17 | head -c $size > \"\$OUT_FILE\"";
+} else {
+  die;
+}

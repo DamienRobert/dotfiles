@@ -1,0 +1,56 @@
+#!/bin/zsh
+#Usage: git-reflog-rebase [topics]
+
+#suppose that the branch foo is based upon bar, but we just rebased bar
+#then git rebase bar foo will rebase foo unto bar starting from their
+#merge-base which is not the real point of divergence between foo and bar
+#(that would be given by the merge base of foo and bar@{1})
+
+#This script looks at the reflog to determine the previous value of bar@ that
+#looks to be the point of divergence
+#This is taken from git-pull.sh
+
+#Note: from revision ad8261d, git rebase now has a --fork-point options that
+#enables this feature, and calling rebase with now options uses this
+#feature
+
+show=
+while true;
+do
+  case "$1" in
+    -- ) shift; break ;;
+    --show) shift; show=1 ;; #don't rebase, show the orig ref
+    -h|--help) shift; help ;;
+    *) break;;
+  esac
+done
+
+. ~/mine/script/git/git-topic-helper
+gth_topic "$@"
+
+#parse the reflog, until we find a previous value of $gth_remote that 
+#was an ancestor of $gth_local
+oldremoteref=$(git rev-parse -q --verify $gth_remote) &&
+for reflog in $(git rev-list -g $gth_remote 2>/dev/null); do
+  if [[ $reflog == $(git merge-base $reflog $gth_local) ]]
+  then
+    oldremoteref=$reflog
+    break
+  fi
+done
+
+o=$(git merge-base --octopus $gth_local $gth_remote $oldremoteref)
+if [[ $oldremoteref == $o ]]; then
+  #In this case $oldremoteref is an ancestor of a merge-base between
+  #$gth_local and $gth_remote. So no need to use it as an upstream, letting
+  #git rebase use the real merge-base between the two $gth_ branches is
+  #better.
+  unset oldremoteref
+fi
+
+if [[ -n $show ]]; then
+  echo $oldremoteref
+else
+  echo "## Rebasing $gth_local onto $gth_remote via $(git describe --all --always $oldremoteref)"
+  git rebase $gth_rest --onto $gth_remote ${oldremoteref:-$gth_remote} $gth_local
+fi

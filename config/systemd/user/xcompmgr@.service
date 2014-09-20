@@ -1,0 +1,15 @@
+[Unit]
+Description=xcompmgr on display %I 
+PartOf=xsession@.target
+ConditionFileIsExecutable=/usr/bin/xcompmgr
+
+[Service]
+Environment=DISPLAY=%I
+ExecStart=/usr/bin/xcompmgr
+Restart=on-failure
+RestartSec=3
+StandardOutput=null
+
+[Install]
+WantedBy=xsession@.target
+Also=xwatch@.service

@@ -1,0 +1,15 @@
+#compdef git-current-branch
+#description Show current branch
+
+    _arguments \
+      '-a[use git rev-parse if no branch is found]' \
+      '-l[output long branch name]' \
+      '--remote[output name of remote]' \
+      '--upstream[output name of upstream]' \
+      '--rebase[show value of merge.rebase]' \
+      '--name[name of branch]:branch:__git_branch_names' \
+      '--name-rev[use name-rev]:branch:__git_branch_names' \
+      '--fullname[find full name of branch]:branch:__git_branch_names' \
+      '--fullname-or-input[find full name of branch or give back input]:branch:__git_branch_names' \
+      '--describe[describe branch]:branch:__git_branch_names' \
+      '--topic[show branch and its upstream]:branches:__git_branch_names' \

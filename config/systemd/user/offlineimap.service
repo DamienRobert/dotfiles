@@ -1,0 +1,14 @@
+[Unit]
+Description=Offlineimap
+ConditionFileIsExecutable=/usr/bin/offlineimap
+ConditionPathExists=%h/.offlineimaprc
+PartOf=internet.target
+
+[Service]
+ExecStart=/usr/bin/offlineimap -u Basic
+Restart=on-failure
+Nice=19
+StandardInput=null
+
+[Install]
+WantedBy=internet.target

@@ -1,0 +1,14 @@
+ext
+===
+
+tune2fs -L label device
+
+fat
+===
+
+fatlabel device label
+
+btrfs
+=====
+
+btrfs filesystem label device label

@@ -2,7 +2,7 @@
 
 use strict;
 
-my $unidata = "/usr/share/unicode/UnicodeData.txt" // $ENV{"UNIDATA"};
+my $unidata = "$ENV{HOME}/var/unicode/UnicodeData.txt" // $ENV{"UNIDATA"};
 open F, "<", $unidata or die "Can't open $unidata";
 my @unidata;
 while (<F>) {

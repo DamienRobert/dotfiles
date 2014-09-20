@@ -1,0 +1,11 @@
+# h -- grep history
+# 08mar2011  +chris+
+# 14mar2011  +chris+
+# 08dec2011  +chris+
+h() {
+  if [[ -z $1 ]];
+  then history
+  else
+    fc -l 0 -1 | sed -n "/$1/s/^ */!/p" | tail -n ${2:-10}
+  fi
+}

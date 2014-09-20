@@ -1,0 +1,9 @@
+#!/bin/sh
+#load specified playlist in mpc, + add metainfo to distinguish between
+#playlists
+
+for i in "$@"; do
+  PLAY=`basename "$i"`
+  mpc add http://"################ PLAYLIST $i ################"
+  mpc load "$PLAY";
+done

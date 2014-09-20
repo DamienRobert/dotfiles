@@ -1,0 +1,239 @@
+#!/bin/zsh
+SUBDIRECTORY_OK=true
+. "$(git --exec-path)/git-sh-setup" ""
+require_clean_work_tree "mysquash" "Please commit or stash them"
+cd_to_toplevel
+
+SVN=
+GO=
+PULL=
+PUSH=
+SQUASHMODE="rebase"
+SQUASHOPT=("-i")
+STEP=
+MRGEXEC=
+
+help() {
+	echo "git-mysquash branch upstream
+	Squash branch on top of upstream
+
+	(use HEAD for branch/upstream by default if one is not specified,
+	use svn for upstream by default if |-svn| is used)
+
+	0) pull upstream
+	1) squash merge branch in upstream
+	2) merge the squash done upstream back in branch
+	[3) push upstream]
+
+	|-g|: don't edit commit
+	|--svn|: use git-svn for pulling/pushing upstream
+	|--merge|: use merge --squash rather than rebase -i
+	|--rebase|: use rebase rather than rebase -i
+	|-[-no]-pull/-[-no]-push|: don't/do (0) resp (3)
+	|--ff|: do (0) and a 'trivial fast forward' if possible
+	|--ff-rebase|: do (0) and a 'trivial merge rebase'
+	|--prepare|: do (1)
+	|--finish|: do (2)
+	|--after|: program to execute after merge --squash, before commit (can be zsh for interactive verifications)
+	"
+	exit 0
+}
+#Example of workflow:
+#git my squash -- --ff #update to current upstream
+#or if we have already some commits:
+##git my merging-rebase #merge current master and rebase our commits
+#git my squash -- --ff-rebase #beter than merging-rebase because it will do a theirs merge like --ff does instead of a ours merge like merging-rebase does
+#hack hack hack
+#git my squash -- --prepare #rebase interactive on upstream
+#check if it is correct
+#git my squash -- --finish --push #push and merge upstream back
+
+while true;
+do
+	case "$1" in
+		-- ) shift; break ;;
+		--no-pull|--nopull ) shift; PULL= ;;
+		--no-push|--nopush ) shift; PUSH= ;;
+		--pull ) shift; PULL=t ;;
+		--push ) shift; PUSH=t ;;
+		--prepare ) shift; STEP="prepare"
+				[[ -n $SVN ]] && PULL=t PUSH= ;;
+		--finish ) shift; STEP="finish"
+				[[ -n $SVN ]] && PULL= PUSH=t ;;
+		--ff) shift; STEP="ff";;
+		--ff-rebase) shift; STEP="ff-rebase";;
+		--merge|-m ) shift; SQUASHMODE="merge" 
+				SQUASHOPT=("--ff-only" "--squash");;
+		--rebase|-rb ) shift; SQUASHMODE="rebase"
+				SQUASHOPT=();;
+		--svn|-svn ) shift; SVN=t
+		PULL=t; PUSH=t;;
+		--after )  shift; AFTEREXEC="$1"; shift;;
+		-g|--go ) shift; GO=1 ;;
+		--opt ) shift; SQUASHOPT+=$1; shift ;;
+		-h|--help) shift; help ;;
+		*) break;;
+	esac
+done
+
+. ~/mine/script/git/.squashmergebase
+
+checkout() {
+	git checkout "$@" >/dev/null || fail
+}
+
+fail() {
+	checkout $CURRENT
+	failnow
+}
+failmsg() {
+	echo "$@"
+	fail
+}
+
+failrb() {
+	echo "!! Error in rebase!
+Solve conflicts, and when finished rebasing [g rb-c] do
+	git checkout $UP && git merge --ff-only HEAD@{1}
+	git my squash -- --finish $DOWN $UP && git checkout $CURRENT"
+failnow
+}
+failmg() {
+	echo "!! Error in merge!
+Solve conflicts, and when finished merging [g co] do
+	git my squash -- --finish $DOWN $UP && git checkout $CURRENT"
+failnow
+}
+
+failnow() {
+	exit 1
+}
+
+after() {
+	if [[ -n $AFTEREXEC ]]; then
+		echo "!! Launching $AFTEREXEC"
+		eval $AFTEREXEC
+	fi
+}
+
+dosquash() {
+	case $SQUASHMODE in
+		merge)
+			checkout $UP
+			git merge --squash $SQUASHOPT $DOWN
+			STATUS=$?
+			findmergebase $DOWN $UP
+			echo "Merge base: $mergebase"
+			echo -e "Squashing '$DOWN' on top of '$UP'\n"  >.git/SQUASH_MSG
+			if [[ -n $mergebase ]]; then
+				git log "^$UP" "$mergebase..$DOWN" >> .git/SQUASH_MSG
+			else
+				git log "^$UP" $DOWN >> .git/SQUASH_MSG
+			fi
+			[[ $STATUS -eq 0 ]] || failmg
+			after
+			git commit $COMMITOPTS -F .git/SQUASH_MSG || fail
+			;;
+		rebase)
+			findmergebase $DOWN $UP
+			echo "Rebase starting point: $mergebase"
+			if [[ -n $mergebase ]]; then
+				git rebase $SQUASHOPT --onto $UP $mergebase "$DOWN^{commit}" || failrb
+			else
+				git rebase $SQUASHOPT $UP "$DOWN^{commit}" || failrb
+			fi
+			RBCOMMIT=$(git rev-parse HEAD)
+			after
+			checkout $UP
+			git merge --ff-only $RBCOMMIT || fail
+			;;
+	esac
+}
+
+theirmerge() {
+	trivialopt=()
+	[[ -n $GO ]] && trivialopt=(--go)
+	git my trivial -- --branch $DOWN --merge --theirs -m $1 $trivialopt $UP || fail
+}
+mergesquash() {
+	theirmerge "Trivial merge from '$UP' (squashed by '$DOWN')"
+}
+mergeff() {
+	theirmerge "Trivial fast-forward to '$UP' on '$DOWN'"
+}
+
+COMMITOPTS=()
+if [[ -z $GO ]]; then
+	COMMITOPTS=("-e")
+fi
+CURRENT=$(git current-branch -a)
+
+. ~/mine/script/git/git-topic-helper
+if [[ -n $SVN ]]; then
+	#without parameters but with -svn we use svn as upstream branch name
+	gth_default_remote="svn"
+fi
+gth_topic "$@"
+DOWN=$gth_local
+UP=$gth_remote
+
+echo "--- Squashing '$DOWN' on top of '$UP'"
+
+#fetching branch
+if [[ -n $PULL ]]; then
+	echo "0) Pulling '$UP'"
+	checkout $UP
+	if [[ -n $SVN ]]; then
+		echo "	Using git svn rebase"
+		git svn rebase || fail
+	else
+		git pull --ff-only || fail
+	fi
+fi
+
+if [[ $STEP == "ff" ]]; then
+		findmergebase $DOWN $UP
+		if [[ $(git rev-parse $DOWN) != $mergebase ]]; then
+			failmsg "Cannot 'fast-forward' from $DOWN to $UP, merbe-base is at $mergebase"
+		else
+			mergeff
+		fi
+	exit 0
+fi
+if [[ $STEP == "ff-rebase" ]]; then
+	checkout $DOWN
+	git my merging-rebase -- --theirs $UP
+	exit 0
+fi
+
+# squashing the merge
+[[ $STEP != "finish" ]] &&
+echo "1) Squashing '$DOWN' on top of '$UP'" &&
+dosquash
+
+# merging the squash
+if [[ -n $SVN ]]; then
+	echo "2) We need to push with svn dcommit first before merging the squash"
+else
+	[[ $STEP != "prepare" ]] && 
+	echo "2) Merging the squash" &&
+	mergesquash
+fi
+
+if [[ -n $PUSH ]]; then
+	echo "3) Pushing '$UP'"
+	if [[ -n $SVN ]]; then
+		echo "	Using git svn dcommit"
+		checkout $UP && git svn dcommit || fail
+	else 
+		checkout $UP && git push || fail
+	fi
+fi
+
+if [[ -n $SVN && -n $PUSH ]]; then
+	[[ $STEP != "prepare" ]] && 
+	echo "2bis) Merging the squash" &&
+	mergesquash
+fi
+
+checkout $CURRENT

@@ -1,0 +1,54 @@
+X forwarding
+============
+
+xpra: rootless (ie la window s'affiche dans le wm hote)
+x2go, nx (x2go est la version maintenue de freenx)
+vnc, rdp (forwardent le desktop entier)
+ssh -X
+
+Rem: http://winswitch.org/ is a nice gui front end
+
+Xephyr: version moderne de Xnest, supportant les extensions X modernes
+
+Containers
+==========
+
+systemd-nspawn, libvirt-lxc, lxc
+
+docker.io (wrapper autour des containers qui permet de faire des push/pull
+et des trucs comme ça)
+docker runs three ways:
+  - as a daemon to manage LXC containers on your Linux host (sudo docker -d)
+  - as a CLI which talks to the daemon’s REST API (docker run ...)
+  - as a client of Repositories that let you share what you’ve built (docker pull, docker commit).
+
+Non root containers
+===================
+
+mbox: http://pdos.csail.mit.edu/mbox/
+Mbox is a lightweight sandboxing mechanism that any user can use without special privileges in commodity operating systems.
+
+Integration continue
+====================
+
+travis (github), jenkins
+
+Virtual box
+===========
+
+vagrant: wrapper
+To achieve its magic, Vagrant stands on the shoulders of giants. Machines are provisioned on top of VirtualBox, VMware, AWS, or any other provider. Then, industry-standard provisioning tools such as shell scripts, Chef, or Puppet, can be used to automatically install and configure software on the machine.
+packer: crée des images vagrant
+https://github.com/elasticdog/packer-arch: un packer pour archlinux
+
+openstack: le cloud open source
+
+Configuration manager
+=====================
+
+chef, puppet, salt, ansible
+
+VPS
+===
+Digital Ocean
+RamNode

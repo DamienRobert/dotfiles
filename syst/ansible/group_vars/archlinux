@@ -1,0 +1,4 @@
+---
+# Variables listed here are applicable to group archlinux
+
+ansible_python_interpreter: /usr/bin/python2

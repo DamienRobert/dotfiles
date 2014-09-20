@@ -6,10 +6,6 @@ Soit X un schéma, F un faisceau de modules.
 On dit que F est quasi-cohérent ssi pour tout ouvert affine U, F|U est
 isomorphe au faisceau induit par un O_X(U) module M.
 
-Th: Si X affine, le foncteur section globale induit une équivalence de
-catégorie entre faisceau quasi-cohérent et O_X(X)-modules; de plus il est
-exact (ainsi que son foncteur réciproque "faisceau associé").
-
 Th: F est quasi-cohérent équivaut à:
 - il existe un recouvrement de X par des ouverts affines U_i tels que F|U_i
   soit isomorphe au faisceau induit par un module affine
@@ -34,6 +30,67 @@ Th: Si f:X->Y est qs, et F quasi-cohérent sur X, f_*(F) est quasi-cohérent
 sur Y. Si de plus f est projectif(?) et F cohérent, f_*(F) est cohérent.
 
 Pr: Mumford, RedBook III.$1, ou Hartshorne.
+
+Faisceaux sur un espace affine
+==============================
+
+Th: Si X affine, le foncteur section globale induit une équivalence de
+catégorie entre faisceau quasi-cohérent et O_X(X)-modules; de plus il est
+exact (ainsi que son foncteur réciproque "faisceau associé").
+
+Plus précisément: si 0->F'->F->F''->0 est exact, et si F'' est
+quasi-coherent, alors 0->\Gamma(X,F')->\Gamma(X,F)->\Gamma(X,F'')->0 est
+exact
+(car les faisceaux quasi cohérents ont une cohomologie triviale sur un
+espace affine).
+
+On a l'adjonction
+Hom_A(M,\Gamma(X,F)) = \Hom_{Spec A}(M~, F)
+pour tout faisceau de module F (non forcément q.cohérent) sur Spec A.
+
+Faisceaux sur un espace projectif
+=================================
+
+Si M gradué sur S gradué, on a un foncteur ~ qui associe
+M~ faisceau quasi-cohérent sur Proj S.
+Réciproquement si S est généré par S_1, alors \Gamma_*(F)~ = F
+où \Gamma_*(F)=\sommetens \Gamma(X,F(n))
+
+Les foncteurs ~ et \Gamma_* induisent des équiv de catégorie entre les
+O_X-modules cohérents et les S modules gradués finis à troncation près.
+
+Rem: Si S=A[x_0,...,x_r], \Gamma_*(S~)=S
+De plus I_1 et I_2 idéaux de S définissent le même sous-schéma fermé ss'ils
+ont la même saturation; et si I est un O_X-idéal, \Gamma_*(I) est saturé,
+d'où bijection entre sous-schémas fermés et idéaux saturés.
+(la saturation de I est l'ensemble des s\in S tel que pour tout i, x_i^n s \in I pour n>>0)
+
+Pullbacks et pushforwards
+=========================
+
+Si f: Spec B -> Spec A, alors
+- f^* (M~)=(M \tens_A B)~
+- f_* (N~) = (N vu comme A-module)~
+
+Si \phi est un morphisme d'anneaux gradués S->T, ça induit un morphisme
+U ouvert dans Y=Proj T -> X=Proj S;
+- f^* (M~)=(M \tens_S T)~|U
+- f_* (N~|U) = (N vu comme S-module)~
+On particulier le pullback de O_X(n) est O_Y(n)|U et le pushforward de
+O_Y(n)|U est (f_* O_U)(n)
+
+Si f: Y->X, E loc libre sur X, alors
+f_*(F \tens f^* E)=f_*(F) \tens E
+
+Faisceaux cohérents
+===================
+
+Th (Serre)
+Si X proj sur A noeth, F cohérent, alors
+F(n) est engendré par un nombre fini de sections globales pour n>>0
+
+Si f:X->Y morphisme projectif de schémas sur A Nagata (ex k-alg de type
+fini), alors si F cohérent f_* F est cohérent.
 
 Extension faisceaux cohérents
 =============================

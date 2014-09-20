@@ -1,0 +1,80 @@
+http://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem
+
+Positive matrices
+=================
+
+Let A = (a_{ij}) be an n \times n positive matrix: a_{ij} > 0 for 1 \le i,j \le n . Then the following statements hold.
+
+*    There is a positive real number r, called the Perron root or the Perron–Frobenius eigenvalue, such that r is an eigenvalue of A and any other eigenvalue λ (possibly, complex) is strictly smaller than r in absolute value, |λ| < r. Thus, the spectral radius \rho(A) is equal to r. If the matrix coefficients are algebraic, this implies that the eigenvalue is a Perron number.
+*    The Perron–Frobenius eigenvalue is simple: r is a simple root of the characteristic polynomial of A. Consequently, the eigenspace associated to r is one-dimensional. (The same is true for the left eigenspace, i.e., the eigenspace for AT.)
+*    There exists an eigenvector v = (v1,…,vn) of A with eigenvalue r such that all components of v are positive: A v = r v, vi > 0 for 1 ≤ i ≤ n. (Respectively, there exists a positive left eigenvector w : wT A = r wT, wi > 0.)
+*    There are no other positive (moreover non-negative) eigenvectors except positive multiples of v (respectively, left eigenvectors except w), i.e., all other eigenvectors must have at least one negative or non-real component.
+*    \lim_{k \rightarrow \infty} A^k/r^k = v w^T, where the left and right eigenvectors for A are normalized so that wTv = 1. Moreover, the matrix v wT is the projection onto the eigenspace corresponding to r. This projection is called the Perron projection.
+*    Collatz–Wielandt formula: for all non-negative non-zero vectors x, let f(x) be the minimum value of [Ax]i / xi taken over all those i such that xi ≠ 0. Then f is a real valued function whose maximum is the Perron–Frobenius eigenvalue.
+*    A "Min-max" Collatz–Wielandt formula takes a form similar to the one above: for all strictly positive vectors x, let g(x) be the maximum value of [Ax]i / xi taken over i. Then g is a real valued function whose minimum is the Perron–Frobenius eigenvalue.
+*    The Perron–Frobenius eigenvalue satisfies the inequalities
+        \min_i \sum_{j} a_{ij} \le r \le \max_i \sum_{j} a_{ij}.
+
+Irreducible matrix
+=================
+
+Let A be a square matrix (not necessarily positive or even real). The matrix A is irreducible if any of the following equivalent properties holds.
+
+Definition 1 : A does not have non-trivial invariant coordinate subspaces. Here a non-trivial coordinate subspace means a linear subspace spanned by any proper subset of basis vectors. More explicitly, for any linear subspace spanned by basis vectors ei1 , ..., eik, n > k > 0 its image under the action of A is not contained in the same subspace.
+
+Definition 2: A cannot be conjugated into block upper triangular form by a permutation matrix P:
+
+    PAP^{-1} \ne \begin{pmatrix} E & F \\ 0 & G \end{pmatrix},
+
+where E and G are non-trivial (i.e. of size greater than zero) square matrices.
+
+If A is non-negative other definitions exist:
+
+Definition 3: For every pair of indices i and j, there exists a natural number m such that (Am)ij is not equal to 0.
+
+Definition 4: One can associate with a matrix A a certain directed graph GA. It has exactly n vertices, where n is size of A, and there is an edge from vertex i to vertex j precisely when Aij > 0. Then the matrix A is irreducible if and only if its associated graph GA is strongly connected.
+
+This notion is reminiscent of that of a free action of a group, if one could somehow build a group out of 'A' (one may take \left\lbrace \exp(tA), t\in\mathbb{R}\right\rbrace in that case one also has an irreducible representation of that group).
+
+A matrix is reducible if it is not irreducible.
+
+Let A be non-negative. Fix an index i and define the period of index i to be the greatest common divisor of all natural numbers m such that (Am)ii > 0. When A is irreducible, the period of every index is the same and is called the period of A. In fact, when A is irreducible, the period can be defined as the greatest common divisor of the lengths of the closed directed paths in GA (see Kitchens[8] page 16). The period is also called the index of imprimitivity (Meyer[5] page 674) or the order of cyclicity.
+
+If the period is 1, A is aperiodic.
+
+A matrix A is primitive if it is non-negative and its mth power is positive for some natural number m (i.e. the same m works for all pairs of indices). It can be proved that primitive matrices are the same as irreducible aperiodic non-negative matrices.
+
+A positive square matrix is primitive and a primitive matrix is irreducible. All statements of the Perron–Frobenius theorem for positive matrices remain true for primitive matrices. However, a general non-negative irreducible matrix A may possess several eigenvalues whose absolute value is equal to the spectral radius of A, so the statements need to be correspondingly modified. Actually the number of such eigenvalues is exactly equal to the period. Results for non-negative matrices were first obtained by Frobenius in 1912.
+
+Perron–Frobenius theorem for irreducible matrices
+=================================================
+
+Let A be an irreducible non-negative n × n matrix with period h and spectral radius ρ(A) = r. Then the following statements hold.
+
+*    The number r is a positive real number and it is an eigenvalue of the matrix A, called the Perron–Frobenius eigenvalue.
+*    The Perron–Frobenius eigenvalue r is simple. Both right and left eigenspaces associated with r are one-dimensional.
+*    A has a left eigenvector v with eigenvalue r whose components are all positive.
+*    Likewise, A has a right eigenvector w with eigenvalue r whose components are all positive.
+*    The only eigenvectors whose components are all positive are those associated with the eigenvalue r.
+*    Matrix A has exactly h (where h is the period) complex eigenvalues with absolute value r. Each of them is a simple root of the characteristic polynomial and is the product of r with an hth root of unity.
+*    Let ω = 2π/h. Then the matrix A is similar to eiωA, consequently the spectrum of A is invariant under multiplication by eiω (corresponding to the rotation of the complex plane by the angle ω).
+*    If h > 1 then there exists a permutation matrix P such that
+        PAP^{-1}= \begin{pmatrix} 0 & A_1 & 0 & 0 & \ldots & 0 \\ 0 & 0 & A_2 & 0 & \ldots & 0 \\ \vdots & \vdots &\vdots & \vdots & & \vdots \\ 0 & 0 & 0 & 0 & \ldots & A_{h-1} \\ A_h & 0 & 0 & 0 & \ldots & 0 \end{pmatrix}, 
+        where the blocks along the main diagonal are zero square matrices.
+*    Collatz–Wielandt formula: for all non-negative non-zero vectors x let f(x) be the minimum value of [Ax]i / xi taken over all those i such that xi ≠ 0. Then f is a real valued function whose maximum is the Perron–Frobenius eigenvalue.
+*   The Perron–Frobenius eigenvalue satisfies the inequalities
+        \min_i \sum_{j} a_{ij} \le r \le \max_i \sum_{j} a_{ij}.
+
+Further properties
+------------------
+
+Let A be an irreducible non-negative matrix, then:
+
+*    (I+A)n−1 is a positive matrix. (Meyer[5] claim 8.3.5 p. 672).
+*    Wielandt's theorem. If |B|<A, then ρ(B)≤ρ(A). If equality holds (i.e. if μ=ρ(A)eiφ is eigenvalue for B), then B = eiφ D AD−1 for some diagonal unitary matrix D (i.e. diagonal elements of D equals to eiΘl, non-diagonal are zero).[9]
+*    If some power Aq is reducible, then it is completely reducible, i.e. for some permutation matrix P, it is true that: P A P^{-1}= \begin{pmatrix} A_1 & 0 & 0 & \dots & 0 \\ 0 & A_2 & 0 & \dots & 0 \\ \vdots & \vdots & \vdots & & \vdots \\ 0 & 0 & 0 & \dots & A_d \\ \end{pmatrix} , where Ai are irreducible matrices having the same maximal eigenvalue. The number of these matrices d is the greatest common divisor of q and h, where h is period of A.[10]
+*    If c(x)=xn+ck1 xn-k1 +ck2 xn-k2 + ... + cks xn-ks is the characteristic polynomial of A in which the only non-zero coefficients are listed, then the period of A equals to the greatest common divisor for k1, k2, ... , ks.[11]
+*    Cesàro averages: \lim_{k \rightarrow \infty} 1/k\sum_{i=0,...,k} A^i/r^i = ( v w^t), where the left and right eigenvectors for A are normalized so that wtv = 1. Moreover the matrix v wt is the spectral projection corresponding to r - Perron projection.[12]
+*    Let r be the Perron-Frobenius eigenvalue, then the adjoint matrix for (r-A) is positive.[13]
+*    If A has at least one non-zero diagonal element, then A is primitive
+

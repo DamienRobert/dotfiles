@@ -1,0 +1,38 @@
+Cf: clipper/2003-2004/GT par Gaetan Chevenier
+
+Voila une methode un peu semblable et legerement plus conceptuelle
+qui prouve l'equivalence.
+
+i) p est ramifie ssi D/pD, qui est une F_p-algebre finie, a un element
+nilpotent non nul:
+        (a) si (p)=P_1...P_g avec les P_i distincts, le lemme chinois
+assure que c'est un produit de corps, donc sans nilpotent.
+        (b) si (p)=P^2A, soit x dans PA-P^2A, alors x^2 est dans P^2A=(p)
+mais x n'est pas dans P: l'image de x est nilpotent non nul dans D/pD.
+
+ii) Soit k un corps parfait et A une k-algebre de dimension finie sur k.
+A a une "trace" en prenant x->tr(m_x), m_x etant la multiplication par x:
+A->A, c'est une forme bilineaire symetrique que je note tr_A.
+
+Alors A est sans nilpotent ssi tr_A est non degeneree:
+
+(a) Si A a un nilpotent x, alors m_xy est nilpotent et donc de trace nulle
+pour tout y: tr_A est degeneree.  (b) Si A est sans nilpotent, alors A est
+un produit fini d'extensions de corps de k. Je ne le montre pas (ca n'est
+pas dur), mais tu auras uniquement a l'appliquer a k=F_p, D=D/pD, auquel
+cas on l'a prouve en i). Dans ce cas la, A=K_1 x ... x K_m, on voit que
+tr_A est reduite par bloc dans les K_i, ou elle coincide avec tr_{K_i}. Il
+suffit donc de le montrer quand A est une extension separable de k.
+Dans ce cas, on sait qu'il existe [A:k] plongements A->k^bar, et on voit
+que tr_{A} est la somme de ces plongements. Le fait que cette trace est
+non degeneree est une consequence simple de l'independance lineaire des
+plongements, et est traitee dans Ireland et Rosen.
+
+iii) Enfin, considerons D=Z^n. Notons que si x est dans D, alors tr(x) est
+aussi la trace de la multiplication par x: D->D. Ainsi, la trace induit
+par reduction modulo p une forme bilineaire sur D/pD a valeur dans F_p qui
+coinde encore avec la trace de F_p-algebre.
+
+Ainsi, p divise disc(D) ssi la trace de D/pD est degeneree, ssi D/pD a des
+nilpotents, ssi p est ramifie. Et on a l'equivalence.
+

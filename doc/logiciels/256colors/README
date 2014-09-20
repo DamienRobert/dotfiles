@@ -1,0 +1,21 @@
+To see all 256colors, cf 256colors.pl or the zsh version 256colors.zsh
+
+How to have 256 colors in vim and screen
+cf http://www.robmeerman.co.uk/unix/256colours
+(I personally use TERM=screen-256colors for screen)
+It contains the script 256colors_cube.pl which show a nice colorcube.
+
+256colors.vim give the links between ctermfg and guifg. Comes from
+http://vim.wikia.com/wiki/Xterm256_color_names_for_console_Vim
+256colors_tohtml.py is a python script that convert it into an html page
+(256colors.html) that we can see on a web browser
+
+To see the colors in vi, launch vi and source color-demo.vim
+
+xterm-color-table is from https://github.com/guns/xterm-color-table.vim
+:source xterm-color-table.vim/plugin/xterm-color-table.vim
+:XtermColorTable
+(warning the color translation is wrong, 'df' should be 'd7')
+
+16colors show the standard 16 colors on a terminal
+

@@ -6,6 +6,7 @@ archive -u foo: unarchive foo
 OPTIONS:
   -r|-rm: in compression mode ask to remove the dir
           in decompression mode ask (or not in -rm) to remove foo"
+  -tmp: extract archive in /tmp
   exit 1
 }
 

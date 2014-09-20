@@ -1,4 +1,5 @@
 #!/bin/zsh
+. $HOME/.initvars
 
 SYSTEMDDISP=${DISPLAY%.0}
 NETCTLWIFI=(netctl-auto@wlan0.service)
@@ -18,6 +19,22 @@ help() {
 
   exit 1
 }
+
+#Warning, on Numenor, after a suspend I have these messages, so I need to
+#run powersave true again for bluetooth and usb 4-2 powersave...
+##08:41:12 numenor dbus-daemon[663]: Activating service name='org.freedeskt
+##08:41:12 numenor dbus-daemon[663]: Successfully activated service 'org.fr
+##08:41:13 numenor kernel: toshiba_bluetooth: Re-enabling Toshiba Bluetooth
+##08:41:15 numenor kernel: usb 4-2: new full-speed USB device number 22 usi
+##08:41:16 numenor kernel: usb 4-2: USB disconnect, device number 22
+##08:41:16 numenor kernel: usbcore: registered new interface driver btusb
+##08:41:17 numenor kernel: usb 4-2: new full-speed USB device number 23 usi
+##08:41:17 numenor systemd[25885]: Starting Bluetooth.
+##08:41:17 numenor systemd[25885]: Reached target Bluetooth.
+##08:41:17 numenor systemd[416]: Starting Bluetooth.
+##08:41:17 numenor systemd[416]: Reached target Bluetooth.
+##08:41:17 numenor systemd[1]: Starting Bluetooth.
+##08:41:17 numenor systemd[1]: Reached target Bluetooth.
 
 end_wifi() {
   echo "wlan0 txpower off"
@@ -74,6 +91,8 @@ start_services() {
   echo "start internet and xsession services"
   systemctl --user start "xsession@$SYSTEMDDISP.target"
   if systemctl --user is-active unlock.target; then
+  	#unlock gpg if it was relocked
+    eval $(gpg -q -d $CFGFILES/.keys.gpg)
     systemctl --user start internet.target
   else
     echo "keychain not loaded; we don't activate internet services"
@@ -94,13 +113,16 @@ set_brightness() {
   for i in /sys/class/backlight/acpi_video*/brightness; do sudo sh -c "echo $bright > $i"; done
 }
 
-test_disconnection() {
+test_connection() {
   #older methods:
-  #essid=$(iwconfig wlan0 | grep ESSID | awk {'print $4'})
-  #if [[ $essid == "ESSID:off/any" ]] ; then
-  #iwdev wlan0 link | grep 'Not connected'
-  #ip addr show dev $1 | grep NO-CARRIER >/dev/null 2>&1
-  ip addr show dev $1 | grep "state DOWN" >/dev/null 2>&1
+  #- essid=$(iwconfig wlan0 | grep ESSID | awk {'print $4'})
+  #  if [[ $essid == "ESSID:off/any" ]] ; then
+  #- iwdev wlan0 link | grep 'Not connected'
+  #- ip addr show dev $1 | grep NO-CARRIER >/dev/null 2>&1
+  #- ip addr show dev $1 | grep "state DOWN" >/dev/null 2>&1
+  
+  #switch to test for a connection
+  ip addr show dev $1 | grep "state UP" >/dev/null 2>&1
 }
 
 process() {
@@ -117,19 +139,20 @@ process() {
     true ) #desactivate wifi if not running
       set_brightness 0
       INTERNET=
-      if test_disconnection eth0; then 
+      if test_connection eth0; then 
+        INTERNET=1
+      else
         end_eth 
-      else
-        INTERNET=true
       fi
-      if test_disconnection wlan0; then 
-        end_wifi
+      if test_connection wlan0; then 
+        INTERNET=1
       else
-        INTERNET=true
+        end_wifi
       fi
       end_bt
       [[ -z $INTERNET ]] && end_internet_services
       end_services
+      #the rest, like usb autosuspend, is done by /usr/local/bin/powersave
       ;;
   
     false )
@@ -211,6 +234,9 @@ do
   esac
 done
 
-[[ $# -eq 0 ]] && help
 [[ $UID  -eq 0 ]] && { echo "Do not run as root!"; exit 1 }
-process "$@"
+if [[ $# -eq 0 ]]; then 
+  process "true"
+else
+  process "$@"
+fi

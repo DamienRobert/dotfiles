@@ -1,0 +1,23 @@
+#!/usr/bin/zsh
+
+# From http://chneukirchen.org/blog/archive/2010/10.html
+
+keyword=$1; shift
+
+case $keyword in
+  firefox)
+#open selected text as firefox address
+firefox "$(xclip -out)"
+;;
+  google)
+#google for selected text
+selurl() {
+  setopt localoptions extendedglob
+  sel=$(xclip -out)
+  input=( ${(s::)sel} )
+  print ${(j::)input/(#b)([^A-Za-z0-9_.!~*\'()-])/%$(([##16]#match))}
+}
+
+firefox "http://google.com/search?q=$(selurl)"
+;;
+esac

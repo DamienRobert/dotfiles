@@ -1,0 +1,182 @@
+#!/bin/zsh
+. $HOME/.initvars
+mylog "usual" "$0 ($@)"
+services=t
+mode=
+
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		-l ) shift; LOCK="true" ;;
+		-s ) shift; mode="sudo" ;;
+		--no-services ) shift; services="" ;;
+		--pro ) shift; mode="pro" ;;
+		--crontab ) shift; mode="crontab" ;;
+		--ssh ) shift; mode="ssh" ;;
+		*) break;;
+	esac
+done
+
+#systemctl --user start basic.target
+
+GPGPRESET="/usr/lib/gnupg/gpg-preset-passphrase"
+PERSOCRYPTDIR="$HOME/.crypt-perso"
+PROCRYPTDIR="$HOME/.crypt-pro"
+IPERSOCRYPTDIR="$HOME/perso/.crypt"
+IPROCRYPTDIR="$HOME/pro/.crypt"
+#I have problem mounting encfs on top of the nfs $HOME
+if [[ $MYHOSTTYPE = "imb" ]]; then
+	mkdir -m 700 -p /tmp/damienrobert || exit 2
+	PERSOCRYPTDIR="/tmp/damienrobert/.crypt-perso"
+	PROCRYPTDIR="/tmp/damienrobert/.crypt-pro"
+fi
+
+mountcrypt() {
+	idir=$1; odir=$2
+	if [[ -d $idir ]]; then
+		echo "# encfs"
+		mkdir -m 700 -p $odir
+		if mount | grep "encfs on $odir" >/dev/null;
+		then
+			echo "## encfs already mounted"
+		else
+			encfs --stdinpass $idir $odir <<< $ENCFS
+		fi
+	fi
+}
+
+gpgread() {
+	case $MYHOSTTYPE in
+		imb )
+			gpg-agent -q || gpg-agent --daemon --use-standard-socket &
+			;;
+	esac
+	gpg-agent -q || exit 1
+	eval $(gpg -q -d $CFGFILES/.keys.gpg)
+}
+
+case $mode in
+sudo )
+	eval $(gpg -q -d $CFGFILES/.keys.gpg)
+	if (( $# > 0 )); then
+		expect <<EOS
+		spawn sudo $@
+expect "dams@$HOSTNAME:dams->root:"
+send "$SUDO\n"
+expect eof
+exit
+EOS
+	else
+		expect <<EOS
+spawn sudo -v
+expect "dams@$HOSTNAME:dams->root:"
+send "$SUDO\n"
+expect eof
+exit
+EOS
+	fi
+	exit $?
+	;;
+
+pro )
+	if [[ -z $LOCK ]]; then
+		gpgread
+		mountcrypt $IPROCRYPTDIR $PROCRYPTDIR
+	else
+		fusermount -u $PROCRYPTDIR
+	fi
+	;;
+
+crontab )
+	gpgread
+	ssh-add -l
+	if [[ $? -ne 2 ]] ; then
+		echo "# ssh-agent (RSA)"
+		expect <<EOS
+spawn ssh-add $HOME/.ssh/id_rsa
+expect "id_rsa:"
+send "$SSHRSA\n"
+expect eof
+exit
+EOS
+	fi
+	;;
+
+* )
+if [[ -z $LOCK ]]; then
+	gpgread
+
+	ssh-add -l
+	#ssh-add -l has error code 1 if there are no identities, 2 if it could not
+	#connect to an agent
+	if [[ $? -ne 2 ]] ; then
+		echo "# ssh-agent (EC25519)"
+		expect <<EOS
+spawn ssh-add $HOME/.ssh/id_ed25519
+expect "id_ed25519:"
+send "$SSHECDSA\n"
+expect eof
+exit
+EOS
+		echo "# ssh-agent (ECDSA)"
+		expect <<EOS
+spawn ssh-add $HOME/.ssh/id_ecdsa
+expect "id_ecdsa:"
+send "$SSHECDSA\n"
+expect eof
+exit
+EOS
+		echo "# ssh-agent (RSA)"
+		expect <<EOS
+spawn ssh-add $HOME/.ssh/id_rsa
+expect "id_rsa:"
+send "$SSHRSA\n"
+expect eof
+exit
+EOS
+	else
+		echo "## Could not connect to ssh agent"
+	fi
+
+	[[ $mode == "ssh" ]] && exit 0
+
+	if [[ -x $GPGPRESET ]]; then
+		echo "# gpg"
+		$GPGPRESET --preset "E5AE1E400B618654974575C3DFEA373BCBC32853" <<< "$GPGPUBLICKEY"
+	fi
+
+	mountcrypt $IPERSOCRYPTDIR $PERSOCRYPTDIR
+
+	if [[ -n $services && -x /usr/bin/systemctl ]]; then
+		#started by internet.target
+		#echo "# unlock.target"
+		#systemctl --user start unlock.target
+		echo "# internet.target"
+		systemctl --user start internet.target
+	fi
+
+else #lock
+	## Not drastic enough
+	#echo "ssh: Foget id_rsa id_ecdsa id_ed25519"
+	#ssh-add -d "$HOME/.ssh/id_ed25519"
+	#ssh-add -d "$HOME/.ssh/id_rsa"
+	#ssh-add -d "$HOME/.ssh/id_ecdsa"
+
+	#echo "gpg: forget public key"
+	#[[ -x $GPGPRESET ]] && $GPGPRESET --forget "E5AE1E400B618654974575C3DFEA373BCBC32853"
+
+	echo "ssh: clear keys"
+	ssh-add -D
+	echo "gpg: forget passphrases"
+	pkill -HUP gpg-agent
+
+	echo "encfs: unmount"
+	fusermount -u $PERSOCRYPTDIR
+	fusermount -u $PROCRYPTDIR
+
+	echo "# To stop systemd services:"
+	echo "systemctl --user stop unlock.target"
+fi
+;;
+esac

@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+#Adapted from: http://perl.plover.com/classes/mybin/samples/slide010.html
+use strict;
+
+my $opt_sep="";
+my $opt_join="|";
+while ($_ = $ARGV[0], defined($_) && /^-/) {
+  shift;
+  last if /^--$/;
+  if (/^-F/) { $opt_sep=shift; };
+  if (/^-j/) { $opt_join=shift; };
+  if (/^-h/) { &help(); exit 0 };
+};
+
+my $field = shift;
+$field -= 1 if $field > 0;
+my @f;
+
+while (<>) {
+  chomp;
+  if ($opt_sep) {
+    @f = split(/$opt_sep/,$_);
+  }
+  else
+  {
+    @f = split;
+  };
+  if (defined($field)) {
+    print $f[$field], "\n";
+  }
+  else
+  {
+    print join($opt_join,@f), "\n";
+  };
+}
+
+sub help {
+  print STDERR "$0 [-F delimiter_regexp] [-j join_delimiter] fieldnumber\n"; 
+  exit 1;
+}

@@ -1,0 +1,4 @@
+#transfert ~dina/BackupPortable dina@FleurBleue:
+transfert dina@FleurBleue:Documents ~dina/BackupPortable/
+sudo setfacl -m u:dams:rX -R ~dina/BackupPortable
+transfert ~dina/BackupPortable oimb:usbdisk/

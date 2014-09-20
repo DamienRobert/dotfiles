@@ -1,0 +1,44 @@
+- Install bluez, bluez-utils
+
+bluetoothctl:
+  list                       List available controllers
+  show [ctrl]                Controller information
+  select <ctrl>              Select default controller
+  devices                    List available devices
+  paired-devices             List paired devices
+  power <on/off>             Set controller power
+  pairable <on/off>          Set controller pairable mode
+  discoverable <on/off>      Set controller discoverable mode
+  agent <on/off/capability>  Enable/disable agent with given capability
+  default-agent              Set agent as the default one
+  scan <on/off>              Scan for devices
+  info <dev>                 Device information
+  pair <dev>                 Pair with device
+  trust <dev>                Trust device
+  untrust <dev>              Untrust device
+  block <dev>                Block device
+  unblock <dev>              Unblock device
+  remove <dev>               Remove device
+  connect <dev>              Connect device
+  disconnect <dev>           Disconnect device
+
+- sudo bluetoothctl
+power on
+agent KeyboardOnly
+scan on
+trust 88:82:54:00:13:1E
+pair 88:82:54:00:13:1E
+connect 88:82:54:00:13:1E
+
+- restart pulseaudio
+
+Malheureusement android ne se présent que comme source, pas comme sink,
+donc on peut s'en servir comme micro, mais pas faire un appel depuis
+l'ordi.
+
+cf: 
+- https://wiki.archlinux.org/index.php/bluetooth
+- http://stackoverflow.com/questions/15818704/is-it-possible-to-send-receive-voice-from-pc-to-android-device-over-bluetooth
+-> http://stackoverflow.com/questions/15557933/receive-audio-via-bluetooth-in-android/15559902#15559902
+- http://askubuntu.com/questions/2573/can-i-use-my-computer-as-an-a2dp-receiver
+- https://bbs.archlinux.org/viewtopic.php?pid=1376448

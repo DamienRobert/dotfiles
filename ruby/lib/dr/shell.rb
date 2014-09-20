@@ -1,38 +1,53 @@
-require 'shellwords'; require 'fileutils'; require 'pathname'
-require 'facets/file'; require 'facets/dir'
-require 'dr/run'; require 'dr/shextra'
-#require 'find'
-#Numenor ~gems/facets-2.9.3/lib/core/facets/file $ ls
-#append.rb        create.rb       read_list.rb  split_all.rb
-#atomic_id.rb     ext.rb          rewrite.rb    split_root.rb
-#atomic_open.rb   null.rb         rootname.rb   write.rb
-#atomic_write.rb  read_binary.rb  sanitize.rb   writelines.rb
-#
-#Ecrire un fichier: file.write("ploum")
-#Ou File.write(path,data) avec facets
+require 'shellwords'; require 'pathname'; require 'fileutils'
+require 'dr/sh'; require 'dr/shextra'
+require 'dr/core_ext'
 
-#monkeypatch ShellWords to convert Paths into strings
-module Shellwords
-  class << self
-    alias :shellescape_orig :shellescape 
-    def shellescape(item)
-      case item
-      when Pathname
-        return shellescape_orig(item.to_s)
-      else
-        return shellescape_orig(item)
-      end
-    end
-  end
+if RUBY_VERSION < "2.0"
+	#monkeypatch ShellWords to convert Paths into strings
+	#this is not needed anymore in ruby2.0
+	module Shellwords
+		class << self
+			alias :shellescape_orig :shellescape 
+			def shellescape(item)
+				return shellescape_orig(item.to_s)
+			end
+		end
+	end
 end
 
+#ruby < 2.1
+#ruby 2.1 defined Pathname#write but I want to use
+#slightly different semantic so I define filewrite anyway
+class Pathname
+	def filewrite(*args,mode:"w")
+		self.open(mode=mode) do |fh|
+			#hack to pass an array to write and do the right thing
+			if args.length == 1 && Array === args.first
+				fh.puts(args.first)
+			else
+				fh.write(*args)
+			end
+			yield fh if block_given?
+		end
+	end
+	#write is not the same as filewrite
+	#but if given only one argument we should be ok
+	unless Pathname.method_defined?(:write)
+		alias :write :filewrite 
+	end
+end
 
 module DR
-  #including DR::ShellInclude will allow 
-  module ShellInclude
-    include ::FileUtils
-    include DR::SH #sh, sh!, run_command, set_sh_logger
-    include DR::CLILogging #debug info warn error fatal
-    include DR::SHExtra
-  end
+	module Shell
+		include DR::SH
+	end
+	#including DR::ShellInclude will allow 
+	module ShellInclude
+		include ::FileUtils
+		include DR::Run #run_command, run_output, run_status, run
+		include DR::Shell #sh, sh!
+											#find, export, run_pager
+		include DR::CLILogging #logger.{debug info warn error fatal}, log_and_do
+		include DR::ExitNow #exit_now!
+	end
 end

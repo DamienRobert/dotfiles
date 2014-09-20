@@ -1,0 +1,5 @@
+# img -- display given or all images with the currently preferred viewer
+# 01jun2010  +chris+
+# 01apr2013  +chris+  back to feh
+# 15sep2013  +chris+  back to qiv
+qiv -ftuNRI ${*:-.}

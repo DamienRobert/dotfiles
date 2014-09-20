@@ -1,0 +1,12 @@
+[default]
+vo=vdpau,xv
+ao=pulse,alsa
+ass=yes
+fontconfig=yes
+font="sans-serif"
+subfont-text-scale=6
+subfont-osd-scale=4
+#ass-font-scale=2
+
+use-filedir-conf=yes
+stop-xscreensaver=yes

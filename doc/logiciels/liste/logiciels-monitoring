@@ -9,8 +9,10 @@ deux-là avec top en plus.
 - pv: transfert entre pipes
 
 On archlinux:
-- htop - top
+- htop,atop - top
 - nethogs, iftop
-- nmon
+- nmon,sysstat (include iostat) - divers stats
+- iotop
 
-
+To try: perf
+https://perf.wiki.kernel.org/index.php/Tutorial

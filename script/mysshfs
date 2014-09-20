@@ -1,6 +1,5 @@
 #!/bin/zsh
-MYFILES=${MYFILES-$HOME/config}
-#. "$MYFILES/00COMPUTERS"
+. $HOME/.initvars
 
 CONTROL_PATH="$HOME/sshfs/.control/%l_%r@%h:%p"
 SSH_OPT="-nNT -o ExitOnForwardFailure=yes -o ControlMaster=auto -o ControlPath=$CONTROL_PATH"
@@ -17,14 +16,15 @@ do
     -- ) break ;;
     -c ) shift ; 
       mkdir -p $DIR; cd $DIR
-          name="$1"; shift ;
-          eval $($MYFILES/00COMPUTERS.rb --export $name)
-          #info_computer $name
-          mkdir -p "$name-root"
-          sshfs "$SSHUNISON:/" "$DIR/$name-root"
-          ln -s "$name-root/$HOMEPATH" "$HOME/sshfs/$name";;
+      name="$1"; shift ;
+      eval $($MYFILES/00COMPUTERS.rb --export $name)
+      #info_computer $name
+      SSHFSDIR="${COMPUTER[hostname]}-root"
+      mkdir -p $SSHFSDIR
+      sshfs "$COMPUTER[sshu]:/" "$DIR/$SSHFSDIR"
+      ln -s "$SSHFSDIR/$COMPUTER[homepath]" "$COMPUTER[hostname]";;
     -u ) shift; name="$1"; shift
-         fusermount -u "$DIR/$name" ;;
+      fusermount -u "$DIR/$name" ;;
     -uall )
       for i in `cut /etc/mtab -d ' ' -f '2' | grep sshfs`; do
         fusermount -u "$i"

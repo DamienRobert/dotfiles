@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/zsh
 
-PS=$(pgrep "$@")
-[ -n "$PS" ] && ps -ww -fp $PS
+# PS=$(pgrep "$@")
+# [ -n "$PS" ] && ps -ww -fp $PS
+ps uwwp ${$(pgrep -d, "${(j:|:)@}"):?no matches}

@@ -1,0 +1,35 @@
+#WHEN @computer[:syst][:arch]!="armv6l"
+#
+# Arch Linux repository mirrorlist
+# Sorted by mirror score from mirror status page
+# Generated on 2014-09-17
+#
+
+# Score: 0.5, France
+Server = http://archlinux.polymorf.fr/$repo/os/$arch
+# Score: 1.4, France
+Server = http://mir.archlinux.fr/$repo/os/$arch
+# Score: 0.5, United States
+Server = http://mirror.us.leaseweb.net/archlinux/$repo/os/$arch
+# Score: 2.1, United States
+Server = http://mirrors.kernel.org/archlinux/$repo/os/$arch
+# Score: 0.5, Germany
+Server = http://mirror.gnomus.de/$repo/os/$arch
+# Score: 0.6, Denmark
+Server = http://mirror.one.com/archlinux/$repo/os/$arch
+# Score: 0.6, Netherlands
+Server = http://mirror.nl.leaseweb.net/archlinux/$repo/os/$arch
+# Score: 0.6, Germany
+Server = http://mirror.de.leaseweb.net/archlinux/$repo/os/$arch
+# Score: 0.7, Belarus
+Server = http://mirror.datacenter.by/pub/archlinux/$repo/os/$arch
+# Score: 0.8, Germany
+Server = http://mirror.js-webcoding.de/pub/archlinux/$repo/os/$arch
+# Score: 0.8, Poland
+Server = http://mirror.chmuri.net/archmirror/$repo/os/$arch
+# Score: 0.8, Germany
+Server = http://ftp.tuxdroid.org/archlinux/$repo/os/$arch
+# Score: 0.8, France
+Server = http://mirror.bpiotrowski.pl/archlinux/$repo/os/$arch
+# Score: 0.8, Germany
+Server = http://archlinux.limun.org/$repo/os/$arch

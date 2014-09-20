@@ -1,2 +1,0 @@
-sudo iw phy phy0 wowlan enable magic-packet
-# iw help wowlan

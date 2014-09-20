@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+umount ${TARGET_DIR}
+systemctl reboot

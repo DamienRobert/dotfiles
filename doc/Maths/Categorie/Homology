@@ -1,3 +1,11 @@
+Complexes
+=========
+
+Rappels: 
+- si f,g morphismes de deux complexes sont homotopes, alors les homologies H(f) et H(g) sont isomorphes.
+- si on a une suite exacte de complexes on a une longue suite des
+  homologies
+
 Exemple du produit tensoriel:
 ============================
 
@@ -9,6 +17,9 @@ la cohomologie de cette chaine \tens B donne Tor^i(M,B).
 (Rappel: P est projectif si Hom(P, -) est exact, comme c'est toujours exact
 à gauche, ça veut dire que pour tout épi M ->> M', chaque Hom(P,M') se
 relève en Hom(P,M))
+
+Les résolutions projectives de M sont quasi isomorphes (ie isomorphes à
+homotopie près).
 
 Si 0 -> M' -> M -> M'' -> 0 est exact, on peut prendre pour résolution de
 M la somme directe de la résolution de M' et M''. Donc via le snake lemma,

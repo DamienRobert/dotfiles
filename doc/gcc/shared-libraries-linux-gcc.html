@@ -1,0 +1,663 @@
+<html>
+<head>
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds2.feedburner.com/Cprogrammingcom/">
+<link rel="stylesheet" href="http://static.cprogramming.com/main_images/style.css?np9" type="text/css">
+<!--[if IE]>
+    <link rel="stylesheet" href="http://static.cprogramming.com/main_images/style-ie.css?np4" type="text/css">
+<![endif]-->
+
+<link href="http://static.cprogramming.com/syntax-highlight/styles/shCore.css" rel="stylesheet" type="text/css" />
+<link href="http://static.cprogramming.com/syntax-highlight/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+
+<META NAME="keywords" CONTENT="gcc shared library, linux shared library, g++ shared library, so file, so shared library">
+<META NAME="Description" CONTENT="How to create and use shared libraries with GCC/G++ on Linux">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Shared libraries with GCC on Linux - Cprogramming.com</title>
+
+<!-- ADDED DFP -->
+<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
+</script>
+<script type='text/javascript'>
+GS_googleAddAdSenseService("ca-pub-2560316224908115");
+GS_googleEnableAllServices();
+</script>
+<script type='text/javascript'>
+GA_googleAddSlot("ca-pub-2560316224908115", "RunOfSite_LargeRectangle_ATF_336x280");
+GA_googleAddSlot("ca-pub-2560316224908115", "RunOfSite_ATF_leaderboard_728x90");
+
+GA_googleAddSlot("ca-pub-2560316224908115", "RunOfSite_ATF_skyscraper_160x600");
+
+</script>
+<script type='text/javascript'>
+GA_googleFetchAds();
+</script>
+<!-- END ADDED DFP -->
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7820175-1']);
+  _gaq.push(['_setDomainName', '.cprogramming.com']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+</head>
+
+<body>
+<div>
+
+<a href="http://www.cprogramming.com/"><img class="logo noprint" src="http://static.cprogramming.com/main_images/title.png" width="324" height="83" border="0"></a> 
+
+<table class="line noprint"><tr><td></td></tr></table>
+<div class="noprint" align="right" style="padding-top:25px;padding-right:25px;">
+<!-- SiteSearch Google -->
+<form action="http://www.google.com/cse" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="partner-pub-2560316224908115:wqvdce-aw4a" />
+    <input type="hidden" name="ie" value="ISO-8859-1" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&amp;lang=en"></script>
+<!-- SiteSearch Google -->
+</div>
+<div>
+  <table class="main">
+    <tr>
+
+  	<td class="noprint" colspan="5" bgcolor="#EBEBEB">
+  		<img src="http://static.cprogramming.com/main_images/spacer-vert.png" height="6" width="0">
+  	   <center>
+    	<div class="leaderboard">
+
+<!-- ADDED DFP -->
+<!-- ca-pub-2560316224908115/Homepage_ATF_leaderboard_728x90 -->
+<script type='text/javascript'>
+GA_googleFillSlot("RunOfSite_ATF_leaderboard_728x90");
+</script>
+<!-- END ADDED DFP -->
+
+</div>
+		</center>
+		<img src="http://static.cprogramming.com/main_images/spacer-vert.png" height="4" width="1">
+  	</td>
+        
+  </tr>
+
+  <tr>
+
+     <td class="noprint" width="130" valign="top" bgcolor="#EBEBEB"> 
+     <div class="menu" valign="top" style="font-size:14px;width:200px">
+     <p class="navcategory" align="left">
+          <img class="bullet" src="http://static.cprogramming.com/main_images/bullet.gif" width="11" height="14">    Starting out
+     </p>
+
+     <p class="navlist" align="left" style="font-size:14px;">
+             <a href="http://www.cprogramming.com/c++book/?inl=sb">Get the Ebook</a><br>
+             <a href="http://www.cprogramming.com/begin.html">Get Started with C or C++</a><br>
+             <a href="http://www.cprogramming.com/compilers.html">Getting a Compiler</a><br>
+             <a href="http://www.cprogramming.com/books.html">Book Recommendations</a><br>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="http://static.cprogramming.com/main_images/bullet.gif" width="11" height="14"> Tutorials
+     </p>
+
+     <p class="navlist" align="left" style="font-size:14px;">
+            <a href=http://www.cprogramming.com/tutorial/c-tutorial.html>C Tutorial</a><br>
+            <a href=http://www.cprogramming.com/tutorial/c++-tutorial.html>C++ Tutorial</a><br>
+            <a href=http://www.cprogramming.com/java-programming.html>Java Tutorial</a><br>
+            <a href=http://www.cprogramming.com/game-programming.html>Game Programming</a><br>
+            <a href=http://www.cprogramming.com/graphics-programming.html>Graphics Programming</a><br>
+            <a href=http://www.cprogramming.com/algorithms-and-data-structures.html>Algorithms &amp; Data Structures</a><br>
+            <a href=http://www.cprogramming.com/debuggers.html>Debugging</a><br>
+            <a href="http://www.cprogramming.com/tutorial.html">All Tutorials</a><br>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="http://static.cprogramming.com/main_images/bullet.gif" width="11" height="14"> Practice
+     </p>
+
+     <p class="navlist" align="left" style="font-size:14px;">
+            <a href="http://www.cprogramming.com/challenge.html">Practice Problems</a><br>
+            <a href="http://www.cprogramming.com/quiz/">Quizzes</a><br>
+     </p>
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="http://static.cprogramming.com/main_images/bullet.gif" width="11" height="14"> Resources
+     </p>
+
+     <p class="navlist" align="left" style="font-size:14px;">
+            <a href="http://www.cprogramming.com/cgi-bin/source/source.cgi">Source Code</a><br>
+            <a href=http://www.cprogramming.com/snippets/>Source Code Snippets</a><br>
+            <a href="http://www.cprogramming.com/tips/">C and C++ Tips</a><br>
+            <a href=http://www.cprogramming.com/jobs/>Finding a Job</a>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="http://static.cprogramming.com/main_images/bullet.gif" width="11" height="14"> References
+     </p>
+
+     <p class="navlist" align="left" style="font-size:14px;">
+            <a href="http://www.cprogramming.com/function.html">Function Reference</a><br>
+            <a href="http://www.cprogramming.com/reference/">Syntax Reference</a><br>
+            <a href="http://faq.cprogramming.com/cgi-bin/smartfaq.cgi">Programming FAQ</a><br>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="http://static.cprogramming.com/main_images/bullet.gif" width="11" height="14"> Getting Help
+     </p>
+
+     <p class="navlist" align="left" style="font-size:14px;">
+             <a href="http://www.cprogramming.com/board.html">Message Board</a><br>
+             <a href="http://www.cprogramming.com/expert.html">Ask an Expert</a><br>
+             <a href="http://www.cprogramming.com/email.html">Email</a><br>
+             <a href="http://www.cprogramming.com/about.html">About Us</a>
+     </p>
+     </div>
+
+<center>
+      <br><br>
+     <script type="text/javascript"><!--
+     google_ad_client = "pub-2560316224908115";
+     google_ad_width = 120;
+     google_ad_height = 90;
+     google_ad_format = "120x90_0ads_al";
+     google_ad_channel ="0800879710";
+     google_color_border = "EBEBEB";
+     google_color_bg = "EBEBEB";
+     google_color_link = "C30000";
+     google_color_url = "C30000";
+     google_color_text = "000000";
+     //--></script>
+     <script type="text/javascript"
+       src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+       </script>
+</center>
+
+
+
+    </td>
+	<td class="content" valign="top">
+
+    			<div class="content2">
+
+<h1>Shared libraries with GCC on Linux</h1>
+
+<div style="margin-right: 1em; float:left; padding: .4em; border-right: 1px solid #bbb"> By anduril462</div>
+
+<p>Libraries are an indispensable tool for any programmer. They are pre-existing code that is compiled and ready for you to use. They often provide generic functionality, like <a href='http://www.cprogramming.com/tutorial/lesson15.html'>linked lists</a> or <a href='http://www.cprogramming.com/tutorial/lesson18.html'>binary trees</a> that can hold any data, or specific functionality like an interface to a <a href='http://www.cprogramming.com/tutorial/c++_database_access_using_ado.html'>database server</a> such as <a href='http://www.mysql.com/'>MySQL</a>.</p>
+
+<p>Most larger software projects will contain several components, some of which you may find use for later on in some other project, or that you just want to separate out for organizational purposes. When you have a reusable or logically distinct set of functions, it is helpful to build a library from it so that you don&#8217;t have to copy the source code into your current project and recompile it all the time&#8211;and so you can keep different modules of your program disjoint and change one without affecting others. Once it&#8217;s been written and tested, you can safely reuse it over and over again, saving the time and hassle of building it into your project every time.</p>
+
+<p>Building static libraries is fairly simple, and since we rarely get questions on them, I won&#8217;t cover them. I&#8217;ll stick with shared libraries, which seem to be more confusing for most people.</p>
+
+<p>Before we get started, it might help to get a quick rundown of everything that happens from source code to running program:</p>
+
+<ol>
+<li>C Preprocessor: This stage processes all the <a href='http://www.cprogramming.com/tutorial/cpreprocessor.html'>preprocessor directives</a>. Basically, any line that starts with a #, such as #define and #include.</li>
+
+<li>Compilation Proper: Once the source file has been preprocessed, the result is then compiled. Since many people refer to the <a href='http://www.cprogramming.com/compilingandlinking.html'>entire build process</a> as compilation, this stage is often referred to as &#8220;compilation proper.&#8221; This stage turns a .c file into an .o (object) file.</li>
+
+<li>Linking: Here is where all of the object files and any libraries are linked together to make your final program. Note that for static libraries, the actual library is placed in your final program, while for shared libraries, only a reference to the library is placed inside. Now you have a complete program that is ready to run. You launch it from the shell, and the program is handed off to the loader.</li>
+
+<li>Loading: This stage happens when your program starts up. Your program is scanned for references to shared libraries. Any references found are resolved and the libraries are mapped into your program.</li>
+</ol>
+
+<p>Steps 3 and 4 are where the magic (and confusion) happens with shared libraries.</p>
+
+<p>Now, on to our (very simple) example.</p>
+
+<h2 id='fooh'>foo.h:</h2>
+<pre class='brush: cpp; toolbar: false'>
+#ifndef foo_h__
+#define foo_h__
+
+extern void foo(void);
+
+#endif  // foo_h__
+</pre>
+<h2 id='fooc'>foo.c:</h2>
+<pre class='brush: cpp; toolbar: false'>
+#include &lt;stdio.h&gt;
+
+
+void foo(void)
+{
+    puts("Hello, I'm a shared library");
+}
+</pre>
+<h2 id='mainc'>main.c:</h2>
+<pre class='brush: cpp; toolbar: false'>
+#include &lt;stdio.h&gt;
+#include "foo.h"
+
+int main(void)
+{
+    puts("This is a shared library test...");
+    foo();
+    return 0;
+}
+</pre>
+<p>foo.h defines the interface to our library, a single function, foo(). foo.c contains the implementation of that function, and main.c is a driver program that uses our library.</p>
+
+<p>For the purposes of this example, everything will happen in /home/username/foo</p>
+
+<h2 id='step_1_compiling_with_position_independent_code'>Step 1: Compiling with Position Independent Code</h2>
+
+<p>We need to compile our library source code into position-independent code (PIC):<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup></p>
+<pre class='example'>
+$ gcc -c -Wall -Werror -fpic foo.c
+</pre>
+<h2 id='step_2_creating_a_shared_library_from_an_object_file'>Step 2: Creating a shared library from an object file</h2>
+
+<p>Now we need to actually turn this object file into a shared library. We&#8217;ll call it libfoo.so:</p>
+<pre class='example'>
+gcc -shared -o libfoo.so foo.o
+</pre>
+<h2 id='step_3_linking_with_a_shared_library'>Step 3: Linking with a shared library</h2>
+
+<p>As you can see, that was actually pretty easy. We have a shared library. Let&#8217;s compile our main.c and link it with libfoo. We&#8217;ll call our final program &#8220;test.&#8221; Note that the -lfoo option is not looking for foo.o, but libfoo.so. GCC assumes that all libraries start with &#8216;lib&#8217; and end with .so or .a (.so is for shared object or shared libraries, and .a is for archive, or statically linked libraries).</p>
+<pre class='example'>
+$ gcc -Wall -o test main.c -lfoo
+/usr/bin/ld: cannot find -lfoo
+collect2: ld returned 1 exit status
+</pre>
+<h3 id='telling_gcc_where_to_find_the_shared_library'>Telling GCC where to find the shared library</h3>
+
+<p>Uh-oh! The linker doesn&#8217;t know where to find libfoo. GCC has a list of places it looks by default, but our directory is not in that list.<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup> We need to tell GCC where to find libfoo.so. We will do that with the -L option. In this example, we will use the current directory, /home/username/foo:</p>
+<pre class='example'>
+$ gcc -L/home/username/foo -Wall -o test main.c -lfoo
+</pre>
+<h2 id='step_4_making_the_library_available_at_runtime'>Step 4: Making the library available at runtime</h2>
+
+<p>Good, no errors. Now let&#8217;s run our program:</p>
+<pre class='example'>
+$ ./test
+./test: error while loading shared libraries: libfoo.so: cannot open shared object file: No such file or directory
+</pre>
+<p>Oh no! The loader can&#8217;t find the shared library.<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup> We didn&#8217;t install it in a standard location, so we need to give the loader a little help. We have a couple of options: we can use the environment variable LD_LIBRARY_PATH for this, or rpath. Let&#8217;s take a look first at LD_LIBRARY_PATH:</p>
+
+<h3 id='using_ld_library_path'>Using LD_LIBRARY_PATH</h3>
+<pre class='example'>
+$ echo $LD_LIBRARY_PATH
+</pre>
+<p>There&#8217;s nothing in there. Let&#8217;s fix that by prepending our working directory to the existing LD_LIBRARY_PATH:</p>
+<pre class='example'>
+$ LD_LIBRARY_PATH=/home/username/foo:$LD_LIBRARY_PATH
+$ ./test
+./test: error while loading shared libraries: libfoo.so: cannot open shared object file: No such file or directory
+</pre>
+<p>What happened? Our directory is in LD_LIBRARY_PATH, but we didn&#8217;t export it. In Linux, if you don&#8217;t export the changes to an environment variable, they won&#8217;t be inherited by the child processes. The loader and our test program didn&#8217;t inherit the changes we made. Thankfully, the fix is easy:</p>
+<pre class='example'>
+$ export LD_LIBRARY_PATH=/home/username/foo:$LD_LIBRARY_PATH
+$ ./test
+This is a shared library test...
+Hello, I'm a shared library
+</pre>
+<p>Good, it worked! LD_LIBRARY_PATH is great for quick tests and for systems on which you don&#8217;t have admin privileges. As a downside, however, exporting the LD_LIBRARY_PATH variable means it may cause problems with other programs you run that also rely on LD_LIBRARY_PATH if you don&#8217;t reset it to its previous state when you&#8217;re done.</p>
+
+<h3 id='using_rpath'>Using rpath</h3>
+
+<p>Now let&#8217;s try rpath (first we&#8217;ll clear LD_LIBRARY_PATH to ensure it&#8217;s rpath that&#8217;s finding our library). Rpath, or the run path, is a way of embedding the location of shared libraries in the executable itself, instead of relying on default locations or environment variables. We do this during the linking stage. Notice the lengthy &#8220;-Wl,-rpath=/home/username/foo&#8221; option. The -Wl portion sends comma-separated options to the linker, so we tell it to send the -rpath option to the linker with our working directory.</p>
+<pre class='example'>
+$ unset LD_LIBRARY_PATH
+$ gcc -L/home/username/foo -Wl,-rpath=/home/username/foo -Wall -o test main.c -lfoo
+$ ./test
+This is a shared library test...
+Hello, I'm a shared library
+</pre>
+<p>Excellent, it worked. The rpath method is great because each program gets to list its shared library locations independently, so there are no issues with different programs looking in the wrong paths like there were for LD_LIBRARY_PATH.</p>
+
+<h4 id='rpath_vs_ld_library_path'>rpath vs. LD_LIBRARY_PATH</h4>
+
+<p>There are a few downsides to rpath, however. First, it requires that shared libraries be installed in a fixed location so that all users of your program will have access to those libraries in those locations. That means less flexibility in system configuration. Second, if that library refers to a NFS mount or other network drive, you may experience undesirable delays&#8211;or worse&#8211;on program startup.</p>
+
+<h3 id='using_ldconfig_to_modify_ldso'>Using ldconfig to modify ld.so</h3>
+
+<p>What if we want to install our library so everybody on the system can use it? For that, you will need admin privileges. You will need this for two reasons: first, to put the library in a standard location, probably /usr/lib or /usr/local/lib, which normal users don&#8217;t have write access to. Second, you will need to modify the ld.so config file and cache. As root, do the following:</p>
+<pre class='example'>
+$ cp /home/username/foo/libfoo.so /usr/lib
+$ chmod 0755 /usr/lib/libfoo.so
+</pre>
+<p>Now the file is in a standard location, with correct permissions, readable by everybody. We need to tell the loader it&#8217;s available for use, so let&#8217;s update the cache:</p>
+<pre class='example'>
+$ ldconfig
+</pre>
+<p>That should create a link to our shared library and update the cache so it&#8217;s available for immediate use. Let&#8217;s double check:</p>
+<pre class='example'>
+$ ldconfig -p | grep foo
+libfoo.so (libc6) => /usr/lib/libfoo.so
+</pre>
+<p>Now our library is installed. Before we test it, we have to clean up a few things:</p>
+
+<p>Clear our LD_LIBRARY_PATH once more, just in case:</p>
+<pre class='example'>
+$ unset LD_LIBRARY_PATH
+</pre>
+<p>Re-link our executable. Notice we don&#8217;t need the -L option since our library is stored in a default location and we aren&#8217;t using the rpath option:</p>
+<pre class='example'>
+$ gcc -Wall -o test main.c -lfoo
+</pre>
+<p>Let&#8217;s make sure we&#8217;re using the /usr/lib instance of our library using ldd:</p>
+<pre class='example'>
+$ ldd test | grep foo
+libfoo.so => /usr/lib/libfoo.so (0x00a42000)
+</pre>
+<p>Good, now let&#8217;s run it:</p>
+<pre class='example'>
+$ ./test
+This is a shared library test...
+Hello, I'm a shared library
+</pre>
+<p>That about wraps it up. We&#8217;ve covered how to build a shared library, how to link with it, and how to resolve the most common loader issues with shared libraries&#8211;as well as the positives and negatives of different approaches.</p>
+<div class='footnotes'><hr /><ol><li id='fn:1'>
+<p>What is position independent code? PIC is code that works no matter where in memory it is placed. Because several different programs can all use one instance of your shared library, the library cannot store things at fixed addresses, since the location of that library in memory will vary from program to program.</p>
+<a href='#fnref:1' rev='footnote'>&#8617;</a></li><li id='fn:2'>
+<p>GCC first searches for libraries in /usr/local/lib, then in /usr/lib. Following that, it searches for libraries in the directories specified by the -L parameter, in the order specified on the command line.</p>
+<a href='#fnref:2' rev='footnote'>&#8617;</a></li><li id='fn:3'>
+<p>The default GNU loader, ld.so, looks for libraries in the following order:</p>
+
+<ol>
+<li>It looks in the DT_RPATH section of the executable, unless there is a DT_RUNPATH section.</li>
+
+<li>It looks in LD_LIBRARY_PATH. This is skipped if the executable is setuid/setgid for security reasons.</li>
+
+<li>It looks in the DT_RUNPATH section of the executable unless the setuid/setgid bits are set (for security reasons).</li>
+
+<li>It looks in the cache file /etc/ld/so/cache (disabled with the &#8216;-z nodeflib&#8217; linker option).</li>
+
+<li>It looks in the default directories /lib then /usr/lib (disabled with the &#8216;-z nodeflib&#8217; linker option).</li>
+</ol>
+<a href='#fnref:3' rev='footnote'>&#8617;</a></li></ol></div>
+<div id="footer" class="noprint">
+
+<div id="social" style="margin-top:5px;height:23px;">
+<table>
+<tr>
+<td> 
+<div id="fb-root"></div>
+<div id="fb-recommend" class="fb-like" data-send="false" data-width="120" data-height="21" data-layout="button_count" data-action="recommend"></div>
+</td>
+<td>
+<a class="twitter-share-button" data-count="horizontal" data-via="alexallain"></a>
+</td>
+<td>
+<div class="g-plusone" data-size="medium"></div>
+</td>
+</tr>
+</table>
+</div>
+
+<div style="font-size:14px;padding:10px;margin-top:5px;margin-bottom:5px;">
+<div style="width:400px; margin-top:10px; float:left; margin-bottom: 15px;">
+    <div id="old-ad" style="display:none">
+    <a href=http://www.cprogramming.com/c++book/?inl=ft-nhp><img src=http://www.cprogramming.com/c++book/small_3d.jpg border=0 align="left"></a><a href="http://www.cprogramming.com/c++book/?inl=ft-nhp">Want to become a C++ programmer? The Cprogramming.com ebook, Jumping into C++, will walk you through it, step-by-step. Get Jumping into C++ today!</a>
+    </div>
+    <div id="new-ad" style="display:none" onmousedown="window.location.href='http://www.cprogramming.com/c++book/?inl=ft-na'">
+    <object width="336" height="280"><param name="bottom-ad" value="http://www.cprogramming.com/c++book/336x280.swf"><param name="wmode" value="transparent" /><embed wmode=transparent allowfullscreen="true" allowscriptaccess="always"  src="http://www.cprogramming.com/c++book/336x280.swf" width="336" height="280"></embed></object>
+    </div>
+</div>
+<div style="clear: both"></div>
+
+
+<script>
+function abTest(element_name_sets) {
+    var element_to_show;
+    var element_count = element_name_sets.length;
+    var i;
+    for ( i = 0; i < element_count; i++ )
+    {
+        if ( Math.random() <= 1 / ( element_count - i ) ) {
+                break;
+        }
+    }
+    var element_name_set = element_name_sets[ i ];
+    for ( i = 0; i < element_name_set.length; i++ )
+    {
+        element_to_show = document.getElementById( element_name_set[ i ] );
+        element_to_show.style.display = "block";
+    }
+}
+abTest( [["old-ad", "old-ad-text"]] );
+</script>
+
+<b>Popular pages</b>
+<ul>
+ <li><a href=http://www.cprogramming.com/begin.html>Exactly how to get started with C++ (or C) today</a> 
+<li><a href=http://www.cprogramming.com/tutorial/c-tutorial.html>C Tutorial</a>
+<li><a href=http://www.cprogramming.com/tutorial/c++-tutorial.html>C++ Tutorial</a>
+<li><a href=http://www.cprogramming.com/how_to_learn_to_program.html>5 ways you can learn to program faster</a> 
+<li><a href=http://www.cprogramming.com/beginner_programming_mistakes.html>The 5 Most Common Problems New Programmers Face</a>
+<li><a href=http://www.cprogramming.com/code_blocks/>How to set up a compiler</a>
+<li><a href=http://www.cprogramming.com/tutorial/common.html>8 Common programming Mistakes</a> 
+<li><a href=http://www.cprogramming.com/c++11/what-is-c++0x.html>What is C++11?</a>
+<li><a href=http://www.cprogramming.com/tutorial/game_programming/same_game_part1.html>How to make a game in 48 hours</a>
+</ul>
+
+<b>Recent additions</b> <a href="http://feeds2.feedburner.com/Cprogrammingcom" rel="alternate" type="application/rss+xml"><img src="http://www.feedburner.com/fb/images/pub/feed-icon16x16.png" alt="subscribe to a feed" style="border:0" width="16" height="16"></img></a>
+<ul>
+
+<li> <a href="http://www.cprogramming.com/c++11/c++11-nullptr-strongly-typed-enum-class.html">Enum classes and nullptr in C++11</a> - November 27, 2011</li>
+<li><a href="http://www.cprogramming.com/tutorial/computersciencetheory/hash-table.html">Learn about The Hash Table</a> - November 20, 2011</li>
+<li><a href="http://www.cprogramming.com/c++11/rvalue-references-and-move-semantics-in-c++11.html">Rvalue References and Move Semantics in C++11</a> - November 13, 2011</li>
+<li><a href="http://www.cprogramming.com/java/c-and-c++-for-java-programmers.html">C and C++ for Java Programmers</a> - November 5, 2011</li>
+<li><a href="http://www.cprogramming.com/tutorial/c++-iostreams.html">A Gentle Introduction to C++ IO Streams</a> - October 10, 2011</li>
+</ul>
+
+</div>
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-bottom" style="background-color:#FFFFFF;color:#000000;width:50%; margin:auto">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-2560316224908115:0581759109" />
+        <input type="hidden" name="ie" value="UTF-8" />
+        <input type="text" name="q" size="55" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+
+<center>
+<div style="margin-top:20px; margin-bottom: 20px">
+<script type="text/javascript">
+<!--
+google_ad_client = "pub-2560316224908115";
+/* link_ads_bottom */
+google_ad_slot = "2258412831";
+google_ad_width = 728;
+google_ad_height = 15;
+//-->
+</script> 
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> </script> 
+</div>
+ 
+<script type="text/javascript" src="http://forms.aweber.com/form/12/618210012.js"></script>
+
+<div class="footer-links" style="padding:10px">
+<a href="http://www.cprogramming.com/advertising.html">Advertising</a> | <a href="http://www.cprogramming.com/privacy.html">Privacy policy</a> |
+<a href="http://www.cprogramming.com/use.html">Copyright © 1997-2011 Cprogramming.com. All rights reserved.</a> | <a href=mailto:webmaster@cprogramming.com>webmaster@cprogramming.com</a>
+</div>
+</div>
+</div>
+</td>
+    	
+
+
+<td class="content noprint" valign="top" rowspan="1" bgcolor="#EBEBEB">
+<div class="content2"><br><div class="verticalad">
+
+
+
+
+<script type='text/javascript'>
+GA_googleFillSlot("RunOfSite_ATF_skyscraper_160x600");
+</script>
+
+
+
+
+
+
+</div><br>
+
+<style type="text/css">
+.sidebar-box { width: 150px; margin-bottom:5px; }
+</style>
+    <div id="side-images">
+        <div style="padding:5px;margin-top:5px">
+            <div style="margin-bottom: 5px">
+                <b>Popular pages</b>
+            </div>
+            <div>
+                
+                <!--http://www.flickr.com/photos/baslow/5620208/sizes/o/in/photostream/ -->
+                <div class = "sidebar-box">
+                    <a href=http://www.cprogramming.com/tutorial/c-tutorial.html>
+                    <img src=http://static.cprogramming.com/main_images/footer/5620208_bff9c514e6_s.jpg border=0 height=75 width=75 alt="C tutorial">
+                    <br>
+                    C Tutorial
+                    </a>
+                </div>
+                
+
+                
+                <!--http://www.flickr.com/photos/29233640@N07/2855530649/sizes/sq/in/photostream/-->
+                <div class = "sidebar-box">
+                    <a href=http://www.cprogramming.com/begin.html>
+                    <img src=http://static.cprogramming.com/main_images/footer/2855530649_905f7862fd_s.jpg border=0 height=75 width=75 alt="Get started">
+                    <br>
+                    Exactly how to get started with C++ (or C) today</a>
+                </div>
+                
+
+                
+                <!--http://www.flickr.com/photos/mikecogh/6505012533/sizes/sq/in/photostream/-->
+                <div class = "sidebar-box">
+                    <a href=http://www.cprogramming.com/how_to_learn_to_program.html>
+                    <img src=http://static.cprogramming.com/main_images/footer/6505012533_55c83fdfa0_s.jpg border=0 height=75 width=75 alt="Learn to program">
+                    <br>
+                    5 ways you can learn to program faster</a>
+                </div>
+                
+
+                
+                <div class = "sidebar-box">
+                    <a href=http://www.cprogramming.com/tutorial/c++-tutorial.html>
+                    <img src=http://static.cprogramming.com/main_images/footer/c++-img.png border=0 height=75 width=75 alt="C++ tutorial">
+                    <br>
+                    C++ Tutorial</a>
+                </div>
+                
+
+                
+                <!--http://www.flickr.com/photos/giopuo/3441263816/sizes/sq/in/photostream/-->
+                <div class = "sidebar-box">
+                    <a href=http://www.cprogramming.com/beginner_programming_mistakes.html>
+                    <img src=http://static.cprogramming.com/main_images/footer/3441263816_95f132a884_s.jpg border=0 height=75 width=75 alt="Problems new programmers face">
+                    <br>
+                    The 5 Most Common Problems New Programmers Face</a>
+                </div>
+                
+
+                
+                <div class = "sidebar-box">
+                   <a href=http://www.cprogramming.com/tutorial/game_programming/same_game_part1.html>
+                    <img src=http://www.cprogramming.com/tutorial/game_programming/same_game_small.png border=0 height=42 width=42 alt="Learn to make a game">
+                    <br>
+                   How to make a game in 48 hours</a>
+                </div>
+                
+
+                
+                <div class = "sidebar-box">
+                   <a href=http://www.cprogramming.com/tutorial/common.html>
+                    <img src=http://static.cprogramming.com/main_images/footer/2291127824_087a497bea_s.jpg border=0 height=75 width=75 alt="Common problems">
+                    <br>
+                   8 Common Programming Mistakes</a>
+                </div>
+                
+
+                
+                <div class = "sidebar-box">
+                   <a href=http://www.cprogramming.com/c++11/what-is-c++0x.html>
+                    <img src=http://static.cprogramming.com/main_images/footer/c++11.png border=0 height=75 width=75 alt="C++11">
+                    <br>
+                   What is C++11?</a>
+                </div>
+                
+            </div>
+        </div>
+        <div style="display:block">
+            <a href=/image_credits.html>Image credits</a>
+        </div>
+    </div>
+</div>
+</td>  	
+
+</tr>
+</table>
+</div>
+
+
+<script>
+(function(w, d, s) {
+  var cur_url = window.location;
+  var loc = cur_url;
+  if ( /htm(l?)/.test( cur_url.pathname ) ) {
+    loc = cur_url.protocol + "//" + cur_url.host + cur_url.pathname.replace( /\+/g, "%2b" );
+  }
+  d.getElementById( "fb-recommend" ).setAttribute( "data-href", loc );
+  function go(){
+    var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.src = url; js.id = id;
+          fjs.parentNode.insertBefore(js, fjs);
+        };
+    load('//connect.facebook.net/en_US/all.js#xfbml=1&channelUrl=http%3A%2F%2Fwww.cprogramming.com%2Ffb%2Fchannel.html', 'fbjssdk');
+    load('https://apis.google.com/js/plusone.js', 'gplus1js');
+    load('//platform.twitter.com/widgets.js', 'tweetjs');
+  }
+  if (w.addEventListener) { w.addEventListener("load", go, false); }
+  else if (w.attachEvent) { w.attachEvent("onload",go); }
+}(window, document, 'script'));
+</script>
+
+
+</body>
+</html>
+
+<script type="text/javascript" src="http://static.cprogramming.com/syntax-highlight/scripts/shCore.js"></script>
+<script type="text/javascript" src="http://static.cprogramming.com/syntax-highlight/scripts/shBrushCpp.js"></script>
+<script type="text/javascript">
+         SyntaxHighlighter.all();
+</script>
+
+
+

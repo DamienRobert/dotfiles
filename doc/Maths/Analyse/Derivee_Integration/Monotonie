@@ -1,0 +1,385 @@
+Quelques contre exemples
+========================
+(On positive derivatives and monotonicity, Casey, Holzsager)
+
+- La fonction de Cantor (l'escalier du diable) est strictement croissante,
+continue, de dérivée nulle presque partout.
+Ca permet de construire des fonctions F continues, telles que F'(x)>0 a.e
+et F(b) < F(a).
+En fait, si F est continue, l'ensemble des x tels que F'(x)<=0 (ou n'existe
+pas) est un borel. S'il est non dénombrable, il contient un parfait, et
+avec l'ex de Cantor on voit que F n'est pas forcément croissante. Par
+contre si F dénombrable, c'est ok.
+- Pour tout epsilon, il existe une fonction C^infty strictement croissante,
+  de dérivée nulle hors un ensemble de mesure epsilon. Si on suppose juste
+  la différentiabilité, on a la même conclusion avec en plus l'ensemble des
+  points ou F'(x)=0 est dense dans [a,b]
+
+=========================================================================
+Résultats de croissance "élémentaires" venant de l'intégrale de la Jauge et
+des partitions.
+
+Intégrale de la jauge
+=====================
+(Recovering a function from a dini derivative, de Hagood et Thomson)
+
+On peut voir l'intégrale de Denjoy comme l'intégrale de la jauge
+(Henstock–Kurzweil), en particulier définir des int^sup et int_inf comme
+les sup (resp inf) des sommes de Riemann des partitions respectant les
+jauges.
+
+Theorem: On a, si F continue à gauche 
+- D^+ F >= g(x) pour tout x => F(b)-F(a) >= int_inf g(x)
+- D_+ F <= g(x) pour tout x => F(b)-F(a) <= int_sup g(x)
+Corollaire: 
+- F(b)-F(a) est compris entre int_inf et int_sup de D^+F.
+- si D_+ F <= g <= D^+ F et que g est intégrale (au sens de Denjoy), alors
+  F(b)-F(a)=int g(x) (et donc F est ACG*)
+
+Rem: on peut remplacer la condition D^+F>=g(x) partout par a.e. si F a zéro
+variation là où D^+F = -infty.
+
+Dans l'autre sens:
+si D_inf F >= g(x) pour tout x, alors F(b)-F(a) >= int_sup g(x)
+Ca marche aussi pour D_+ F si on remplace l'intégrale de la jauge par
+l'intégrale définie sur des partitions "orientées à droite". 
+
+En particulier, on a  int_inf D^+ F <= int_droite_inf D^+ F = F(b)-F(a) <=
+int_sup D^+F. Une autre manière de retrouver F à partir de D^+ F et via
+l'intégrale de Denjoy-Khintchin: si D^+ F existe partout, F est ACG et
+D^+F=F'_ap a.e. donc F est l'intégrale de Khintchin de D^+F.
+
+Mixer les dérivées
+==================
+
+Toujours avec des partitions (orientées à droites) et le lemme de Cousin,
+on peut mixer les dérivées.
+
+Ex: (an extension of two basic results in real
+analysis dorin ervin dutkay, constantin p. niculescu, and florin popovici)
+
+Si F et phi sont C^0, et que [a,b]=A \cup B \cup C avec
+- F, phi zéro var sur A
+- ||F'_droite || <= D^+ phi sur B
+- ||F'_gauche || <= D_- phi sur C
+Alors ||F(b)-F(a)|| <= phi(b)-phi(a)
+
+Si F C^0 et f intégrale au sens de Denjoy, avec
+- F zéro var sur A et f=0 sur A (où mu(A)=0)
+- F'_droite = f sur B, F'_gauche = f sur C
+Alors F(b)-F(a) = \int f(x)
+
+======================================================
+
+Croissance
+==========
+(S'il n'y a pas de référence, c'est dans le Bruckner)
+
+Théorème naif:
+- F est différentiable 
+- F'>=0, 
+Alors F est croissante
+
+Th standard de Lebesgue:
+- F est AC
+- F'>=0 a.e
+=> F croissante
+(En fait s'étend à F ACG*)
+
+Goldowski and Tonelli:
+- F est continue
+- F' existe (finie ou infinie) excepté dans un ens dénombrable, 
+- F'>=0 a.e 
+Alors F est croissante.
+
+Tolstoff
+- F est approx continue
+- F'_ap existe (finie ou infinie) excepté dans un ens dénombrable, 
+- F'_ap >=0 a.e 
+Alors F est croissante.
+
+Dans le même ordre d'idée (Goldowski/Tonelli vs Lebesgue), on a (Khintchin):
+- F est ACG
+- F'_ap >=0 a.e 
+Alors F est croissante.
+
+On peut même généraliser l'intégrale de Denjoy en une intégrale
+approximative grâce au théorème de Kubota:
+- F est [ACG] et approx continue
+- F'_ap >=0 a.e 
+Alors F est croissante.
+Gordon généralise ça à F VBG+approx continue+(N)
+(cf Kubota: integrals of Lusin type)
+
+Rem: [ACG]  signifie AC sur un recouvrement dénombrable de fermés, mais on
+n'impose pas la condition f continue. ACG signifie AC sur un recouvrement
+dénombrable d'ensembles pas forcément fermés, et suivant les auteurs f
+continue ou non...
+D'après Saks, VBG+(N)+continue => ACG
+par contre [VBG]+(N)+approx continue ne donne pas [ACG], cf
+ON THE APPROXIMATELY CONTINUOUS INTEGRALS OF BURKILL AND KUBOTA - D. N. Sarkhel
+qui montre que [VBG]+(N) => (PAC).
+
+Zahorski:
+- F est Darboux
+- F' existe (finie ou infinie) hors un ensemble dénombrable,
+- F'>=0 a.e 
+Alors F est croissante.  
+
+Théorème général de Bruckner:
+============================
+Si F est Darboux Baire 1 VBG, il existe une union d'intervalles I_n dont
+l'union est dense et tels que F est Continue VB sur chaque I_n
+Application: si une propriété (*) est telle qu'une fonction continue BV ayant
+(*) est croissante, et qu'une fonction Darboux Baire 1 ayant (*) est VBG,
+alors toute fonction Darboux Baire 1 ayant (*) est croissante.
+
+Appliqué à Tolstoff:
+- Si F est Darboux Baire 1 (ex approx continue)
+- F'_ap existe (finie ou infinie) excepté dans un ens dénombrable, 
+- F'_ap >=0 a.e 
+Alors F est croissante (et continue car elle est Darboux).
+(Ceci généralise aussi Zahorski, car les conditions impliquent que F est
+Baire1)
+
+On a la même chose si on remplace la dérivée approximative par la dérivée
+qualitative, prépondérante, sélective, dérivée à droite.
+
+Autre exemple:
+- si F est Darboux Baire 1 VBG
+- F est croissante dans un voisinage de x pour tout x point de continuité
+  et de variation bornée locale
+Alors F est croissante
+
+Dérivée extrémale approximative
+-------------------------------
+- Si F est mesurable
+- F'_inf,ap >=0 a.e.
+- F'_inf,ap > -infty pour tout x
+Alors F est croissante
+
+Dini
+----
+On suppose que F est continue, ou simplement lim sup à gauche <= F(x) <= lim inf à droite (#).
+Soit E l'ens des x où D^+F(x)<=0. Si F(E) est d'intérieur vide, alors F est
+croissante.
+
+Application:
+- Si F satisfait (#), 
+- D^+F>=0 a.e
+- D^+F >-\infty en dehors d'un ensemble dénombrable,
+Alors f est croissante 
+(Comme dans la plupart du temps, on peut remplacer la condition D^+F> -infiny
+par f est de variation nulle là où D^+ F <0.).
+
+Remarques:
+- par le th de Bruckner, comme les fonctions continues satisfont (#), on
+  peut remplacer F satisfait (#) par F Darboux Baire 1 VBG.
+- Si on remplace D^+ F >-infty en dehors d'un ensemble dénombrable par D^+
+  F est Baire 1 (+ F satisfait #, et D^+F >=0 a.e), alors F est croissante.
+  Mais en général, même pour F continue, D^+F est seulement Baire 2.
+
+Dans le même ordre d'idée:
+Kubota: on the approximately continuous denjoy integral
+- Si F est approx continue et [ACG]
+- D^+F>=0 a.e
+Alors F est croissante.
+
+O'Malley: 
+cf Kubota, Integrals of Lusin type, Th 8.5
+- lim sup approx à gauche <= F(x) <= lim supp approx à droite + F Baire 1.
+- Si E = l'ens des x où D^+_ap F(x)<=0, F(E) est d'intérieur vide. 
+Alors F est croissante.
+
+On en déduit (si je ne me trompe pas, vu qu'une fonction est de type (N) là
+où 0>=D^+F>-infty):
+- Si F est approx continue, 
+- D^+F_ap >=0 a.e
+- D^+F_ap >-\infty en dehors d'un ensemble dénombrable
+Alors f est croissante 
+
+Darboux
+-------
+
+Théorème de Lee: http://dml.cz/dmlcz/128181 (Lemma 6.2)
+- Soit F une fonction Darboux qui satisfait (N).
+- Si F'(x)>=0 pour presque tout point où F est différentiable
+Alors F est croissante et AC
+
+Vient du théorème 7.7 Chapitre IX de Saks:
+- F continue + (N), 
+- g=F'(x) là où ça existe et 0 sinon, g intégrale au sens de Denjoy
+Alors F est ACG*. Si de plus g est sommable (au sens de Lebesgue), alors F
+est AC. (Apparemment ça s'étend au cas Darboux).
+Et donc si la dérivée est a.e >=0 là où F est différentiale, la dérivée est
+intégrale, donc F est AC, donc F est croissante par le th de Lebesgue.
+
+Convexité
+---------
+
+On note F^11= lim [F(x+h)+F(x-h)-2F(x)]/h^2 (la dérivée seconde
+symétrique), et F^11_inf la dérivée seconde symétrique inférieure.
+
+- Si F est continue sur [a,b], et F^11_inf(x)>=0 à l'intérieur de [a,b],
+  alors F est convexe.
+
+Bruckner: si une propriété (*) est suffisamment forte pour impliquer qu'une
+fonction continue BV ayant (*) soit convexe, alors c'est le cas aussi pour
+les fonctions Darboux VBG* (note: une fonction VBG* n'a qu'un nombre
+dénombrable de points de discontinuité donc est Baire 1)
+
+On a
+- Si F est Darboux VBG*
+- F^11_inf(x) >= a.e
+- F^11_inf > -infty partout
+Alors F convexe
+
+De même,
+- Si F est Darboux VBG*
+- F^11_sup(x) >= 0 partout
+Alors F est convexe.
+
+
+=====================================================================
+Quelques autres références
+
+Saks:
+=====
+
+http://matwbn.icm.edu.pl/ksiazki/mon/mon02/mon0209.pdf
+(chapitre du livre la théorie de l'intégrale)
+
+http://www.mathunion.org/ICM/ICM1928.2/Main/icm1928.2.0253.0254.ocr.pdf
+(dérivée fort = dérivée approximative)
+     On démontre que si une fonction F(x) admet en chaque point d'un inter-
+valle (excepté au plus, une infinité dénombrable de points) un dérivé fort
+fini, F(x) vérifie dans cet intervalle la condition (N) (2). Il s'en suit, en
+vertu du théorème 3, le suivant
+     T H é O R è M E 4. - Si une fonction continue F(x) admet en tout point d'un
+intervalle (a, b) (excepté, au plus, un ensemble dénombrable de points) un
+dérivé fort A(x) fini et intégrable au sens de MM. Denjoy-Khintchine,  on
+                                   F(b)-F(a) =  \int_a,b A(x)dx,
+ou l'intégrale est prise au même sens.
+     Cette proposition est évidemment analogue au théorème connu qu'on obtient
+en y remplaçant le terme « un dérivé fort » par « un dérivé médian quel-
+conque, mais d'un côté fixe », et la notion de l'intégrale de MM. DENJOY-
+KHINTCHINE par ceUe de MM. DENJOY-PERRON.
+
+Denjoy-Youg-Sak theorem
+=======================
+
+http://www.dm.unipi.it/~alberti/files/ricerca/2000-02/derivatives.pdf
+    We note that the restriction of any measurable mapping f:RRn
+    to the set of points at which it possesses a finite approximate derived
+    number maps Lebesgue null sets to sets of zero linear measure. As a
+    corollary we deduce an optimal version of Denjoy-Young-Saks's theorem
+    for approximate derivatives valid up to exceptional sets of zero linear
+    measure in the graph.
+
+General monoticity theorems
+==========================
+
+PATH DERIVATIVES:       A UNIFIED VIEW OF CERTAIN
+            GENERALIZED DERIVATIVES
+BY A. M. BRUCKNER1, R. J. O'MALLEY1 AND B. S. THOMSON2
+http://www.ams.org/tran/1984-283.../S0002-9947-1984-0735410-1/
+
+4.7 Theorem. Let E = {Ex: x E R] be a system of paths that is bilateral and
+satisfies the intersection condition. Then, in order for a function F to be
+nondecreasing on an interval [a, b], either of the following suffice:
+(4.7.1) D_inf F(x) >= 0 a.e. and D_inf F > -oo everywhere in [a, b], or
+(4.7.2) D_inf F = D^sup F n.e. and D_inf F(x) >= 0 a.e. in [a, b] with F in the
+first class of Baire and satisfying the Darboux property.
+
+Monotonicity property: F'_E exist and is >=0 a.e on [a,b].
+6.6 Theorem. Let E = {Ex: x E R} be a system of paths and let F be a function.
+If y of the following hold, then F has the monotonicity property relative to E:
+(6.6.1) E is bilateral and satisfies the intersection condition, and F is
+E-differentiable.
+(6.6.2) E satisfies the intersection condition and F is Darboux and [ACG].
+(6.6.3) F is bilateral and satisfies the intersection condition, and F is Darboux Baire 1 with F'_inf,E(x) = F'_sup,E(x) n.e.
+(6.6.4) F is bilateral (or merely unilateral but from an invariable side), and F is continuous with finite E-derivates n.e.
+
+   Proof.   For (6.6.1) the monotonicity property follows directly from Theorem
+(4.7.1), and for (6.6.3) it follows from (4.7.2).
+  For (6.6.4) we need only apply a classical monotonicity theorem for the Dini
+derivatives of a continuous function (see, for example, [4, p. 189]).
+  Finally, (6.6.2) follows from a monotonicity result of Ellis [12], since in
+the presence of an intersection condition, a derivative FE(x) will only differ
+from the derivative Fa'p(x) on the set where they both exist at a denumberable
+number of points (this follows from Theorem 4.2).
+
+MONOTONICITY THEOREMS B. S. THOMSON
+
+Si D_inf f >= 0 a.e, D_inf f > -infty sauf sur un ensemble N, avec
+- N vide
+- ou N dénombrable + f continu en tout point de N
+- ou N de mesure 0 et f ACG*
+- ou \mu(f(N))=0 et f continue + VBG*
+alors f est croissante.
+
+Rem: Cf plus bas pour une idée de la preuve. L'idée est que si f ACG*, f a
+(N), et f+\epsilon x aussi, fonc f+\epsilon x (N) est de mesure nulle. Si f
+VBG* et que f(N) est de mesure nulle, f+\epsilon x (N) est aussi de mesure
+nulle.
+
+De même pour la dérivée approximative (avec N vide, qu'en est-il des autres
+cas?)
+
+===================================================
+Résumés (th puissants -> cas particuliers plutôt que l'inverse comme plus
+haut)
+
+Plus on impose de régularité à F, moins on a besoin de conditions sur la
+dérivée.
+
+* Pour un système de dérivation bilatéral (ex dérivée, dérivée approx,
+prépondérante, qualitative, séléctive...)
+- D_inf F > -infty partout
+- D_inf F >=0 a.e
+=> F croisante
+
+- F Darboux Baire 1
+- D_inf F = D^sup F n.e. (ie F "dérivable" n.e.)
+- D_inf F >=0 a.e
+=> F croisante
+(Ce dernier th marche aussi pour la dérivée à droite)
+
+* Cas F approx continu:
+- Il faut et suffit que  F({x/ D^+_ap x <= 0 } soit d'intérieur vide.
+On en déduit:
+- F approx continue
+- D^+ ap F > -infty n.e OU F [ACG]
+- D^+_ap F >= 0 a.e.
+=> F croissante
+Rem: [ACG] => dérivable approx a.e, donc la condition 
+D^+_ap F >=0 a.e se lit F'_ap >= 0 a.e
+
+La démo est: si D^+_ap F >=0 a.e, alors G=F+\epsilon x F satisfait E={x/
+D^+_ap x <=0} est de mesure nulle. Dans le premier cas, E est même
+dénombrable, donc G(E) est de mesure nulle. Dans le second cas, G satisfait (N),donc G(E) est aussi de mesure nulle, donc d'intérieur nul.
+ATTENTION: F continue + (N) n'implique pas forcément que G satisfait (N),
+c'est là que VBG entre en jeu.
+
+(En fait on peut prouver, cf Kubota integrals of Lusin type, $10:
+- F upper closed monotone (ex: Darboux) et lower [ACG]
+- D^sup F >=0 a.e
+=> F croissante)
+
+* Cas continu
+- Si F continue, il faut et suffit que  F({x/ D^+ x <= 0 } soit d'intérieur
+  vide. (On voit qu'avec plus de régularité, on a besoin de moins de
+  condition, car D^+ >= D^+_ap)
+On en déduit:
+- F continue (ou Darboux Baire 1 VBG)
+- D^+ F > -infty n.e OU F [ACG*]
+- D^+ F >= 0 a.e.
+=> F croissante
+Rem: [ACG*] => dérivable a.e, donc la condition 
+D^+ F >=0 a.e se lit F' >= 0 a.e
+
+* Condition (N)
+- Soit F une fonction Darboux qui satisfait (N).
+- Si F'(x)>=0 pour presque tout point où F est différentiable
+=> F croissante + AC
+

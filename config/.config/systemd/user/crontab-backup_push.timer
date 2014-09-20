@@ -1,9 +1,0 @@
-[Unit]
-Description=Git backup push Timer
-
-[Timer]
-OnBootSec=30min
-OnUnitActiveSec=3h
-
-[Install]
-WantedBy=crontab.target

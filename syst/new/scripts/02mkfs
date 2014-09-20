@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+mkfs.$FS -L slash ${ROOT_PARTITION}
+
+if [[ -e ${DISK}3 && ${DISK}3 != ${ROOT_PARTITION} ]]; then
+	#assume this is the home partition
+	mkfs.$FS -L home ${DISK}3
+fi
+if [[ -e ${DISK}1 && ${DISK}1 != ${ROOT_PARTITION} ]]; then
+	#assume this is the boot partition
+	mkfs.vfat ${DISK}1
+fi

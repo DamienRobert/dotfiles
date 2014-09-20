@@ -1,0 +1,24 @@
+http://en.wikipedia.org/wiki/Cauchy%27s_theorem_%28group_theory%29
+
+[Rem: trivial par Sylow]
+
+Theorem: Let G be a finite group and p be a prime. If p divides the order of G, then G has an element of order p.
+Proof 1
+
+We first prove the special case that where G is abelian, and then the general case; both proofs are by induction on n = |G|, and have as starting case n = p which is trivial because any non-identity element now has order p. Suppose first that G is abelian. Take any non-identity element a, and let H be the cyclic group it generates. If p divides |H|, then a|H|/p is an element of order p. If p does not divide |H|, then it divides the order [G:H] of the quotient group G/H, which therefore contains an element of order p by the inductive hypothesis. That element is a class xH for some x in G, and if m is the order of x in G, then xm = e in G gives (xH)m = eH in G/H, so p divides m; as before xm/p is now an element of order p in G, completing the proof for the abelian case.
+
+In the general case, let Z be the center of G, which is an abelian subgroup. If p divides |Z|, then Z contains an element of order p by the case of abelian groups, and this element works for G as well. So we may assume that p does not divide the order of |Z|; since it does divide |G|, the class equation shows that there is at least one conjugacy class of a non-central element a whose size is not divisible by p. But that size is [G : CG(a)], so p divides the order of the centralizer CG(a) of a in G, which is a proper subgroup because a is not central. This subgroup contains an element of order p by the inductive hypothesis, and we are done.
+Proof 2
+
+This proof uses the fact that for any action of a (cyclic) group of prime order p, the only possible orbit sizes are 1 and p, which is immediate from the orbit stabilizer theorem.
+
+The set that our cyclic group shall act on is the set X = \{\,(x_1,\cdots,x_p) \in G^p : x_1x_2...x_p = e\, \} of p-tuples of elements of G whose product (in order) gives the identity. Such a p-tuple is uniquely determined by all its components except the last one, as the last element must be the inverse of the product of those preceding elements. One also sees that those p − 1 elements can be chosen freely, so X has |G|p−1 elements, which is divisible by p.
+
+Now from the fact that in a group if ab = e then also ba = e, it follows that any cyclic permutation of the components of an element of X again gives an element of X. Therefore one can define an action of the cyclic group Cp of order p on X by cyclic permutations of components, in other words in which a chosen generator of Cp sends (x_1,x_2,\ldots,x_p)\mapsto(x_2,\ldots,x_p,x_1).
+
+As remarked, orbits in X under this action either have size 1 or size p.
+The former happens precisely for those tuples (x,x,...,x) for which xp = e.
+Counting the elements of X by orbits, and reducing modulo p, one sees that
+the number of elements satisfying xp = e is divisible by p. But x = e is
+one such element, so there must be at least p − 1 other solutions for x,
+and these solutions are elements of order p. This completes the proof.

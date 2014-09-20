@@ -5,12 +5,12 @@
 require 'dr/shell'
 require 'dr/git'
 require 'gli'
-include GLI::App
 include DR::ShellInclude
+include GLI::App
 logger.progname=$0
 
 GITScripts=Pathname.new(ENV['HOME'])+"script/git"
-GITDist=Pathname.new(ENV['HOME'])+"var/dist"
+GITDist=Pathname.new(ENV['HOME'])+"var/dist/git-extra/"
 
 program_desc 'Bundle my git extensions'
 #version "0.0.0"
@@ -20,13 +20,7 @@ desc 'Set log level'
 arg_name 'log_level'
 default_value 'info'
 flag :log
-LOG_LEVELS = {
-  'debug' => Logger::DEBUG,
-  'info' => Logger::INFO,
-  'warn' => Logger::WARN,
-  'error' => Logger::ERROR,
-  'fatal' => Logger::FATAL,
-}
+LOG_LEVELS = DR::CLILogging::LOG_LEVELS
 
 desc 'Always use pager'
 switch :pager
@@ -35,33 +29,33 @@ switch :'no-pager'
 
 $pageropt=nil
 pre do |global,command,options,args|
-  logger.level=LOG_LEVELS[global[:log]]
+	logger.level=LOG_LEVELS[global[:log]]
 
-  $pageropt=:always if global[:pager]
-  $pageropt=:never if global[:'no-pager']
-  true
+	$pageropt=:always if global[:pager]
+	$pageropt=:never if global[:'no-pager']
+	true
 end
 
 class GLI::Commands::Help
-  alias orig_show_help show_help
-  #monkey patch help command to wrap the output inside a pager
-  def show_help(*args, &block)
-    DR::SHExtra.run_pager($pageropt)
-    orig_show_help(*args, &block)
-  end
+	alias orig_show_help show_help
+	#monkey patch help command to wrap the output inside a pager
+	def show_help(*args, &block)
+		DR::Shell.run_pager($pageropt)
+		orig_show_help(*args, &block)
+	end
 end
 
 # Contrib
-# Blame {{{1
+# contrib-blameview -> blameview.perl {{{1
 desc 'Blame (incremental)'
 long_desc "A cause du fonctionnement de git, git blame peut etre long pour un gros projet. blameview utilise l'option incremental de git blame pour updater à la volée le dernier commit ayant modifier une ligne (ie il affiche HEAD pour toutes les lignes, puis au fur et à mesure qu'il parcourt le DAG il update avec le commit ayant dernièrement touché cette ligne)."
-command :blameview do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"contrib/blameview.perl"]+args).shelljoin
-  end
+command :'contrib-blameview' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"contrib/blameview.perl"]+args).shelljoin
+	end
 end
 #}}}1
-# Diffall {{{1
+# contrib-diffall -> git-diffall {{{1
 desc 'Diff directory'
 long_desc <<EOS
 The git-diffall script provides a directory based diff mechanism
@@ -73,94 +67,94 @@ the 'diff.tool' or 'merge.tool' configuration option to be set.
 This script is compatible with most common forms used to specify a
 range of revisions to diff:
 
-  1. git diffall: shows diff between working tree and staged changes
-  2. git diffall --cached [<commit>]: shows diff between staged
-     changes and HEAD (or other named commit)
-  3. git diffall <commit>: shows diff between working tree and named
-     commit
-  4. git diffall <commit> <commit>: show diff between two named commits
-  5. git diffall <commit>..<commit>: same as above
-  6. git diffall <commit>...<commit>: show the changes on the branch
-     containing and up to the second, starting at a common ancestor
-     of both <commit>
+	1. git diffall: shows diff between working tree and staged changes
+	2. git diffall --cached [<commit>]: shows diff between staged
+		 changes and HEAD (or other named commit)
+	3. git diffall <commit>: shows diff between working tree and named
+		 commit
+	4. git diffall <commit> <commit>: show diff between two named commits
+	5. git diffall <commit>..<commit>: same as above
+	6. git diffall <commit>...<commit>: show the changes on the branch
+		 containing and up to the second, starting at a common ancestor
+		 of both <commit>
 
 Note: all forms take an optional path limiter [-- <path>*]
 
 The '--extcmd=<command>' option allows the user to specify a custom
-command for viewing diffs.  When given, configured defaults are
-ignored and the script runs $command $LOCAL $REMOTE.  Additionally,
+command for viewing diffs.	When given, configured defaults are
+ignored and the script runs $command $LOCAL $REMOTE.	Additionally,
 $BASE is set in the environment.
 EOS
-command :diffall do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"contrib/git-diffall"]+args).shelljoin
-  end
+command :'contrib-diffall' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"contrib/git-diffall"]+args).shelljoin
+	end
 end
 
-# Hash {{{1
+# contrib-hash -> git-common-hash {{{1
 desc 'Shows hash prefixes'
-long_desc """
+long_desc <<EOS
 This script displays the distribution of longest common hash prefixes.
 This can be used to determine the minimum prefix length to use
 for object names to be unique.
-"""
-command :hash do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"contrib/git-common-hash"]+args).shelljoin
-  end
+EOS
+command :'contrib-hash' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec ([GITScripts+"contrib/git-common-hash"]+args).shelljoin
+	end
 end
 
-# Mailmap {{{1
+# contrib-mailmap -> mailmap.pl {{{1
 desc 'Find mailmap candidates'
 long_desc 'Check if the same email address has different user name on it (meaning it would be nice in the .mailmap file)'
-command :mailmap do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"contrib/mailmap.pl"]+args).shelljoin
-  end
+command :'contrib-mailmap' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec ([GITScripts+"contrib/mailmap.pl"]+args).shelljoin
+	end
 end
 
-# New-workdir {{{1
+# contrib-new-workdir -> git-new-workdir {{{1
 desc 'Create a new workdir from a repository'
 arg_name "<repository> <new_workdir> [<branch>]"
-long_desc """
+long_desc <<EOS
 Create symlinks to the original repo:
 'config refs logs/refs objects info hooks packed-refs remotes rr-cache svn'
 Explicitly exclude index, HEAD and logs/HEAD from the list since they are
 purely related to the current working directory, and should not be shared.
-"""
-command :'new-workdir' do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"contrib/git-new-workdir"]+args).shelljoin
-  end
+EOS
+command :'contrib-new-workdir' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"contrib/git-new-workdir"]+args).shelljoin
+	end
 end
 
-# Packs {{{1
+# contrib-packs -> packinfo.pl {{{1
 desc 'Give informations on packs'
 long_desc <<EOS
-  git-myinfo pack [-tree|-dump [-filenames]] packs
+	git-myinfo pack [-tree|-dump [-filenames]] packs
 * "all sizes" stats are across every object size in the file;
-  full sizes for base objects, and delta size for deltas.
+	full sizes for base objects, and delta size for deltas.
 * "all path sizes" stats are across all object's "path sizes".
-  A path size is the sum of the size of the delta chain, including the
-  base object.  In other words, it's how many bytes need be read to
-  reassemble the file from deltas.
+	A path size is the sum of the size of the delta chain, including the
+	base object.	In other words, it's how many bytes need be read to
+	reassemble the file from deltas.
 * "tree sizes" are object sizes grouped into delta trees.
 * "tree path sizes" are path sizes grouped into delta trees.
 * "depths" should be obvious.
 
 |-tree|
-                          object size, path size
-  0 commit 031321c6...      803      803
+													object size, path size
+	0 commit 031321c6...			803			 803
 
-  0   blob 03156f21...     1767     1767
-  1    blob f52a9d7f...       10     1777
-  2     blob a8cc5739...       51     1828
-  3      blob 660e90b1...       15     1843
-  4       blob 0cb8e3bb...       33     1876
-  2     blob e48607f0...      311     2088
-     size: count 6 total 2187 min 10 max 1767 mean 364.50 median 51 std_dev 635.85
+	0		blob 03156f21...		 1767			1767
+	1		 blob f52a9d7f...				10		 1777
+	2			blob a8cc5739...			 51			1828
+	3			 blob 660e90b1...				15		 1843
+	4				blob 0cb8e3bb...			 33			1876
+	2			blob e48607f0...			311			2088
+		 size: count 6 total 2187 min 10 max 1767 mean 364.50 median 51 std_dev 635.85
 path size: count 6 total 11179 min 1767 max 2088 mean 1863.17 median 1843 std_dev 107.26
 
 |-dump|
@@ -172,82 +166,82 @@ prints out "sha1 size pathsize depth" for each sha1 in lexical order.
 |-filename| add to which file the blob correspond"
 EOS
 
-command :packs do |c|
-  c.desc 'Describe the content of the packs in a tree like manner'
-  c.switch :tree
-  c.desc 'Find to which file the blob correspond'
-  c.switch :filenames
-  c.desc 'Dump the sha1 of the objects insided the packs'
-  c.switch :dump
-  c.action do |global_options,options,args|
-    opts=[]
-    opts.unshift('-tree') if options[:tree]
-    opts.unshift('-filenames') if options[:filenames]
-    opts.unshift('-dump') if options[:dump]
-    DR::Git.cd_to_toplevel
+command :'contrib-packs' do |c|
+	c.desc 'Describe the content of the packs in a tree like manner'
+	c.switch :tree
+	c.desc 'Find to which file the blob correspond'
+	c.switch :filenames
+	c.desc 'Dump the sha1 of the objects insided the packs'
+	c.switch :dump
+	c.action do |global_options,options,args|
+		opts=[]
+		opts.unshift('-tree') if options[:tree]
+		opts.unshift('-filenames') if options[:filenames]
+		opts.unshift('-dump') if options[:dump]
+		DR::Git.cd_to_toplevel
 
-    DR::SHExtra.run_pager($pageropt)
-    if args.empty?
-      exec "git verify-pack -v .git/objects/pack/*.idx | '#{GITScripts+"contrib/packinfo.pl"}' #{opts.shelljoin}"
-    else
-      exec "git verify-pack -v #{args.shelljoin} | '#{GITScripts+"contrib/packinfo.pl"}' #{opts.shelljoin}"
-    end
-  end
+		DR::Shell.run_pager($pageropt)
+		if args.empty?
+			exec "git verify-pack -v .git/objects/pack/*.idx | '#{GITScripts+"contrib/packinfo.pl"}' #{opts.shelljoin}"
+		else
+			exec "git verify-pack -v #{args.shelljoin} | '#{GITScripts+"contrib/packinfo.pl"}' #{opts.shelljoin}"
+		end
+	end
 end
 
-# Resurrect {{{1
+# contrib-resurrect -> git-resurrect.sh {{{1
 desc 'Try to resurrect a deleted branch'
 arg_name "[-a] [-r] [-m] [-t] [-n] [-b <newname>] <name>"
 long_desc <<EOS
 git resurrect [-a] [-r] [-m] [-t] [-n] [-b <newname>] <name>
 --
-b,branch=            save branch as <newname> instead of <name>
-a,all                same as -l -r -m -t
-k,keep-going         full rev-list scan (instead of first match)
-l,reflog             scan reflog for checkouts (enabled by default)
-r,reflog-merges      scan for merges recorded in reflog
-m,merges             scan for merges into other branches (slow)
-t,merge-targets      scan for merges of other branches into <name>
-n,dry-run            don't recreate the branch"
+b,branch=						 save branch as <newname> instead of <name>
+a,all								 same as -l -r -m -t
+k,keep-going				 full rev-list scan (instead of first match)
+l,reflog						 scan reflog for checkouts (enabled by default)
+r,reflog-merges			 scan for merges recorded in reflog
+m,merges						 scan for merges into other branches (slow)
+t,merge-targets			 scan for merges of other branches into <name>
+n,dry-run						 don't recreate the branch"
 
 git-resurrect attempts to find traces of a branch tip
 called <name>, and tries to resurrect it.  Currently, the reflog is
-searched for checkout messages, and with -r also merge messages.  With
+searched for checkout messages, and with -r also merge messages.	With
 -m and -t, the history of all refs is scanned for Merge <name> into
 other/Merge <other> into <name> (respectively) commit subjects, which
 is rather slow but allows you to resurrect other people's topic
 branches.
 EOS
 
-command :resurrect do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"contrib/git-resurrect.sh"]+args).shelljoin
-  end
+command :'contrib-resurrect' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"contrib/git-resurrect.sh"]+args).shelljoin
+	end
 end
 
-# Subtree {{{1
+# subtree -> git-subtree.sh {{{1
 desc 'Merge subtrees together and split repository into subtrees'
 arg_name 'add/pull/push/merge/split ...'
 long_desc File.read(GITScripts+"contrib/git-subtree.txt")
 command :subtree do |c|
-  ENV["PATH"]+=":"+(GITScripts+"contrib").to_s
-  c.action do |global_options,options,args|
-    puts ([GITScripts+"contrib/git-subtree.sh"]+args).shelljoin
-    exec ([GITScripts+"contrib/git-subtree.sh"]+args).shelljoin
-  end
+	ENV["PATH"]+=":"+(GITScripts+"contrib").to_s
+	c.action do |global_options,options,args|
+		puts ([GITScripts+"contrib/git-subtree.sh"]+args).shelljoin
+		exec ([GITScripts+"contrib/git-subtree.sh"]+args).shelljoin
+	end
 end
 
-# Rerere-train {{{1
+# contrib-rerere-train -> rerere-train.sh {{{1
 desc 'Prime rerere database from existing merge commits'
 arg_name '<rev-list>'
-command :'rerere-train' do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"contrib/rerere-train.sh"]+args).shelljoin
-  end
+command :'contrib-rerere-train' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"contrib/rerere-train.sh"]+args).shelljoin
+	end
 end
 
 # }}}1
-# Remote-hg {{{1
+# hg -> remote hg helper {{{1
 desc 'Remote hg helper'
 long_desc 'Just copy to your ~/bin, or anywhere in your $PATH.
 Then you can clone with:
@@ -261,211 +255,201 @@ git my hg --inside path/to/mercurial/repo1 path2 ... to clone inside these hg re
 '
 arg_name 'path to hg repo'
 command :'hg' do |c|
-  c.desc 'Clone inside the hg repo'
-  c.switch :inside
-  c.action do |global_options,options,args|
-    ENV['PATH']+=":#{ENV['HOME']}/script/git/contrib"
-    if options[:inside]
-      args.each do |arg|
-        hgdir=Pathname.new(arg)
-        gitdir=hgdir+".git"
-        system ["git", "clone", "--bare", "hg::#{hgdir}", gitdir].shelljoin
-        puts "git config -f #{gitdir+"config"} core.bare false"
-        system "git config -f #{gitdir+"config"} core.bare false"
-      end
-    else
-      hgdir=args.shift
-      exec (["git", "clone", "hg::#{hgdir}"]+args).shelljoin
-    end
-  end
+	c.desc 'Clone inside the hg repo'
+	c.switch :inside
+	c.action do |global_options,options,args|
+		ENV['PATH']+=":#{ENV['HOME']}/script/git/contrib"
+		if options[:inside]
+			args.each do |arg|
+				hgdir=Pathname.new(arg)
+				gitdir=hgdir+".git"
+				system ["git", "clone", "--bare", "hg::#{hgdir}", gitdir].shelljoin
+				puts "git config -f #{gitdir+"config"} core.bare false"
+				system "git config -f #{gitdir+"config"} core.bare false"
+			end
+		else
+			hgdir=args.shift
+			exec (["git", "clone", "hg::#{hgdir}"]+args).shelljoin
+		end
+	end
 end
 # }}}1
+# contrib-contacts -> git-contacts {{{1
+desc 'Find who contributed on a patched line'
+long_desc File.read(GITScripts+"contrib/git-contacts.txt")
+arg_name 'patch_files'
+command :'contrib-contacts' do |c|
+	c.action do |global_options,options,args|
+		pwd=Pathname.pwd
+		args.each_with_index do |a,i|
+			a=Pathname.new(a)
+			args[i]=pwd+a if a.relative?
+		end
+		DR::Git.cd_to_toplevel
+		DR::Shell.run_pager($pageropt)
+		exec ([GITScripts+"contrib/git-contacts"]+args).shelljoin
+	end
+end
+#}}}
 
 # Scripts 
-# Changelog {{{1
-desc 'Output changelog from git log'
-command :changelog do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"scripts/changelog.rb"]+args).shelljoin
-  end
-end
-
-# Churn {{{1
-desc 'Number of commits modifying each files'
-arg_name '<git log arguments>'
-command :churn do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"scripts/git-churn"]+args).shelljoin
-  end
-end
-
-# log remote {{{1
-desc 'Shows diff between current branch and its remote'
-arg_name 'local[=HEAD] remote'
-long_desc 'Provides a nice output of logs between locate..remote and remote..local'
-command :diffbranch do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"scripts/git-divergence"]+args).shelljoin
-  end
-end
-
-# Diverge {{{1
-desc 'Find when two branches first diverged'
-arg_name 'upstream[=master] local[=HEAD]'
-command :diverge do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"scripts/diverge"]+args).shelljoin
-  end
-end
-# Quickstats {{{1
+# stats-authors -> git-stats.sh (Quickstats) {{{1
 desc 'Statistics by authors'
 arg_name '-- [-s since -e before -w -C -M]'
-long_desc """
-  -s time: --after time
-  -e time: --before time
-  -w: word diff
-  -M: activate move detection
-  -C: activate copy detection
+long_desc <<EOS
+	-s time: --after time
+	-e time: --before time
+	-w: word diff
+	-M: activate move detection
+	-C: activate copy detection
 Warning: do not play nice with mailmaps
-"""
-command :stats do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec(([GITScripts+"scripts/git-stats.sh"]+args).shelljoin)
-  end
+EOS
+command :'stats-authors' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec(([GITScripts+"scripts/git-stats.sh"]+args).shelljoin)
+	end
 end
 
-# Up, Reup {{{1
-desc 'pull current branch and show new commits'
-long_desc '"git my up" will detect if rebase is the default and will switch to "reup" mode automatically. Add "-b" if you want to use "reup" ponctually, and "--no-rebase" to prevent "git pull" from using rebase. The poing of calling "reup" rather than letting "pull" find the default "merge/rebase" mode is that "reup" will stash, rebase current branch and show diffstat.'
-arg_name '<pulloptions>'
-command :up do |c|
-  c.desc 'Use rebase rather than pull'
-  c.switch :b
-  c.action do |global_options,options,args|
-    if options[:b]
-      #DR::SHExtra.run_pager($pageropt)
-      exec ([GITScripts+"scripts/git-reup"]+args).shelljoin
-    else
-      exec ([GITScripts+"scripts/git-up"]+args).shelljoin
-    end
-  end
-end
-
-desc 'stash, rebase current branch and show diffstat'
-arg_name '<pulloptions>'
-command :reup do |c|
-  c.action do |global_options,options,args|
-    #DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"scripts/git-reup"]+args).shelljoin
-  end
-end
-
-# Runcmd {{{1
+# extra-runcmd -> git-run-command-on-git-revisions{{{1
 desc 'run command on git revisions'
 arg_name 'start_ref end_ref command'
-command :runcmd do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"scripts/git-run-command-on-git-revisions"]+args).shelljoin
-  end
+command :'extra-runcmd' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"scripts/git-run-command-on-git-revisions"]+args).shelljoin
+	end
 end
 # }}}1
-# Blametree {{{1
-desc 'like blame, but for a tree'
-arg_name 'revs'
-command :blame_tree do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"scripts/blame-tree"]+args).shelljoin
-  end
+# topic-{trails,neck} -> git-{trail,neck} {{{1
+desc 'Show all branching points'
+long_desc '[-r]: add remotes in topics to search
+[-t]: add tags in topics to search'
+arg_name '[-r] [-t] COMMIT'
+command :'topic-trails' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"scripts/git-trail"]+args).shelljoin
+	end
 end
-
-# }}}1
+desc 'Show commits until first branching point'
+arg_name '[-r] COMMIT'
+long_desc '[-r]: add remotes in topics to search for neck'
+command :'topic-neck' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"scripts/git-neck"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 ls-removed -> git-attic
+desc "Show removed files"
+arg_name "paths"
+long_desc "Use -M to not show renamed files, and other git-log options as you like."
+command :"ls-removed" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"scripts/git-attic"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 children -> git-children-of
+desc "Show direct children"
+arg_name "commits"
+command :"children" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"scripts/git-children-of"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 merging-rebase -> git-merging-rebase
+desc "Rebase, preserving fastforwardabiliy"
+arg_name "topics"
+command :"merging-rebase" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"scripts/git-merging-rebase"]+args).shelljoin
+	end
+end
+#}}}
 
 # Dist
-# Stats {{{1
+# stats-html -> gitstats/gitstats {{{1
 desc 'Statistics (html)'
-long_desc """
+long_desc <<EOS
 -c option=value
 Override a default configuration value. Defaults can be seen by running gitstats without parameters.
 Default config values:
 {'linear_linestats': 1, 'style': 'gitstats.css', 'commit_end': 'HEAD', 'max_authors': 20, 'commit_begin': '', 'max_ext_length': 10, 'project_name': '', 'authors_top': 5, 'merge_authors': {}, 'max_domains': 10}
 -authors_top 
-  How many top authors to show.
+	How many top authors to show.
 -commit_begin, commit_end
-  Specify a commit range to generate statistics from. You can specify only commit_end limit statistics to a certain commit or another branch.
+	Specify a commit range to generate statistics from. You can specify only commit_end limit statistics to a certain commit or another branch.
 -linear_linestats
-  When enabled, the lines of code statistics are collected from linear history.
+	When enabled, the lines of code statistics are collected from linear history.
 The downside is that commits of long feature branches appear only at the point
 where a merge commit is made.
-  If disabled (old behaviour), the problem is that if two branches contain the
+	If disabled (old behaviour), the problem is that if two branches contain the
 same changes (for example, removal of same lines), the statistics get skewed.
-  Defaults to on.
+	Defaults to on.
 -max_authors
-  How many authors to show in the list of authors.
+	How many authors to show in the list of authors.
 -max_domains
-  How many domains to show in domains by commits.
+	How many domains to show in domains by commits.
 -max_ext_length
-  Maximum file extension length.
+	Maximum file extension length.
 -project_name
-  Project name to show on the generated pages. Default is to use basename of the repository directory.
+	Project name to show on the generated pages. Default is to use basename of the repository directory.
 -style
-  CSS stylesheet to use.
-"""
+	CSS stylesheet to use.
+EOS
 arg_name '[opts] <repo dir> <output dir>'
-command :statshtml do |c|
-  c.action do |global_options,options,args|
-    #DR::SHExtra.run_pager($pageropt)
-    exec ([GITDist+"gitstats/gitstats"]+args).shelljoin
-  end
+command :'stats-html' do |c|
+	c.action do |global_options,options,args|
+		#DR::Shell.run_pager($pageropt)
+		exec ([GITDist+"gitstats/gitstats"]+args).shelljoin
+	end
 end
 
-# Merged {{{1
+# topic-merged -> git-mainline/bin/git-show-merges {{{1
 desc 'Shows merge status of topic branches'
 arg_name 'heads'
-long_desc """
+long_desc <<EOS
 git-show-merges: a simple script to show you which topic branches have been
 merged into the current branch, and which haven't. (Or, specify the set of
 merge branches you're interested in on the command line.)
-"""
+EOS
 
-command :merged do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITDist+"git-mainline/bin/git-show-merges"]+args).shelljoin
-  end
+command :'topic-merged' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec ([GITDist+"git-mainline/bin/git-show-merges"]+args).shelljoin
+	end
 end
 
-# Publish {{{1
-desc 'Publish branch'
-arg_name '[-d -n] <branch> [repository]'
-long_desc """
-git-publish-branch: a simple script to ease the unnecessarily complex task
-of 'publishing' a branch, i.e., taking a local branch, creating a reference
-to it on a remote repo, and setting up the local branch to track the remote
-one, all in one go. you can even delete that remote reference.
+## # Publish {{{1
+## #Use grb instead
+## desc 'Publish branch'
+## arg_name '[-d -n] <branch> [repository]'
+## long_desc <<EOS
+## git-publish-branch: a simple script to ease the unnecessarily complex task
+## of 'publishing' a branch, i.e., taking a local branch, creating a reference
+## to it on a remote repo, and setting up the local branch to track the remote
+## one, all in one go. you can even delete that remote reference.
+## 
+## '-d' signifies deletion. <branch> is the branch to publish, and
+## [repository] defaults to 'origin'. The remote branch name will be the same
+## as the local branch name. Don't make life unnecessarily complex for
+## yourself.
+## '-n' dry run
+## EOS
+## 
+## command :publish do |c|
+##	 c.action do |global_options,options,args|
+##		 DR::Shell.run_pager($pageropt)
+##		 exec ([GITDist+"git-mainline/bin/git-publish-branch"]+args).shelljoin
+##	 end
+## end
 
-'-d' signifies deletion. <branch> is the branch to publish, and
-[repository] defaults to 'origin'. The remote branch name will be the same
-as the local branch name. Don't make life unnecessarily complex for
-yourself.
-'-n' dry run
-"""
-
-command :publish do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITDist+"git-mainline/bin/git-publish-branch"]+args).shelljoin
-  end
-end
-
-# Rank {{{1
+# stats-diff -> git-mainline/bin/git-rank-contributors {{{1
 desc 'Rank contributors according to size of diff'
 arg_name '[-v -o -h]'
-long_desc """
+long_desc <<EOS
 git-rank-contributors: a simple script to trace through the logs and rank
 contributors by the total size of the diffs they're responsible for. A
 change counts twice as much as a plain addition or deletion.
@@ -474,19 +458,19 @@ Output may or may not be suitable for inclusion in a CREDITS file. Probably
 not without some editing, because people often commit from more than one
 address.
 
--v: verbose
+-v: verbose (on by default)
 -o: obfuscate
 -h: htmlize
-"""
+EOS
 
-command :statsdiff do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITDist+"git-mainline/bin/git-rank-contributors"]+args).shelljoin
-  end
+command :'stats-diff' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec ([GITDist+"git-mainline/bin/git-rank-contributors","-v"]+args).shelljoin
+	end
 end
 
-# Wtf {{{1
+# topic-status -> git-mainline/bin/git-wtf {{{1
 desc 'Shows state of the repository topic branches'
 arg_name '[branch+] [options]'
 
@@ -507,19 +491,19 @@ KEY:
 
 x merge occurs both locally and remotely
 ~ merge occurs only locally
-  (space) branch isn't merged in
+	(space) branch isn't merged in
 
 If [branch] is not specified, git-wtf will use the current branch. The possible
 [options] are:
 
-  -l, --long          include author info and date for each commit
-  -a, --all           show all branches across all remote repos, not just
-                      those from origin
-  -A, --all-commits   show all commits, not just the first 5
-  -s, --short         don't show commits
-  -k, --key           show key help
-  -r, --relations     show relation to features / integration branches
-      --dump-config   print out current configuration and exit
+	-l, --long					include author info and date for each commit
+	-a, --all						show all branches across all remote repos, not just
+											those from origin
+	-A, --all-commits		show all commits, not just the first 5
+	-s, --short					don't show commits
+	-k, --key						show key help
+	-r, --relations			show relation to features / integration branches
+			--dump-config		print out current configuration and exit
 
 git-wtf uses some heuristics to determine which branches are integration
 branches, and which are feature branches. (Specifically, it assumes the
@@ -529,7 +513,7 @@ incorrectly, you will have to create a .git-wtfrc file.
 To start building a configuration file, run "git-wtf --dump-config >
 .git-wtfrc" and edit it. The config file is a YAML file that specifies the
 integration branches, any branches to ignore, and the max number of commits to
-display when --all-commits isn't used.  git-wtf will look for a .git-wtfrc file
+display when --all-commits isn't used.	git-wtf will look for a .git-wtfrc file
 starting in the current directory, and recursively up to the root.
 
 IMPORTANT NOTE: all local branches referenced in .git-wtfrc must be prefixed
@@ -537,230 +521,1205 @@ with heads/, e.g. "heads/master". Remote branches must be of the form
 remotes/<remote>/<branch>.
 EOS
 
-command :wtf do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITDist+"git-mainline/bin/git-wtf"]+args).shelljoin
-  end
+command :'topic-status' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec ([GITDist+"git-mainline/bin/git-wtf"]+args).shelljoin
+	end
 end
 
 #}}}1
-
-# Divers
-# Authors {{{1
-desc 'Shows list of authors (ranking by number of commits)'
-arg_name '<log args>'
-command :authors do |c|
-  c.desc 'Shows emails'
-  c.switch :email, :e
-  c.action do |global_options,options,args|
-    DR::SHExtra.run_pager($pageropt)
-    if options[:email]
-      exec "git log '--pretty=format:%aN <%aE>' #{args.shelljoin} | sort | uniq -c | sort -rn"
-    else
-      exec "git log --pretty=format:%aN #{args.shelljoin} | sort | uniq -c | sort -rn"
-    end
-  end
+#{{{1 extra-reparent -> git-reparent/git-reparent
+desc 'Change parent of a commit'
+long_desc File.read(GITDist+"git-reparent/README.rst")
+command :'extra-reparent' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"git-reparent/git-reparent"]+args).shelljoin
+	end
 end
+#}}}
+#{{{1 cherry -> aspiers_git-config/bin/git-icing
+desc 'Wrapper around git cherry'
+long_desc <<EOS
+Some extra icing on top of git cherry's tasty cake ...
 
-# grb {{{1
+	- Allow blacklisting of commits which should never be upstreamed,
+		via the git-notes(1) mechanism.  To blacklist a commit from being
+		upstreamed to any branch:
+
+				git notes --ref=upstreaming add -m'skip: all' $sha
+
+		or to blacklist from being upstreamed to specific branches (currently
+		only works when the upstream branch is explicitly provided):
+
+				git notes --ref=upstreaming add		 -m'skip: upstream-branch' $sha
+				git notes --ref=upstreaming append -m'skip: another-branch'  $sha
+				git notes --ref=upstreaming append -m'skip: /branch-regexp/' $sha
+
+		It is strongly recommended that you also include justification for
+		why this commit should not be upstreamed.  You can place free-form
+		text in the note, as long as the 'skip: ' line is preserved, with
+		no indentation.  To edit the note:
+
+				git notes --ref=upstreaming edit $sha
+
+		To remove from the blacklist:
+
+				git notes --ref=upstreaming remove $sha
+
+		To push / pull the blacklist notes between git repositories, see:
+
+				http://stackoverflow.com/questions/12055303/merging-git-notes-when-there-are-merge-conflicts-in-them/
+
+	- Categorise and colour-code commits.  The first field of each
+		line output by `git cherry' is extended to show more than just
+		`+' and `-'.	Run `git icing --help' to show all possibilities.
+
+See: http://blog.adamspiers.org/2013/09/19/easier-upstreaming-with-git/
+EOS
+command :cherry do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"aspiers_git-config/bin/git-icing"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 cherry-menu -> aspiers_git-config/bin/git-cherry-menu
+desc 'Interactive menu around git my cherry'
+long_desc <<EOS
+usage: git [<options>] cherry-menu <command> [<args>...]
+suggested options:
+
+		-c cherry-menu.redo-upstreamed=true
+					Include commits which are annotated has having been
+					previously upstreamed with a different patch-id.	This can
+					be useful if you decide to hard-reset the upstream branch in
+					order to redo some cherry-picking you made a mess of, but
+					want to be able to reuse the notes which were created the
+					first time round.
+
+		-c cherry-menu.skip-todos=true
+					Skip commits which have notes including 'TODO'.  This allows
+					unresolved upstreaming tasks to be tracked via an external
+					issue tracker without getting in the way during repeated
+					runs of cherry-menu.
+
+COMMAND is typically "git icing -v2" or "git cherry" but can be
+anything which gives output in the same format, e.g.
+
+		git icing -v2 $upstream $downstream | grep ... > tmpfile
+		# Could edit tmpfile here if we want
+		git-cherry-menu cat tmpfile
+
+Provides an interactive wrapper around git-icing (or git cherry).  For
+each commit provided on STDIN by COMMAND which has not yet been
+upstreamed, asks the user whether they want to cherry-pick the commit,
+blacklist it, or skip it.  After a successful cherry-pick, the source
+commit will be automatically blacklisted if the patch-id changed.
+
+You can quit the process at any time and safely re-run it later - it
+will resume from where you left off.
+
+Invoking icing with "-v2" ensures that previously blacklisted /
+upstreamed commits are also processed.
+EOS
+command :"cherry-menu" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"aspiers_git-config/bin/git-cherry-menu"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 notes-remote -> aspiers_git-config/bin/git-rnotes
+desc "Wrapper around 'git notes' to make it easier to share notes to and from remote repositories."
+long_desc <<EOS
+Usage: git-rnotes [options] SUBCOMMAND REMOTE
+Options:
+	-h, --help		 Show this help and exit
+
+Subcommands:
+
+	fetch
+	push
+	merge
+	pull
+EOS
+command :"notes-remote" do |c|
+	c.action do |global_options,options,args|
+		#ENV["PATH"]+=":"+(GITDist+"aspiers_git-config/bin").to_s
+		exec ([GITDist+"aspiers_git-config/bin/git-rnotes"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 ls-blame -> aspiers_git-config/bin/git-ls-dir
+desc "Like 'git blame', but for a directory"
+command :"ls-blame" do |c|
+	c.action do |global_options,options,args|
+		#ENV["PATH"]+=":"+(GITDist+"aspiers_git-config/bin").to_s
+		exec ([GITDist+"aspiers_git-config/bin/git-ls-dir"]+args).shelljoin
+	end
+end
+#}}}
+# grb -> git_remote_branch/bin/grb {{{1
 desc 'Manipulates published branches'
-long_desc 'TODO'
+long_desc <<EOS
+git_remote_branch version 0.3.5
+
+	Usage:
+
+	grb create branch_name [origin_server]
+	grb publish branch_name [origin_server]
+	grb rename branch_name [origin_server]
+	grb delete branch_name [origin_server]
+	grb track branch_name [origin_server]
+
+	Notes:
+	- If origin_server is not specified, the name 'origin' is assumed (git's default)
+	- The rename functionality renames the current branch
+
+	The explain meta-command: you can also prepend any command with the keyword 'explain'. Instead of executing the command, git_remote_branch will simply output the list of commands you need to run to accomplish that goal.
+	Example:
+		grb explain create
+		grb explain create my_branch github
+
+	All commands also have aliases:
+	create: create, new
+	delete: delete, destroy, kill, remove, rm
+	publish: publish, remotize, share
+	rename: rename, rn, mv, move
+	track: track, follow, grab, fetch
+EOS
 command :grb do |c|
-  c.action do |global_options,options,args|
-    exec ([GITDist+"git_remote_branch/bin/grb"]+args).shelljoin
-  end
+	c.action do |global_options,options,args|
+		exec ([GITDist+"git_remote_branch/bin/grb"]+args).shelljoin
+	end
 end
 #}}}1
+#{{{1 stats -> visionmedia/bin/git-summary
+desc "Summary of commits/files/activity"
+arg_name "<commit options>"
+command :"stats" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"visionmedia/bin/git-summary"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 extra-tag-rename -> visionmedia/bin/git-rename-tag
+desc "Rename tag"
+arg_name "Old_Tag New_Tag"
+command :"extra-tag-rename" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"visionmedia/bin/git-rename-tag"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 extra-obliterate -> visionmedia/bin/git-obliterate
+desc "Use filter-branch to remove a file"
+arg_name "file"
+command :"extra-obliterate" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"visionmedia/bin/git-obliterate"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 info -> visionmedia/bin/git-{info,alias}
+desc "Give info on the repository config"
+long_desc "--no-config to skip config"
+
+command :"info" do |c|
+	c.desc 'Show all aliases'
+	c.switch :alias
+	c.desc 'Show full config'
+	c.switch :config
+	c.action do |global_options,options,args|
+		if options[:alias]
+			exec ([GITDist+"visionmedia/bin/git-alias"]+args).shelljoin
+		end
+		if options[:config]
+			exec ([GITDist+"visionmedia/bin/git-info"]+args).shelljoin
+		end
+		exec ([GITDist+"visionmedia/bin/git-info","--no-config"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 ls-churn -> visionmedia/bin/git-effort,git/script/git-churn
+desc 'Number of commits modifying each files'
+arg_name "<files> | -a <git log arguments>"
+command :"ls-churn" do |c|
+	c.desc 'show all files in repo'
+	c.switch :all,:a
+	c.action do |global_options,options,args|
+		if options[:all]
+			DR::Shell.run_pager($pageropt)
+			exec ([GITScripts+"scripts/git-churn"]+args).shelljoin
+		else
+			exec ([GITDist+"visionmedia/bin/git-effort"]+args).shelljoin
+		end
+	end
+end
+
+#}}}
+#{{{1 stats-lines -> visionmedia/bin/git-line-summary
+desc "Give number of lines written in a directory by authors"
+arg_name "directory"
+command :"stats-lines" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"visionmedia/bin/git-line-summary"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 extra-whitespace -> git-aliae/wip/git-nows
+desc "Removes whitespace errors"
+long_desc <<EOS
+Removes whitespace errors (as configued by core.whitespace).
+
+If no arguments are given removes uncommitted errors from the index and working tree,
+If --all is given, removes all errors in the repository.
+If a commit is given, removes all errors introduced since that commit.
+EOS
+arg_name "commit"
+command :"extra-whitespace" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"git-aliae/wip/git-nows"]+args).shelljoin
+	end
+end
+#}}}
+#{{{ reintegrate -> git-reintegrate/git-reintegrate
+desc "Merge topic branches on base into integration branch"
+long_desc <<EOS
+Generate instructions:
+(Automatic)
+	git reintegrate --generate pu master
+(Manual)
+	git reintegrate --create pu master
+	git reintegrate --add=branch1 --add=branch2 --add=branch3
+
+See instructions:
+	git reintegrate --cat
+	git reintegrate --edit
+
+Integrate:
+	git reintegrate --rebuild
+	git reintegrate --continue
+EOS
+command :"reintegrate" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"git-reintegrate/git-reintegrate"]+args).shelljoin
+	end
+end
+#}}}
+#{{{ related -> git-related/git-related
+desc "People interested by a patch (ruby version of git contacts)"
+long_desc <<EOS
+= git-related =
+
+This tool finds people that might be interested in a patch, by going
+back through the history for each single hunk modified, and finding
+people that reviewed, acknowledged, signed, or authored the code the
+patch is modifying.
+
+It does this by running `git blame` incrementally on each hunk, and then
+parsing the commit message. After gathering all the relevant people, it
+groups them to show what exactly was their role when the participated in
+the development of the relevant commit, and on how many relevant commits
+they participated. They are only displayed if they pass a minimum
+threshold of participation.
+
+For example:
+
+------------
+% git related master..fc/transport/improv
+Junio C Hamano <gitster@pobox.com> (signer: 90%, author: 5%)
+Felipe Contreras <felipe.contreras@gmail.com> (author: 25%, reviewer: 2%)
+Sverre Rabbelier <srabbelier@gmail.com> (author: 17%, acker: 2%, signer: 7%)
+Jeff King <peff@peff.net> (acker: 17%, author: 10%)
+Shawn O. Pearce <spearce@spearce.org> (author: 5%, signer: 2%, cced: 2%)
+Elijah Newren <newren@gmail.com> (author: 10%)
+------------
+
+In addition, it has an option to output the list of commits, instead of the
+contributors, which allows you to easily find out the previous changes to the
+lines your patches modify.
+
+------------
+% git related -c master..fc/transport/improv
+99d9ec0 Merge branch 'fc/transport-helper-no-refspec'
+67c9c78 transport-helper: barf when user tries old:new
+0460ed2 documentation: trivial style cleanups
+126aac5 transport-helper: fix remote helper namespace regression
+21610d8 transport-helper: clarify pushing without refspecs
+a93b4a0 transport-helper: warn when refspec is not used
+664059f transport-helper: update remote helper namespace
+c4458ec fast-export: Allow pruned-references in mark file
+...
+------------
+
+Moreover, when sending patches for review, you can configure `git send-email`
+to use `git related` to find relevant people that should be Cc'ed:
+
+------------
+% git send-email --cc-cmd='git related' *.patch
+------------
+
+== Installation ==
+
+To use this script, simply put `git-related` in your `$PATH` and make sure it
+has executable permissions:
+
+------------
+wget https://raw.github.com/felipec/git-related/master/git-related -O ~/bin/git-related
+chmod +x ~/bin/git-related
+------------
+
+And make sure `~/bin` is in your `$PATH`:
+
+------------
+export PATH="$HOME/bin:$PATH"
+------------
+EOS
+command :"related" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"git-related/git-related"]+args).shelljoin
+	end
+end
+#}}}
+#{{{ topic-diff -> tbdiff/git-tbdiff.py
+desc "topic diff"
+long_desc <<EOS
+git-tbdiff: topic branch interdiff
+==================================
+
+### 2-minute guide
+
+Installation:
+
+		cp git-tbdiff.py /usr/local/bin/git-tbdiff
+		# or anywhere else in $PATH, or in $(git --exec-path)
+
+If your system does not yet have a `/usr/bin/python2` symlink (older
+systems would only have `/usr/bin/python`), you will need to edit the
+`#!` line.
+
+Usage:
+
+		git tbdiff A..B C..D
+
+to compare the topic branch represented by the range A..B with that in
+the range C..D.
+
+or:
+
+		git tbdiff A...B
+
+to let tbdiff automatically calculate the common ancestor X and
+compare the range X..A to X..B.
+
+### Synopsis
+
+		git tbdiff [--[no-]color] [--no-patches]
+							 [--creation-weight=<factor>]
+							 <range1> <range2>
+
+		git tbdiff [--[no-]color] [--no-patches]
+							 [--creation-weight=<factor>]
+							 <committish1>...<committish2>
+
+		git tbdiff [--[no-]color] [--no-patches]
+							 [--creation-weight=<factor>]
+							 <base> <topic1> <topic2>
+
+### Description
+
+_tbdiff_ shows the differences between two versions of a patch series,
+or more generally, two sets of commits (ignoring merges).
+To do this in a meaningful way, it tries to find a good correspondence
+between commits in the two versions (see _Algorithm_ below), and then
+shows the difference between the pairs found.  It also copes with
+removal and addition of commits.
+
+The two `<range>` arguments are passed unchanged and without any
+validation to two git-log invocations.
+
+
+### Options
+
+* `--[no-]color`
+
+	Toggle colored output.	The default is to use color.
+
+* `--no-patches`
+
+	Suppress the diffs between commit pairs that were deemed to
+	correspond; only show the pairings.
+
+* `--creation-weight=<factor>`
+
+	Set the creation/deletion cost fudge factor to `<factor>`.
+	Defaults to 0.6.	Try a larger value if _tbdiff_ erroneously
+	considers a large change a total rewrite (deletion of one
+	commit and addition of another), and a smaller one in the
+	reverse case.  See the _Algorithm_ section below for an
+	explanation why this is needed.
+
+
+### Rationale
+
+Git does not ship with convenient tools for seeing the difference
+between versions of a topic branch.  Some approaches seen in the wild
+include:
+
+* use git-cherry as a first-order comparison
+
+* rebase the old version on the new version to a) have the patch-id
+	logic drop equivalent patches and b) [usually] get a conflict when
+	the patches themselves differ on a change
+
+* apply on the same base
+
+* run interdiffs across the series
+
+* run an interdiff of the "squashed diff" (base to branch)
+
+We propose a somewhat generalized approach based on interdiffs.  The
+goal would be to find an explanation of the new series in terms of the
+old one.	However, the order might be different, some commits could
+have been added and removed, and some commits could have been tweaked.
+
+
+### Algorithm
+
+The general idea is this:
+
+Suppose the old version has commits 1--2 and the new one has commits
+A--C.  Assume that A is a cherry-pick of 2, and C is a cherry-pick of
+1 but with a small modification (say, a fixed typo).	Visualize the
+commits as a bipartite graph:
+
+		1						 A
+
+		2						 B
+
+								 C
+
+We are looking for a "best" explanation of the new series in terms of
+the old one.	We can represent an "explanation" as an edge in the
+graph:
+
+
+		1						 A
+							 /
+		2 --------'  B
+
+								 C
+
+The 0 represents the edge weight; the explanation is "free" because
+there was no change.	Similarly C can be explained using 1, but it has
+some cost c>0 because of the modification:
+
+
+		1 ----.			 A
+					|		 /
+		2 ----+---'  B
+					|
+					`----- C
+					c>0
+
+Clearly what we are looking for is some sort of a minimum cost
+bipartite matching; 1 is matched to C at some cost, etc.	The
+underlying graph is in fact a complete bipartite graph; the cost we
+associate with every edge is the size of the interdiff between the two
+commits in question.	To also explain new commits, we introduce dummy
+commits on both sides:
+
+		1 ----.			 A
+					|		 /
+		2 ----+---'  B
+					|
+		o			`----- C
+					c>0
+		o						 o
+
+		o						 o
+
+The cost of an edge o--C is the size of C's diff, modified by a fudge
+factor that should be smaller than 1.  The cost of an edge o--o is
+free.  The fudge factor is necessary because even if 1 and C have
+nothing in common, they may still share a few empty lines and such,
+making the assignment "1--C, o--o" may be slightly cheaper than "1--o,
+o--C" even if 1 and C have nothing in common.  With the fudge factor
+we require a much larger common part to consider the patches related.
+
+This definition allows us to find a "good" topic interdiff among
+topics with n and m commits in the time needed to compute n+m commit
+diffs and then n*m interdiffs, plus the time needed to compute the
+matching.  For example, in this Python version we use the hungarian[1]
+package, where the underlying algorithm runs in O(n^4)[2].	 The
+matching found in this case will be like
+
+		1 ----.			 A
+					|		 /
+		2 ----+---'  B
+			 .--+-----'
+		o -'	`----- C
+					c>0
+		o ---------- o
+
+		o ---------- o
+
+Then we reconstruct a "pretty" (well, not quite) output that
+represents the topic diff.
+
+[1]  https://pypi.python.org/pypi/hungarian
+[2]  http://en.wikipedia.org/wiki/Hungarian_algorithm
+EOS
+command :"topic-diff" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"tbdiff/git-tbdiff.py"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 latexdiff -> git-latexdiff/git-latexdiff
+desc "git wrapper around latexdiff"
+long_desc <<EOS
+Usage: git my latexdiff [options] OLD [NEW]
+			 git my latexdiff [options] OLD --
+Call latexdiff on two Git revisions of a file.
+
+OLD and NEW are Git revision identifiers. NEW defaults to HEAD.
+If "--" is used for NEW, then diff against the working directory.
+
+Options:
+		--help								this help message
+		--main <file.tex>			name of the main LaTeX file
+		--no-view							don't display the resulting PDF file
+		--bibtex, -b					run bibtex as well as latex
+														 (pdflatex,bibtex,pdflatex,pdflatex)
+		--biber								run BibLaTex-Biber as well as latex
+														 (pdflatex,bibtex,pdflatex,pdflatex)
+		--view								view the resulting PDF file
+														(default if -o is not used)
+		--pdf-viewer <cmd>		use <cmd> to view the PDF file (default: \$PDFVIEWER)
+		--no-cleanup					don't cleanup temp dir after running
+		--cleanup MODE				Cleanup temporary files according to MODE:
+
+													 - keeppdf (default): keep only the
+																	generated PDF file
+
+													 - none: keep all temporary files
+																	(may eat your diskspace)
+
+													 - all: erase all generated files.
+																	Problematic with --view when the
+																	viewer is e.g. evince, and doesn't
+																	like when the file being viewed is
+																	deleted.
+
+		--latexmk							use latexmk
+		--latexopt						pass additional options to latex (e.g. -shell-escape)
+		-o <file>, --output <file>
+													copy resulting PDF into <file> (usually ending with .pdf)
+													Implies "--cleanup all"
+		--tmpdirprefix				where temporary directory will be created (default: /tmp)
+		--verbose, -v					give more verbose output
+		--quiet								redirect output from subprocesses to log files
+		--prepare <cmd>				run <cmd> before latexdiff (e.g. run make to generate
+														 included files)
+		--ln-untracked				symlink uncommited files from the working directory
+		--version							show git-latexdiff version.
+		--subtree							checkout the tree at and below the main file
+														 (enabled by default, disable with --whole-tree)
+		--whole-tree					checkout the whole tree (contrast with --subtree)
+		--ignore-makefile			ignore the Makefile, build as though it doesn't exist
+
+Examples:
+git my latexdiff --bare -- --type=CFONTCHBAR --latexmk
+git my latexdiff --bare -- --type=CCHANGEBAR --latexmk
+
+By default I add the following options:
+	--type=CFONTCHBAR --visible-label --latexmk -v
+EOS
+command :"latexdiff" do |c|
+	c.desc "Don't pass my prefered options to git-latexdiff"
+	c.switch :bare
+	standardopts=["--type=CFONTCHBAR", "--visible-label", "--latexmk", "-v"]
+	c.action do |global_options,options,args|
+		standardopts=[] if options[:bare]
+		exec ([GITDist+"git-latexdiff/git-latexdiff"]+standardopts+args).shelljoin
+	end
+end
+#}}}
 
 # Mine
-# Cc {{{1
-desc 'Find who contributed on a patched line'
-arg_name 'patch_files'
-command :cc do |c|
-  c.action do |global_options,options,args|
-    pwd=Pathname.pwd
-    args.each_with_index do |a,i|
-      a=Pathname.new(a)
-      args[i]=pwd+a if a.relative?
-    end
-    DR::Git.cd_to_toplevel
-    DR::SHExtra.run_pager($pageropt)
-    exec ([GITScripts+"git-mycc"]+args).shelljoin
-  end
-end
-
-# Current-branch {{{1
+# current-branch -> git-current-brannch {{{1
 desc 'Print current branch'
 long_desc <<EOS
-  -a: use git rev-parse if on a detached head
-  -l: print long branch name (ie with refs/heads)
-  --remote: give the remote associated to the current branch (ex: origin)
-  --upstream: give the upstream branch (ex: refs/remotes/origin/master)
-  --rebase: say if a pull will rebase rather than merge
+	-a: use git rev-parse if on a detached head
+	-l: print long branch name (ie with refs/heads)
+	--remote: give the remote associated to the current branch (ex: origin)
+	--upstream: give the upstream branch (ex: refs/remotes/origin/master)
+	--rebase: say if a pull will rebase rather than merge
+	--name/--name-rev/--fullname/--describe: name a branch
+	--topic: play with git-topic-helper
 EOS
 command :'current-branch' do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"git-current-branch"]+args).shelljoin
-  end
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-current-branch"]+args).shelljoin
+	end
 end
 
-# Deploy {{{1
+# deploy -> git-deploy {{{1
 desc 'Deploy repository'
 arg_name 'upstream'
 long_desc <<EOS
-  -l|-local: local git dir (default to current dir) 
-  -u|-upstream: upstream git dir (if not specified take \$1)
-  -b|-branch: the local branch to push (default to master)
-  -rb|-remote-branch: where to push it (default to damien/\$branch)
-  -ub|-upstream-branch: the upstream branch to update (default to master)
-  -rebase: rebase rather than merge upstreambranch into branch
-  -nopull: don't pull only push
-  -pullopt opt: do our own pull
-  -pushopt opt: do our own push
-  -lc|-local-commit [(all)|update|yes|no|none]
-  -lo|-local-opt: the local commit options
-  -rc|-remote-commit [(all)|update|yes|no|none]
-  -ro|-remote-opt: the remote commit options
+	git-mydeploy upstream: deploying script"
 
-  COMMIT MODES:
-  - all: add all files in the directory (git add -AN && git commit -a)
-  - update: git commit -a
-  - yes: only commit
-  - no: no commit, but still show diff
-  - none: do nothing
+	OPTIONS:
+	-l|--local: local git dir (default to current dir) 
+	-u|--upstream: upstream git dir (if not specified take \$1)
+	-b|--branch: the local branch to push (default to master)
+	-rb|--remote-branch: where to push it (default to damien/\$branch)
+	-ub|--upstream-branch: the upstream branch to update (default to master)
+	--rebase: rebase rather than merge upstreambranch into branch
+	--no-pull: don't pull
+	--no-push: don't push
+	--only-push: only push
+	--pull-opt opt: do our own pull
+	--push-opt opt: do our own push
+	-lc|--local-commit [(all)|update|yes|no|none]
+	-lo|--local-opt: the local commit options
+	-rc|--remote-commit [(all)|update|yes|no|none]
+	-ro|--remote-opt: the remote commit options
 
-  git mydeploy update branch, and then push it to remotebranch. It then
-  update upstreambranch with remotebranch. This allow to push into a non
-  bare repository where upstreambranch should give the deployed data.
+	COMMIT MODES:
+	- all: add all files in the directory (git add -AN && git commit -a)
+	- update: git commit -a
+	- yes: only commit
+	- no: no commit, but still show diff
+	- none: do nothing
 
-  By default, branch is updated with upstreambranch, but by specifying
-  -pullopt the user can use it's own pull. The same with pushing (but we
-  still assume the push will be in remotebranch)."
+	git mydeploy does:
+	1) Commit branch in local, commit upsterambranch in remote.
+	2) Pull upstreambranch into branch.
+	3) Push branch into remotebranch.
+	4) Merge (--ff-only) upstreambranch with remotebranch. 
+	This allow to push into a non bare repository where upstreambranch should
+	give the deployed data.
+
+	By default, branch is updated with upstreambranch, but by specifying
+	--pull-opt the user can use it's own pull. The same with pushing (but we
+	still assume the push will be in remotebranch)."
+
 EOS
-command :deploy do |c|
-  c.action do |global_options,options,args|
-    DR::SHExtra.escape_pager
-    exec ([GITScripts+"git-mydeploy"]+args).shelljoin
-  end
+command :'deploy' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.escape_pager
+		exec ([GITScripts+"git-deploy"]+args).shelljoin
+	end
 end
 
-# Empty {{{1
+# trivial -> git-trivial {{{1
 desc 'Create empty commits and trivial merges'
 arg_name "[-b branch] create/merge ..."
 long_desc <<EOS
-    git myempty [-b branch] create parents
-    Create an empty commits with parents 'parents' ('parents' can be empty)
-    If branch is specified create branch on this commit and checkout"
+		git myempty [-b branch] create parents
+		Create an empty commits with parents 'parents' ('parents' can be empty)
+		If branch is specified create branch on this commit and checkout"
 
-    git myempty [-b branch] merge branches
-    Create a trivial merge (-s ours) against branches. 
-    If branches is empty use HEAD.
-    If branch is specified checkout on branch and create the merge in branch."
+		git myempty [-b branch] merge branches
+		Create a trivial merge (-s ours) against branches. 
+		If branches is empty use HEAD.
+		If branch is specified checkout on branch and create the merge in branch."
 EOS
-command :empty do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"git-myempty"]+args).shelljoin
-  end
+command :'trivial' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-trivial"]+args).shelljoin
+	end
 end
 
-# Patch {{{1
+# patch -> git-patches {{{1
 desc 'Manage patches'
-arg_name 'git-mypatch [-n[ame]/-up[stream]/-cc/-dir/-dirfrom/-dirto] format/send/sent/toresend check apply/applied/toreapply'
+arg_name 'format/send check/apply sent/resend/applied/reapply'
 long_desc <<EOS
-  - git mypatch format [-n name|] [-up upstream] args
-    Apply format-patch args, and save it in 'name'. 'upstream' can be used
-    to explain against what branch the patches are to be applied. As an
-    optimization, if args=branch, then we use branch as the upstream
-    description. Note: in most case, args will be upstrea..name
-  - git mypatch send [-cc] [-n name|]
-    Send patches in name, eventually applying the git-mycc as cc-cmd if -cc
-    is given as parameters
-  - git mypatch sent/toresend [-n name|]
-    mv patches from 'tosend' to 'sent' or back in toresend
-  
-  - git mypatch apply [-n name|name]
-    apply patches in name
-  - git mypatch applied/toreapply [-n name|name]
-    mv patches from 'toapply' to 'applied' or back in toreapply
-  
-  - git mypatch check [-n name|name]
-    Check if the patches in name apply on the workdir (usually won't be the
-    case if there is one of them that depend on another). Also check for
-    whitespace error
-  
-  |-dir|: change the patchdir 11patch-upstream
-  |-dirfrom|: change the default tosend/toapply
-  |-dirto|: change the default sent/applied
-EOS
-command :patch do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"git-mypatch"]+args).shelljoin
-  end
-end
+git-mypatch format/send check/apply sent/resend/applied/reapply
 
-# Squash {{{1
+- git mypatch format [branch] [upstream] [format-patch args]
+Apply format-patch args. If args is empty, use upstream..branch.
+Here branch and upstream are found using git-topic-helper
+
+- git mypatch send [--cc] name
+	Send patches, eventually applying git-mycc as cc-cmd if --cc is given as parameters
+
+- git mypatch check name
+	Check if the patches in name apply on the workdir (usually won't be the case if there is one of them that depend on another). Also check for whitespace error
+- git mypatch apply name
+	apply patches in name
+
+- git mypatch sent/resend name
+- git mypatch applied/reapply name
+		Move the patches accordingly
+
+|--dir|: change the patchdir .patches
+|--dir-from|: change the default dirs send/apply
+|--dirto|: change the default dirs sent/applied"
+EOS
+command :'patch' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-patches"]+args).shelljoin
+	end
+end
+# squash -> git-squash {{{1
 desc 'Update and squash branch'
-arg_name 'git-mypatch [-n[ame]/-up[stream]/-cc/-dir/-dirfrom/-dirto] format/send/sent/toresend check apply/applied/toreapply'
+arg_name 'topics'
 long_desc <<EOS
-  git-mysquash [-svn|-g|-nopush|-nopull] branch upstream
-  git-mysquash [-svn|-g|-nopush|-nopull] [-to] upstream
-  git-mysquash [-svn|-g|-nopush|-nopull] -from branch
-  Squash branch on top of upstream (use HEAD for branch/upstream by default
-  if one is not specified, use svn for upstream by default if |-svn| is
-  used)
-  1) pull upstream
-  2) merge upstream in branch
-  3) squash merge branch in upstream
-  4) merge the squash in branch
-  5) push upstream
-  |-g|: don't edit commit
-  |-svn|: use git-svn for pulling/pushing upstream
-  |-nopull/-nopush|: don't do (1) resp (5)
+git-mysquash [-svn|-g|-nopush|-nopull] branch upstream
+Squash branch on top of upstream
+
+(use HEAD for branch/upstream by default if one is not specified,
+use svn for upstream by default if |-svn| is used)
+1) pull upstream + merge upstream in branch
+2) squash merge branch in upstream
+3) merge the squash in branch
+4) push upstream
+
+|-g|: don't edit commit
+|--svn|: use git-svn for pulling/pushing upstream
+|--no-pull/--no-push|: don't do (1) resp (4)
+|--only-squash|: only do (2)
+|--only-mergesquash|: only do (3)
+|--mrg|: program to execute after merge --squash, before commit (can be zsh for interactive verifications)
 EOS
 command :squash do |c|
-  c.action do |global_options,options,args|
-    exec ([GITScripts+"git-mysquash"]+args).shelljoin
-  end
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-squash"]+args).shelljoin
+	end
 end
 
-# Test {{{1
+# setrebase -> git-setrebase {{{1
+desc 'Configure branch to be rebased'
+arg_name 'topics'
+long_desc <<EOS
+Set branch to track upstream, and also configure that it should be rebased.
+--merge: specify that branch should be merged rather than rebased.
+EOS
+command :'setrebase' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-setrebase"]+args).shelljoin
+	end
+end
+#}}}
+# reflog-rebase -> git-reflog-rebase {{{1
+desc 'Rebase using the reflog to find where upstream was'
+arg_name 'topics'
+long_desc <<EOS
+Suppose that the branch foo is based upon bar, but we just rebased bar
+then git rebase bar foo will rebase foo unto bar starting from their
+merge-base which is not the real point of divergence between foo and bar
+(that would be given by the merge base of foo and bar@{1})
+
+This script looks at the reflog to determine the previous value of bar@ that
+looks to be the point of divergence
+This is taken from git-pull.sh
+EOS
+command :'reflog-rebase' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-reflog-rebase"]+args).shelljoin
+	end
+end
+#}}}
+# changelog -> git-changelogb.rb {{{1
+desc 'Output changelog from git log'
+arg_name '[-v] [-a] branch'
+long_desc '-v: details commits by date/authors
+-a: show summary of all authors after each release
+branch is current branch by default'
+
+command :changelog do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec ([GITScripts+"git-changelog.rb"]+args).shelljoin
+	end
+end
+
+# topic-diverged -> git-topic-diverged {{{1
+desc 'Find when two branches first diverged'
+arg_name 'upstream[=master] local[=HEAD]'
+command :'topic-diverged' do |c|
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		exec ([GITScripts+"git-topic-diverged"]+args).shelljoin
+	end
+end
+#{{{1 archive -> git-archive
+desc "Archive current directory"
+long_desc "Archive current directory into a .tar.xz archive. Derive the name of the archive from the branch, the version and the name of the directory."
+arg_name "branch"
+command :"archive" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-archive"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 stash -> git-mystash
+desc "Custom stash command"
+arg_name "branch"
+command :"stash" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-mystash"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 reflog-store -> git-reflog-store
+desc "Store commits in a ref"
+command :"reflog-store" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-reflog-store"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 worktree-update -> git-update-worktree
+desc "Update the worktree"
+command :"worktree-update" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-update-worktree"]+args).shelljoin
+	end
+end
+#}}}
+#{{{1 extra-uncommit -> git-uncommit
+desc "Remove changes from your previous commit"
+long_desc <<EOS
+Git uncommit allows you to remove changes from your previous commit,
+without loosing any unstaged changes you may have.
+
+When called with no arguments, removes the entire commit (git reset HEAD^) and let you edit the commit message of this previous commit
+When called with <filename>, removes changes to that file from the commit.
+Also useful is	git uncommit -p, which allows you to select which chunks to uncommit.
+EOS
+command :"extra-uncommit" do |c|
+	c.action do |global_options,options,args|
+		exec ([GITScripts+"git-uncommit"]+args).shelljoin
+	end
+end
+#}}}
+
+# Direct code
+# authors {{{1
+desc 'Shows list of authors (ranking by number of commits)'
+arg_name '<log args>'
+command :authors do |c|
+	c.desc 'Shows emails'
+	c.switch :email, :e
+	c.desc 'Show total number of commits'
+	c.action do |global_options,options,args|
+		opt=""
+		opt="-e" if options[:email]
+		DR::Shell.run_pager($pageropt)
+		sh "git shortlog -ns #{opt} #{args.shelljoin}"
+		print "Total: "
+		sh "git rev-list --count #{args.empty? ? "HEAD" : args.shelljoin}"
+	end
+end
+
+# update {{{1
+desc 'Update repo'
+long_desc 'Run git remote update -p, show the topic-log, and then merge --ff-only upstream.'
+arg_name 'remotes'
+command :update do |c|
+	c.desc 'Name of the svn branch'
+	c.default_value 'svn'
+	c.flag :svn
+	c.desc "Don't update all remotes"
+	c.switch :only
+	c.desc "mode: ffonly/update/merge/rebase"
+	c.default_value 'ffonly'
+	c.flag :mode
+	c.action do |global_options,options,args|
+		$pageropt=:never #prevent the pager when calling topic-log
+		unless options[:only]
+			puts "## remote update ##"
+			system ([ "git", "remote", "update", "-p" ]).shelljoin
+		end
+		if args.empty?
+			args=['HEAD'] if args.empty?
+		else
+			current=DR::Git.get_current_branch
+		end
+		args.each do |branch|
+			sh! "git checkout #{branch}" unless branch=="HEAD"
+			branchname=DR::Git.name_branch(branch, method: "name")
+			if branchname==options[:svn]
+				sh! "git svn rebase"
+			else
+				run ["topic-log", "--no-stats"]
+				if options[:mode] == "ffonly"
+					puts "## Fast-forward ##"
+					system "git", "-c", "color=always", "merge", "--ff-only", "#{branch}@{u}"
+				end
+			end
+		end
+		sh! "git checkout #{current}" unless current.nil?
+	end
+end
+#}}}
+# topic-log {{{1
+desc 'Shows log between current branch and its remote'
+arg_name 'local[=HEAD] remote'
+long_desc 'Provides a nice output of logs between locate..remote and remote..local'
+command :'topic-log' do |c|
+	c.desc "Show diff"
+	c.default_value true
+	c.switch :'diff',:'stats'
+	c.desc "Show log"
+	c.default_value true
+	c.switch :'log'
+	c.action do |global_options,options,args|
+		DR::Shell.run_pager($pageropt)
+		local,remote=DR::Git.get_topic_branches(*args)
+		def gitlog(*args)
+			return DR::Run.run_output "git --no-pager log --graph --pretty=summary "+args.shelljoin
+		end
+		unless local.nil? or remote.nil?
+			puts "## Changes from local '#{local}' to remote '#{remote}'"
+			if options[:log]
+				incoming=gitlog("#{local}..#{remote}")
+				outgoing=gitlog("#{remote}..#{local}")
+				unless incoming.empty? then
+					puts "- Incoming:"
+					puts incoming
+				end
+				unless outgoing.empty? then
+					puts "\n- Outgoing:"
+					puts outgoing
+				end
+			end
+			if options[:diff]
+				diff=DR::Run.run_output "git --no-pager diff --color --stat #{local.shellescape} #{remote.shellescape}"
+				unless diff.empty?
+					puts "\n- Diff:"
+					puts diff.split("\n").map {|s| " "+s}
+				end
+			end
+		end
+	end
+end
+#}}}1
+# topics-log {{{1
+desc 'Shows log between branches and their upstreams'
+arg_name 'branches'
+long_desc 'Call git my topic-log for each branch and their upstreams'
+command :'topics-log' do |c|
+	c.desc "Log the previous position rather than upstream"
+	c.switch :'reflog'
+	c.action do |global_options,options,args|
+		opts=args.select {|i| i =~ /^-/}
+		args=args-opts
+		DR::Shell.run_pager($pageropt)
+		args.each do |branch|
+			if options[:reflog]
+				run ["topic-log", *opts, "#{branch}@{1}", branch]
+			else
+				run ["topic-log", *opts, branch, DR::Git.branch_upstream(branch)]
+			end
+		end
+	end
+end
+#}}}1
+# test {{{1
 desc 'Create a git test dir'
 arg_name 'dir'
-long_desc <<EOS
-EOS
 command :test do |c|
-  c.action do |global_options,options,args|
-    exit_now! "Specify a dir!" if args.empty?
-    dir=Pathname.new(args.first)
-    exit_now! "#{dir} exist!" if dir.exist?
-    log_and_do(Logger::INFO,:mkdir_p,dir)
-    Dir.chdir(dir)
-    execute= <<-EOS
-    git init
-    echo a > a
-    git add a
-    git commit -am 'Adding a'
-    echo b > b
-    git add b
-    git commit -am 'Adding b'
-    git checkout -b noconflict
-    echo new line >> a
-    echo c > c
-    git add c
-    git commit -am 'Adding c, new line to a'
-    git checkout master
-    git checkout -b conflict
-    echo 'Conlict on b' > b
-    git commit -am 'Changing line on b'
-    git checkout master
-    echo new line on b >> b
-    echo d > d
-    git add d
-    git commit -am 'Adding d, new line to b'
-    EOS
-    exec execute
-  end
+	c.desc 'Create a complicated layout to test topic-diverge'
+	c.switch :complicated
+	c.desc 'Create two repos to test push'
+	c.switch :push
+	c.desc 'Recreate the TREESAME example in git log'
+	c.switch :logtreesame
+	c.action do |global_options,options,args|
+		exit_now! "Specify a dir!" if args.empty?
+		dir=Pathname.new(args.first)
+		exit_now! "#{dir} exist!" if dir.exist?
+		log_and_do(Logger::INFO,:mkdir_p,dir)
+		Dir.chdir(dir)
+		#{{{
+		execute= <<-EOS
+		git init
+		echo a > a
+		git add a
+		git commit -am 'Adding a'
+		echo b > b
+		git add b
+		git commit -am 'Adding b'
+		git checkout -b noconflict
+		echo new line >> a
+		echo c > c
+		git add c
+		git commit -am 'Adding c, new line to a'
+		git checkout master
+		git checkout -b conflict
+		echo 'Conlict on b' > b
+		git commit -am 'Changing line on b'
+		git checkout master
+		echo new line on b >> b
+		echo d > d
+		git add d
+		git commit -am 'Adding d, new line to b'
+		EOS
+		#}}}
+		# * - * - master
+		#			 \- noconflict
+		#			 \- conflict
+		if options[:complicated]
+			#{{{
+			execute= <<-EOS
+			git init
+			git commit --allow-empty -m "X - Work in branch master"
+			git tag node_X -m "X"
+			git branch branch_A
+			git checkout branch_A
+			git commit --allow-empty -m "Z - Work in branch_A"
+			git tag node_Z -m "Z"
+			git checkout master
+			git commit --allow-empty -m "Y - Work in branch master"
+			git tag node_Y -m "Y"
+			git checkout branch_A
+			git merge --no-edit master
+			git tag node_M1 -m "M1"
+			git checkout master
+			git merge --no-edit branch_A
+			git tag node_M2 -m "M2"
+			git commit --allow-empty -m "A - Work in branch master"
+			git tag node_A -m "A"
+			git tag branch_A_tag		 -m "Tag branch point of branch_A"
+			git commit --allow-empty -m "B - Work in branch master"
+			git tag node_B -m "B"
+			git checkout branch_A
+			git commit --allow-empty -m "G - Work in branch_A"
+			git tag node_G -m "G"
+			git checkout master
+			git merge --no-edit branch_A
+			git tag node_C -m "C"
+			git checkout branch_A
+			git commit --allow-empty -m "H - Work in branch_A"
+			git tag node_H -m "H"
+			git merge --no-edit master
+			git tag node_I -m "I"
+			git checkout master
+			git commit --allow-empty -m "D - Work in branch master"
+			git tag node_D -m "D"
+			git merge --no-edit branch_A
+			git tag node_E -m "E"
+			git checkout branch_A
+			git commit --allow-empty -m "J - Work in branch_A branch"
+			EOS
+			#}}}
+		# X - Y - M12- A - B - C - D - F	master
+		#		\		/		 \	 /	 \		/
+		#			Z			 G --- H --I -- J branch_A
+		end
+		if options[:push]
+			#{{{
+			execute= <<-EOS
+			git my test first
+			git clone first second
+			cd first
+			git remote add origin ../second
+			echo "new line on a, not in repo second" >> a
+			git commit -am "add a new commit"
+			EOS
+			#}}}
+		#same layout as standard in first, git clone first second
+		#add a commit to master in first
+		end
+		if options[:logtreesame]
+			# See the thread gmane.comp.version-control.git:239529
+			# git tests 6004, 6007 have nice layouts too
+			#{{{
+			execute= <<-EOS
+			git init
+
+			# I
+			echo asdf > foo; echo quux > quux
+			git add .
+			git commit -mI; git tag I
+
+			# A
+			echo foo > foo
+			git add .
+			git commit -mA; git tag A
+
+			# B
+			git checkout -b b I
+			echo foo > foo
+			git add .
+			git commit -mB; git tag B
+
+			# M
+			git checkout master
+			git merge --no-commit b
+			git commit -m"M: merge of A and B"; git tag M
+
+			# C
+			git checkout -b c I
+			git commit --allow-empty -mC; git tag C
+
+			# N
+			git checkout master
+			git merge --no-commit c
+			git commit -m"N: merge of M and C"; git tag N
+
+			# D
+			git checkout -b d I
+			echo baz > foo
+			git add .
+			git commit -mD; git tag D
+
+			# O
+			git checkout master
+			git merge --no-commit d
+			echo foobarbaz > foo
+			git add .
+			git commit -m"O: merge of N and D"; git tag O
+
+			# E
+			git checkout -b e I
+			echo xyzzy > quux
+			git add .
+			git commit -mE; git tag E
+
+			# P
+			git checkout master
+			git merge --no-commit e
+			echo "quux xyzzy" > quux
+			git add .
+			git commit -m"P: merge of O and E"; git tag P
+
+			# X
+			git checkout -b x I
+			rm foo quux; echo side > side
+			git add -A .
+			git commit --amend -m"X"; git tag X
+
+			# Y
+			git checkout -b y x
+			echo side2 > side
+			git add .
+			git commit -m"Y"; git tag Y
+
+			# Q
+			git checkout master
+			git merge --no-commit y
+
+			git commit -mQ; git tag Q
+
+			# cleanup unneeded branches
+			git branch -D b c d e x y
+			EOS
+			#}}}
+		#		.-A---M---N---O---P---Q
+		#  /		 /	 /	 /	 /	 /
+		# I			B		C		D		E		Y
+		#  \	 /	 /	 /	 /	 /
+		#		`-------------'		X
+		end
+		exec execute
+	end
 end
 # }}}1
 

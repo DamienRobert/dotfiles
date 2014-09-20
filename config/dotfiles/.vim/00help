@@ -1,0 +1,138 @@
+"" Old command that were in .vimrc
+"imap pour les map dans insert
+"map pour les map dans en mode normal et visuel
+"nmap mode normal
+"vmap mode visuel
+"cmap pour les map dans la commande
+
+"remettre à jour les helptags:
+:helptags ~/.vim/doc 
+:Helptags pour prendre en compte les .vim/bundle
+
+"Ignore bundler and sass cache
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+"Disable temp and backup files
+set wildignore+=*.swp,*~,._*
+
+"Options de formatage des fichiers pour le source C.
+autocmd FileType c,cpp set fo=croq cin com=sr:/*,mb:*,el:*/,://
+autocmd BufRead,BufNewFile * set formatoptions=tcq2 nocindent
+
+" Colorier les espaces insécables {{{
+" cf list, où je fais ça là
+" autocmd ColorScheme * highlight Insecable  ctermfg=darkBlue cterm=underline
+autocmd ColorScheme * highlight Insecable  ctermbg=darkgreen guibg=darkgreen
+autocmd BufRead,BufNewFile * syntax match Insecable / / containedin=ALL
+syntax match Insecable / / containedin=ALL
+ }}}
+
+ Le spell highlight
+augroup myaucmd
+ Je suis obligé de le faire dans un augroup sinon en resourçant ça buggue
+
+ Spell 
+autocmd ColorScheme * highlight SpellBad cterm=undercurl ctermfg=none ctermbg=none
+autocmd ColorScheme * highlight SpellLocal cterm=undercurl ctermfg=none ctermbg=none
+autocmd ColorScheme * highlight SpellRare cterm=undercurl ctermfg=none ctermbg=none
+autocmd ColorScheme * highlight SpellCap cterm=none ctermfg=none ctermbg=none
+"highlight! SpellBad cterm=undercurl ctermfg=none ctermbg=none
+"highlight! SpellLocal cterm=undercurl ctermfg=none ctermbg=none
+"highlight! SpellRare cterm=undercurl ctermfg=none ctermbg=none
+"highlight! SpellCap cterm=none ctermfg=none ctermbg=none
+
+
+ Malheureusement gnome-term a pour TERM=xterm mais ne connait pas cette séquence :-(
+"if &term =~ '^xterm'
+"  " solid underscore
+"  let &t_SI .= "\<Esc>[4 q"
+"  " solid block
+"  let &t_EI .= "\<Esc>[2 q"
+"  " 1 or 0 -> blinking block
+"  " 3 -> blinking underscore
+" Change color of cursor in terminal:
+" - red in normal mode.
+" - orange in insert mode.
+" Tip found there:  http://forums.macosxhints.com/archive/index.php/t-49708.html
+ if &term =~ '^xterm\|^rxvt\|^gnome' || expand("$COLORTERM") =~ '^screen-256color\|^gnome-terminal'
+   set t_Co=256 
+   "normally should not be needed
+   "but this is needed by gnome-term and screen
+   "and i can't always detect gnome-term by COLORTERM (because of ssh)
+ 
+   "let g:solarized_termcolors=256
+   "let g:solarized_visibility="low"  " list chars 
+   "colorscheme solarized
+   "colorscheme mayansmoke
+   "colorscheme lucius
+   colorscheme my256
+ 
+     ":silent !echo -ne "\033]12;firebrick3\007"
+     "au VimEnter * :sil !echo -ne "\033]12;firebrick3\007"
+     let &t_SI = "\033]12;DarkOrange3\007"
+     let &t_EI = "\033]12;firebrick3\007"
+     au VimLeave * :sil !echo -ne "\033]112\007"
+   if &term =~ '^gnome' || expand("$COLORTERM") =~ '^gnome-terminal'
+    au VimLeave * :sil !echo -ne "\033]12;firebrick3\007"
+   "elseif expand("$COLORTERM") =~ 'screen256'
+   "  set t_Co=256
+   endif
+ else
+   colorscheme minimal
+ endif
+
+Underline (but use a register, cf the actual map for a better way)
+nnoremap <leader>su "zyy"zp<c-v>$r=
+nmap <silent> <leader>tp :set invpaste<CR>:set paste?<CR>
+ Toggle hlsearch with <leader>hs (it is usually simpler to just clean the search)
+nmap <leader>th :set hlsearch! hlsearch?<CR>
+
+"emacs-style editing of the command line:
+" conflicts with new bindinds. Do Ctrl-F to open a window
+" back one character
+cnoremap <C-B>         <Left> 
+" forward one character
+cnoremap <C-F>         <Right> 
+" start of line
+cnoremap <C-A>         <Home>
+" delete character under cursor
+cnoremap <C-D>         <Del>
+" end of line
+cnoremap <C-E>         <End>
+" recall newer command-line
+cnoremap <C-N>         <Down>
+" recall previous (older) command-line
+"cnoremap <C-P>         <Up>
+" Insert the current directory into a command-line path
+cmap <C-P> <C-R>=expand("%:p:h") . "/"<CR>
+
+ back one word
+cnoremap <Esc><C-B>    <S-Left>
+ forward one word
+cnoremap <Esc><C-F>    <S-Right>
+ }}}
+
+"" augroup EnableSyntaxHighlighting
+""   au! VimEnter * syntax enable
+""   "sinon le syntax se fait disabler quand je change de buffers, aucune idée de pourquoi
+"" "http://stackoverflow.com/questions/10513583/filetype-setting-lost-after-reloading-all-files-in-buffer
+"" " Enable syntax highlighting when buffers were loaded through :bufdo, which
+"" " disables the Syntax autocmd event to speed up processing.
+""     " Filetype processing does happen, so we can detect a buffer initially
+""     " loaded during :bufdo through a set filetype, but missing b:current_syntax.
+""     " Also don't do this when the user explicitly turned off syntax highlighting
+""     " via :syntax off.
+""     " Note: Must allow nesting of autocmds so that the :syntax enable triggers
+""     " the ColorScheme event. Otherwise, some highlighting groups may not be
+""     " restored properly.
+""     autocmd! BufWinEnter * nested if exists('syntax_on') && ! exists('b:current_syntax') && ! empty(&l:filetype) | syntax enable | endif
+"" 
+""     " The above does not handle reloading via :bufdo edit!, because the
+""     " b:current_syntax variable is not cleared by that. During the :bufdo,
+""     " 'eventignore' contains "Syntax", so this can be used to detect this
+""     " situation when the file is re-read into the buffer. Due to the
+""     " 'eventignore', an immediate :syntax enable is ignored, but by clearing
+""     " b:current_syntax, the above handler will do this when the reloaded buffer
+""     " is displayed in a window again.
+""     autocmd! BufRead * if exists('syntax_on') && exists('b:current_syntax') && ! empty(&l:filetype) && index(split(&eventignore, ','), 'Syntax') != -1 | unlet! b:current_syntax | endif
+"" augroup END
+

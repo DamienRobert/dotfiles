@@ -1,8 +1,10 @@
 #!/bin/sh
 # vim:ft=sh
 
-PROG=shift;
+PROG=$1
+shift;
 
 for i in "$@"; do
+  echo "## $PROG $i"
   $PROG "$i"
 done

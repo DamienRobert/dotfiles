@@ -1,0 +1,34 @@
+Play files/playlists
+====================
+
+- mpc-add: add files in folders to read via mpc
+- mpc_playlist: load specified playlist in mpc, + add metainfo to distinguish between #playlists
+- indiepop: run the specified somafm stream via 'mpl -audio' (-> uses mpv usually)
+
+Notifications
+=============
+
+- mpc-notify: my notification script for mpc
+- mpc_osd.py: python mpc client, with nice notifications (not used)
+
+Playlist generation
+===================
+
+- m3u_dl: download m3us from url
+- m3u_dl_to_pls: download m3u from url and convert them to .pls
+    (use m3u_dl and playlist_generate)
+- m3u_play: parse a m3u file to play it with mplayer
+- playlist_generate: Generate playlist in .pls format from .m3u format
+    (use playlist_info)
+- playlist_info.pl: playlist_info.pl stream use wget to look at the headers and find title and genre of stream
+
+Album art
+=========
+
+- mpd_album_art.py: used to download cover art of current song via last fm
+  (used by mpc-notify; use pylast and mpd)
+- cover_art.py: This script will download all album art for a music collection and put it in Musique/.covers
+  (use pylast [and tagpy])
+- mpd-notification.py: like mpd_album_art, not used, but get album via
+  albumart rather than lastfm, so I keep it for my ruby rewrite to see the code
+  (use mpd)

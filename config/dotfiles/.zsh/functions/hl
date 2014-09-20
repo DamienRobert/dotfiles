@@ -1,0 +1,6 @@
+# hl -- highlight regexps
+# 06sep2012  +chris+
+# cat ploum | hl plam
+hl() {
+  egrep --color=always -e '' -e${^*}
+}

@@ -1,9 +1,13 @@
 #!/bin/bash
-REVPARSE=
+#git current-branch [-al]: give the name of the current branch
+# -a always print a name, even if detached
+# -l long branch name
+#+also some specific commands to get infos on branch names or state of workdir
 
 # From git-parse-remote.sh
 #GIT_DIR=$(git rev-parse -q --git-dir) || :;
 
+#are we rebasing by default?
 get_rebase () {
   curr_branch=$(git symbolic-ref -q HEAD)
   curr_branch="${curr_branch#refs/heads/}"
@@ -62,13 +66,46 @@ get_remote_merge_branch () {
   esac
 }
 
+require_clean_work_tree () {
+    # Update the index
+    git update-index -q --ignore-submodules --refresh
+    err=0
 
+    # Disallow unstaged changes in the working tree
+    if ! git diff-files --quiet --ignore-submodules --
+    then
+        echo >&2 "cannot $1: you have unstaged changes."
+        git diff-files --name-status -r --ignore-submodules -- >&2
+        err=1
+    fi
+
+    # Disallow uncommitted changes in the index
+    if ! git diff-index --cached --quiet HEAD --ignore-submodules --
+    then
+        echo >&2 "cannot $1: your index contains uncommitted changes."
+        git diff-index --cached --name-status -r --ignore-submodules HEAD -- >&2
+        err=1
+    fi
+
+    if [ $err = 1 ]
+    then
+        echo >&2 "Please commit or stash them."
+        exit 1
+    fi
+}
+
+ALWAYS=
 while true;
 do
   case "$1" in
     -- ) shift; break ;;
-    -a ) shift; REVPARSE=true ;; #always print a name
+    -a ) shift; ALWAYS="--always" ;; #always print a name
     -l ) shift; LONG=true ;; #long branch name
+    -al|-la ) shift; LONG=true; ALWAYS="--always" ;; #always print a name
+  --clean ) shift;
+    require_clean_work_tree
+    exit 0
+    ;; #cleaniless state of work tree
   --remote ) shift;
     get_default_remote
     exit 0
@@ -77,31 +114,54 @@ do
     get_remote_merge_branch
     exit 0
     ;; #print the upstream of the current branch
+    #this is the low level way
+    #the high level way is git rev-parse --abbrev-ref --symbolic-full-name @{u}
   --rebase ) shift;
     get_rebase
     exit 0
     ;; #does a pull rebase rather than merge?
-    *) break;;
+  --name-rev ) shift
+    git name-rev "$@" | cut -d ' ' -f 2
+    exit $?
+    ;;
+  --contains ) shift
+    exec git describe --all --contains $ALWAYS "$@"
+    ;;#get the name of a branch
+    #more or less equivalent to git name-rev
+  --describe ) shift
+    exec git describe --all $ALWAYS "$@"
+    ;; #describe the branch
+  --fullname) shift
+    exec git rev-parse --symbolic-full-name "$@"
+    ;;
+  --symbolic) shift
+    exec git rev-parse --symbolic "$@"
+    ;;
+  --name) shift;
+    name=$(git rev-parse --abbrev-ref --symbolic-full-name "$@")
+    [[ -n $ALWAYS && -z $name ]] && name=$(git describe --all --always "$@")
+    echo $name
+    exit $?
+    ;;
+  --topic ) shift
+    . ~/mine/script/git/git-topic-helper
+    gth_topic "$@"
+    echo "$gth_local,$gth_remote,${gth_rest[@]}"
+    exit $?
+    ;; #use git-topic-helper
+  *) break;;
   esac
 done
 
-readsymbolic() {
-  if [ -z "$LONG" ]; then
-    shortok=$(git symbolic-ref --short 2>&1 | grep 'error: unknown option')
-    if [ -n "$shortok" ]; then
-      branch=$(git symbolic-ref -q HEAD)
-      if [ -z "$branch" ]; then return 1; fi
-      echo ${branch#refs/heads/}
-    else
-      git symbolic-ref -q --short HEAD
-    fi
-  else
-    git symbolic-ref -q HEAD
-  fi
-}
-
-if [ -n "$REVPARSE" ]; then
-   readsymbolic || git rev-parse --verify HEAD
+#to read a symbolic link directly:
+#git symbolic-ref [--short] -q HEAD
+if [[ -z $LONG ]]; then
+  git symbolic-ref --short -q HEAD || {
+    if [[ -n $ALWAYS ]]; then git rev-parse --verify HEAD; fi
+  }
 else
-   readsymbolic
+  #git rev-parse --symbolic-full-name HEAD || {
+  git symbolic-ref -q HEAD || {
+    if [[ -n $ALWAYS ]]; then git rev-parse --verify HEAD; fi
+  }
 fi

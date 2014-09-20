@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+# Regenerate the initrd
+sudo mkinitcpio -p linux

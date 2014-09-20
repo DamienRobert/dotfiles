@@ -1,0 +1,87 @@
+Virtual Box
+===========
+
+#https://wiki.archlinux.org/index.php/VirtualBox
+sudo modprobe vboxdrv #Load virtual box kernel module
+vboxmanage setproperty machinefolder $HOME/.VirtualBox
+mkdir ~/.VirtualBox
+chattr +C ~/.VirtualBox
+ #this is ~/VirtualBox\ VMs by default which is ugly
+VBoxManage modifyvm "VM name" --natpf1 "guestssh,tcp,,40022,,22"
+ #ssh redirection (done automatically by vagrant)
+
+Vagrant Boxes
+=============
+
+# Find a box: http://www.vagrantbox.es/
+vagrant box add archlinux-test http://vagrant.srijn.net/archlinux-x64-2014-01-07.box
+#-> la box est dans ~/.vagrant.d
+
+# Or use packer:
+pacaur -y packer-io
+# Some boxes:
+# https://github.com/elasticdog/packer-arch
+# https://github.com/SocialGeeks/packer-boxes
+# Ansible conf: https://github.com/elasticdog/monarch
+
+cd ~/opt/vagrant
+git clone ~/var/dist/packer-arch .
+
+packer-io build -only=virtualbox-iso arch-template.json
+vagrant box add arch packer_arch_virtualbox.box
+
+Vagrant
+=======
+
+vagrant init arch
+#vagrant's ssh does not understand ECDSA
+SSH_AUTH_SOCK= vagrant up
+vagrant ssh
+
+# All the boxes:
+~/opt/vagrant/packer-arch/packer_arch_virtualbox.box (540MO)
+  arch vagrant box made by packer
+  the folder also contains archlinux install iso in packer_cache (548MO)
+~/.vagrant.d/boxes/ (546MO)
+  boxes imported by vagrant (to get back the original .box format use vagrant package)
+  clean them via vagrant box remove
+~/VirtualBox\ VMs/ (1.1GO) (or ~/.VirtualBox)
+  boxes set up by vagrant up
+  clean space via vagrant destroy
+
+Settings
+========
+
+Disable default shared folder:
+https://docs.vagrantup.com/v2/synced-folders/basic_usage.html
+config.vm.synced_folder "./", "/vagrant", disabled: true
+
+Packer
+======
+
+Exemple of provisioners:
+(this connects via ssh, uploads the script and runs it.
+For this ssh has to be available; this is annoying and I prefer to configure everything in "builders" in arch-template.json)
+
+    "builders": [
+        {
+            "type":     "null",
+            "host":     "127.0.0.1",
+            "ssh_username": "foo",
+            "ssh_password": "bar"
+        }
+    ],
+    "provisioners": [
+      {
+        "type" : "shell",
+        "scripts": [
+          "install-box.sh"
+        ]
+      }
+    ],
+
+vagrant can read lzma files; to generate them:
+gunzip packer_myarch_2014.08.01_virtualbox-iso_virtualbox.box.gz
+xz -9 packer*
+(maybe put a 0 compression level to remove the need for the first step?)
+This goes from 544M uncompressed to 538M gzip to 518M xz

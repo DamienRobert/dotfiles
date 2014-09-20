@@ -1,0 +1,517 @@
+http://www.physicsforums.com/showthread.php?t=182195
+See also
+http://www.jstor.org/discover/10.2307/3072368?uid=3738016&uid=2&uid=4&sid=21103508718107,
+aka http://www.math.wayne.edu/~isaksen/Expository/carrying.pdf
+
+From: *** (james dolan)
+Newsgroups: sci.math
+Subject: carrying, part 1 (re-post)
+Date: 19 Jan 1994 20:10:30 -0800
+Organization: fair play for neptune committee
+
+[part 1 of n]
+
+in another thread, i wrote:
+
+  >ron maimon wrote:
+  >
+  >>Well, I don't remember when I was six, but I remember when I first
+  >>understood a mathematical concept. I was on a school bus, I was 10
+  >>years old, and I finally understood why you carry a "1" when you do
+  >>addition. I mean, I _really_ understood why. I remember most of my
+  >
+  >
+  >well, i'm impressed.  i was well into my thirties before i realized
+  >that the "carry digit" function is the premier example of a
+  >2-cocycle.
+
+some people have asked me to elaborate on this, so i will try to do
+so, particularly since it ties in somewhat with questions tim chow has
+been asking about homological algebra lately.
+
+first of all, what do i mean by the "carry digit" function here?
+well, the binary operation of addition of single-digit numbers gives
+as output a number with two digits: the "ones" (or "least
+significant") digit, and the "tens" (or "most significant") digit.
+doing the case of base five so as to keep the table small, for
+example, here is the addition table you get:
+
+      0  1  2  3  4
+    _______________
+   |
+ 0 | 00 01 02 03 04
+   |
+ 1 | 01 02 03 04 10
+   |
+ 2 | 02 03 04 10 11
+   |
+ 3 | 03 04 10 11 12
+   |
+ 4 | 04 10 11 12 13
+
+it turns out to be interesting, from the utmost practical point of
+view (for example in the implementation of arithmetic on computers)
+just as well as from the utmost theoretical point of view, to break up
+this double-digit-number-valued function into two
+single-digit-number-valued functions.  focussing on just the "ones"
+digit, we get the well-known operation of "addition of integers modulo
+the multiples of five":
+
+      0  1  2  3  4
+    _______________
+   |
+ 0 |  0  1  2  3  4
+   |
+ 1 |  1  2  3  4  0
+   |
+ 2 |  2  3  4  0  1
+   |
+ 3 |  3  4  0  1  2
+   |
+ 4 |  4  0  1  2  3
+
+focussing on just the "tens" digit, on the other hand, we get the equally
+important but less remarked upon "carry digit" operation:
+
+      0  1  2  3  4
+    _______________
+   |
+ 0 |  0  0  0  0  0
+   |
+ 1 |  0  0  0  0  1
+   |
+ 2 |  0  0  0  1  1
+   |
+ 3 |  0  0  1  1  1
+   |
+ 4 |  0  1  1  1  1
+
+so what is going on here?  let's note the following particular features
+of the situation:
+
+1.  we have a "big" group (the group of two-digit numbers, under the
+operation of addition modulo the multiples of 100), and two "small"
+groups (the "tens" group {00,10,20,30,40} and the "ones" group
+{0,1,2,3,4}).  the big group can be thought of as "built out of" the
+two small groups, but in a slightly tricky way that makes crucial use
+of the carry digit function, and that has the "ones" group and the
+"tens" group playing sharply contrasting roles.
+
+(be careful to note that the word "group" here is being used in its
+technical mathematical sense, meaning a set equipped with a certain
+sort of binary operation into itself, which in all the cases we're
+interested in here is more or less just the binary operation of
+addition.)
+
+2.  the "tens" group can be thought of as a "subgroup" of the big
+group.  that is, the elements 00, 10, 20, 30, 40 of the "tens" group
+add together in the big group just the same way they add together
+among themselves.
+
+the "ones" group, on the other hand, can _not_ be thought of as a
+subgroup of the big group.  that is, the elements 0, 1, 2, 3, 4 of the
+"ones" group add together very differently depending on whether they
+are thought of as belonging to the big group or as forming a small
+group all by themselves.  for example 4+4 = 13 using the addition
+operation in the big group, which is different from the answer 4+4 = 3
+that you get in the small "ones" group.
+
+3.  the "ones" group can be thought of as a "quotient group" of the big
+group.  that is, the "ones" group can be thought of as the big group,
+"modulo" the subgroup consisting of the multiples of 10.  that is, if i
+pick a pair x, y of two-digit numbers, but i only tell you the "ones"
+digit of x and the "ones" digit of y, then you can tell me the "ones"
+digit of x+y.  that is, the "ones" digit of the sum x+y _depends only
+upon_ the "ones" digits of x and y; the "tens" digits are completely
+irrelevant if all you care about are the "ones" digits.
+
+the "tens" group, on the other hand, can _not_ be thought of as a
+quotient group of the big group.  that is, if i pick a pair x, y of
+two-digit numbers, but i only tell you the "tens" digits of x and the
+"tens" digit of y, then you _can't_ in general tell me the "tens"
+digit of x+y.  the best you can do is to ask me: "it all _depends_-
+when you added the "ones" digits together what was the carry digit
+produced?".  for example, 11+12 = 23, whereas 14+14 = 33; you can't
+figure out the "tens" digit of x+y without having a peek over at the
+"ones" digits of x and y.  that is, the "tens" digit of the sum x+y
+does _not_ depend only upon the "tens" digits of x and y; it depends
+also upon the carry digit produced by the "ones" digits of x and y.
+
+those are the basic ingredients of the situation, which is, for some
+reason, known as "expressing the big group of double-digit numbers as
+an extension of the quotient group {0,1,2,3,4} by the subgroup
+{00,10,20,30,40}".  besides the addition tables for the addition
+operations in the two small groups q={0,1,2,3,4} and
+s={00,10,20,30,40}, the basic data that you need to build the addition
+table for the big group is the carry digit function, which is a
+function with two inputs both of type q and one output of type s,
+represented in standard "arrow" notation as:
+
+                        q x q   ------>   s
+
+then, thinking of a two-digit number as a pair (s1,q1), the formula for
+the sum of (s1,q1) and (s2,q2) is (s1+s2+carry(q1,q2),q1+q2).
+
+essentially this same formula can be used with many different
+"carry-digit functions".  the technical name for such a "carry-digit
+function" is "2-cocycle" (or more specifically, "2-cocycle on the
+group q with coefficients in the group s").  2-cocycles by definition
+satisfy certain simple algebraic laws that guarantee that the
+resulting "big group" is in fact a genuine group extending the
+quotient group q by the subgroup s.  different 2-cocycles can result
+in fundamentally different big groups, but sometimes there are
+interesting relationships between the resulting big groups.
+
+as long as the situation is viewed as one of pure algebra, however,
+much about it must appear mysterious and arbitrary.  in order to
+understand the really most important reasons why 2-cocycles (and their
+relatives the "n-cocycles", for other natural numbers n) are
+interesting, you have to learn about what at first may seem like a
+completely unrelated branch of mathematics: topology.
+
+(notice that i am essentially repeating here the message conveyed by
+john baez in a recent reply to tim chow: that the secret weapon to use
+in understanding even the most algebraic manifestations of
+"homological algebra" is an understanding of the conceptual origin of
+homological algebra in problems of topology.)
+
+[this concludes part 1; in part 2 i hope to begin to explain how in
+the world the phenomenon of "extensions of groups" actually has
+anything to do with topology.]
+
+=================================
+
+
+
+From: *** (james dolan)
+Newsgroups: sci.math
+Subject: carrying, part 2 (re-post)
+Date: 19 Jan 1994 20:13:42 -0800
+Organization: fair play for neptune committee
+
+[part 2 of n]
+
+[the story so far:
+
+the operation of addition (with wrap-around overflow) of double-digit
+(decimal, or binary, or octal, etc.) numbers can be defined by a
+formula that uses only:
+
+      1.  addition (with wrap-around overflow) of single-digit
+          numbers,
+
+and:
+
+      2.  one other primitive binary operation on single-digit
+          numbers, called the "carry-digit" function, which takes the
+          value 0 whenever the single-digit numbers add without
+          overflow, and 1 otherwise.
+
+
+representing double-digit numbers as ordered pairs of single-digit
+numbers, so that for example 17 is represented as (1,7), this formula is:
+
+           (a,b) + (c,d)   :=   (a + c + carry(b,d),  b + d).
+
+it turns out that this phenomenon is just a special case of a very
+interesting and important general process for creating a new big
+"group" (which is a set equipped with a binary "addition" operation of
+a special type), whose elements are ordered pairs of elements from two
+smaller groups, and whose addition operation is defined with the help
+of a "generalized carry-digit function".  in the general case, the two
+small groups may be different from each other; that is, the right
+digit (the one we call the "ones" digit, and which "sends" the carry)
+comes from one group, called the "quotient group", while the left
+digit (the one that we call the "tens" digit, and which "receives" the
+carry) comes from another group, called the "subgroup".  the
+generalized carry-digit function is called the "2-cocycle" (for
+reasons which may possibly be within the limits of human
+understanding, and which i may even get around to trying to explain),
+and given a quotient group q, subgroup s, and 2-cocycle
+
+                                    c
+                            q x q ----->s,
+
+the group whose underlying set is s x q and whose "addition" operation
+is given by the formula at top is called "the central extension of q by
+s, with 2-cocycle c".
+
+(the most general case that i intend to consider here is the case where
+the quotient group q may be non-abelian, but the subgroup s is abelian.
+"abelian" (also known as "commutative") means that the law "a+b = b+a"
+holds.  there are however generalizations of the process that can apply
+in the case where even s is non-abelian.)
+
+
+i admit that some people claim to have mastered the art of adding
+two-digit numbers without any explicit introduction to the concept of
+2-cocycle, and i think that tal kubo and myself are both resigned to
+the likelihood that the ordinary carry-digit function will remain the
+only 2-cocycle that ron maimon and millions of other american
+schoolchildren ever learn, and the only 2-cocycle that is hard-coded
+into medium-priced personal computers.  but i hope that there may be
+some people struggling with the general concept of 2-cocycle and with
+other general concepts of homological algebra who will benefit from
+seeing how the familiar and lowly carry-digit function is an example
+of a 2-cocycle.]
+
+let's return to the example of the carry-digit function for base five
+numerals.  in this case both the quotient group q and the subgroup s are
+the integers modulo five, and the 2-cocycle c: qxq -> s is:
+
+      0  1  2  3  4
+    _______________
+   |
+ 0 |  0  0  0  0  0
+   |
+ 1 |  0  0  0  0  1
+   |
+ 2 |  0  0  0  1  1
+   |
+ 3 |  0  0  1  1  1
+   |
+ 4 |  0  1  1  1  1
+
+but let's consider now also another 2-cocycle d: qxq -> s, as follows:
+
+      0  1  2  3  4
+    _______________
+   |
+ 0 |  0  0  0  0  0
+   |
+ 1 |  0  0  0  4  2
+   |
+ 2 |  0  0  4  1  2
+   |
+ 3 |  0  4  1  1  2
+   |
+ 4 |  0  2  2  2  3
+
+you can check for yourself that this is in fact a 2-cocycle; that is
+that if you use it as a "generalized carry-digit function" it actually
+makes s x q into a group with s as subgroup and q as quotient group.
+however there is a sense in which the 2-cocycle d is "equivalent" to
+the 2-cocycle c that we have already seen.
+
+this equivalence can be expressed in a number of different ways.  one
+way of expressing it is to say that the groups (s x q, c+) and
+(s x q, d+) (where "g+" denotes the addition operation defined using
+the 2-cocycle g as generalized carry-digit function) are isomorphic,
+and moreover isomorphic in such a way that both the inclusion map from
+the subgroup s and the projection map onto the quotient group q are
+preserved.
+
+another way of expressing it is to say that the 2-cocycles c and d are
+"cohomologous" to each other.  this means that if you subtract the
+function c from the function d (which makes sense since c and d are
+functions taking values in an abelian group), the result is a
+"coboundary" 2-cocycle.  a coboundary 2-cocycle is a 2-cocycle that's in
+the image of the map
+
+                               "coboundary"
+                   1-cochains  ------------>  2-cocycles,
+
+where the "1-cochains" are the arbitrary functions from q to s, and where
+the coboundary of a 1-cochain
+
+                                   f
+                              q  ----->  s
+
+is the 2-cocycle
+
+                                     g
+                            q x q  ----->  s
+
+given by the formula:
+
+                    g(a,b) :=   f(a) + f(b) - f(a+b).
+
+
+you can check for yourself that the 2-cocycles c and d given above are
+cohomologous to each other because when you subtract c from d you get:
+
+
+     0  1  2  3  4
+    _______________
+   |
+ 0 |  0  0  0  0  0
+   |
+ 1 |  0  0  0  4  1
+   |
+ 2 |  0  0  4  0  1
+   |
+ 3 |  0  4  0  0  1
+   |
+ 4 |  0  1  1  1  2
+
+which is the coboundary of the 1-cochain f: q -> s given by:
+
+a          0  1  2  3  4
+
+f(a)       0  0  0  0  1
+
+it is then an important but straightforward theorem that these two
+equivalence relations on the class of 2-cocycles, namely
+isomorphicness of the associated central extensions, and
+cohomologousness, are in fact the same.
+
+[this concludes part 2.  in part 3 i hope to begin to show how, by
+re-interpreting the situation from the viewpoint of topology, much of
+what is going on and which appears mysterious and arbitrary from the
+viewpoint of pure algebra becomes much more clearly motivated.  of
+course that's the same thing i said about part 2, but hope springs
+eternal.]
+
+=====================
+
+
+
+From: *** (james dolan)
+Newsgroups: sci.math
+Subject: carrying, part 3 (re-post)
+Date: 19 Jan 1994 20:16:08 -0800
+Organization: fair play for neptune committee
+
+[part 3 of n]
+
+[so far i have introduced a concept of "2-cocycle" which is a sort of
+"generalized carry-digit function" from q x q to s, where q is some
+group and s is some abelian group; and i have discussed an equivalence
+relation "a is cohomologous to b" on the set of 2-cocycles, for which
+the equivalence classes (called "cohomology classes") correspond to
+isomorphism classes of "central extensions of q by s".]
+
+there is a very close relationship between the "cohomology of groups"
+that we have been considering so far, and the older "cohomology of
+spaces".  one way of trying to understand this relationship is to
+associate to each group q a topological space (called "k(q,1)" for
+some (pretty good) reason), constructed in stages as follows:
+
+stage 0:
+start with a single point p, called the "basepoint" of the space.
+
+stage 1:
+for each element a in q, sew in a path "p_a" from the basepoint p to
+itself.
+
+stage 2:
+for each pair (a,b) of elements in q, sew in a solid triangle, filling
+in the hollow triangle formed by traversing the paths p_a and then p_b in the
+forwards direction, followed by the path p_[ab] in the backwards direction.
+
+already after stage 2 we have achieved an important goal: the group q
+can now be recovered from the space as its "fundamental group".  this
+is the group whose elements are equivalence classes of paths from the
+basepoint of the space to itself, under the equivalence relation of
+"homotopy"; with the group operation being concatenation of paths.
+two paths are "homotopic" if you can gradually deform one of them into
+the other, keeping the ends of the path fixed at the basepoint.  for
+example, notice that the solid triangles that we sew in make the
+concatenation of p_a and p_b homotopic to p_[ab], which is as it
+should be.
+
+(one way to verify that q is the fundamental group of the space after
+stage 2 is to apply the "seifert-van kampen theorem", which is a
+general theorem about how to compute the fundamental group of a space
+sewn together from a bunch of little pieces.  this theorem and its
+proof are not that hard to understand.)
+
+however although we have (after stage 2) succeeded in sculpting the
+fundamental group of the space to be exactly what we wanted it to be
+(namely q), we have in the process played havoc with the "higher
+homotopy groups" of the space.  the "first homotopy group" of a space
+is just its fundamental group, whose elements are homotopy classes of
+"loops"; that is, of paths from the basepoint to itself; that is, of
+"figures shaped like the circle".  the elements of the second homotopy
+group of the space are, similarly, homotopy classes of "2-loops"; that
+is, of figures shaped like the sphere; and so on for the other higher
+homotopy groups.  to see how we have managed to play havoc with these
+higher homotopy groups, think of all of the solid triangles that we
+sewed into the space.  from four solid triangles you can make a hollow
+tetrahedron, which is topologically just a sphere; and indeed, in
+general we will have in this way introduced some hollow spheres into
+our space.
+
+these higher dimensional holes that have wormed their way into our
+space detract from the purity with which the space acts as a
+"geometric realization" of the group q.  it would be nice if we could
+get rid of all of the higher-dimensional holes without disturbing the
+fundamental group.  that is, it would be nice if we could end up with
+a space such that not only is its fundamental group equal to q, but
+also all of its higher homotopy groups are trivial.  and this is in
+fact the defining property that a space needs to satisfy in order to
+qualify as being "the" space k(q,1).  so the remaining stages of the
+construction are devoted to the purpose of filling in all of the
+higher-dimensional holes without disturbing the fundamental group.
+and this is not so hard to do, because, in general, filling in an
+"[n+1]-loop" with an "[n+2]-cell" has absolutely no effect on the
+homotopy classes of n-loops in the space; the [n+2]-cells are in a
+sense "too big for the n-loops to notice".  thus, whatever damage is
+caused by tinkering with the n-loops propagates only in the upwards
+direction; so that if we take care at stage n of our construction to
+get the [n-1]th homotopy group of the space correct, then after an
+infinite number of stages all of the homotopy groups will be correct,
+all of the upwards-propagated damage having been repaired at the
+appropriate stage.  thus the construction continues:
+
+
+stage 3:
+here we want to insure that the second homotopy group is correct; that
+is, we want to kill it off entirely, by filling in all of the hollow
+tetrahedrons formed by appropriately adjoining quadruples of the solid
+triangles that we laid down in stage 2.  in fact, these hollow
+tetrahedrons correspond to triples (a,b,c) of elements of q, as
+follows:
+
+triangle #1: sides p_a, p_b, p_[ab]
+triangle #2: sides p_b, p_c, p_[bc]
+triangle #3: sides p_[ab], p_c, p_[abc]
+triangle #4: sides p_a, p[bc], p_[abc]
+
+you can check for yourself that these four triangles in fact touch one
+another so as to form a hollow tetrahedron; then filling in each such
+hollow tetrahedron with a solid tetrahedron completes stage 3.
+
+...
+
+stage n:
+
+the pattern established in stages 0, 1, 2, and 3 continues:
+at stage n, the "solid n-simplexes" that need to be sewn in correspond
+to the n-tuples of elements of q.
+...
+
+thus, after all of the stages have been completed, we have a space
+"k(q,1)", with fundamental group equal to q and with all other
+homotopy groups trivial; and this space is equipped with a
+combinatorial decomposition into "cells" of all dimensions, which
+leads to a particular combinatorial scheme for computing the
+cohomology of the space.  (i think that this particular scheme is
+called something like "cellular cohomology".)  and it is easy (if
+somewhat laborious) to see that the cellular cohomology of the space
+k(q,1) is in fact precisely just the "group cohomology" of the group
+q.
+
+thus, to focus on the example that started this discussion off,
+consider some 2-cocycle c: qxq -> s, where s is some abelian group.
+from the algebraic point of view this acts as a "generalized
+carry-digit function", but from the topological point of view it is
+just a "cellular 2-cocycle" on the space k(q,1).  each pair (a,b) of
+elements of q corresponds to a solid triangle ("2-cell") sewn into the
+space at stage 2 of the construction, and the 2-cocycle c assigns to
+each such 2-cell the element c(a,b) of the "coefficients" group s.
+
+furthermore, the equivalence relation "c is cohomologous to d" on the
+set of cellular 2-cocycles, defined in terms of the cellular
+1-cochains, is, on the one hand, just the same as i defined it to be
+in the purely group-theoretical setting; while on the other hand, the
+set of equivalence classes with respect to it ("cohomology classes")
+is a topological invariant of the space k(q,1).
+
+[this concludes part 3.  i have now given a fairly thorough
+explanation of my original smart-alecky remark about the "carry-digit
+function" being a 2-cocycle, but in future installments i would like
+to try to explain some more important general ideas about the
+conceptual interaction between group theory and algebraic topology.
+what i have described so far is only a very small taste of the
+thorough inter-mixture of ideas from these two areas that occurs.]

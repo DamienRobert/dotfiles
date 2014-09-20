@@ -1,0 +1,26 @@
+http://math.stackexchange.com/questions/138043/does-convergence-in-lp-implies-convergence-almost-everywhere
+
+Convergence dans L_p n'implique pas convergence ae mais c'est vrai si on
+extrait une sous-suite.
+
+Application: si p>=1 les fonctions continues sont denses dans L_p; on peut
+même supposer qu'on a une suite qui converge ae.
+
+cf: www.maths.bris.ac.uk/~matmj/mtandIsec7.pdf
+Theorem 7.5. Let (f_n ) be a sequence of R-valued, measurable functions,
+which is Cauchy in measure. Then there is a subsequence of f_n , which
+converges μ-a.e. and in measure to a R-valued, measurable function f .
+
+Theorem 7.11. Let (f_n) converge to f in measure. Then there is a subse-
+quence that converges almost uniformly to f.
+
+Theorem 7.13. (Egorov’s Theorem)
+Suppose μ(X) < ∞. Let (f_n) be a sequence of measurable, R-valued func-
+tions which converges almost everywhere to a measurable, R-valued function
+f. Then (f_n) converges almost uniformly to f.
+
+http://terrytao.wordpress.com/2010/10/02/245a-notes-4-modes-of-convergence/
+et les cours de Terrence:
+http://terrytao.wordpress.com/category/teaching/245a-real-analysis/
+http://terrytao.wordpress.com/category/teaching/245b-real-analysis/page/2/
+http://terrytao.wordpress.com/category/teaching/245c-real-analysis/

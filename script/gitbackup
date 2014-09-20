@@ -4,9 +4,10 @@
 
 #FILES=("${(@f)$(bupbackuplist common)}")
 DIRS=(mine/ perso/ pro/ latex/)
-SKIP=(pro/dist/gforge/mpc/ pro/dist/gforge/inria-doc-style/ latex/texmf/tex/generic/beamercolorthemesolarized/)
+#Rather than to use SKIP, I prefer to put good .gitignore files
+SKIP=()
 GITDIR="$HOME/backups/gitbackup"
-mkdir -p $GITDIR || exit 1
+mkdir -m 700 -p $GITDIR || exit 1
 
 while true;
 do
@@ -49,7 +50,6 @@ for dir in $DIRS; do
   SUBMODULES=("${(@f)$(find $dir -name .git | sort -r)}")
   for subdir in $SUBMODULES; do 
     sub=${subdir%.git}
-    #echo $sub
     if [[ -n ${(M)SKIP:#${sub}} ]] ; then
       #echo "skipped"
     else
@@ -60,7 +60,7 @@ for dir in $DIRS; do
 done
 ;;
     mycommit )
-#DATE=$(date --rfc-3339=seconds)
+#DATE=$(date --iso-8601=seconds)
 gitcmd commit -m ' ' --allow-empty-message --untracked-files=no
 #we want to exit 0 if $?==1 because a possible error is that there is
 #nothing to commit, which is normal when we run this script from a crontab

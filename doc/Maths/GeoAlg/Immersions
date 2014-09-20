@@ -15,6 +15,8 @@ http://mathoverflow.net/questions/20782/ring-theoretic-characterization-of-open-
 Theorem 2: Spec(A)→Spec(R) is an open immersion if and only if R→A is flat,
 of finite presentation and an epimorphism in the category of rings.
 
+Theoreme général sur les immersions ouvertes
+-------------------------------------------
 More generally, in EGA IV, 17.9.1 it is proven that a morphism of schemes
 is an open immersion if and only if it is flat, a (categorical)
 monomorphism and locally of finite presentation.
@@ -152,3 +154,165 @@ des conditions suffisantes - mais j'ai l'impression qu'un éclatement
 (disons du plan affine à l'origine) est un épimorphisme universel,
 auquel cas il montre que la disjonction de ces deux conditions n'est
 pas nécessaire pour être un épimorphisme universel.
+
+http://mathoverflow.net/questions/56564/what-are-the-epimorphisms-in-the-category-of-schemes
+
+It is easy to see that a morphism f:X→Y such that the underlying map |f| is
+surjective and the homomorphism f#:O_Y→f∗ O_X is injective, is an epimorphism.
+But there are other examples, too.
+
+La réponse contient la preuve du fait suivant:
+X is non-initial and every morphism from a non-initial object to X is an
+epimorphism <=> X est le spectre d'un corps
+(que ce soit dans la catégorie des schémas affines ou des schémas)
+
+Monomorphismes
+==============
+
+1)
+
+http://mathoverflow.net/questions/56591/what-are-the-monomorphisms-in-the-category-of-schemes
+
+In EGA IV, 17.2.6 the following characterization of monomorphisms is given:
+  Let f:X→Y be a morphism locally of finite type. Then the following conditions are equivalent:
+  a) f is a monomorphism.
+  b) f is radicial and formally unramified.
+  c) For every y∈Y, the fiber f−1(y) is either empty or isomorphic to Spec(k(y)).
+
+Also note that (due to the adjunction) a morphism between affine schemes is
+a monomorphism (in the category of schemes) if and only if the associated
+homomorphism of rings is an epimorphism (in the category of rings) and the
+latter ones can be characterized in many ways. See, for example, this
+Samuel seminar and this MO discussion. Monomorphisms of noetherian schemes
+are treated in detail in Exposé 7 by Daniel Ferrand.
+
+Further examples:
+
+1) Immersions are monomorphisms; this follows from the universal property
+of a closed resp. open immersion.
+2) A morphism X→Y is a monomorphism if and only if the diagonal X→X×YX is
+an isomorphism. In particular, every monomorphism is separated.
+3) In EGA IV, 18.12.6 it is shown that proper monomorphisms are exactly the
+   closed immersions.
+
+Notes
+-----
+
+http://en.wikipedia.org/wiki/Radicial_morphism
+  In algebraic geometry, a morphism of schemes
+      f: X → Y
+  is called radicial or universally injective, if, for every field K the
+  induced map X(K) → Y(K) is injective. (EGA I, (3.5.4)) This is a
+  generalization of the notion of a purely inseparable extension of fields
+  (sometimes called a radicial extension, which should not be confused with a
+  radical extension.)
+  It suffices to check this for K algebraically closed.
+  
+  This is equivalent to the following condition: f is injective on the topological spaces and for every point x in X, the extension of the residue fields
+      k(f(x)) ⊂ k(x)
+  is radicial, i.e. purely inseparable.
+  
+  It is also equivalent to every base change of f being injective on the
+  underlying topological spaces. (Thus the term universally injective.)
+
+http://mathoverflow.net/questions/46058/whats-the-intuition-between-formal-smoothness-etaleness-and-unramifiedness
+(Rappel: étale=flat+unramified
+dim 0" pas "formally unramified")
+formally smooth/étale/unramified + loc of finite presentation=smooth/étale/unramified;
+formally unramified <=> Kahler sheaf differentials \Omega_X/Y=0
+
+Cf comments by BCrn, ZMT => formally etale implies Zariski-locally looks like open in Spec((R[t]/(f))[1/f′])→ Spec(R) for some monic f∈R[t] and hence flat by inspection, formally smooth implies Zariski-locally etale over an affine space, and formally unramified implies "etale-locally" a closed immersion
+cf http://en.wikipedia.org/wiki/Formally_unramified
+)
+
+2)
+
+http://mathoverflow.net/questions/109/what-do-epimorphisms-of-commutative-rings-look-like
+
+No, not every epimorphism of rings is a composition of localizations and
+surjections.
+An epimorphism of commutative rings is the same thing as a monomorphism of
+affine schemes. Monomorphisms are not only embeddings, e.g., any
+localization is an epimorphism and the corresponding morphism of schemes is
+not a locally closed embedding.
+
+Example: Let C be the nodal affine cubic and let X be its normalization.
+Pick any point x above the node. Then X\{x}->C is a monomorphism (see
+Proposition below). The corresponding homomorphism of rings is injective
+but not a localization.
+
+Remark: A flat epimorphism A->B is a localization if A is normal and
+Q-factorial. This is a result by D. Lazard and P. Samuel. [cf. Lazard
+"Autour de la platitude" (IV, Prop 4.5)]
+
+Remark: There was a seminar on epimorphisms of rings directed by P. Samuel in 1967-68.
+-> http://www.numdam.org/numdam-bin/feuilleter?id=SAC_1967-1968__2_
+
+Immersions ouvertes (le retour)
+===============================
+stacks.math.columbia.edu/download/etale.pdf
+
+Theorem 14.1. 
+Let f : X → Y be a morphism of schemes. The following are equivalent:
+(1) f is an open immersion,
+(2) f is radicial and etale, and
+(3) f is a flat monomorphism, locally of finite presentation.
+
+Généralisations: 
+---------------
+
+/home/dams/Papiers/Maths/GeoAlg/mono_plats.pdf
+(Raynaud, un critère d'effectivité de descente)
+
+Theorem: f est un mono plat ssi f est injectif et pour tout x \in X
+O_Y,f(x) -> O_X,x est une bijection.
+Si f locally pres finie, alors on a vu f immersion ouverte.
+
+Si f:X->Y est mono plat qc (il n'est pas forcément ouvert car non loc pres
+finie). Alors f induit toujours un iso de X sur f(X) (où f(X) est munie de
+la structure annelée induite par Y).
+- De plus f(X) est inclus dans un ouvert U tel que f:X->U soit affine.
+- f est une immersion ouverte dans Z=Spec f_*(X) (qui est donc affine
+  au-dessus de Y).
+- Y\U= cloture de h(Z\X) où h est le morphisme Z->Y.
+(Si je ne me trompe pas dans le cas f ouvert on a U=f(X)=X)
+
+/home/dams/Papiers/Maths/GeoAlg/monos_platsaffines.pdf
+DANIEL LAZARD Autour de la platitude
+
+Prop IV.2.5: Si A anneau, il y a bijection entre les épimorphismes plats
+d'anneaux A-> B et les parties de Spec A qui munies du faisceau induit sont
+affines. Ces parties sont stables par générisation.
+(et donc ouvertes si elles sont loc de prés finie, et on retrouve qu'un
+mono plat loc de prés fini est ouvert)
+
+Il montre ensuite: 
+* si A est noéth, K(A) (l'anneau des fractions totales)
+est le plus grand anneau tel que A->K(A) soit un épi plat injectif, 
+ie si A->X est un épi plat injectif, alors X \subset K(A).
+* si f:A->B est plat, K(f):K(A)->K(B) est plat,
+si f inj alors K(f) est inj, si f épi plat inj alors K(f) est un iso.
+* f:A->B est un épi plat ssi B \subset K(f(A))
+
+===================================================================
+Résumé
+======
+
+Let f : X → Y be a morphism of schemes.
+
+Monomorphismes:
+  a) f is a monomorphism.
+  b) f is radicial and formally unramified.
+  c) For every y∈Y, the fiber f^−1(y) is either empty or isomorphic to Spec(k(y)).
+[formally unramified+loc finite pres=unramified
+ radicial=universally injective ie X(K) → Y(K) is injective
+          ie f is injective on the topological spaces and for every point x in X, the extension of the residue fields k(f(x)) ⊂ k(x) is radicial, i.e. purely inseparable.]
+
+Immersion ouverte:
+(1) f is an open immersion,
+(2) f is radicial and etale, and
+(3) f is a flat monomorphism, locally of finite presentation.
+
+Immersion fermée:
+(1) f is a closed immersion,
+(2) f is a proper monomorphism

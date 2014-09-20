@@ -1,0 +1,66 @@
+github integration:
+------------------
+
+! https://github.com/defunkt/hub
+Examples {{{1
+
+hub init -g: add a remote from github
+  > git init
+  > git remote add origin git@github.com:YOUR_USER/REPO.git
+  
+hub create ploum -d 'It shall be mine, all mine!'
+  create the repo ploum on git hub with description blabla and add the corresponding remote
+  $ hub create recipes
+  [ repo created on GitHub ]
+  > git remote add origin git@github.com:YOUR_USER/recipes.git
+Pusher la branch: git push --set-upstream origin master
+
+hub clone/remote add/fetch ploum/plam
+  will use the repo from git://github.com/ploum/plam.git
+hub clone ploum
+  will do the same for YOUR_USER/ploum
+hub fetch/remote add ploum
+  will do the same for ploum/CURRENT_REPO
+(hub submodule marche aussi)
+
+hub push origin,staging,qa bert_timeout
+  push bert_timeout to origin, staging and qa
+
+hub cherry-pick http://github.com/mislav/REPO/commit/SHA
+hub cherry-pick mislav@SHA (use REPO=CURRENT_REPO)
+hub checkout https://github.com/defunkt/hub/pull/73 custom-branch-name
+hub am, hub apply, hub merge can also take a github url
+hub fork: fork the current repo into github
+
+hub pull-request:
+  # while on a topic branch called "feature":
+  $ hub pull-request
+  [ opens text editor to edit title & body for the request ]
+  [ opened pull request on GitHub for "YOUR_USER:feature" ]
+  # explicit title, pull base & head:
+  $ hub pull-request "I've implemented feature X" -b defunkt:master -h mislav:feature
+  $ hub pull-request -i 123
+  [ attached pull request to issue #123 ]
+
+$ hub browse
+> open https://github.com/YOUR_USER/CURRENT_REPO
+$ hub browse -- commit/SHA
+> open https://github.com/YOUR_USER/CURRENT_REPO/commit/SHA
+$ hub browse -- issues
+> open https://github.com/YOUR_USER/CURRENT_REPO/issues
+$ hub browse schacon/ticgit commit/SHA
+> open https://github.com/schacon/ticgit/commit/SHA
+
+$ hub compare refactor
+> open https://github.com/CURRENT_REPO/compare/refactor
+$ hub compare -u fix #get url
+> (https://github.com/CURRENT_REPO/compare/fix)
+$ hub compare 1.0..1.1
+> open https://github.com/CURRENT_REPO/compare/1.0...1.1
+$ hub compare other-user patch
+> open https://github.com/other-user/REPO/compare/patch
+}}}
+
+! https://github.com/defunkt/gist
+gist -h, en gros: 
+gist -p -o ploum.rb: fait un jist de ploum.rb, -p pour le rendre public et -o pour l'ouvrir dans le navigateur

@@ -1,0 +1,164 @@
+#!/bin/zsh
+SUBDIRECTORY_OK=true
+. "$(git --exec-path)/git-sh-setup" ""
+require_clean_work_tree "mysquash" "Please commit or stash them"
+cd_to_toplevel
+
+help() {
+	echo "1) git-trivial parents
+Create a trivial commit with parents 'parents' ('parents' can be empty)
+-b|-B|--branch branch: create branch at commit
+--ff: update HEAD to commit
+--no-date: create commit at time EPOCH
+
+2) git-trivial --merge/--prepare-merge branches
+Do a trivial merge with branches 'branches'
+-b|-B|--branch branch: checkout to 'branch' first
+--no-commit: don't do final commit
+--prepare-merge: shortcut for --merge+--no-commit
+
+Common options:
+--ours: use 'ours' tree
+--theirs: use 'theirs' tree (ie tree from first commit passed as argument)
+-t|--tree tree: use tree 'tree' rather than an empty tree
+-g|--go: don't edit commit message
+-m msg: use 'msg' as commit message
+
+Note: while the result is the same (a commit with the arguments [+the
+current branch with --merge] as parents and a certain tree as tree), the
+first method is to be thought as a 'trivial commit' whereas the second is
+more of the form 'a trivial merge'. Hence the difference in the commit
+message and the action of the -b option
+
+Warning: in the first form, git trivial --ours does not add the current branch to the parents, it just uses ours tree for the commit.
+
+Example:
+	git trivial -b deploy --merge --theirs next
+will allow to deploy the branch next while keeping fastforwardibility
+"
+}
+
+gettree() {
+	treename=$1
+	tree=$(git rev-parse "$1:")
+}
+
+branch=
+branchopt=
+nodate=
+#The magic SHA1 4b825dc642cb6eb9a060e54bf8d69288fbee4904
+nulltree=$(git hash-object -t tree /dev/null)
+tree=$nulltree
+treename=
+ff=
+merge=
+nocommit=
+mode=
+GO=
+msg=
+
+while true;
+do
+	case "$1" in
+		-- ) shift; break ;;
+		-b|--branch ) shift; branchopt="-b";branch=$1; shift ;;
+		-B ) shift; branchopt="-B"; branch=$1; shift ;;
+		--no-date) shift; nodate=1;;
+		-t|--tree) shift; gettree $1; shift;;
+		--ff) shift; ff=1 ;;
+		--no-commit) shift; nocommit=1 ;;
+		--merge) shift; merge=1 ;;
+		--prepare-merge) shift; merge=1; nocommit=1 ;;
+		--ours) shift; mode="ours" ;;
+		--theirs) shift; mode="theirs" ;;
+		-m ) shift; msg=$1; shift ;;
+		-g|--go ) shift; GO=1 ;;
+		-h|--help|-* ) help ;;
+		*) break;;
+	esac
+done
+
+fail() {
+	[[ -n $branch ]] && git checkout $CURRENT
+	exit 1
+}
+
+getmsg() {
+	msg='Trivial commit'
+	if [[ $# -gt 0 ]]; then 
+		msg="$msg with parents"
+		for parent in "$@"; do
+			msg="$msg '$parent'"
+		done
+	else
+		msg="$msg with no parents"
+	fi
+	if [[ $tree == $nulltree ]]; then
+		msg="$msg and empty tree."
+	else
+		msg="$msg and tree '$treename'."
+	fi
+}
+getmrgmsg() {
+	msg="Trivial merge"
+	[[ -n $mode ]] && msg="$msg [$mode]"
+	msg="$msg on $(git current-branch -a) with branches"
+	for parent in "$@"; do
+		msg="$msg '$parent'"
+	done
+	if [[ $tree == $nulltree ]]; then
+		msg="$msg and empty tree."
+	else
+		msg="$msg and tree '$treename'."
+	fi
+}
+
+if [[ -z $treename ]]; then
+	case $mode in
+		theirs)
+			gettree $1
+			;;
+		ours)
+			gettree $(git current-branch -a)
+	esac
+fi
+
+if [[ -z $merge ]]; then
+
+	[[ -z $msg ]] && getmsg "$@"
+	opts=()
+	for parent in "$@"; do
+		opts=($opts '-p' $(git rev-parse --verify $parent))
+	done
+	ev="git commit-tree \$opts \$tree"
+	[[ -n $nodate ]] && ev="GIT_AUTHOR_DATE='Thu, 01 Jan 1970 00:00:00 +0000' GIT_COMMITTER_DATE='Thu, 01 Jan 1970 00:00:00 +0000' $ev"
+	[[ -z $GO ]] && ev="vipe|$ev"
+	ev="echo \$msg|$ev"
+	commit=$(eval $ev)
+	echo $commit
+	echo >&2 "$commit: $msg"
+	[[ -n $branch ]] && git branch $branchop $branch $commit
+	[[ -n $ff ]] && git merge --ff-only $commit
+
+else
+
+	CURRENT=$(git current-branch -a)
+	[[ -n $branch ]] && { git checkout $branch || fail }
+
+	MERGEOPTS=()
+	[[ -n $msg ]] && MERGEOPTS=(-m $msg)
+	git merge --no-commit --no-ff -s ours $MERGEOPTS "$@" || fail
+	if [[ $mode != "ours" ]]; then
+		git read-tree -m -u $tree || fail
+	fi
+	if [[ -z $msg ]]; then
+		getmrgmsg "$@"
+		echo >> .git/MERGE_MSG
+		echo $msg >> .git/MERGE_MSG
+	fi
+	if [[ -z $nocommit ]]; then
+		[[ -n $GO ]] && commitopts=("--no-edit")
+		git commit $commitopts || fail
+		[[ -n $branch ]] && git checkout $CURRENT
+	fi
+fi

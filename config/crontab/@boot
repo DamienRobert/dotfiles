@@ -1,0 +1,63 @@
+#!/usr/bin/zsh
+
+CRONDIR="$HOME/mine/config/crontab"
+tmuxname=crontab
+unlock=
+init=
+greptmux() {
+	grep "^$@\$"
+}
+
+while true;
+do
+	case $1 in
+		-- ) shift; break ;;
+		--unlock ) shift; unlock=t ;;
+		--init ) shift; init=t ;;
+		*) break;;
+	esac
+done
+CRONDIR="$CRONDIR/$1"
+
+[[ -n $init ]] && . "$HOME/.initenv"
+
+if [[ -n $unlock ]]; then
+	export SSH_AUTH_SOCK="$HOME/tmp/.ssh-agent-crontab"
+	
+	#set up an ssh-agent
+	#we use a special one in case we connect by ssh and then close the connection
+	ssh-add -l
+	[[ $? -eq 2 ]] && $(ssh-agent -a $SSH_AUTH_SOCK) && echo "# Launched new ssh-agent: $SSH_AUTH_SOCK)"
+	
+	#set up a gpg-agent
+	#we set up a special socket so that it does not overwrite my socket in my
+	#diskless computer @imb
+	GPGFILE="$HOME/tmp/.gpg-agent-info-crontab"
+	if [[ -e $GPGFILE ]]; then 
+		. $GPGFILE
+		export GPG_AGENT_INFO
+	fi
+	gpg-agent -q ||  eval $(gpg-agent --daemon --no-use-standard-socket --write-env-file $GPGFILE) && echo "# Launched new gpg-agent: $GPG_AGENT_INFO"
+	export GPG_AGENT_INFO
+	
+	$HOME/mine/script/unlock --crontab
+fi
+
+if tmux has-session -t $tmuxname; then
+	#be sure we update the session environment
+	tmux set-environment -t $tmuxname GPG_AGENT_INFO $GPG_AGENT_INFO
+	tmux set-environment -t $tmuxname SSH_AUTH_SOCK $SSH_AUTH_SOCK
+else
+	#we need to set up a pane
+	#this also has the bonus that errors in the config pane affect this pane
+	#and not the crontab launched
+	tmux new-session -d -s $tmuxname && echo "#Launched new tmux: $tmuxname"
+fi
+
+for script in $CRONDIR/*(.x); do
+	name=$(basename $script)
+	tmux list-windows -t $tmuxname -F '#W' | greptmux $name || {
+		echo "-> Launching $script"
+		tmux new-window -t $tmuxname -n $name $script
+	}
+done

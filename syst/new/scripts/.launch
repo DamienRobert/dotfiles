@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+for glob in $@; do
+	for script in $~glob(xN); do
+		echo "== $script =="
+		. $script || exit 1
+	done
+done

@@ -1,10 +1,51 @@
-sudo modprobe -r rt73usb rt73
-sudo modprobe rt73
-sudo ip link set wlan0 address 00:08:a1:b0:a6:a2
-sudo ifconfig wlan0 up
-sudo iwconfig wlan0 mode managed
+ip/iw
+=====
+
+ip link show wlan0
+ip addr add 192.168.1.2/24 broadcast 192.168.1.255 dev eth0
+ip route add default via 192.168.1.1
+
+iw dev wlan0 link #Getting link status.
+iw dev wlan0 scan #Scanning for available access points.
+iw dev wlan0 set type ibss #Setting the operation mode to ad-hoc.
+iw dev wlan0 connect your_essid #Connecting to open network.
+iw dev wlan0 connect your_essid 2432 #Connecting to open network specifying channel.
+iw dev wlan0 connect your_essid key 0:your_key #Connecting to WEP encrypted network
+iw dev wlan0 set power_save on #Enabling power save. 
+
+#wpa:
+wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf
+
+$ wpa_passphrase essid passphrase
+network={
+    ssid="essid"
+    #psk="passphrase"
+    psk=f5d1c49e15e679bebe385c37648d4141bc5c9297796a8a185d7bc5ac62f954e3
+}
+# wpa_supplicant -B -i interface -c <(wpa_passphrase essid passphrase)
+
+Spoof mac address
+=================
+
+sudo ip link set dev wlan0 down
+sudo ip link set dev wlan0 address 00:08:a1:b0:a6:a2
+sudo ip link set dev wlan0 up
+sudo iw dev wlan0 set type managed
 sudo iwpriv wlan0 set AuthMode=WPAPSK 
 sudo iwpriv wlan0 set EncrypType=AES 
 sudo iwpriv wlan0 set SSID="SSID" 
 sudo iwpriv wlan0 set WPAPSK="PASSWD" 
-sudo dhclient wlan0
+sudo dhclient/dhcpcd wlan0
+
+wowlan
+======
+
+sudo iw phy phy0 wowlan enable magic-packet
+# iw help wowlan
+
+Load module
+===========
+
+sudo modprobe -r rt73usb rt73
+sudo modprobe rt73
+

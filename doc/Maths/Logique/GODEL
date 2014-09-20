@@ -979,3 +979,96 @@ Par contre, je suis extrêmement flou sur la question de svoir quelle
 est la puissance ordinale de Peano+Consis(Peano) ou des trucs de ce
 genre.
 ---------------------------------------------------------------------
+https://groups.google.com/forum/#!msg/sci.math.research/CmQddAMpzGs/kTYZzJtyeV0J
+
+David Madore    2/24/06
+Hi,
+
+I had always taken the following fact for granted, but I realize now
+that I don't know how to prove it, and the question doesn't even seem
+mentioned in any of the books I can find (e.g., *Metamathematics of
+First-Order Arithmetic* by Hájek and Pudlak):
+
+  Is the set of Pi_1 theorems of Peano arithmetic nonrecursive?
+
+Comment: it is well-known that the set of Sigma_1 theorems is
+nonrecursive (essentially because Sigma_1 theorems are exactly Sigma_1
+true statements).  If the above is true then there exists a true Pi_1
+statement such that P is not provable in Peano, and _that_ is not
+provable in Peano+Consis(Peano) (otherwise we would have a decision
+algorithm for Pi_1 theorems and the above says exactly that this does
+not exist): i.e., there is an "undecidably undecidable" (but true)
+statement.
+
+Is this known?  If so, where can I find a proof?
+
+  David Madore  2/24/06
+David Madore in litteris <dtn8q2$fea$1...@news.ks.uiuc.edu> scripsit:
+
+>   Is the set of Pi_1 theorems of Peano arithmetic nonrecursive?
+
+Sorry, I think this is another instance of the general rule of "I'll
+think about a problem for hours, and find the answer minutes after I
+decide to ask the question publicly"...  So if I'm not mistaken,
+here's a proof of this:
+
+Let T1 and T2 be two Turing machines which enumerate recursively
+enumerable sets S1 and S2 of integers which are disjoint but not
+recursively separable (that is, there is no recursive set which
+contains one and is disjoint from the other).  We also need the fact
+that Peano arithmetic proves that S1 and S2 are disjoint (or, more
+accurately, that there is no integer x which is enumerated by T1 and
+by T2): this is harmless.  (The existence of T1 and T2 is proved,
+e.g., in Roger's *Theory of Recursive Functions and Effective
+Computability*, circa §7.7.)
+
+Now given an integer x the statement "T2 never generates x" (that is,
+"x does not belong to S2") is Pi_1.  Consider the set C of x such that
+this is a theorem of Peano: if the set of Pi_1 theorems of Peano
+arithmetic were recursive, then C would be recursive.  Certainly, C is
+disjoint from S2 because Peano is sound.  But conversely, if x belongs
+to S1 then that fact is a theorem in Peano (because it is a Delta_0
+statement), so it is also a theorem in Peano that T2 never generates x
+(because by assumption Peano proves disjointness of S1 and S2), i.e.,
+x belongs to C.  So we have a recursive set C which contains S1 and is
+disjoint from S2, a contradiction.
+
+In fact the reasoning above shows that the set of Pi_1 theorems of
+Peano and the set of Pi_1 antitheorems (=negation is a theorem) are
+recursively inseparable.  So it is not possible that for all Pi_1
+statements P either Peano+Consis(Peano) proves Consis(Peano+P) or
+Peano+Consis(Peano) proves Consis(Peano + not-P): for if this were the
+case we would have a recursive separation of the set of Pi_1 theorems
+into certain consistent statements (including all Pi_1 theorems) and
+certain unprovable statements (including all Pi_1 antitheorems).  In
+particular, there is a Pi_1 statement P such that Peano+Consis(Peano)
+does not prove either Consis(Peano+P) or Consis(Peano + not-P); and of
+course, P must be true, because otherwise not-P would be a theorem (so
+Peano+Consis(Peano) would prove Consis(Peano + not-P)), but it must
+also be unprovable in Peano (otherwise Peano+Consis(Peano) would prove
+Consis(Peano+P)).  Ergo, I have shown that there is a true Pi_1
+statement P which is not provable in Peano (nor refutable) but such
+that Peano+Consis(Peano) cannot show that P is unprovable nor can it
+show that it is consistent.
+
+And I'm sure P can be made explicit (using effective inseparability).
+Also, I'm sure we can go much further (for all integers k, find a true
+Pi_1 statement P such that any addition of up to k levels of "is
+consistent" or "is unprovable" is true: P is true, P is consistent, P
+is unprovable, "P is consistent" is consistent, "P is consistent" is
+unprovable, "P is unprovable" is consistent, "P is unprovable" is
+unprovable, etc., where each level refers to a formal system which
+adds consistency of the previous one to its axioms).
+
+I hope I didn't make any major mistakes here.
+
+I'd still like to find a textbook reference to such questions, because
+I'm sure there are more interesting things to be said than my modest
+knowledge will let me discover.
+
+=====================================================================
+http://www.madore.org/~david/weblog/2014-05.html#d.2014-05-08.2200
+(surtout pour les liens, en particulier le très bon résumé sur Godel, les
+schémas de réflexions, ...:
+http://www.madore.org/~david/weblog/2012-12-15-verite-en-mathematiques.html#d.2012-12-15.2093.le-cadre-des-mathematiques.deux-points-de-vue
+)

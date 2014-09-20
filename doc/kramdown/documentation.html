@@ -1,0 +1,211 @@
+<!doctype html>
+<html xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Thomas Leitner" />
+    <meta name="copyright" content="2009-2013 Thomas Leitner" />
+    <meta name="description" content="kramdown is a fast, pure-Ruby Markdown-superset converter" />
+    <meta name="keywords" content="ruby, kramdown, markdown, text markup" />
+    <link href="default.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="news.atom" type="application/atom+xml" rel="alternate" />
+    <script src="http://kramdown.rubyforge.org/MathJax/MathJax.js" type="text/javascript"></script>
+    <title>Documentation | kramdown</title>
+  </head>
+  <body>
+    <header>
+      <hgroup>
+        <h1 id="logo"><a href="index.html" title="Homepage">kramdown</a></h1>
+        <h2 id="slogan">fast, pure-Ruby Markdown-superset converter</h2>
+      </hgroup>
+
+      <nav>
+        <ul><li class="webgen-menu-level1"><a href="index.html" hreflang="en">Home</a></li><li class="webgen-menu-level1"><a href="installation.html" hreflang="en">Installation</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><a href="documentation.html" hreflang="en">Documentation</a></li><li class="webgen-menu-level1"><a href="quickref.html" hreflang="en">Quick Reference</a></li><li class="webgen-menu-level1"><a href="syntax.html" hreflang="en">Syntax</a></li></ul>
+      </nav>
+    </header>
+
+    <div id="wrapper">
+      
+
+      <aside>
+        <h1>Documentation</h1>
+
+<ul>
+  <li>Parsers
+    <ul>
+      <li><a href="parser/kramdown.html">kramdown</a></li>
+      <li><a href="parser/markdown.html">Markdown</a></li>
+      <li><a href="parser/html.html">HTML</a></li>
+    </ul>
+  </li>
+  <li>Converters
+    <ul>
+      <li><a href="converter/html.html">HTML</a></li>
+      <li><a href="converter/latex.html">LaTeX</a></li>
+      <li><a href="converter/kramdown.html">kramdown</a></li>
+      <li><a href="converter/remove_html_tags.html">RemoveHtmlTags</a></li>
+    </ul>
+  </li>
+  <li><a href="options.html">Configuration Options</a></li>
+  <li><a href="tests.html">Tests</a></li>
+</ul>
+
+<h1>Contents</h1>
+
+<ul><li class="webgen-menu-level1"><a href="#overview">Overview</a></li><li class="webgen-menu-level1"><a href="#usage">Usage</a></li><li class="webgen-menu-level1"><a href="#tests">Tests</a></li></ul>
+
+
+        <h2>News</h2>
+
+<p>The latest version of kramdown is <span class="inline-important">1.2.0</span> and it was released
+on <span class="inline-important">2013-08-31</span></p>
+
+<p>More <a href="news.html">news</a>…</p>
+
+<h2>Support kramdown</h2>
+
+<p>If you like kramdown and would like to support it, you are welcome to make a small
+donation (PayPal or Pledgie) -- it will surely be appreciated! Thanks!</p>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="99HUWKWPMUHWG">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+<a href='http://www.pledgie.com/campaigns/16657'><img alt='Click here to lend your support to: kramdown and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16657.png?skin_name=chrome' border='0' /></a>
+
+<h2>Sponsors</h2>
+
+<p>GROSSWEBER provides <a href="http://grossweber.com/b/kramdown" target="_blank">software
+development consulting and training services</a>. <em>We like to work on open source. We use it heavily.
+We love kramdown!</em></p>
+
+      </aside>
+
+      <div id="content">
+        <h1 id="kramdown-documentation">kramdown Documentation</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>kramdown is first and foremost a library for converting text written in a superset of Markdown to
+HTML. However, due to its modular architecture it is able to support additional input and output
+formats. The following input and output formats are currently supported:</p>
+
+<ul>
+  <li>
+    <p>Input: <a href="parser/kramdown.html">kramdown</a> (a superset of Markdown),
+<a href="parser/markdown.html">Markdown</a>, <a href="parser/gfm.html">Github Flavored Markdown</a>, <a href="parser/html.html">HTML</a></p>
+  </li>
+  <li>
+    <p>Output: <a href="converter/html.html">HTML</a>, <a href="converter/latex.html">LaTeX</a>,
+<a href="converter/kramdown.html">kramdown</a>, <a href="converter/remove_html_tags.html">RemoveHtmlTags</a> (a special
+converter which removes HTML tags, normally used in conjunction with the LaTeX or kramdown
+converters)</p>
+  </li>
+</ul>
+
+<p>The <a href="syntax.html">kramdown syntax page</a> describes in detail what is supported and how it differs
+from standard Markdown.</p>
+
+<p>For all available options have a look at the <a href="options.html">options documentation</a> or have a look at
+a parser/converter page to see which options they support!</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>The kramdown package provides two ways for using it:</p>
+
+<ul>
+  <li>
+    <p><strong>As a library</strong></p>
+
+    <p>kramdown uses basically the same API as <a href="http://redcloth.org/">RedCloth</a>, <a href="http://deveiate.org/projects/BlueCloth">BlueCloth</a> and <a href="http://maruku.rubyforge.org">Maruku</a>:</p>
+
+    <div><div class="CodeRay">
+  <div class="code"><pre>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">kramdown</span><span style="color:#710">'</span></span>
+
+puts <span style="color:#036;font-weight:bold">Kramdown</span>::<span style="color:#036;font-weight:bold">Document</span>.new(text).to_html
+</pre></div>
+</div>
+    </div>
+
+    <p>The second parameter to the <code>new</code> call is an options hash for (de)activating certain features. For
+example, to disable automatic header ID generation, you can do the following:</p>
+
+    <div><div class="CodeRay">
+  <div class="code"><pre>puts <span style="color:#036;font-weight:bold">Kramdown</span>::<span style="color:#036;font-weight:bold">Document</span>.new(text, <span style="color:#A60">:auto_ids</span> =&gt; <span style="color:#069">false</span>).to_html
+</pre></div>
+</div>
+    </div>
+
+    <p>The default parser used is <code>kramdown</code>, however, you can select a different one with the <code>:input</code>
+option:</p>
+
+    <div><div class="CodeRay">
+  <div class="code"><pre>puts <span style="color:#036;font-weight:bold">Kramdown</span>::<span style="color:#036;font-weight:bold">Document</span>.new(text, <span style="color:#A60">:input</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">html</span><span style="color:#710">'</span></span>).to_latex
+</pre></div>
+</div>
+    </div>
+
+    <p>You can also reuse the created document object to produce multiple outputs:</p>
+
+    <div><div class="CodeRay">
+  <div class="code"><pre>doc = <span style="color:#036;font-weight:bold">Kramdown</span>::<span style="color:#036;font-weight:bold">Document</span>.new(text, <span style="color:#A60">:input</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">html</span><span style="color:#710">'</span></span>)
+puts doc.to_html
+puts doc.to_latex
+</pre></div>
+</div>
+    </div>
+
+    <p>More information on how to use or extend kramdown can be found in the <a href="rdoc/index.html">API
+documentation</a>!</p>
+  </li>
+  <li>
+    <p><strong>As an application</strong></p>
+
+    <p>Together with the library files a binary called <code>kramdown</code> is shipped which can be used to convert
+text in any supported input format to any supported output format. It either reads from the files
+specified as the command line arguments or from the standard input. For example:</p>
+
+    <pre><code>kramdown path/to/kramdown/doc/syntax.page
+</code></pre>
+
+    <p>The input and output formats as well as all available kramdown options are supported through
+command line switches.</p>
+  </li>
+</ul>
+
+<h2 id="tests">Tests</h2>
+
+<p>kramdown uses various test suites to verify the correct working of the parsers and converters. For
+more information, have a look at the <a href="tests.html">tests document</a>.</p>
+
+
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+    <footer>
+      <div class="float-left">Copyright © 2009-2013 Thomas Leitner</div>
+      <div class="float-right">Generated by <a href="http://webgen.rubyforge.org">webgen</a></div>
+    </footer>
+
+    <!-- Start of StatCounter Code -->
+    <script type="text/javascript">
+      var sc_project=4267845;
+      var sc_invisible=1;
+      var sc_partition=46;
+      var sc_click_stat=1;
+      var sc_security="41321455";
+    </script>
+
+    <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script>
+    <noscript><div class="statcounter">
+        <a title="web counter" class="statcounter" href="http://www.statcounter.com/free_hit_counter.html">
+          <img class="statcounter" src="http://c.statcounter.com/4267845/0/41321455/1/" alt="web counter" />
+        </a>
+    </div></noscript>
+    <!-- End of StatCounter Code -->
+
+  </body>
+</html>

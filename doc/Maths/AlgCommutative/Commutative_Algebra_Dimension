@@ -54,3 +54,14 @@ Application de l'ex: une équation polynômiale f(x,y)=0 sur k a des
 solutions de la forme y=p(x^1/n) où p est une série de Laurent. Si f est
 unitaire en y, p est dans k[[x]]. Si de plus f(0,0)=0, on peut écrire p
 sans terme constant.
+
+Lemme de Normalisation de Noether
+=================================
+
+R affine de dim d sur k
+I_1 \suset ... \subset I_m chaine d'idéaux de dim d_i avec d_1>d_2...>d_m>0
+Alors il existe x_1,...,x_d alg indép tels que
+(i) R/k[x_1,...,x_d] fini
+(ii) I_j \inter k[x_1,...,x_d]=(x_{d_j+1},...,x_d)
+Géométriquement: on a une application finie qui envoit la chaîne de
+variétés affines Spec R/I_i sur une chaîne linéaire.

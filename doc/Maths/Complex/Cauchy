@@ -1,0 +1,56 @@
+Formule de Cauchy homologique:
+
+Homologie
+=========
+
+On dit qu'un cycle est homologue à 0 dans \Omega si I(\Gamma,p)=0 pour tout
+p dans \C \ Omega.
+
+Rem: deux cycles homotopes sont homologues.
+
+Theorem
+=======
+
+Si \Gamma est un cycle homologue à 0 dans \Omega, alors pour toute 1-forme
+fermée w on a \int_Gamma w=0.
+En particulier, si \Gamma_1 et \Gamma_2 sont homologues
+\int_Gamma_1 w=\int_Gamma_2 w.
+
+Application:
+si f est holomorphe dans \Omega, fdz est fermée donc 
+\int_Gamma f(z)dz = 0 si \Gamma homotope à 0 dans \Omega.
+Plus généralement, si a \in \Omega \ im(Gamma):
+I(\Gamma,a) f(a) = 1/(2\pi i) \int_Gamma f(z)/(z-a) dz
+
+Remarque:
+- si \Gamma est homotope à un lacet constant, alors \Gamma est homologue à 0
+=> formule de Cauchy homotopique.
+- si \Gamma est le bord d'un compact K \subset \Omega a bord réguliers,
+  alors \delta K est homologue à 0 dans \Omega.
+
+Résidus
+=======
+
+Soit f holomorphe dans \Omega \ S, S fini. Soit \Gamma un cycle dans \Omega
+\ S, \Gamma homologue à 0 dans \Omega.
+Alors \int_\Gamma f(z)dz = 2 i \pi \sum_{a\in S} I(\Gamma,a) Res(f,a)
+
+Principe de l'argument
+----------------------
+
+Soit f méromorphe sur \Omega et K \subset \Omega compact à bord régulier /
+f n'ait ni pôle ni zéros sur \delta K. Alors
+1/2i\pi \int_{\delta K} f'(z)/f(z) dz=nb zeros - nb poles
+
+Interprétation: si f est holomorphe sur \Omega, alors le nombre de zéros de
+f dans K est donné par 
+\sum I(f o \gamma_i, 0) où \delta K est paramétré par les \gamma_i.
+Ainsi, le nombre de solutions de f(z)=w dans K est donné par le nombre de
+fois que f(z) tourne autour de w quand z parcourt le bord de K.
+
+Plus généralement: si f est un morphisme vers la sphère de Riemann, alors
+on regarde le chemin tracé par fo\gamma. Si il ne passe pas par deux points
+a et b de la sphère, on peut regarder l'indice par de fo\gamma par rapport
+à l'axe définit par (ab). Alors cet indice donne le nombre de fois que f
+passe par a moins le nombre de fois que f passe par b à l'intérieur de K
+(en regardant l'orientation trigonométrique).

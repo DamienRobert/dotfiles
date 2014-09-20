@@ -1,0 +1,86 @@
+Recueil des noms des théorèmes (j'oublie tout le temps les noms
+français...)
+
+Représentations
+===============
+
+Burnside's theorem: every proper algebra of matrices over an algebraically closed field has a non-trivial invariant subspace.
+http://en.wikipedia.org/wiki/Invariant_subspace#Fundamental_theorem_of_noncommutative_algebra
+(One consequence is that every commuting family in L(V) can be simultaneously upper-triangularized.)
+
+Maschke: K[G] est semi-simple si G fini avec card G non divisible par car K.
+
+Algèbre linéaire
+================
+
+Lemme des noyaux:  \somme ker P_i(f)= ker \prod P_i(f)
+si les P_i sont premiers entre eux
+(c'est de la localisation qui ne dit pas son nom...)
+
+Cayley-Hamilton: pol min | pol car
+(outre la preuve classique via Nakayama, une preuve possible est de montrer
+qu'il existe un sous-espace cyclique de dim le degré du pol min; cas
+particulier de la décomposition en classes de similitudes)
+
+Théorème de la décomposition de Dunford — Un endomorphisme u d'un espace
+vectoriel de dimension finie admet un polynôme minimal scindé si et
+seulement s'il peut s'écrire sous la forme u = d + n avec d un
+endomorphisme diagonalisable et n un endomorphisme nilpotent tels que d et
+n commutent (c'est-à-dire dn = nd). De plus d et n sont alors des polynômes
+en u et sont uniques.
+(si k=\C alors le pol min est tjrs scindé donc u=d+n existe toujours)
+Construction: d=\sum \lambda_i \pi_i où \pi_i est la projection sur
+l'espace caractéristique ker(X-lambda_i)^n_i.
+
+Décomposition de Frobenius: la décomposition issu des polynômes de
+similitudes (k[x] est principal); décomposition de Jordan la version avec
+des puissances (sur un corps alg clos on a des (X-lambda)^n_i)
+
+Nilpotent <=> Trace des puissances = 0
+http://math.stackexchange.com/questions/159167/trace-of-powers-of-a-nilpotent-matrix
+(pour le <= il suffit d'avoir la trace de A^k=0 pour k=1..n)
+
+Recursion formula for the higher traces (of exterior product) giving the
+coeffs of the characteristic polynomial:
+http://math.stackexchange.com/questions/23899/formulas-for-the-top-coefficients-of-the-characteristic-polynomial-of-a-matrix
+
+Formules
+========
+
+Résultant: si f=a_n x^n + ... + a_0
+              g=b_m x^m + ... + b_0
+  f=qg+r, r non constant, deg r<deg g
+  alors Res(f,g)=(-1)^(n+m) b_0^(n-deg r) Res(g,r)
+
+CRT: si n_1 et n_2 premiers entre eux, un_1+vn_2=1
+     x=x_1 (n_1), x=x_2 (n_2)
+     Alors x=x_1 vn_2 + x_2 un_1
+            =x_1+un_1(x_2-x_1)
+
+Euclide étendu:
+  r_i=q_{i+1}r_{i+1}+r_2
+  (r_{i+1}; r_{i+2})=(0 1; 1 -q_{i+1})(r_i; r_{i+1})
+                    =(u_{i+1} v_{i+1}; u_{i+2} v_{i+2})(a b)
+  Donc R_{i+1}=Q_{i+1}R_i=UV_{i+1}R_0
+  où UV_i=Q_i Q_{i-1}... Q_0; UV_{i+1}=Q_{i+1} UV_i
+  (on remarque que det Q_i=-1, tr Q_i=-q_i, ie car(Q_i)=X^2-q_iX-1.
+  En particulier det UV=\pm 1, ie u_i et v_i sont premiers entre eux).
+  
+  On a r_i=u_i a+ v_i b; et si r_{k+1}=0, gcd(a,b)=r_k et r_k=u_k a+v_k b
+  On a |u_i|<b/r_i et |v_i|<a/r_i, autrement dit |a/b+v_i/u_i|<1/u^2.
+  Donc les v_i/u_i approximent a/b (fractions continues), et ce sont les
+  seuls qui approximent aussi bien (on va voir qu'on peut faire plus fort)
+
+  Si U_i=(-1)^i u_i, V_i=(-1)^(i+1) v_i (ie on remplace la matrice Q_i par
+  |Q_i| dans les formules de récurrence pour simplifier les signes), on a
+  r_i=(-1)^i (aU_i-bV_i). Or  U_iV_{i+1}-V_{i+1}U_i=(-1)^i, ie
+  V_i/U_i < a/b si i pair, et a/b < V_i/U_i sinon.
+  On a |a/b - V_i/U_i|<1/(U_i U_{i+1}<1/(2U_i^2)
+  Réciproquement, si |a/b-v/u|<1/(2u^2), alors u=U_i et v=V_i.
+
+  Forme polynômiale: deg u_i<deg b-deg (r_i), deg v_i<deg a-deg(r_i). 
+  De manière plus précise: deg u_i=deg b-deg(r_{i-1}) et deg v_i=deg
+  a-deg(r_{i-1}).
+  Réciproquement, si deg(ua+vb)+deg(u)<deg(b), autrement dit si
+  |a/b+v/u|=fraction rationelle de degré < - 2 deg u, alors u=alpha u_i et
+  v=alpha v_i à un facteur constant alpha près.

@@ -1,0 +1,39 @@
+# vim: ft=zsh
+list_merges () {
+	git rev-list --parents "$@" | sed -n 's/ .* .*//p'
+}
+is_ours_merge () {
+	[[ "$(git rev-parse $1:)" == "$(git rev-parse "$1^:")" ]]
+}
+is_their_merge () {
+	[[ "$(git rev-parse $1:)" == "$(git rev-parse "$1^2:")" ]]
+}
+
+findmergebase() {
+	#mergebase=$(git rev-parse --verify "$DOWN^{/Trivial merge from '$UP' .squashed by '$DOWN'.}" 2>/dev/null || git merge-base $DOWN $UP)
+	DOWN=$1; UP=$2
+	mergebase=
+	for commit in $(list_merges $UP..$DOWN)
+	do
+		if is_ours_merge $commit; then
+			subject=$(git show -s --format=%s $commit)
+			case "$subject" in
+				*merging-rebase*)
+				mergebase=$commit
+				break
+				;;
+			esac
+		fi
+		if is_their_merge $commit
+		then
+			subject=$(git show -s --format=%s $commit)
+			case "$subject" in
+				Trivial\ merge*|Trivial\ fast-forward*) 
+				mergebase=$commit
+				break
+				;;
+			esac
+		fi
+	done
+	[[ -z $mergebase ]] && mergebase=$(git merge-base $DOWN $UP)
+}

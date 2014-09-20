@@ -1,0 +1,6 @@
+#It is better to use
+#timedatactl set-local-rtc true
+#to generate /etc/adjtime automatically
+0.0 0.0 0.0
+0
+LOCAL

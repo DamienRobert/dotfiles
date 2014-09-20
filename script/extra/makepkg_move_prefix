@@ -1,0 +1,28 @@
+#!/usr/bin/zsh
+
+rrd() {
+	dir=$1
+	#remove dirs
+	find $dir -depth -type d -print0 | xargs -0 rmdir
+}
+
+rootdir() {
+	local ddir
+	dir=$1
+	ddir=$(dirname $dir)
+	if [[ $ddir == "." || $ddir == "/" ]]; then
+		echo $dir
+	else
+		rootdir $ddir
+	fi
+}
+
+dest=$1
+move=$2
+
+mv $dest/$move/{*,.*}(N) $dest/
+rrd $dest/$(rootdir $move)
+
+#rrd $dest/{$move%%/*}
+#extraclean=$3
+#[[ -n $extraclean ]] && rrd $extraclean

@@ -83,3 +83,10 @@ alpha x beta, donc.
 < et donc, en considérant les adhérences, hop c'était bon. La seule question
 < qui me gênait était: au niveau ensembliste, alpha x beta -> Spec A x Spec B
 < st-elle vraiment une inclusion.
+
+On peut voir aussi de manière géométrique: Spec alpha x beta -> Spec A x
+Spec B est l'image d'un point qui a pour adhérence toute la variété. Pour
+montrer que c'est un point générique il suffit de montrer que c'est une
+immersion, mais \Spec alpha -> A et \Spec beta -> B sont des immersions
+(car ce sont des points), et il me paraît clair que le produit respecte les
+immersions.

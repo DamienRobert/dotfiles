@@ -1,0 +1,21 @@
+#!/bin/zsh
+#arguments: -p -> select chunks to uncommit
+#           files -> files to uncommit
+#           no argument: -> remove commit, and even let you edit the commit
+#           message of the previous commit
+
+opts=()
+while true;
+do
+	case "$1" in
+		-- ) shift; break ;;
+		-p) opts+="-p"; shift ;;
+		*) break;;
+	esac
+done
+
+. ~/mine/script/git/git-topic-helper
+gth_tmp_index
+
+git reset $opts HEAD^ -- "$@"
+git commit --amend --no-verify

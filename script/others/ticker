@@ -1,0 +1,76 @@
+#!/usr/bin/perl
+# -*- perl -*-
+#From: http://perl.plover.com/classes/mybin/samples/MENU.html
+
+use strict;
+use FileHandle;
+# $| = 1;
+
+use Getopt::Std;
+our ($opt_l, $opt_p, $opt_r);
+getopts('lpr');
+#l: print number of lines rather than bits
+#r: rate
+#p: only with -l, print number of pages where a page=66lines
+
+if (eval 'require Time::HiRes') {
+  Time::HiRes->import('time');
+}
+
+my @files = @ARGV;
+my @fhs;
+
+foreach my $f (@files) {
+  my $fh = new FileHandle;
+  if (open $fh, "< $f") {
+    push @fhs, [$f, $fh, 0];
+  } else {
+    warn "Couldn't open file `$f': $!; ignoring.\n";
+  }
+}
+
+die "Couldn't open any files; aborting" unless @fhs;
+
+for (;;) {
+  my $change = 0;
+  my $time = time;
+  foreach my $item (@fhs) {
+    my ($fn, $fh, $fl, $fs, $fl1) = @$item;
+    my $b = 0;
+    seek $fh, 0, 1;
+    while (<$fh>) {
+      if ($opt_l) {
+	$b++ if /\n\z/;
+      } else {
+	$b += length;
+      }
+    }
+    $fl += $b;
+    #print "In fh: $fh, fl=$fl, fs=$fs, b=$b, fn: $fn, fl1: $fl1\n";
+    if ($b) {
+      $fl1 = $fl unless defined $fl1;
+      $fs = "$fn: $fl ";
+      print $fs;
+      printf "%.2f", $fl/66 if $opt_p && $opt_l;
+      printf "%s/s", rate(($fl-$fl1)/($time -$^T)) if $time > $^T && $opt_r;
+      $change = 1;
+      @{$item}[2,3,4] = ($fl, $fs, $fl1);
+      print "\n";
+    } else {
+      #print $fs;
+    }
+  }
+  sleep 5 unless $change;
+}
+
+sub rate {
+  my $r = shift;
+  my @m = (1000000000, 1000000, 1000, 1, .0001, .0000001);
+  my @l = ('G', 'M', 'k', '', 'm', 'u');
+  for (0 .. $#m) {
+    if ($r >= $m[$_]) {
+      return sprintf "%.2f%s", $r/$m[$_], $l[$_];
+    }
+  }
+}
+

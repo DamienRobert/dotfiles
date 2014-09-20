@@ -1,0 +1,120 @@
+Résultants et sous-résultants
+=============================
+
+http://en.wikipedia.org/wiki/Resultant
+http://en.wikipedia.org/wiki/Subresultant#Subresultants
+
+The i-th subresultant polynomial Si(P ,Q) of two polynomials P and Q is a polynomial of degree at most i whose coefficients are polynomial functions of the coefficients of P and Q, and the i-th principal subresultant coefficient si(P ,Q) is the coefficient of degree i of Si(P, Q). They have the property that the GCD of P and Q has a degree d if and only if
+    s_0(P,Q)=\cdots=s_{d-1}(P,Q) =0 \ , s_d(P,Q)\neq 0.
+In this case, Sd(P ,Q) is a GCD of P and Q and
+    S_0(P,Q)=\cdots=S_{d-1}(P,Q) =0.
+Every coefficient of the subresultant polynomials is defined as the determinant of a submatrix of the Sylvester matrix of P and Q. This implies that that subresultants "specialize" well.
+
+# Technical definition
+
+Let P=p_0+p_1 X+\cdots +p_m X^m,\quad Q=q_0+q_1 X+\cdots +q_n X^n.
+be two univariate polynomials with coefficients in a field K. Let us denote by \mathcal{P}_i the K vector space of dimension i the polynomials of degree less than i. For non negative integer i such that i≤m and i≤n, let
+    \varphi_i:\mathcal{P}_{n-i} \times \mathcal{P}_{m-i} \rightarrow \mathcal{P}_{m+n-i}
+be the linear map such that
+    \varphi_i(A,B)=AP+BQ.
+The resultant of P and Q is the determinant of the Sylvester matrix, which is the (square) matrix of \varphi_0 on the bases of the powers of X. Similarly, the i-subresultant polynomial is defined in term of determinants of submatrices of the matrix of \varphi_i.
+
+phi_0 est de rang m+n-deg(pgcd(P,Q)), en particulier phi_0 inversible <=>
+résultant non nul <=> pgcd de degré 0.
+Si le pgcd est de deg i, alors \phi_i est le premier \phi_j inversible.
+
+Avec des preuves/généralisations ici:
+- http://atlas.mat.ub.es/personals/dandrea/jan31.pdf
+  Resultants and Subresultants: Univariate vs. Multivariate Case, Carlos D'Andrea
+- http://domino.mpi-inf.mpg.de/intranet/ag1/ag1publ.nsf/20a0a8aecef76f33c12569e30040d63d/c3a69ddfe0bcbf83c1256fb3004bb90f/$FILE/subresultant.pdf
+  An Elementary Approach to Subresultants Theory, Mohammed El Kahou
+- http://www.math.jussieu.fr/~chardin/publications/textes/07.MultSub.pdf
+  Multivariate Subresultants, Marc Chardin
+- http://www.eecs.berkeley.edu/Pubs/TechRpts/1988/CSD-88-440.pdf
+  Generalized Characteristic Polynomials, John Canny
+- http://arxiv.org/pdf/1307.5330.pdf
+  On Computing the Elimination Ideal Using Resultants with Applications to Gröbner Bases, Matteo Gallet, Hamid Rahkooy, Zafeirakis Zafeirakopoulos
+- http://web.cs.miami.edu/home/strac/root_methods/papers/auz.pdf
+  An Elimination Algorithm for the Computation of All Zeros of a System of Multiv ariate P olynomial Equations W. Auzinger, H. J. Stetter
++ Les pages web de Laurent Busé
+http://www-sop.inria.fr/members/Laurent.Buse/supervisionteaching.html
+et de Marc Chardin
+http://www.math.jussieu.fr/~chardin/textes-pdf.html
+
+Cf aussi le livre Modern Computer Algebra
+
+Cox: Using algebraic geometry
+=============================
+
+# Préliminaires (p.70)
+
+(4.5) Theorem. Let I C \C[X_i] be zero-dimensional,
+m_f the multiplication by f on C[X_i]/I. Alors les valeurs propres de m_f
+sont les valeurs de f sur les points V(I).
+
+Ex: la multiplication de f sur C[X]/g donne le résultant, et le pol car est
+\prod(X-f(\beta_i)) [pas vérifié]; donc en général le pol car de m_f ça doit
+être les prod(X-f(i))_i \in V(I) [pas vérifié]
+
+# Résultant
+
+· (Integer Polynomial) Res(f, g) is an integer polynomial in the coefficients
+of f and g.
+· (Common Factor) Res(f, g) == 0 if and only if f and g have a nontrivial
+common factor in k [x] .
+· (Elimination) There are polynomials A, B in k[x] such that A f + B g =
+Res(f, g). The coefficients of A and B are integer polynomials in the
+coefficients of f and g.
+
+Ex: if f,g \in k[x, y], Res(f,g,x)=Af+Bg \in k[y] donc le résultant est
+dans l'idéal d'élimination (f, g) n k[y], en particulier s'annule sur les
+racines communes.
+
+# Calculs
+
+If f = a_0 x^l + . . . + a_l, g = b_0 x^m + . . . + b_l:
+Res(f,g) = a_0^m b_0^l \prod (alpha_i-beta_i)
+         = a_0^m \prod g(alpha_i)
+         = (-1)^lm b_0^l \prod f(beta_i)
+Res(f,g)=a_0^m dét(multiplication par g dans k[x]/f)
+
+Res(f,g)=dét(Af+Bg: k[x]_{m-1}*k[x]_{l-1} -> k[x]_{l+m-1}
+
+Rem: si g=g' de deg m'<m, Res_{l,m}(f,g)=a_^0^{m-m'} Res_{l,m'}(f,g')
+     Res(f,b_0)=b_0^l,
+     Res(f,g) = (-l)^lm Res(g,f);
+
+If g = q f + r Euclidian division:
+  Res(f, g) == a_0^{m-deg(r)} Res(f, r).
+
+# Résultant homogène
+
+(1.7) Proposition.
+a. Res(F,G) est un polynôme homogène en les coeffs
+b. Over the field of complex numbers, Res(F, G)=0 iff the
+equations F == G == 0 have a non trivial solution (x, y).
+(ie il y a des solutions dans P^1(C))
+
+Pr: soit on n'a pas de perte de degré et on est dans le cas affine, sinon
+il faut plus analyser.
+
+# Résultant multivarié
+
+(2.3) Theorem. If we fix positive degrees d_0, ... d_n , then there is a
+unique polynomial Res \in Z[Ui] which has the following properties:
+a. If F_0, ... , F_n \in C[x_0,..., x_n] are homogeneous of degrees d_0,  d_n ,
+then the equations (2.1) have a nontrivial solution over \C if and only if
+Res(Fo, ... , Fn) = 0.
+b. Res (x_0^d_0 , ... , x_n^d_n) = 1.
+c. Res is irreducible, even when regarded as a polynomial in C[Ui].
+
+(3.1) Theorem. For a fixed j between 0 and n, Res is homogeneous in
+the variables Uj,a (|a|=d_j), of degree d_0x ...x d_{j-1}xd_{j+1}x...xd_n.
+(In the special case when F_i all have the same total degree d > 0,
+the resultant Res_{d,...,d} has degree d^n in the coefficients of each F_i , and its total degree is (n + 1) d^n.)
+
+- f_i(x_0,. . . , x_{n-1}) = F_i(X_0, . . . , X{n-1}, 1).
+- F0_i(X_0,. . . , X_{n-1}) = F0_i(X_0, . . . , X{n-1}, 0).
+(3.4) Theorem. If Res(F0_i) \ne 0, then the quotient ring 
+A = \C[x_i]/(f_0, ..., f_{n-1}) has dimension d_0x...xd_{n-1} as a vector space
+over \C and Res(F_i) = Res(F0_i)^d_n x det(mult_{f_n} : A -> A).

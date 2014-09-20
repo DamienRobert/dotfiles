@@ -1,7 +1,16 @@
 Yoneda
 ======
 
-Si Y=Spec A, alors Hom(X,Y)=Hom(A, \Gamma(X)).
+Si Y=Spec B, alors Hom(X,Y)=Hom(B, \Gamma(X)).
+
+(ça marche pour X schéma ou même espace localement annelé)
+I.e. le foncteur Spec est un adjoint à droite du foncteur sections globales
+Γ:(loc ringed space)→(rings)^op.
+
+Dans l'autre sens:
+Hom(Y,X)=X(Y)=X(B) (=Hom(A,B) si X=Spec A) est le foncteur des points
+(qui pour un anneau A reprèsent l'ensemble des éléments de A satisfaisant
+les "équations" de X)
 
 Localisation des sections globales
 ==================================

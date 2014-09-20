@@ -32,3 +32,9 @@ et comprise entre 0<f(x)<=1 sur E.
   complémentaire à P mais non constante sur chaque intervalle qui
   intersecte P (et la condition avec l'intersection est une condition
   nécessaire à l'existence de g).
+
+En combinant les trois premiers exemples, on doit pouvoir montrer qu'il
+exsite une fonction dérivable partout (de dérivée bornée), dont la dérivée
+s'annule sur un ensemble dense, mais qui n'est monotone nulle part (en
+particulier constante sur aucun intervalle) et a un nombre infini
+dénombrable  de maximums/minimums stricts.

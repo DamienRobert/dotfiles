@@ -1,0 +1,15 @@
+[Unit]
+Description=checkmail on display %I
+PartOf=xsession@.target
+
+[Service]
+Environment=DISPLAY=%I
+#EnvironmentFile=%h/mine/config/services/00Environment
+#ExecStart=/bin/sh -c 'exec %h/mine/script/checkmail --daemon --notify --body'
+ExecStart=/bin/sh -c 'source %h/mine/config/dotfiles/.initenv; exec %h/mine/script/checkmail --daemon --notify --body'
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=xsession@.target
+Also=xwatch@.service

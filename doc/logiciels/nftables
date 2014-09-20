@@ -1,0 +1,5 @@
+http://en.wikipedia.org/wiki/Nftables
+
+nftables is a project providing packet filtering and packet classification on Linux, and it is intended to replace existing iptables, ip6tables, arptables and ebtables frameworks. nftables is a combination of a Linux kernel engine, and a userspace utility.
+
+https://home.regit.org/2014/01/why-you-will-love-nftables/

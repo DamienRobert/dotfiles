@@ -3,9 +3,8 @@
 # gems {{{1
 Dans archlinux, par défaut les gem install se font avec l'option
 --user-install, ce qui installe la gem dans ~/.gem
-J'ai symlinké ça dans ~/opt/ruby
 
-Pour installer dans GEM_HOME (=~/progs-data/ruby), il suffit de faire
+Pour installer dans GEM_HOME,  il suffit de faire
 gem install --no-user-install (ou --no-user)
 
 La gem rubygems-tasks permet de faire des Rakefile avec:
@@ -29,15 +28,21 @@ Pour créer un dossier pour la gem:
    #si on veut markdown il faut utiliser yard plutôt que rdoc car rdoc force le markup à être rdoc
    #gemspec-yml pour faire la spec dans un fichier yaml
    #mini-test pour remplacer rspec qui est le défaut
-#}}}
 
-# Liste {{{1
-* pry: Remplacement d'irb (cf aussi bond pour l'autocomplétion)
-* whenever: Un générateur de crontab
-* microoptparse, *thor*, trollop (pour les options, +optparse dans la stdlib)
-* Nokogiri: xml parser
-* rspec (tests)
-* Mocha or Rspec Mocks(for mock objects), fakefs (fake filesystem)
+Variables disponibles dans les templates (cf generator.rb):
+@root, @project_dir, @name, @scm, 
+@modules, @module_depth, @module,
+@namespace, @namespace_dirs, @namespace_path, @namespace_dir
+@author, @email, @safe_email, @homepage, @uri, @bug_tracker
+@markup, ^markup_ext, @date, @year, @month, @day
+@ignore, @dependencies, @development_dependencies
+@generated_dirs, @generated_files
+
+## Pour pusher sur github:
+hub init -g
+hub create -d 'description'
+git push
+git push --tags
 #}}}
 
 Configuration File: {{{1
@@ -61,18 +66,56 @@ Extension library {{{1
 ----------------
 
 - Active Support (from rails)
+  https://github.com/rails/rails/tree/master/activesupport
   cf: hash deep_merge, timezone in Time
 - Facets
+  https://github.com/rubyworks/facets
   cf: memoization, lazy support
+- https://github.com/flori/tins
+  des mini trucs
 - https://github.com/irongaze/iron-extensions
+  Des extensions, en particulier:
   Une class DSLProxy qui permet de faire des trucs comme
   ploum.instance_eval mais où on peut appeler les méthodes (et variables)
   du self originel, pas seulement celles de ploum
-- https://github.com/flori/tins
-  des mini trucs
 - https://github.com/banister/include_complete
   Des rajouts dans le modèle objet de ruby
-  (genre include_complete pour rajouter les singleton methods)
+  (genre include_complete pour rajouter les singleton methods
+  + cf les liens pour d'autres extensions comme local_eval, gen_eval,
+  dup_eval qui permettent aussi d'évaluer les méthodes du self originel
+      Object2module is one of a series of experimental libraries that mess with the internals of Ruby to bring new and interesting functionality to the language, see also:
+      Remix - Makes ancestor chains read/write
+      Include Complete - Brings in module singleton classes during an include. No more ugly ClassMethods and included() hook hacks.
+      Prepend - Prepends modules in front of a class; so method lookup starts with the module
+      GenEval - A strange new breed of instance_eval
+      LocalEval - instance_eval without changing self
+  )
+- https://github.com/ConradIrwin/lspace
+  Dynamic scoping
+- https://github.com/rapportive-oss/ampex
+  The Ampex (&X) library provides a Metavariable X that can be used in
+  conjunction with the unary ampersand to create anonymous blocks in a
+  slightly more readable way than the default. It was inspired by the clever
+  Symbol#to_proc method which handles the most common case very elegantly,
+  and discussion with Sam Stokes about creating lazy enumerators in ruby.
+- https://github.com/AlexParamonov/inheritance_module_eval
+  Allows to create methods with same name inside particular class/object by
+  pushing them down by inheritance tree. So method "field" may call other
+  "field" in same class by calling super keyword instead of just redefine
+  it.
+  See also:
+  http://solnic.eu/2012/08/13/subclassing-module-for-fun-and-profit.html
+  https://gist.github.com/riccieri/3616434
+- https://github.com/saturnflyer/casting
+   Add behavior to your objects without using extend
+   (ça marche comme un delegate:
+       To use proper delegation, your approach should preserve self as a reference to the original object receiving a method. When the object receiving the forwarded message has its own and separate notion of self, you're working with a wrapper (also called consultation) and not using delegation.
+   En pratique ça utilise le fait que dans ruby2.0 on peut appliquer une unbound method à n'importe quel objet, d'où la possibilité de faire un vrai delegate en appliquant les objets de la classe déléguée au self actuel)
+- https://github.com/txus/traitor
+   Traits in ruby2.0 using refinements
+- https://github.com/danielsdeleo/deep_merge
+    Deep Merge is a simple set of utility functions for Hash. It permits you to merge elements inside a hash together recursively. The manner by which it does this is somewhat arbitrary (since there is no defining standard for this) but it should end up being pretty intuitive and do what you expect.
+    (Très complet)
 }}}1
 
 Launching commands {{{1
@@ -146,6 +189,31 @@ Sur minitest
 Pour avoir plus de formats de sortie
 - https://github.com/davetron5000/clean_test
 Un micro dsl pour minitest (est-ce nécessaire vu qu'on a minitest/spec?)
+- https://github.com/rizzatti/minitest-ansi
+Colorize your minitest output
+- https://github.com/splattael/minitest-around
+Around block for minitest.
+- https://github.com/sobrinho/minitest-colorize
+Colorize MiniTest output and show failing tests instantly
+(Older than minitest-ansi)
+- https://github.com/seattlerb/minitest-debugger
+Wraps assert so failed assertions drop into the ruby debugger
+(I prefer to use pry-rescue)
+- https://github.com/stefanozanella/minitest-filesystem
+Minitest extension for testing filesystem contents
+- https://github.com/mceachen/minitest-great_expectations
+Generally useful additions to minitest's expectations
+- https://github.com/mptre/minitest-implicit-subject
+Implicit declaration of the test subject.
+    describe Object do
+      it 'defines the subject implicitly' do
+        subject.must_equal Object
+      end
+    end
+- https://github.com/wojtekmach/minitest-metadata
+Annotate tests with metadata (key-value)
+- https://github.com/adammck/minitest-stub-const
+Stub constants for the duration of a block in MiniTest.
 }}}1
 
 # Options and commands {{{1
@@ -168,3 +236,8 @@ Facile à comprendre:
 # deployment {{{1
 - https://github.com/nadarei/mina
 # }}}
+
+# Divers: {{{
+- https://github.com/ConradIrwin/showterm
+  Showterm lets your record a terminal session exactly as you experience it, right down to the syntax highlighting.
+}}}

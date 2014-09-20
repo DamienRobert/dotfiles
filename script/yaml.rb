@@ -11,7 +11,4 @@ ARGV.each do |filename|
     #binding.pry
     streams.map {|stream| ap stream; puts "---"}
   end
-  #puts data
-  #pp data
-  #ap data
 end

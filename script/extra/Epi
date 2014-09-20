@@ -1,0 +1,7 @@
+MOVIESEP=x
+SUBSEP=x
+GO=1 #don't ask confirmation
+FORMATSUB=1 #format subtitles
+
+SEASON=01
+EPI=01

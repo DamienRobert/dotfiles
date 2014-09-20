@@ -1,0 +1,49 @@
+#!/usr/bin/env perl
+#Generate playlist in .pls format from .m3u format
+#The advantage of the .pls format it than it can contain meta infos, like
+#the title of the stream
+sub help { 
+  print STDERR <<EOHelp;
+  playlist_generate.pl playlists.m3u playlist.pls génère une playlist.pls avec les infos.ply
+  -a pour concaténer toutes les playlists.mp3
+  sinon ne prend qu'une entrée par playlist
+EOHelp
+};
+
+$all=0;
+while ($_ = $ARGV[0], defined($_) && /^-/) {
+  shift;
+  last if /^--$/;
+  if (/^-h/) { &help(); exit 0 };
+  if (/^-a/) { $all=1 };
+}
+
+$HOME=$ENV{'HOME'};
+$playlist=pop;
+@playorig=@ARGV;
+die "No playlist specified" if ($#playorig eq -1);
+print "Output to: $playlist\n";
+
+open $out, ">$playlist" or die "impossible d'ouvrir $playlist: $!";
+$num=1;
+print $out "[playlist]\n";
+foreach $file (@playorig) {
+  print "$file\n";
+  open $in, "<$file" or die "impossible d'ouvrir $playorig: $!";
+  while (<$in>) {
+    next if (/^#/);
+    print;
+    chomp;
+    print $out "File$num=$_\n";
+    $name=`$HOME/script/mpd/playlist_info.pl $_`;
+    print $name;
+    chomp($name);
+    print $out "Title$num=$name\n" if ($name);
+    print $out "Length$num=-1\n\n";
+    $num++;
+    last if (!$all);
+  }
+}
+$num--;
+print $out "NumberOfEntries=$num\n";
+print $out "Version=2\n";

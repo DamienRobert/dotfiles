@@ -24,6 +24,42 @@ Par exemple, il existe des modèles M de Peano tels que
 M |= [](0=1) (ça existe par Gödel), par contre on n'a pas M |= (0=1) par
 définition.
 
+Goedel formel
+=============
+
+T théorie telle que
+- Si T|-P alors T |- []P
+- T |- []P=>[][]P
+- T |- [](P=>Q)=>[]P=>[]Q
+
+Th de Lob:
+- Si T |- []P=>P alors T |- P
+- T |- []([]P=>P)=>[]P
+
+Soit G l'énoncé de Goedel: G <=> Non [] G
+H l'énoncé de Robinson: H <=> []H
+Consis(T) est l'énoncé Non [] (1=0), NonConsis(T) est l'énoncé [](1=0)
+
+Cor:
+- Si T |- Consis(T) ou si T |- G alors T |- (1=0)
+- Si T |- Non G alors T |- NonConsis(T)
+- T |- []Consis(T) => NonConsis(T)
+- T |- H
+(Moralité, si T |- Non [] Truc, alors T |- Consis(T) donc T est
+inconsistante)
+
+Rem (cf plus haut): si T est w-consistante ou même sigma_1-sound, T ne peut
+pas prouver NonConsis(T), donc T ne prouve ni G, ni Non G. 
+De même Consis(T) est indécidable, donc
+S_0=T+Consis(T) est consistante, mais aussi S_1=T+NonConsis(T)
+(et bien sûr on peut itérer sur S_0 mais pas sur S_1...)
+
+En général (Goedel Rosser),
+soit T une théorie _consistante_, contenant l'arithmétique minimale, et
+récursivement énumérable (ou axiomatisable de façon récursivement
+énumérable, cela revient au même) ; il existe toujours un énoncé G_0 Pi_1
+indécidable dans T.
+
 ==============================================================
 ens.forum.sciences.maths.avancees:2309 et thread associé
 

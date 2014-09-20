@@ -1,0 +1,561 @@
+<!doctype html> 
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]> <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]> <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]> <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Ruby Loops - while, for, until, break, redo and retry</title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<meta name="Keywords" content="Ruby, Tutorials, Learning, Beginners, Basics, Scripting Language, Syntax, Classes, , Variables, Comments, Loops, File, I/O, Functions, Objects, TK, Ranges, iterators, arrays, strings, methods, blocks, Exception, Multi-Threading, Hashes, Modules, LDAP, Web Services, Web Programming." />
+<meta name="description" content="Ruby Loops while, for, until, break, redo and retry - Learning Ruby in simple and easy steps - A beginner's tutorial containing complete knowledge of Ruby Syntax Syntax, Classes, , Variables, Comments, Loops, File, I/O, Functions, Objects, TK, Ranges, iterators, arrays, strings, methods, blocks, Exception, Multi-Threading, Hashes, Modules, LDAP, Web Services, Web Programming." />
+<base href="http://www.tutorialspoint.com" />
+<link rel="stylesheet" type="text/css" href="/scripts/style.css" />
+<link rel="stylesheet" type="text/css" href="/scripts/prettify.css" />
+<script type="text/javascript" src="/scripts/prettify.js"></script>
+<script type="text/javascript" src="/scripts/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/scripts/colorbox.css" />
+<script type="text/javascript" src="/scripts/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="/scripts/tryit.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  var tryit = new $.TryIt('/ruby/try_ruby.php');
+  tryit.compile();
+});
+</script>
+<style media="screen" type="text/css">
+/* Ruby Scheme */
+#topmenu a:link {text-decoration:none;color:#fff !important;background-color:transparent;font-weight:bold;}
+#topmenu a:visited {text-decoration:none;color:#fff !important;background-color:transparent;font-weight:bold;}
+#topmenu a:hover {text-decoration:none;color:#C83932 !important;background-color:transparent;font-weight:bold;}
+#header{ 
+background:#C83932 !important;
+}
+#topmenu
+{
+background-color:#5E0500 !important;
+}
+#leftcol ul.menu li.heading 
+{
+background:#C83932 !important;
+border:1px solid #964800 !important;
+}
+#leftcol, #middlecol, #rightcol {min-height:1500px; padding:0px;}
+</style>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-232293-6";
+urchinTracker();
+</script>
+</head>
+<body onload="prettyPrint()">
+<div id="header">
+<div class="wrapper">
+<h1 class="logo"><a href="/index.htm">Tutorials Point - Simply Easy Learning</a></h1>
+<div id="search">
+<form method="get" id="searchform" name="searchform" action="http://www.google.com/search" target="_blank">
+<input type="hidden" name="sitesearch" value="www.tutorialspoint.com"/>
+<input type="text" name="as_q" id="s" value="Search this site..." onfocus="if (this.value == 'Search this site...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search this site...';}"/>
+<input value="FORID:11" name="cof" type="hidden"/>
+<input type="hidden" name="ie" value="ISO-8859-1" />
+<input class="submit btn" type="image" src="/images/icon-search.png" alt="Go"/>
+</form>
+</div>
+</div>
+</div>
+<div id="topmenu">
+<div class="wrapper">
+<div id="left">
+<a href="/index.htm" target="_top">HOME </a>
+<a href="/java/index.htm" target="_top">JAVA </a>
+<a href="/php/index.htm" target="_top">PHP </a>
+<a href="/python/index.htm" target="_top">Python </a>
+<a href="/ruby/index.htm" target="_top">Ruby </a>
+<a href="/perl/index.htm" target="_top">Perl </a>
+<a href="/html/index.htm" target="_top">HTML </a>
+<a href="/css/index.htm" target="_top">CSS </a>
+<a href="/javascript/index.htm" target="_top">Javascript </a>
+<a href="/mysql/index.htm" target="_top">MySQL </a>
+<a href="/cplusplus/index.htm" target="_top">C++ </a>
+<a href="/unix/index.htm" target="_top">UNIX </a>
+<a href="/more.htm" target="_top">MORE...</a>
+</div>
+<div id="right">
+<a href="/references.htm" target="_top">REFERENCES</a> |
+<a href="/forums/index.php" target="_top">FORUM</a> |
+<a href="/about/index.htm" target="_top">ABOUT</a> |
+<a href="/about/contact_us.htm" target="_top">CONTACT</a>
+</div>
+</div>
+</div>
+<div class="wrapper">
+<div id="leftcol">
+<div class="mini-logo">
+<img src="/images/ruby-mini-logo.png" alt="Ruby Tutorial" />
+</div>
+<ul class="menu">
+<li class="heading">Ruby Basics</li>
+<li><a class="left" target="_top" href="/ruby/index.htm">Ruby Home</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_overview.htm">Ruby Overview</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_environment.htm">Ruby Environment</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_syntax.htm">Ruby Syntax</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_classes.htm">Ruby Classes</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_variables.htm">Ruby Variables</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_operators.htm">Ruby Operators</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_comments.htm">Ruby Comments</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_if_else.htm">Ruby IF...ELSE</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_loops.htm"><b>Ruby Loops</b></a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_methods.htm">Ruby Methods</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_blocks.htm">Ruby Blocks</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_modules.htm">Ruby Modules</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_strings.htm">Ruby Strings</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_arrays.htm">Ruby Arrays</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_hashes.htm">Ruby Hashes</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_date_time.htm">Ruby Date &amp; Time</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_ranges.htm">Ruby Ranges</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_iterators.htm">Ruby Iterators</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_input_output.htm">Ruby File I/O</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_exceptions.htm">Ruby Exceptions</a></li>
+</ul>
+<ul class="menu">
+<li class="heading">Ruby Advanced</li>
+<li><a class="left" target="_top" href="/ruby/ruby_object_oriented.htm">Ruby Object Oriented</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_regular_expressions.htm">Ruby Regular Expressions</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_database_access.htm">Ruby Database Access</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_web_applications.htm">Ruby Web Applications</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_sending_email.htm">Ruby Sending Email</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_socket_programming.htm">Ruby Socket Programming</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_xml_xslt.htm">Ruby/XML, XSLT</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_web_services.htm">Ruby Web Services</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_tk_guide.htm">Ruby/Tk Guide</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_ldap.htm">Ruby/LDAP Tutorial</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_multithreading.htm">Ruby Multithreading</a></li>
+</ul>
+<ul class="menu">
+<li class="heading">Ruby Useful Resources</li>
+<li><a class="left" target="_top" href="/ruby/ruby_quick_guide.htm">Ruby Quick Guide</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_builtin_functions.htm">Ruby Built-in Functions</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_predefined_variables.htm">Ruby Predefined Variables</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_predefined_constants.htm">Ruby Predefined Constants</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_associated_tools.htm">Ruby Associated Tools</a></li>
+<li><a class="left" target="_top" href="/ruby/ruby_resources.htm">Ruby Useful Resources</a></li>
+<li><a class="left" target="_top" href="/ruby-on-rails/index.htm">Ruby on Rails Tutorial</a></li>
+</ul>
+<ul class="menu">
+<li class="sreading">Selected Reading</li>
+<li><a target="_top" href="/developers_best_practices/index.htm">Developer's Best Practices</a></li>
+<li><a target="_top" href="/effective_resume_writing.htm">Effective Resume Writing</a></li>
+<li><a target="_top" href="computer_glossary.htm">Computer Glossary</a></li>
+<li><a target="_top" href="computer_whoiswho.htm">Who is Who</a></li>
+</ul>
+</div><!-- leftcol -->
+<div id="middlecol">
+<!-- PRINTING STARTS HERE -->
+<div class="content">
+<h1>Ruby Loops - while, for, until, break, redo and retry</h1>
+<div class="topgooglead">
+<div style="padding-bottom:5px;padding-left:10px;">Advertisements</div>
+<script type="text/javascript"><!--
+google_ad_client = "pub-7133395778201029";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "image";
+google_ad_channel = "";
+//--></script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> 
+</script>
+</div>
+<hr />
+<div class="pre-btn">
+<a href="/ruby/ruby_if_else.htm">Previous Page</a>
+</div>
+<div class="nxt-btn">
+<a href="/ruby/ruby_methods.htm">Next Page</a>
+</div>
+<div class="clearer"></div>
+<hr />
+<p>Loops in Ruby are used to execute the same block of code a specified number of times. This chapter details all the loop statements supported by Ruby.</p>
+<h2>Ruby <i>while</i> Statement:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+while conditional [do]
+   code
+end
+</pre>
+<p>Executes <i>code</i> while <i>conditional</i> is true. A <i>while</i> loop's <i>conditional</i> is separated from <i>code</i> by the reserved word do, a newline, backslash \, or a semicolon ;.</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+$i = 0
+$num = 5
+
+while $i &lt; $num  do
+   puts("Inside the loop i = #$i" )
+   $i +=1
+end
+</pre>
+<p>This will produce following result:</p>
+<pre class="prettyprint">
+Inside the loop i = 0
+Inside the loop i = 1
+Inside the loop i = 2
+Inside the loop i = 3
+Inside the loop i = 4
+</pre>
+<h2>Ruby <i>while</i> modifier:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+code while condition
+
+OR
+
+begin 
+  code 
+end while conditional
+</pre>
+<p>Executes <i>code</i> while <i>conditional</i> is true.</p> 
+<p>If a <i>while</i> modifier follows a <i>begin</i> statement with no <i>rescue</i> or ensure clauses, <i>code</i> is executed once before conditional is evaluated.</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+$i = 0
+$num = 5
+begin
+   puts("Inside the loop i = #$i" )
+   $i +=1
+end while $i &lt; $num
+</pre>
+<p>This will produce following result:</p>
+<pre class="prettyprint">
+Inside the loop i = 0
+Inside the loop i = 1
+Inside the loop i = 2
+Inside the loop i = 3
+Inside the loop i = 4
+</pre>
+<h2>Ruby <i>until</i> Statement:</h2>
+<pre class="prettyprint">
+until conditional [do]
+   code
+end
+</pre>
+<p>Executes <i>code</i> while <i>conditional</i> is false. An <i>until</i> statement's conditional is separated from <i>code</i>
+by the reserved word <i>do</i>, a newline, or a semicolon.</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+$i = 0
+$num = 5
+
+until $i &gt; $num  do
+   puts("Inside the loop i = #$i" )
+   $i +=1;
+end
+</pre>
+<p>This will produce following result:</p>
+<pre class="prettyprint">
+Inside the loop i = 0
+Inside the loop i = 1
+Inside the loop i = 2
+Inside the loop i = 3
+Inside the loop i = 4
+Inside the loop i = 5
+</pre>
+<h2>Ruby <i>until</i> modifier:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+code until conditional
+
+OR
+
+begin
+   code
+end until conditional
+</pre>
+<p>Executes <i>code</i> while <i>conditional</i> is false.</p>
+<p>If an <i>until</i> modifier follows a <i>begin</i> statement with no <i>rescue</i> or ensure clauses, <i>code</i> is executed once before <i>conditional</i> is evaluated.</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+$i = 0
+$num = 5
+begin
+   puts("Inside the loop i = #$i" )
+   $i +=1;
+end until $i &gt; $num
+</pre>
+<p>This will produce following result:</p>
+<pre class="prettyprint">
+Inside the loop i = 0
+Inside the loop i = 1
+Inside the loop i = 2
+Inside the loop i = 3
+Inside the loop i = 4
+Inside the loop i = 5
+</pre>
+<h2>Ruby <i>for</i> Statement:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+for variable [, variable ...] in expression [do]
+   code
+end
+</pre>
+<p>Executes <i>code</i> once for each element in <i>expression</i>.</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+for i in 0..5
+   puts "Value of local variable is #{i}"
+end
+</pre>
+<p>Here we have defined the range 0..5. The statement for i in 0..5 will allow i to take values in the range from 0 to 5 (including 5).This will produce following result:</p>
+<pre class="prettyprint">
+Value of local variable is 0
+Value of local variable is 1
+Value of local variable is 2
+Value of local variable is 3
+Value of local variable is 4
+Value of local variable is 5
+</pre>
+<p>A <i>for...in</i> loop is almost exactly equivalent to:</p>
+<pre class="prettyprint">
+(expression).each do |variable[, variable...]| code end
+</pre>
+<p>except that a for loop doesn't create a new scope for local variables. A for loop's <i>expression</i> is separated from <i>code</i> by the reserved word do, a newline, or a semicolon.</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+(0..5).each do |i|
+   puts "Value of local variable is #{i}"
+end
+</pre>
+<p>This will produce following result:</p>
+<pre class="prettyprint">
+Value of local variable is 0
+Value of local variable is 1
+Value of local variable is 2
+Value of local variable is 3
+Value of local variable is 4
+Value of local variable is 5
+</pre>
+<h2>Ruby <i>break</i> Statement:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+break
+</pre>
+<p>Terminates the most internal loop. Terminates a method with an associated block if called within the block (with the method returning nil).</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+for i in 0..5
+   if i &gt; 2 then
+      break
+   end
+   puts "Value of local variable is #{i}"
+end
+</pre>
+<p>This will produce following result:</p>
+<pre class="prettyprint">
+Value of local variable is 0
+Value of local variable is 1
+Value of local variable is 2
+</pre>
+<h2>Ruby <i>next</i> Statement:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+next
+</pre>
+<p>Jumps to next iteration of the most internal loop. Terminates execution of a block if called within a block (with <i>yield</i> or call returning nil).</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+for i in 0..5
+   if i &lt; 2 then
+      next
+   end
+   puts "Value of local variable is #{i}"
+end
+</pre>
+<p>This will produce following result:</p>
+<pre class="prettyprint">
+Value of local variable is 2
+Value of local variable is 3
+Value of local variable is 4
+Value of local variable is 5
+</pre>
+<h2>Ruby <i>redo</i> Statement:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+redo
+</pre>
+<p>Restarts this iteration of the most internal loop, without checking loop condition. Restarts <i>yield</i> or <i>call</i> if called within a block.</p>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+for i in 0..5
+   if i &lt; 2 then
+      puts "Value of local variable is #{i}"
+      redo
+   end
+end
+</pre>
+<p>This will produce following result and will go in an infinite loop:</p>
+<pre class="prettyprint">
+Value of local variable is 0
+Value of local variable is 0
+............................
+</pre>
+<h2>Ruby <i>retry</i> Statement:</h2>
+<h2>Syntax:</h2>
+<pre class="prettyprint">
+retry
+</pre>
+<p>If <i>retry</i> appears in rescue clause of begin expression, restart from the beginning of the 1begin body.</p>
+<pre class="prettyprint">
+begin
+   do_something # exception raised
+rescue
+   # handles error
+   retry  # restart from beginning
+end
+</pre>
+<p>If retry appears in the iterator, the block, or the body of the for expression, restarts the invocation of the iterator call. Arguments to the iterator is re-evaluated.</p>
+<pre class="prettyprint">
+for i in 1..5
+   retry if some_condition # restart from i == 1
+end
+</pre>
+<h2>Example:</h2>
+<pre class="prettyprint tryit">
+#!/usr/bin/ruby
+
+for i in 1..5
+   retry if  i &gt; 2
+   puts "Value of local variable is #{i}"
+end
+</pre>
+<p>This will produce following result and will go in an infinite loop:</p>
+<pre class="prettyprint">
+Value of local variable is 1
+Value of local variable is 2
+Value of local variable is 1
+Value of local variable is 2
+Value of local variable is 1
+Value of local variable is 2
+............................
+</pre>
+<hr />
+<div class="pre-btn">
+<a href="/ruby/ruby_if_else.htm">Previous Page</a>
+</div>
+<div class="print-btn">
+<a href="/cgi-bin/printpage.cgi" target="_blank">Print Version</a>
+</div>
+<div class="pdf-btn">
+<a href="/ruby/pdf/ruby_loops.pdf" alt="Ruby Loops - while, for, until, break, redo and retry" target="_blank">PDF Version</a>
+</div>
+<div class="nxt-btn">
+<a href="/ruby/ruby_methods.htm">Next Page</a>
+</div>
+<div class="clearer"></div>
+<hr />
+</div>
+<!-- PRINTING ENDS HERE -->
+<div class="bottomgooglead">
+<div style="padding-bottom:5px;padding-left:10px;">Advertisements</div>
+<script type="text/javascript"><!--
+google_ad_client = "pub-7133395778201029";
+google_ad_width = 336;
+google_ad_height = 280;
+google_ad_format = "336x280_as";
+google_ad_type = "text";
+google_ad_channel ="9030538898";
+google_color_border="ffffff";
+google_color_link="900b09";
+google_color_url="000000";
+google_color_text="000000";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div>
+</div><!-- middlecol -->
+<div id="rightcol">
+<!-- AddThis Button BEGIN -->
+<div class="addthis">
+<div class="addthis_toolbox addthis_default_style">
+<a class="addthis_button_facebook"></a>
+<a class="addthis_button_twitter"></a>
+<script type="text/javascript">
+<!--
+ document.write('<a class="addthis_button_google_plusone" g:plusone:count="false"></a>');
+//-->
+</script>
+<a class="addthis_button_linkedin"></a>
+<a class="addthis_button_email"></a>
+<a class="addthis_button_compact"></a>
+</div>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4f661ec623a400f0"></script>
+</div>
+<!-- AddThis Button END -->
+<div class="localad">
+<a rel="nofollow" href="http://www.modernindianbabynames.com/" target="_blank" title="Modern Baby Names">Modern Baby Names</a>
+</div>
+<div class="localad">
+<a rel="nofollow" href="http://www.photofuntoos.com/" target="_blank" title="Online Photo Editing">Online Photo Editing</a>
+</div>
+<div class="rightgooglead">
+<div style="padding-bottom:5px;padding-left:10px;">Advertisements</div>
+<script type="text/javascript"><!--
+google_ad_client = "pub-7133395778201029";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "image";
+google_ad_channel ="";
+//--></script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> 
+</script>
+</div>
+</div><!-- rightcol -->
+<div style="clear:both;"></div>
+</div><!-- wrapper -->
+<div id="footer">
+<div class="wrapper">
+<div id="bottommenu">
+<a href="/asp.net/index.htm" target="_top">ASP.NET </a> |
+<a href="/jquery/index.htm" target="_top">jQuery </a> |
+<a href="/ajax/index.htm" target="_top">AJAX </a> |
+<a href="/ant/index.htm" target="_top">ANT</a> |
+<a href="/jsp/index.htm" target="_top">JSP </a> |
+<a href="/servlets/index.htm" target="_top">Servlets </a> |
+<a href="/log4j/index.htm" target="_top">log4j </a> |
+<a href="/ibatis/index.htm" target="_top">iBATIS </a> |
+<a href="/hibernate/index.htm" target="_top">Hibernate </a> |
+<a href="/jdbc/index.htm" target="_top">JDBC </a> |
+<a href="/struts_2/index.htm" target="_top">Struts </a> |
+<a href="/html5/index.htm" target="_top">HTML5 </a> |
+<a href="/sql/index.htm" target="_top">SQL </a> |
+<a href="/mysql/index.htm" target="_top">MySQL </a> |
+<a href="/cplusplus/index.htm" target="_top">C++ </a> |
+<a href="/unix/index.htm" target="_top">UNIX </a>
+</div>
+<div id="copyright">
+<p>Copyright &copy; 2013 by tutorialspoint. All Rights Reserved.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

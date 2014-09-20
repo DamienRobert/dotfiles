@@ -1,0 +1,67 @@
+#!/bin/zsh
+echo "## -> Xorg (~/.xprops ~/.Xresources.local)"
+
+eval $($MYFILES/00COMPUTERS.rb --export=xorg)
+HORIZ=$XORG[horiz]
+FONTTYPE=$XORG[fonttype]
+FONTSIZE=$XORG[fontsize]
+VERT=$XORG[vert]
+GVERT=$XORG[gvert]
+SFONTSIZE=$XORG[sfontsize]
+SVERT=$XORG[svert]
+DEFAULTDM=$XORG[dm]
+GFONTSIZE=$XORG[gfontsize]
+
+if [[ -n $DISPLAY && -n $DBUS_SESSION_BUS_ADDRESS ]]; then
+	. $CFGFILES/generate/extra/.dmsettings
+else
+	echo "dm: you need to be under a dm session to launch .dmsettings"
+fi
+
+FILE="$HOME/.xprops"
+mv $FILE "$FILE.old"
+touch $FILE
+cat >>$FILE <<EOF
+#Generated: @$(date --iso-8601=seconds)
+FONT="${FONTTYPE}:size=${FONTSIZE}"
+SFONT="${FONTTYPE}:size=${SFONTSIZE}"
+XTERMG="${HORIZ}x${VERT}"
+GTERMG="${HORIZ}x${GVERT}"
+SXTERMG="${HORIZ}x${SVERT}"
+DEFAULTDM="${DEFAULTDM}"
+
+GEODR="-0-0"
+GEODL="+0-0"
+GEOUR="-0+0"
+GEOUL="+0+0"
+EOF
+
+. $HOME/.xprops
+
+FILE="$HOME/.Xresources.local"
+mv $FILE "$FILE.old"
+touch $FILE
+
+cat >>$FILE <<EOF
+!Generated: @$(date --iso-8601=seconds)
+URxvt.font: xft:$FONT
+*vt100.faceName: "$FONT"
+*vt100.geometry: $XTERMG
+beta*.vt100.faceName: "$SFONT"
+
+alpha.vt100.geometry: ${XTERMG}${GEODL}
+alpha2.vt100.geometry: ${XTERMG}${GEODR}
+
+betadr.vt100.geometry: ${SXTERMG}${GEODR}
+betadl.vt100.geometry: ${SXTERMG}${GEODL}
+betaur.vt100.geometry: ${SXTERMG}${GEOUR}
+betaul.vt100.geometry: ${SXTERMG}${GEOUL}
+
+Xft.rgba: ${XORG[Xft_rgba]}
+Xft.hinting: ${XORG[Xft_hinting]}
+Xft.autohint: ${XORG[Xft_autohint]}
+Xft.hintstyle: ${XORG[Xft_hintstyle]}
+Xft.antialias: ${XORG[Xft_antialias]}
+Xft.lcdfilter: ${XORG[Xft_filter]}
+${XORG[Xresources]}
+EOF
