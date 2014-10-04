@@ -21,7 +21,8 @@ can not guaranty this is always the case.
 
 Anyway I view this repository as a way for people to find some examples of
 config files and quick and dirty scripts. I doubt this will be interesting
-to many people! For more concrete programs, look at my other github
+to many people! The most interesting files are probably those in
+script/git. For more concrete programs, look at my other github
 repositories.
 
 Obligatory warning:
