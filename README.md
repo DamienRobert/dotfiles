@@ -1,3 +1,5 @@
+# Dotfiles
+
 This repository contain dotfiles files and custom scripts.
 
 - bin: symlinks to scripts that I use often, in my `PATH`. Some symlinks
@@ -25,7 +27,11 @@ to many people! The most interesting files are probably those in
 script/git. For more concrete programs, look at my other github
 repositories.
 
-Obligatory warning:
+## Copyright
+
+Copyright © 2007-2014 Damien Robert
+
+MIT License. Obligatory warning:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
