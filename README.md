@@ -29,7 +29,7 @@ repositories.
 
 ## Copyright
 
-Copyright © 2007-2014 Damien Robert
+Copyright © 2007–2014 Damien Robert
 
 MIT License. Obligatory warning:
 
