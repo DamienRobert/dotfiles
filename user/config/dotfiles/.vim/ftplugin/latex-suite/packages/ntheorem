@@ -1,0 +1,21 @@
+if exists("ntheorem_package_file")
+	finish
+endif
+let ntheorem_package_file = 1
+
+let TeX_package_option_ntheorem = ''
+
+let TeX_package_ntheorem =
+\ 'env:proof,'
+\.'nor:swapnumbers,'
+\.'brd:newtheorem,'
+\.'brd:newtheorem*,'
+\.'nor:theoremstyle{plain},'
+\.'nor:theoremstyle{definition},'
+\.'nor:theoremstyle{remark},'
+\.'nor:newtheoremstyle,'
+\.'nor:qedsymbol,'
+\.'nor:qed,'
+\.'nor:qedhere'
+
+" vim:ft=vim:ff=unix:

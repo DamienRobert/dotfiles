@@ -1,9 +1,7 @@
 #!/bin/sh
 
 process() {
-    #[ -e /usr/lib/seahorse/seahorse-ssh-askpass ] && export SUDO_ASKPASS="/usr/lib/seahorse/seahorse-ssh-askpass";
-    #sudo -A cat /dev/null
-    systemctl "$1" &
+    systemctl "$@"
     exec dm-tool lock
 }
 
@@ -11,7 +9,5 @@ case "$1" in
   logout ) exec xfce4-session-logout --logout ;;
   dialog ) exec xfce4-session-logout ;;
   lock ) exec dm-tool lock ;;
-  * ) process "$1" ;;
+  * ) process "$@" ;;
 esac
- 
-#exec gnome-session-save --gui

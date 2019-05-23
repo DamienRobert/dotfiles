@@ -1,0 +1,148 @@
+#!/usr/bin/env ruby
+require 'dr/sh'
+
+module DR
+	module NotMuch
+		extend self
+
+		@maildir=ENV['MAILDIR'] ? Pathname.new(ENV['MAILDIR']) : Pathname.new(ENV['HOME'])+"Mail"
+		@notmuchdir=Pathname.new(ENV['NOTMUCH'] ? ENV['NOTMUCH'] : @maildir)
+
+		def tag(**opts)
+			return unless SH.find_executable('notmuch')
+			notmuchdir=Pathname.new(opts[:dir] || @notmuchdir)
+			notmuchdir=Pathname.pwd+notmuchdir if notmuchdir.relative?
+			ENV['MAILDIR']=notmuchdir.to_s
+			opts[:archive] ||= notmuchdir.basename.to_s.match(/archives/)
+
+			if opts[:dryrun]
+				sh=SH::ShDryRun
+			else
+				sh=SH::Sh
+			end
+			SH.debug if opts[:debug]
+
+			unprocessed='tag:unprocessed'
+			unprocessed_not_empty=unprocessed
+			# to prevent an empty query
+			if opts[:all]
+				unprocessed=''
+				unprocessed_not_empty="*"
+			end
+
+			emails=["Damien Robert"]
+			emails+=([%x/notmuch config get user.primary_email/.chomp]+
+				%x/notmuch config get user.other_email/.split("\n")).compact
+
+			maildirs=[]
+			Dir.chdir(notmuchdir) do
+				maildirs=Pathname.glob('**/cur').map {|d| d.dirname}
+			end
+
+			rootnames={}
+			maildirs.each do |m|
+				root=m.descend.first
+				(rootnames[root]||=[]) << m
+			end
+
+			if opts[:clean]
+				tags=%w(all inbox ml spam mailer postponed)
+				tags+=rootnames.keys
+				return Sh.sh("notmuch tag -#{tags.map {|t| "-#{t}"}.join(' ')} -- #{unprocessed_not_empty}")
+			end
+
+			drafts=maildirs.select {|m| m.basename.to_s.match(/^[dD]raft|^[pP]ostponed/)}
+			spamdirs=maildirs.select {|m| m.basename.to_s.match(/^(.*[sS]pam|[Jj]unk|Pubs)/)}
+			mailerdirs=maildirs.select {|m| m.basename.to_s.match(/^[mM]ailer|[mM]ail_[dD]aemon/)}
+			chatsdirs=maildirs.select {|m| m.basename.to_s.match(/^[cC]hats/)}
+			mldirs=maildirs.select {|m| m.each_filename.any? {|f| f.to_s.match(/^ML/)}}
+			inboxes=maildirs.select {|m| m.basename.to_s.match(/^[iI]nbox/) or
+				m.basename.to_s.match(/^[sS]ent/) or
+				m.basename.to_s.match(/^robertdamien@yahoo.com/) or
+				m.to_s.match(%r{ploum.plam@gmail/accounts})
+			} - drafts - spamdirs - mailerdirs - chatsdirs - mldirs
+
+			if opts[:archive]
+				mailerdirs += maildirs.select do |m|
+					m.to_s.match(%r{microsoft/backup-2012-02/(Local Failures|Sync Issues)|clipper/Divers/(Daemon|Control)})
+				end
+				chatsdirs += maildirs.select do |m|
+					m.to_s.match(%r{Conversation})
+				end
+				mldirs += maildirs.select do |m|
+					m.basename.to_s=="u-bordeaux1" or
+						m.to_s.match(%r{loria/(Monitorat|Scolarite|commits)}) or
+						m.to_s.match(%r{phare/old/cacao_archive}) or
+						m.to_s.match(%r{microsoft/backup-2012-02/(CryptoGroup|MSInfo|Read|Talks)}) or
+						m.to_s.match(%r{clipper/(Collectif|MAILINGLISTS|.*Mailco|Autres/Yahoo/SauvonsLaRecherche)})
+				end
+				inboxes += maildirs.select do |m|
+					m.dirname.to_s=='4a' or
+						m.to_s.match(%r{loria/(These|loria)}) or
+						m.to_s.match(%r{microsoft/backup-2010-09}) or
+						m.to_s.match(%r{microsoft/backup-2012-02/(Admin|Helpdesk|Inbox|Meetings|Perso|Scans|Travel|Work)}) or
+						m.to_s.match(%r{clipper/(200|INBOX|Perso|Scolarite|Vie_Pratique|Autres/Yahoo|.*Colles|Divers/Divers)})
+				end
+				inboxes -= mldirs + mailerdirs
+			end
+
+			nmquery=lambda do |tag, array, join: ' or '|
+				r=array.map{|a| "#{tag}:#{a}"}.join(join)
+				r="(#{r})".shellescape unless r.empty?
+				r
+			end
+
+			if opts[:debug]
+				puts "Inboxes: #{inboxes.join(" ")}"
+				puts "ML: #{mldirs.join(" ")}"
+				puts "Chats: #{chatsdirs.join(" ")}"
+				puts "Drafts: #{drafts.join(" ")}"
+				puts "Spam: #{spamdirs.join(" ")}"
+				puts "Mailer: #{mailerdirs.join(" ")}"
+				puts "None: #{(maildirs-inboxes-mldirs-chatsdirs-drafts-spamdirs-mailerdirs).join(" ")}"
+			end
+
+			sh.sh("notmuch tag +all -- #{unprocessed_not_empty}")
+			sh.sh("notmuch tag +postponed -- #{unprocessed} #{nmquery.("folder", drafts)}")
+			sh.sh("notmuch tag +spam -- #{unprocessed} #{nmquery.("folder", spamdirs)}")
+			sh.sh("notmuch tag +chats -- #{unprocessed} #{nmquery.("folder", chatsdirs)}")
+			sh.sh("notmuch tag +mailer -- #{unprocessed} #{nmquery.("folder", mailerdirs)}")
+			sh.sh("notmuch tag +inbox -- #{unprocessed} #{nmquery.("folder", inboxes)}")
+			sh.sh("notmuch tag +ml -- #{unprocessed} #{nmquery.("folder", mldirs)}")
+			sh.sh("notmuch tag +sent -- #{unprocessed} #{nmquery.("from", emails)}")
+			sh.sh("notmuch tag +received -- #{unprocessed} #{nmquery.("to", emails)}")
+
+			rootnames.each do |r,m|
+				sh.sh("notmuch tag +#{r} -- #{unprocessed} #{nmquery.("folder", m)}")
+			end
+
+			sh.sh("notmuch tag -unprocessed -- #{unprocessed_not_empty}")
+		end
+	end
+end
+
+if __FILE__ == $0
+	require 'optparse'
+	opts={}
+	optparse = OptionParser.new do |opt|
+		opt.banner= "#{File.basename($0)} [options]"
+		opt.on("--dir=dir", "Notmuch directory") do |v|
+			opts[:dir]=v
+		end
+		opt.on("--all", "Tag everything") do |v|
+			opts[:all]=v
+		end
+		opt.on("--clean", "Clean tags") do |v|
+			opts[:clean]=v
+		end
+		opt.on("--dryrun", "Dry run") do |v|
+			opts[:dryrun]=v
+		end
+		opt.on("--[no-]debug", "debug") do |v|
+			opts[:debug]=v
+		end
+	end
+	optparse.parse!
+
+	DR::NotMuch.tag(**opts)
+end

@@ -1,0 +1,8 @@
+#console
+loadkeys fr
+loadkeys fr-latin9
+setfont lat1-16
+showconsolefont
+
+Fonts are in /usr/share/kbd/consolefonts/
+Keymaps are in /usr/share/kbd/keymaps

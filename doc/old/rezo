@@ -1,0 +1,12 @@
+echo nameserver 10.10.159.254 > /etc/resolv.conf
+
+Et pour le routeur :
+
+route add default gw 10.10.159.254
+
+sudo ifconfig eth0 10.10.159.211 netmask=255.255.252.0
+
+Ajoute « broadcast 10.10.159.255 », ça vaut mieux.
+
+Gondolin ~ $ host clipper.ens.fr
+clipper.ens.fr has address 129.199.129.1

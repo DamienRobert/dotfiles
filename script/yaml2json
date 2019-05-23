@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'yaml'
+require 'optparse'
+require 'ap'
+
+opts={mode: :yaml}
+optparse = OptionParser.new do |opt|
+	opt.banner = "Convert yaml to json"
+	opt.on("-y", "--yaml", "yaml to json", "Default") do |v|
+		opts[:mode]=:yaml
+	end
+	opt.on("-j", "--json", "json to yaml") do |v|
+		opts[:mode]=:json
+	end
+	opt.on("-s", "--streams", "Show yaml streams") do |v|
+		opts[:mode]=:streams
+	end
+end
+optparse.parse!
+
+ARGV.each do |filename|
+	if filename=="-"
+		data=STDIN.read
+	else
+		data=File.read(filename)
+	end
+	case opts[:mode]
+	when :json
+		json = JSON.parse(data)
+		yml = YAML.dump(json)
+		puts yml
+	when :streams
+		puts "-- #{filename} --"
+		File.open(filename) do |file|
+			streams=YAML.load_stream(file);
+			#binding.pry
+			streams.map {|stream| ap stream; puts "---"}
+		end
+	else
+		yml = YAML.load(data)
+		json = JSON.dump(yml)
+		puts json
+	end
+end

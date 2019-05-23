@@ -1,7 +1,0 @@
-# l -- find file names, recursively
-# 20jun2012  +chris+  take an directory as possible last argument
-lsfind() {
-  local p=$argv[-1]
-  [[ -d $p ]] && { argv[-1]=(); } || p='.'
-  find $p ! -type d | sed 's:^./::' | egrep "${@:-.}"
-}

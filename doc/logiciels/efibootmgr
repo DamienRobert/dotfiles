@@ -1,1 +1,0 @@
-efibootmgr -c -o 1 -g -w -l "\EFI\gummiboot\gummibootx64.efi" -L gummiboot  -d /dev/sdb -p 1

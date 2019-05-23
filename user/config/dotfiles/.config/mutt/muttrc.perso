@@ -1,0 +1,76 @@
+# vim: fdm=marker
+
+# From
+# ====
+
+#Le nom (par défaut le gecos); sert dans le from, sauf s'il y a un déjà un from=
+set realname="Damien Robert"
+set from="Damien Robert <damien.olivier.robert@gmail.com>"
+
+#mes adresses
+alternates -group me -group me_perso "damien\.robert.*@(.*normalesup|nsup)\.org" \
+  "robert@phare\.normalesup\.org" \
+  "(damien\.)?robert@quatramaran\.salle-s\.org"
+
+alternates -group me -group me_work "damien\.robert@.*inria\.fr" \
+ "damien\.robert@maths?\.u-bordeaux1?\.fr" \
+ "damien\.robert@u-bordeaux\.fr" \
+ "drobert@math\.cnrs\.fr"
+
+alternates -group me -group me_gmail "ploum\.?plam.*@gmail\.com" \
+  "robertdami.*@gmail\.com" \
+  "damien\.?olivier\.?robert.*@gmail\.com" \
+  "olympe\.marie\.robert.*@gmail\.com"
+
+alternates -group me "robertdamien@yahoo.com"
+
+#color header green default "(damien\.?)?robert@[a-zA-Z.]*"
+# color header green default "robert"
+
+# Custom headers
+# ==============
+
+send-hook . 'my_hdr X-Start-Date: `date -R`'
+my_hdr X-PGP-Key: http://www.normalesup.org/~robert/pro/files/Damien_Olivier_Robert.asc
+
+# Spam
+# ====
+
+#apparemment, le white listing a été enlevé, donc le spam-co ne sert plus
+spam "^X-Collectif-Spam-Status: .*, score=([2-9][0-9.]*)" "Spam-co: %1"
+spam "^X-Spam-Status: .*, score=([2-9][0-9.]*)" "Spam: %1"
+
+# Macros
+# ======
+# Menus: http://www.mutt.org/doc/manual/#concept-screens-and-menus
+# https://dev.mutt.org/doc/manual.html#generic-map
+# index, pager, browser, alias, query, attachment, compose, postpone, pgp, smime, editor
+# generic = all - (pager, editor)
+set my_confscript=$my_confdir/config.rb
+
+#More doc (F1 gives mutt's manual)
+macro generic,pager <f2> "<shell-escape>less $my_confdir/doc/pattern<enter>" "Mutt Pattern"
+
+#load imap accounts (mailbox imap)
+#(I rarely use them so no need to load them each time)
+macro index,pager,browser ,mi "<enter-command>source '$my_confscript imap |'<enter>" "Imap Accounts"
+macro index,pager,browser ,mI "<enter-command>unmailboxes imap<enter-command>//* <enter>" "Clear imap mailboxes"
+#looks at mailboxes from offlineimap (mailbox offlineimap)
+macro index,pager,browser ,mo "<enter-command>source '$my_confscript mailboxes offlineimap |'<enter>" "Mailboxes from offlineimap"
+macro index,pager,browser ,mC "<enter-command>unmailboxes * <enter>" "Clear all mailboxes"
+# config.rb<enter-command> ,mV to clear virtual mailboxes
+
+# imap logout (mailbox logout)
+bind index,pager ,ml imap-logout-all
+
+#switch to sendmailssh
+macro index,pager,compose ,lh "<enter-command>source '$my_confscript smtp ssh |'<enter>" "send mail via ssh"
+# select my smtp
+macro index,pager,compose ,lm "<enter-command>source '$my_confscript smtp |" "select smtp"
+macro index,pager ,ls "<enter-command>source '$my_confscript |" "call config.rb"
+
+# Settings
+# ========
+
+set folder="~/Mail"
+source "~/.mutt/config.rb globalconfig |"

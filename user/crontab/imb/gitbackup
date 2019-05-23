@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+  $HOME/script/gitbackup save
+  sleep 3600
+done

@@ -1,0 +1,12 @@
+# Changer la racine d'une extraction:
+http://superuser.com/questions/146814/unpack-tar-but-change-directory-name-to-extract-to
+
+curl "https://gforge.inria.fr/frs/download.php/file/34327/raweb-light-14-1.1.5.tgz" | tar xvzf - -C raweb-light -strip-components=1
+
+    --strip-components=NUMBER
+      Strip NUMBER leading components from file names on extraction
+
+Plus général: utiliser --transform
+http://stackoverflow.com/questions/9729793/rename-directory-name-before-tar-happens
+    --transform=EXPRESSION, --xform=EXPRESSION
+      Use sed replace EXPRESSION to transform file names.

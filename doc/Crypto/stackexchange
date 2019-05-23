@@ -1,7 +1,20 @@
-http://security.stackexchange.com/users/655/thomas-pornin
+# Programing
 
-http://security.stackexchange.com/questions/23007/where-can-i-find-a-hello-world-equivalent-of-a-bufferoverflow-in-a-variety-o
+- http://security.stackexchange.com/questions/23007/where-can-i-find-a-hello-world-equivalent-of-a-bufferoverflow-in-a-variety-o
+  #buffer overflow
+- http://security.stackexchange.com/questions/18556/how-do-aslr-and-dep-work/18698#18698
+  #How do Address Space Layout Randomisation (ASLR) and Data Execution Prevention (DEP) work
 
-http://security.stackexchange.com/questions/211/how-to-securely-hash-passwords/31846#31846
+# Symmetric
 
-http://security.stackexchange.com/questions/18556/how-do-aslr-and-dep-work/18698#18698
+- http://security.stackexchange.com/questions/211/how-to-securely-hash-passwords/31846#31846
+  #Hash
+
+# Public
+
+- http://security.stackexchange.com/questions/37797/how-does-non-ephemeral-diffie-hellman-key-exchange-become-compromised-in-ssl-whe
+- http://security.stackexchange.com/questions/50878/ecdsa-vs-ecdh-vs-ed25519-vs-curve25519
+- http://crypto.stackexchange.com/questions/1677/when-to-use-rsa-and-when-elgamal-asymmetric-encryption
+
+# User
+- http://security.stackexchange.com/users/655/thomas-pornin

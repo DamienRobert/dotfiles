@@ -1,0 +1,13 @@
+i#!/bin/zsh
+#arch-chroot
+
+systemctl preset-all
+
+for service in $SERVICES; do
+	if [[ $service[1] == "-" ]]; then
+		systemctl disable $service[2,$#service]
+	else
+		systemctl enable $service
+	fi
+done
+return 0 #it's ok to fail, it may be that not all services files are present yet

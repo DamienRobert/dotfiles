@@ -1,0 +1,4 @@
+#!/bin/zsh
+##chroot:TMPDIR
+
+$RUNDIR/helpers/copydir -b -s $RUNDIR/slash/ $TARGET_DIR/

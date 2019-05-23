@@ -1,0 +1,57 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+# $0 local => build locally in $OPTSRC
+local_install() {
+	cd $OPTSRC
+	vcs clone_or_update http://pari.math.u-bordeaux.fr/git/pari.git
+	cd pari
+
+	./Configure --prefix=GP --mt=pthread && make -j4 all
+	# => gp-dyn, gp-sta
+	make statest-all
+	make test-parallel #not included in test-all
+	make install
+	# make install-bin-sta
+	# GP/bin/gp
+
+	./Configure --prefix=GP.dbg -g && make -j4 gp.dbg
+	make install -C $(config/objdir).dbg
+	# GP.dbg/bin/gp
+
+	#make all -> make gp and make doc
+	#make doc -> make doc in 'doc/Makefile' -> compile dvi from tex
+	#make gp, install -> call the makefile in Olinux-x86_64
+	#make gp.dbg -> call the makefile in Olinux-x86_64.dbg
+	#In Olinux-x86_64/Makefile:
+	#  make all: gp-sta gp-dyn lib-sta
+	#  make gp => symlink: gp -> gp-dyn
+	#  make statest-all or dyntest-all -> test-all
+	#  make install: install-doc install-nodata install-data
+	#    install-nodata -> install-bin-dyn -> gp-dyn, install-lib-dyn
+	#    install-doc -> call make doc in 'doc/Makefile' and install .dvi and .tex
+	#  => as a byproduct make install induce make gp and make doc
+	#Note: in Olinux-x86_64.dbg: gp => symlink: gp -> gp-sta
+
+	vcs clone_or_update http://pari.math.u-bordeaux.fr/git/gp2c.git
+	cd gp2c
+	./autogen.sh
+	./configure --prefix=$PWD/../GP \
+ 	 --with-paricfg=../GP/lib/pari/pari.cfg \
+ 	 --with-paricfg.dbg=../GP.dbg/lib/pari/pari.cfg
+	make check
+	make install
+	cd ..
+	# GP/bin/gp2c -v
+}
+
+url=pari
+build_helper $@
+if [[ $version == "local" ]]; then
+	local_install
+	exit 0
+fi
+
+CUSTOM_COMPILE='./Configure --prefix=$prefix --mt=pthread && make -j4 all && make install'
+
+build_git

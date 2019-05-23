@@ -1,0 +1,8 @@
+#!/bin/sh
+# See also the script at https://github.com/jonls/redshift/issues/636
+
+# From /etc/geoclue/geoclue.conf
+URL="https://location.services.mozilla.com/v1/geolocate?key=16674381-f021-49de-8622-3021c5942aff"
+#url=https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
+
+curl $URL

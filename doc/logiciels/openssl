@@ -1,4 +1,106 @@
-#dumper un certificat
-openssl s_client -connect www.eleves.ens.fr:443 < /dev/null
-gnutls-cli --print-cert -p 443 www.eleves.ens.fr < /dev/null
+Cf le script [~/script/get_certificate]
+https://support.ssl.com/Knowledgebase/Article/View/19/0/der-vs-crt-vs-cer-vs-pem-certificates-and-how-to-convert-them
+- .CRT = The CRT extension is used for certificates. The certificates may be encoded as binary DER or as ASCII PEM.
+- .DER = The DER extension is used for binary DER encoded certificates.
+- .PEM = The PEM extension is used for different types of X.509v3 files which contain ASCII (Base64) armored data prefixed with a “—– BEGIN …” line.
+  (can contain several certificates => several BEGIN CERTIFICATE / END CERTIFICATE)
 
+https://wiki.openssl.org/index.php/Command_Line_Utilities
+
+# Connection
+openssl s_client -connect www.eleves.ens.fr:443 <<<''
+
+Options: -verify depth 
+  The verify depth to use. This specifies the maximum length of the
+  server certificate chain and turns on server certificate
+  verification.
+
+# Spécifier un certificat (et vérifier si i marche)
+openssl s_client -CApath certs/ -connect ${REMOTE_HOST}:${REMOTE_PORT} <<<'' |\
+grep -i verify
+ou [-CAfile certs/mycert.pem]
+
+# Afficher toute la chaine des certificats
+openssl s_client -showcerts -connect www.eleves.ens.fr:443 <<<''
+gnutls-cli --print-cert -p 443 www.eleves.ens.fr <<<''
+
+# Dumper le certificat
+http://serverfault.com/questions/139728/how-to-download-the-ssl-certificate-from-a-website
+http://superuser.com/questions/97201/how-to-save-a-remote-server-ssl-certificate-locally-as-a-file/641396#641396
+
+- openssl s_client -connect server.edu:443 <<<'' | openssl x509 -outform PEM -out mycertfile.pem
+  (`-outform pem/PEM` seems to be the default and not needed; there is no autodetection based on outname; `-out -` to print to stdout; the same for `-inform PEM`)
+
+- Get the full chain, malheureusement `openssl x509` ça ne sauve que le premier certificat donc il faut faire
+  openssl s_client -showcerts -connect HOST:PORTNUMBER <<<'' | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/$SERVERNAME.pem
+  openssl s_client -showcerts -connect server.edu:443 <<<'' | openssl x509 >mycertfile.pem
+
+# Lire un certificat:
+openssl x509 -in eduroam-ub.pem -text -noout
+openssl x509 -in MYCERT.der -inform der -text -noout
+(`-noout` évite d'afficher le certificat [en forme pem])
+
+# Get the fingerprint of the key
+fingerprint=$(openssl x509 -noout -hash -in cert.pem)
+# Rendre le certificat accessible aux applications (via -CApath)
+ln -sv cert.pem $fingerprint.0
+# Le faire pour tout les certificats dans un répertoire
+openssh rehash dir
+
+# PEM <=> DER
+openssl x509 -in cert.crt -outform der -out cert.der
+openssl x509 -in cert.crt -inform der -outform pem -out cert.pem
+  (`outform pem` is the default)
+
+# Vérifier un certificat
+openssl verify -show_chain -untrusted dc-sha2.crt se.crt
+Options: 
+  -CAfile/-CApath: file/directory of trusted certificates
+  -trusted file
+     A file of trusted certificates, which must be self-signed (specify
+     root trust anchors; implies -no-CAfile and -no-CApath)
+  -untrusted file
+     A file of additional untrusted certificates (intermediate issuer CAs)
+     used to construct a certificate chain from the subject certificate to
+     a trust-anchor.
+
+# Create a [self signed] certificate
+openssl req -new -out cert.csr
+=> create a CERTIFICATE REQUEST and an encrypted RSA key in privkey.pem
+openssl rsa -in privkey.pem -out key.pem
+=> take the ENCRYPTED PRIVATE KEY and output a RSA PRIVATE KEY
+openssl x509 -in cert.csr -out cert.pem -req -signkey key.pem -days 1001
+  (`-signkey`: causes the input file to be self signed using the supplied private key [rem can also use the encrypted key privkey.pem]
+   `-req`: specify that the input file is a certificate request)
+
+All in one:
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+  (`-x509`: this option outputs a self signed certificate instead of a certificate request
+  `-newkey keyparam`: creates a new certificate request and a new [encrpyted] private key
+  `-new`: same but generates a new RSA key from the conf file unless `-key` is specified
+  `-keyout`: default to privkey.pem)
+
+# From man openssl-x509:
+Convert a certificate to a certificate request:
+$ openssl x509 -x509toreq -in cert.pem -out req.pem -signkey key.pem
+[the `signkey` option is used to pass the required private key]
+
+Convert a certificate request into a self signed certificate using extensions for a CA:
+$ openssl x509 -req -in careq.pem -extfile openssl.cnf -extensions v3_ca \
+     -signkey key.pem -out cacert.pem
+
+Sign a certificate request using the CA certificate above and add user
+certificate extensions:
+$ openssl x509 -req -in req.pem -extfile openssl.cnf -extensions v3_usr \
+        -CA cacert.pem -CAkey key.pem -CAcreateserial
+[note: signing with a `-CA` can also be used directly on a self signed certificate]
+
+Set a certificate to be trusted for SSL client use and change set its
+alias to "Steve's Class 1 CA"
+$ openssl x509 -in cert.pem -addtrust clientAuth \
+        -setalias "Steve's Class 1 CA" -out trust.pem
+
+Voir aussi https://spin.atomicobject.com/2014/05/12/openssl-commands/
+
+# Curve25519
+openssl genpkey -algorithm EC -out smime_x25519.key -pkeyopt ec_paramgen_curve:X25519 -pkeyopt ec_param_enc:named_curve

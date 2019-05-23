@@ -4,7 +4,7 @@ for i in "$@"; do
   if [ -d "$i" ]; then
     $0 "$i"/*
   else
-   case "$i" in 
+   case "$i" in
      /* ) mpc add file:///"$i"  ;; #absolute path
       * ) mpc add file:///"`pwd`"/"$i"  ;; #relative path
    esac

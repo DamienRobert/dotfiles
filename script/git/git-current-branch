@@ -2,166 +2,206 @@
 #git current-branch [-al]: give the name of the current branch
 # -a always print a name, even if detached
 # -l long branch name
+#
 #+also some specific commands to get infos on branch names or state of workdir
+# --clean: check that the worktree is clean
+# --remote: print the default remote
+# --upstream: print the default upstream
+# --rebase: show if branch configured for rebase
+#
+# --name-rev: show the symbolic names of branches
+# --contains: git describe --contains (essentially the same as name-rev)
+# --describe: git describe
+# --fullname: git rev-parse --symbolic-full-name
+# --symbolic: git rev-parse --symbolic
+# --name: git rev-parse --abbrev-ref (note abbrev-ref implies symbolic-full-name)
+# --topic: git-topic-helper
+#
+# Exemples:
+# in a detached HEAD,
+#   git rev-parse --symbolic/--abbrev-ref/--symbolic-full-name HEAD -> HEAD
+#   git describe --contains --all -> master~1
+# dans une branche 'conflict'
+#   git rev-parse --symbolic/--abbrev-ref/--symbolic-full-name @ -> @/conflict/refs/heads/conflict
+#   git describe --all -> heads/conflict
+
+
+# get a real branch name, abort if the refs does not correspond to a branch
+# ie like git rev-parse --symbolic-full-name but does not return HEAD when
+# called in a detached head
+get_branch_name() {
+	curr_branch=$(git rev-parse --symbolic-full-name "${1-HEAD}")
+	case $curr_branch in
+		refs/heads/*) curr_branch="${curr_branch#refs/heads/}" ;;
+		*) return 1 ;;
+	esac
+}
 
 # From git-parse-remote.sh
 #GIT_DIR=$(git rev-parse -q --git-dir) || :;
 
 #are we rebasing by default?
 get_rebase () {
-  curr_branch=$(git symbolic-ref -q HEAD)
-  curr_branch="${curr_branch#refs/heads/}"
-  rebase=$(git config --bool branch.$curr_branch.rebase)
-  if test -z "$rebase"
-  then
-      rebase=$(git config --bool pull.rebase)
-  fi
-  echo $rebase
+	get_branch_name "$@" || return 2
+	rebase=$(git config --bool branch.$curr_branch.rebase)
+	if test -z "$rebase"
+	then
+			rebase=$(git config --bool pull.rebase)
+	fi
+	echo $rebase
+	[[ -z $rebase ]] && return 1
 }
 
 get_default_remote () {
-  curr_branch=$(git symbolic-ref -q HEAD)
-  curr_branch="${curr_branch#refs/heads/}"
-  origin=$(git config --get "branch.$curr_branch.remote")
-  echo ${origin:-origin}
+	get_branch_name "$@" || return 1
+	origin=$(git config --get "branch.$curr_branch.remote")
+	echo ${origin:-origin}
 }
 
 get_remote_merge_branch () {
-  case "$#" in
-  0|1)
-      origin="$1"
-      default=$(get_default_remote)
-      test -z "$origin" && origin=$default
-      curr_branch=$(git symbolic-ref -q HEAD) &&
-      [ "$origin" = "$default" ] &&
-      echo $(git for-each-ref --format='%(upstream)' $curr_branch)
-      ;;
-  *)
-      repo=$1
-      shift
-      ref=$1
-      # FIXME: It should return the tracking branch
-      #        Currently only works with the default mapping
-      case "$ref" in
-      +*)
-    ref=$(expr "z$ref" : 'z+\(.*\)')
-    ;;
-      esac
-      expr "z$ref" : 'z.*:' >/dev/null || ref="${ref}:"
-      remote=$(expr "z$ref" : 'z\([^:]*\):')
-      case "$remote" in
-      '' | HEAD ) remote=HEAD ;;
-      heads/*) remote=${remote#heads/} ;;
-      refs/heads/*) remote=${remote#refs/heads/} ;;
-      refs/* | tags/* | remotes/* ) remote=
-      esac
-      [ -n "$remote" ] && case "$repo" in
-    .)
-        echo "refs/heads/$remote"
-        ;;
-    *)
-        echo "refs/remotes/$repo/$remote"
-        ;;
-      esac
-  esac
+	case "$#" in
+	0|1)
+			origin="$1"
+			default=$(get_default_remote)
+			test -z "$origin" && origin=$default
+			curr_branch=$(git symbolic-ref -q HEAD) &&
+			[ "$origin" = "$default" ] &&
+			echo $(git for-each-ref --format='%(upstream)' $curr_branch)
+			;;
+	*)
+			repo=$1
+			shift
+			ref=$1
+			# FIXME: It should return the tracking branch
+			#				 Currently only works with the default mapping
+			case "$ref" in
+				+*) ref=$(expr "z$ref" : 'z+\(.*\)') ;;
+			esac
+			expr "z$ref" : 'z.*:' >/dev/null || ref="${ref}:"
+			remote=$(expr "z$ref" : 'z\([^:]*\):')
+			case "$remote" in
+				'' | HEAD ) remote=HEAD ;;
+				heads/*) remote=${remote#heads/} ;;
+				refs/heads/*) remote=${remote#refs/heads/} ;;
+				refs/* | tags/* | remotes/* ) remote=
+			esac
+			[ -n "$remote" ] && case "$repo" in
+				.) echo "refs/heads/$remote" ;;
+				*) echo "refs/remotes/$repo/$remote" ;;
+			esac
+	esac
 }
 
 require_clean_work_tree () {
-    # Update the index
-    git update-index -q --ignore-submodules --refresh
-    err=0
+		# Update the index
+		git update-index -q --ignore-submodules --refresh
+		err=0
 
-    # Disallow unstaged changes in the working tree
-    if ! git diff-files --quiet --ignore-submodules --
-    then
-        echo >&2 "cannot $1: you have unstaged changes."
-        git diff-files --name-status -r --ignore-submodules -- >&2
-        err=1
-    fi
+		# Disallow unstaged changes in the working tree
+		if ! git diff-files --quiet --ignore-submodules --
+		then
+				echo >&2 "cannot $1: you have unstaged changes."
+				git diff-files --name-status -r --ignore-submodules -- >&2
+				err=1
+		fi
 
-    # Disallow uncommitted changes in the index
-    if ! git diff-index --cached --quiet HEAD --ignore-submodules --
-    then
-        echo >&2 "cannot $1: your index contains uncommitted changes."
-        git diff-index --cached --name-status -r --ignore-submodules HEAD -- >&2
-        err=1
-    fi
+		# Disallow uncommitted changes in the index
+		if ! git diff-index --cached --quiet HEAD --ignore-submodules --
+		then
+				echo >&2 "cannot $1: your index contains uncommitted changes."
+				git diff-index --cached --name-status -r --ignore-submodules HEAD -- >&2
+				err=1
+		fi
 
-    if [ $err = 1 ]
-    then
-        echo >&2 "Please commit or stash them."
-        exit 1
-    fi
+		if [ $err = 1 ]
+		then
+				echo >&2 "Please commit or stash them."
+				exit 1
+		fi
 }
 
 ALWAYS=
 while true;
 do
-  case "$1" in
-    -- ) shift; break ;;
-    -a ) shift; ALWAYS="--always" ;; #always print a name
-    -l ) shift; LONG=true ;; #long branch name
-    -al|-la ) shift; LONG=true; ALWAYS="--always" ;; #always print a name
-  --clean ) shift;
-    require_clean_work_tree
-    exit 0
-    ;; #cleaniless state of work tree
-  --remote ) shift;
-    get_default_remote
-    exit 0
-    ;; #print the remote of the current branch
-  --upstream ) shift;
-    get_remote_merge_branch
-    exit 0
-    ;; #print the upstream of the current branch
-    #this is the low level way
-    #the high level way is git rev-parse --abbrev-ref --symbolic-full-name @{u}
-  --rebase ) shift;
-    get_rebase
-    exit 0
-    ;; #does a pull rebase rather than merge?
-  --name-rev ) shift
-    git name-rev "$@" | cut -d ' ' -f 2
-    exit $?
-    ;;
-  --contains ) shift
-    exec git describe --all --contains $ALWAYS "$@"
-    ;;#get the name of a branch
-    #more or less equivalent to git name-rev
-  --describe ) shift
-    exec git describe --all $ALWAYS "$@"
-    ;; #describe the branch
-  --fullname) shift
-    exec git rev-parse --symbolic-full-name "$@"
-    ;;
-  --symbolic) shift
-    exec git rev-parse --symbolic "$@"
-    ;;
-  --name) shift;
-    name=$(git rev-parse --abbrev-ref --symbolic-full-name "$@")
-    [[ -n $ALWAYS && -z $name ]] && name=$(git describe --all --always "$@")
-    echo $name
-    exit $?
-    ;;
-  --topic ) shift
-    . ~/mine/script/git/git-topic-helper
-    gth_topic "$@"
-    echo "$gth_local,$gth_remote,${gth_rest[@]}"
-    exit $?
-    ;; #use git-topic-helper
-  *) break;;
-  esac
+	case "$1" in
+		-- ) shift; break ;;
+		-a ) shift; ALWAYS="--always" ;; #always print a name
+		-l ) shift; LONG=true ;; #long branch name
+		-al|-la ) shift; LONG=true; ALWAYS="--always" ;; #always print a name
+	--clean ) shift;
+		require_clean_work_tree
+		exit $?
+		;; #cleaniless state of work tree
+	--remote ) shift;
+		get_default_remote "$@"
+		exit $?
+		;; #print the remote of the current branch
+	--upstream ) shift;
+		get_remote_merge_branch "$@"
+		exit $?
+		;; #print the upstream of the current branch
+		#this is the low level way
+		#the high level way is git rev-parse --abbrev-ref @{u}
+	--rebase ) shift;
+		get_rebase "$@"
+		exit $?
+		;; #does a pull rebase rather than merge?
+	--name-rev ) shift #git-name-rev - Find symbolic names for given revs
+		git name-rev "$@" | cut -d ' ' -f 2
+		exit $?
+		;;
+	--contains ) shift
+		exec git describe --all --contains $ALWAYS "$@" #describe default to HEAD
+		;;#get the name of a branch
+		#more or less equivalent to git name-rev
+		#eg: master~3
+	--describe ) shift
+		exec git describe --all $ALWAYS "$@"
+		;; #describe the branch #-> master-3-g7bb13ba
+	--fullname) shift
+		exec git rev-parse --symbolic-full-name "${@-HEAD}"
+		;;
+	--symbolic) shift
+		exec git rev-parse --symbolic "${@-HEAD}"
+		;;
+	--name) shift;
+		name=$(git rev-parse --abbrev-ref "${@-HEAD}")
+		[[ -n $ALWAYS && -z $name ]] && name=$(git describe --all --always "$@")
+		echo $name
+		exit $?
+		;;
+	--branch-name ) branch-name "$@" ; exit $? ;;
+	--topic ) shift
+		. ~/mine/script/git/git-topic-helper
+		gth_topic "$@"
+		echo "$gth_local,$gth_remote,${gth_rest[@]}"
+		exit $?
+		;; #use git-topic-helper
+	*) break;;
+	esac
 done
 
 #to read a symbolic link directly:
 #git symbolic-ref [--short] -q HEAD
+# the problem with 'git rev-parse --symbolic-full-name' is that for a
+# detached HEAD, it will print HEAD whereas 'git symbolic-ref HEAD' will
+# print nothing, and exit 1 to show it is not a symbolic ref
 if [[ -z $LONG ]]; then
-  git symbolic-ref --short -q HEAD || {
-    if [[ -n $ALWAYS ]]; then git rev-parse --verify HEAD; fi
-  }
+	branch=$(git rev-parse --symbolic ${1-HEAD})
+	case "$branch" in
+		'') [[ -n $ALWAYS ]] && git rev-parse --short --verify HEAD ;;
+		HEAD) if ! git symbolic-ref --short -q HEAD; then
+			[[ -n $ALWAYS ]] && git rev-parse --short --verify HEAD
+			fi ;;
+		*) echo $branch ;;
+	esac
 else
-  #git rev-parse --symbolic-full-name HEAD || {
-  git symbolic-ref -q HEAD || {
-    if [[ -n $ALWAYS ]]; then git rev-parse --verify HEAD; fi
-  }
+	branch=$(git rev-parse --symbolic-full-name ${1-HEAD})
+	case "$branch" in
+		'') [[ -n $ALWAYS ]] && git rev-parse --verify HEAD ;;
+		HEAD) if ! git symbolic-ref -q HEAD; then
+			[[ -n $ALWAYS ]] && git rev-parse --verify HEAD
+			fi ;;
+		*) echo $branch ;;
+	esac
 fi

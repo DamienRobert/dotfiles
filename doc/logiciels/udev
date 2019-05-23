@@ -1,0 +1,4 @@
+udevadm trigger #replay udev events
+udevadm control -R #reload
+
+gui: udev-browse (seems dead)

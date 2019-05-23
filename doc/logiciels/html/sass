@@ -1,0 +1,126 @@
+# Sass
+http://sass-lang.com/guide
+http://sass-lang.com/documentation/file.SASS_REFERENCE.html
+
+Variables:
+$font-stack: Helvetica, sans-serif;
+font: 100% $font-stack;
+$ploum: plam !default; #do not overwrite if already set
+
+Nesting:
+nav {
+  ul {
+    margin: 0; padding: 0;
+    list-style: none;
+  }
+  li { display: inline-block; }
+}
+Parent selector: a { &:hover { text-decoration: underline; } } //& = a here
+
+Partials:
+_partial.scss
+@import 'partial';
+
+Mixins:
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+.box { @include border-radius(10px); }
+
+Extend:
+.message {
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
+}
+.success {
+  @extend .message;
+  border-color: green;
+}
+%ploum //a pseudo class used only for @extend %ploum
+
+Operators: +, -, *, /, %
+  width: 600px / 960px * 100%;
+
+Namespace:
+.funky {
+  font: 20px/24px fantasy {
+    weight: bold; //font-weight
+  }
+}
+
+Comments: /* */ and //
+
+Types:
+$list: a b c
+$map: (key1: value1, key2: value2, key3: value3);
+
+Interpolation:
+$name: foo;
+$attr: border;
+p.#{$name} {
+  #{$attr}-color: blue;
+}
+
+Media: @media query can be nested and inside style elements
+
+Flags: !default, !optional
+
+Other Directives: @at-root, @if, if(), @for, @each, @while, @function,
+ @debug, @warn, @error, @content (in a mixin)
+
+## Functions
+http://sass-lang.com/documentation/Sass/Script/Functions.html
+(explain how to define sass functions in ruby)
+
+## Output style
+:nested, :expanded, :compact, :compressed
+
+## Color names
+https://github.com/sass/sass/blob/stable/lib/sass/script/value/color.rb#L28-L180
+
+## Command line
+sass input.scss output.css
+sass --watch input.scss:output.css #watch file
+sass --watch app/sass:public/stylesheets #watch dir
+sass --update <like_watch> #update sass files with a newer timestamp
+
+## Sass common options
+    -I, --load-path PATH             Specify a Sass import path.
+    -r, --require LIB                Require a Ruby library before running Sass.
+        --compass                    Make Compass imports available and load project configuration.
+    -t, --style NAME                 Output style. Can be nested (default), compact, compressed, or expanded.
+
+## Sass plugins
+
+- susy (table framework)
+- http://breakpoint-sass.com/ #Really Simple, Organized, Media Queries with Sass
+
+## Sass framework
+
+- Prefixes mixins: http://bourbon.io/
+  A simple and lightweight mixin library for Sass.
+  http://www.blackmonk.com/blog/2015/05/bourbon-_-simple-and-awesome-scss-framework
+  v5 in beta: http://bourbon.netlify.com/docs/5.0.0/
+
+  - http://bitters.bourbon.io/
+    Scaffold styles, variables and structure for Bourbon projects
+    (ie style all elements by default)
+  - http://refills.netlify.com/
+    https://github.com/thoughtbot/refills/tree/cr-rewrite
+    code that can be copy pasted (use bitters and bourbon)
+  - neat: grid (using floats)
+
+- Compass: http://www.sitepoint.com/compass-or-bourbon-sass-frameworks/
+A much more complete/heavy sass library/framework than bourbon [Not maintained anymore]
+  Note: an alternative to using compass for prefixes would be to use
+https://github.com/ai/autoprefixer-rails (also usable from pure ruby, or from sprockets)
+But do we really need compass? http://bensmithett.com/goodbye-compass/
+
+## Divers
+
+https://gist.github.com/mrinalwadhwa/2958063
+SCSS custom function to insert data uri into style sheets.

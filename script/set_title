@@ -2,7 +2,7 @@
 
 help() {
   echo "set_title: set the shell title
-  Special option for screen by default set the title and the hardstatus. 
+  Special option for screen by default set the title and the hardstatus.
   -hs: only set hardstatus
   -s: only set status
 "
@@ -39,6 +39,6 @@ case "$TERM" in
     print -Pn "\e]2;$@\a"
     ;;
   *)
-    echo -e "\033]2;$@\007" 
+    echo -e "\033]2;$@\007"
     ;;
 esac

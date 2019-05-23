@@ -1,0 +1,7 @@
+<% require 'dr/base/eruby' %>
+<% extend DR::Eruby %>
+<% @ploum=1 %>
+<% plim=2 %>
+<%= erb_include('included2.erb',{bind: binding}) %>
+ploum+plim=<%= @ploum+plim %>
+<%= "<em> An html string </em>" %>

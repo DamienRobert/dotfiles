@@ -1,0 +1,63 @@
+#WHEN !@computer[:xorg].empty?
+#<%= generated_from %>
+## Paths
+mpd_host="<%= (@computer.file(:xdg_runtime_dir)+"mpd_sock").to_s %>"
+mpd_music_dir=~/.mpd/music
+visualizer_fifo_path = "<%= (@computer.file(:xdg_runtime_dir)+"mpd.fifo").to_s %>"
+lyrics_directory = ~/Documents/Lyrics
+
+## Formats
+#song_list_format = {%a - }{%t}|{$8%f$9}$R{$3(%l)$9}
+song_list_format = "{$5[%n]$9 }{$2%a -$9 }{$3%t$9}|{$1%f$9}$R{$5 (%l)$9}"
+#song_status_format = {{%a{ "%b"{ (%y)}} - }{%t}}|{%f}
+song_status_format = "$3{%t}|{%f} $1• $2{%a} $1• $4{%b} {(%d) }$1• $5{%y}$1"
+#song_library_format = {%n - }{%t}|{%f}
+song_library_format = "{[%n] }{%t}|{%f}"
+#tag_editor_album_format = {(%y) }%b
+##tag_editor_album_format = "{[%y] }%b"
+#browser_sort_format = {%a - }{%t}|{%f} {(%l)}
+#alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b
+alternative_header_first_line_format = "$b$1$aqqu$/a$9 $3{%t}|{%f}$9 $1$atqq$/a$9$/b"
+#alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($4%y$9)}}|{%D}
+alternative_header_second_line_format = "{{$2$b%a$/b$9}{ - $4%b$9}{ ($5%y$9)}}|{%D}"
+#browser_playlist_prefix = "$2playlist$9 "
+browser_playlist_prefix = "$2playlist »$9 "
+#song_window_title_format = {%a - }{%t}|{%f}
+song_window_title_format = "ncmpc • {%t}|{%f}{ • %a }{ • %b{ (%d)}}{ • %y}"
+#song_columns_list_format = (20)[]{a} (6f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}
+song_columns_list_format = "(3f)[cyan]{n}(28f)[green]{t|f}(18f)[red]{a|c|p}(20f)[yellow]{b}(5f)[blue]{yr}(5f)[magenta]{lr}"
+
+## visualizer
+visualizer_output_name = "Visualizer feed"
+visualizer_in_stereo = "yes"
+visualizer_type = "spectrum"
+
+## Settings
+execute_on_song_change = "mpd_notify.rb >/dev/null 2>&1"
+playlist_disable_highlight_delay="0"
+progressbar_look = "─╼·"
+titles_visibility = "no"
+autocenter_mode = "yes"
+#playlist_show_remaining_time="yes"
+#search_engine_display_mode="columns"
+#enable_window_title="no"
+
+## Colors
+#header_window_color = "default"
+#volume_color = "default"
+#state_line_color = "default"
+#state_flags_color = "default"
+#statusbar_color = "default"
+#progressbar_color = "black"
+#empty_tag_color = "cyan"
+#main_window_color = "yellow"
+#main_window_highlight_color = "yellow"
+#color1 = white
+color1 = "green"
+#color2 = green
+color2 = "black"
+#active_column_color = "red"
+#window_border_color = green
+window_border_color = "blue"
+#active_window_border = red
+active_window_border = "blue"

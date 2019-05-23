@@ -1,0 +1,131 @@
+URI
+===
+
+scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
+
+An uri is relative if there is no scheme.
+Specify a component:
+- "scheme:" or "scheme://"
+- "//user@"
+- "//:password@"
+- "//host"
+- "//:port"
+- "path", "/path" or "///path"
+- "?query"
+- "#fragment"
+- opaque: "scheme:[^/]opaque"
+  (A comparer avec 'scheme:/path', 'scheme://host')
+
+From rfc2396_parser.rb:
+        # URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
+        # absoluteURI   = scheme ":" ( hier_part | opaque_part )
+        # hier_part     = ( net_path | abs_path ) [ "?" query ]
+        # opaque_part   = uric_no_slash *uric
+        # relativeURI   = ( net_path | abs_path | rel_path ) [ "?" query ]
+        # net_path      = "//" authority [ abs_path ]
+        # abs_path      = "/"  path_segments
+        # rel_path      = rel_segment [ abs_path ]
+        # authority     = server | reg_name
+        # server        = [ [ userinfo "@" ] hostport ]
+[cf the function initialize_pattern for the full spec.
+En particulier host peut être un 'hostname', ou une 'ipv4', ou un '[ipv6]']
+
+In ruby: require 'uri'
+u=URI.parse("foo://dams:ploum@google.com:22/path?query#fragment") #ou URI(...)
+u.component
+=> [:scheme, :userinfo, :host, :port, :registry, :path, :opaque, :query, :fragment] #:registry is not used
+
+=> scheme, user, password, port, registry, path, opaque, query, fragment, (=)
+   hierarchical?, absolute?/relative?, default_port, merge (=+), select, find_proxy, to_s, route_from (=-), route_to, normalize
+   URI.escape, URI.unescape, URI.split, URI.join, URI.extract
+
+Examples: 
+- u.select(*u.component) #[like URI.split(u.to_s) but URI.split use a regexp implementation from rfc3986 wherase u is parsed from rfc2396 by default]
+- u.merge(rel): 
+    if rel is absolute then set u=rel
+    else merge the elements of rel into u 
+      [and clean up u.fragment and u.query except if rel is only a fragment]
+      furthermore merge the paths if rel does not have a userinfo or hostinfo
+      [otherwise set base.path=rel.path]
+  [note: URI.join simply inject :merge to the list of uris]
+- URI('http://my.example.com/foo/bar').route_to("http://my.example.com/foo/baz")
+  => #<URI::Generic baz>
+  URI('http://my.example.com/foo/bar').route_to("http://my.example2.com/foo/baz")
+  => #<URI::Generic //my.example2.com/foo/baz>
+
+Mailto
+------
+
+u=URI.parse("mailto:foo@yo?to=bar@com&to=baz@cim&subject=ploum")
+u.to #=> foo@yo
+u.headers #=> [["to", "bar@com"], ["to", "baz@cim"], ["subject", "ploum"]]
+puts u.to_mailtext
+  To: foo@yo, bar@com, baz@cim
+  Subject: ploum
+
+Addressable
+===========
+
+Notes: see Addressable::URI for a more modern library
+Full unicode/punicode normalisation, can set up non-ascii components
+http://www.rubydoc.info/github/sporkmonger/addressable/master/Addressable/URI
+Addressable::URI.methods: 
+  convert_path      form_unencode        normalize_path     unencode_component
+  encode            heuristic_parse      normalized_encode  unescape          
+  encode_component  ip_based_schemes     parse              unescape_component
+  escape            join                 port_mapping     
+  form_encode       normalize_component  unencode         
+
+- convert_path: convert a path to a file:// uri
+- encode=escape
+- encode_component: like encode but can specify which character class to percent encode
+- form_encode: application/x-www-form-urlencoded
+- ip_based_schemes, port_mapping: usual ip based scheme and their corresponding ports
+- normalize_component: normalize and encode_component (unencode_component -> unicode_normalize_kc -> encode_component)
+- normalize_path: normalize the path ('//' => '/')
+- normalized_encode: unencode_component -> unicode_normalize_kc -> encode_component (except host and port)
+  (=> essentially like #display_uri except that if the host is in punycode won't convert back to unicode)
+
+Addressable::URI#methods: 
+  +                 host                  normalized_query     relative?   
+  ==                host=                 normalized_scheme    request_uri 
+  ===               hostname              normalized_site      request_uri=
+  absolute?         hostname=             normalized_user      route_from  
+  authority         inferred_port         normalized_userinfo  route_to    
+  authority=        inspect               omit                 scheme      
+  basename          ip_based?             omit!                scheme=     
+  default_port      join                  origin               site        
+  defer_validation  join!                 origin=              site=       
+  display_uri       merge                 password             tld         
+  domain            merge!                password=            to_hash     
+  dup               normalize             path                 to_s        
+  empty?            normalize!            path=                to_str      
+  eql?              normalized_authority  port                 user        
+  extname           normalized_fragment   port=                user=       
+  fragment          normalized_host       query                userinfo    
+  fragment=         normalized_password   query=               userinfo=   
+  freeze            normalized_path       query_values       
+  hash              normalized_port       query_values=      
+Note registry or opaque component, 'foo:opaque' is parsed as {scheme: 'foo',
+path: 'opaque'}
+
+- authority: user, password, host, port
+- basename/extname: the one of the path
+- domain: the public suffix domain for the host
+- hostname: like host but unwrap brackets for ipv6 addresses
+- origin: normalized scheme, host [=puny encoded], port
+- site: scheme, user, password, host, and port
+- tld: top level domain of the host
+- normalize: percent encode components, except the host which is puny encoded
+- display_uri: like normalize except the host which is unicode encoded
+
+Addressable::IDNA.methods: to_ascii  to_unicode  unicode_normalize_kc
+to_ascii/to_unicode: -> unicode_downcase, punycode_encode and add the 'xn--' prefix (resp revert)
+Private :punycode_encode/decode => encode/decode a unicode code point to ascii
+
+Escaping
+========
+URI.escape("foo baré") => "foo%20bar%C3%A9"
+CGI.escape("foo baré") => "foo+bar%C3%A9"
+CGI::escapeHTML('Usage: foo "bar" <baz>') => "Usage: foo &quot;bar&quot; &lt;baz&gt;"
+CGI::escapeElement('<BR><a HREF="url"></a>', ["A", "IMG"]) => <BR>&lt;a HREF=&quot;url&quot;&gt;&lt;/a&gt"

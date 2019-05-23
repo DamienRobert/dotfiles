@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+date=$(date --rfc-3339=date)
+dryrun=
+
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		-d ) shift; date=$1; shift ;;
+		-n ) shift; dryrun=t ;;
+		*) break;;
+	esac
+done
+
+#Ex: ploum=ploum.tar.gpg.xz
+#${ploum##*.}=${ploum:e}=gpg
+#${ploum%.*}=${ploum:r}=ploum.tar.gpg
+#${ploum#*.}=tar.xz.gpg
+#${ploum%%.*}=ploum
+
+for file in $@; do
+	base=${file%%.*}
+	ext=${file#*.}
+	echo mv $file $base-$date.$ext
+	[ -z $dryrun ] && mv $file $base-$date.$ext
+done

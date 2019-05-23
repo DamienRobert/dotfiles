@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#-p: pour garder l'environnement
+#-q: pour -quiet
+
+#exec schroot -p -c 32  "`basename $0`" "$@"
+exec schroot -p -c 32 -- "$@"

@@ -98,7 +98,7 @@ cdrecord -v speed=1 dev=2,0 -audio track*.cdaudio
 To  write a tar archive directly to a CD that will later contain a sim- ple iso9660 filesystem with the tar archive call:
 % star -c . | mkisofs -stream-media-size 333000 | \
     cdrecord dev=b,t,l -dao tsize=333000s -
-		     
+
 
 #j'utilise:
 mkisofs (-f)  -r -l -f -V NOMDUCD . | cdrecord -pad -v dev=/dev/hdc -tao -

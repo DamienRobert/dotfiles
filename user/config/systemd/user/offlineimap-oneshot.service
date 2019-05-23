@@ -1,0 +1,21 @@
+[Unit]
+Description=Offlineimap
+Documentation=man:offlineimap(1)
+ConditionFileIsExecutable=/usr/bin/offlineimap
+ConditionPathExists=%h/.offlineimaprc
+PartOf=network.target
+Requisite=unlock.target
+
+[Service]
+Type=oneshot
+# Give 120 seconds for offlineimap to gracefully stop before hard killing it:
+TimeoutStopSec=120
+ExecStart=/usr/bin/offlineimap -u Basic -o
+#Restart=on-failure
+StandardInput=null
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=unlock.target

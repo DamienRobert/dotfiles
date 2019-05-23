@@ -1,13 +1,13 @@
 #!/bin/sh
 #recursive rmdir
 
-find "$@" -depth -type d -print0 | xargs -0 rmdir
+find "$@" -depth -type d -print0 | xargs -0 rmdir --ignore-fail-on-non-empty
 
 
 # for j in "$@"; do
 #  echo $j
 #  if [ -d "$j" ]; then
-#  rrd "$j"/* "$j"/.[!-~]*; 
+#  rrd "$j"/* "$j"/.[!-~]*;
 #  rmdir "$j"
 #  fi
 # done

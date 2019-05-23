@@ -1,0 +1,235 @@
+# ToRead
+- rails as she spoke
+  http://railsoopbook.com/
+- https://www.youtube.com/watch?v=X2sgQ38UDVY
+  The Ruby Object Model by Dave Thomas
+
+# Read
+- main: http://banisterfiend.wordpress.com/2010/11/23/what-is-the-ruby-top-level/
+
+- Ruby 2.0: http://globaldev.co.uk/2013/03/ruby-2-0-0-in-detail/
+            http://blog.marc-andre.ca/2013/02/23/ruby-2-by-example/
+
+- Ruby and C bindings:
+  http://stackoverflow.com/tags/ruby-c-api/info
+  http://www.ruby-doc.org/docs/ProgrammingRuby/html/ext_ruby.html
+
+- Some nice tricks:
+  http://www.rubyinside.com/21-ruby-tricks-902.html
+
+- Fun ruby programs:
+  git clone https://github.com/tric/trick2013
+
+- Why attraccessor is 3x faster than getters and setters, and 8x faster than definemethod:
+  https://www.omniref.com/ruby/2.2.0/files/method.h?#annotation=4081781&line=47
+
+- http://red-badger.com/blog/2015/02/23/understanding-the-enigma-machine-with-30-lines-of-ruby-star-of-the-2014-film-the-imitation-game/
+
+- Illustrating a Markov chain in ruby:
+http://www.reddit.com/r/ruby/comments/2yx2ey/this_is_a_pretty_straightforward_example_of/
+https://github.com/omniref/hn_title_generator
+-> https://www.omniref.com/github/omniref/hn_title_generator/0.1.0/symbols/HNTitleGenerator::MarkovModel?
+
+- http://blog.diatomenterprises.com/rails-and-neo4j/
+  Using neo4j with ruby on rails (Neo4j is an open-source NoSQL graph database implemented in Java and Scala.)
+
+- https://www.codefellows.org/blog/this-is-why-learning-rails-is-hard
+
+- http://www.monkeyandcrow.com/blog/reading_rails_time_travel/
+
+- https://medium.com/@rdsubhas/ruby-in-production-lessons-learned-36d7ab726d99
+
+- https://gist.github.com/capitalist/473543b7ea24d461d030
+  Multiple inheritance by including refinements
+
+- http://www.blackbytes.info/2015/04/parsing-with-ruby/
+  How to use the stdlib StringScanner
+
+- http://www.sitepoint.com/ruby-uses-memory/
+  + some gems to introspect memory usage
+
+- http://thiébaud.fr/robots.txt.html
+  crawling the web's robo.txt with ruby
+
+- http://www.sitepoint.com/the-self-pipe-trick-explained/
+
+- https://netguru.co/blog/java-script-ruby-on-rails-resources
+
+- http://radek.io/2015/06/29/catpix/
+  Pictures on the terminal
+
+- http://blog.honeybadger.io/how-to-change-the-process-name-in-ruby-for-top-and-ps/
+  Change the process name via `Process.setproctitle("foobar")`
+  (For older ruby version $PROGRAM_NAME = "foobar" or $0="foobar" would work)
+
+- http://twin.github.io/ode-to-sequel/
+  Sequel instead of ActiveRecord
+
+-  http://www.nateberkopec.com/2015/08/05/rack-mini-profiler-the-secret-weapon.html
+
+- http://brewhouse.io/2015/07/31/be-nice-to-others-and-your-future-self-use-data-objects.html
+  -> https://github.com/solnic/virtus (Attributes on Steroids for Plain Old Ruby Objects)
+
+- ruby with guix: http://dthompson.us/ruby-on-guix.html
+
+- http://idiosyncratic-ruby.com/49-what-the-format.html
+  String#format (also has links to strftime and pack)
+
+- http://www.ombulabs.com/blog/ruby/imap/a-comprehensive-guide-to-interacting-with-imap-using-ruby.html
+  A comprehensive guide to interacting with IMAP using Ruby
+
+- http://jvns.ca/blog/2016/06/12/a-weird-system-call-process-vm-readv/
+  Ruby debugging/call trace
+  => https://github.com/tmm1/rbtrace
+
+- https://jhawthorn.github.io/curl-to-ruby/
+  curl-to-ruby Instantly convert curl commands to Ruby's net/http
+
+- https://github.com/franzejr/best-ruby
+ Ruby Tricks, Idiomatic Ruby, Refactorings and Best Practices http://best-ruby.com 
+
+- http://rosenfeld.herokuapp.com/en/articles/infrastructure/2016-06-24-a-sample-ruby-script-to-achieve-fast-incremental-back-up-on-btrfs-partition
+
+- http://www.blackbytes.info/2016/07/writing-a-shell-in-ruby/
+  with readline completion
+
+- https://www.gitbook.com/book/rubyfu/rubyfu/details
+  This book is a collection of ideas, tricks and skills that could be
+  useful for Hackers. It's a unique extraction reference, summarizes a lot
+  of research and experience in order to achieve your w00t in shortest and
+  smartest way. Rubyfu is where you'll find plug-n-hack code, Rubyfu is a
+  book to use not to read, it's where ruby goes evil.
+
+- https://twin.github.io/partial-downloads-with-enumerators-and-fibers/
+
+- https://infinum.co/the-capsized-eight/articles/hiding-secrets-in-vault
+
+- https://infinum.co/the-capsized-eight/analyzing-rubygems-stats-v2016
+  Gems used in ruby+rails
+
+- http://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/
+  https://news.ycombinator.com/item?id=12450501
+
+- https://medium.com/@rubinius/rubinius-takes-the-fun-out-of-ruby-21db64ce87a6#.11umreou3
+
+- http://stackoverflow.com/questions/1113611/what-does-ruby-have-that-python-doesnt-and-vice-versa/
+
+- https://robots.thoughtbot.com/evaluating-alternative-decorator-implementations-in
+  https://8thlight.com/blog/arlandis-lawrence/2015/05/18/decorators-in-ruby.html
+
+- http://codereview.stackexchange.com/questions/53928/how-to-create-a-tee-command-in-ruby-for-a-unix-like-pipeline
+
+- https://gist.github.com/pcreux/2f87847e5e4aad37db02
+  *nix has pipes, Elixir has pipes, Ruby deserves pipes.
+  (implementation of Elixir pipe operator in ruby)
+
+- http://rubyland.news/
+  news, opinion, tutorials, about ruby, aggregated 
+
+- https://developers.redhat.com/blog/2017/02/27/towards-faster-ruby-hash-tables/
+  Towards Faster Ruby Hash Tables
+
+- On the GIL
+http://www.csinaction.com/2014/10/10/multithreading-in-the-mri-ruby-interpreter/
+http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil
+http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil
+http://www.rubyinside.com/does-the-gil-make-your-ruby-code-thread-safe-6051.html
+
+- Lazy streams in ruby (before lazy enumerators):
+  https://github.com/melvinxie/lazy_stream
+  http://melvinxie.github.io/blog/2013/05/04/ruby-lazy-infinite-stream-in-the-sicp-way/
+
+- https://news.ycombinator.com/item?id=13398100
+  TruffleRuby Status
+  Substrate (compiled version of the jvm for native binaries), graal (new jvm compiler) and truffle (ast for graal)
+
+- celluloid:
+http://web.archive.org/web/20130928093317/http://www.unlimitednovelty.com/2011/05/introducing-celluloid-concurrent-object.html
+ Introducing Celluloid: a concurrent object framework for Ruby 
+http://web.archive.org/web/20140215001314/http://www.unlimitednovelty.com/2011/09/object-oriented-concurrency-deep-dive.html
+ Object Oriented Concurrency: A Deep Dive into Celluloid (Part 1) 
+
+- https://blog.blockscore.com/new-features-in-ruby-2-4/
+
+- http://api.rubyonrails.org/classes/ActiveSupport/Concern.html
+
+- http://rwdtow.stdout.in/
+Ruby Web Dev The Other Way "When Rails is not enough..."
+
+- Fun with pipelining enumerators
+1) https://spin.atomicobject.com/2012/06/07/piecepipe-pipe-dreams-in-ruby/
+=> https://github.com/atomicobject/piece_pipe
+2) http://nome.github.io/coroutines/
+=> https://github.com/nome/coroutines
+Much better: introduce Consumers (the dual of Enumerators) and Transformers(=Consumers+Enumerators)
+
+- Faraday setting up certificates:
+  https://github.com/lostisland/faraday/wiki/Setting-up-SSL-certificates
+  ssl options: https://gist.github.com/mislav/938183
+
+- http://relaxed.ruby.style/
+  Relaxed rubocop styles
+
+- http://idiosyncratic-ruby.com/
+  Documenting All Ruby Specialities
+
+- https://www.reddit.com/r/ruby/comments/65wx4f/seeing_is_believing_display_the_results_of_every/
+  Seeing Is Believing: Display the results of every line of code in your file
+
+- https://github.com/k-tsj/power_assert
+  Power Assert shows each value of variables and method calls in the expression. It is useful for testing, providing which value wasn't correct when the condition is not satisfied.
+
+- https://tutorials.botsfloor.com/chatbot-development-tutorial-how-to-build-a-fully-functional-weather-bot-on-facebook-messenger-c94ac7c59185
+
+- https://www.schneems.com/2017/05/01/the-fastest-way-to-generate-a-heap-dump-on-heroku/ => rbtrace
+
+- https://github.com/LIQIDTechnology/methodobject
+  Method Object pattern in Ruby for your Service Objects
+
+- https://github.com/arbox/machine-learning-with-ruby
+  Useful resources for Machine Learning in Ruby.
+
+- Tenderlove blog posts (memory internals of ruby):
+  https://tenderlovemaking.com/2015/02/13/predicting-test-failues.html
+  https://tenderlovemaking.com/2015/12/23/inline-caching-in-mri.html
+  https://tenderlovemaking.com/2016/02/05/i-am-a-puts-debuggerer.html
+  https://tenderlovemaking.com/2017/02/01/object-id-in-mri.html
+  https://tenderlovemaking.com/2017/09/27/visualizing-your-ruby-heap.html
+  https://tenderlovemaking.com/2018/01/23/reducing-memory-usage-in-ruby.html
+
+- https://iridakos.com/tutorials/2018/01/25/creating-a-gtk-todo-application-with-ruby
+  https://news.ycombinator.com/item?id=16340126
+
+- https://twin.github.io/imageprocessing-1-0-released/
+
+- https://bugs.ruby-lang.org/issues/14709
+  Proper pattern matching
+
+- http://www.blacktm.com/blog/ruby-on-webassembly
+
+- https://www.schneems.com/2018/04/30/how-to-implement-a-ruby-hash-like-grammar-in-parslet/
+
+- https://medium.com/@tiagoparreira/powering-your-ruby-rails-development-with-pry-3d5dbd2a8b80
+
+- https://news.ycombinator.com/item?id=17472485
+  Escaping the SPA rabbit hole with modern Rails (medium.com)
+
+- https://medium.com/@baweaver/understanding-transducers-in-ruby-209766372c39
+
+- https://news.ycombinator.com/item?id=18053423
+Traveling Ruby: self-contained, portable Ruby binaries (phusion.github.io)
+http://phusion.github.io/traveling-ruby/
+http://nts.strzibny.name/making-a-ruby-executable-with-ruby-packer/
+https://github.com/pmq20/ruby-packer
+
+- https://www.reddit.com/r/ruby/comments/bcng2z/living_with_a_ruby_parser_for_a_year_with_drawings/
+-> https://github.com/huginn/huginn (IFFT like in ruby)
+
+- https://www.reddit.com/r/ruby/comments/bgi750/drytypes_and_drystruct_100_released/
++ comments on using `roda` + `dry-rb` + `rom-rb` stack.
+
+- https://blog.appsignal.com/2019/04/30/ruby-magic-hidden-gems-delegator-forwardable.html
+
+- https://www.reddit.com/r/ruby/comments/bl8oq3/the_construct_a_modern_rails_template/
+
+- https://www.cookieshq.co.uk/posts/a-useful-tool-for-building-serverless-ruby-apps-with-aws-lambda

@@ -1,0 +1,7 @@
+- atom
+- vscode (on electron too)
+  -> vim intregration: https://github.com/VSCodeVim/Vim#neovim-integration
+  -> ruby plugins https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby https://marketplace.visualstudio.com/items?itemName=misogi.ruby-rubocop
+- oni2: https://github.com/onivim/oni2
+  A mix of vscode and neovim
+  Onivim 2 uses neovim to manage buffers and provide authentic modal editing, and features a fast, native front-end. In addition, Onivim 2 leverages the VSCode Extension Host process in its entirety - meaning, eventually, complete support for VSCode extensions and configuration.

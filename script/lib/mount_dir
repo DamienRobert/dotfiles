@@ -1,0 +1,87 @@
+# vim: ft=zsh
+
+find_mount() {
+	if [[ -n $MOUNTDISK ]]; then
+		# do nothing
+	elif [[ -n $MOUNTUUID ]]; then
+		MOUNTDISK=$(findfs "UUID=$MOUNTUUID")
+		[[ $MOUNTMODE == "udisk" && -z $MOUNTTARGET ]] && MOUNTTARGET="$HOME/media/$MOUNTUUID"
+	elif [[ -n $MOUNTLABEL ]]; then
+		MOUNTDISK=$(findfs "LABEL=$MOUNTLABEL")
+		[[ $MOUNTMODE == "udisk" && -z $MOUNTTARGET ]] && MOUNTTARGET="$HOME/media/$MOUNTLABEL"
+	fi
+	[[ -n $MOUNTDISK ]] || return 1
+}
+
+do_mount() {
+	if [[ -z $MOUNTDISK ]]; then
+		echo "Warning: disk 'MOUNTDISK' not specified, aborting..."
+		return 1
+	fi
+	if [[ -n $MOUNTTARGET ]] && findmnt $MOUNTTARGET > /dev/null; then
+		echo "$MOUNTTARGET is already mounted"
+	else
+		if [[ -z $MOUNTTARGET && $MOUNTMODE != "udisk" ]]; then
+			echo "# Warning: MOUNTTARGET not specified"
+			return 1
+		fi
+		echo "# Mounting $MOUNTDISK to $MOUNTTARGET (mount mode: $MOUNTMODE)"
+		DID_MOUNT=t
+		case $MOUNTMODE in
+		sudo)
+			echo "$ sudo mount -o $MOUNTOPTS $MOUNTDISK $MOUNTTARGET"
+			sudo mkdir -p $MOUNTTARGET && sudo mount -o $MOUNTOPTIONS $MOUNTDISK $MOUNTTARGET
+			;;
+		udisk)
+			echo "$ udisksctl mount -b $MOUNTDISK"
+			OMOUNTTARGET=$MOUNTTARGET
+			# MOUNTTARGET=$() # The output is 'Mounted /dev/sdb1 at /run/media/dams/9016-4EF8.', not only the target
+			udisksctl mount -b $MOUNTDISK # -o "noexec,nosuid,noatime"
+			;;
+		*)
+			echo "$ mount -o $MOUNTOPTS $MOUNTDISK $MOUNTTARGET"
+			mkdir -p $MOUNTTARGET && mount -o $MOUNTOPTS $MOUNTDISK $MOUNTTARGET
+		esac
+	fi
+	[[ -z $MOUNTTARGET || -d $MOUNTTARGET ]] || return 1
+}
+
+do_umount() {
+	echo "# Unmounting $MOUNTTARGET (umount mode: $MOUNTMODE)"
+	if [[ -n $MOUNTTARGET && ! -d $MOUNTTARGET ]]; then
+		echo "Warning: $MOUNTTARGET is not a directory, aborting..."
+		return 1
+	fi
+	case $MOUNTMODE in
+		sudo)
+			sudo umount $MOUNTTARGET
+			sudo rmdir $MOUNTTARGET
+			;;
+		udisk)
+			udisksctl unmount -b $MOUNTDISK
+			;;
+		*)
+			umount $MOUNTTARGET
+			rmdir $MOUNTTARGET
+			;;
+	esac
+}
+
+mount_dir() {
+	local MODE=mount
+	while true;
+	do
+		case $1 in
+			-- ) break ;;
+			-s|--sudo ) shift; MOUNTMODE=sudo;;
+			-u|--udisk ) shift; MOUNTMODE=udisk;;
+			--mount ) shift; MODE=mount;;
+			--umount|--unmount ) shift; MODE=umount;;
+			*) break;;
+		esac
+	done
+	case $MODE in
+		mount) do_mount ;;
+		umount) do_umount ;;
+	esac
+}

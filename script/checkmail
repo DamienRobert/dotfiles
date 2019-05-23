@@ -6,7 +6,7 @@ require 'mail_extract'
 require 'pathname'
 require "optparse"
 require 'simplecolor'
-require 'dr/encoding'
+require 'dr/base/encoding'
 require 'cgi'
 
 SimpleColor.mix_in_string
@@ -70,7 +70,7 @@ module MailCheck
 				part = mail.parts.select { |p| p.content_type =~ /text\/html/ }.first rescue nil if part.nil?
 				mail=part unless part.nil?
 			end
-			case mail.content_type 
+			case mail.content_type
 			when /text\/plain/
 				message = mail.body.decoded
 				charset=mail.charset if mail.charset
@@ -116,9 +116,9 @@ module MailCheck
 				mail=Mail.new(DR::Encoding.to_utf8(mail))
 			end
 			begin
-				from=mail.from
-				subject=mail.subject
-				date=mail.date
+				from=mail.from || [""]
+				subject=mail.subject || ""
+				date=mail.date || ""
 			rescue Exception => e
 				warn "Error in parsing mail headers: #{e}"
 				raise e
@@ -128,6 +128,7 @@ module MailCheck
 			else
 				format="<#{from.join(" ").color(:red)}> #{subject.color(:green)} (#{date.to_s.color(:yellow)})\n"
 			end
+			format=DR::Encoding.to_utf8(format)
 			if $opts[:body]
 				begin
 					format+=Format.mail_body(mail)
@@ -181,9 +182,9 @@ module MailCheck
 			if $opts[:summary]
 				format=Format.maildirs_summary(maildirs)
 				if nbmails > 0 or $opts[:read]
-					format=Format.emphasize("New mails: #{nbmails}") + 
+					format=Format.emphasize("New mails: #{nbmails}") +
 						 "\n"+format
-				end 
+				end
 			else
 				format=Format.maildirs_format(maildirs)
 			end
@@ -293,7 +294,7 @@ elsif $opts[:daemon]
 else
 	m=MailDirs.new(paths)
 	msgs=m.check
-	
+
 	if $opts[:status]
 		if MailDirs.nbmails(msgs) == 0
 			exit 0

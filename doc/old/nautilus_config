@@ -1,0 +1,4 @@
+gconftool-2 -st bool /desktop/gnome/background/draw_background false
+gconftool-2 -st bool /apps/nautilus/preferences/show_desktop false
+ #pour empêcher nautilus de changer le fond d'écran et de mettre des
+ #îcones

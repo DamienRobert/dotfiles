@@ -3,7 +3,7 @@ use strict;
 #playlist_info.pl stream use wget to look at the headers and find title and
 #genre of stream
 
-sub help { 
+sub help {
   print STDERR <<EOHelp;
   playlist_info.pl stream récupère les infos icy-*
 EOHelp

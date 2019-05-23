@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=UXTerm
+Comment=standard terminal emulator for the X window system
+Exec=uxterm
+Terminal=false
+Type=Application
+Icon=xterm-color
+Categories=System;TerminalEmulator;Utility;
+X-Desktop-File-Install-Version=0.21
+X-XFCE-Source=file:///usr/share/applications/debian-uxterm.desktop

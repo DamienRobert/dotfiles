@@ -1,0 +1,8 @@
+[groups]
+cacao = fondant.loria.fr
+[cacao]
+ssl-client-cert-file = /home/imb/drobert/.subversion/robert.p12
+[global]
+# ssl-authority-files =  /home/imb/drobert/.subversion/cacacao.crt
+ssl-authority-files =  /home/imb/drobert/.subversion/cacacao.pem
+ssl-trust-default-ca = false

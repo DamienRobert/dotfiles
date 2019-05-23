@@ -1,0 +1,5 @@
+#!/bin/zsh
+. $HOME/.initvars
+mylog "user" "~maint/01update"
+
+$MAINTFILES/packages.rb --shell=exec update_or_check

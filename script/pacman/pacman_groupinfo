@@ -1,4 +1,0 @@
-#!/bin/sh
-#launch pacman -Qi on packages from group $@
-
-pacman -Qi $(pacman -Sg $@ | cut -d ' ' -f 2)

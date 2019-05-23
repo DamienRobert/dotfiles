@@ -1,0 +1,118 @@
+#!/bin/sh
+
+/etc/rc.d/iptables stop
+/etc/rc.d/ip6tables stop
+
+iptables() {
+	/usr/sbin/iptables $@
+	/usr/sbin/ip6tables $@
+}
+ip4tables() {
+	/usr/sbin/iptables $@
+}
+ip6tables() {
+	/usr/sbin/ip6tables $@
+}
+
+# Reset
+iptables-restore </etc/iptables/empty.rules
+iptables -N TCP
+iptables -N UDP
+
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+
+# local packets
+iptables -A INPUT -i lo -j ACCEPT
+
+#ICMP, and already-established connections
+iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+#ICMPv6 Neighbor Discovery packets
+iptables -A INPUT -p 41 -j ACCEPT
+
+#invalid (icmp) packets
+iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+
+#icmp echo reply
+ip4tables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -A INPUT -p icmpv6 --icmpv6-type 8 -m conntrack --ctstate NEW -j ACCEPT
+
+#Now we append the OPEN chains to INPUT chain to handle all new incoming
+#connections. Once a connection is accepted by the OPEN chains, it is
+#handled by the RELATED/ESTABLISHED traffic rule. The OPEN chains will
+#either accept new incoming connections, or politely reject them. New TCP
+#connections must be started with SYN packets.
+iptables -A INPUT -p udp -m conntrack --ctstate NEW -j UDP
+iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP
+
+#We reject TCP connections with TCP RST packets and UDP streams with ICMP
+#port unreachable messages if the ports are not opened. This imitates
+#default Linux behavior (RFC compliant), and it allows the sender to quickly
+#close the connection and clean up.
+ip4tables -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
+ip6tables -A INPUT -p udp -j REJECT --reject-with icmp6-port-unreachable
+iptables -A INPUT -p tcp -j REJECT --reject-with tcp-reset
+#For other protocols, we add a final rule to the INPUT chain to reject all
+#  remaining incoming traffic with icmp protocol unreachable messages. This
+#  imitates Linux's default behavior.
+ip4tables -A INPUT -j REJECT --reject-with icmp-proto-unreachable
+ip6tables -A INPUT -j REJECT
+
+# Open services
+iptables -N GUARD
+iptables -A TCP -p tcp --dport 22 -j GUARD #ssh
+#iptables -A INPUT -p tcp --dport 25 -j GUARD #smtp
+#iptables -A INPUT -p tcp --dport 53 -j ACCEPT #dns
+#iptables -A INPUT -p udp --dport 53 -j ACCEPT #dns
+#iptables -A INPUT -p tcp --dport 80 -j ACCEPT #http
+#iptables -A INPUT -p tcp --dport 443 -j ACCEPT #https
+#iptables -A INPUT -p tcp --dport 3483 -j ACCEPT #squeeze-protocol
+#iptables -A INPUT -p tcp --dport 5222 -j ACCEPT #xmpp-c2s
+#iptables -A INPUT -p tcp --dport 5269 -j ACCEPT #xmpp-s2s
+#iptables -A INPUT -p udp --dport 6881 -j ACCEPT #rtorrent-dht
+#iptables -A INPUT -p tcp --dport 8010 -j ACCEPT #xmpp-file-transfer
+#iptables -A INPUT -p tcp --dport 8080 -j ACCEPT #vlc-stream
+#iptables -A INPUT -p tcp --dport 9000 -j ACCEPT #squeeze-interface
+#iptables -A INPUT -p tcp --dport 16523 -j ACCEPT #btg
+#iptables -A INPUT -p tcp --dport 52121:52127 -j ACCEPT #rtorrent
+
+# Prevent bruteforce
+iptables -A GUARD -m recent --set --name BRUTE
+iptables -A GUARD -m recent --update --name BRUTE --seconds 10 --hitcount 3 -j REJECT
+#iptables -A GUARD -m recent --update --name BRUTE --seconds 100 --hitcount 5 -j DROP
+iptables -A GUARD -j ACCEPT
+
+/etc/rc.d/iptables save
+/etc/rc.d/ip6tables save
+/etc/rc.d/iptables start
+/etc/rc.d/ip6tables start
+
+##/etc/sysctl.conf:
+#net.ipv4.conf.all.rp_filter=1
+
+### NAT: mapping ingoing from  eth0  to outgoing on eth1
+# iptables -N fw-interfaces
+# iptables -N fw-open
+# iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+# iptables -A FORWARD -j fw-interfaces
+# iptables -A FORWARD -j fw-open
+# iptables -A FORWARD -j REJECT --reject-with icmp-host-unreachable
+# iptables -P FORWARD DROP
+#
+# iptables -A fw-interfaces -i eth0 -j ACCEPT
+# iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth1 -j MASQUERADE
+#
+# #I will give two simple examples: First, we want to change all incoming SSH
+# #packets (port 22) to the ssh server in the machine 192.168.0.5:
+# iptables -A fw-open -d 192.168.0.5 -p tcp --dport 22 -j ACCEPT
+# iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 22 -j DNAT --to 192.168.0.5
+#
+# #The second example will show you how to change packets to a different port
+# #than the incoming port. We want to change any incoming connection on port
+# #8000 to our web server on 192.168.0.6, port 80:
+# iptables -A fw-open -d 192.168.0.6 -p tcp --dport 80 -j ACCEPT
+# iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 8000 -j DNAT --to 192.168.0.6:80
+
+# echo 1 >/proc/sys/net/ipv4/ip_forward

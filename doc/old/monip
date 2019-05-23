@@ -1,0 +1,35 @@
+Feanor ~ $ ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:30:1b:b8:f1:2f
+          inet addr:192.168.0.2  Bcast:192.168.0.255  Mask:255.255.255.0
+          inet6 addr: 2a01:5d8:58a6:c994:230:1bff:feb8:f12f/64 Scope:Global
+          inet6 addr: fe80::230:1bff:feb8:f12f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:25 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:44 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:5412 (5.2 KiB)  TX bytes:7457 (7.2 KiB)
+          Interrupt:21 Base address:0x2000
+
+eth0:1    Link encap:Ethernet  HWaddr 00:30:1b:b8:f1:2f
+          inet addr:192.168.42.1  Bcast:192.168.42.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          Interrupt:21 Base address:0x2000
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:516 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:516 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:38900 (37.9 KiB)  TX bytes:38900 (37.9 KiB)
+
+wlan0     Link encap:Ethernet  HWaddr 00:08:a1:b0:a6:a2
+          inet addr:192.168.0.1  Bcast:192.168.0.255  Mask:255.255.255.0
+          inet6 addr: 2a01:5d8:58a6:c994:208:a1ff:feb0:a6a2/64 Scope:Global
+          inet6 addr: fe80::208:a1ff:feb0:a6a2/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:914 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:84 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:848221 (828.3 KiB)  TX bytes:43484 (42.4 KiB)

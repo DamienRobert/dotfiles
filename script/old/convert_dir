@@ -1,0 +1,52 @@
+#!/bin/bash3
+
+convert_rec() {
+  cd "$1"
+  for i in *
+  do
+    convert "$i"
+    [ -d "$i" ] && ( convert_rec "$i"; );
+  done
+}
+
+convert() {
+  old="$1";
+  new=`echo "$old" | iconv -f "$FROM" -t "$TO" -`
+  if [ "$old" != "$new" -o -n "$ALL" ];
+  then
+    echo "$old -> $new"
+  fi
+  if [ -n "$WRITE" -a "$old" != "$new" ];
+  then
+    mv "$old" "$new"
+  fi
+}
+
+FROM="ISO-8859-1";
+TO="UTF-8";
+WRITE=;
+ORIG=;
+ALL=;
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -f ) shift; FROM="$1"; shift ;;
+    -t ) shift; TO="$1"; shift ;;
+    -w ) shift; WRITE="true" ;;
+    -o ) shift; ORIG="true" ;;
+    -a ) shift; ALL="true" ;;
+    *) break;;
+  esac
+done
+
+for i in  "$@"
+do
+  echo "$i";
+  if [ -n "$ORIG" ]
+  then
+    convert "$i"
+  fi
+  [ -d "$i" ] && ( convert_rec "$i"; );
+done

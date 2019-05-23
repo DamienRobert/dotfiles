@@ -1,0 +1,347 @@
+#!/bin/bash
+
+#============ From xdg-open ================================
+DEBUG()
+{
+  [ -z "${XDG_UTILS_DEBUG_LEVEL}" ] && return 0;
+  [ ${XDG_UTILS_DEBUG_LEVEL} -lt $1 ] && return 0;
+  shift
+  echo "$@" >&2
+}
+
+# Get the value of a key in a desktop file's Desktop Entry group.
+# Example: Use get_key foo.desktop Exec
+# to get the values of the Exec= key for the Desktop Entry group.
+get_key()
+{
+    local file="${1}"
+    local key="${2}"
+    local desktop_entry=""
+
+    IFS_="${IFS}"
+    IFS=""
+    while read line
+    do
+        case "$line" in
+            "[Desktop Entry]")
+                desktop_entry="y"
+            ;;
+            # Reset match flag for other groups
+            "["*)
+                desktop_entry=""
+            ;;
+            "${key}="*)
+                # Only match Desktop Entry group
+                if [ -n "${desktop_entry}" ]
+                then
+                    echo "${line}" | cut -d= -f 2-
+                fi
+        esac
+    done < "${file}"
+    IFS="${IFS_}"
+}
+
+# This handles backslashes but not quote marks.
+first_word()
+{
+    read first rest
+    echo "$first"
+}
+# This handles backslashes but not quote marks.
+last_word()
+{
+    read first rest
+    echo "$rest"
+}
+
+check_input_file()
+{
+    if [ ! -e "$1" ]; then
+        exit_failure_file_missing "file '$1' does not exist"
+    fi
+    if [ ! -r "$1" ]; then
+        exit_failure_file_permission_read "no permission to read file '$1'"
+    fi
+}
+
+# Returns true if argument is a file:// URL or path
+is_file_url_or_path()
+{
+    if echo "$1" | grep -q '^file://' \
+            || ! echo "$1" | egrep -q '^[[:alpha:]+\.\-]+:'; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# If argument is a file URL, convert it to a (percent-decoded) path.
+# If not, leave it as it is.
+file_url_to_path()
+{
+    local file="$1"
+    if echo "$file" | grep -q '^file:///'; then
+        file=${file#file://}
+        file=${file%%#*}
+        file=$(echo "$file" | sed -r 's/\?.*$//')
+        local printf=printf
+        if [ -x /usr/bin/printf ]; then
+            printf=/usr/bin/printf
+        fi
+        file=$($printf "$(echo "$file" | sed -e 's@%\([a-f0-9A-F]\{2\}\)@\\x\1@g')")
+    fi
+    echo "$file"
+}
+
+#-------------------------------------------------------------
+# Exit script on successfully completing the desired operation
+
+exit_success()
+{
+    if [ $# -gt 0 ]; then
+        echo "$@"
+        echo
+    fi
+
+    exit 0
+}
+
+# Exit script on failure to locate necessary tool applications
+
+exit_failure_operation_impossible()
+{
+    if [ $# -gt 0 ]; then
+        echo "xdg-open: $@" >&2
+    fi
+
+    exit 3
+}
+
+#-----------------------------------------
+# Recursively search .desktop file
+
+search_desktop_file()
+{
+    local default="$1"
+    local dir="$2"
+    local target="$3"
+
+    local file=""
+    # look for both vendor-app.desktop, vendor/app.desktop
+    if [ -r "$dir/$default" ]; then
+      file="$dir/$default"
+    elif [ -r "$dir/`echo $default | sed -e 's|-|/|'`" ]; then
+      file="$dir/`echo $default | sed -e 's|-|/|'`"
+    fi
+
+    if [ -r "$file" ] ; then
+        command="$(get_key "${file}" "Exec" | first_word)"
+        command_exec=`which $command 2>/dev/null`
+        icon="$(get_key "${file}" "Icon")"
+        # FIXME: Actually LC_MESSAGES should be used as described in
+        # http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s04.html
+        localised_name="$(get_key "${file}" "Name")"
+        set -- $(get_key "${file}" "Exec" | last_word)
+        # We need to replace any occurrence of "%f", "%F" and
+        # the like by the target file. We examine each
+        # argument and append the modified argument to the
+        # end then shift.
+        local args=$#
+        local replaced=0
+        while [ $args -gt 0 ]; do
+            case $1 in
+                %[c])
+                    replaced=1
+                    arg="${localised_name}"
+                    shift
+                    set -- "$@" "$arg"
+                    ;;
+                %[fFuU])
+                    replaced=1
+                    arg="$target"
+                    shift
+                    set -- "$@" "$arg"
+                    ;;
+                %[i])
+                    replaced=1
+                    shift
+                    set -- "$@" "--icon" "$icon"
+                    ;;
+                *)
+                    arg="$1"
+                    shift
+                    set -- "$@" "$arg"
+                    ;;
+            esac
+            args=$(( $args - 1 ))
+        done
+        [ $replaced -eq 1 ] || set -- "$@" "$target"
+        "$command_exec" "$@"
+
+        if [ $? -eq 0 ]; then
+            exit_success
+        fi
+    fi
+
+    for d in $dir/*/; do
+        [ -d "$d" ] && search_desktop_file "$default" "$d" "$target"
+    done
+}
+
+#given a mimetype find the corresponding desktop files
+# eg: open_generic_xdg_mime file.txt text/plain
+open_generic_xdg_mime()
+{
+    filetype="$2"
+    default=`xdg-mime query default "$filetype"`
+DEBUG 2 "Default applications: $default"
+    if [ -n "$default" ] ; then
+        open_generic_xdg_desktops "$1" "$default"
+    else
+        fallback "$1"
+    fi
+}
+
+#run the desktop files
+# eg: open_generic_xdg_desktops file.txt vim;gedit
+open_generic_xdg_desktops() {
+   defaults="$2"
+DEBUG 2 "Try applications: $defaults"
+   defaults=(${defaults//;/ }) #TODO bashism
+   for default in "${defaults[@]}"; do
+       open_generic_xdg_desktop "$1" "$default"
+   done
+   fallback "$1"
+}
+
+# eg: open_generic_xdg_desktops file.txt vim
+open_generic_xdg_desktop() {
+    default="$2"
+DEBUG 2 "Try application: $default"
+    xdg_user_dir="$XDG_DATA_HOME"
+    [ -n "$xdg_user_dir" ] || xdg_user_dir="$HOME/.local/share"
+
+    xdg_system_dirs="$XDG_DATA_DIRS"
+    [ -n "$xdg_system_dirs" ] || xdg_system_dirs=/usr/local/share/:/usr/share/
+
+DEBUG 3 "$xdg_user_dir:$xdg_system_dirs"
+    for x in `echo "$xdg_user_dir:$xdg_system_dirs" | sed 's/:/ /g'`; do
+        search_desktop_file "$default" "$x/applications/" "$1"
+    done
+}
+
+#Given a file, find its filetype and run the desktop files
+# via open_generic_xdg_mime
+# eg: open_generic_xdg_file_mime file.txt
+open_generic_xdg_file_mime()
+{
+    #filetype=`xdg-mime query filetype "$1" | sed "s/;.*//"`
+    filetypes=`xdg-mime query filetype "$1"`
+DEBUG 2 "Mimetypes: $filetypes"
+    filetypes=(${filetypes//;/ }) #TODO bashism
+    for filetype in "${filetypes[@]}"; do
+        open_generic_xdg_mime "$1" "$filetype"
+    done
+}
+
+open_generic_xdg_x_scheme_handler()
+{
+    scheme="`echo $1 | sed -n 's/\(^[[:alnum:]+\.-]*\):.*$/\1/p'`"
+    if [ -n $scheme ]; then
+        filetype="x-scheme-handler/$scheme"
+        open_generic_xdg_mime "$1" "$filetype"
+    fi
+}
+
+open_generic()
+{
+    if is_file_url_or_path "$1"; then
+        local file="$(file_url_to_path "$1")"
+        check_input_file "$file"
+        if [ -n "$DISPLAY" ]; then
+            open_generic_xdg_file_mime "$1"
+        fi
+    fi
+    if [ -n "$DISPLAY" ]; then
+        open_generic_xdg_x_scheme_handler "$1"
+    fi
+
+    exit_failure_operation_impossible "no method available for opening '$1'"
+}
+
+fallback() {
+    if [[ -n $fallback ]]; then
+        DEBUG 2 "No default found, fallback"
+        xdg-open "$1"
+    fi
+}
+
+#================== end of xdg-open ====================
+mime_from_ext() {
+	local mime
+	case "$1" in
+		*.odt) mime=application/vnd.oasis.opendocument.text ;;
+		*.html) mime=text/html ;;
+		*.doc) mime=application/msword ;; #https://blogs.msdn.microsoft.com/vsofficedeveloper/2008/05/08/office-2007-file-format-mime-types-for-http-content-streaming-2/
+		*.ppt) mime=application/vnd.ms-powerpoint;;
+		*.xls|*.xla ) mime=application/vnd.ms-excel;;
+		*.xlsx ) mime=application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ;;
+		*.xltx ) mime=application/vnd.openxmlformats-officedocument.spreadsheetml.template ;;
+		*.docx ) mime=application/vnd.openxmlformats-officedocument.wordprocessingml.document ;;
+		*.dvi ) mime=application/dvi ;;
+		*.ps ) mime=application/postscript ;;
+		*.pdf ) mime=application/pdf ;;
+		*.jpg|*.JPG ) mime=image/jpeg ;;
+	esac
+	printf '%s' $mime
+}
+
+mime_from_file() {
+	local file="$1"
+	# echo "Mime: $mime, file: $file" >&2
+	case $mime in
+		''|auto) printf '%s' $(xdg-mime query filetype "$file") ;;
+		file) mime_from_ext "$file" ;;
+		*) printf '%s' "$mime" ;;
+	esac
+}
+
+mime=
+generic=
+desktop=
+query=
+fallback=
+print_mime=
+
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		--print-mime ) shift ; print_mime=t ;; # show mime of file
+		--query) shift ; query=t;; #get the mime type and the default application
+
+		--fallback ) shift ; fallback=t ;; # if no defaults found or desktop files found, fallback to xdg-open
+		--desktop) shift ; desktop="$1"; shift ;; #mime-open --desktop zathura.desktop file => force the use of specified desktop files
+		--mime) shift ; mime="$1"; shift ;; #mime-open --mime application/pdf file; mime-open --mime auto|file file.
+		#=> get desktop file via: xdg-mime query default "$filetype". Notes: mime=auto calls $(xdg-mime query filetype $1) so is essentially the same as --generic; mime=file only looks at the file extension.
+		--generic) shift ; generic=t;; #run open_generic: get the mime type and run the corresponding desktop file [Note: get mime type via: xdg-mime query filetype "$1"] The difference with `--mime=auto` is that open_generic calls `open_generic_xdg_x_scheme_handler` if the passed file does not exist.
+		*) break;;
+	esac
+done
+
+#convert to array: http://stackoverflow.com/questions/918886/how-do-i-split-a-string-on-a-delimiter-in-bash
+if [ -n "$query" ]; then
+	mime=$(xdg-mime query filetype "$1")
+	app=$(xdg-mime query default "$mime")
+	echo "$1: $mime -> $app"
+elif [ -n "$print_mime" ]; then
+	mime_from_file "$1"
+elif [ -n "$mime" ]; then
+	open_generic_xdg_mime "$1" "$(mime_from_file "$1")"
+elif [ -n "$desktop" ]; then
+	open_generic_xdg_desktops "$1" "$desktop"
+elif [ -n "$generic" ]; then
+	open_generic "$1"
+else
+	xdg-open "$@" #=> uses exo-open on xfce #warning: forks
+fi

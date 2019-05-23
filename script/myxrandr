@@ -1,28 +1,57 @@
-#!/bin/sh
+#!/bin/zsh
 
 help() {
-  echo "myxrandr on|off|reset"
-  exit 1
+	echo "myxrandr on|off|reset
+	left-of|right-of|above|below|same-as
+	first|second|first_primary|second_primary
+	dpi"
+	exit 1
 }
 
-[ $# -eq 0 ] && help
+# . $HOME/.initvars
+list=(${(@f)$(xrandr | sed -n '/ connected / {s/^\(.*\) connected.*/\1/p}')})
+eDPs=(${(M)list:#eDP*})
+others=(${list:#eDP*})
+MAIN=$eDPs[1]
+SECOND=$others[1]
+echo "# Main: $MAIN, Second: $SECOND"
 
-MAIN=LVDS
-SECOND=VGA-0
-case $MYHOSTNAME in
-  Numenor)  SECOND="HDMI-0";;
-  Feanor)  MAIN="DP2" SECOND="HDMI1";;
-  Valinor)  MAIN="eDP-1" SECOND="VGA-1";;
-esac
+# MAIN=LVDS; SECOND=VGA-0
+# case $MYHOSTNAME in
+# 	Mithrim) MAIN="eDP1" SECOND="DP1-1";;
+# 	Doriath) MAIN="eDP1" SECOND="HDMI1";;
+# 	Numenor) SECOND="HDMI-0";;
+# 	Feanor) MAIN="DP2" SECOND="HDMI1";;
+# 	Valinor) MAIN="eDP-1" SECOND="VGA-1";;
+# esac
 
+[[ $# -eq 0 ]] && help
 case $1 in
-  -h|-help|--help ) help ;;
-  true|on ) 
-    xrandr --output $SECOND --auto --below $MAIN ;;
-  false|off)
-    xrandr --output $SECOND --off ;;
-  reset )
-   xrandr --output $MAIN --off
-   xrandr --output $MAIN --auto
-  ;;
+	-h|-help|--help ) help ;;
+	true|on )
+		xrandr --output $SECOND --auto --same-as $MAIN ;;
+	false|off)
+		xrandr --output $SECOND --off ;;
+	left-of|right-of|above|below|same-as)
+		xrandr --output $SECOND --auto --$1 $MAIN ;;
+	reset )
+	 xrandr --output $MAIN --off
+	 xrandr --output $MAIN --auto
+	;;
+	first_primary) xrandr --output $MAIN --primary ;;
+	second_primary) xrandr --output $SECOND --primary ;;
+	first)
+	 xrandr --output $MAIN --auto
+	 xrandr --output $SECOND --off
+	 ;;
+	second)
+	 xrandr --output $SECOND --auto
+	 xrandr --output $MAIN --off
+	 ;;
+	dpi)
+		# reset the dpi to the value of the currently active screen
+		size=$(xrandr | sed -n '/ connected primary / {s/.* \([0-9]\+\)mm x \([0-9]\+\)mm/\1x\2/p;q}')
+		[[ -z $size ]] && size=$(xrandr | sed -n '/ primary / {s/.* \([0-9]\+\)mm x \([0-9]\+\)mm/\1x\2/p;q}')
+		[[ -n $size ]] && echo "xrandr --fbmm $size" && xrandr --fbmm $size
+		;;
 esac

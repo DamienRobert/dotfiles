@@ -1,0 +1,5 @@
+path=data/Photos
+path=data/Videos/clip
+
+# Digikam
+ignore = Name *.db

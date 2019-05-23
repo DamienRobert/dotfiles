@@ -1,0 +1,47 @@
+#!/bin/zsh
+
+OPTS=()
+while true;
+do
+  case $1 in
+    -- ) break ;;
+    --all ) shift; all=t ;;
+    --test ) shift; test=t ;;
+    --url ) shift; get_url=t ;;
+    -* ) OPTS+=$1; shift;;
+    *) break;;
+  esac
+done
+
+run() {
+	if [[ -n $test ]]; then
+		echo $@
+	else
+		( cd $(git rev-parse --show-toplevel)
+		  $@ )
+	fi
+}
+
+subadd() {
+	local sub url remote_url
+	for sub in $@; do
+		sub=${sub%/.git}
+		url="./$(git rev-parse --show-prefix)$sub"
+		[[ -n $get_url ]] && remote_url=$(git --git-dir=$sub/.git remote get-url origin 2>/dev/null) && url=$remote_url
+		run git submodule add $OPTS $url "$(git rev-parse --show-prefix)$sub"
+	done
+}
+
+if [[ -n $all ]]; then
+	if [[ -n $@ ]]; then
+		for dir in $@; do
+			subs=($dir/**/.git(/DN))
+			subadd ${subs%/.git}
+		done
+	else
+		subs=(*/**/.git(/DN))
+		subadd ${subs%/.git}
+	fi
+else
+	subadd $@
+fi

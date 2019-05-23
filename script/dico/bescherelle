@@ -1,0 +1,60 @@
+#!/usr/bin/env perl
+# bescherelle - programme de conjugaison automatique.
+# Usage: bescherelle verbe
+#
+# Nécessite le module Verbe.pm.
+# <http://www.eleves.ens.fr:8080/home/plut/scripts.html>
+
+use strict;
+use lib "$ENV{HOME}/script/dico/lib";
+use Verbe ;
+
+use vars qw/@pronom/;
+
+@pronom = qw(je tu il nous vous ils);
+
+sub conjuguer($) {
+	my $v = shift;
+   my $a = Verbe->new($_);
+	my $i;
+
+   unless($a) { print "Drôle de verbe que « $_ » !\n"; return; }
+
+   print "INDICATIF\n---------\n";
+   print "Présent :\n";
+   for($i=1;$i<=6;$i++) {
+      my $b = $a->indicatif_present($i);
+      $b && print "    ".$pronom[ $i-1 ]." $b\n"; }
+   print "Imparfait :\n";
+   for($i=1;$i<=6;$i++) {
+      my $b = $a->indicatif_imparfait($i);
+      $b && print "    ".$pronom[ $i-1 ]." $b\n"; }
+   print "Passé simple :\n";
+   for($i=1;$i<=6;$i++) {
+      my $b = $a->passe_simple($i);
+      $b && print "    ".$pronom[ $i-1 ]." $b\n"; }
+   print "Futur simple :\n";
+   for($i=1;$i<=6;$i++) {
+      my $b = $a->futur_simple($i);
+      $b && print "    ".$pronom[ $i-1 ]." $b\n"; }
+   print "PARTICIPE\n----------\n";
+   print "Présent : ",$a->participe_present(),"\n";
+   print "Passé : ",$a->participe_passe(),"\n";
+   print "SUBJONCTIF\n-----------\n";
+   print "Présent :\n";
+   for($i=1;$i<=6;$i++) {
+      my $b = $a->subjonctif_present($i);
+      $b && print "    ".$pronom[ $i-1 ]." $b\n"; }
+   print "Imparfait :\n";
+   for($i=1;$i<=6;$i++) {
+      my $b = $a->subjonctif_imparfait($i);
+      $b && print "    ".$pronom[ $i-1 ]." $b\n"; }
+   print "CONDITIONNEL\n------------\n";
+   print "Présent :\n";
+   for($i=1;$i<=6;$i++) {
+      my $b = $a->conditionnel_present($i);
+      $b && print "    ".$pronom[ $i-1 ]." $b\n"; }
+}
+
+if(@ARGV) { conjuguer($_) foreach(@ARGV); }
+else { while(<STDIN>) { chop; conjuguer($_); } }

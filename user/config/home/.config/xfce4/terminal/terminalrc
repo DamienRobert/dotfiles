@@ -1,0 +1,38 @@
+# WHEN @computer[:xorg][:dm] == "xfce" or @computer.current? && SH.find_executable("xfce4-terminal")
+#<%= generated_from %>
+<% colors=@computer.dig(:xorg,:colors) %>
+[Configuration]
+MiscAlwaysShowTabs=TRUE
+MiscBell=FALSE
+MiscBellUrgent=FALSE
+MiscBordersDefault=TRUE
+MiscCopyOnSelect=FALSE
+MiscCursorBlinks=FALSE
+MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK
+MiscDefaultGeometry=<%= @computer.terminal_geometry(:vte) %>
+MiscDefaultWorkingDir=
+MiscHighlightUrls=TRUE
+MiscInheritGeometry=FALSE
+MiscMenubarDefault=FALSE
+MiscMiddleClickOpensUri=TRUE
+MiscMouseAutohide=TRUE
+MiscMouseWheelZoom=TRUE
+MiscToolbarDefault=FALSE
+MiscConfirmClose=TRUE
+MiscCycleTabs=TRUE
+MiscRewrapOnResize=TRUE
+MiscSlimTabs=FALSE
+MiscTabCloseButtons=TRUE
+MiscTabCloseMiddleClick=TRUE
+MiscTabPosition=GTK_POS_TOP
+MiscUseShiftArrowsToScroll=FALSE
+
+ScrollingOnOutput=FALSE
+TabActivityTimeout=30
+<% if colors %>
+ColorForeground=<%= colors[:foreground] %>
+ColorBackground=<%= colors[:background] %>
+ColorCursor=<%= colors[:cursor] %>
+ColorPalette=<%= colors[:scheme].join(";")%>
+<% end %>
+FontName=<%= @computer.font(:vte, type: :gtk) || "Monospace 10" %>

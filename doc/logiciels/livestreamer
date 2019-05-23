@@ -1,0 +1,3 @@
+livestreamer -p mpv twitch.tv/sc2starleague best
+livestreamer -p mpv twitch.tv/gsl best
+livestreamer -p mpv twitch.tv/sc2proleague best

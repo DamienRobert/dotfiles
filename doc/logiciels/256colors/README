@@ -18,4 +18,3 @@ xterm-color-table is from https://github.com/guns/xterm-color-table.vim
 (warning the color translation is wrong, 'df' should be 'd7')
 
 16colors show the standard 16 colors on a terminal
-

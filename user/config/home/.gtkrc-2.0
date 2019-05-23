@@ -1,0 +1,9 @@
+#WHEN !@computer.dig(:xorg,:xsettings).nil?
+#<%= generated_from %>
+<% @computer.gtk_settings.each do |key,value| %>
+<% value="\"#{value}\"" if String===value %>
+<% # For gtk-2.0 (unlike gtk-3.0), false/true are encoded as 0/1
+   value=0 if value == false
+   value=1 if value == true %>
+<%= key%> = <%= value %>
+<% end %>

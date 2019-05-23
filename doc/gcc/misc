@@ -1,6 +1,0 @@
-In C99, you can add qualifiers for an array in a parameter list:
-http://stackoverflow.com/questions/2374875/should-i-declare-the-expected-size-of-an-array-passed-as-function-argument
-  The main reason to add an array size is for documentation purposes. Also,
-  with C99, you can add qualifiers within the square brackets which will be
-  used to modify the pointer declaration to which the array declaration will
-  be converted if it occurs within a parameter list.

@@ -1,0 +1,133 @@
+http://www.hearthstonetopdecks.com/
+S: spell, W: weapon, H: hero, M: minion, L: legendary
+
+Neutrals:
+- 3M Mind control tech, 3/3, More than 4 minions => control one at random
+- 4M Spellbreaker, 4/3, Silence a minion
+- 5M Big game hunter, 4/2, destroy a minion with >=7 attack
+- 6M Black knight, 4/5, destroy a minion with taunt
+- 8M Bonemare, 5/5, give minion +4/+4 and taunt
+- 8M Primordial Drake, 4/8, 2 to all AOE
+
+# Druid
+- 1S Spellstone (2/4/6 damage)
+- 2S Wrath, 1 or 3 damage
+- 3S Savage Roar, +2 attack
+- 4S Swipe, 4 damage to one + 1 to all other enemies
+- 5S Living mana
+- 6S Spreading Plague
+- 7H Malfurion the pestilent [+3 or +3], 2 scarabs
+- 10S Ultimate infestation
+
+# Hunter
+Secrets: Cat Trick, Explosive Trap, Freezing Trap, Hidden Cache, Misdirection, Snake Trap, Snipe, Venomstrike Trap
+- 2S Grievous Bite (2+1x2)
+- 3S Unleash the hounds
+- 3S Kill command (3 ou 5)
+- 3S Deadly shot
+- 3W Eaglehorn bow, 3/2 (secret => +1 durability)
+- 5S Explosive shot (5+2x2)
+- 5S Spellstone
+- 6H Rexar [build a beast], Battlecry: Deal 2 damage to all enemy minions
+
+# Mage
+Secrets: Counterspell, Frozen Clone, Ice Barrier, Ice Block, Mana Bind, Mirror Entity, Potion of Polymorph, Spellbender, Vaporize
+- 2S Frostbold, 3 damage + freeze
+- 3S Frostnova, freeze
+- 4S Fireball, 6 damage
+- 5S Dragon's fury
+- 6S Blizzard, 2 damage aoe + freeze
+- 6S Meteor, 15 damage + 3 adjacent
+- 7S Flamestrike, 4 damage to all enemy minions
+- 7S Fireland portal, 5 damage
+- 9H Frost lich jaina, summon 3/6 water elemental
+- 10S Pyroblast, 10 damage
+
+# Paladin
+Secrets: Eye for an Eye, Noble Sacrifice, Redemption, Repentance, Getaway Kodo
+- 2S Equality, change health of all minions to 1
+- 3W Rallying blade, 3/2 Battlecry: +1/+1 to your minions with Divine Shield.
+- 4S Consecration, 2 damage to all enemies
+- 4S Blessing of kings, +4/+4
+- 4W Truesilver champion, 4/2 whenever your hero attacks, restore 2 Health to it
+- 6S Spikeridged Steed, +2/+6 taunt, deathrattle: summon a 2/6 taunt stegodon
+- 6L Sunkeeper tarim, 3/7 taunt, set all other minions to 3/3
+- 8S Dinosize, set a minion to 10/10
+- 8L Tirion Fordring, 6/6 divine shield, deathrattle: equip a 5/3 weapon
+- 9H Uther of the Ebon Blade [summon a 2/2 apocalypse], 5/3 lifesteal weapon
+
+# Priest
+- 3S Shadow word pain, destroy a minion with <=3 attack
+- 3S Shadow word death, destroy a minion with >=5 attack
+- 4S Shadow madness, gain control of an enemy with <=3 attack until next turn
+- 4S Eternal servitude
+- 4S Greater healing potion, restore 12 health
+- 4S Mass dispell
+- 5S Holy Nova, 2 damages to all ennemies, 2 health to all allies
+- 5S Mind blast
+- 7S Psychic scream, shuffle all minions in opponent deck
+- 8H Shadowreaper Anduin [2 damage], Destroy all minions with 5 or more Attack
+- 10S Mind control
+
+# Rogue
+- 0S Backstab, Deal 2 damage to an undamaged minion
+- 0S Preparation, Next spell costs 3 less
+- 2S Sap
+- 2S Eviscerate, Deal 2 damage, Combo 4
+- 3S Fan of knives, 1 damage to all enemies minions + draw a card
+- 3S Shadow strike, deal 5 damage to undamaged character
+- 3M SI:7 Agent, 3/3 Combo deal 2 damage
+- 3L Edwin VanCleef, 2/2 (+2/+2 for each card played this turn)
+- 5S Assassinate
+- 5W Assassin's blade, 3/4
+- 5M Vilespine slayer, 3/4 combo destroy a minion
+- 6S Vanish
+- 9H Valeera the Hollow [passive mimic card], Stealth until your next turn
+
+# Shaman
+- 1S Evolve
+- 1(+1)S, Lightning bolt, Deal 3 damage
+- 2S Devolve
+- 2S Maelstorm portal, Deal 1 aoe damage, summon 1 cost minion
+- 2(+1)W Jade claw, 2/2 + jade golem
+- 3S Hex
+- 3S Feral spirit, summon 2 2/3+taunt
+- 3(+2)S Lighting Storm, 2/3 damage to all enemies minions
+- 4S Jade Lightning, deal 4 damage, summon jade golem
+- 4S Tidal surge, deal 4 damage, restore 4 health to your hero
+- 5S Bloodlust, +3 attack this turn
+- 5H Thrall Deathseer [Evolve a minion], Evolve +2
+- 5(+2)S Volcano, 15 damage across all minions
+- 6M Thing from below, 5/5 taunt
+
+# Warlock
+- 1S Mortal coil, 1 damage to a minion (if that kills it draw a card)
+- 2S Defile, 1 damage to all (++)
+- 2S Drain soul, 2 damage to a minion life steal
+- 3S Shadow bolt, 4 damage to a minion
+- 4S Hellfire, 3 damage to all (including allies)
+- 4S Shadowflame, destroy a friendly minion and deal its Attack damage to all enemy minions
+- 4S Spellstone (3/5/7 lifesteal)
+- 5M Despicable dreadlord, 4/5, at end of turn => 1 damage to ennemy minions
+- 6S Felfire potion, 6 damage to all (including allies)
+- 6S Siphon soul, destroy a minion, restore 3 health to your hero
+- 7M Abyssal enforcer, 6/6, deal 3 damage to all
+- 7L Lord Godfrey (=defile x2)
+- 8S Twisting Nether, Destroy all minions
+- 9H Lord Jaraxxus [summon 6/6 elemental], 15 health 3/8 weapon
+- 10S Doom, destroy all minions, draw a card for each
+- 10H Bloodreaver Gul'dan [Lifesteal 3], summon friendly daemons
+
+# Warrior
+- 1S Whirlwind, 1 damage to all minions
+- 2S Cleave, 2 damage to two random enemy minions
+- 2S Slam, Deal 2 damage to a minion. If it survives, draw a card
+- 2S Execute
+- 2S Heroic strike, hero +4 attack this turn
+- 3S Shield block, +5 armor, draw a card
+- 3W Fiery war axe, 3/2
+- 4S Mortal strike, Deal 4 damage. If you have 12 or less Health, deal 6 instead
+- 4W Blood razor, 2/2, battlecry/deathrattle: 1 damage to all minions
+- 5S Brawl, destroy all minions except one (random)
+- 5W Arcanite reaper, 5/2
+- 8H Scourgelord Garrosh [Whirlwind], Equip a 4/3 Shadowmourne

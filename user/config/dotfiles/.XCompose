@@ -1,0 +1,3 @@
+include "%L"
+include "%H/mine/config/files/dotXCompose/dotXCompose"
+include "%H/mine/config/files/dotXCompose/frakturcompose"

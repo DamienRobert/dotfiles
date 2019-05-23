@@ -1,0 +1,15 @@
+[Unit]
+Description=Unison backup
+Documentation=man:unison(1)
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/ping -c 1 -W 1 acces.math.u-bordeaux1.fr
+SyslogIdentifier=unison_backup
+ExecStart=/bin/sh -c 'exec %h/mine/script/unison.rb --sync=backup -cb'
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=crontab.target

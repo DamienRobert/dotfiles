@@ -1,0 +1,3 @@
+#!/bin/sh
+
+GEM_HOME=$HOME/mine/ruby/core_gems GEM_PATH= gem "$@"

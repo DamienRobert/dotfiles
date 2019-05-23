@@ -1,0 +1,12 @@
+Aptitude "";
+Aptitude::Auto-Fix-Broken "false";
+Aptitude::UI "";
+Aptitude::UI::Pause-After-Download "false";
+Aptitude::UI::Package-Status-Format "%d %D %I";
+Aptitude::UI::Package-Display-Format "%c%a%M%S %p %Z %v %V %t";
+Aptitude::Recommends-Important "";
+Aptitude::Keep-Unused-Pattern "";
+Aptitude::Delete-Unused-Pattern "";
+Aptitude::Ignore-Recommends-Important "true";
+APT "";
+APT::Install-Recommends "false";

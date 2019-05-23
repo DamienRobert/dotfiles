@@ -1,0 +1,9 @@
+#!/bin/sh
+
+{
+for i in MP3_*; do
+  perl -e 'print "-" x 80, "\n"';
+  printf '%s\n' "$i"
+  cat "$i"/00FILEINFO
+done
+} > 00MP3_LIST

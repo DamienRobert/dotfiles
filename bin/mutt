@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if command -v neomutt; then
+  neomutt "$@"
+else
+  /usr/bin/mutt "$@"
+fi

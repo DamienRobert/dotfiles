@@ -1,0 +1,7 @@
+cd ~/opt/src
+version=20160607
+
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+unarchive install-tl-unx.tar.gz
+cd install-tl-$version
+TEXLIVE_INSTALL_PREFIX=$HOME/scratch/opt/packages/texlive ./install-tl

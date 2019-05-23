@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+export FROM=${${"$(who am i)"##*\(}%\)*}
+
+if [[ -n $FROM && $DISPLAY == localhost:<10->.0 ]]; then
+  ssh $FROM display -display :0 - < $1
+else
+  print -u2 "Dont know how to display."
+fi
+
+if [[ $DISPLAY == localhost:<10->.0 ]]; then
+  export DISPLAY_HIDDEN=$DISPLAY
+  unset DISPLAY
+fi
+if [[ -z $DISPLAY_HIDDEN ]]; then
+  alias x="DISPLAY=$DISPLAY_HIDDEN"
+fi

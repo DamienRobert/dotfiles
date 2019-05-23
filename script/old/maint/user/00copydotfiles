@@ -1,0 +1,1 @@
+rsync -vaczP --backup --backup-dir=.rsync_backup ~/tmp/@comps/$MYHOSTNAME/home/ ~/

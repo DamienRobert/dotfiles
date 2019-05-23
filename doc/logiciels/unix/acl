@@ -1,0 +1,70 @@
+# "chmod"-acl
+user::rw-
+group::r--
+other::r--
+
+#named user and group acl
+user:name:rwx
+group:groupname:rwx
+
+# mask
+mask::rw
+
+All the named user and named group acl + the owner group acl are subject to
+the mask. This is what is printed by ll in the group permission.
+
+  Entry type      Text form       Permissions
+  Named user      user:joe:r-x    r-x
+  Mask            mask::rw-       rw-
+  Effective permissions           r-
+
+#default acl: the acl of new files
+default:name:rwx
+
+#Ex: allow a user to do stuff in a dir
+setfacl -Rm default:u:dina:rwx ploum
+setfacl -Rm u:dina:rwX ploum #affect existing files
+-> setfacl -R -m default:u:dina:rwx -m u:dina:rwx ploum
+
+Example:
+=======
+               1:  # file: somedir/
+               2:  # owner: lisa
+               3:  # group: staff
+               4:  # flags: -s-
+               5:  user::rwx
+               6:  user:joe:rwx               #effective:r-x
+               7:  group::rwx                 #effective:r-x
+               8:  group:cool:r-x
+               9:  mask::r-x
+              10:  other::r-x
+              11:  default:user::rwx
+              12:  default:user:joe:rwx       #effective:r-x
+              13:  default:group::r-x
+              14:  default:mask::r-x
+              15:  default:other::---
+
+On acls and umasks and chmod:
+============================
+http://unix.stackexchange.com/questions/82329/how-does-umask-affect-acls
+http://serverfault.com/questions/352783/why-does-chmod1-on-the-group-affect-the-acl-mask/352915#352915
+
+Quand unix crée un repertoire, il rajoute par défaut un umask de 0777
+Pour un fichier, il y aura un umask de 0666.
+Donc même avec les default acls, un fichier n'aura jamais le +x mis par défaut.
+Enfin dans un chmod, la permission du groupe est spéciale: si il y a des acls, ça change le 'mask' et pas le groupe par défaut.
+Rappel: le 'mask' s'applique à tous les named user et named groups (plus le default group). Donc changer les permissions au groupe affecte toutes les acls (sauf other and default user). Finalement, dans ll, les permissions du groupe affichées sont l'union des acls affectées par le mask.
+Au final, si umask=022, la création d'un fichier va enlever le +w au mask, et donc l'écriture inaccessible aux named user et named groups (en plus du groupe)
+
+Acl entries
+===========
+       The setfacl utility recognizes the following ACL entry formats:
+       [d[efault]:] [u[ser]:]uid [:perms]
+              Permissions  of  a  named user. Permissions of the file owner if
+              uid is empty.
+       [d[efault]:] g[roup]:gid [:perms]
+              Permissions of a named group. Permissions of the owning group if
+       [d[efault]:] m[ask][:] [:perms]
+              Effective rights mask
+       [d[efault]:] o[ther][:] [:perms]
+              Permissions of others.

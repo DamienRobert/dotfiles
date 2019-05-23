@@ -1,0 +1,14 @@
+#!/bin/sh
+
+FILE="$@"
+[ -z $FILE ] && FILE=$(ls -t $HOME/.mozilla/firefox/*default/places.sqlite | sed q)
+
+# --: sql comment
+sqlite3 $FILE "
+SELECT DISTINCT
+    moz_places.title,url FROM moz_bookmarks
+INNER JOIN moz_places ON moz_bookmarks.fk=moz_places.id
+ORDER BY
+    visit_count DESC,
+    last_visit_date DESC;" |
+awk -F '|' '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}'

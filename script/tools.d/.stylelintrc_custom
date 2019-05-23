@@ -1,0 +1,29 @@
+{
+  "plugins": [
+    "stylelint-no-unsupported-browser-features",
+    "stylelint-order",
+  ],
+  "rules": {
+    "plugin/no-unsupported-browser-features": [true, {
+      "severity": "warning",
+      "ignore": ["rem"]
+    }],
+    "function-url-quotes": "always",
+    "order/order": [
+      [
+        "custom-properties",
+        "declarations",
+        "rules"
+      ]
+    ],
+    "order/properties-alphabetical-order": true,
+    "selector-class-pattern": [
+      "^[a-z0-9\\-]+$",
+      {
+        "message":
+          "Selector should be written in lowercase with hyphens (selector-class-pattern)"
+      }
+    ],
+    "shorthand-property-no-redundant-values": true,
+  }
+}

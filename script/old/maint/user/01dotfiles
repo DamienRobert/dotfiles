@@ -1,0 +1,69 @@
+#!/bin/zsh
+
+FORCE=
+while true;
+do
+	case "$1" in
+		-- ) shift; break ;;
+		-f|--force ) shift; FORCE=t;;
+		*) break;;
+	esac
+done
+
+. "$HOME/mine/config/dotfiles/.initvars"
+. "$DOTFILES/.initenv"
+. "$USERFILES/script/lib/dolink"
+export MYFILES CFGFILES
+#the order is as follow: set MYHOST* by arguments, otherwise by
+#00COMPUTERS.rb, otherwise by .initvars which reads hosttype.local
+eval $($MYCOMPUTERS --export=config)
+[[ -n $config[hostname] ]] && MYHOSTNAME=$config[hostname]
+[[ -n $config[hosttype] ]] && MYHOSTTYPE=$config[hosttype]
+MYHOSTNAME=${1-$MYHOSTNAME}
+MYHOSTTYPE=${2-$MYHOSTTYPE}
+export MYHOSTNAME MYHOSTTYPE
+
+rm $MYHOSTFILE
+if [[ -n $MYHOSTNAME ]]; then
+	touch $MYHOSTFILE
+	echo "MYHOSTNAME=$MYHOSTNAME" >> $MYHOSTFILE
+fi
+if [[ -n $MYHOSTTYPE ]]; then
+	touch $MYHOSTFILE
+	echo "MYHOSTTYPE=$MYHOSTTYPE" >> $MYHOSTFILE
+fi
+echo "Updating config files for $MYHOSTNAME with type $MYHOSTTYPE"
+
+if [[ -n $FORCE ]]; then
+	DOLINK_FORCE=t
+fi
+
+copy() {
+	~/mine/progs/linkutils/install_package -a -s $1 $2 $HOME -q ${FORCE:+-f}
+}
+
+dotfiles_link() {
+	DOTFILESDIR=$1
+	DOTFILESDIRNAME="${DOTFILESDIR#$HOME/}"
+	echo "# Copy dotfiles in $DOTFILESDIRNAME"
+	echo "-> Squel"
+	for i in $DOTFILESDIR/dotfiles-squel/{*,.*}(N); do
+		copy $DOTFILESDIR/dotfiles-squel $i;
+	done
+	echo "-> Dotfiles"
+	for i in $DOTFILESDIRNAME/{*,.*}(N); do
+		case $(basename $i) in
+			dotfiles*) #do nothing
+				;;
+			*) 
+				do_link $i
+				;;
+		esac
+	done
+}
+
+cd $HOME
+
+dotfiles_link $DOTFILES
+[[ -d "dotfiles-local/$MYHOSTTYPE" ]] && dotfiles_link "dotfiles-local/$MYHOSTTYPE"
+[[ -d "dotfiles-local/$MYHOSTNAME" && "$MYHOSTTYPE" != "$MYHOSTNAME" ]] && dotfiles_link "dotfiles-local/$MYHOSTNAME"

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sudo ip address add "fd69:afef:e73d:0:213:77ff:feae:a162/64" dev eth0

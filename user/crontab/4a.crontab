@@ -1,0 +1,2 @@
+42 02 01 * * exec sh -c ". $HOME/.initenv; exec $HOME/script/phare/stat_forumdb --post --realm=forum"
+52 02 01 * * exec sh -c ". $HOME/.initenv; exec $HOME/script/phare/stat_forumdb --post --realm=yaf"

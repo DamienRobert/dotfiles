@@ -1,34 +1,85 @@
 #!/bin/zsh
-#ssh2 active les features interactives: ControlMaster, ServerAliveInterval
+#ssh2 active les features interactives: ControlMaster
 
 help() {
   echo "$0 -(no)CM -ssl -SAI"
   exit 1
 }
 
-SSH_OPT=(-o 'ControlMaster auto' -o 'ControlPath "/tmp/%l_%r@%h:%p"' -o 'ControlPersist yes' -o 'ServerAliveInterval=30')
+tmux=t
+[[ -z $XDG_RUNTIME_DIR ]] && XDG_RUNTIME_DIR="/tmp"
+CM=(-o 'ControlMaster=auto' -o "ControlPath=$XDG_RUNTIME_DIR/ssh@%l:%r@%h:%p" -o 'ControlPersist=yes')
+DEFAULT_SSH_OPT=($CM)
+SSH_OPT=()
+if [[ -z $TZ && -h /etc/localtime ]]; then
+	#export my system timezone
+	l=$(readlink /etc/localtime)
+	export TZ="$(basename $(dirname $l))/$(basename $l)"
+fi
 
 while true;
 do
   case "$1" in
     -- ) break ;;
     -V ) shift; VERBOSE="true";;
-    -CM ) shift; SSH_OPT+=(-o 'ControlMaster auto' \
-  -o 'ControlPath "/tmp/%l_%r@%h:%p"' \
-  -o 'ControlPersist yes') 
-    ;;
+    -CM ) shift; SSH_OPT+=($CM) ;; #on by default
     -noCM ) shift; SSH_OPT+=(-o 'ControlMaster=no') ;;
-    -ssl ) shift; SSH_OPT+=(-o 'ProxyCommand=ssh -W %h:%p phare2') ;;
     -SAI ) shift; SSH_OPT+=(-o 'ServerAliveInterval=30') ;;
     -noSAI ) shift; SSH_OPT+=(-o 'ServerAliveInterval=0') ;;
     -nohost ) shift; SSH_OPT+=(-o 'UserKnownHostsFile=/dev/null' -o 'StrictHostKeyChecking=no') ;;
+    -ssl ) shift; SSH_OPT+=(-o 'ProxyCommand=ssh -W %h:%p sshproxy') ;;
     -proxy ) shift; proxy=$1; shift; SSH_OPT+=(-o "ProxyCommand=ssh -W %h:%p $proxy") ;;
-    -h) help ;;
+    -forward ) shift; SSH_OPT+=(-fNT) ;;
+    --batch ) shift; DEFAULT_SSH_OPT=(); tmux= ;; #for unison.rb
+    -tmux ) shift; tmux=t ;; #default
+    -notmux ) shift; tmux= ;;
+    -killctl ) shift; killctl=t ;;
+    -h) shift; help ;;
+    -m) shift; DEFAULT_SSH_OPT=(); mosh=t ;;
+    -o) shift; SSH_OPT+=(-o $1); shift ;;
+    -O) shift; SSH_OPT+=(-O $1); shift ;;
+    -c ) shift ; COMPUTER=$1; shift
+    	. $HOME/.initvars
+			eval $($MYCOMPUTERS --export --ssh $COMPUTER)
+			# SSH_COMMAND=ssh #SSH_OPTIONS=(-p 22) #HOST=dams@durin
+			# use `set` to set the positional parameters
+			SSH_OPT+=$SSH_OPTIONS; set $HOSTSSH $@; break ;;
     -*) SSH_OPT+=$1; shift ;;
     *) break;;
   esac
 done
+prog=${SSH_COMMAND-ssh}
 
-command="ssh $SSH_OPT $@"
-if [[ -n $VERBOSE ]]; then echo "$command"; fi
-ssh  $SSH_OPT "$@"
+verbose_exec() {
+	[[ -n $VERBOSE ]] && echo $@
+	exec $@
+}
+
+SSH_OPT=($DEFAULT_SSH_OPT $SSH_OPT)
+if [[ -n $killctl ]]; then
+	for i in $XDG_RUNTIME_DIR/ssh@*(N); do
+		i=(${(s/:/)i}); #i=(dirname/ssh@mithrim dams@4a 22)
+		#shift i
+		#i=${(j/:/)i}
+		host=$i[2]
+		[[ -n $i[3] ]] && SSH_OPT+=(-p $i[3]) #port
+		verbose_exec ssh $SSH_OPT -O exit $host
+	done
+fi
+
+if [[ -n $@ ]]; then
+	SSH_POST=
+	if [[ -n $tmux ]]; then
+		[[ -z $mosh ]] && SSH_OPT+="-t"
+		#SSH_POST=(sh -c '. ./.initenv; exec tmux new -As ssh')
+		#we need the -u since we launch from ssh directly so the env var may not be passed
+		SSH_POST=(tmux -u new -As ssh)
+	fi
+	if [[ -n $mosh ]]; then
+		space=''
+		[[ -n $SSH_OPT ]] && space=' '
+		verbose_exec mosh "--ssh=$prog$space$SSH_OPT" -- $@ $SSH_POST
+	else
+		verbose_exec $prog $SSH_OPT $@ $SSH_POST
+	fi
+fi

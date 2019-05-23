@@ -1,0 +1,56 @@
+#!/bin/zsh
+
+USER=
+CHOWN=
+OWNER=
+while true;
+do
+  case "$1" in
+    -- ) break;;
+    -bd ) shift; BACKUPDIR=$1; shift ;;
+    -b ) shift; BACKUP=t;;
+    -o ) shift; OWNER=t;;
+    -s ) shift; SUDO=t;;
+    -u ) shift; USER=$1; shift;;
+    -c ) shift; CHOWN=$1; shift;;
+    *) break;;
+  esac
+done
+
+indir=$1
+outdir=$2
+
+if [[ ! -d $indir ]]; then
+	echo "$indir does not exists!"
+	exit 1
+fi
+
+PRE=""
+[[ -n $SUDO ]] && PRE="sudo "
+[[ -n $USER ]] && PRE="sudo -u $USER "
+
+if command -v rsync >/dev/null; then
+	RSYNC_OPT=(-vaczP)
+	[[ -z $OWNER ]] && RSYNC_OPT+=(--no-owner --no-group)
+	[[ -n $CHOWN ]] && RSYNC_OPT+=(--chown=$CHOWN)
+	if [[ -n $BACKUP ]]; then
+		if [[ -n $BACKUPDIR ]]; then
+			RSYNC_OPT+=(--backup --backup-dir=$BACKUPDIR)
+		else
+			RSYNC_OPT+=(--backup --suffix=.orig)
+		fi
+	fi
+	${=PRE} rsync $RSYNC_OPT $indir/ $outdir/
+else
+	COPY_OPT=(-a)
+	[[ -z $OWNER ]] && COPY_OPT+=(--no-preserve=owner)
+	[[ -n $BACKUP ]] && COPY_OPT+=(--backup --suffix=.orig)
+	${=PRE} cp $COPY_OPT $indir/{*,.*}(N) $outdir
+	if [[ -n $CHOWN ]]; then
+		LIST=$( cd $indir; find . -type f )
+		LIST=("${(f)LIST}")
+		for file in $LIST; do
+			${=PRE} chown $CHOWN "$outdir/$file"
+		done
+	fi
+fi

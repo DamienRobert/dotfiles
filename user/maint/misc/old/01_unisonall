@@ -1,0 +1,8 @@
+#!/bin/zsh
+# sync all non personnal computers
+. $HOME/.initvars
+eval $($MYCOMPUTERS -l --export)
+COMPUTERS=$TOUNISON
+#COMPUTERS=(phare 4a bbq mygale)
+
+unison.rb -s --all $COMPUTERS

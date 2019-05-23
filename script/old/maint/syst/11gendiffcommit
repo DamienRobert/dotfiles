@@ -1,0 +1,12 @@
+#!/bin/zsh
+. $HOME/.initvars
+mylog "update" "~system-generate/11gendiffcommit"
+
+ETCGEN="$HOME/mine/syst/cfgfiles"
+echo "# Generate sys files"
+$ETCGEN/generate.rb
+echo "# Diff files? (press a key/n)"
+read a
+[[ $a != "n" ]] && $ETCGEN/10diff-slash "$@"
+echo "# Commit files"
+$ETCGEN/12commit-slash "$@"

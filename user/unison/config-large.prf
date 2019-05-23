@@ -1,0 +1,4 @@
+path=data/Fonts
+path=data/Etudes
+
+ignore = Name data/Fonts/Free/google-fonts

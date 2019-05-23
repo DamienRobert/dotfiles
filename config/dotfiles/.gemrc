@@ -1,4 +1,0 @@
-# Read about the gemrc format at http://docs.rubygems.org/read/chapter/11
-
-# --user-install install to $HOME/.gem/ by default
-gem: --no-user-install

@@ -1,0 +1,7 @@
+France2:
+mplayer-local32 -cache 1024 'mms://direct.francetv.fr/live.wsx?WMCache=0'
+
+TF1:
+mplayer-local32 -cache 1024 \
+mms://a670.l1928532669.c19285.e.lm.akamaistream.net/D/670/19285/v0001/reflector:
+32669

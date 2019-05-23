@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+#mount on $TARGET_DIR if there is nothing mounted already
+#otherwise assume the previous scripts mounted things correctly
+if [[ -z $(findmnt $TARGET_DIR) ]]; then
+	#ex: mount -o noatime,errors=remount-ro ${ROOT_PARTITION} ${TARGET_DIR}
+	[[ -z $MOUNTOPTS ]] && MOUNTOPTS="defaults"
+	DHOME=$(findfs LABEL=$HOMELABEL)
+	DBOOT=$(findfs LABEL=$BOOTLABEL || findfs LABEL=BOOT)
+	[[ -n $ROOTLEAF ]] && DSLASH=$(findfs LABEL=$ROOTLEAF)
+	if [[ -n $DSLASH ]]; then
+		#we have found a rootleaf partition, assume this is btrfs
+		eval $(blkid -t LABEL=$ROOTLEAF -o export)
+		[[ $TYPE == "btrfs" ]] || return 1
+		mount -o "$MOUNTOPTS,subvol=/$SLASHLABEL" $DSLASH $TARGET_DIR &&
+		mkdir -p $TARGET_DIR/{boot,home,data,rootleaf} &&
+		mount -o "$MOUNTOPTS,subvol=/data" $DSLASH $TARGET_DIR/data &&
+		mount -o $MOUNTOPTS $DSLASH $TARGET_DIR/rootleaf &&
+		[[ -n $DBOOT ]] && mount $DBOOT $TARGET_DIR/boot
+		if [[ -n $DHOME ]]; then
+			mount $DHOME $TARGET_DIR/home
+		else
+			mount -o "$MOUNTOPTS,subvol=/$HOMELABEL" $DSLASH $TARGET_DIR/home
+		fi
+	else
+		DSLASH=$(findfs LABEL=$SLASHLABEL || ${DISK}1)
+		[[ -n $DSLASH ]] || return 1
+		mount -o $MOUNTOPTS $DSLASH $TARGET_DIR &&
+		mkdir -p $TARGET_DIR/{boot,home} &&
+		{
+			[[ -n $DHOME ]] && mount -o $MOUNTOPTS $DHOME $TARGET_DIR/home
+			[[ -n $DBOOT ]] && mount $DBOOT $TARGET_DIR/boot
+		}
+	fi
+fi
+return 0

@@ -1,0 +1,18 @@
+#!/bin/sh
+#Load somafm playlist
+PLAYLIST="$HOME/.mpd/playlists/somafm.m3u"
+rm "$PLAYLIST"
+touch "$PLAYLIST"
+
+for radio in `
+  curl -s http://somafm.com/ \
+  | awk 'BEGIN{FS="/"}(/<li /){print $2}'
+  `; do
+  echo "http://ice.somafm.com/$radio"
+done >> $PLAYLIST
+
+#echo 'http://fg6.impek.com:80/' >> $PLAYLIST # http://www.radiofg.com/streams/fg6.pls
+#curl http://flaix.stream.flumotion.com/flaix/FLAIXfm.mp3.m3u | tail -n1 >> $PLAYLIST
+#echo 'http://shoutcast3.oigovoces.stream.flumotion.com/oigovoces/shoutcast3.mp3'>> $PLAYLIST # http://www.blancoynegro.com/nonstopdance/
+##echo 'http://omgren.com:8000/rens128mp3'
+#| mpc add

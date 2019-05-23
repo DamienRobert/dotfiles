@@ -1,0 +1,404 @@
+# vim: fdm=marker
+
+# Variables {{{
+# ========
+
+set editor=`echo \$EDITOR`
+
+#charset of messages without content type
+#set assumed_charset="utf-8:utf-16:iso8859-1"
+set assumed_charset="utf-8:iso8859-1"
+set config_charset="utf-8"
+set attach_charset="utf-8:iso-8859-1" #attached files encoding
+set rfc2047_parameters=yes #decode qp-encoded attachement names: http://www.mutt.org/doc/manual/manual-6.html
+
+set mbox=+received #not used
+set mbox_type=Maildir
+set header_cache="~/.cache/mutt_header_cache/"
+set certificate_file=~/.mutt/certificates
+set tmpdir=~/tmp/mutt
+
+set copy=yes #keep sent mails
+set noconfirmappend #save message without confirmation
+set move=no #when moving message, erase original without confirmation
+#set delete=yes #delete without confirmation
+
+set use_from #use custom from
+set edit_hdrs
+set mark_old
+set postpone=ask-yes
+set recall=no #no recall of existing postponed message
+set reverse_alias #use .muttalias for reverse alias lookup
+set reverse_name=yes #if To match alternates, use this one as From
+unset abort_nosubject
+set abort_unmodified=ask-yes
+
+set fast_reply
+set reply_to=ask-yes #should be default value
+set include=yes
+
+#sort
+set strict_threads
+set sort=threads
+set sort_aux="last-date"
+
+set tilde #end of message markers
+set nomarkers #don't mark long lines
+
+set nobeep
+set beep_new
+
+set pager_index_lines=5
+#set pager_stop
+
+set print_command="a2ps -q --center-title=mail -Email -o /tmp/robert_mutt_print.ps | evince /tmp/robert_mutt_print.ps"
+set query_command = "abook --mutt-query '%s'"
+
+# Use X-Original-To header to reply when reverse is disabled or no alternate
+# is found.
+set reply_with_xorig = "yes"
+# keep my mailboxes order
+set sort_browser="unsorted"
+# binding: S skip quotes, but we want some context
+set skip_quoted_offset = 3
+set forward_references
+
+set history_file = $HOME/.cache/.mutt_history
+set save_history
+
+# use very high $read_inc to speed up reading hcache'd maildirs
+folder-hook . 'set read_inc=200'
+# use lower value for reading slower remote IMAP folders
+folder-hook imaps?:// 'set read_inc=50'
+# }}}
+
+# gpg {{{
+
+set pgp_replysign=yes
+set pgp_replysignencrypted=yes
+set pgp_replyencrypt=yes
+
+## This does not allow encrypt-to-self :-( http://permalink.gmane.org/gmane.mail.mutt.user/28750
+## Solved by patch-encrypt-to-self-neomutt, cf config.rg
+#set crypt_use_gpgme=yes #http://henrytodd.org/notes/2014/simpler-gnupg-mutt-config-with-gpgme/
+set pgp_use_gpg_agent
+#Only set if a bad signature still gives an exit code 0
+#set pgp_good_sign="Good signature from"
+#Localisation, cf https://lists.debian.org/debian-user/2010/06/msg00802.html: set pgp_good_sign="`gettext -d gnupg -s 'Good signature from'`"
+
+# }}}
+
+# Format {{{
+# ======
+
+set attribution="From %n, %d :"
+#pour le format des dates dans l'index, et l'attribution (%d)
+
+set date_format= "%a %d %b %Y at %T (%Z)"
+#Default: "!%a, %b %d, %Y at %I:%M:%S%p %Z"
+
+set forward_format="[%a: %s] (fwd)"
+#Default: "[%a: %s]"
+
+set status_format="%?b?%b&?%r %?V?❮%V❯&%v:? %f \
+[Msgs:%?M?%M/?%m\
+%?n? %nN?%?o? %oO?%?d? %dD?%?F? %F!?%?t? %t*?\
+%?p? %pP? \
+%?L?%L/?%l]\
+―%>―(%s)―%P―"
+#Default: "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d?\
+#  Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l?\
+#  %l?]---(%s/%S)-%>-(%P)---"
+#I don't use %s/%S since I don't change sort aux
+
+set compose_format="-- %v (%h): Compose [Size: %l - Atts: %a]%>-"
+#Default: "-- Mutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
+
+set index_format="%4C %Z %[%F] %-15.15L %?M?(#%03M)&(%4c)?%?H? ❮%H❯? %s%* %?Y?❮%Y❯?%?g?❮%g❯?"
+#Default: "%4C %Z %{%b %d} %-15.15L (%4l) %s"
+#I am essentially just adding the number of hidden messages
+#[⁅【［］❮ ❯
+
+set pager_format="-%Z-%e/%E (%{%T}[%[%H]h]/%(%T)): %-20.20n %s"
+#Default: "-%Z- %C/%m: %-20.20n   %s"
+
+set message_format="%-.16n: %s"
+#defaut: %s
+
+set folder_format="%2C %t%N%?n?%4n/&     ?%4m %f%* [%s] (%d)"
+#Defaut: set folder_format="%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f"
+
+#Default: set vfolder_format="%2C %?n?%4n/&     ?%4m %f"
+#Defaut: set alias_format="%4n %2f %t %-10a   %r"
+#Default: set attach_format="%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
+#Default: set pgp_entry_format="%4n %t%f %4l/0x%k %-4a %2c %u"
+#Default: set query_format="%4c %t %-25.25a %-25.25n %?e?(%e)?"
+#}}}
+
+# Headers {{{
+# =======
+
+unignore *
+ignore List- Precedence
+unignore List-Id
+ignore Received Message-ID References Status Mime-Version SpamDiagnostic
+ignore DomainKey-Signature Authentication-Results
+ignore ARC-
+ignore X-Collectif X-Loop
+ignore X-Received X-Original-MessageID X-Sequence X-no-archive X-IPAS-Result
+ignore X-Virus-Scanned X-Greylist X-Spam X-Mail-Format-Warning
+ignore DKIM-Signature X-Google-DKIM
+ignore X-j-chkmail X-TMASE X-TM X-Provags-ID X-YMail-OSG X-Assp X-DSPAM
+ignore IronPort-PHdr X-IronPort X-Ovh X-NDUS X-VR X-NFIT X-Scanned-By
+ignore X-Exchange- X-MS-Exchange- X-Microsoft-Exchange- X-forefront
+ignore X-AUTHENTICATED_LDAP X-Microsoft-Antispam X-Bugzilla
+ignore X-SG-EID X-SG-ID X-Feedback-ID X-Auth X-Brightmail-Tracker X-Gm X-Xyz-
+ignore X-YMailISG Autocrypt IronPort-Data X-MGA-submission
+hdr_order "From " Date From: To Cc Subject List-Id Reply-To Return-Path Sender Delivered-To  Organization Newsgroup Content Errors-To In-Reply User-Agent lines Precedence Approved Resent- X-
+#}}}
+
+# Bindings {{{
+# =======
+
+# groups: generic,alias,attach,browser,editor,index,compose,pager,pgp,postpone
+# warning: generic does not contain pager or editor
+
+#some /etc/muttrc change this as 'send an email' :-(
+bind compose <Return> view-attach
+bind compose <Enter> view-attach
+
+# bind generic
+bind generic,index,pager j   next-entry
+bind generic,index,pager k   previous-entry
+bind generic,index,pager \Cb previous-page
+# bind generic,pager ,<PageUp> top
+# bind generic,pager ,<PageDown> bottom
+bind generic       ,H  current-top
+bind generic       ,L  current-bottom
+bind generic       ,M  current-middle
+bind generic,pager \Cn next-line
+bind generic,pager \Cp previous-line
+bind generic,index 0   first-entry
+bind generic,index G   last-entry
+bind generic,index ,G  first-entry
+bind generic,pager <esc>n search-opposite
+bind generic       ,q exit
+
+# threads/subthread
+bind index       +   collapse-thread
+bind index       -   collapse-thread
+bind index       *   collapse-all
+#bind index       ,v  collapse-thread
+bind index,pager ,d  delete-subthread
+bind index,pager ,D  delete-thread
+bind index,pager ,n  next-subthread
+bind index,pager ,N  next-thread
+bind index,pager ,p  previous-subthread
+bind index,pager ,P  previous-thread
+bind index,pager ,r  read-subthread
+bind index,pager ,R  read-thread
+bind index       ,t  tag-subthread
+bind index       ,T  tag-thread
+bind index,pager ,u  undelete-subthread
+bind index,pager ,U  undelete-thread
+
+# bind index,pager ,<F5> imap-fetch-mail
+# bind index       ,<F6> fetch-mail
+# transposition of p/P bindings
+bind index,pager ,<Tab>  previous-new-then-unread
+bind index,pager p  parent-message
+bind index,pager ,p root-message
+bind index,pager P  print-message
+#bind index \Ct query
+bind index       ,F  fetch-mail #pop3
+bind index,pager ,f  imap-fetch-mail
+bind index,pager ,\cF  forget-passphrase
+bind index,pager <esc>c  change-folder-readonly
+bind index,pager ,c  next-unread-mailbox
+# e is edit-or-view-raw-message
+bind index,pager ,e  resend-message
+bind index,pager E   compose-to-sender
+bind index,pager ,@  compose-to-sender
+bind index,pager ,g  check-traditional-pgp
+bind index,pager ,k  mail-key
+bind index       ,sl show-limit
+bind index       ,sv show-version
+bind index       ,sk what-key
+bind index       ,lt  limit-current-thread
+macro index      ,la  "<limit>all<enter>
+bind index,pager ,v  view-raw-message
+bind index,pager ,Y  modify-labels
+bind index,pager ,z  mail-key
+bind index,pager ,Z  extract-keys
+
+# decode save is <Esc>s already
+#bind index,pager ,s  decode-save
+bind index,pager ,S  decrypt-save
+#bind index ,C  decode-copy
+bind index,pager ,C  decrypt-copy
+#already default: bind index <esc>C  decode-copy
+
+bind index,pager ,<TAB> previous-new-then-unread
+# bind index,pager ,j   next-unread
+# bind index,pager ,k   previous-unread
+bind index,pager ,k    root-message
+# bind index,pager ,J   next-thread
+# bind index,pager ,K   previous-thread
+bind index,pager J   next-undeleted
+bind index,pager K   previous-undeleted
+bind index <right>   next-unread
+bind index <left>    previous-unread
+# bind index ,<right> next-new-then-unread
+# bind index ,<left>  previous-new-then-unread
+# bind index ,<up>    parent-message
+# bind index ,<down>  root-message
+
+# #pager
+bind pager <Up>    previous-line
+bind pager <Down>  next-line
+bind pager K       previous-line
+bind pager J       next-line
+
+# some nntp functions: get-children get-message get-parent reconstruct-thread
+#}}}
+
+# macros {{{
+# ======
+
+# #ugly hack: don't go to next message with pagedown
+macro pager <pagedown> "<enter-command>set pager_stop<enter><next-page><enter-command>unset pager_stop<enter>" "next-page"
+
+# url menu, default is ^B but i use it for previous-page
+macro index,pager \cu <pipe-message>urlscan<enter> 'call urlscan to extract URLs out of a message'
+
+# default keybinding: ^t
+macro generic,index,pager \ca "<shell-escape>abook<return>" "launch abook"
+macro index,pager A "<pipe-message>abook --add-email<return>" "add the sender address to abook"
+#abook --convert --informat mutt --infile ~/.mutt/muttalias --outformat abook --outfile ~/.abook/addressbook-new
+
+#}}}
+
+# Mime {{{
+# ====
+
+set mailcap_path=~/.mutt/mailcap
+auto_view text/html application/x-pkcs7-signature
+# auto_view text/* application/x-pkcs7-signature
+# unauto_view text/plain
+alternative_order text/enriched text/plain text/html text
+
+# for this mime type, look up the real mime in mime.types
+mime_lookup application/octet-stream
+
+# what are counted as attachements (for ~X searches) [copied from the doc]
+attachments   +A */.*
+attachments   -A text/x-vcard application/pgp.*
+attachments   -A application/x-pkcs7-.*
+attachments   +I text/plain
+attachments   -A message/external-body
+attachments   -I message/external-body
+#}}}
+
+# Colors {{{
+# ======
+
+# basic monocolor screen
+mono  bold          bold
+mono  underline     underline
+mono  indicator     reverse
+mono  error         bold
+mono  tilde	 bold
+mono  hdrdefault bold
+mono  body          bold                            "^gpg: Good signature"
+mono  body          bold                            "^gpg: BAD signature from.*"
+
+color normal	 default	default
+color error	 brightred	default
+color hdrdefault cyan	         default
+color signature	 red		default
+color indicator	 white		cyan
+color status	 yellow	        blue
+color tree	 yellow		default
+color message	 default	default
+color attachment brightmagenta	default
+color search	 white		red
+color markers    green          default
+color tilde	 green		default
+
+#on colorie différemment les headers les plus importants
+
+color header brightgreen  default "^From"
+color header brightgreen  default "^From:"
+color header brightgreen default "^Date:"
+color header brightgreen default "^To:"
+color header brightgreen default "^Cc:"
+color header brightblue default "^Subject:"
+color header yellow default "^List-id:"
+color header yellow default "^Reply-To:"
+color header yellow default "^In-Reply-To:"
+color header yellow default "^Errors-To:"
+color header yellow default "^Delivered-To:"
+color header yellow default "^Return-Path:"
+color header yellow default "^Organization:"
+color header yellow default "^Newsgroup:"
+color header yellow default "^Sender:"
+
+color header yellow default "^Content-.*:"
+
+#quotes
+color quoted	    red		default
+color quoted1       yellow       default
+color quoted2       blue            default
+color quoted3       green          default
+color quoted4       cyan             default
+
+color index         brightgreen            default         "~p!~F"                     # messages to me
+color index         green   default         "~Q"                        # messages that have been replied to
+color index         yellow      default         "~P"                        # messages from me
+color index          black    yellow         "~v~(!~N)"                  # collapsed thread with no unread
+color index         brightblack          yellow         "~v~(~N|~O)"             # collapsed thread with some unread
+color index         brightblack       default             "~="                    # duplicated messages
+color index         default             cyan         "~T"                       # tagged messages
+color index         magenta            default         "~N"                     # new messages
+color index         magenta            default         "~O"                     # old messages
+color index         red             default         "~F"                        # flagged messages
+color index         brightred       default         "~E"                        # expired messages
+color index         white           red             "~D"                        # deleted messages
+
+color body          default     brightwhite         " "    # nbsp
+# emoticons
+color body          brightblack     default         "[;:][-o][)/(|]"    # emoticons
+color body          brightblack     default         "[;:][)(|]"         # emoticons
+color body          brightblack     default         "[*]?((N)?ACK|CU|LOL|SCNR|BRB|BTW|CWYL|\
+                                                     |FWIW|vbg|GD&R|HTH|HTHBE|IMHO|IMNSHO|\
+                                                     |IRL|RTFM|ROTFL|ROFL|YMMV)[*]?" # abbrevs
+color body          brightblack     default         "[ ][*]+[^*]*[*]+[ ]?" # bold
+color body          brightblack     default         "[ ]?[*]+[^*]*[*]+[ ]" # bold
+color body          brightblack     default         "[ ][_]+[^_]*[_]+[ ]?" # italic
+color body          brightblack     default         "[ ]?[_]+[^_]*[_]+[ ]" # italic
+
+## pgp
+color body          yellow      default         "^gpg: .*"
+color body          red             default         "(BAD signature.*)"
+color body          green            default         "(Good signature.*)"
+color body        brightyellow    default     "(WARNING)"
+color body          green     default         "^gpg: Good signature .*"
+color body          brightyellow      default         "^gpg: WARNING.*"
+color body          red      default             "^gpg: BAD signature from.*"
+
+# yes, an insane URL regex
+color body          magenta             white         "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+# and a heavy handed email regex
+color body          red        white         "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
+# }}}
+
+# Files {{{
+# =====
+
+set alias_file=~/.mutt/muttalias
+set my_confdir=$HOME/.config/mutt
+source $my_confdir/muttalias
+
+#personnal config
+source $my_confdir/muttrc.perso
+#}}}

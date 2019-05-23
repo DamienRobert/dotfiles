@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+[[ -d ~/mnt/imb/public_html ]] || mysshfs -c imb
+# specify AURDEST?
+# add -D /my/chroot/path?
+export AUR_REPO="dams"
+export AUR_DBROOT="$HOME/mnt/imb/public_html/archlinux/dams/os/x86_64"
+~/progs/aurutils/aur "$@"
+

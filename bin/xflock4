@@ -1,3 +1,19 @@
 #!/bin/sh
 
-dm-tool lock
+if systemctl is-active --quiet xss-lock.service; then
+	# we run xss-lock so loginctl locking works
+	if command -v dm-tool; then
+		# We first try dm-tool which call loginctl and set up lightdm as prompt
+		dm-tool lock
+	else
+		# fallback to only loginctl to lock the sessions
+		loginctl lock-sessions
+	fi
+else
+	# try to run a locker manually
+	if command -v i3lock; then
+		i3lock
+	elif command -v xlock; then
+		xlock
+	fi
+fi

@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+[[ -r $RUNDIR/slash/etc/pacman.conf ]] && PACOPTS=(-C $RUNDIR/slash/etc/pacman.conf)
+[[ -n $PKGSINIT ]] || PKGSINIT=($PKGS)
+pacstrap $PACOPTS $TARGET_DIR $PKGSINIT

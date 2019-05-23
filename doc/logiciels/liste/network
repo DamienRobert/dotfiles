@@ -1,0 +1,75 @@
+- iputils: arping clockdiff ping ping6 rarpd rdisc tftpd tracepath tracepath6
+- ldns: drill ldns-chaos ldns-compare-zones ldns-config ldns-dane ldns-dpa ldns-gen-zone ldns-key2ds ldns-keyfetcher ldns-keygen ldns-mx ldns-notify ldns-nsec3-hash ldns-read-zone ldns-resolver ldns-revoke ldns-rrsig ldns-signzone ldns-test-edns ldns-testns ldns-update ldns-verify-zone ldns-version ldns-walk ldns-zcat ldns-zsplit 
+
+"Obsolete":
+- net-tools: arp ifconfig ipmaddr iptunnel mii-tool nameif netstat plipconfig rarp route slattach
+  Better to use 'ip a', 'ip r' instead
+- bind-tools: arpaname bind9-config delv dig dnssec-checkds dnssec-coverage dnssec-dsfromkey dnssec-importkey dnssec-keyfromlabel dnssec-keygen dnssec-revoke dnssec-settime dnssec-signzone dnssec-verify genrandom host isc-config.sh isc-hmac-fixup named-journalprint named-rrchecker nsec3hash nslookup nsupdate
+
+host www.google.com #list all the adresses
+getent hosts www.google.com #the adress used by the dns from nsswitch.conf
+getent ahosts www.google.com #return all adresses
+
+VPN: wireguard
+
+Man pages
+=========
+
+host (1)             - DNS lookup utility
+dig (1)              - DNS lookup utility
+
+host.conf (5)        - resolver configuration file
+hostid (1)           - print the numeric identifier for the current host
+hostname (1)         - show or set the system's host name
+hostname (7)         - host name resolution description
+hosts (5)            - The static table lookup for host names
+hosts.allow (5)      - format of host access control files
+hosts.deny (5)       - format of host access control files
+hosts.equiv (5)      - list of hosts and users that are granted "trusted"r command access to your system
+hosts_access (5)     - format of host access control files
+hosts_options (5)    - host access control language extensions
+
+resolv.conf (5)      - resolver configuration file
+resolvconf (8)       - manage nameserver information
+
+ping (8)             - send ICMP ECHO_REQUEST to network hosts
+traceroute (8)       - print the route packets take to network host
+
+route (8)            - show / manipulate the IP routing table
+ip (7)               - Linux IPv4 protocol implementation
+ipv6 (7)             - Linux IPv6 protocol implementation
+iptables (8)         - administration tool for IPv4 packet filtering and NAT
+ip6tables (8)        - IPv6 packet filter administration
+
+dhclient (8)         - Dynamic Host Configuration Protocol Client
+dhclient.conf (5)    - DHCP client configuration file
+dhclient3 (8)        - Dynamic Host Configuration Protocol Client
+dhcp-options (5)     - Dynamic Host Configuration Protocol options
+dhcpdump (1)         - DHCP packet dumper
+dhcping (8)          - send a DHCP request to DHCP server to see if it's up and running
+
+etherape (1)         - graphical network traffic browser
+ethereal (1)         - Interactively browse network traffic
+
+ether_aton (3)       - Ethernet address manipulation routines
+ethers (5)           - Ethernet address to IP number database
+
+lftp (1)             - Sophisticated file transfer program
+
+ssh (1)              - OpenSSH SSH client (remote login program)
+ssh-add (1)          - adds RSA or DSA identities to the authentication agent
+ssh-agent (1)        - authentication agent
+ssh-argv0 (1)        - replaces the old ssh command-name as hostname handling
+ssh-askpass (1)      - prompts an X user for a passphrase
+ssh-copy-id (1)      - install your identity.pub in a remote machine's authorized_keys
+ssh-keygen (1)       - authentication key generation, management and conversion
+ssh-keyscan (1)      - gather ssh public keys
+ssh-keysign (8)      - ssh helper program for hostbased authentication
+ssh_config (5)       - OpenSSH SSH client configuration files
+sshd (8)             - OpenSSH SSH daemon
+sshd_config (5)      - OpenSSH SSH daemon configuration file
+
+netstat (8)          - Print network connections, routing tables, interface statistics, masquerade connections, and multicast memberships
+Eg: netstat -natp; -n: numeric, -a: all, -t: tcp, -p: pid and name of the program
+
+networks (5)         - network name information

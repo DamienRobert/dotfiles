@@ -1,0 +1,5 @@
+#!/bin/sh
+#convert somafm playlist from .m3u to .pls
+PLAYDIR="$HOME/.mpd/playlists/somafm.m3u"
+PLAYLIST="$HOME/.mpd/playlists/somafm.pls"
+~/script/mpd/playlist_generate -a $PLAYDIR $PLAYLIST

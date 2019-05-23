@@ -1,0 +1,23 @@
+#!/bin/zsh
+. $HOME/.initvars
+
+LINE="\n---------------------------------------------------\n"
+
+echo "$ blkid"
+#sometimes sudo blkid gives more informations
+#For instance on Gondolin: /dev/sda1: PARTLABEL="grub" PARTUUID="ce3ca4a9-da7a-48e6-b0b1-2b4978b7883f"
+eval $($MYCOMPUTERS --export=user/sudo)
+${=user_sudo} blkid
+echo "$LINE"
+
+echo "$ lsblk --fs"
+lsblk --fs
+echo "$LINE"
+
+echo "$ lsblk"
+lsblk
+echo "$LINE"
+
+echo "$ lsblk -O"
+lsblk -O
+echo "$LINE"

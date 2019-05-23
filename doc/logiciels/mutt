@@ -1,0 +1,54 @@
+Version with lots of patches (sidebar, notmuch...): neomutt
+
+Merging maildirs:
+cd ~/Mail
+sudo mount -t overlay overlay -o lowerdir=inria/Inbox:damien.olivier.robert@gmail/Inbox /mnt/tmp
+# userspace unionfs-fuse:
+unionfs inria/Inbox=RO:damien.olivier.robert@gmail/Inbox=RO tmp
+
+# Note on pgp_getkeys_command
+http://objectmix.com/mutt/202220-mutt-gpg-semi-automatic-public-key-fetching.html
+  set pgp_getkeys_command="gpg -q --no-verbose --batch --recv-keys %r"
+Does not work because mutt pass the email adress in %r and not the keyid.
+A solution is to unset this command and to use gpg auto retrieve
+functionality instead:
+  keyserver-options auto-key-retrieve
+
+To be sure to be able to read the emails encrypted, add
+--encrypt-to 'selfkey' to the encrypt commands
+One can also specify which key to use for signing (rather than the default
+key) by setting $pgp_sign_as
+
+# gpg mode:
+If pgp_use_gpg_agent is set, mutt uses the gpg agent.
+Otherwise, mutt tries to use fd-0. For this to work on gpg 2.1, we need to
+set it up with
+%?p?--pinentry-mode loopback --passphrase-fd 0?
+to get a loopback pinentry (%p is active when mutt does not try to go
+through the agent)
+
+#inline gpg message:
+Use Esc-P to decrypt
+
+Chiffrer un message reçu: e (edit)
+Selectionner le texte puis ':!gpg -ae'
+
+============ mime/pgp =====================
+--bg08WKrSYDhXBjb5
+Content-Type: application/pgp-encrypted
+Content-Disposition: attachment
+
+Version: 1
+
+--bg08WKrSYDhXBjb5
+Content-Type: application/octet-stream
+Content-Disposition: attachment; filename="msg.asc"
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v2
+
+hQIMA2LTcxn/2VVWARAAyb1mvSG+hAMr4hB+ov9BzfjHsV0HPLRyTr+jNsjLDGCR
+-----END PGP MESSAGE-----
+
+--bg08WKrSYDhXBjb5--
+===========================================

@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ x$@ = x ]
+then isopath=cd.iso
+fi
+exec sudo mount -o loop "$isopath" "$@" /mnt/iso

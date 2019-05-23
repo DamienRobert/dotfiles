@@ -1,0 +1,209 @@
+# Docs: https://ruby.github.io/rake/
+# https://martinfowler.com/articles/rake.html
+# http://devblog.avdi.org/2014/04/21/rake-part-1-basics/
+
+desc "toc tic"
+#task tic depend on toc
+task :tic => [:toc] do |t| #or simply `task :tic => :toc`, `task(tic: :toc)`
+  puts "tic"
+end
+
+desc "toc"
+task :toc  do |t|
+  puts "toc"
+end
+
+desc "ploum"
+#task ploum has an argument 'name'
+task :ploum, [:name] => [:plam] do |t,args|
+  puts "ploum: #{args.name}"
+end
+
+desc "plam"
+task :plam, [:name] do |t,args|
+  args.with_defaults(:name => "John")
+  puts "plam: #{args.name}"
+end
+
+namespace "foo" do
+	desc "bar in foo namespace"
+	task bar: :baz  do #this calls foo:baz
+		# bar=plam rake foo:bar
+		# rake foo:bar bar=plam
+		puts ENV['bar']
+	end
+
+	desc "empty foo"
+	task do # "rake foo:"
+		puts "empty foo"
+	end
+
+	# To find a task, use 'lookup' (this lookup in the current namespace
+	# scope first)
+	# with a '^' goes up one level in the namespace scope
+	# with a '^^' goes up two levels in the namespace scope...
+	# eg lookup('^tic')
+end
+	desc "baz in foo namespace"
+task 'foo:baz' do
+	puts ENV['baz']
+end
+
+task :default => [:tic] #default task
+
+task 'foo:' => 'foo:bar' do # rake foo
+# or simply `task 'foo' => ...`
+	puts "foo:"
+end
+
+desc 'empty task'
+task do #rake ''
+	puts "empty"
+end
+
+desc "test arguments"
+task "test", ["ploum", "plam"] => :tic do |t, args|
+	p args
+	#rake test[ploum,plam] => <Rake::TaskArguments ploum: ploum, plam: plam>
+end
+
+task "dep1" do
+	puts "dep1"
+end
+task "dep2" do
+	puts "dep2"
+end
+task 'dep' => 'dep1'
+task 'dep' => 'dep2' #this adds the dep2 dependency but don't overwrite the dep1 one
+
+# Without dependencies:
+#   task :name, [:arg1, :arg2, :arg3]
+#   task :name, :arg1, :arg2, :arg3
+# With deps:
+#   task :t => [:d1, :d2]
+#   task :t => :d
+#   task :t, [a] => [:d1, :d2]
+#   task :t, [a] => :d1
+
+=begin Notes: 
+- Options:
+  rake -T: list of tasks (which have a description); rake -AT all tasks
+  rake -D: description of tasks
+  rake -W: source code of tasks
+  rake -P: list prerequesites
+
+- rake task ploum=plam
+  will set up ENV['ploum']=plam (a bit like makefile)
+
+- Invoke a task by hand:
+  Rake::Task["namespace:task"].invoke
+
+- Import: https://docs.ruby-lang.org/en/2.0.0/Rake/DSL.html#method-i-import
+  import 'rakefile"
+
+- Utilities
+FileList: can be specified as a task dependency
+
+- Code: Rake.application contain the current rake data;
+  Rake.application.tasks => tasks graph
+
+~~~ rake
+task :default
+file "ploum" do |t| touch t.name end
+directory "testdata/examples/doc" #=> mkdir -p
+rule '.o' => ['.c'] do |t|
+  sh "cc #{t.source} -c -o #{t.name}"
+end
+rule( /\.o$/ => [
+  proc {|task_name| task_name.sub(/\.[^.]+$/, '.c') }
+  ]) do |t|
+ sh "cc #{t.source} -c -o #{t.name}"
+ end
+multitask "multi" #like `task` but the deps  are parallelized
+# rake -m transforms all task into multitask
+namespace :foo do
+  task :bar # rake foo:bar
+end
+~~~
+
+- Full Makefile like example
+~~~ rake
+ 1 require 'rake/clean' #=> task :clean, task :clobber
+ 2
+ 3 CLEAN.include('*.o') # this is a Rake::FileList
+ 4 CLOBBER.include('hello')
+ 5
+ 6 task :default => ["hello"]
+ 7
+ 8 SRC = FileList['*.c']
+ 9 OBJ = SRC.ext('o')
+10
+11 rule '.o' => '.c' do |t|
+12   sh "cc -c -o #{t.name} #{t.source}"
+13 end
+14
+15 file "hello" => OBJ do
+16   sh "cc -o hello #{OBJ}"
+17 end
+18
+19 # File dependencies go here ...
+20 file 'main.o' => ['main.c', 'greet.h']
+21 file 'greet.o' => ['greet.c']
+~~~
+
+- Parsing of `task` arguments
+    # Resolve the arguments for a task/rule.  Returns a triplet of
+    # [task_name, arg_name_list, prerequisites].
+    def resolve_args(args)
+      if args.last.is_a?(Hash)
+        deps = args.pop
+        resolve_args_with_dependencies(args, deps)
+      else
+        resolve_args_without_dependencies(args)
+      end
+    end
+
+    # Resolve task arguments for a task or rule when there are no
+    # dependencies declared.
+    #
+    # The patterns recognized by this argument resolving function are:
+    #
+    #   task :t
+    #   task :t, [:a]
+    #
+    def resolve_args_without_dependencies(args)
+      task_name = args.shift
+      if args.size == 1 && args.first.respond_to?(:to_ary)
+        arg_names = args.first.to_ary
+      else
+        arg_names = args
+      end
+      [task_name, arg_names, []]
+    end
+    private :resolve_args_without_dependencies
+
+    # Resolve task arguments for a task or rule when there are
+    # dependencies declared.
+    #
+    # The patterns recognized by this argument resolving function are:
+    #
+    #   task :t => [:d]
+    #   task :t, [a] => [:d]
+    #
+    def resolve_args_with_dependencies(args, hash) # :nodoc:
+      fail "Task Argument Error" if hash.size != 1
+      key, value = hash.map { |k, v| [k, v] }.first
+      if args.empty?
+        task_name = key
+        arg_names = []
+        deps = value || []
+      else
+        task_name = args.shift
+        arg_names = key
+        deps = value
+      end
+      deps = [deps] unless deps.respond_to?(:to_ary)
+      [task_name, arg_names, deps]
+    end
+    private :resolve_args_with_dependencies
+=end

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 
-sub help { 
+sub help {
   print STDERR <<EOHelp;
   permutations.pl word wordlist look for all (sub)-permutations of word
   that are in wordlist.
@@ -27,7 +27,7 @@ sub process {
   if ($n eq 0) {
     push(@words,$actu);
   }
-  else { 
+  else {
     foreach my $i (0..$#reste) {
       my @new_reste=@reste[0..($i-1),($i+1)..($#reste)];
       my $new_actu="$actu$reste[$i]";
@@ -71,9 +71,7 @@ foreach my $target (@parcours) {
 }
 
 # foreach my $target (@allwords) {
-#   if( grep { "$_" eq "$target" } @possible ) {        
+#   if( grep { "$_" eq "$target" } @possible ) {
 #     print "$target\n";
 #   }
 # }
-
-

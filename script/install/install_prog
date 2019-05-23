@@ -1,0 +1,19 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+mode=git
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -u|--url ) shift; mode=url ;;
+    -a|--all ) shift; mode=all ;;
+    *) break;;
+  esac
+done
+
+case $mode in
+	git) build_git $@ ;; #url version
+	url) build $@ ;; #url
+	all) do_build $@;; #name nameversion archivename url *configure_args
+esac

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function gnome-keyring-control() {
+  local -a vars=( \
+    DBUS_SESSION_BUS_ADDRESS \
+    GNOME_KEYRING_CONTROL \
+    GNOME_KEYRING_PID \
+    XDG_SESSION_COOKIE \
+  )
+  local pid=$(ps -C gnome-session -o pid --no-heading)
+  eval "unset ${vars[@]}; $(printf "export %s;" $(sed 's/\x00/\n/g' /proc/${pid//[^0-9]/}/environ | grep $(printf -- "-e ^%s= " "${vars[@]}")) )"
+}
+
+exec 2>&1
+
+gnome-keyring-control
+SSH_AUTH_SOCK=$GNOME_KEYRING_CONTROL/ssh
+export SSH_AUTH_SOCK
+echo $SSH_AUTH_SOCK
+ssh-add -l
+[ -n "$SSH_AUT_SOCK" ] && exec nice -n 10 $HOME/bin/myunison -b sync -contactquietly

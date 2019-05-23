@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#10.
+#129.199.
+#192.168.
+
+#ifconfig eth0 10.10.156.114 broadcast 10.10.159.255 netmask 255.255.252.0
+
+#le routage a été augmenté
+
+#ifconfig eth0 10.10.156.114 broadcast 10.10.191.255 netmask 255.255.192.0
+#route add default gw 10.10.159.254
+
+#ca a encore change
+
+#config par defaut donne par le dhcp
+#ifconfig eth0 129.199.224.132 broadcast 129.199.224.255 netmask 255.255.255.0
+#route add default gw 129.199.224.254
+#echo "nameserver 129.199.224.254\nsearch turnes.local" > /etc/resolv.conf
+
+#Je suis a Ulm.
+#ifconfig eth1 129.199.159.42 broadcast 129.199.159.255 netmask 255.255.252.0
+ifconfig eth1 129.199.158.89 broadcast 129.199.159.255 netmask 255.255.252.0
+route add default gw 129.199.159.254
+
+#si j'utilise manuellement, c'est surement que le dns est mort
+echo "nameserver 129.199.1.22
+search turnes.local" > /etc/resolv.conf

@@ -1,0 +1,304 @@
+#!/usr/bin/env ruby
+
+require 'shellwords'
+require 'active_support/time'
+
+module PSQL
+	extend self
+	def psql(*args, align: false, column: false)
+		copts=[]
+		copts<<"-A" unless align
+		copts<<"-t" unless column
+		return %x/psql forumdb guest #{copts.shelljoin} -c #{args.shelljoin}/.chomp
+	end
+
+	def psql_convert(v, value: nil)
+		case value
+		when :integer
+			return v.to_i
+		when :time
+			v ? (return Time.parse(v)) : v
+		else
+			return v
+		end
+	end
+	#return a list from psql results
+	def psql_parse_list(lines, value: nil)
+		r=lines.split('\n')
+		r.map! {|i| psql_convert(i, value: value) }
+		return r
+	end
+	#split result in 2
+	#name,count=l.split('|') does not quite work if name contains '|'
+	def psql_parse_result(lines, value: nil)
+		c={}
+		lines.each_line do |l|
+			l=l.chomp.split('|')
+			l.length>1 ? r=l.pop : r=nil
+			name=l.join('|')
+			r=psql_convert(r, value: value)
+			c[name]=r
+		end
+		return c
+	end
+
+	def cond_from_interval(first=nil,last=nil,first_cond='>=',last_cond='<', prefix: ' AND ', cond_name: 'posting_date', **opts)
+		cond=""
+		cond+="#{cond_name} #{first_cond} '#{first}'" if first
+		cond+=( cond.empty? ? "" : " AND ")+"#{cond_name} #{last_cond} '#{last}'" if last
+		if cond.empty?
+			return cond
+		else
+			return prefix+"(#{cond})"
+		end
+	end
+end
+
+module StatsFormat
+	extend self
+	def title(t)
+		return t+"\n"+"-"*t.length
+	end
+
+	def align(first,second=nil, interval: 30)
+		if second
+			return first.to_s+" "*([2,interval-first.length].max)+second.to_s+"\n"
+		else
+			return first.to_s+"\n"
+		end
+	end
+
+	def format_name(name)
+		if name=~/^yaf@4a.ens.fr \((.*)\)$/
+			return $1
+		else
+			return name
+		end
+	end
+
+	def format_interval(time_int)
+		first=time_int.first
+		last=time_int.last
+		return first.strftime("%d/%m/%Y")+" au "+last.strftime("%d/%m/%Y")
+	end
+
+	def format_count(r)
+		s=""
+		r.each.with_index do |h,i|
+			n,c=h
+			s+=sprintf("%2i",i+1)+"\t"+align(format_name(n),c.to_s)
+		end
+		return s
+	end
+
+	def format_newbies(title,r)
+		s=""
+		return s if r.empty?
+		r.each do |name,l|
+			s+=align(format_name(name),l ? "(Depuis #{ (l / (24*3600)).to_i} jours)": nil)
+		end
+		return title+"\n"+s
+	end
+
+	def format_halloffame(title,r)
+		s=""
+		return s if r.empty?
+		r=r.map {|i| format_name(i)}
+		m=r.map {|i| i.length}.max
+		slice=75/(m+2)
+		r.each_slice(slice) do |row| 
+			s+=row.map{|e| "%-#{m}s" % e}.join("  ")+"\n"
+		end
+		return title+"\n"+s
+	end
+
+end
+
+class ForumDB
+	TNOW=Time.now
+	attr_accessor :realm, :stats
+	include PSQL
+	include StatsFormat
+
+	def initialize(realm)
+		@realm=realm
+		@send_name="sender"
+		@send_name="from_header" if @realm=="yaf"
+	end
+
+	#return sender+count in the interval
+	def count(time_int)
+		cond = cond_from_interval(*time_int)
+		r=psql("SELECT #{@send_name}, count(*) AS cnt FROM articles WHERE realm='#{@realm}' #{cond} GROUP BY #{@send_name} ORDER BY cnt ;")
+		return psql_parse_result(r, value: :integer)
+	end
+	#return the last or first posts of people in an interval
+	def posts(time_int, select:'max')
+		cond = cond_from_interval(*time_int)
+		r=psql("SELECT #{@send_name},#{select}(posting_date) FROM articles WHERE realm='#{@realm}' #{cond} GROUP BY #{@send_name} ORDER BY #{@send_name};")
+		return psql_parse_result(r, value: :time)
+	end
+
+	def stats(t=TNOW.prev_month)
+		tend=t.next_month.all_month.first
+		month=[t.all_month.first,tend]
+		@month=t.all_month
+		year=[t.all_year.first,tend]
+		all=[nil,tend]
+
+		month_count=count(month)
+		year_count=count(year)
+		all_count=count(all)
+		fposts=posts(month, select:'min')
+		lposts=posts([nil,month.first], select:'max')
+		keys=all_count.keys.sort #should contain everything else
+		@stats={}
+		keys.each do |k|
+			stat={}
+			stat[:month]=month_count[k].to_i
+			stat[:year]=year_count[k].to_i
+			stat[:all]=all_count[k].to_i
+			stat[:first_new]=fposts[k]
+			stat[:last_old]=lposts[k]
+			@stats[k]=stat
+		end
+		return @stats
+	end
+
+	#from a list of senders, and last posts return the new ones
+	def newbies(old_time: 6.months)
+		newb={}
+		@stats.each do |name, stat|
+			lpost=stat[:last_old]
+			fpost=stat[:first_new]
+			if fpost
+				if lpost.nil?
+					newb[name]=nil
+				elsif fpost-lpost > old_time
+					newb[name]=fpost-lpost
+				end
+			end
+		end
+		return newb
+	end
+
+	#return the best posters in an interval + the total
+	def bestof(key: :month, first: 30)
+		best=@stats.keys.sort { |a,b| @stats[b][key] <=> @stats[a][key] }.first(first)
+		best_hash={}
+		best.each do |k|
+			best_hash[k]=@stats[k][key]
+		end
+		total=@stats.keys.map {|i| @stats[i][key]}.reduce(:+)
+		return best_hash, total
+	end
+
+	def show_stats(t=TNOW.prev_month)
+		@stats || stats(t)
+		newb=newbies
+		month_count,month_total=bestof(key: :month)
+		year_count,year_total=bestof(key: :year)
+		all_count,all_total=bestof(key: :all)
+		year_fame=@stats.keys.select {|i| @stats[i][:year]>=1000}
+
+		msg_stats="Statistiques #{@realm}, mois du #{format_interval(@month)}"
+		title_month="Plus gros posteurs du mois"
+		title_year="Plus gros posteurs de l'année"
+		title_all="Plus gros posteurs de l'univers"
+		title_hof="Club mille"
+		title_delurks="Delurks du mois"
+		msg_end="Glup. Glip. Glop."
+		if @realm=~/^yaf/
+			msg_stats="Nouvelles de l'Univers, mois du #{format_interval(@month)}"
+			title_month="Plus gros nazes du mois"
+			title_year="Plus gros naszes de l'année"
+			title_all="Plus gros nasczes de la rosée du matin"
+			title_hof="Club des plus débiles"
+			title_delurks="The futur nazcses"
+			msg_end="Plim. Plam. Ploum."
+		end
+		return <<EOS
+#{msg_stats}
+
+#{title(title_month)}
+#{format_count(month_count)}
+Total: #{month_total}
+
+#{title(title_year)}
+#{format_count(year_count)}
+Total: #{year_total}
+
+#{title(title_all)}
+#{format_count(all_count)}
+Total: #{all_total}
+
+#{format_halloffame(title(title_hof),year_fame)}
+#{format_newbies(title(title_delurks),newb)}
+#{msg_end}
+EOS
+	end
+end
+
+if __FILE__ == $0
+	require 'optparse'
+
+	@opts={realm: 'forum'}
+	optparse = OptionParser.new do |opt|
+		opt.banner = "yaforum stats"
+		opt.on("--post=[REALM]", "post message") do |v|
+			#currently not handled, we always post to 'yaf'
+			if String === v
+				@opts[:post]=v
+			else
+				@opts[:post]="yaf"
+			end
+		end
+		opt.on("--realm=[REALM]", "realm to base stats") do |v|
+			@opts[:realm]=v
+		end
+	end
+	optparse.parse!
+
+	forumdb=ForumDB.new(@opts[:realm])
+	r=""
+	args=ARGV.empty? ? [ForumDB::TNOW.prev_month.to_s] : ARGV
+	args.each do |t|
+		r+=forumdb.show_stats(Time.parse(t))+"\n"
+	end
+
+	if @opts[:post]
+		group="yaf.statistiques"
+		from="stat_daemon@phare.normalesup.org (Forum Stat Daemon)"
+		if @opts[:realm]=~/^yaf/
+			from="stat_daemon@phare.normalesup.org (Big Yaf Dragon)" 
+			group="yaf.yaf.stat"
+		end
+		subject="stats" #there is no subjet in yaf
+		r=<<EOS +r
+Newsgroups: #{group}
+From: #{from}
+Subject: #{subject}
+
+EOS
+		require_relative 'nntp_post'
+		msg=NNTP_msg.new(r)
+		msg.post('yaf', echo: 2)
+	else
+		puts r
+  end
+end
+
+# Examples de requetes:
+# #total
+# $ psql forumdb guest
+# SELECT sender , count(*) AS cnt FROM articles WHERE realm='forum' GROUP BY se der ORDER BY cnt DESC LIMIT 10 ;
+#
+# $ psql forumdb guest -c "SELECT sender , count(*) AS cnt FROM articles WHERE ealm='forum' OR realm='archeo-forum' GROUP BY sender ORDER BY cnt DESC LIMIT 10 ;"
+# #in a month
+# SELECT sender, count(*) AS cnt FROM articles WHERE realm='forum' AND posting_date>='2014-01-01' AND posting_date<'2014-02-01' GROUP BY sender ORDER BY cnt DESC LIMIT 10 ;
+# 
+# #les posteurs d'un mois
+# psql forumdb guest -A -t -c "SELECT sender FROM articles WHERE realm='forum' ND posting_date>='2014-01-01' AND posting_date<'2014-02-01' GROUP BY sender ORD R BY sender;"
+# 
+# #les posts d'un posteur
+# SELECT posting_date FROM articles WHERE realm='forum' AND posting_date<='2014 01-01' AND sender='robert' ORDER BY posting_date DESC LIMIT 10;

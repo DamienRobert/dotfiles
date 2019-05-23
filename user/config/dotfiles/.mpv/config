@@ -1,0 +1,51 @@
+[default]
+profile-desc="My default options"
+stop-screensaver="yes"
+af=scaletempo # correct pitch when speed is faster or slower than 1.0
+profile=best
+
+[best]
+profile-desc="Best decoding options"
+profile=opengl-hq
+scale=ewa_lanczossharp
+cscale=ewa_lanczossharp
+# see https://github.com/mpv-player/mpv/wiki/Display-synchronization
+video-sync=display-resample
+# see https://github.com/mpv-player/mpv/wiki/Interpolation
+interpolation
+
+[protocol.dvd]
+profile-desc="Automatic profile for dvd:// streams"
+profile=en
+
+[en]
+profile-desc="Select english audio and subtitles"
+alang=eng
+slang=eng
+
+[fr]
+profile-desc="Select french audio and subtitles"
+alang=fre
+slang=fre
+
+[hw]
+profile-desc="Hardware decoding"
+hwdec=auto
+
+[big-cache]
+profile-desc="Bigger cache settings"
+cache=256000 #default 75000kb
+demuxer-readahead-secs=20
+
+[slow]
+profile-desc="prevent framedrop"
+framedrop=no
+
+[fast]
+profile-desc="Skip some quality to try to decode video"
+vd-lavc-fast
+vd-lavc-skiploopfilter=all
+
+[max-vol]
+profile-desc="Use volume-max to increase max volume"
+volume-max=1000

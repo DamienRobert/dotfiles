@@ -1,0 +1,145 @@
+PATH=/usr/local/util/bin:/usr/local/bin:/usr/bin:/bin
+
+MAILDIR=$HOME/Mail/phare
+
+INBOX=$MAILDIR/Inbox
+MLBOX=$MAILDIR/ML
+SPAMBOX=$MAILDIR/Spam
+COLLECTIFBOX=$MAILDIR/Ens-Collectif
+
+LOGFILE=$HOME/var/log/procmail.log
+LOGABSTRACT=yes
+#VERBOSE=yes
+
+############################################################################
+# IDENT
+
+#:0fhw
+#* ^(To|Cc|Bcc):.*\<damien\.robert__\/[^@]*@normalesup\.org\>
+#* MATCH ?? ^\/[^@]*
+#{
+#  IDENT="$MATCH"
+#  :0hfw
+#  * ^Subject:\/.*
+#  | formail -i "Subject: [!$IDENT!] $MATCH"
+#}
+
+############################################################################
+# SPAMS
+
+#y a des spams qui pipotent le status
+:0fhw
+* ^Status:
+| formail -R Status: X-Bogus-Status:
+
+# :0:
+# * ^Subject: No bees no honey.*Try new working in the new direction!
+# $SPAMBOX
+
+############################################################################
+# COLLECTIF
+
+:0
+* ^X-Loop: gourous@eleves\.ens\.fr
+{
+ :0fh
+   * ^Subject: \/.*$
+   | formail -i"Subject: [!gourous!] $MATCH"
+
+  :0:
+$COLLECTIFBOX
+}
+
+:0
+* ^X-Loop: games@eleves\.ens\.fr
+{
+ :0fh
+   * ^Subject: \/.*$
+   | formail -i"Subject: [!games!] $MATCH"
+
+  :0:
+$COLLECTIFBOX
+}
+
+:0
+* ^X-Loop: tuteurs@eleves\.ens\.fr
+{
+ :0fh
+   * ^Subject: \/.*$
+   | formail -i"Subject: [!tuteurs!] $MATCH"
+
+  :0:
+$COLLECTIFBOX
+}
+
+:0
+* ^X-Loop: wtuteurs@eleves\.ens\.fr
+{
+ :0fh
+   * ^Subject: \/.*$
+   | formail -i"Subject: [!wtuteurs!] $MATCH"
+
+  :0:
+$COLLECTIFBOX
+}
+
+:0
+* ^X-Compte-Collectif: .*k-fet@eleves.ens.fr
+{
+  :0fh
+   * ^Subject: \/.*$
+   | formail -i"Subject: [!kfet!] $MATCH"
+
+  :0:
+$COLLECTIFBOX
+}
+
+############################################################################
+# ML
+:0:
+*  ^List-Id:
+{
+  :0c
+  {
+          :0
+          * ^X-Loop: ploum.plam@gmail.com
+          /dev/null
+
+          :0
+          * ^From *MAILER-DAEMON
+          /dev/null
+
+          :0fhw
+          | formail -z -A "X-Loop: ploum.plam@gmail.com"
+
+          :0
+          ! ploum.plam+phareall@gmail.com
+  }
+  :0:
+$MLBOX
+}
+
+##############################################################################
+# Gmail
+
+:0c
+{
+        :0
+        * ^X-Loop: ploum.plam@gmail.com
+        /dev/null
+
+        :0
+        * ^From *MAILER-DAEMON
+        /dev/null
+
+        :0fhw
+        | formail -z -A "X-Loop: ploum.plam@gmail.com"
+
+        :0
+        ! ploum.plam+phare@gmail.com
+}
+
+##############################################################################
+
+:0:
+$INBOX

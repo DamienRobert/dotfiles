@@ -1,0 +1,11 @@
+[retriever]
+type = SimpleIMAPSSLRetriever
+server = imap.mail.yahoo.com
+username = robertdamien@yahoo.com
+port = 993
+password = ****
+mailboxes = ("Archive", "Sent")
+
+[destination]
+type = Maildir
+path = /var/tmp/yahoo/

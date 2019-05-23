@@ -1,0 +1,43 @@
+#!/bin/zsh
+
+#Ex: ~/script/qemu-launch --efi -m arch-virtual.raw
+MEMORY=512
+OPTS=(-machine accel=kvm -m $MEMORY)
+arch=$(uname -m)
+linuxoptions="root=/dev/sda2 rw"
+machines=
+while true;
+do
+	case $1 in
+		-- ) break ;;
+		--efi|--uefi ) shift; BIOS=/usr/share/ovmf/x64/OVMF_CODE.fd;;
+		--arch ) shift; arch=$1; shift ;;
+		--linux ) shift; OPTS+=(-kernel /boot/vmlinuz-linux -initrd /boot/initramfs-linux-fallback.img -append $linuxoptions) ;;
+		--linuxoptions ) shift; linuxoptions=$1; shift ;;
+		--root ) shift; linuxoptions="root=$1"; shift ;;
+		-m|--machines ) shift; machines=t
+			if [[ ! -r /var/lib/machines ]]; then
+				#only set up acls on machine images, not on subdirs
+				echo "Set acl on /var/lib/machines..."
+				sudo set_acls -w -u g:wheel /var/lib/machines
+				sudo set_acls -w -u g:wheel /var/lib/machines/*(.)
+			fi
+			;;
+		*) break;;
+	esac
+done
+
+[[ -n $BIOS ]] && OPTS+=(-bios $BIOS)
+drive=$1; shift
+[[ -n $machines && $drive != /* ]] && drive="/var/lib/machines/$drive"
+case $drive in
+	*.raw)
+		OPTS+=(-drive format=raw,file=$drive)
+		;;
+	*)
+		OPTS+=($drive)
+esac
+bin=qemu-system-$arch
+
+echo $bin $OPTS $@
+exec $bin $OPTS $@

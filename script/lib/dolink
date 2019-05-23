@@ -1,0 +1,37 @@
+# vim: ft=zsh
+
+#do_link orig dest
+DOLINK_VERBOSE=t
+#If origin is a symlink, overwrite the pointed link
+DOLINK_FOLLOW=
+#If dest exist, move it to .old and put the symlink
+DOLINK_FORCE=
+#Do not overwrite existing symlink
+DOLINK_NOCLOBBER=
+
+do_link() {
+	orig=$1
+	dest=$2
+	[[ -z $dest ]] && dest=$(basename $orig)
+  [[ -h $orig && -n $DOLINK_FOLLOW ]] && orig=$(readlink $orig)
+	if [[ ! -e $orig ]]; then return 1; fi
+	if [[ -e $dest && ! -h $dest ]]; then
+		if [[ -n $DOLINK_FORCE ]]; then
+			echo "Warning: mv $dest $dest.old"
+			mv $dest "$dest.old";
+		else
+			echo "Error: $dest -> $orig ($dest already exists!)"
+			return 1
+		fi
+	fi
+	if [[ -h $dest ]]; then
+		destlink=$(readlink $dest)
+		if [[ $destlink != $orig && -z $DOLINK_NOCLOBBER ]]; then
+			[[ -n $DOLINK_VERBOSE ]] && echo "$dest -> $orig"
+			ln -snf $orig $dest
+		fi
+	else
+		[[ -n $DOLINK_VERBOSE ]] && echo "$dest -> $orig"
+		ln -s $orig $dest
+	fi
+}

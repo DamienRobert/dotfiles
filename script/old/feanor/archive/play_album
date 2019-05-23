@@ -1,0 +1,42 @@
+#!/bin/bash
+
+play() {
+cd "$1"
+
+NB_TRACKS=`ls -l *.mp3 | wc -l`
+ARGS=""
+
+for nb in `seq "$NB_TRACKS"`
+do
+  for i in *.mp3
+  do
+    if [ `mp3info -p '%n' "$i"` -eq $nb ]
+    then
+      echo "$nb: $i"
+      ARGS="$ARGS \"$i\""
+    fi
+  done
+done
+
+CACHE=${2-1000}
+
+eval "mplayer -cache $CACHE $ARGS"
+}
+
+CACHE=1000;
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -c ) shift; CACHE="$1"; shift ;;
+    -C ) shift; CACHE="10000" ;;
+    *) break;;
+  esac
+done
+
+for i in  "$@"
+do
+  echo "$i"
+  ( play "$i" $CACHE )
+done

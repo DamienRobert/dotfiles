@@ -1,0 +1,23 @@
+#even more minimal than minimal.prf
+#intended for computers that i only use to launch jobs, not do
+#long interactive (typically for $LIST_PROGS)
+#.bash_profile is for when I can't change shell to zsh
+
+path=mine/00COMPUTERS.rb
+path=mine/ruby/lib/computers.rb
+path=mine/config/.gitignore
+path=mine/config/dotfiles/.bash_profile
+path=mine/config/dotfiles/.bashrc
+path=mine/config/dotfiles/.config/git
+path=mine/config/dotfiles/.config/locale.conf
+path=mine/config/dotfiles/.dir_colors
+path=mine/config/dotfiles/.initenv
+path=mine/config/dotfiles/.initvars
+path=mine/config/dotfiles/.inputrc
+path=mine/config/dotfiles/.profile
+path=mine/config/dotfiles/.ssh/authorized_keys.default
+path=mine/config/dotfiles/.tmux.conf
+path=mine/config/dotfiles/.vim
+path=mine/config/dotfiles/.zprofile
+path=mine/config/dotfiles/.zsh
+path=mine/config/dotfiles/.zshrc

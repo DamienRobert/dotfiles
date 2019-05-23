@@ -1,0 +1,156 @@
+# vim: ft=zsh
+find_vcs() {
+	local dir
+	vcs=()
+	for dir in ${(@)^@}/{.*,*}/{.git,.svn,.hg,.bzr}(/N); do
+		vcs+=$(dirname $dir)
+	done
+}
+find_remote_vcs() {
+	local try_vcs orig
+	vcs=()
+	orig=$1; shift
+	for try_vcs in $@; do
+		if [[ -d $try_vcs/.git ]]; then
+			if git --git-dir=$try_vcs/.git remote show | grep -q $orig; then
+				vcs+=$try_vcs
+			fi
+		fi
+	done
+}
+find_branch_vcs() {
+	local try_vcs branch
+	vcs=()
+	branch=$1; shift
+	for try_vcs in $@; do
+		if [[ -d $try_vcs/.git ]]; then
+			if git --git-dir=$try_vcs/.git rev-parse $branch -- >/dev/null 2>&1; then
+				vcs+=$try_vcs
+			fi
+		fi
+	done
+}
+
+get_vcs() {
+	local name
+	for name in $@; do
+		case $name in
+			mine)
+				[[ -n $MINE ]] && continue
+				find_vcs ~/mine/progs ~/mine/ruby/gems
+				MINE=(~/mine ~/mine/crypt $vcs) ;;
+			perso)
+				[[ -n $PERSO ]] && continue
+				find_vcs ~/perso ~/perso/crypt ~/perso/dist
+				PERSO=(~/perso $vcs) ;;
+			pro)
+				[[ -n $PRO ]] && continue
+				find_vcs ~/pro
+				PRO=($vcs) ;;
+			latex)
+				[[ -n $LATEX ]] && continue
+				find_vcs ~/latex ~/latex/articles
+				LATEX=($vcs) ;;
+			magma)
+				[[ -n $MAGMA ]] && continue
+				find_vcs ~/pro/magma
+				MAGMA=($vcs) ;;
+			usr)
+				[[ -n $USR ]] && continue
+				find_vcs ~/usr
+				USR=($vcs) ;;
+			local)
+				[[ -n $LOCAL ]] && continue
+				get_vcs mine perso pro latex magma usr
+				LOCAL=($MINE $PERSO $PRO $LATEX $MAGMA $USR) ;;
+
+			prodist)
+				[[ -n $PRODIST ]] && continue
+				find_vcs ~/pro/dist
+				PRODIST=($vcs) ;;
+			optdist)
+				[[ -n $OPTDIST ]] && continue
+				find_vcs ~/opt/dist
+				OPTDIST=($vcs) ;;
+			usrdist)
+				[[ -n $USRDIST ]] && continue
+				find_vcs ~/usr/dist ~/usr/dist/*(/N) ~/usr/vim-script/*(/N)
+				USRDIST=($vcs) ;;
+			dist)
+				[[ -n $DIST ]] && continue
+				get_vcs pro op usrdist
+				DIST=($PRODIST $USRDIST $OPTDIST) ;;
+
+			all)
+				[[ -n $ALL ]] && continue
+				get_vcs local dist
+				ALL=($LOCAL $DIST) ;;
+
+			durin)
+				[[ -n $DURIN ]] && continue
+				get_vcs prodist
+				find_remote_vcs durin $PRODIST
+				DURIN=($vcs) ;;
+			mathrice)
+				[[ -n $MATHRICE ]] && continue
+				get_vcs prodist
+				find_remote_vcs mathrice $PRODIST
+				MATHRICE=($vcs) ;;
+			github)
+				[[ -n $GITHUB ]] && continue
+				get_vcs all
+				find_remote_vcs github $ALL
+				GITHUB=($vcs) ;;
+			prosvn)
+				[[ -n $PROSVN ]] && continue
+				get_vcs prodist
+				find_branch_vcs git-svn $PRODIST
+				PROSVN=($vcs) ;;
+			imb_local)
+				[[ -n $IMB_LOCAL ]] && continue
+				get_vcs prodist
+				find_remote_vcs imb-local $PRODIST
+				IMB_LOCAL=($vcs) ;;
+		esac
+	done
+}
+
+# fuji33 ~ $ gitfolders -l durin
+# ~/pro/dist/code-avisogenies: (master|✔)
+# ~/pro/dist/paper-avisogenies: (master|✔)
+#
+# fuji33 ~ $ gitfolders -l imb_local
+# ~/pro/dist/raweb: (master|✔)
+# ~/pro/dist/team-lfant_public: (master|✔)
+#
+# fuji33 ~ $ gitfolders -l mathrice
+# ~/pro/dist/code-avisogenies: (master|✔)
+# ~/pro/dist/paper-avisogenies: (master|✔)
+# ~/pro/dist/paper-isographGoingUp: (master↑2|✔)
+# ~/pro/dist/team-lfant_public: (master|✔)
+#
+# fuji33 ~ $ gitfolders -l github
+# ~/mine/progs/greasemonkey: (master|✔)
+# ~/mine/progs/linkutils: (master↑1|✔)
+# ~/mine/progs/powersave: (master↑5|✔)
+# ~/mine/progs/sudoku: (master|✔)
+# ~/mine/progs/vidir2: (master|✔)
+# ~/mine/ruby/gems/birthdays: (master↑1|✔)
+# ~/mine/ruby/gems/drain: (master↑21|✔)
+# ~/mine/ruby/gems/nano-optparse: (master|✔)
+# ~/mine/ruby/gems/shell_helpers: (master↑47|✔)
+# ~/mine/ruby/gems/simplecolor: (master↑19|✔)
+# ~/mine/ruby/gems/tiny_singleton: (master|✔)
+# ~/perso/dist/miam: (master|✔)
+#
+# fuji33 ~ $ gitfolders -l prosvn
+# ~/pro/dist/anr-chic: (master↑207↓8|✔)
+# ~/pro/dist/anr-chic2-contrib: (svn|✔)
+# ~/pro/dist/anr-chic2: (master↑352↓4|✔)
+# ~/pro/dist/anr-saga: (master↑435|✔)
+# ~/pro/dist/book-pairings: (master|✔)
+# ~/pro/dist/code-avisogenies: (master|✔)
+# ~/pro/dist/paper-cyclic-isogenies: (svn↑143↓80|✔)
+# ~/pro/dist/paper-iii: (svn|✔)
+# ~/pro/dist/team-lfant: (master|✔)
+# ~/pro/dist/team-macisa: (master↑45|…)

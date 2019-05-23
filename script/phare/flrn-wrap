@@ -1,0 +1,72 @@
+#!/usr/bin/env zsh
+
+git=t
+while true;
+do
+	case $1 in
+		-- ) break ;;
+		--no-git ) git=; shift ;;
+		*) break ;;
+	esac
+done
+
+log_action() {
+	echo "! $@"
+	${=@}
+}
+
+test_ssh() {
+	ssh-add -l >/dev/null
+}
+
+gitcommit() {
+	git commit --allow-empty-message -am '' >/dev/null
+}
+
+typeset -A remotes
+#associate a branch to each remote
+remotes[phare]="phare"
+remotes[4a]="4a"
+
+#merge master with local 4a and phare branches
+#in case of conflict, if master is up to date just do a
+#git merge -s ours
+gitff() {
+	for br in ${(M)remotes}; do
+		echo "- $br (ff)"
+		git merge --ff-only $br || {
+			echo "$br and master have diverged"
+			exit 1
+		}
+	done
+}
+
+#push master to 4a/phare:$MYHOSTNAME
+gitpush() {
+	. $HOME/.initvars
+	for remote in ${(M)remotes}; do
+		log_action git push $remote +master:$remotes[$MYHOSTNAME]
+	done
+}
+
+#fetch 4a and phare master and put it in remote/{4a,phare}
+gitfetch() {
+	for remote in ${(M)remotes}; do
+		log_action git fetch $remote master:$remotes[$remote]
+	done
+}
+
+( cd ~/.flrn
+	gitcommit
+	[[ -n $git ]] && test_ssh && gitfetch
+	gitff
+) || exit 1
+
+name=$(basename $0)
+[[ $name == "yaf" ]] && name="zorglub"
+EDITOR_VERSION=$name EDITOR="$HOME/script/phare/flrn-editor" MAIL="$MAILPATH" glubzorg -name $name "$@"
+
+( cd ~/.flrn
+	gitcommit
+	[[ -n $git ]] && test_ssh && gitpush
+)

@@ -1,0 +1,7 @@
+{
+  "extends": ["stylelint-config-standard", "./.stylelintrc_custom"],
+  "rules": {
+    # reset some stylelint-config-standard properties
+    "color-hex-length": null,
+  }
+}

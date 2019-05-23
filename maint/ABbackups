@@ -1,0 +1,214 @@
+systemd user services and timers
+================================
+
+- ~/mine/script/gitbackup -v save
+- unison.rb --sync=backup
+
+Home
+====
+
+- ~/script/usbbackup: backup on usb key
+
+- ~/mine/@infos/history/dobackup #(.history)
+- ~/mine/@infos/00savedata #(mbr, ip addr, blkid...)
+
+Git folders
+===========
+
+- gitfolders --mirror #mirror repos on mathrice/durin
+- gitfolders -l usrdist action 'cat .git/config' #save git configs
+
+Unison
+======
+
+backup: var/backup/archives
+book: data/Books
+booklight: Books/mathinfo/{Maths,Info},Roman
+common: mine, pro, perso, latex, dist
+data: data/{Documents,Papiers,Scans,WorkData,usr} Mail/mail-archives
+large: data/{Fonts,Etudes}
+perso: data/Photos, data/Videos/clip
+perso2: data/Music
+photoslight: Photos/Photos_de_{Blandine,Damien}
+full: :common, :data, :booklight
+all: :full + :large
+
+
+Inria Bordeaux
+==============
+
+transfert --delete-after ~/mine ~/pro ~/perso ~/latex  inriabdx:
+
+Tablette Asus
+=============
+
+transfert --delete-after ~/Books/mathinfo/{Maths,Info} ~/data/Papiers ~/Books/Roman asus:SDCard/Library/
+# transfert --delete-after ~/Books/mathinfo/Info/ asus:SDCard/Library/Info/
+
+FleurBleue
+==========
+
+RELDIR=var/backups/dina
+DIR=~/$RELDIR #~dina/Documents est un lien symbolique vers $DIR/Documents
+#mkdir $DIR; chown -R dams:dams $DIR; ~/script/set_acls -Rwd -u dina $DIR
+
+#Ingoing to Feanor
+  transfert dina@fleurbleue:/home/dina/{BackupPortable,Documents,Bureau} $DIR/
+
+#Outgoing from Feanor
+  #transfert --delete-after $DIR/BackupPortable dina@fleurbleue:
+  transfert --delete-after $DIR/ imb:$RELDIR/
+  transfert --delete-after $DIR/ 4a:$RELDIR/
+  transfert --delete-after $DIR/ mithrim:$RELDIR/
+
+# Transfert ponctuel:
+transfert imb:$RELDIR/ $DIR/
+
+Mithrim
+=======
+
+# back up to external_disk
+transfert --delete-after ~/data/Photos ~/var/backups ~/media/external_disk/dams/
+transfert --delete-after ~/Videos/clip ~/media/external_disk/dams/Videos/
+
+Imb
+===
+
+#Run git gc before transfers:
+  ssh imb vcs update -a ~/dist/imb/*(/)
+  ssh imb vcs action 'git gc --aggressive' ~/dist/imb/*(/) ~/var/backups/gitbackup ~/scratch/yaf
+
+#Ingoing to Feanor
+  transfert --delete-after imb:dist/imb ~/var/backups/imb/dist
+  transfert --delete-after imb:scratch/backups/archives.old imb:var/backups/gitbackup ~/var/backups/imb/
+
+Feanor
+======
+
+- cd ~/large/spools/forum; ./copy_forum.sh #forum
+  cd ~/large/spools/yaf; ~/script/phare/spools/yafbackup
+
+=> Outgoing to imb:
+  transfert --delete-after ~/large/spools/forum/forum.xz imb:scratch/backups/spools/
+  transfert --delete-after ~/large/spools/yaf imb:scratch/backups/spools/
+  transfert --delete-after ~/large/Medias imb:scratch/backups
+=> Outgoing to Mithrim:
+  # transfert --delete-after ~/large/spools/forum/forum.xz mithrim:media/external_disk/backup/
+  transfert --delete-after ~/var/backups/Medias/ mithrim:var/backups/Medias/
+
+- usb disk small backup (btrfs):
+  transfert --delete-after ~/Mail ~/dist ~/latex ~/mine ~/perso ~/pro ~/data/Photos ~/media/small_backup/dams/rsync/
+  sudo btrfs subvolume snapshot -r ~/media/small_backup ~/media/small_backup/snapshot-$(date '+%F')
+
+- large2 (ext4):
+  bupdirs=(~/ ~/data/ ~/large/{Books,Medias,Music,ipod,spools} ~dina/BackupDina)
+  bup index $bupdirs; bup save -n large2 $bupdirs
+  bup fsck -g #par2 files
+  transfert --delete-after ~/large/{Isos,.XXX-crypt} ~/large2/rsync/
+  transfert --delete-after --exclude /videos/Recording /large/backups/dams/ ~/large2/rsync/backups/
+
+- large_usb (xfs):
+  transfert --delete-after ~/ ~/media/large_usb/dams/home/
+  transfert --delete-after ~/data/ ~/media/large_usb/dams/data/
+  transfert --delete-after ~/large/ ~/media/large_usb/dams/large/
+  transfert --delete-after /large/backups/dams ~/media/large_usb/dams/backups
+
+- usbdisk_nomad (ext4) [disque usb mobile]:
+  transfert --delete-after ~/Mail ~/dist ~/latex ~/mine ~/perso ~/pro ~/media/usbdisk_nomad/home/dams/
+  transfert --delete-after ~/data/{Documents,Etudes,Fonts,Papiers,Photos,Scans,WorkData,usr} ~/large/{Books,Music} ~/media/usbdisk_nomad/home/dams/data/
+
+Last Backups:
+  2017-10-01 for Feanor
+  2018-07-23 for inriabdx, forum, imb
+  2018-07 for FleurBleue
+
+Notes
+=====
+
+- Photos is synchronised among my computers and imb's usbdisk (unison perso)
+  [Gondolin, Numenor and Valinor do not have the latest photos]
+- Books/mathinfo/{Info,Math};Books/Roman are synchronised across my computers
+- A part of Music [Music \ 01Other, A_Trier, Divers, Mirrors, MP3Albums]  and Video/clip are synchronised on my computers (via unison perso, perso2)
+
+imb:
+- Books is synchronised on imb (except Books/mathinfo/Torrent)
+- imb:var/backups/{archives.old,gitbackup},dist/imb -> ~/var/backups/imb
+- imb:usbdisk <- ~backup/dina, Medias and forum's spool (manual) + Photos (unison)  + some Music
+- Photos,Videos are on usbdisk
+  Books,Fonts,Music,opt,yaf,imb:dist (+ alternate unison repo) are on scratch
+#TODO: import imb's usbdisk backup/bup into ~/large2/bup
+Access zfs snapshots on .zfs
+
+4a: has ~backup/dina and some photos
+
+On Feanor:
+- Mail, dist, latex, mine, perso, pro, Photos are rsynced on my usb disk
+  'small_backup' and usbdisk_nomad
+- data/ and large/{Books,Music} are rsynced to usbdisk_nomad
+- For ~/large:
+  - home/, data/ + Books, Medias, Music, ipod, spools are buped to large2
+  - Isos, .XXX-crypt are rsynced to large2
+  - /large/backups/dams mainly contains original video files
+    A part of that is backed up in ~/large2/backup/
+  - All is rsynced large4/
+
+- ~/var/backups:
+  archives/{Immobilier, annuaires} [unison]
+  Medias -> ~/large/Medias [imb scratch]
+  dams -> /large/backups/dams/
+  imb -> dams/imb/{archives.old, dist, gitbackup}
+  videos -> dams/videos/ [archives videos non compressées]
+  dina -> ../../../../home/dina/BackupDina/
+    [~/var/backup/dina est synchronisé manuellement sur Feanor, Mithrim, 4a, imb:scratch]
+  gitbackup/ [synchronisé automatiquement sur imb via une crontab]
+  spools -> ../../large/spools/ [imb scratch]
+
+- disk layout:
+  /boot on /dev/sdc1, /home+/data on /dev/sdc4 et /dev/sda, large on
+  /dev/sdd, large2 on /dev/sdb, windows on /dev/sdc2
+
+Usb
+===
+
+Old key: 128MB
+Clé inria: 2GB     ext4   usbinria
+Clé emtec: 32GB    exfat  USB_DAMIEN
+Clé SanDisk: 64GB  efi boot + slash + home
+Clé Emtec footballeur: 4GB, iso ARCH_201807
+
+MicroSD SanDisk Extreme Plus: 64GB UHS Speed class 3 (GoPro)
+MicroSD SanDisk Ultra: 32GB (Phone Blandine)
+MicroSD 1GB et 2GB (Old phones, boite vieilles affaires)
+MicroSD 32GB: webcam xiaomi
+MicroSD 64GB: webcam xiaomi 360
+MicroSD 64GB: samsung A8
+
+Transcend SD: 16GB SD HC 10 (Lumix LF1)
+SD 16GB (Durin)
+Transcend SD: 4GB SD HC 6 (Old Lumix)
+Transcend SD: 4GB SD HC 6 (Boite informatique)
+SD 256MB (Boite Informatique [+ adapteurs micro sd -> sd)
+
+Disques:
+/large 3To
+/large2 2To
+usbdisk_nomad: 1To
+small_backup: 150Go
+
+Google
+======
+gmail pp: inria, phare
+
+photos dor: all (All ...), Evenements (Divers ...),
+  Photos_de_autres/{Dams,Famille,Gaetan_Bisson,Work}
+photos pp: Divers (Vrac ...), Photos_de_autres/Divers (Vrac Famille)
+
+musique dor: Music/Albums
+
+drive dor: Scans/
+drive robertdami: gpg backups of mine, perso, Photos/.crypt
++ ~backups/{dina,archives/{Immobilier,annuaires,.WorldOfGoo}}
++ ~/Documents
+  fusermount -u ~/.crypt-{mine,perso}
+  gpgfiles -c mine -r internal
+  gpgfiles -c perso -r internal

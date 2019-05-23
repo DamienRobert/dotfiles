@@ -1,0 +1,10 @@
+- name: install the kernel headers
+  pacman: name=linux-headers state=installed
+- name: install virtualbox guest utils
+  pacman: name=virtualbox-guest-utils
+- name: install virtualbox guest dmks
+  pacman: name=virtualbox-guest-dkms
+- name: start dkms
+  service: name=dkms state=started enabled=yes
+- name: add vboxsf to {{ ansible_ssh_user }}
+  user: name='{{ ansible_ssh_user }}' groups=vboxsf append=yes

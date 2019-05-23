@@ -1,0 +1,307 @@
+Weather:
+- https://github.com/chubin/wttr.in
+  curl wttr.in/~Bordeaux
+- https://www.met.no/en
+  => https://www.yr.no/place/France/Aquitaine/Bordeaux/
+- http://openweathermap.org/city/3031582 (Bordeaux)
+  http://openweathermap.org/weathermap?basemap=map&cities=true&layer=temperature&lat=30&lon=-20&zoom=3
+- Mesure de la pollution:
+  https://www.airvisual.com/france/nouvelle-aquitaine/merignac
+
+DNS:
+- https://www.duckdns.org
+
+Music:
+- Pay: Pandora [US only]/Spotify/Google play music
+- Library: soundcloud
+- last.fm
+
+Hosting:
+- firebase (google), heroku, github pages
+
+Google
+======
+
+Alerts: https://www.google.com/alerts
+Shopping list: https://shoppinglist.google.com/u/0/lists/default
+Tasks: https://mail.google.com/tasks/canvas
+  (on google calendar: switch between tasks and reminders)
+Rappels: http://www.androidpolice.com/2017/04/26/opinion-google-fix-erratic-reminder-system/
+  - calendar: reminders (Reminders calender -> Switch with Tasks)
+  - inbox -> reminders
+  - google keep (notes reminders. [These reminders can also be accessed from the other interfaces])
+  - google search 'reminders/add reminder/set a reminders'
+     (-> search your personal account)
+  - google apps (settings -> reminders)
+  - google assistant (your stuff)
+Activity: https://myactivity.google.com/myactivity
+Fit: https://fit.google.com/u/0/
+
+Google assistant
+================
+https://assistant.google.com/
+https://assistant.google.com/intl/fr_fr/
+Actions: https://developers.google.com/actions/
+
+Default Services: https://support.google.com/assistant/answer/7172842?hl=en&ref_topic=7409221
+  (cf aussi help dans google assistant et les applications google:
+  https://assistant.google.com/explore/search?q=%27Google%20Inc%27&hl=en-US)
+All Applications: https://assistant.google.com/explore?hl=en_us
+
+Liste de commandes:
+- https://www.androidauthority.com/google-home-commands-727911/
+- https://www.cnet.com/how-to/google-home-complete-list-of-commands/
+- https://stylistme.com/fonctionnalites-google-home/
+- Découvrir ce que vous pouvez faire avec Google Home: https://support.google.com/googlehome/answer/7130274?hl=fr
+
+Exemples:
+- "What's this song?" (in google now or google assistant an icon 'what's this song' appear automatically when music is playing)
+  => sound search library: https://play.google.com/music/listen?u=0#/ap/sound-search
+- Rappels/Reminders: https://support.google.com/googlehome/answer/7387866?co=GENIE.Platform%3DAndroid&hl=en (=> google calendar)
+- Minuteurs
+- Liste de course => express.google.com / https://shoppinglist.google.com/
+x Prendre des notes (google keep)
+- Agenda (google calendar)
+
+Applications
+------------
+
+Activer une application:
+https://support.google.com/googlehome/answer/7126338?co=GENIE.Platform%3DAndroid&hl=en
+“Let me speak/talk to <app name>”
+“I want to speak/talk to <app name>"
+“Can I speak/talk to <app name>”
+“Speak/Talk to <app name>”
+“At <app name>” 
+"Ask <app name> about/to ..."
+"Cancel”
+
+En français:
+https://assistant.google.com/explore?hl=fr_fr
+https://assistant.google.com/explore/search?q=Google%20Inc&hl=fr
+"Fais-moi parler/discuter avec/à <application>"
+"Je veux/J'aimerais parler/discuter avec/à <application>"
+"Puis-je parler/discuter avec/à <application>"
+"Parler/Discuter avec/à <application> [pour ...]"
+"Passe moi <application>" / "Connecte moi avec <application>" / "Je veux me connecter avec/à <application>"
+"Demande à <application> de ..."
+"Stop"
+
+Commandes
+---------
+Routines: Good Morning, Bedtime, Leaving Home, I'm home, Commuting to work, Commuting home
+Good morning: "OK, Google, tell me about my day" or "OK, Google, good morning"
+
+Reminders:
+Create a reminder: "OK, Google, remind me to [title] on [day] and [time]" or "OK, Google, remind me to [title] every day at [time]."
+Play reminders: "OK, Google, what are my reminders?" or "OK, Google, what are my reminders tomorrow?" or "OK, what is my reminder for [title}?"
+Delete reminders: "OK, Google, delete my reminders for tomorrow" or "OK, Google, delete my reminder to [title]" or "OK, Google, delete all of my reminders."
+Check notifications: "OK, Google, what's up?" or "OK, Google, what are my notifications?"
+https://www.reddit.com/r/googlehome/comments/85b5oq/how_to_mark_reminder_as_complete/ => I think I say "clear reminder", I always say "Consider it done"
+
+Calendar:
+Create a new calendar event: "OK, Google new calendar event" or "OK, Google, add [event] to my calendar" or "OK, Google, schedule [event] for me on Saturday at 8 p.m."
+List next calendar event: "OK, Google, what's next on my calendar" or "What/where/when is my next meeting?"
+List calendar events for a day: "OK, Google, list all events for January 1," "OK, Google, what's on my agenda for today?" or "OK, Google, what's on my calendar for Friday?"
+
+Timers/Alarms:
+Alarm: "OK, Google, set an alarm for [time]" or "OK, Google, set an alarm for every day at [time]."
+Snooze alarm: "OK, Google, snooze alarm."
+Cancel alarm: "OK, Google, cancel my alarm for [time]."
+Timer: "OK Google, set a timer for [time]."
+Multiple timers: "OK, Google, set a second timer for [time]" or "OK, Google, set a pizza timer for [time]."
+Check timer: "OK, Google, how much time is left on my timer?"
+Cancel timer: "OK, Google, cancel my timer."
+
+Music:
+Play music: "OK, Google, play some music" or "Play some [genre] music."
+Play ambient sounds: "OK, Google, help me relax" or "OK, Google, play white
+noise" or "OK, Google play forest sounds."
+Play an artist or song: "OK, Google, play [artist]" or "Play [song]."
+Play a song by lyrics: "OK, Google, play the song that goes, 'Is this the
+real life?'"
+Play a Google Play playlist or album: "OK, Google, play some indie music"
+or "OK, Google, play [album]."
+Ask what's playing: "OK, Google, what song is this?" or "OK, Google, what
+album is this?"
+Get more information: "OK, Google, when did this album come out?"
+Fast forward and rewind: "OK, Google, skip forward two minutes" or "OK,
+Google, skip backward 30 seconds."
+Set a sleep timer: "OK, Google, stop in 20 minutes."
+Like or dislike a song: "OK, Google, dislike this song."
+
+Shopping list:
+Add to shopping list: "OK, Google, add [item] to my shopping list."
+Check shopping list: "OK, Google, what's on my shopping list?"
+
+Misc:
+Remember things: "OK, Google, remember that I put my passport in the filing
+cabinet" or "Remember that my password is 'money'."
+Recall remembered things: "OK, Google, where is my passport?" or "What is
+my password?"
+Location: "OK, Google, where am I?"
+Translations: "OK, Google, how do you say [word] in [language]?"
+Broadcast: "OK, Google, broadcast/shout/announce/tell everyone [custom message]."
+
+Relax: https://support.google.com/googlehome/answer/7364558?hl=en&ref_topic=7030084
+Listen to an unspecified ambient sound 	"Help me relax", "Play ambient noise" 
+Listen to a specific ambient sound 	"Play fireplace sounds", "Play river sounds", "Play forest sounds", "Play white noise"
+Hear other ambient sound options 	"What other ambient sounds do you know?"
+Hear white noise  	"Play white noise"
+
+Games:
+https://assistant.google.com/explore/c/5/?hl=en
+https://www.cnet.com/how-to/games-you-can-play-with-google-home/
+https://www.cnet.com/how-to/kids-games-and-quizzes-on-google-home/
+
+En Français
+-----------
+
+Volume:
+"Volume au niveau cinq", "Volume à 65 %"
+
+Diffuser:
+"Annonce sur tous les appareils <message>"
+"Annonce sur tous les appareils... c’est l’heure de se lever"
+"Ok Google Annonce que votre message..."
+"Ok Google Diffuse que votre message..."
+
+Mémo:
+Dites "Hey Google, souviens-toi que <information à mémoriser>". Par
+exemple, vous pouvez dire "Hey Google, Souviens-toi que mon passeport est
+dans le tiroir à côté de l'évier".
+Dites "Hey Google, où/qu'est-ce que <information à mémoriser>". Par
+exemple, vous pouvez dire "Hey Google, où est mon passeport ?"
+
+Alarme:
+"Règle une alarme pour 7h appelée 'Médicament'"
+
+Minuteur:
+"Règle un minuteur de 10 minutes pour la pizza"
+"Mets en pause le minuteur"
+
+Listes:
+Ajoute 'essuie-tout' et 'piles' à ma liste de courses"
+"Qu'est-ce qui se trouve sur ma liste de courses ?"
+
+Agenda:
+ "Ok Google, donne-moi le programme de ma journée"
+ "À quelle heure est mon/ma prochain/prochaine événement/réunion ?"
+ "Quel est mon planning aujourd'hui ?"
+ "Quel est mon agenda pour vendredi ?"
+ "Crée un événement [quoi] [quand] [où]"
+ "Qu'est-ce que j'ai à faire [quand]" Exemple : "qu'est-ce que j'ai à faire aujourd'hui ?"
+ "Quand est [quoi]" 
+
+Rappels:
+  "Rappelle moi de ..."
+  "Quels sont mes rappels?"
+  "Annule mon rappel"
+
+Traffic:
+"Quelle est la durée de mon trajet domicile-travail ?"
+
+Météo:
+"Quel temps fait-il ?"
+"Va-t-il pleuvoir demain ?"
+Divers:
+"Choses à faire à Paris"
+
+Musique/Radio:
+"Joue <nom du titre>", "Joue <nom du titre> de <nom de l'artiste>", "Joue <nom du titre> sur <service de musique>"
+"Joue de la musique", "Joue de la musique <genre> sur <service de musique>"
+"Joue de la musique sur le téléviseur de mon salon", "Joue de la musique <genre> sur les enceintes de ma chambre"
+"Mets en pause", "Mets la musique en pause"
+"Reprends", "Continue la lecture"
+"Quel artiste est diffusé ?", "Qu'est-ce que c'est?", "Qu'est-ce que j'ecoute?"
+
+« Joue France Inter»
+"Diffuse les actualités", "Raconte-moi les actualités"
+Écouter des actualités provenant d'un fournisseur précis 	"Mets NPR News", "Lis BBC Minute"
+Écouter les dernières actualités concernant une catégorie d'actualités précise 	"Quelles sont les dernières actualités concernant le sport/l'économie/la technologie ?"
+
+Vidéos/Photos:
+« Lis des vidéos de <artiste> <sur le téléviseur> »
+"Montre-moi des photos de <San Francisco> sur <nom de l'appareil>"
+« Photo suivante sur <nom de l'appareil> », « Diapositive suivante sur <nom de l'appareil> »
+« Suspendre/Reprendre les photos sur <nom de l'appareil> », « Suspendre le diaporama sur <nom de l'appareil> »
+[Note: d'après le bug
+https://productforums.google.com/forum/#!topic/googlehome/uKqYYQUzm60
+il faut dire "mes photos" plutôt que "les photos"; par ex
+"Montre moi mes photos Olympe 2018"]
+
+Search:
+Faits et informations
+    "Comment dit-on "comment vas-tu ?" en italien ?"
+    "Qui est le président du Mexique ? "
+    "Quelle est la capitale de l'Espagne?"
+    "Quel est le rayon du soleil ?"
+    "Qui était Suzanne Lenglen ?"
+Calculs
+    "25 multiplié par 83 ?"
+    "Combien font 18% de 92?"
+    "Quelle est la racine carré de 5 ?"
+Traduction
+    "Ok Google, comment dit-on 'Bonjour' en russe ?"
+    "Ok Google, comment dit-on 'Bonjour' en italien ?"
+    "Traduis "Bonjour" en espagnol ?"
+Conversions de devises  
+    "Combien font 10 euros en dollars ?"
+Conversions d'unités  
+    "Combien de millilitres dans un décilitre ?"
+    "Combien font 75 degrés Fahrenheit en degré Celsius ?"
+Nutrition
+    "Combien de calories y a-t-il dans une pomme ?"
+    "Combien y a-t-il de vitamine C dans une orange ?"
+Dictionnaire
+    "Que signifie 'Al Dente' ?"
+    "Que signifie "circonlocution" ?"
+Heure locale
+    "Quelle heure est-il ?"
+    "Quelle heure est-il à/en <endroit>?"
+Jours fériés
+    "Quand aura lieu <fête/jour férié> ?"
+    "Combien de jours reste-t-il avant <fête/jour férié> ?" 
+Découvrez ce que Google Home peut faire
+    "Que peux-tu faire ?"
+
+Home Control:
+  "Allume <nom de la lumière>", "Tamise <nom de la lumière>", "Augmente la
+luminosité de <nom de la lumière>", "Règle <nom de la lumière> à 50 %", "Mets <nom de la lumière> en vert", "Allume/Éteins les lumières dans <nom de la pièce>" 
+  "Quelle est la température intérieure ?"
+
+Relax:
+  Nature sounds, Water sounds, Running water sounds, Outdoor sounds
+  Babbling brook sounds, Oscillating fan sounds, Fireplace sounds
+  Forest sounds, Country sounds, Ocean sounds, Rain sounds
+  River sounds, Thunderstorm sounds, White noise
+
+Animaux: que fais la vache?
+
+Jeux:
+    "J'ai de la chance"
+    "Jouons à un jeu", « amusons-nous », « divertis-moi ».
+    "Pile ou Face"
+    "Boule de cristal"
+    ? « jouer au jeu des noms avec le prénom 'Jean' »
+    "Fais un quizz"
+
+Easter egg:
+    « parle comme Yoda », « Où est Charlie ? », "tu ne passeras pas"
+    https://vieartificielle.com/easter-eggs-google-home-assistant
+
+Appli: Akinator
+
+Actions
+-------
+
+App with dialogflow: https://developers.google.com/actions/dialogflow/first-app
+Apps from templates (Trivia, Personality Quiz, Flash Cards): https://developers.google.com/actions/templates/first-app
+Voices: https://developers.google.com/actions/localization/languages-locales
+
+Dialog Flow
+===========
+
+Use dialog flow to create google assistant actions:
+https://developers.google.com/actions/dialogflow/first-app
+=> https://console.dialogflow.com

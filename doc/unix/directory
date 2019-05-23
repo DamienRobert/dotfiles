@@ -1,8 +1,0 @@
-sticky bit: only the owner of the file, or the directory owner can rm the
-file (ex: /tmp)
-
-setgid: new files are created with the group of the directory (and new
-directories have the setgid bit set)
-
-setuid: ignored on linux, on freebsd same as setgid but for the user owner
-rather than the group

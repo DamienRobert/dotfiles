@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec "$HOME/script/extra/archfull_wrapper" "$(basename $0)" "$@"

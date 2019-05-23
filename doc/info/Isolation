@@ -1,0 +1,367 @@
+Isolation
+=========
+lambda: W/m.K
+R=e/lambda: m^2.K/W
+U=1/R: W/K.m^2
+
+Liste de U: http://www.energieplus-lesite.be/index.php?id=15347
+Liste de Lambda:
+- http://www.energieplus-lesite.be/index.php?id=15348
+- http://tony.moutaux.free.fr/isomaison/index.php/materials/index
+- http://www.isoltop.com/Conductivite-Thermique.html
+
+Déperditions:
+Ubat=(1/R)*Surface +1/hi +1/he => watt/degré (W/K)
+  R=e/lambda
+  hi et he (conduction de l'air): https://www.thermexcel.com/french/ressourc/deperdit.htm
+  Ou encore appelé rsi et rse http://www.energieplus-lesite.be/index.php?id=16896
+  Pour un mur 1/hi+1/he=0.11+0.06=0.17
+  Pour un sol: 1/hi=0.17, 1/he=0.05
+  Pour un plafond: 1/hi=0.09, 1/he=0.05
+
+Résistance lame d'air
+http://www.energieplus-lesite.be/index.php?id=16897
+1.5-2.5cm: 0.17, au-delà: 0.18
+
+Coefficients tau:
+http://forums.futura-sciences.com/habitat-bioclimatique-isolation-chauffage/93426-conductivite-thermique-dune-lame-dair.html
+
+Ponts thermiques:
+http://forums.futura-sciences.com/habitat-bioclimatique-isolation-chauffage/194634-isolation-une-renovation-ponts-thermiques-2.html
+ St = Si + Sp
+ St/Rt = Si/Ri + Sp/Rp
+ En combinant les deux, on obtient la relation suivante :
+ Rt/Ri = (1+Sp/Si) / (1 + (Sp/Si)/(Rp/Ri))
+
+# Inertie
+
+http://boiscorde.weebly.com/uploads/3/1/2/4/31244775/pare-pluie_pare-vapeur_et_inertie.pdf
+http://www.energieplus-lesite.be/index.php?id=10330
+http://passivact.com/Concepts/files/InertiesThermiques-Comprendre.html
+http://www.ideesmaison.com/Construction/Gros-travaux/Materiaux/Detail-des-calculs.html
+- ρ la masse volumique du matériau en [kg/m^3]
+- c la capacité thermique massique du matériau en [J/kg.K]
+- masse thermique: S=ρ*c: J/K.m^3
+
+Effusivité:
+https://fr.wikipedia.org/wiki/Effusivit%C3%A9_thermique
+- Effusivité : E = √(λ*S) = √(λ*ρ*c) [J/K.m^2.s^{1/2}]
+- Température de contact en surface entre deux matériaux de temp Ti et
+  d'effusivité Ei: T=(E1.T1+E2.T2)/(E1+E2)
+
+Diffusivité:
+https://fr.wikipedia.org/wiki/Diffusivit%C3%A9_thermique
+- diffusivité: α=λ/S=λ/ρ*c [m²/s] (Elle est en en m²/h si masse thermique en Wh/m^3/°C)
+- amortissement: exp(-e/δ) (amortissement de l'amplitude du signal, sans unité)
+  où δ(ω) = √{2α/ω} [m] (profondeur de peau thermique: profondeur à laquelle l'amplitude du signal est amortie d'un facteur e)
+  où α: diffusivité, ω: pulsation du signal de température en rad/s (ie ω=fréquence rad)
+  [Rem: si α en m^2/h on a pour un signal de 24h: δ=√{2α24/2π}), 
+   => amortissement = exp(-e√{24α/π})]
+  Temps caractéristique (lié au déphasage): t=e^2/α
+  => Le signal sinusoïdal de température à la profondeur e dans le massif semi-infini est amorti de façon exponentielle dans cette épaisseur avec une longueur caractéristique −e/δ par un coefficient exp(−e/δ) et retardé avec un déphasage de e/δ radians. [cf résolution équation chaleur]
+- célérité = cel = δ/ω = √{2αω} = √(4πα/T) [m/s]
+  Si T=24h et α en [m/h], cel=0.725[1/√h].√α [m/h]
+  [en effet √(4π/24*3600s)=1/83√s=1/0.023√3600√h=1/1.38√h=0.725[1/√h]=√(4π/24h)]
+- déphasage = e/cel = √(T/4π) e/√α [s] où e=épaisseur
+  Si T=24h, déphasage=e/0.725√α=1.38[√h] e/√α [h]
+
+Applets de calcul inertie:
+- http://meteo.re.free.fr/thermo.php
+- https://enercoconseils.wordpress.com/2011/10/14/wall-t/
+
+Chauffage
+=========
+Degré Jour Unitaire (DJU): https://cegibat.grdf.fr/simulateur/calcul-dju
+http://www.infoclimat.fr/climatologie/
+
+Calcul simplifié de puissance de chauffe: http://www.radiastyl.fr/calcul-puissance.html [zone climatique*coeff isolation*volume]
+Calcul plus précis: http://herve.silve.pagesperso-orange.fr/deperditions/deperd_simplifiee.htm
+
+Chauffer 1m^3 d'air:
+http://www.maisons-et-bois.com/discussions/viewtopic.php?id=11433
+  chaleur spécifique de l'air = 960J/kg.K
+  masse volumique de l'air = 1.2kg/m^3 à 20°C (ρ=1,292kg⋅273,15K/T)
+  Il faut donc 960x1.3=1150 Joules d'énergie pour réchauffer un m3 d'air par degrés de différence = 0.32 Wh
+
+Chauffer 1L d'eau:
+http://edesignlab.fr/chauffage-dun-volume-deau/
+  chaleur spécifique de l'eau = 4185.5J/(kg.K)=1.1626Wh
+  chaleur latente: 333,7kJ=92,7Wh pour transformer 1kg de glace à 0°C en eau.
+  chaleur latente: 2258kJ=627,22Wh pour transformer 1kg d'eau à 100°C en vapeur.
+
+Estimation consommation ECS:
+http://forums.futura-sciences.com/habitat-bioclimatique-isolation-chauffage/646554-ecs-instantane-gaz-vs-ecs-ballon-electrique-guide-choix.html
+ Pour 2 personnes, pour obtenir 80L d'ECS à 55°C à partir d'une eau à 10°C, il faut donc fournir
+80L x (55°C-10°C) x 1,161 = 4,18 kWh par jour pour l'ECS.
+Si l'ECS est produite via un ballon d'ECS, il faut ajouter les déperditions thermiques du ballon : 1,17 kWh par jour pour un ballon de 100L à 55°C
+
+Pertes tuyaux: http://forums.futura-sciences.com/habitat-bioclimatique-isolation-chauffage/180288-cette-reduire-pertes-dun-cumulus-2.html
+E= Delta t°*1,16*pi*r*r=(60-20)*1,16*3,14*0,7*0,7=71 Wh de pertes pour
+chaque mètre de canalisation de 12, après chaque utilisation d'une source.
+
+Gains condensation: http://herve.silve.pagesperso-orange.fr/chcondens.htm
+
+Apports solaires
+================
+
+http://forums.futura-sciences.com/habitat-bioclimatique-isolation-chauffage/338824-puissance-solaire-1000-w-m2-342-w-m2-2.html
+Pour un panneau perpendiculaire au soleil,
+sur 24 h, il aura reçu en moyenne 342 W/m2
+sur 12 heures de jour, il aura reçu 680 W/m2
+la plus forte puissance enregistrée (à midi) sera 1361 W
+
+https://fr.wikipedia.org/wiki/Constante_solaire
+F = 1 360,8 ± 0,5 W/m².
+Le rayonnement solaire incident moyen sur la surface totale est  :
+F¯ = F/4 ≃ 340 W.m^−2
+
+Données plus précises en fonction de la lattitude:
+http://ines.solaire.free.fr/gisesol_1.php
+
+Autres apports: http://www.bbs-logiciels.com/download/manuels/Clima-Win/APPORTS%20-%20CALCUL%20PAR%20LA%20METHODE%20RTS%202005-2009-2013.pdf
+
+Radiateur
+=========
+Puissance radiateur fonte:
+4 colonnes: http://www.radiateur-en-fonte.fr/vente-radiateur-en-fonte-2484.htm
+6 colonnes: http://www.radiateur-en-fonte.fr/radiateur-fonte-inertie-2486.htm
+
+Calculs: http://herve.silve.pagesperso-orange.fr/radiateur.htm
+
+ Q = S x (hr+hc) x (Tm - Ti)
+Avec hr coefficient de radiation:
+  hr = Ec x (T1 + T2) x (T1^22 + T2^22) x Co (Co=5,67051 x 10-8, constante de Stefan-Boltzmann), Ec=émissivité du corps=~0.9
+et hc coefficient de convection:
+   hc = 5,6 x ((T1 - T2) / (T2 x h))^0,25
+
+ L'équilibre thermique de l'ensemble local-émetteur, en régime permanant, est donné par la relation suivante :
+Q = K x S x (Tm - Ti) = H x (Ti - Te) = D x c ρ x (Td - Tr), en W
+  avec c = coefficient de chaleur spécifique de l'eau c = 1,1627Wh
+  et ρ=masse volumique en kilo par litre
+  typiquement c*ρ=1,1628
+  D débit de l'eau [kg/h]
+  H pertes de la maison [W/K]
+  K coeff du radiateur [W/Km^2]
+
+ Le coefficient K, pour un DeltaT autre que le DeltaT nominal, est obtenu avec la formule suivante :
+K = KN x (DeltaT / DeltaTN)^(n - 1), en W/(m².K)
+ie Q=QN*(DeltaT/DeltaTN)^n
+Où DeltaT=(Td - Tr) / ln((Td - Ti) / (Tr - Ti))
+         =~ (Td+Tr)/2-Ti si la chute n'est pas trop grande
+et n=1,287 en moyenne, n=1 si le radiateur est très rayonnant, n=1.5 s'il est très convectant
+
+Hydraulique (pression circulateur et perte de charge): http://www.energieplus-lesite.be/index.php?id=10983
+
+Discussion sur futura: http://forums.futura-sciences.com/habitat-bioclimatique-isolation-chauffage/766139-augmentation-de-superficie-radiateurs-8.html
+
+Confort thermique
+=================
+
+Confort thermique en fonction température et humidité:
+http://www.energieplus-lesite.be/index.php?id=10250
+
+Type de chauffage:
+http://forums.futura-sciences.com/habitat-bioclimatique-isolation-chauffage/766771-difference-entre-radiateur-fonte-radiateur-aluminium.html
+
+fonte : lambda = 46W/m/K, rho = 7,8e3kg/m3, cp = 540J/kg/K --> effusivité ~14e3
+alu : lambda = 237W/m/K, rho = 2,7e3kg/m3, cp = 888J/kg/K --> effusivité ~24e3
+effusivité = racine (lambda.rho.c)
+
+radiateur fonte 92 6 colonnes : 198W, 10,5kg --> capa thermique par watt déclaré 10.5*540/198 = ~29 J/K/W(n)
+radiateur alu 32 4 éléments : 181W, 2,19kg --> capa thermique par watt déclaré 2.19*888/181 = ~11 J/K/W(n)
+
+Hygrométrie
+===========
+Hygrométrie recommandée: 30-70%, si possible 40-60%
+
+La résistance à la diffusion de vapeur d’une paroi (mu et Sd):
+http://www.energieplus-lesite.be/index.php?id=17041#02
+https://fr.wikipedia.org/wiki/Facteur_de_diffusion_de_la_vapeur_d'eau
+  \mu: coefficient de diffusion de la vapeur d'eau
+  Sd=\mu*épaisseur: résistance à la diffusion de vapeur
+    => l'épaisseur de la couche d’air équivalente à la diffusion de la vapeur
+
+Flux de vapeur d'eau (\mu <=> 1/lambda pour les déperditions thermiques):
+q [kg/m^2.s] =0.185E-9 [s] /Sd [m] * \Delta pression [Pa]
+             = \Delta pression/R avec R= Sd(=\mu*épaisseur)*5.4E9  [m/s]
+Q [kg] = q*temps [s] * surface [m^2]
+
+
+## Point de rosée et vapeur saturante
+
+RH = P_vapeur d'eau/P_saturante (humidité relative)
+
+Température de rosée: https://fr.wikipedia.org/wiki/Point_de_ros%C3%A9e
+  Tr = b α(T,RH) /(a−α(T,RH))
+    avec : α(T,RH)= aT/(b + T) + ln RH 
+    a = 17,27 et b=237,7 [°C].
+  Domaine de validité :
+    T, température mesurée : 0 °C < T < 60 °C
+    RH, humidité relative : 0,01 (1%) < RH < 1,00 (100%)
+    Tr, point de rosée : 0 °C < Tr < 50 °C
+  Autre formule: Tr = RH^{1/8}⋅[112+0.9⋅T]+0.1⋅T−112
+
+Calcul de vapeur saturante: https://fr.wikipedia.org/wiki/Pression_de_vapeur_saturante
+  ln(p_sat/p_0)=M.Lv/R(1/T0-1/T)-a/R*ln(T/T0)
+    - T0: température d'ébullition de la substance à une pression p0 donnée, en K (T0 = 373 K pour l'eau)
+    - psat: pression de vapeur saturante, dans la même unité que p0 (p0 = 1013.25 mbar);
+    - a: le facteur de linéarité de la variation de l'enthalpie du fluide avec la température ;
+    - M: masse molaire de la substance, en kg/mol (M = 0,018 kg/mol);
+    - Lv: chaleur latente de vaporisation de la substance, en J/kg (Lv = 2,26E6 J/kg);
+    - R: constante des gaz parfaits, égale à 8,31447 J/K/mol ;
+    - T: température de la vapeur, en K.
+  Formule simplifiée pour l'eau, sur la plage de 5 à 140 °C:
+    ln p_sat = 13.7 − 5120/T
+
+Température (°C) 	Pression de vapeur saturante (mbar)
+-60° 0,001  -40° 0,13  -20° 1,03  -10° 2,6  0° 6,10   5° 8,72  10° 12,3
+15° 17,0  20° 23,4  25° 31,7  30° 42,4  40° 73,8  50° 123  60° 199  100° 1013
+
+## Les grandeurs hygrométriques et formules
+http://www.energieplus-lesite.be/index.php?id=11243
+- pvs [Pa] = 10^{2,7877+7,625.η/(241,6+η)}
+    η température en °C>0.
+  pvs [Pa] = 10^{2,7877+(9,756.η)/(272,7+η)}
+    η température en °C<0 (glace)
+- température de rosée:
+    Si ηr>0°C, ηr = 31,685.x/(1-0,1311.x)
+    Si ηr<0°C, ηr = 27,952.x/(1-0,1025.x)
+      où x = log_10 (pv/613,34) [inverser les deux formules plus haut]
+- humidité absolue: ha [kg_eau/kg_air sec]=0,622.(pv/(Patm-pv))
+    où Patm=101300 Pa en altitude 0m.
+- enthalpie: h [kJ/kg air sec]= 1,006.η + ha.(2501+1,83.η)
+- volume spécifique: v = (461,24.(0,622+ha).T)/P [en m^3 air humide/kg air sec]
+    T est la température absolue = η + 273,15°C
+    P = pression totale de l’air humide, que l’on peut en première approche prendre égale à la pression atmosphérique, soit 101 300 Pa 
+  masse spécifique: m=1/v en kg air sec/m^3 air humide
+
+http://herve.silve.pagesperso-orange.fr/chcondens.htm
+  Tr = ((pv/288,68)^(1/8,02)-1,098)*100
+  Pvs = 288,68*(1,098 + T /100)^8,02
+
+Equation de la chaleur
+======================
+
+https://fr.wikipedia.org/wiki/%C3%89quation_de_la_chaleur
+https://en.wikipedia.org/wiki/Heat_equation
+https://fr.wikipedia.org/wiki/Conduction_thermique#Cas_d.27un_domaine_limit.C3.A9_par_deux_plans_parall.C3.A8les
+
+ ∂u/∂t-\alpha \nabla^{2}u=0
+ Dim 1: ∂u/∂t =  α (∂^2 u/∂x^2)
+  avec α=λ/ρ*c la diffusivité
+
+Exemples de résolution numérique et anologie electrique:
+http://robert.mellet.pagesperso-orange.fr/diff/diff_01.htm
+
+Fonction theta, Chaleur (cas spatial périodique)
+http://www.les-mathematiques.net/phorum/read.php?4,1382144,1383434,quote=1
+
+Cours (cf la page wikipedia)
+- http://www.sciences.univ-nantes.fr/sites/claude_saintblanquet/conducti/cddex.htm
+  CONDUCTION DE LA CHALEUR Auteurs : Claude SAINT-BLANQUET et Bernard FOURCHER 
++ http://www.lmm.jussieu.fr/~lagree/COURS/MECAVENIR/index.html
+  Cours Mécavenir EPU de Thermique, GM3C, Pierre-Yves Lagrée
+- http://ori-oai-search.insa-lyon.fr/notice/view/default%253AUNIMARC%253A160504
+  Transferts de chaleur et de masse, Insa Lyon, Jean Brau
+
+Logiciels: http://www.thermexcel.com/french/ressourc/bilanth.htm
+
+Formules
+========
+
+Q: transfert thermique [J]
+\Phi: flux de chaleur, \Phi=dQ/dt [W]
+\phi: densité de flux thermique; \Phi=\phi.S [W/m^2]
+
+Echangeur: dQ/dt=(h2-h1) dm/dt où m=masse, h_i=enthalpie massique=c_p T_i
+Exemple: Une masse m1 à temp T1 mis en contacte avec une masse m2 à temp T2
+dans une enceinte adiabatique
+=> (mc_p)_1 (T-T1)+(mc_p)_2 (T-T2)=0 => T=...
+
+# Loi de Newton
+
+Loi de Newton (système mince, ie T uniforme dans le système):
+Q'(t)=\int_surface flux q; q est proportionel à (T_ext-T_int)
+=> Q'(t)=-hS(T-T_ext) où S=surface et h le coefficient d'échange [W/m^2K]
+
+Rayonnement: E=e*\sigma T^4 où e est l'émissivité (0<e<=1) et
+\sigma=5.67*10^-8 W/m^2K^4 constante de Boltzman
+En linéarisant: q_rayonnement=h_r(T-T_ext) avec h_r=4e\sigma T_ext^3.
+
+Exemple de convection (cf p10 du chapitre 3 cours3_mince):
+h=2.4(T-T_ext)^{1/4}.
+
+Autres valeurs de h: cf chap 3 p.6 et http://www.fsr.ac.ma/cours/physique/bargach/Chap4.pdf (Transferts de chaleur par convection) et chap 5 p.2
+
+Résolution: Or Q'(t)=ρ c_p V ∂T/∂t (s'il n'y a pas de création volumique)
+ie ∂T/∂t=-hS/Vρc_p. Delta_T= -αS/V Delta_T = -α/e Delta_T
+=> ∂T/∂t = -α/e Delta_T d'où T=T_ext+(T_0-T_ext)e^{-t/\tau}, 
+   avec \tau=ρ c_p V/hS=V/αS (=e/α pour un mur)
+
+# Loi de conservation
+
+Si a est une quantité conservée,
+d/dt \int^3 a dv = -\int^2 J.ds + \int^3 rdv
+où J flux associé et r terme source volumique
+=> en 1d: ∂/∂t a(x,t)=-∂/∂x J(x,t)+r(x,t)
+
+# Equation de la chaleur
+
+Pour la chaleur: J=q le flux de chaleur, a= l'énergie volumique =ρ c_p T
+=> ρ c_p ∂T(x,t)/∂t=-∂q(x,t)/∂x+r(x,t)
+
+Loi de Fourier: q = −k ∂T/∂x [k=λ]
+On en déduit l'équation de la chaleur:
+ρc_p ∂T/∂t = ∂/∂x(k.∂T/∂x)+r
+et donc si k est constant et r=0:
+∂T/∂t = α ∂^2 T/∂x^2 avec α=k/ρ*c la diffusivité.
+
+En 3D: q = −k ∇T, ρ cp ∂/∂t T(x,t) = −∇·q+r
+
+Conditions aux limites:
+- Température limite imposée: T=T_p sur la paroi
+- Flux limite imposé: q_p=cste (=- k ∂T/∂x|p)
+- Flux limite suivant une loi de Newton: q_p=h.(T_paroi-T_ext) (=- k ∂T/∂x|p)
+
+Cas statique: l'équation de la chaleur donne dq/dx=0
+ie si Q'(t)=qS, Q'(t)=(T_1-T_2)/R, R=e/kS (analogie électrique \delta T=R Q').
+
+# Nombre de biot
+
+Normalisons l'épaisseur L de telle sorte qu'elle vaille 1 (et T en
+retranchant T_ext).
+"q_p=h.(T_paroi-T_ext)" devient "-dT/dx=hL/k T" (sur la paroi)
+Bi nombre de Biot=hL/k;
+- B_i infini: T_paroi=constante
+- B_i=0: paroi adiabatique, q_p=0
+- B_i petit: système "mince". Le flux de chaleur emporté est faible, on
+  peut supposer le système à température homogène (la conduction
+  homogénisant plus vite que la convection)
+
+Remarque: en régime stationnaire on a q= \delta T/r (r=e/k la résistance surfacie)
+          sur la paroi on a q=h \delta T; tout se passe comme si on avait
+          une résistance "superficielle" de 1/h en plus.
+
+# Equation de chaleur cylindrique
+
+Cf Chapitre 5b, en particulier (p.7) si on isole un tuyau par une épaisseur trop
+petite, l'isolation ne compense pas l'augmentation de surface de convection!
+
+# Résolution
+
+Cf Chapitre 6.
+1) Cas d'une lamelle
+On normalise pour avoir e=1, \Delta_T=1, en normalisant le temps par
+T'=T/tau avec tau=e^2/α (temps caractéristique) on a
+∂T/∂t =  ∂^2 T/∂x^2 
+de solutions \sum_k A_k exp(-k^2 t) cos(kx+\phi_k)
+où k vérifie k tan(k)=B_i
+
+2) Cas semi-infini
+Solution en coordonnées normalisées: T=erf(x/2\sqrt{t})
+
+3) Cas périodique en x=0
+T=\Delta T e^{i(wt-kx)}
+où l'équation de la chaleur donne -k^2=iw/α
+ie T=T0+\Delta_T e^{-x \sqrt{w/2α}} cos(wt-x\sqrt{w/2α})
+    =T0+\Delta_T e^{-x/δ} cos(wt-x/δ)

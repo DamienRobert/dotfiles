@@ -1,0 +1,153 @@
+#!/usr/bin/zsh
+. $HOME/.initvars
+TOOLSD=$MYFILES/script/tools.d
+NODEMODULES=~/opt/pkgmgr/npm/lib/node_modules
+
+info() {
+	echo $@ >&2
+}
+
+BROWSERSLISTCONFIG=".browserslistrc"
+
+get_browsers() {
+	if [[ -n $setbrowsers ]]; then
+		export BROWSERSLIST=${BROWSERSLIST-${(j:, :)${(@f)"$(<$TOOLSD/$BROWSERSLISTCONFIG)"}}}
+		info "## BROWSERSLIST: $BROWSERSLIST"
+	fi
+}
+
+css() {
+	case $lintmode in
+		strict) css_style $@ ;;
+		check) css_check $@ ;;
+		*) css_style $@ ;;
+	esac
+}
+
+css_style() {
+	info "# stylelint (css style)"
+	get_browsers
+	stylelint --config $TOOLSD/.stylelintrc $OPTS "$@"
+}
+
+css_check() {
+	#only check for errors
+	info "# stylelint (css check)"
+	get_browsers
+	stylelint --config $NODEMODULES/stylelint-config-standard/node_modules/stylelint-config-recommended $OPTS "$@"
+}
+
+css_doiuse() {
+	info "# doisue"
+	get_browsers
+	doiuse $OPTS "$@"
+}
+
+css_postcss() {
+	info "# postcss"
+	get_browsers
+	postcss --config $TOOLSD/postcss.config.js $OPTS "$@"
+}
+
+stylelint_scss() {
+	info "# stylelint (scss)"
+	get_browsers
+	stylelint --config $TOOLSD/.stylelintrc_sass $OPTS "$@"
+}
+
+scss() {
+	info "# scss-lint"
+	scss-lint $OPTS "$@"
+}
+
+html5validator() {
+	info "# html5validator"
+	html5validator --show-warnings --root "$(dirname $1)" --match "$(basename $1)" $OPTS
+}
+
+html () {
+	info "# tidy (html)"
+	tidy $OPTS "$1" >/dev/null
+}
+
+js() {
+	info "# eslint (js)"
+	eslint --config $TOOLSD/.eslintrc $OPTS "$@"
+}
+
+js_minify() {
+	info "# babel minify (js)"
+	get_browsers
+	babel --config-file $TOOLSD/.babel_minifyrc $OPTS "$@"
+}
+
+js_babel() {
+	info "# babel (js)"
+	get_browsers
+	babel --config-file $TOOLSD/.babelrc $OPTS "$@"
+}
+
+py() {
+	flake8 "$@"
+}
+
+rb() {
+	case $lintmode in
+		strict) rb_style $@ ;;
+		check) rb_check $@ ;;
+		*) rb_style $@ ;;
+	esac
+}
+
+rb_check() {
+	info "# rubocop (rb check)"
+	# note: rubocop looks for the .rubocop.yml from the file path, not the CWD
+	# Rem: rubocop -l only activates linter cops
+	rubocop --config $TOOLSD/.rubocop_check.yml $OPTS "$@"
+}
+
+rb_style() {
+	info "# rubocop (rb style)"
+	rubocop --config $TOOLSD/.rubocop_style.yml $OPTS "$@"
+}
+
+autolint() {
+	filename=$1
+	extension="${filename##*.}"
+	case $extension in
+		css ) css $1 ;;
+		scss ) scss $1 ;;
+		html ) html $1 ;;
+		js ) js $1 ;;
+		rb ) rb $1 ;;
+		py ) py $1 ;;
+	esac
+}
+
+OPTS=()
+mode=autolint
+setbrowsers=t
+lintmode=
+
+while true;
+do
+  case $1 in
+    -- ) break ;;
+    --mode ) shift; mode=$1; shift ;;
+    -s|--strict ) shift; lintmode=strict ;;
+    -c|--check ) shift; lintmode=check ;;
+    --no-browsers ) shift; setbrowsers= ;;
+    --browsers ) shift; setbrowsers=t ;;
+    --allb ) shift; BROWSERSLISTCONFIG=".browserslistallrc";;
+    -* ) OPTS+=$1; shift;;
+    *) break;;
+  esac
+done
+
+case $mode in
+	autolint)
+		for file in $@; do
+			$mode $file
+		done ;;
+	*) $mode "$@" ;;
+esac

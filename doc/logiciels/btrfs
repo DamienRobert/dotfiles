@@ -1,3 +1,14 @@
+Periodic checks
+===============
+
+- defragment: sudo btrfs filesystem defragment -r -v /
+- recompress: sudo btrfs filesystem defragment -r -v -czstd /
+- balance: sudo btrfs balance start -v -dusage=5 /
+- on a ssd: sudo fstrim -a
+
+Create
+======
+
 https://btrfs.wiki.kernel.org/index.php/Btrfs%28command%29
 
 Raid 1:
@@ -23,20 +34,20 @@ Example for a raw image:
 Defrag
 ======
 
-Defrag the journal: (speed-up systemd boot)
-btrfs filesystem defrag /var/log/journal/*/*
+https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
+https://btrfs.wiki.kernel.org/index.php/Problem_FAQ#Defragmenting_a_directory_doesn.27t_work
+Use filefrag to see file fragmentation
 
-Defrag full disk
-sudo btrfs filesystem defrag -rv /
-
-From: https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
-Btrfs supports online defragmentation. To defragment the metadata of the root folder do:
+- Defragment the *metadata* of the root folder do:
     btrfs filesystem defragment /
-This will not defragment the entire file system. For more information read this page on the btrfs wiki.
-To defragment the entire file system verbosely:
+- To defragment the entire file system verbosely [defrag files but not directory metadata, also does not traverse subvolumes]:
     btrfs filesystem defragment -r -v /
-Note: The command above will defragment only file data. To defragment directory metadata for every directory in the file system, run this command:
+- The command above will defragment only file data. To defragment directory metadata for every directory in the file system, run this command:
     find / -xdev -type d -print -exec btrfs filesystem defragment '{}' \;
+[-xdev does not cross devices or subvolumes]
+
+Defrag the journal: (speed-up systemd boot)
+btrfs filesystem defrag -rv /var/log/journal/
 
 Other commands
 ==============
@@ -46,20 +57,124 @@ Other commands
 btrfs filesystem balance is an operation which simply takes all of the data and metadata on the filesystem, and re-writes it in a different place on the disks, passing it through the allocator algorithm on the way. It was originally designed for multi-device filesystems, to spread data more evenly across the devices (i.e. to "balance" their usage). This is particularly useful when adding new devices to a nearly-full filesystem.
 Due to the way that balance works, it also has some useful side-effects:
     If there is a lot of allocated but unused data or metadata chunks, a balance may reclaim some of that allocated space. This is the main reason for running a balance on a single-device filesystem.
-    On a filesystem with damaged replication (e.g. a RAID-1 FS with a dead and removed disk), it will force the FS to rebuild the missing copy of the data on one of the currently active devices, restoring the RAID-1 capability of the filesystem. 
+    On a filesystem with damaged replication (e.g. a RAID-1 FS with a dead and removed disk), it will force the FS to rebuild the missing copy of the data on one of the currently active devices, restoring the RAID-1 capability of the filesystem.
+
+=> Rebalance with balance filters when no space available:
+https://btrfs.wiki.kernel.org/index.php/Balance_Filters
+http://www.spinics.net/lists/linux-btrfs/msg31074.html
+http://marc.merlins.org/perso/btrfs/post_2014-05-04_Fixing-Btrfs-Filesystem-Full-Problems.html
+
+    sudo btrfs balance start -v -dusage=5 /
 
 #scrub
-btrfs scrub is used to scrub a btrfs filesystem, which will reading all data from all disks and verifying checksums. 
+btrfs scrub is used to scrub a btrfs filesystem, which will reading all data from all disks and verifying checksums.
 
 Slow mount times
 ================
 
 Slow mount times are usually caused by large log trees and fragmented
-metadata. Try the autodefrag mount option and btrfs fi defrag -clzo -t 2M
--r /home (defragment files over 2M in size, recompress with lzo,
-recursively), btrfs balance start /home (and wait for btrfs-endio-wri to
-calm down or check with balance status, this takes some time)
-If those don't help enough, try checking (but not repairing) the device
-with btrfsck, and, if it's clean, clear the logs with btrfs-zero-image
-after backing up the metadata with btrfs-image (consult the btrfs mailing
-list or IRC first, I am not an expert in this).
+metadata. Try the autodefrag mount option and 
+  btrfs fi defrag -clzo -t 2M -r /home
+(defragment files over 2M in size, recompress with lzo, recursively), 
+  btrfs balance start /home
+(and wait for btrfs-endio-wri to calm down or check with balance status,
+this takes some time) If those don't help enough, try checking (but not
+repairing) the device with btrfsck, and, if it's clean, clear the logs with
+btrfs-zero-image after backing up the metadata with btrfs-image (consult
+the btrfs mailing list or IRC first, I am not an expert in this).
+
+Snapshots
+=========
+
+# btrfs subvolume snapshot -r /btrfs/sub1 /btrfs/sub1/snapshot -> creates a readonly snapshot
+
+http://unix.stackexchange.com/questions/149932/how-to-make-a-btrfs-snapshot-writable
+
+To set a snapshot to read-write, you do something like this:
+  btrfs property set -ts /path/to/snapshot ro false
+Change that to true to set it to read-only.
+You can also use list to see the available properties:
+  btrfs property list -ts /path/to/snapshot
+  ro                  Set/get read-only flag of subvolume.
+-t specifies the type of object to work on, s means subvolume. Other options are f (filesystem), i (inode), and d (device). If you don't specify, it'll show all applicable ones (for list) or try to guess for get/set.
+
+Default mount options
+=====================
+
+https://www.kernel.org/doc/Documentation/filesystems/btrfs.txt
+Options: https://btrfs.wiki.kernel.org/index.php/Manpage/btrfs(5)#MOUNT_OPTIONS
+Some defaults options: rw, space_cache,noautodefrag,nodiscard,barrier #compress=zlib,
+
+I only need to add the option 'compress=zstd/lzo' and eventually autodefrag.
+If I add this option to a [sub]-volume, it applies it to all other
+corresponding subvolumes in the same volume. So if slash is in the same
+volume as home, I just need to set rootflags=compress=lzo and when mounting
+/home it'll get the compress=lzo
+
+Btrfs options for an ssd [note that 'ssd' is not needed because it is
+autodetected, but 'ssd' doest not enable 'discard']:
+rw,noatime,compress=lzo,autodefrag,discard
+[One can also use 'fstrim' from time to time manually rather than automatically with the 'discard' option]
+See the discussion http://www.spinics.net/lists/linux-btrfs/msg31018.html
+for autodefrag. Not that useful for ssd, but useful for harddisk (given we pay attention to disable cow on vms)
+
+Space
+======
+
+http://askubuntu.com/questions/464074/ubuntu-thinks-btrfs-disk-is-full-but-its-not
+https://btrfs.wiki.kernel.org/index.php/FAQ#or_My_filesystem_is_full.2C_and_I.27ve_put_almost_nothing_into_it.21
+
+df:
+/dev/sdc5        43G   21G   21G  50% /
+/dev/sdc4       299G  111G  187G  38% /home
+
+Feanor ~syst-config/files $ btrfs filesystem df /
+Data, single: total=29.00GiB, used=18.10GiB
+System, DUP: total=32.00MiB, used=12.00KiB
+Metadata, DUP: total=1.75GiB, used=875.70MiB
+GlobalReserve, single: total=292.00MiB, used=0.00B
+
+Feanor ~syst-config/files $ btrfs filesystem df /home
+Data, RAID1: total=119.00GiB, used=109.66GiB
+Data, single: total=8.00MiB, used=0.00B
+System, RAID1: total=8.00MiB, used=24.00KiB
+System, single: total=4.00MiB, used=0.00B
+Metadata, RAID1: total=2.00GiB, used=676.14MiB
+Metadata, single: total=8.00MiB, used=0.00B
+GlobalReserve, single: total=228.00MiB, used=0.00B
+
+Feanor ~syst-config/files $ sudo btrfs filesystem show 
+Label: 'linux-root'  uuid: ba8d1474-88ec-4342-a63d-e4d4732511af
+	Total devices 1 FS bytes used 18.95GiB
+	devid    1 size 42.52GiB used 32.56GiB path /dev/sdc5
+Label: 'linux-home'  uuid: 32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e
+	Total devices 2 FS bytes used 110.32GiB
+	devid    1 size 298.09GiB used 121.03GiB path /dev/sdc4
+	devid    2 size 298.09GiB used 121.01GiB path /dev/sda
+Label: 'large'  uuid: 33e81fa8-6a49-4294-8bc9-bf6295ac39d1
+	Total devices 1 FS bytes used 2.27TiB
+	devid    1 size 2.73TiB used 2.28TiB path /dev/sdd
+
+Note on linux-root: 32.5GiB=29Gib data+1.75*2 Dup Metadata
+I think that df is reporting '21GiB' used rather than '19GiB' because 5% of the space is reserved for root, ie '2GiB'...
+
+We can get 'df' and 'show' combined by using 'usage':
+Feanor ~syst-config/files $ sudo btrfs fi usage /
+Overall:
+    Device size:		  42.52GiB
+    Device allocated:		  32.56GiB
+    Device unallocated:		   9.96GiB
+    Device missing:		     0.00B
+    Used:			  19.81GiB
+    Free (estimated):		  20.86GiB	(min: 15.88GiB)
+    Data ratio:			      1.00
+    Metadata ratio:		      2.00
+    Global reserve:		 292.00MiB	(used: 0.00B)
+Data,single: Size:29.00GiB, Used:18.10GiB
+   /dev/sdc5	  29.00GiB
+Metadata,DUP: Size:1.75GiB, Used:875.71MiB
+   /dev/sdc5	   3.50GiB
+System,DUP: Size:32.00MiB, Used:12.00KiB
+   /dev/sdc5	  64.00MiB
+Unallocated:
+   /dev/sdc5	   9.96GiB

@@ -1,0 +1,42 @@
+#vim: ft=sh
+#<%= generated_from %>
+_INITVARS=t
+
+<% def envfile(name)
+    rel_path=@computer.file(("rel_"+name.to_s).to_sym)
+    unless rel_path
+      path=@computer[:user][name]
+      home=@computer.file(:homepath)
+      rel_path=home&.rel_path_to(path, inside: true)
+    end
+    envname=name.to_s.upcase
+    my=@computer.file(:rel_myfiles)
+    if rel_path
+      if my and name != :myfiles and rel_path.ascend.include?(my) 
+        "#{envname}=\"${#{envname}-$MYFILES/#{my.rel_path_to(rel_path, inside: true)}}\""
+      else
+        "#{envname}=\"${#{envname}-$HOME/#{rel_path}}\""
+      end
+    end
+  end
+  %i(myfiles userfiles cfgfiles dotfiles systfiles maintfiles mycomputers).each  do |name|
+%><%= envfile(name) %>
+<% end %>
+<% if name=@computer.dig(:user,:hostname) %>
+MYHOSTNAME=<%=name%>
+<% else %>
+[ -z "$MYHOSTNAME" ] && MYHOSTNAME="${HOST-$HOSTNAME}"
+<% end %>
+<% if type=@computer.dig(:user,:hosttype) %>
+MYHOSTTYPE=<%=type%>
+<% end %>
+
+LOGDIR="$HOME/var/log"
+[ -d "$LOGDIR" ] || mkdir -p "$LOGDIR"
+
+mylog() {
+  file="${1%.log}.log"; shift;
+  LOGFILE="$LOGDIR/$file"
+  [ -f "$LOGFILE" ] || touch $LOGFILE
+  echo "@`date --iso-8601=seconds` - $@" >> $LOGFILE
+}

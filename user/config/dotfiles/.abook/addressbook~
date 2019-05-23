@@ -1,0 +1,663 @@
+# abook addressbook file
+
+[format]
+program=abook
+version=0.6.1
+
+
+[0]
+name=Damien Robert
+email=Damien.Robert@inria.fr,Damien.Robert@normalesup.org,Damien.Robert@math.u-bordeaux1.fr,ploum.plam@gmail.com
+address=90 Rue du Président Doumer
+city=Libourne
+zip=33500
+country=France
+phone=0954445340
+workphone=0540002156
+mobile=0666562549
+nick=Dams
+url=www.normalesup.org/~robert
+
+[1]
+name=Blandine Belin
+email=blandine.belin@gmail.com,Blandine.Belin@developpement-durable.gouv.fr,"BELIN Blandine - DDTM 33/SAR/Aménagement du Sud-Gironde (Chef d'unité)" <blandine.belin@gironde.gouv.fr>
+phone=0954445340
+workphone=0678549191
+mobile=0619053164
+nick=Dina
+
+[2]
+name=Olivia Robert
+email=olirobert10@hotmail.com
+mobile=0667569721
+nick=Olivia.Robert
+
+[3]
+name=Benoit Robert
+email=thebigfanofben@hotmail.com
+mobile=0615971921
+nick=Benoit.Robert
+
+[4]
+name=Sylvie Robert
+email=sylvierobertbrignais@gmail.com
+address=41 Rue de Bonneton
+city=Brignais
+zip=69530
+country=France
+phone=0472311774
+mobile=0686987943
+nick=Sylvie.Robert
+
+[5]
+name=Gabriel Chevalier
+email=gabriel.chevalier@free.fr,gabriel.chevalier@9business.fr
+address=97 Chemin des Vergers
+city=Bernin
+zip=38190
+phone=0476922721
+mobile=0781388974
+nick=Gabriel.Chevalier
+
+[6]
+name=Yves Robert
+email=Yves.Robert@ens-lyon.fr,yvesbob.robert@gmail.com
+address=41 Rue de Bonneton
+city=Brignais
+zip=69530
+country=France
+phone=0472311774
+workphone=0472728586
+mobile=0686987942
+nick=Yves.Robert
+
+[7]
+name=Nadine Belin
+email=nadine.belin@ac-grenoble.fr
+nick=Nadine.Belin
+
+[8]
+name=Xavier Belin
+email=xavier.belin@gmail.com,xaviooo@gmail.com
+address=390 Route de Saint-Simon
+city=Toulouse
+zip=31100
+country=France
+mobile=0606605000
+nick=Xavier.Belin
+
+[9]
+name=David Armand
+email=abaddon2345@gmail.com,abaddon2345@wanadoo.fr
+address=54 rue François Pinson (code 9254A)
+city=Chatillon
+zip=92320
+mobile=0686927894
+nick=David.Armand
+
+[10]
+name=Francois Bonnet
+email=Francois.Bonnet@irisa.fr,francois.bonnet@gmail.com
+mobile=0622831196
+nick=Francois.Bonnet
+
+[11]
+name=Lionel Perrin
+email=lionel.perrin@gmail.com
+nick=Lionel.Perrin
+
+[12]
+name=Marielle Bouvier
+email=oxymalou@yahoo.fr
+nick=Marielle.De.La.Salle
+
+[13]
+name=Mikael De La Salle
+email=delasall@phare.normalesup.org
+nick=Mikael.De.La.Salle
+
+[14]
+name=Sandrine Rosamont
+email=sandrine.rosamont@googlemail.com
+nick=Sandrine.Rosamont
+
+[15]
+name=Simon Dolle
+email=simon.dolle@gmail.com
+nick=Simon.Dolle
+
+[16]
+name=Thomas Breda
+email=Thomas.Breda@ens.fr,breda.thomas@gmail.com
+mobile=0633084965
+nick=Thomas.Breda
+
+[17]
+name=Renaud Heitz
+email=renaud.heitz@gmail.com
+mobile=0675356574
+nick=Renaud.Heitz
+
+[18]
+name=Vivien Ripoll
+email=vivien.ripoll@normalesup.org,vivien.ripoll@ens.fr
+mobile=0671086817
+nick=Vivien.Ripoll
+
+[19]
+name=Adrian Daerr
+email=daerr@pmmh.espci.fr
+nick=Adrian.Daerr
+
+[20]
+name=Kristin Lauter
+email=klauter@microsoft.com
+nick=Kristin.Lauter
+
+[21]
+name=Guillaume Hanrot
+email=Guillaume.Hanrot@ens-lyon.fr
+nick=Guillaume.Hanrot
+
+[22]
+name=Guillaume Hanrot
+email=ghanrot@free.fr
+nick=Guillaume.Hanrot-free
+
+[23]
+name=Pierrick Gaudry
+email=pierrick.gaudry@gmail.com,pierrick.gaudry@loria.fr
+mobile=+33611331900
+nick=Pierrick.Gaudry
+
+[24]
+name=Emmanuel Thomé
+email=Emmanuel.Thome@normalesup.org
+phone=+33601805502
+nick=Emmanuel.Thome
+
+[25]
+name=Paul Zimmermann
+email=Paul.Zimmermann@normalesup.org
+nick=Paul.Zimmermann
+
+[26]
+name=romain cosset
+email=romain.cosset@loria.fr
+nick=Romain.Cosset
+
+[27]
+name=Gaetan Bisson
+email=gaetan.bisson@loria.fr
+nick=Gaetan.Bisson
+
+[28]
+name=Jérémie Detrey
+email=Jeremie.Detrey@loria.fr
+nick=Jeremie.Detrey
+
+[29]
+name=Alexander Kruppa
+email=kruppaal@loria.fr
+nick=Alexander.Kruppa
+
+[30]
+name=Nicolas Estibals
+email=Nicolas.Estibals@loria.fr
+nick=Nicolas.Estibals
+
+[31]
+name=Andreas Enge
+email=andreas.enge@math.u-bordeaux.fr,andreas.enge@inria.fr
+workphone=0540006112
+mobile=0688168005
+nick=Andreas.Enge
+
+[32]
+name=Karim Belabas
+email=Karim.Belabas@math.u-bordeaux1.fr
+nick=Karim.Belabas
+
+[33]
+name=Jean-Marc Couveignes
+email=Jean-Marc.Couveignes@math.u-bordeaux1.fr
+nick=Jean-Marc.Couveignes
+
+[34]
+name=Bill Allombert
+email=Bill.Allombert@math.u-bordeaux1.fr
+nick=Bill.Allombert
+
+[35]
+name=Jean-Paul Cerri
+email=Jean-Paul.Cerri@math.u-bordeaux1.fr
+nick=Jean-Paul.Cerri
+
+[36]
+name=Henri Cohen
+email=cohen@math.u-bordeaux1.fr
+nick=Henri.Cohen
+
+[37]
+name=Nicolas Mascot
+email=nmascot@math.u-bordeaux1.fr
+nick=Nicolas.Mascot
+
+[38]
+name=Aurel Page
+email=aurel.page@math.u-bordeaux1.fr
+nick=Aurel.Page
+
+[39]
+name=LFANT Team
+email=lfant@inria.fr
+nick=lfant
+
+[40]
+name=LFANT Seminar
+email=lfant-seminar@math.u-bordeaux1.fr
+nick=lfant-seminar
+
+[41]
+name=Guilhem Castagnos
+email=guilhem.castagnos@math.u-bordeaux1.fr
+nick=Guilhem.Castagnos
+
+[42]
+name=Fabien Pazuki
+email=Fabien.Pazuki@math.u-bordeaux1.fr
+mobile=0660069311
+nick=Fabien.Pazuki
+
+[43]
+name=Karine Lecuona
+email=Karine.Lecuona@math.u-bordeaux1.fr
+nick=Karine.Lecuona
+
+[44]
+name=Christine Bachoc
+email=Christine.Bachoc@math.u-bordeaux1.fr
+nick=Christine.Bachoc
+
+[45]
+name=A2X
+email=theorie-des-nombres@math.u-bordeaux1.fr
+nick=a2xall
+
+[46]
+name=Anne-Laure Gautier
+email=anne-laure.gautier@inria.fr
+nick=Anne-Laure.Gautier
+
+[47]
+name=David Lubicz
+email=david.Lubicz@univ-rennes1.fr,david.lubicz@gmail.com
+mobile=0641673590
+nick=David.Lubicz
+
+[48]
+name=Francois Morain
+email=morain@lix.polytechnique.fr
+nick=Francois.Morain
+
+[49]
+name=Vanessa Vitse
+email=vanessa.vitse@prism.uvsq.fr
+mobile=0689893892
+nick=Vanessa.Vitse
+
+[50]
+name=Daniel Augot
+email=daniel.augot@inria.fr
+nick=Daniel.Augot
+
+[51]
+name=Nadia Mado
+email=nadia.mado@inria.fr
+nick=Nadia.Mado
+
+[52]
+name=Isabelle Terrasse
+email=isabelle.terrasse@inria.fr
+nick=Isabelle.Terrasse
+
+[53]
+name=Adrien Daerr
+mobile=0675957058
+
+[54]
+name=Alexander Kruppa
+mobile=+4917621255709
+
+[55]
+name=Anne-Laure Masson
+address=37 Rue Dauzats
+city=Bordeaux
+zip=33000
+country=France
+mobile=0620100806
+
+[56]
+name=Anne tpe
+mobile=0664996511
+
+[57]
+name=Anthony
+mobile=0670082430
+
+[58]
+name=Antoine
+mobile=0682801652
+
+[59]
+name=Aurelie Mertz
+mobile=+33683789129
+
+[60]
+name=Ben Smith
+mobile=0613706675
+
+[61]
+name=Bruno
+mobile=0676941372
+
+[62]
+name=Celine Galandie
+mobile=0687056779
+
+[63]
+name=Chen Xu
+mobile=0608705658
+
+[64]
+name=Christophe Ritzenthaler
+mobile=0672591270
+
+[65]
+name=Concierge Metz
+mobile=0688591653
+
+[66]
+name=Constantin Denuelle
+mobile=0687204980
+
+[67]
+name=Crozier Denis
+phone=0620481047
+
+[68]
+name=David Dubois
+mobile=0688670565
+
+[69]
+name=Denis Conduche
+mobile=0673692675
+
+[70]
+name=Dubord
+mobile=0630271757
+
+[71]
+name=Elise
+mobile=0674439891
+
+[72]
+name=Eric Mathurin
+mobile=0686829684
+
+[73]
+name=Florent Valat
+mobile=0687496088
+
+[74]
+name=Frederic Beal
+email=ego.frederic@gmail.com
+
+[75]
+name=Gabriel Faraud
+email=gabriel.faraud@ens.fr
+
+[76]
+name=Gabrielle Piaton
+email=gabiepiaton@gmail.com
+
+[77]
+name=Gaëtan Bisson
+email=bisson@vesath.org
+mobile=061-928-2632
+
+[78]
+name=Gaetan Bisson
+email=gaetan.bisson@normalesup.org
+
+[79]
+name=Gaëtan Leurent
+mobile=066-723-8038
+
+[80]
+name=Gaëtan Rault
+email=gaetan.rault@gmail.com
+
+[81]
+name=Guillaume Hanrot
+email=hanrot@gmail.com
+phone=0472728795
+workphone=0437287644
+
+[82]
+name=Jeremie Detrey
+mobile=060-842-3296
+
+[83]
+name=Kristin Lauter
+email=klauter@microsoft.com
+
+[84]
+name=Laurent Imbert
+phone=0622119358
+
+[85]
+name=LesOiseauxGazouillentDanslePre
+email=lesoiseauxgazouillentdanslepre@googlegroups.com
+
+[86]
+name=Lionel Perrin
+email=lionel.perrin@gmail.com
+mobile=067-495-1300
+
+[87]
+name=Loria
+mobile=038-359-3014
+
+[88]
+name=Ludovic Jacquin
+mobile=067-663-5295
+
+[89]
+name=Mael Primet
+email=mael.primet@gmail.com
+
+[90]
+name=Marie Antzcak
+mobile=068-705-1405
+
+[91]
+name=Marie-Jeanne Robert
+address=13 Rue de Chamrousse
+city=Grenoble
+zip=38100
+phone=0476879397
+workphone=0476346608
+notes=Rue du Breuil, 38710 Mens
+
+[92]
+name=Marielle De La Salle
+email=oxymalou@yahoo.fr
+mobile=063-084-3799
+
+[93]
+name=Marina Sigliano
+mobile=+33664302251
+
+[94]
+name=Matthew Meitl
+
+[95]
+name=Matthieu Guillaumin
+email=matthieu.guillaumin@normalesup.org
+
+[96]
+name=Mikael De La Salle
+mobile=067-382-4403
+
+[97]
+name=Nadine Belin
+email=nadine.belin@ac-grenoble.fr
+address=33 Impasse Longueville
+city=Bourg Lès Valence
+zip=26500
+mobile=+33614066435
+
+[98]
+name=Nicolas Pierrard
+mobile=061-110-7826
+
+[99]
+name=Olivia  Robert
+mobile=+33667569721
+
+[100]
+name=Olivier Arnould
+mobile=066-267-3790
+
+[101]
+name=Olivier Robert
+
+[102]
+name=Olivier Tardy
+email=tardyo@gmail.com
+
+[103]
+name=Orselina Chevalier
+email=mlinet74@gmail.com
+address=97 Chemin des Vergers
+city=Bernin
+zip=38190
+phone=0476922721
+mobile=0674726601
+
+[104]
+name=Perine
+mobile=060-737-6736
+
+[105]
+name=Pierre
+mobile=+33686718237
+
+[106]
+name=Pierre Alexis Voisin
+mobile=067-270-5790
+
+[107]
+name=Pierre-Olivier Robert
+mobile=0684094943
+
+[108]
+name=Pierre-Yves Chevalier
+email=dr2pitch@yahoo.fr
+
+[109]
+name=Pierrette Robert
+mobile=0608651828
+
+[110]
+name=Piotr Karwarsz
+mobile=0688401802
+
+[111]
+name=Rachel Deyts
+mobile=0672403399
+
+[112]
+name=René Vinard
+address=50 Route des Vaches
+city=Chauzon
+zip=07120
+country=France
+mobile=0475396966
+
+[113]
+name=Romain Cosset
+mobile=0683869649
+
+[114]
+name=Salle S
+mobile=0144322104
+
+[115]
+name=Sandrine Rosamont
+email=sandrine.rosamont@googlemail.com
+
+[116]
+name=Schneider
+mobile=0670338425
+
+[117]
+name=Seb
+mobile=0621662228
+
+[118]
+name=Simon Dolle
+email=simon.dolle@googlemail.com
+mobile=0603776822
+
+[119]
+name=Simon Leray
+email=Simon.Leray@equipement.gouv.fr
+mobile=0608068835
+
+[120]
+name=Sophie Louis
+mobile=0632222565
+
+[121]
+name=Stephanie Biron
+email=stephanie.mathieu@lyxor.com
+mobile=0609038529
+
+[122]
+name=Xavier Caruso
+mobile=0641661806
+
+[123]
+name=Geneviève Belin
+address=Hameaux de Laurigue, 69 lot Mas Nicolas
+city=Saint Remy de Provence
+zip=13210
+phone=049092292
+
+[124]
+name=Nicolas Mascot
+mobile=0618195718
+
+[125]
+name=Aurel Page
+mobile=0621258384
+
+[126]
+name=Lionel Nicoud
+mobile=0675995050
+
+[127]
+name=David Madore
+address=11 Rue Simonet
+city=Paris
+zip=75013
+phone=0698034180
+
+[128]
+name=Amandine Notin
+address=11 Rue Chateaubriand
+city=Lyon
+zip=69007
+

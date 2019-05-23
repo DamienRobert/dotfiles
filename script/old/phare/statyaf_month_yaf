@@ -1,0 +1,249 @@
+#!/usr/bin/perl -w
+
+
+$poster = $#ARGV >= 0 && shift eq "-p";
+
+use Socket;
+use Date::Parse;
+use POSIX qw(strftime);
+
+open E, ">&STDERR";
+
+# Forum
+$serverF = "quatramaran";
+$portF = 2319;
+# Yaf
+$serverY = "quatramaran";
+$portY = 2319;
+
+$today_actuel = time;
+@today_local = localtime $today_actuel;
+
+$month_actuel = $today_local[4]+1;
+$year_actuel = $today_local[5] + 1900;
+
+$prev_month = $month_actuel-1;
+$prev_year = $year_actuel;
+if ($prev_month eq 0) { $prev_month=12; $prev_year-- };
+
+$today = str2time "$month_actuel/01/$year_actuel";
+$month = str2time "$prev_month/01/$prev_year";
+$year = str2time "01/01/$prev_year";
+$old = $today - 200 * 86400;
+
+die "socket: $!\n" unless socket SF, AF_INET, SOCK_STREAM, 0;
+$addr = (gethostbyname($serverF))[4];
+die "gethostbyaddr: $!\n" unless $addr;
+die "connect: $!\n" unless connect SF, pack_sockaddr_in($portF, $addr);
+select SF; $| = 1; select STDOUT;
+
+sub discardF {
+  my $l = <SF>;
+  #print E $l;
+}
+
+sub discardY {
+  my $l = <SY>;
+  #print E $l;
+}
+
+sub data {
+  my $w = shift;
+  my $l = <SF>;
+  if($l !~ /$w/) {
+    $! = $_;
+    return undef;
+  }
+  my @r = ();
+  while(<SF>) {
+    last if /^\.[\r\n]*$/;
+    s/[\r\n]*$//;
+    push @r, $_;
+  }
+  return @r;
+}
+
+discardF();
+print SF "MODE reader\n";
+discardF();
+
+print SF "LIST\n";
+@groups = data "^215";
+die "list: $!\n" unless defined @groups;
+
+###changer ça pour yaf!!
+#@groups = grep /^ens\.forum\.(?!archeo-forum)/, @groups;
+
+
+# less groups for debugging
+#@groups = grep /ens\.forum\.syst\.salle_s/, @groups;
+# @groups = grep /yaf\.perso/, @groups;
+
+for $i (@groups) {
+    die "strange group: $i\n" unless $i =~ /^([^\s]+)\s+(\d+)\s+(\d+)\s+\w+$/;
+    my ($grp, $msg) = ($1, $2 + 0);
+    print SF "GROUP $grp\n";
+    discardF;
+    print SF "XOVER 1-$msg\n";
+    my @msgs = data "^224";
+    if(!defined @msgs) {
+      print E "unknown group: $!\n";
+      next;
+    }
+    for $j (@msgs) {
+      my ($from, $date, $id);
+      (undef, undef, $from, $date, $id, undef) = split /\t/, $j;
+
+#print "$from\n";
+
+### on accepte tous les noms
+#
+#      if($from !~ /(\w+)@/) {
+#        print E "strange address ignored: $from\n";
+#        next;
+#      }
+      $from =~ /\((.*)\)/;
+      $from = $1;
+
+#print "$from\n";
+
+      my $d = str2time $date;
+      if(!defined $d) {
+        print E "unknown date: $date";
+        $d = 0;
+      }
+      else {
+        if ($d eq 0) { $d=$month }
+        # je veux compter les messages n'ont désanonymiser
+      }
+      $date = $d;
+      next if $date > $today;
+      next if exists $msgid{$id};
+      $msgid{$id} = 1;
+      $sent_all{$from} = 0 unless exists $sent_all{$from};
+      $sent_year{$from} = 0 unless exists $sent_year{$from};
+      $sent_month{$from} = 0 unless exists $sent_month{$from};
+  #    $sent_week{$from} = 0 unless exists $sent_week{$from};
+      $sent_old{$from} = 0 unless exists $sent_old{$from};
+      $sent_all{$from}++ if $date < $today;
+      $sent_year{$from}++ if $date >= $year && $date < $today;
+      #on prend on compte les messages recents sur yaf
+      $sent_month{$from}++ if ($date >= $month && $date < $today) || $date == 0 ;
+  #    $sent_week{$from}++ if $date >= $week;
+  #    print "$from: $id\n"
+  #      if $date >= $week && ($from eq "george" || $from eq "madore");
+      $sent_old{$from} = $date if $date <= $month && $date > $sent_old{$from};
+    }
+    print E "$grp ($msg)\n";
+}
+
+
+sub titre {
+  my $t = shift;
+  print $t, "\n";
+  print "-"x(length $t), "\n";
+}
+
+sub sortir_stats {
+  my $t = shift;
+  my $n = shift;
+  my $h = shift;
+  %h = %{$h};
+  my $madore = $h{"Gro-Tsen"};
+  my $total = 0;
+  my @best = sort { $h{$a} <=> $h{$b} } keys(%h);
+  $n = $#best + 1 if $#best < $n;
+  titre $t;
+  for (@_) {
+    print "$_\n";
+  }
+  for(my $i = 1; $i <= $n; $i++) {
+    my $k = pop @best;
+    last unless exists $h{$k};
+    my $c = $h{$k};
+    last if $c == 0;
+#    if ($madore != 0) {
+#	printf "%3d\t%-10.30s\t%8d\t%7.2f mGt\n", $i, $k, $c,
+#	1000 * $c / $madore;
+#    } else {
+	printf "%3d\t%-10.100s\t%8d\n", $i, $k, $c;
+#    }
+    $total += $c;
+  }
+  print "\n";
+#  printf "Total: %d\t\tTRG: %d\n\n", $total, 10000 * $madore / $total;
+   printf "Total: %d\n\n", $total;
+
+}
+
+if($poster) {
+  die "socket: $!\n" unless socket SY, AF_INET, SOCK_STREAM, 0;
+  $addr = (gethostbyname($serverY))[4];
+  die "gethostbyaddr: $!\n" unless $addr;
+  die "connect: $!\n" unless connect SY, pack_sockaddr_in($portY, $addr);
+  select SY; $| = 1; select STDOUT;
+
+  select SY;
+  print "GROUP yaf.statistiques\n";
+  discardY;
+  print "POST\n";
+  discardY;
+  print "Newsgroups: yaf.yaf.stat\n";
+  print "From: dam's\@clipper.ens.fr (Big Yaf Dragon)\n";
+#  printf "Subject: Nouvelles de l'univers, mois du %s au %s\n",
+#    strftime("%d/%m/%Y", localtime($month + 100)),
+#    strftime("%d/%m/%Y", localtime($today - 86000));
+#  print "\n";
+
+  print "Subject: d\n"; #on est dans yaf!
+  print "\n";
+}
+
+printf "Nouvelles de l'univers, mois du %s au %s\n",
+    strftime("%d/%m/%Y", localtime($month)),
+    strftime("%d/%m/%Y", localtime($today));
+print "\n";
+
+sortir_stats "Plus gros naszes du mois", 30, \%sent_month;
+sortir_stats "Plus gros naszes de l'année", 30, \%sent_year;
+sortir_stats "Plus gros naszes de tous les temps", 30, \%sent_all,
+  "(depuis que le monde a été crée)";
+
+@club1000 = grep { $sent_year{$_} >= 1000 } keys %sent_year;
+@club1000 = sort @club1000;
+$n = $#club1000;
+if($n >= 0) {
+  #titre "Club des plus débiles";
+  titre "Club des <insérer un mot neutre parce que les yaffeurs sont
+  tous plus débiles les uns que les autres>";
+  for($i = 0; $i <= $n; $i++) {
+    printf "%-10.100s  ", $club1000[$i];
+    print "\n" if $i % 5 == 4 || $i == $n;
+  }
+  print "\n";
+}
+
+@delurk = grep { $sent_old{$_} <= $old && $sent_month{$_} > 0 } keys %sent_old;
+@delurk = sort { $sent_old{$a} <=> $sent_old{$b} } @delurk;
+if($#delurk >= 0) {
+  titre "The futur naszes";
+  for $i (@delurk) {
+    printf "%-10.100s\t", $i;
+    $old = ($today - $sent_old{$i}) / 86400;
+    printf "(depuis %d jours)", $old if $old < 10000;
+    print "\n";
+  }
+}
+print "\n";
+
+print "Plim. Plam. Ploum.\n";
+
+if($poster) {
+  print ".\n";
+  select STDOUT;
+  my $l = <SY>;
+  print E $l;
+  print SY "QUIT";
+}
+
+print SF "QUIT";

@@ -8,7 +8,7 @@
 		 -h : Quick help
          -l : Include URLs to sources of definitions
 		 -r : Pipe raw HTML to terminal, useful for redirection to browsers
-		 -f : (Slightly) Fancy output 
+		 -f : (Slightly) Fancy output
 		 -u : Display results in Unicode UTF-8
 """
 
@@ -35,7 +35,7 @@ flag_word={}
 # Parse command line options:
 
 cli_parser = OptionParser( usage="usage: %prog [-rlf] phrase1 [phrase2 phrase3 ...]\n%prog --help for help" )
-cli_parser.add_option( "-l", "--links", action="store_true", dest="url", 
+cli_parser.add_option( "-l", "--links", action="store_true", dest="url",
 					  default=False, help="Include URLs to sources of definitions" )
 cli_parser.add_option( "-r", "--raw", action="store_true", dest="raw",
 					  default=False, help="Spout raw HTML, useful for redirection to browsers" )
@@ -45,7 +45,7 @@ cli_parser.add_option( "-u", "--unicode", action="store_true", dest="unicode",
 					  default=False, help="Display results in unicode UTF-8" )
 
 ( flag, words ) = cli_parser.parse_args(  )
-if not words: 
+if not words:
 	words = sys.stdin.read( ).strip( ).split( " " )
 if not words:
 	print "usage: define [-rlf] phrase1 [phrase2 phrase3 ...]\ndefine --help for help"
@@ -105,7 +105,7 @@ if not flag.url:
 	for word in words:
 		# Discard URLs given that definitions are found.
 		if flag_word[ word ]: value[ word ] = URLMatchEx.sub( '', value[ word ], 0 )
-		
+
 if flag.raw:
 	#Raw output needed, no more processing necessary.
 	for word in words:
@@ -123,16 +123,16 @@ if flag.raw:
 # Class methods for HTML to Text conversion. Most tags will be discarded,
 # some replaced by newlines and asterisks, etc.
 
-entitysubs = { 'quot': '"', 'lt' : '<', 'gt' : '>', 'amp' : '&', 'apos' : '\'', 
-			  'rsquo':"'", 'lsquo':"'", 'rdquo':'"', 'ldquo':'"', 'copy':'(C)', 
+entitysubs = { 'quot': '"', 'lt' : '<', 'gt' : '>', 'amp' : '&', 'apos' : '\'',
+			  'rsquo':"'", 'lsquo':"'", 'rdquo':'"', 'ldquo':'"', 'copy':'(C)',
 			  'mdash':'--', 'nbsp':' ', 'rarr':'->', 'larr':'<-', 'middot':'*',
-			  'ndash':'-' } 
+			  'ndash':'-' }
 if not flag.unicode:
-	charsubs = { 'oelig':'oe', 'aelig':'ae', 'agrave':'a', 'aacute':'a', 'uuml':'u', 
-			  	 'acirc':'a', 'atilde':'a', 'auml':'a', 'aring':'a', 'egrave':'e', 
-			  	 'eacute':'e', 'ecirc':'e', 'euml':'e', 'igrave':'i', 'iacute':'i',
-			  	 'icirc':'i', 'iuml':'i', 'ograve':'o', 'oacute':'o', 'ocirc':'o',
-			  	 'otilde':'o', 'ouml':'o', 'ugrave':'u', 'uacute':'u', 'ucirc':'u' }
+	charsubs = { 'oelig':'oe', 'aelig':'ae', 'agrave':'a', 'aacute':'a', 'uuml':'u',
+				 'acirc':'a', 'atilde':'a', 'auml':'a', 'aring':'a', 'egrave':'e',
+				 'eacute':'e', 'ecirc':'e', 'euml':'e', 'igrave':'i', 'iacute':'i',
+				 'icirc':'i', 'iuml':'i', 'ograve':'o', 'oacute':'o', 'ocirc':'o',
+				 'otilde':'o', 'ouml':'o', 'ugrave':'u', 'uacute':'u', 'ucirc':'u' }
 
 
 class DefinePageHTML2Text( SGMLParser ):
@@ -142,7 +142,7 @@ class DefinePageHTML2Text( SGMLParser ):
 		self.suffix = ''
 		self.pieces = [  ]
 		SGMLParser.reset( self )
-		
+
 	def start_br( self, attrs ):
 		self.unknown_starttag( "br", attrs )
 		self.pieces.append( "\n" )
@@ -165,11 +165,11 @@ class DefinePageHTML2Text( SGMLParser ):
 		# Called for each character reference, e.g. for "&#160;", ref will be "160"
 		# Convert ref to unicode string and append to output text
 		if flag.unicode:
-			self.pieces.append( unichr( int( ref ) ).encode( 'utf-8' ) ) 
+			self.pieces.append( unichr( int( ref ) ).encode( 'utf-8' ) )
 		else:
 			if ref in htmlentitydefs.codepoint2name.keys( ):
 				self.pieces.append( charsubs[ htmlentitydefs.codepoint2name [ref].lower( ) ] )
-		
+
 	def handle_entityref( self, ref ):
 		# called for each entity reference, e.g. for "&copy;", ref will be "copy"
 		# Replace with closest ASCII equivalent if possible
@@ -183,7 +183,7 @@ class DefinePageHTML2Text( SGMLParser ):
 	def handle_data( self, text ):
 		if not self.ignore_URL: self.pieces.extend( [ self.prefix, text, self.suffix ] )
 		self.ignore_URL = 0
-		
+
 	def output( self ):
 		"""Return processed HTML as a single string"""
 		return "".join( self.pieces )
@@ -193,8 +193,8 @@ parser = DefinePageHTML2Text(  )
 #Almost done- Time to feed the parser...
 for word in words:
 	print str.upper( word )+": ",
-	if flag_word[ word ]: 
-		parser.feed( value[ word ] ) 
+	if flag_word[ word ]:
+		parser.feed( value[ word ] )
 		#...and spit the text out.
 		print parser.output(  )
 	else:

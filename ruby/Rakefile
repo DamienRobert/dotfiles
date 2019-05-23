@@ -1,0 +1,33 @@
+# encoding: utf-8
+require 'rake/testtask'
+
+Rake::TestTask.new do |t|
+	t.libs << 'test'
+	#Follow symlinks, see http://stackoverflow.com/questions/357754/can-i-traverse-symlinked-directories-in-ruby-with-a-glob
+	t.pattern = 'test/**{,/*/**}/test_*.rb'
+	t.verbose = true
+	t.warning = false
+end
+
+begin
+  require 'yard'
+  YARD::Rake::YardocTask.new
+rescue LoadError => e
+  task :yard do
+    warn e.message
+  end
+end
+task :doc => :yard
+
+task :version do |t|
+	require 'pathname'
+	Pathname.new("gems").children.each do |gemdir|
+		Dir.chdir(gemdir) do
+			print "#{gemdir}: "
+			system('rake version 2>/dev/null')
+		end
+	end
+end
+
+#task :test_all
+#Dir.glob('**/Rakefile').each { |r| import r}

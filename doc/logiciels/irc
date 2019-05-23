@@ -1,0 +1,84 @@
+Chanserv
+========
+
+-ChanServ-     AUTODEOP     Non autorisé(e) à avoir le status d'opérateur du
+canal
+-ChanServ-     AUTOHALFOP   Mode +h automatique sur le canal
+-ChanServ-     AUTOOP       Status automatique d'opérateur du canal
+-ChanServ-     AUTOPROTECT  Mode +a automatique sur le canal
+-ChanServ-     AUTOVOICE    Mode +v automatique sur le canal
+-ChanServ-     NOJOIN       Non autorisé(e) à joindre le canal s'il est
+restreint
+-ChanServ-     SIGNKICK     Dispensé(e) de signature pour la commande KICK
+quand SIGNKICK LEVEL est activé
+-ChanServ-     ACC-LIST     Autorisé(e) à voir la liste d'accès
+-ChanServ-     ACC-CHANGE   Autorisé(e) à modifier la liste d'accès
+-ChanServ-     AKICK        Autorisé(e) à utiliser la commande AKICK
+-ChanServ-     SET          Autorisé(e) à utiliser la commande SET (sauf SET
+FOUNDER/PASSWORD)
+-ChanServ-     BAN          Autorisé(e) à utiliser la commande BAN
+-ChanServ-     BANME        Autorisé(e) à se bannir
+-ChanServ-     CLEAR        Autorisé(e) à utiliser la commande CLEAR
+-ChanServ-     GETKEY       Autorisé(e) à utiliser la commande GETKEY
+-ChanServ-     HALFOP       Autorisé(e) à utiliser les commandes
+HALFOP/DEHALFOP
+-ChanServ-     HALFOPME     Autorisé(e) à se donner/s'ôter le mode +h
+-ChanServ-     INFO         Autorisé(e) à utiliser la commande INFO avec
+l'option ALL
+-ChanServ-     KICK         Autorisé(e) à utiliser la commande KICK
+-ChanServ-     KICKME       Autorisé(e) à s'expulser
+-ChanServ-     INVITE       Autorisé(e) à utiliser la commande INVITE
+-ChanServ-     OPDEOP       Autorisé(e) à utiliser les commandes OP/DEOP
+-ChanServ-     OPDEOPME     Autorisé(e) à se donner/se supprimer le status
+d'opérateur
+-ChanServ-     PROTECT      Autorisé(e) à utiliser les commandes
+PROTECT/DEPROTECT
+-ChanServ-     PROTECTME    Autorisé(e) à se donner/s'ôter le mode +a
+-ChanServ-     TOPIC        Autorisé(e) à utiliser la commande TOPIC
+-ChanServ-     UNBAN        Autorisé(e) à utiliser la commande UNBAN
+-ChanServ-     VOICE        Autorisé(e) à utiliser les commandes VOICE/DEVOICE
+-ChanServ-     VOICEME      Autorisé(e) à se donner/s'ôter le mode +v
+-ChanServ-     MEMO         Autorisé(e) à lister/lire les mémos
+-ChanServ-     ASSIGN       Autorisé(e) à attribuer/retirer un robot
+-ChanServ-     BADWORDS     Autorisé(e) à utiliser la commande BADWORDS
+-ChanServ-     FANTASIA     Autorisé(e) à utiliser les commandes fantaisistes
+-ChanServ-     GREET        Message d'accueil affiché
+-ChanServ-     NOKICK       Jamais expulsé(e) par les expulseurs du robot
+-ChanServ-     SAY          Autorisé(e) à utiliser les commandes ACT et SAY
+
+-ChanServ-     AUTODEOP     -1
+-ChanServ-     AUTOHALFOP   4
+-ChanServ-     AUTOOP       5
+-ChanServ-     AUTOPROTECT  10
+-ChanServ-     AUTOVOICE    3
+-ChanServ-     NOJOIN       -2
+-ChanServ-     SIGNKICK     (désactivé)
+-ChanServ-     ACC-LIST     1
+-ChanServ-     ACC-CHANGE   10
+-ChanServ-     AKICK        10
+-ChanServ-     SET          (désactivé)
+-ChanServ-     BAN          5
+-ChanServ-     BANME        5
+-ChanServ-     CLEAR        (désactivé)
+-ChanServ-     GETKEY       5
+-ChanServ-     HALFOP       5
+-ChanServ-     HALFOPME     4
+-ChanServ-     INFO         (désactivé)
+-ChanServ-     KICK         5
+-ChanServ-     KICKME       5
+-ChanServ-     INVITE       5
+-ChanServ-     OPDEOP       5
+-ChanServ-     OPDEOPME     5
+-ChanServ-     PROTECT      (désactivé)
+-ChanServ-     PROTECTME    10
+-ChanServ-     TOPIC        (désactivé)
+-ChanServ-     UNBAN        5
+-ChanServ-     VOICE        5
+-ChanServ-     VOICEME      3
+-ChanServ-     MEMO         10
+-ChanServ-     ASSIGN       (désactivé)
+-ChanServ-     BADWORDS     10
+-ChanServ-     FANTASIA     3
+-ChanServ-     GREET        5
+-ChanServ-     NOKICK       1
+-ChanServ-     SAY          5

@@ -1,4 +1,3 @@
 #!/bin/sh
 
- socat READLINE EXEC:"$@",pty,setsid,ctty
-
+socat READLINE EXEC:"$@",pty,setsid,ctty

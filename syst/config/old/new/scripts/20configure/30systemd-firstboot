@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+ARGS=()
+if [[ $SYST[lang] == "fr" ]]; then
+	ARGS+=(--keymap fr-latin1)
+fi
+
+systemd-firstboot --root=$TARGET_DIR --hostname="$COMPUTER[name]" --timezone=$TIMEZONE --locale=$LOCALE $ARGS

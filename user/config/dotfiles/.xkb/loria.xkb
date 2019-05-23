@@ -1,0 +1,7 @@
+xkb_keymap {
+	xkb_keycodes  { include "evdev+aliases(qwerty)"	};
+	xkb_types     { include "complete+numpad(pc)"	};
+	xkb_compat    { include "complete"	};
+	xkb_symbols   { include "pc+mysymbols(us)+inet(evdev)+altwin(alt_super_win)+level3(ralt_switch)+compose(menu)+eurosign(5)+keypad(oss)+srvr_ctrl(xfree86)+terminate(ctrl_alt_bksp)"	};
+	xkb_geometry  { include "pc(pc104)"	};
+};

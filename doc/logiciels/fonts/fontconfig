@@ -1,0 +1,420 @@
+fontconfig
+==========
+
+https://wiki.archlinux.org/index.php/font_configuration
+https://wiki.archlinux.org/index.php/Font_configuration/Examples
+https://eev.ee/blog/2015/05/20/i-stared-into-the-fontconfig-and-the-fontconfig-stared-back-at-me/
+
+Patterns: fc-pattern  'Monospace:size=10:hinting=false'
+Use fc-pattern -d to get default values substitution, and fc-pattern -c to get config substitution.
+See https://www.freedesktop.org/software/fontconfig/fontconfig-user.html
+for properties that can be set.
+Exemples: 'weight=light:slant=italic'; 'style=bold italic'
+
+Note that in gtk, specifying a font is different, cf
+https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html
+Ex: "serif,monospace bold italic condensed 16" # look for a serif or monospace font, and set the style as bold italic condensed 16
+
+Update
+======
+
+fc-cache -v
+fc-cache ~/.fonts #only cache this directory
+# for X, cf ftp://www.x.org/pub/X11R6.8.1/doc/fonts2.html:
+mkfontscale ~/.fonts
+mkfontdir ~/.fonts
+
+fonts.conf
+==========
+https://www.freedesktop.org/software/fontconfig/fontconfig-user.html
+https://eev.ee/blog/2015/05/20/i-stared-into-the-fontconfig-and-the-fontconfig-stared-back-at-me/
+
+Note: fontconfig fallback configuration
+    <alias>
+      <family>FONT_WITH_A_POSSIBLY_MISSING_GLYPH</family>
+      <prefer>
+        <family>FIRST_FONT_TO_LOOK_INTO</family>
+        <family>SECOND_FONT_TO_LOOK_INTO</family>
+        <family>...</family>
+      </prefer>
+    </alias>
+Cf below to see how it works.
+
+Blacklist a font:
+  <selectfont>
+    <rejectfont>
+      <pattern>
+        <patelt name="family" >
+           <string>Monospace</string>
+        </patelt>
+      </pattern>
+    </rejectfont>
+  </selectfont>
+
+Add properties to a font:
+  <match target="pattern/font/scan">
+    <test qual="any" name="property" target="default" compare="eq> 
+    <edit name="property" mode="assign" binding="weak">
+
+  <match target="font">
+    <test name="pixelsize" qual="any" compare="more"><double>15</double></test>
+    <edit mode="assign" name="hintstyle"><const>hintnone</const></edit>
+    <edit mode="assign" name="lcdfilter"><const>lcdlight</const></edit>
+  </match>
+
+  Exemple: replace a font
+  <match>
+    <test name="family"><string>Arial</string></test>
+    <edit name="family" mode="assign" binding="strong">
+      <string>Arimo</string>
+    </edit>
+  </match>
+
+  On binding=strong/weak/same: 
+    The canonical font pattern is finally matched against all available
+    fonts. The distance from the pattern to the font is measured for each
+    of several properties: foundry, charset, family, lang, spacing,
+    pixelsize, style, slant, weight, antialias, rasterizer and outline.
+    This list is in priority order -- results of comparing earlier elements
+    of this list weigh more heavily than later elements.
+    There is one special case to this rule; family names are split into two
+    bindings; strong and weak. Strong family names are given greater
+    precedence in the match than lang elements while weak family names are
+    given lower precedence than lang elements. This permits the document
+    language to drive font selection when any document specified font is
+    unavailable. 
+
+Alias: <alias>
+  Alias elements provide a shorthand notation for the set of common match
+  operations needed to substitute one font family for another. They contain a
+  <family> element followed by optional <prefer>, <accept> and <default>
+  elements. Fonts matching the <family> element are edited to prepend the
+  list of <prefer>ed families before the matching <family>, append the
+  <accept>able families after the matching <family> and append the <default>
+  families to the end of the family list. 
+
+	<alias binding="same">
+	  <family>Arimo</family>
+	  <default>
+	    <family>Arial</family>
+	  </default>
+	</alias>
+	<alias>
+	  <family>Helvetica</family>
+	  <default>
+	  <family>Arial</family>
+	  </default>
+	</alias>
+
+  So Arial is a strong alias for Arimo, but Helvetica is a weak (by default) alias for Arial, meaning that if a lang is specified and a font to that lang exists, it will take precedence
+
+Exemple of properties:
+
+  <match target="font">
+    <edit name="hintstyle" mode="assign" binding="same">
+      <int>1</int>
+    </edit>
+    <edit name="antialias" mode="assign" binding="same">
+      <bool>true</bool>
+    </edit>
+    <edit name="hinting" mode="assign" binding="same">
+      <bool>true</bool>
+    </edit>
+    <edit name="autohint" mode="assign" binding="same">
+      <bool>false</bool>
+    </edit>
+    <edit name="embeddedbitmap" mode="assign" binding="same">
+      <bool>true</bool>
+    </edit>
+    <edit name="rgba" mode="assign" binding="same">
+      <int>1</int>
+    </edit>
+    <edit name="lcdfilter" mode="assign" binding="same">
+      <int>1</int>
+    </edit>
+    <edit name="scale" mode="assign" binding="same">
+      <double>1.0</double>
+    </edit>
+    <edit name="dpi" mode="assign" binding="same">
+      <double>130.0</double>
+    </edit>
+  </match>
+
+/etc/fonts/conf.d
+=================
+
+fonts.conf: mono => monospace, {sans, sans serif} => sans-serif, 
+  <dir>/usr/share/fonts</dir>
+  <dir>/usr/local/share/fonts</dir>
+  <dir prefix="xdg">fonts</dir>
+
+ 00 through 09		Font directories
+ 10 through 19		system rendering defaults (AA, etc)
+ 20 through 29		font rendering options
+ 30 through 39		family substitution
+ 40 through 49		generic identification, map family->generic
+ 50 through 59		alternate config file loading
+ 60 through 69		generic aliases, map generic->family
+ 70 through 79		select font (adjust which fonts are available)
+ 80 through 89		match target="scan" (modify scanned patterns)
+ 90 through 99		font synthesis
+
+10-hinting-slight.conf
+10-scale-bitmap-fonts.conf
+20: unhint small dejavu & vera
+30-metric-aliases.conf: aliases for arial, helvetica, times...
+40-nonlatin.conf, 45-latin.conf: serif, sans-serif, monospace, fantasy, cursive
+45-generic.conf: emoji & math
+  Rem: apparently lang=und-zsye if for emoji and und-zmath for math
+49-sansserif.conf: if all families != sans-serif, serif, monospace; append_last sans-serif
+50-user.conf: load ~/.config/fontconfig/{conf.d,fonts.conf}
+57-dejavu*: aliasing for deja vu (this should be 37-...)
+60-generic.conf: emoji & math
+60-latin.conf: serif & sans-serif & monospace & fantasy & cursive
+65-nonlatin.conf: serif & sans-serif & monospace
+69-*: some settings by 'gsfonts'
+69-unifont.conf: FreeSerif, Code2000, Code2001, FreeSans, Arial Unicode, FreeMono
+80-delicious.conf: Fix-ups for Delicious, 'heavy' variant says its Medium weight
+90-synthetic.conf: artificial oblique and bold
+
+Note: generic families are serif, sans-serif, monospace, fantasy, cursive, emoji, math
+
+Not activated
+-------------
+
+09-texlive-fonts.conf: add texlive fonts to <dir>
+10-autohint.conf: autohint true
+10-hinting-full.conf 10-hinting-medium.conf 10-hinting-none.conf: hintstyle
+10-no-sub-pixel.conf 10-sub-pixel-bgr.conf 10-sub-pixel-rgb.conf 10-sub-pixel-vbgr.conf 10-sub-pixel-vrgb.conf: rgba
+10-unhinted.conf: hinting false
+11-lcdfilter-default.conf 11-lcdfilter-legacy.conf 11-lcdfilter-light.conf: lcdfilter
+25-unhint-nonlatin.conf: turn off hinting for CJK fonts
+30-ttf-liberation-mono.conf: Courier New <-> Liberation Mono
+30-ttf-liberation-sans.conf: Arial <-> Liberation Sans
+30-ttf-liberation-serif.conf: Times New Roman <-> Liberation Serif
+  (Note: liberation are already handled by 30-metric-aliases)
+65-khmer.conf: Khmer OS" is both serif and sans-serif
+66-noto-color-emoji.conf: Noto Color Emoji takes precedence over Apple Emoji, Segoe Emoji, EmojiOne Color + emoji -> Noto Color Emoji + set scalable=true
+66-noto-emoji.conf: emoji -> Noto Emoji
+  (Note: emoji -> Noto [Color] Emoji is already done in 60-generic.conf)
+66-noto-mono.conf 66-noto-sans.conf 66-noto-serif.conf Noto Mono/Sans/Serif <-> monospace/sans-serif/serif
+69-freefont.conf: FreeMono/Sans/Serif <-> monospace/sans-serif/serif
+  (Note: Free* -> generic handled by 45-latin.conf but not the converse)
+70-no-bitmaps.conf: reject bitmap fonts
+70-yes-bitmaps.conf: accept bitmap fonts
+75-ttf-inconsolata.conf: Inconsolata <-> monospace
+  (Note: inconsolata already handled by 45,60-latin.conf)
+
+FC_DEBUG
+========
+
+Name         Value    Meaning
+---------------------------------------------------------
+MATCH            1    Brief information about font matching
+MATCHV           2    Extensive font matching information
+EDIT             4    Monitor match/test/edit execution
+FONTSET          8    Track loading of font information at startup
+CACHE           16    Watch cache files being written
+CACHEV          32    Extensive cache file writing information
+PARSE           64    (no longer in use)
+SCAN           128    Watch font files being scanned to build caches
+SCANV          256    Verbose font file scanning information
+MEMORY         512    Monitor fontconfig memory usage
+CONFIG        1024    Monitor which config files are loaded
+LANGSET       2048    Dump char sets used to construct lang values
+MATCH2        4096    Display font-matching transformation in patterns
+
+FC_DEBUG=4 => see rules
+
+FC_DEBUG=2 => see score information
+Exemple: Score 0 0 0 1000 0 0 1000 0 2000 1001 0 0 0 0 0 0 0 0 0 0 0 0 0 2.14742e+12
+  0 means no match
+  1 means exact match
+  higher score means less matching
+  Order: (cf fcmatch.c, _FcMatcherPriority)
+    PRI_FILE PRI_FONTFORMAT PRI_SCALABLE PRI_COLOR PRI_FOUNDRY
+    PRI_CHARSET PRI_FAMILY_STRONG PRI_POSTSCRIPT_NAME_STRONG PRI_LANG PRI_FAMILY_WEAK
+    PRI_POSTSCRIPT_NAME_WEAK PRI_SYMBOL PRI_SPACING PRI_SIZE PRI_PIXEL_SIZE
+    PRI_STYLE PRI_SLANT PRI_WEIGHT PRI_WIDTH PRI_DECORATIVE
+    PRI_ANTIALIAS PRI_RASTERIZER PRI_OUTLINE PRI_FONTVERSION PRI_END
+
+Match Pattern has 24 elts (size 32)
+  family: "Twitter Color Emoji"(s) "Noto Color Emoji"(w)
+  (s): strong binding, (w): weak binding
+
+API
+===
+
+Types:
+- An FcPattern is an opaque type that holds both patterns to match against
+  the available fonts, as well as the information about each font. 
+- An FcFontSet simply holds a list of patterns; these are used to return
+  the results of listing available fonts. 
+- An FcObjectSet holds a list of pattern property names; it is used to
+  indicate which properties are to be returned in the patterns from
+  FcFontList.
+- An FcCharSet is a boolean array indicating a set of Unicode chars
+- An FcLangSet is a set of language names (each of which include language and an optional territory). They are used when selecting fonts to indicate which languages the fonts need to support. Each font is marked, using language orthography information built into fontconfig, with the set of supported languages. 
+- An FcConfig object holds the internal representation of a configuration. There is a default configuration which applications may use by passing 0 to any function using the data within an FcConfig. 
+
+Functions:
+Initialization
+- FcInit -- initialize fontconfig library
+  FcBool FcInit(void);
+  Loads the default configuration file and the fonts referenced therein and
+  sets the default configuration to that result. Returns whether this
+  process succeeded or not. If the default configuration has already been
+  loaded, this routine does nothing and returns FcTrue.
+
+FcPattern
+- FcDefaultSubstitute -- Perform default substitutions in a pattern
+  void FcDefaultSubstitute(FcPattern *pattern);
+  Supplies default values for underspecified font patterns:
+    Patterns without a specified style or weight are set to Medium
+    Patterns without a specified style or slant are set to Roman
+    Patterns without a specified pixel size are given one computed from any
+    specified point size (default 12), dpi (default 75) and scale (default 1).
+  See [./settings#fontconfig] for more infos on defaults
+
+- FcNameParse -- Parse a pattern string
+  FcPattern * FcNameParse(const FcChar8 *name);
+  Converts name from the standard text format described above into a pattern.
+
+FcFontSet
+- FcFontSetMatch -- Return the best font from a set of font sets
+  FcPattern * FcFontSetMatch(FcConfig *config, FcFontSet **sets, intnsets, FcPattern *pattern, FcResult *result);
+  Finds the font in sets most closely matching pattern and returns the
+  result of FcFontRenderPrepare for that font and the provided pattern.
+  This function should be called only after FcConfigSubstitute and
+  FcDefaultSubstitute have been called for pattern; otherwise the results
+  will not be correct. If config is NULL, the current configuration is
+  used. Returns NULL if an error occurs during this process.
+  (ie fc-match)
+
+- FcFontSetSort(FcConfig *config, FcFontSet **sets, intnsets, FcPattern *pattern, FcBool trim, FcCharSet **csp, FcResult *result);
+  Returns the list of fonts from sets sorted by closeness to pattern.
+  (ie fc-match -s)
+
+FcConfig
+- FcConfigSubstitute -- Execute substitutions
+  FcBool FcConfigSubstitute(FcConfig *config, FcPattern *p, FcMatchKind kind);
+  Calls FcConfigSubstituteWithPat setting p_pat to NULL. Returns FcFalse if
+  the substitution cannot be performed (due to allocation failure).
+  Otherwise returns FcTrue. If config is NULL, the current configuration is
+  used. 
+
+- FcConfigSubstituteWithPat -- Execute substitutions
+  FcBool FcConfigSubstituteWithPat(FcConfig *config, FcPattern *p, FcPattern *p_pat, FcMatchKind kind);
+  Performs the sequence of pattern modification operations, if kind is
+  FcMatchPattern, then those tagged as pattern operations are applied, else
+  if kind is FcMatchFont, those tagged as font operations are applied and
+  p_pat is used for <test> elements with target=pattern. Returns FcFalse if
+  the substitution cannot be performed (due to allocation failure).
+  Otherwise returns FcTrue. If config is NULL, the current configuration is
+  used. 
+
+- FcFontMatch -- Return best font
+  FcPattern * FcFontMatch(FcConfig *config, FcPattern *p, FcResult *result);
+  Finds the font in sets most closely matching pattern and returns the
+  result of FcFontRenderPrepare for that font and the provided pattern.
+  This function should be called only after FcConfigSubstitute and
+  FcDefaultSubstitute have been called for p; otherwise the results will
+  not be correct. If config is NULL, the current configuration is used. 
+
+- FcFontRenderPrepare -- Prepare pattern for loading font file
+  FcPattern * FcFontRenderPrepare(FcConfig *config, FcPattern *pat, FcPattern *font);
+  Creates a new pattern consisting of elements of font not appearing in
+  pat, elements of pat not appearing in font and the best matching value
+  from pat for elements appearing in both. The result is passed to
+  FcConfigSubstituteWithPat with kind FcMatchFont and then returned.
+  (ie call FcConfigSubstituteWithPat (config, new, pat, FcMatchFont);)
+
+- FcFontSort -- Return list of matching fonts
+  FcFontSet * FcFontSort(FcConfig *config, FcPattern *p, FcBool trim, FcCharSet **csp, FcResult *result);
+  Returns the list of fonts sorted by closeness to p. If trim is FcTrue,
+  elements in the list which don't include Unicode coverage not provided by
+  earlier elements in the list are elided. The union of Unicode coverage of
+  all of the fonts is returned in csp, if csp is not NULL. This function
+  should be called only after FcConfigSubstitute and FcDefaultSubstitute
+  have been called for p; otherwise the results will not be correct.
+  The returned FcFontSet references FcPattern structures which may be
+  shared by the return value from multiple FcFontSort calls, applications
+  must not modify these patterns. Instead, they should be passed, along
+  with p to FcFontRenderPrepare which combines them into a complete
+  pattern.
+  The FcFontSet returned by FcFontSort is destroyed by calling
+  FcFontSetDestroy. If config is NULL, the current configuration is used. 
+
+Rem: FcConfigSubstituteWithPat(FcConfig *config, FcPattern *p, FcPattern
+     *p_pat, FcMatchKind kind) 
+     - rajoute les FcGetDefaultLangs à p sauf si il les contient déjà
+     - Le code (et pareil dans FcConfigEvaluate) fait:
+           if (kind == FcMatchFont && r->u.test->kind == FcMatchPattern)
+             m = p_pat;`
+       ie p_pat est utilisé pour les <name target=pattern> à l'intérieur d'un
+       <match target=front>
+
+Résumé:
+FcInit()
+FcChar8 *name="Sans 10"
+FcPattern *pattern=FcNameParse(const FcChar8 *name);
+FcConfigSubstitute (NULL, pattern, FcMatchPattern);
+FcDefaultSubstitute(pattern);
+FcPattern *font= FcPatternCreate();
+FcPattern * FcFontMatch(NULL, pattern, font);
+// this calls FcFontRenderPrepare(NULL,pattern,font) which 
+// calls FcConfigSubstituteWithPat(NULL, font, pattern, FcMatchFont);
+
+Macros in fontconfig.h:
+~~~
+#define FC_FAMILY	    "family"		/* String */
+#define FC_STYLE	    "style"		/* String */
+#define FC_SLANT	    "slant"		/* Int */
+#define FC_WEIGHT	    "weight"		/* Int */
+#define FC_SIZE		    "size"		/* Range (double) */
+#define FC_ASPECT	    "aspect"		/* Double */
+#define FC_PIXEL_SIZE	    "pixelsize"		/* Double */
+#define FC_SPACING	    "spacing"		/* Int */
+#define FC_FOUNDRY	    "foundry"		/* String */
+#define FC_ANTIALIAS	    "antialias"		/* Bool (depends) */
+#define FC_HINTING	    "hinting"		/* Bool (true) */
+#define FC_HINT_STYLE	    "hintstyle"		/* Int */
+#define FC_VERTICAL_LAYOUT  "verticallayout"	/* Bool (false) */
+#define FC_AUTOHINT	    "autohint"		/* Bool (false) */
+/* FC_GLOBAL_ADVANCE is deprecated. this is simply ignored on freetype 2.4.5 or later */
+#define FC_GLOBAL_ADVANCE   "globaladvance"	/* Bool (true) */
+#define FC_WIDTH	    "width"		/* Int */
+#define FC_FILE		    "file"		/* String */
+#define FC_INDEX	    "index"		/* Int */
+#define FC_FT_FACE	    "ftface"		/* FT_Face */
+#define FC_RASTERIZER	    "rasterizer"	/* String (deprecated) */
+#define FC_OUTLINE	    "outline"		/* Bool */
+#define FC_SCALABLE	    "scalable"		/* Bool */
+#define FC_COLOR	    "color"		/* Bool */
+#define FC_VARIABLE	    "variable"		/* Bool */
+#define FC_SCALE	    "scale"		/* double (deprecated) */
+#define FC_SYMBOL	    "symbol"		/* Bool */
+#define FC_DPI		    "dpi"		/* double */
+#define FC_RGBA		    "rgba"		/* Int */
+#define FC_MINSPACE	    "minspace"		/* Bool use minimum line spacing */
+#define FC_SOURCE	    "source"		/* String (deprecated) */
+#define FC_CHARSET	    "charset"		/* CharSet */
+#define FC_LANG		    "lang"		/* String RFC 3066 langs */
+#define FC_FONTVERSION	    "fontversion"	/* Int from 'head' table */
+#define FC_FULLNAME	    "fullname"		/* String */
+#define FC_FAMILYLANG	    "familylang"	/* String RFC 3066 langs */
+#define FC_STYLELANG	    "stylelang"		/* String RFC 3066 langs */
+#define FC_FULLNAMELANG	    "fullnamelang"	/* String RFC 3066 langs */
+#define FC_CAPABILITY       "capability"	/* String */
+#define FC_FONTFORMAT	    "fontformat"	/* String */
+#define FC_EMBOLDEN	    "embolden"		/* Bool - true if emboldening needed*/
+#define FC_EMBEDDED_BITMAP  "embeddedbitmap"	/* Bool - true to enable embedded bitmaps */
+#define FC_DECORATIVE	    "decorative"	/* Bool - true if style is a decorative variant */
+#define FC_LCD_FILTER	    "lcdfilter"		/* Int */
+#define FC_FONT_FEATURES    "fontfeatures"	/* String */
+#define FC_FONT_VARIATIONS  "fontvariations"	/* String */
+#define FC_NAMELANG	    "namelang"		/* String RFC 3866 langs */
+#define FC_PRGNAME	    "prgname"		/* String */
+#define FC_HASH		    "hash"		/* String (deprecated) */
+#define FC_POSTSCRIPT_NAME  "postscriptname"	/* String */
+~~~

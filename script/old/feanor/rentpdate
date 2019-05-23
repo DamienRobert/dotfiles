@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sudo /etc/init.d/ntp stop
+sudo ntpdate ntp1.proxad.net
+sudo /etc/init.d/ntp start

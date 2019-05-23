@@ -1,0 +1,11 @@
+# search ctags
+fztags() {
+	local line tagname=.tags dir=$PWD tag
+	[[ -n $1 ]] && dir=$1
+	tag=$dir/$tagname
+	[[ -e $tag ]] &&
+	# type, name, file, regexp
+	line=$(
+		awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' $tag | fzf --nth=1,2 --header="[tags:$dir]"
+		) && (cd $dir && exec ${EDITOR:-vim} $(cut -f3 <<< "$line") -c "silent tag $(cut -f2 <<< "$line")")
+}

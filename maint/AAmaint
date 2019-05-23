@@ -1,0 +1,71 @@
+Login
+=====
+
+- gogo [=~maint/00login]-> unlock, unison, progs, ~maint/01update
+
+Packages
+========
+
+- packages.rb is a wrapper around user/packages.rb, syst/packages.rb and package_handler.rb
+
+- 01update -> $MAINTFILES/packages.rb --shell=exec update_or_check
+cf AApackages for more infos
+
+Clean-up
+========
+
+- ~maint/packages.rb --shell=exec clean
+  [gitfolders -l all action 'git gc --aggressive']
+- ~/script/clean_tmp #(clean old ~/tmp files)
+
+- folders to clean up: (cf script/clean_tmp -d foo)
+  ~/var/{log,run,tmp}/*
+  ~/.cache/{@comp, vim, mutt_header_cache}
+  $ pacaur -a -Sc #.cache/pacaur
+  $ yarn cache clean #.cache/yarn
+  $ npm cache verify #.cache/npm
+  $ rm -rf ~/.cache/{pip, wine, winetricks}
+
+Machines virtuelles: ~/var/spool/{VirtualBox,vagrant.d}
+
+SaveData
+========
+
+- ~/mine/@infos/00savedata
+- gitfolders -l perso action 'echo $foldername; cat $folder/.git/config' >| ~/mine/@infos/git-configs
+- dofor 'ssh-keygen -lf' ~/.ssh/*.pub >| ~/mine/@infos/ssh_fingerprints
+  Si besoin: ssh-keygen -lf ~/.ssh/known_hosts
+
+Dist
+====
+
+- gitfolders -l prodist,vardist update --auto
+
+Config
+======
+
+- ~maint/user/00update #update config files
+
+- ~maint/user/misc/01_unisonall #(run unison.rb -s --all on computers)
+- unison.rb -t common,data,booklight,book,perso,perso2
+    ens,4a,imb,feanor,numenor,FleurBleue,durin
+- unison.rb --sync=photos
+
+- ~maint/user/misc/01_updateallcomptes #(update config files on computers)
+- ~maint/user/misc/09_updateunison #(update unison on computers)
+
+Crontabs
+========
+
+- Run by an @boot crontab normally, to restart services:
+  ssh phare; ~/mine/config/crontab/@boot-phare
+  ssh simb;  ~/mine/config/crontab/@boot-imb
+- To run manually:
+  ssh simb; ~/mine/config/crontab/imb-unlock.sh #crontabs include yaf backup
+
+New
+====
+
+- ~maint/user/01new
+- ~syst/new/generate
+

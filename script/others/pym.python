@@ -49,25 +49,25 @@ def pym_expand(text, env, loc, out):
     begin_len = len(begin)
     end_len = len(end)
     if len(text) <= begin_len + end_len:
-    	out.append(text)
+	out.append(text)
     else:
 	pos = 0
 	start = string.find(text, begin, pos)
 	while (start >= 0):
-    	    stop = string.find(text, end, start+begin_len)
+	    stop = string.find(text, end, start+begin_len)
 	    if stop < 0: pym_error("unterminated python macro", loc)
 	    out.append(text[pos:start])
 	    exp = string.strip(text[start+begin_len:stop])
-    	    prefix = prefix_map.get(exp[0])
+	    prefix = prefix_map.get(exp[0])
 	    try:
-    		if prefix:
-	    	    len_pr = len(prefix[0])
+		if prefix:
+		    len_pr = len(prefix[0])
 		    if len(exp) >= len_pr and exp[:len_pr] == prefix[0]:
-	    		value = eval(prefix[1]+exp[len_pr:], env, env)
+			value = eval(prefix[1]+exp[len_pr:], env, env)
 		    else:
 			pym_error("illegal prefix '%s'" % exp[:len_pr], loc)
 		else:
-	    	    value = eval(exp, env, env)
+		    value = eval(exp, env, env)
 	    except PymException: raise
 	    except NameError: raise 	# doesn't have lineno
 	    except KeyError: raise  	# ditto
@@ -77,9 +77,9 @@ def pym_expand(text, env, loc, out):
 	    except Exception, error:
 		error.filename = loc[0]
 		error.lineno = error.lineno + loc[1] + \
-		    	       len(string.split(text[0:start],'\n'))
+			       len(string.split(text[0:start],'\n'))
 		raise
-    	    pym_expand(str(value), env, loc, out)
+	    pym_expand(str(value), env, loc, out)
 	    pos = stop+end_len
 	    start = string.find(text, begin, pos)
 	out.append(text[pos:])
@@ -102,24 +102,24 @@ def pym_expand_file(filename, env, out):
     condstack = []
     lines = string.split(text, '\n')
     if len(lines[0]) > 2 and lines[0][:2] == "#!":
-    	lines = lines[1:]
+	lines = lines[1:]
 	lnum = 2
     for line in lines:
-    	end = pos + len(line) + 1
+	end = pos + len(line) + 1
 	if line and line[0] == '#':
 	    if tx_pos >= 0:
-	    	tx_start = tx_pos ; tx_pos = -1
-	    	try:
+		tx_start = tx_pos ; tx_pos = -1
+		try:
 		    if cond:
-		    	pym_expand(text[tx_start:pos], env, loc, out)
+			pym_expand(text[tx_start:pos], env, loc, out)
 		except PymEndOfFile: break
 	    if string.find(line,"end python") > 0:
-    		if py_pos < 0: pym_error("superfluous end python", loc)
+		if py_pos < 0: pym_error("superfluous end python", loc)
 		if cond:
 		    try:
 			exec text[py_pos:pos] in env, env
 		    except PymExit: raise
-    	    	    except PymEndOfFile:
+		    except PymEndOfFile:
 			py_pos = -1
 			break
 		    except NameError: raise 	# doesn't have lineno
@@ -131,44 +131,44 @@ def pym_expand_file(filename, env, out):
 			error.filename = loc[0]
 			error.lineno = error.lineno + loc[1]
 			raise
-	    	py_pos = -1
+		py_pos = -1
 		tx_pos = end
-    	    elif string.find(line, "begin python") > 0:
+	    elif string.find(line, "begin python") > 0:
 		py_pos = end
 		loc = (filename, lnum)
-    	    elif string.find(line, "include") == 1:
-	    	namestart = 8
+	    elif string.find(line, "include") == 1:
+		namestart = 8
 		if string.find(line, "include_direct") == 1:
 		    namestart = 15
-	    	if cond:
-        	    dir = os.path.dirname(filename)
+		if cond:
+		    dir = os.path.dirname(filename)
 		    include = eval(string.strip(line[namestart:]), env, env)
 		    includefilename = os.path.join(dir,include)
 		    if not os.path.isfile(includefilename):
-	    		for dir in PYM_PATH:
+			for dir in PYM_PATH:
 			    includefilename = os.path.join(dir, include)
 			    if os.path.isfile(includefilename): break
 		    if namestart == 8:
-	    	    	pym_expand_file(includefilename, env, out)
+			pym_expand_file(includefilename, env, out)
 		    else:
-		    	pym_read_file(includefilename, out)
+			pym_read_file(includefilename, out)
 		tx_pos = end
 		loc = (filename, lnum)
 	    elif string.find(line, "if") == 1:
-	    	condstack.append(cond)
-	    	cond = eval(string.strip(line[3:]), env, env)
+		condstack.append(cond)
+		cond = eval(string.strip(line[3:]), env, env)
 		tx_pos = end
 		loc = (filename, lnum)
 	    elif string.find(line, "elif") == 1:
-	    	cond = eval(string.strip(line[5:]), env, env)
+		cond = eval(string.strip(line[5:]), env, env)
 		tx_pos = end
 		loc = (filename, lnum)
 	    elif string.find(line, "else") == 1:
-	    	cond = not cond
+		cond = not cond
 		tx_pos = end
 		loc = (filename, lnum)
 	    elif string.find(line, "endif") == 1:
-	    	cond = condstack.pop()
+		cond = condstack.pop()
 		tx_pos = end
 		loc = (filename, lnum)
             ### Bout rajoute pour gerer les #ploum
@@ -194,12 +194,12 @@ if __name__ == '__main__':
 	    file_list = []
 	    incl = 0
 	    for arg in sys.argv[1:]:
-	    	if arg == '-I':
+		if arg == '-I':
 		    incl = 1
 		    continue
 		if incl:
 		    if (arg[0] != '/'):
-		    	arg = os.path.join(os.getcwd(), arg)
+			arg = os.path.join(os.getcwd(), arg)
 		    PYM_PATH.append(arg)
 		    incl = 0
 		    continue
@@ -213,16 +213,16 @@ if __name__ == '__main__':
 		env = ENVIRONMENT.copy()
 		out = []
 		try:
-    		    pym_expand_file(filepath, env, out)
+		    pym_expand_file(filepath, env, out)
 		except PymExit: pass
 		extension = env.get("PYM_EXTENSION","")
 		if extension:
-    		    file = open(filepath[:-4] + extension, "w")
+		    file = open(filepath[:-4] + extension, "w")
 		    for text in out: file.write(text)
-    		    file.close()
+		    file.close()
 		    if talk: print filepath
 		else:
-	    	    for text in out: sys.stdout.write(text)
+		    for text in out: sys.stdout.write(text)
     else:
 	env = ENVIRONMENT.copy()
 	PYM_PATH.append(document_root)
@@ -232,7 +232,7 @@ if __name__ == '__main__':
 	try:
 	    pym_expand_file(path_translated, env, out)
 	except PymExit:
-    	    pass
+	    pass
 	for text in out: sys.stdout.write(text)
 	if env.get("PYM_ARG_MAP",{}).get("debug","") == "timing":
 	    overall = time.clock()

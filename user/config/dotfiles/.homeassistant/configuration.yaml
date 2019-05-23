@@ -1,0 +1,101 @@
+homeassistant:
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 44.823776
+  longitude: -0.618094
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  unit_system: metric
+  time_zone: Europe/Paris
+  customize: !include customize.yaml
+
+# Splits
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+# Default components
+updater: #check if new release is available
+  reporting: false #don't send infos
+discovery: #mDNS/uPnP (google casts, samsung tv, xiaomi gateway)
+tts:
+  - platform: google
+  - language: 'fr'
+# cloud:
+
+# Apis
+http:
+  # api_password: !secret http_password
+  ssl_certificate: "~/perso/domain/certs/dams.duckdns.org/fullchain.pem"
+  ssl_key: "~/perso/domain/certs/dams.duckdns.org/privkey.pem"
+  base_url: dams.duckdns.org:8123
+
+intent_script:
+  GetTemperature:
+    speech:
+      text: La température dans la maison est de {{ states('sensor.temperature_living_room') }} degrés.
+
+# Frontend
+frontend:
+config: #activate the configuration editor
+conversation:
+  intents:
+    GetTemperature:
+     - What is the temperature
+history: #activate history item
+logbook: #activate logbook item
+map: #activate map item
+
+# Specific Components
+sun:
+
+xiaomi_aqara:
+  gateways:
+  - mac: f0:b4:29:cc:11:c9
+    key: g31qvj9l7wg4vve0
+
+google_assistant:
+  project_id: homeassistant-200510
+  client_id: 8d10e1fff7e39d901278d332a931003eb8584a9ec5dded487eb8d759da4b2466
+  access_token: 26307310b00108513da31aa5275daa6ece17c4f0632d267649d972c69b441a71
+  agent_user_id: Home Assistant User Agent
+  api_key: AIzaSyBLxd0J9FmII94cr2pKRRXlvhvqtc06bPo
+  exposed_domains:
+    - climate
+    - light
+
+dialogflow: #enable webhook integration of dialog flow
+
+device_tracker:
+  - platform: bluetooth_tracker
+    interval_seconds: 600
+  - platform: gpslogger
+  - platform: nmap_tracker
+    hosts: 192.168.0.11-50
+    interval_seconds: 600
+    # home_interval: 10
+
+# General components
+sensor:
+  # Weather
+  - platform: yr
+climate:
+  # dummy thermostat to get temp in google assistant
+  - platform: generic_thermostat
+    name: Salon
+    heater: switch.dummy
+    target_sensor: sensor.temperature_living_room
+switch:
+  - platform: command_line
+    switches:
+      dummy: #dummy switch for the dummy thermostat
+        command_on: "true"
+        command_off: "true"
+# media_player:
+#   # Is also auto discovered
+#   - platform: samsungtv
+#     host: 192.168.0.36
+#     port: 8001
+#     name: 'Living Room - Samsung TV'
+#     mac: fc:f1:36:b6:3b:3d
+#     timeout: 5

@@ -1,4 +1,20 @@
-#!/bin/sh
+#!/bin/zsh
 
-DIR="$HOME/var/dist/git/contrib"
-cp "$DIR/blameview/blameview.perl" "$DIR/diff-highlight/diff-highlight" "$DIR/diffall/git-diffall" "$DIR/git-resurrect.sh" "$DIR/rerere-train.sh" "$DIR/stats/"* "$DIR/subtree/git-subtree.sh" "$DIR/remote-helpers/git-remote-hg" "$DIR/workdir/"* "$DIR/contacts/*" .
+folder=$1
+[[ -z $folder ]] && folder=$HOME/opt/dist/git
+#Last update: 2019-04-04
+
+cp $folder/contrib/{git-resurrect.sh,rerere-train.sh,stats/*,subtree/git-*,contacts/git-*,git-jump/git-*,completion/git-completion.{bash,zsh},completion/git-prompt.sh} .
+cp -r $folder/contrib/examples $folder/contrib/diff-highlight .
+
+# $ ls git/contrib/
+# README             fast-import/          remotes2config.sh*
+# buildsystems/      git-jump/             rerere-train.sh*
+# coccinelle/        git-resurrect.sh*     stats/
+# completion/        git-shell-commands/   subtree/
+# contacts/          hg-to-git/            svn-fe/
+# coverage-diff.sh*  hooks/                thunderbird-patch-inline/
+# credential/        long-running-filter/  update-unicode/
+# diff-highlight/    mw-to-git/            vscode/
+# emacs/             persistent-https/     workdir/
+# examples/          remote-helpers/

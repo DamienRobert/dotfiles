@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["@babel/preset-env", { // https://github.com/babel/babel/tree/master/packages/babel-preset-env
+      useBuiltIns: 'usage', // automatic polyfill
+      corejs: 3,
+      "targets": {
+        "node": "current" // compile for current version of node
+      }
+    }],
+    //"minify", // preset from babel-minify, cf .babel_minifyrc
+  ],
+  // "plugins": ['@babel/syntax-dynamic-import'], // needed for webpack's dynamic import
+}

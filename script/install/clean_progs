@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+#Usage: rm -rf $(~/script/install/clean_progs ~/opt/packages)
+
+require 'dr/sh'
+ARGV.empty? ? args=["."] : args=ARGV
+
+args.each do |dir|
+	dir=DR::Pathname.new(dir)
+	links=dir.children.select {|e| e.symlink? }
+	links.each do |link|
+		dirs=dir.children.select {|e| e.directory? && !e.symlink? && e.basename.to_s.start_with?(link.basename.to_s)}
+		version=lambda do |dir|
+			name=dir.basename.to_s
+			v=name.sub(/^#{link.basename}-v?/,'')
+			Gem::Version.new(v) rescue Gem::Version.new(0)
+		end
+		dirs.sort! {|x,y| version.(x) <=> version.(y) }
+		dirs.length > 1 and puts dirs[0..-2]
+		#p link,dirs
+	end
+end

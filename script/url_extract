@@ -1,0 +1,9 @@
+#!/usr/bin/ruby
+
+#https://stackoverflow.com/questions/6038061/regular-expression-to-find-urls-within-a-string
+html_regexp=/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/mi
+ARGF.each do |line|
+	line.match(html_regexp) do |m|
+		puts m
+	end
+end

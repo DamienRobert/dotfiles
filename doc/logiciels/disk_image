@@ -1,0 +1,14 @@
+Lire une image disque:
+https://askubuntu.com/questions/483009/mounting-disk-image-in-raw-format
+
+- Utiliser fdisk ou gdisk (gpt) pour voir les offsets des partitions, puis
+  mount -o offset=... image
+
+- losetup --find --show --partscan image
+         -P, --partscan
+              Force  the kernel to scan the partition table on a newly created
+              loop device.
+
+- Si on a oublié '-P' au moment de faire losetup:
+  DISK=$(losetup --find --show image)
+  partprobe $DISK #tells the kernel about the partitions

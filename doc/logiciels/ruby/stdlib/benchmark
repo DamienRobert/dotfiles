@@ -1,0 +1,45 @@
+require 'benchmark'
+n = 5000000
+Benchmark.bm(7) do |x| #7 is for label width
+  x.report("for:")   { for i in 1..n; a = "1"; end }
+  x.report("times:") { n.times do   ; a = "1"; end }
+  x.report("upto:")  { 1.upto(n) do ; a = "1"; end }
+end
+
+#               user     system      total        real
+# for:      0.341590   0.000000   0.341590 (  0.342268)
+# times:    0.275080   0.000000   0.275080 (  0.275456)
+# upto:     0.292432   0.000000   0.292432 (  0.292934)
+
+array = (1..1000000).map { rand }
+Benchmark.bmbm do |x| #since it is run twice, label width is auto determined
+  x.report("sort!") { array.dup.sort! }
+  x.report("sort")  { array.dup.sort  }
+end
+
+# Rehearsal -----------------------------------------
+# sort!   0.402802   0.000000   0.402802 (  0.403312)
+# sort    0.404933   0.000000   0.404933 (  0.405569)
+# -------------------------------- total: 0.807735sec
+# 
+#             user     system      total        real
+# sort!   0.403738   0.000000   0.403738 (  0.404244)
+# sort    0.393613   0.000000   0.393613 (  0.394141)
+
+n = 1000000
+time = Benchmark.measure do
+  n.times { a = "1" }
+end
+puts time #=>   0.084412   0.000000   0.084412 (  0.084765)
+
+Benchmark.realtime # directly return the realtime
+
+Exemple:
+array = (1..1000000).map { rand(10)-5 }
+Benchmark.bmbm do |x|
+  x.report("array") { array.each {|x| [x,0].max }}
+  x.report("if")  { array.each {|x| x >= 0 ? x : 0  }}
+  x.report("if temp var")  { array.each {|x| y=x; y=0 if y <= 0  }}
+  x.report("abs")  { array.each {|x| (x+x.abs)/2  }}
+  x.report("shift")  { array.each {|x| (x+x.abs) << 1  }}
+end

@@ -1,5 +1,5 @@
 #!/bin/sh
-DIR=${MYTMP-/tmp}
+DIR="$HOME/tmp"
 while true;
 do
   case "$1" in
@@ -22,3 +22,4 @@ findcmd -exec ls --color=auto -F -T 0 -d  '{}' \+
 echo "Proceed? (press a key)"
 read a
 findcmd -delete
+rrd .

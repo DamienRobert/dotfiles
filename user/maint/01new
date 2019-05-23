@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+COPYID=
+FULL=
+HOSTSSH=
+
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		--full ) shift ; FULL=t ;;
+		--id ) shift ; COPYID=t ;;
+		--ssh ) shift ; HOSTSSH=$1; shift ;;
+		-c ) shift ; COMPUTER=$1; shift
+			. $HOME/.initvars
+			eval $($MYCOMPUTERS --export --ssh $COMPUTER)
+			HOSTSSH=$HOST
+			;;
+		*) break;;
+	esac
+done
+
+COMP=$1; shift
+[[ -z $HOSTSSH ]] && HOSTSSH=$COMP
+
+. $HOME/.initvars
+[[ -n $COPYID ]] && ssh-copy-id -i ~/.ssh/id_ed25519.pub $HOSTSSH
+
+if [[ -n $FULL ]]; then
+	MYFILENAME=$(basename $MYFILES)
+	rsync -vaczP --exclude 'old' --exclude ".git" --exclude "$MYFILENAME/doc" --exclude "$MYFILENAME/@infos" $MYFILES $HOSTSSH:
+	ssh $HOSTSSH $MYFILES/bootstrap $MYFILES/config/generate.rb --all
+else
+	$CFGFILES/generate.rb --minimal -c $HOSTSSH
+	rsync -vaczP ~/.cache/@comps/$HOSTSSH/home/ $HOSTSSH:
+fi

@@ -1,0 +1,11 @@
+[Unit]
+Description=Set up basic environment
+
+[Service]
+Type=oneshot
+SyslogIdentifier=environment
+ExecStart=/bin/sh -c 'exec %h/mine/script/services/environment'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=init.target

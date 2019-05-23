@@ -1,0 +1,30 @@
+https://pandoc.org/demos.html
+
+HTML fragment:
+pandoc MANUAL.txt -o example1.html
+
+Standalone HTML file:
+pandoc -s MANUAL.txt -o example2.html
+
+HTML with table of contents, CSS, and custom footer:
+pandoc -s --toc -c pandoc.css -A footer.html MANUAL.txt -o example3.html
+
+LaTeX:
+pandoc -s MANUAL.txt -o example4.tex
+
+From LaTeX to markdown:
+pandoc -s example4.tex -o example5.text
+
+reStructuredText:
+pandoc -s -t rst --toc MANUAL.txt -o example6.text
+
+Rich text format (RTF):
+pandoc -s MANUAL.txt -o example7.rtf
+
+Man page:
+pandoc -s -t man pandoc.1.md -o example10.1
+
+Convert a document (default to html when no output specified):
+pandoc doc.docx
+pandoc doc.docx | w3m -T text/html
+pandoc -t markdown doc.docx

@@ -1,11 +1,11 @@
-# Set to 1 if you always want to display the boot: prompt 
-# With 0 only show prompt if 'SHIFT' is pressed
+# Set to 1 if you always want to display the boot: prompt
+# With 0 only show prompt if 'SHIFT' (in practice ALT) is pressed
 PROMPT 0
 
 #Show menu, overrides PROMPT setting above
 UI menu.c32
 #Show menu only if ALT is on
-MENU SHIFTKEY 
+MENU SHIFTKEY
 
 Keyboard
 ========
@@ -43,14 +43,14 @@ install --owner=root --group=root fr.ktl /boot/syslinux/
 # The wiki provides further configuration examples
 
 DEFAULT arch
-PROMPT 0        # Set to 1 if you always want to display the boot: prompt 
+PROMPT 0        # Set to 1 if you always want to display the boot: prompt
 TIMEOUT 50      #Wait 5s
 # You can create syslinux keymaps with the keytab-lilo tool
 #KBDMAP de.ktl
 KBDMAP fr.ktl
 
 # Menu Configuration
-# Either menu.c32 or vesamenu32.c32 must be copied to /boot/syslinux 
+# Either menu.c32 or vesamenu32.c32 must be copied to /boot/syslinux
 UI menu.c32
 #UI vesamenu.c32
 
@@ -102,3 +102,23 @@ LABEL reboot
 LABEL poweroff
         MENU LABEL Poweroff
         COM32 poweroff.c32
+
+Extra:
+=====
+
+http://www.syslinux.org/wiki/index.php/SYSLINUX#CONFIG_file
+CONFIG file
+CONFIG will restart the boot loader using a different configuration file.
+
+Load new config file:
+LABEL new_config
+CONFIG </path/to/cfg/file/><configfile.cfg>
+
+Set Syslinux' new home directory to </path/to/new/base/dir> and load new config file:
+LABEL new_config2
+CONFIG </path/to/cfg/file/><configfile.cfg> </path/to/new/base/dir>
+
+or:
+LABEL new_config2
+CONFIG </path/to/cfg/file/><configfile.cfg>
+APPEND </path/to/new/base/dir>

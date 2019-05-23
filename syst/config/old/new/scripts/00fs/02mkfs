@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+DSLASH=$(findfs PARTLABEL=$SLASHPARTLABEL || echo ${DISK}1)
+[[ -n $DSLASH ]] || return 1
+DHOME=$(findfs PARTLABEL=$HOMEPARTLABEL)
+DBOOT=$(findfs PARTLABEL=$BOOTPARTLABEL)
+DSWAP=$(findfs PARTLABEL=$SWAPPARTLABEL)
+
+if [[ -n $ROOTLEAF ]]; then
+	mkfs.$FS $MKFSOPTS -L $ROOTLEAF $DSLASH || return 1
+else
+	mkfs.$FS $MKFSOPTS -L $SLASHLABEL $DSLASH || return 1
+fi
+[[ -n $DHOME ]] && { mkfs.$FS $MKFSOPTS -L $HOMELABEL $DHOME || return 1 }
+[[ -n $DBOOT ]] && { mkfs.vfat -n $BOOTLABEL $DBOOT || return 1 }
+[[ -n $DSWAP ]] && { mkswap -L $SWAPLABEL $DSWAP || return 1 }
+return 0

@@ -1,0 +1,397 @@
+# Fichier .flrnrc, version 2.3
+set files_charset utf-8
+set post_charsets utf-8
+#set editor_charset utf-8
+
+color status black  green    bold
+
+# Où trouver forum.
+include /opt/flrn/share/flrn/flrnrc_forum
+#name forum set server |/opt/flrn/bin/tlsclient forum.salle-s.org:2063
+#and tlsclient is exec setsid socat - ssl:${remote},verify=0
+include .flrnrc.auth_forum_201408
+name forum set list_all_groups
+name forum set hist_file_name .hist.forum
+name forum set flnews_ext .forum
+name forum color status yellow  blue    bold
+
+name allforum set server |/opt/flrn/bin/tlsclient forum.salle-s.org:2063
+name allforum set list_all_groups
+name allforum set hist_file_name .hist.allforum
+name allforum set flnews_ext .allforum
+name allforum color status green  blue    bold
+
+# Où trouver yaf
+name yaf set server quatramaran.salle-s.org
+name yaf set port 2319
+name yaf set list_all_groups
+name yaf color status yellow red bold
+#name yaf set port 1234
+name zorglub set server quatramaran.salle-s.org
+name zorglub set list_all_groups
+name zorglub set port 2319
+name zorglub color status yellow red bold
+
+name allyaf set server quatramaran.salle-s.org
+name allyaf set port 2319
+name allyaf set flnews_ext .allyaf
+name allyaf set hist_file_name .hist.allyaf
+name allyaf color status green red bold
+
+# Où trouver les news extérieures.
+name news set server news.ens.fr
+name news set port 119
+name news set flnews_ext .news
+name news set hist_file_name .hist.news
+name news color status green yellow bold
+
+# Où trouver les dépêches de l'AFP
+name afp set server quatramaran.ens.fr
+name afp set port 2019
+name afp set flnews_ext .afp
+name afp set hist_file_name .hist.afp
+name afp color status yellow black bold
+
+#Yes! A new timewaster! #les newsgroup de Cachan
+name cachan set server news.crans.org
+name cachan set port 119
+name cachan set flnews_ext .cachan
+name cachan set hist_file_name .hist.cachan
+name cachan color status yellow green bold
+
+# gmane
+name gmane set server news.gmane.org
+name gmane set port 119
+name gmane set flnews_ext .gmane
+name gmane set hist_file_name .hist.gmane
+name gmane color status yellow green bold
+
+# Les options générales
+# ---------------------
+# On poste les messages en priorité en latin-1 ; si ce n'est pas
+# possible, ce sera en UTF-8.
+name forum set post_charsets iso-8859-1
+name yaf set post_charsets iso-8859-1//translit
+name zorglub set post_charsets iso-8859-1//translit
+
+# On veut être prévenu de l'arrivée de nouveaux groupes, mais pas s'y
+# abonner automatiquement
+set warn_if_new
+set nodefault_subscribe
+
+# L'alpha-tree est le petit arbre qui représente la discussion courante
+# (en haut à droite de la fenêtre).
+#set alpha_tree
+set small_tree
+set with_cousins
+
+# Pour lire forum en «mode threadé», c'est-à-dire dans l'ordre de la
+# discussion plutôt que dans l'ordre chronologique des messages:
+
+#set threaded_space
+set threaded_next
+set noordered_summary
+
+# La façon de marquer les groupes:
+# M = censuré, D = désabonné, minuscules = lecture seule (les
+# mailing-lists).
+set flags_group "M DDm*dd"
+
+# un page-down qui amène plus loin que la fin du texte est honoré
+set scroll_after_end
+
+# On utilise les menus interactifs.
+set use_menus
+
+# On ne veut pas utiliser l'éditeur intégré de flrn
+#set auto_edit
+
+# On veut des lignes d'aide un peu plus explicites
+#set help_lines_file aide_forum
+set help_lines_file Foobar-Bleute
+
+# On inclut le message auquel on répond
+set include_in_edit
+
+# On édite tous les entêtes du message (à décommenter) :
+set edit_all_headers
+
+# Pas d'espace en haut
+set noskip_line
+
+# Changer de group après un zap
+set zap_change_group
+
+# Ne télécharger, que 2000 entêtes d'articles au plus. Pour remonter dans
+# les articles plus vieux, il faut sauter sur l'article n°1.
+name forum set max_group_size 2000
+
+# On marque d'un - les messages qu'on ne lit pas pour la première fois
+my_flags - read
+
+# Quels en-têtes choisit-on de montrer?
+
+# Table des numéros/en-têtes:
+# 1 : Auteur      2 : Réponse à     3 : Sujet         4 : Date
+# 5 : Newsgroups  6 : Followup-To   7 : Organization  8 : Lines
+# 9 : Sender     10 : Reply-To     11 : Expires      12 : X-Newsreader
+#header list 5 See-Also To Cc 6 4 1 2 3
+#header hide others
+
+
+# Je veux les entêtes grotesques
+#header list Newsgroups Sender Message-Id Followup-To See-Also Date From References Subject
+#header weak Message-ID Sender Newsgroups others
+
+header list others Date From References Subject
+header hide X-Mailer X-Original-Received X-Original-Path X-Original-NNTP-Posting-Host X-Modappbot-Version X-Priority Path Lines References NNTP-Posting-Host Mime-Version X-Trace X-Complaints-To NNTP-Posting-Date X-Newsreader Xref Distribution Organization Injection-Date Injection-Info
+header weak Sender Newsgroups others
+
+# la cerise sur le gâteau: les headers pas secrets en vert...
+#name forum regcolor header 1 green default bold "^(Auteur:|Réponse à:|Sujet:|See-Also:)"
+#name forum regcolor header - blue std-header normal "^(X-Start-Date|X-Chronology|X-Troll|X-Karma|X-Date-Of-The-(Day|Second)|X-Smiley|X-BOFH-Style-Excuse|X-Boston-Temperature|X-Boston-Temperature-Encoding|X-Boston-Weather|X-Phase-Of-Moon|Followup-To|X-Slashdot-Headline|Newsgroups|Date):"
+#name forum regcolor header 2 cyan default bold "^(Auteur|Réponse à|Sujet|See-Also):(.*)$"
+# les autres en ROUGE !
+#name forum regcolor header 1 red std-header normal "^([^:]*:)"
+# et l'encre invisible en fond blanc
+#name forum regcolor normal - black white normal "| "
+
+#header list Newsgroups See-Also To Cc Followup-To Date From References Subject
+#header hide others
+
+my_hdr X-Start-date: %`date -R`
+
+# Les couleurs
+# ------------
+
+mono quoted underline
+mono header bold
+
+color header cyan    default normal
+color normal default default normal
+color sig    blue    default normal
+color quoted red default normal
+
+# Pour colorier différemment les citations paires ou impaires.
+regcolor quoted,normal - green default normal "^((<< *|[«>|#]){2})+([^>|#].*$|$)"
+regcolor quoted,normal - cyan default normal "^(<< *|[>|#])((<<|[«>|#]){2})*([^>|#].*$|$)"
+
+# Tout ce qui ressemble à une URL ou une adresse mail.
+regcolor normal,sig - magenta default underline "(ftp|http|https)://[-a-z0-9_.+!*',;/?:@&=%~#]+"
+regcolor normal,sig - magenta default bold "[a-z0-9_.$-]+@[-a-z0-9_.]+"
+
+# On peut évidemment varier bien plus... par exemple, pour mettre le
+# sujet dans une couleur spéciale.
+# regcolor header - yellow std-header bold "^Sujet:.*$"
+color header cyan default normal normal
+regcolor header 2 cyan default bold "^(Auteur|Réponse à|Sujet|See-Also): (.*)$"
+regcolor header 1 green default bold "^(Auteur:|Réponse à:|Sujet:|See-Also:)"
+regcolor header 1 green std-header normal "^([^:]*:)"
+
+# Les bindings clavier
+# --------------------
+
+# Pour lire le rot13.
+bind X filter rot13
+# convertir l'utf8
+bind Y filter iconv -f UTF8 -t L1
+
+# Pour accéder à un message à partir de son message-id.
+bind y art-msgid
+
+# Pour modifier le post_name #YAF!!!!!!
+#bind Y :set post_name
+
+bind A subscribe
+bind D unsubscribe
+
+bind pager \13 pgdown
+bind pager \272 pgup
+bind pager pageup pgup
+bind pager pagedown pgdown
+bind r menu-summary
+
+# Pour pouvoir se déplacer rapidement dans les menus ;
+bind menu pageup pgup
+bind menu pagedown pgdown
+
+# Pour pouvoir continuer une recherche
+bind menu ; nxt-search
+
+
+# Si vous voulez les touches de vi, décommentez le paragraphe suivant :
+ bind menu j down
+ bind menu k up
+# bind h left
+# bind l right
+# bind j down
+# bind k up
+# bind i list
+# bind I LIST
+# bind d kill
+
+bind n next-unread
+bind c swap-grp
+
+# On répond par mail à un message avec la touche M.
+bind M mail-answer
+
+#pour voir un lien
+bind U pipe urlview
+
+# On est amené à se promener sur des newsgroups anglophones. En fait, il
+# n'y a que dans forum que l'on parle français et que les articles sont
+# désignés par nom de groupe/numéro; ceci est réglé plus bas.
+set attribution="%n wrote in message %i:"
+
+#pour voir les espaces insecables
+regcolor normal,quoted,sig - default white normal " "
+
+
+
+
+# Options spécifiques à forum
+# ---------------------------
+name forum set prefixe_groupe ens.forum.
+
+# On affiche d'une façon un peu plus conforme à l'ancien forum (un
+# programme qui a disparu à l'automne 97...).
+name forum set forum_mode
+name forum set parse_from
+
+# Le nom dont je signe mes messages
+#name forum set post_name Johann "Dam's" Gambolputty de von Ausfern-schplenden-schlitter-crasscrenbon-fried-digger-dingle-dangle-dongle-dungle-burstein-von-knacker-thrasher-apple-banger-horowitz-ticolensic-grander-knotty-spelltinkle-grandlich-grumblemeyer-spelterwasser-kurstlich-himbleeisen-bahnwagen-gutenabend-bitte-ein-nurnburger-bratwustle-gernspurten-mitz-weimache-luber-hundsfut-gumberaber-shonedanker-kalbsfleisch-mittler-aucher von Hautkopft of Ulm
+
+name forum set post_name Dam's
+
+# Pour marquer d'un wow (!) les messages que leur auteur considère comme une
+# provocation grossière, décommenter la ligne suivante
+name forum my_flags ! X-Troll: yes
+
+# On met une attribution en français
+#name forum set attribution="Comme le dit si mal %n, dans le message (%g:%C):"
+name forum set attribution="Bluh blih %n bloh (%g:%C) ploum ploum:"
+
+# Il y a sur forum quelques cinglés qui mettent des choses intéressantes
+# dans leur signature; on la reprend quand on cite un message auquel on
+# répond
+name forum set quote_sig
+
+# On modifie l'abonnement par defaut pour exclure archives
+name forum set auto_ignore="^control|^[^.]+$|archeo-forum|mailing-lists"
+
+# La censure. Un message peut être censuré par son auteur; les âmes
+# sensibles qui lisent le groupe en question en mode censuré ne verront
+# alors pas le message.
+name forum set kill_file_name .flrnkill.forum
+
+# On marque d'une araignée (*) les messages censurés par leur auteur
+# qu'on est quand même amené à lire.
+# name forum my_flags * X-Censorship: yes
+
+name forum bind F1 shell altview /usr/local/util/doc/flrn/forum
+
+# Pour s'abonner automatiquement à certains groupes.
+name forum set nosubscribe_first
+name forum set auto_subscribe ""
+
+#Pour ne pas considérer les messages antérieurs aux max_group_size précédents
+name forum set max_group_size 1000
+name forum set default_subscribe
+
+#blast
+name forum bind Z pipe-header Message-ID: /opt/gourous/forum/bin/simpleblast
+
+#piratage
+name forum bind P pipe su-tuteurs /users/staffs/tuteurs/bin/piratage
+
+# Options spécifiques aux news extérieures
+# ----------------------------------------
+
+name news set default_flnewsfile /usr/local/util/lib/flrn/flnewsrc_nef
+
+
+# YAF!!
+#-----------------------------------------
+
+#adoptons la suggestion du nicolas couchoud
+#grmbl QP-encding des noms casse tout :(
+#name yaf set post_charsets cp1252
+
+name yaf set kill_file_name .flrnkill.yaf
+name yaf set attribution=
+name yaf set flnews_ext .yaf
+name yaf set hist_file_name .hist.yaf
+name yaf set post_name Gondolin
+name yaf set parse_from
+name yaf set quote_sig
+name yaf set prefixe_groupe yaf.
+#name yaf set attribution="%n, dans le message (%g:%C), a écrit :\n"
+name yaf set default_subscribe
+
+#autres options:
+#name yaf header 2 1 4 X-Conti
+name yaf header list Newsgroups X-Conti Date From Subject
+name yaf slang_parse /home/robert/.flrn/slang_yaf.sl
+
+name zorglub set kill_file_name .flrnkill.zorglub
+name zorglub set attribution=
+name zorglub set flnews_ext .zorglub
+name zorglub set hist_file_name .hist.zorglub
+name zorglub set post_name Gondolin
+name zorglub set parse_from
+name zorglub set quote_sig
+name zorglub set prefixe_groupe zorglub.
+name zorglub set default_subscribe
+name zorglub header list Newsgroups X-Conti Date From Subject
+name zorglub slang_parse /home/robert/.flrn/slang_yaf.sl
+
+#name yaf bind l [Gabuzo,1]
+#name yaf slang_parse /users/03/info/robert/.flrn/slang_yaf_example.sl
+
+#name yaf regcolor header - green std-header normal "^(Réponse à|Date|Followup-To|Auteur):"
+#name yaf regcolor header - blue std-header normal "^X-Conti:.*$"
+
+#Cachan
+#-------------------------------------
+
+name cachan set kill_file_name .flrnkill.cachan
+name cachan set attribution=
+name cachan set post_name Dam's
+name cachan set parse_from
+name cachan set quote_sig
+name cachan set attribution="%n, dans le message (%g:%C), a écrit :\n"
+name cachan set default_subscribe
+
+# ALLFORUM:
+# -------------------------------------
+name allforum set prefixe_groupe ens.forum.
+name allforum set forum_mode
+name allforum set parse_from
+name allforum set post_name "Dam's"
+name allforum set attribution="%n, dans le message (%g:%C), a écrit :"
+name allforum set quote_sig
+name allforum bind F1 shell altview /usr/local/util/doc/flrn/forum
+name allforum set kill_file_name .flrnkill.allforum
+
+# ALLYAF
+#-----------------------------------------
+name allyaf set kill_file_name .flrnkill.allyaf
+name allyaf set attribution=
+name allyaf set post_name "Gondolin"
+name allyaf set parse_from
+name allyaf set quote_sig
+name allyaf set prefixe_groupe yaf.
+
+name forum my_hdr From: Damien Robert <damien.robert__forum@normalesup.org>
+name yaf my_hdr From: Damien Robert <damien.robert__yaf@normalesup.org>
+my_hdr From: Damien Robert <damien.olivier.robert+news@gmail.com>
+
+# Gmane
+name gmane header list Date From To Cc References Subject
+#Disappearing headers make the scrolling bug
+#name gmane header weak To Cc
+name gmane header hide others
+name gmane set max_group_size 1000
+name gmane my_hdr From: Damien Robert <damien.olivier.robert+gmane@gmail.com>
+name gmane set nowarn_if_new

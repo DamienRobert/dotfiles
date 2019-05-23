@@ -18,4 +18,4 @@ done
 gth_topic "$@"
 
 git config "branch.${gth_local}.rebase" $REBASE
-[[ -n $UPSTREAM ]] && git branch --set-upstream-to $gth_remote $gth_local
+[[ -n $gth_remote ]] && git branch --set-upstream-to $gth_remote $gth_local

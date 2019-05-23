@@ -1,0 +1,193 @@
+My Bugs Reports
+===============
+
+https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/304004
+Network manager does not run files in /etc/network/if-pre-up.d
+
+https://bugs.ruby-lang.org/issues/10708
+In a function call, double splat of an empty hash still calls the function with an argument
+
+https://bugs.ruby-lang.org/issues/10879
+UnboundMethod#to_proc
+
+https://bugzilla.gnome.org/show_bug.cgi?id=792724
+Set 'lang: und-zsye' rather than 'family: emoji' for emoji characters
+-> https://gitlab.gnome.org/GNOME/pango/issues/298
+
+https://bugzilla.xfce.org/show_bug.cgi?id=14236
+Displays.c hardcodes the dpi to 96 
+
+https://github.com/unoconv/unoconv/issues/470
+ Unoconv cannot start a new instance when libreoffice is already launched #470
+
+https://github.com/systemd/systemd/issues/9581
+ systemctl enable aborts on first non existing unit #9581
+
+https://github.com/OfflineIMAP/offlineimap/issues/536
+ XOAUTH2 authentication failed #536
+
+Closed
+------
+
+https://bugs.ruby-lang.org/issues/7498
+Optparse does not complete argument when used with :REQUIRED
+
+https://bugs.ruby-lang.org/issues/10883
+Passing a block to itself
+=> Implemented as Kernel#yield_self
+
+https://bugs.ruby-lang.org/issues/13236
+Ruby segfault
+
+https://bugs.ruby-lang.org/issues/13271
+Clarifications on refinement spec
+
+https://bugzilla.xfce.org/show_bug.cgi?id=12234
+notify-send -t 1 does not work without a composite manager
+
+https://bugzilla.xfce.org/show_bug.cgi?id=13753
+Negative geometry offset do not position the correct corner
+
+https://bugs.archlinux.org/task/31306
+ FS#31306 - /home fails to mount with lvm, systemd and linux-3.4.9 
+
+https://github.com/ruby-ore/ore/issues/43
+ New release #43 [-> Ore templates to submodules]
+
+https://github.com/inukshuk/bibtex-ruby/issues/100
+bibtex-ruby should not convert strings entries to integer #100 
+
+https://bugzilla.gnome.org/show_bug.cgi?id=785607
+Geometry spec not correctly implemented
+
+https://github.com/inukshuk/bibtex-ruby/issues/100
+ bibtex-ruby should not convert strings entries to integer #100
+
+https://github.com/gettalong/webgen/issues/7
+ private method `load' called for Psych:Module #7
+
+https://github.com/Compass/compass/issues/1987
+ Properties are only allowed within rules, directives, mixin includes, or other properties. #1987
+
+https://github.com/systemd/systemd/issues/945
+ systemd-firstboot does not support all the features of the *ctl tools #945
+
+https://github.com/systemd/systemd/issues/979
+ systemd-network does not match the veth- interface #979
+
+https://github.com/systemd/systemd/issues/9870
+ file system namespace service options not working with user sessions #9870
+
+https://github.com/mikel/mail/issues/1276
+ Cannot parse LF mail when body contains a non ascii character #1276
+
+https://github.com/SidOfc/cani/issues/2
+ viewer.rb: light gray is unreadble on light background terminal #2
+
+https://github.com/bellecp/fast-p/issues/12
+ Put fast-p_cached_pdftotext_output.db in $XDG_CACHE_HOME/ #12
+
+https://github.com/systemd/systemd/issues/10359
+ systemd-resolve: coredump #10359
+
+My Pull Requests
+================
+
+https://github.com/deivid-rodriguez/pry-byebug/pull/187
+Allow to pass options to Pry.start #187
+
+https://github.com/ConradIrwin/pry-rescue/pull/110
+ bin/rescue: use the realpath #110
+
+https://github.com/capistrano/sshkit/pull/436
+ Command: wrap a Proc interaction_handler into a MappingInteractionHandler #436
+
+Closed
+------
+
+https://github.com/florianpilz/micro-optparse/pull/7
+Short options
+
+git-latexdiff commits a86a72afef4042bc2a7f4a8cb9835b2c1836feac, 21cd4f0dd359662b8a3978b6eeb39344fa1321e2
+
+https://github.com/rubygems/rubygems/pull/1157
+ Handle trailing colon in GEM_PATH #1157
+
+https://github.com/stephencelis/ghi/pull/247
+ Fix a bug in formatting.rb #247
+
+https://github.com/csu/export-saved-reddit/pull/27
+ Correct bugs and add a --all switch #27
+
+https://github.com/anandthakker/doiuse/pull/81
+ Conform to browserslist api
+
+https://github.com/DamienRobert/doiuse/pull/1
+ cli.js --browsers: default to null #1
+
+https://github.com/pry/pry/pull/1762
+ PluginManager#load_cli_options: use the realpath #1762
+
+https://github.com/AladW/aurutils/pull/439
+ aur-repo-filter: pass --repo=... to pacsift #439
+
+https://github.com/AladW/aurutils/pull/440
+ aur-build: fix a bug in find_pkg_dupes() #440
+
+https://github.com/AladW/aurutils/pull/441
+ aur-chroot: A local repo without a file:// entry is not an error #441
+
+https://github.com/AladW/aurutils/pull/442
+ aur.1: fix typos #442
+
+https://github.com/AladW/aurutils/pull/443
+ Add $AUR_DBROOT #443
+
+https://github.com/pry/pry/pull/1771
+ repl.rb: guard against negative overhang #1771
+
+https://github.com/AladW/aurutils/pull/448
+ [wip] factorise db handling and add `aur repolist` #448
+
+https://github.com/AladW/aurutils/pull/450
+ wip: plumbing #450
+
+https://github.com/SidOfc/cani/pull/1
+ fzf.rb: correctly detect the binary #1
+
+https://github.com/gettalong/cmdparse/pull/3
+ cmdparse.rb: fix a nil.sub bug #3
+
+https://github.com/pry/pry/pull/1861
+ pager.rb: fix Helpers constant invocation #1861
+
+Bugs I follow
+=============
+
+https://bugs.archlinux.org/task/16702
+ FS#16702 - [linux] Versioned Kernel installs 
+
+http://comments.gmane.org/gmane.mail.mutt.devel/21777
+[Mutt] #3724: mime type application/pgp-encrypted breaks sending public keys with extension .asc
+
+Closed
+-------
+
+https://dev.mutt.org/trac/ticket/2973
+configurable encrypt-to-self with gpgme 
+Discussion: http://comments.gmane.org/gmane.mail.mutt.user/28587
+Solved by neomutt 'patch-encrypt-to-self-neomutt'
+
+https://bugs.archlinux.org/task/36265
+ FS#36265 - [systemd] rd.systemd.unit=emergency.target does not work 
+Duplicates:
+https://bugs.archlinux.org/task/44493
+ FS#44493 - [systemd] Add rescue.target and rescue.service to initramfs
+https://bugs.archlinux.org/task/45480
+ FS#45480 - [systemd] The 'systemd' initcpio hook fails to provide the shell or sulogin binaries 
+
+https://bugzilla.mindrot.org/show_bug.cgi?id=2249
+sshd ignores PAM_MAXRETRIES pam return value
+[From http://serverfault.com/questions/588297/pam-servicesshd-ignoring-max-retries
+A temp solution is to set 'MaxAuthTries 3' but I wonder if this does not
+also count the number of keys the client can present]

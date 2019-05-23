@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+my $rate = 48000;
+my $channels = 2;
+my $channels_playback = 8;
+my $dt = 1 / 48000;
+
+open my $out, "|-", "aplay", "-c", $channels_playback, "-r", $rate,
+  "-f", "S32_LE", "-D", "hw" or die "out: $!\n";
+select $out;
+
+for(my $t = 0; $t < 5; $t += $dt) {
+  for my $c (1 .. $channels) {
+    my $v=0;
+    if ($c == 1) {
+    #my $v = sin(440 * 6.28 * $c * $t);
+    $v = sin(440 * 6.28 *  $t);
+    }
+    $v = int($v * 0x7FFFFFFF);
+    #print STDOUT "$c : $v \n";
+    print pack "l", $v;
+  }
+}

@@ -1,0 +1,16 @@
+if exists("floatrow_package_file")
+	finish
+endif
+let floatrow_package_file = 1
+
+let g:TeX_package_option_floatrow = ''
+
+let g:TeX_package_floatrow =
+\ 'bra:floatstyle,'
+\.'brs:newfloat{<++>}{<++>}{<++>}[<++>],'
+\.'brd:floatname,'
+\.'brd:listof,'
+\.'bra:restylefloat,'
+\.'brd:floatplacement'
+
+" vim:ft=vim:ff=unix:

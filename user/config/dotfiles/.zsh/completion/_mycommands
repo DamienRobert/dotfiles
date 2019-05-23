@@ -1,0 +1,120 @@
+#compdef allnice bluetooth_helper checkmail dofor dm powersave get_authinfo raspberry vcs wpa_helper totxt
+
+case $service in
+	allnice )
+		_arguments \
+		':Command:_command_names -e' \
+		'*::arguments: _normal'
+		;;
+
+	bluetooth_helper )
+		_arguments \
+			{-i,--init}"[Pair first]" \
+			'1:device:(ueboom uebommr android soundbar)'
+		;;
+
+	checkmail )
+		_arguments -s -S \
+	{-c,--color}"[Color output (on by default)]" \
+	"--notify[Send output to notification]" \
+	"--check[specify list of maildir to check]:maildir:_files -/" \
+	"-q[quiet]"
+	;;
+
+	dofor )
+		_arguments \
+		':Command:_command_names -e' \
+		'*::arguments: _normal'
+		;;
+
+	dm)
+		_arguments \
+			'1:Action:(logout dialog lock suspend hibernate halt poweroff)'
+		;;
+
+	powersave )
+		local -a values start_values
+		#we need an extra level of quoting here:
+		values=("true:'activate power save'"
+						"false:'desactivate power save'"
+						"status:'see powersave status'"
+						"state:'check if power is on'"
+						"start:'start services or network device'"
+						"stop:'stop services or network device'"
+						"brightness:'set brightness'"
+						"usb:'set powervalue of usb bus'")
+		start_values=(bt bluetooth netdev services)
+		#todo: options powersave true -f; powersave stop netdev -f; powersave stop services -f
+		if [[ $CURRENT -gt 2 ]]; then
+			(( CURRENT-- ))
+			case $words[2] in
+				usb) _arguments ':usb power value:(on auto suspend)' ;;
+				brightness) _arguments \
+					'-dpms[disable dpms]' \
+					'+dpms[enable dpms]' \
+					':brightness:(min max \$max_brightness)' ;;
+				start) _arguments ":start:($start_values)" ;;
+				stop) _arguments ":stop:($start_values)" ;;
+			esac
+		else
+		_arguments \
+			":Powersave value:(($values))"
+		fi
+	;;
+
+	get_authinfo )
+		_arguments \
+			'-connect[only try to connect]' \
+			'-env[use ~/.gpg-agent-info]' \
+			'-auth[allow to ask a passphrase]' \
+			'-key[allow to ask a passphrase]:key file:_files' \
+			'-gpgopt[add gpg option]:gpg option' \
+			'-gpgagentopt[add gpg-agent option]:gpg-agent option' \
+			- Actions \
+			'1:Action:(start exec startexec wait)' \
+			'2:Command:_command_names -e' \
+			'*:::arguments: _normal' \
+			- Credentials \
+				'1:Credential:(pass)' \
+				#'2:machine:'  \
+				#'3:login:'  \
+				#'4:port:'
+	;;
+
+	raspberry)
+	if [[ $CURRENT -gt 2 && $words[2] = "audio" ]]; then
+			shift words
+			(( CURRENT-- ))
+			_arguments '1:Value:((0\:auto 1\:analog 2\:hdmi))'
+	 else
+			_arguments '1:Action:(audio mpd)'
+	 fi
+	;;
+
+  totxt)
+    _arguments -s -S \
+      {-m,--markdown}'[convert to markdown (using pandoc)]' \
+      {-h,--html}'[convert to html (using pandoc)]' \
+      {-p,--pdf}'[convert to pdf (using unoconv)]' \
+      '--pandoc-pdf[convert to pdf (using pandoc)]' \
+      {-q,--quiet}'[quiet]' \
+      {-v,--view}'[view the converted files]' \
+      '--mime[specify mime type]:Mime:' \
+      '--charset[specify charset]:Charset:' \
+      '*:Files:_files'
+    ;;
+
+	vcs)
+		_arguments \
+		'1:Action:(list update)' \
+		'*:VCS folders:_files -/'
+	;;
+
+	wpa_helper)
+		_arguments \
+			"-i[interface]:interface name" \
+			"1:Action:(scan commit menu add save pass)" \
+			"2:ssid:" \
+			"3:pass:"
+	;;
+esac

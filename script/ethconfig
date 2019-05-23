@@ -1,11 +1,25 @@
 #!/bin/sh
+# via ip: sudo ip a add 192.168.17.1/24 dev eth0
+#         sudo ip route add default gateway
+# Ex: CIEP
+# sudo ip a add 10.1.17.42/16 dev wlo1; sudo ip r add default via 10.1.254.251
+# sudo ip a del 10.1.17.42/16 dev wlo1; sudo ip r del default via 10.1.254.251
 
-echo "IP: $1"
-echo "broadcast: $2"
-echo "netmask: $3"
-echo "routeur: $4"
-echo "nameserver: $5"
+#Use systemd-networkd
+mkdir -p /run/systemd/network
+file=/run/systemd/network/99-custom-static.network
+cat <<EOS >$file
+[Match]
+Name=$1
 
-ifconfig eth0 "$1" broadcast "$2" netmask "$3" 
-route add default gw "$4"
-echo "nameserver $5" > /etc/resolv.conf
+[Network]
+Address=$2
+Gateway=$3
+#Broadcast=
+EOS
+
+if [ -n "$4" ]; then
+	echo "DNS=$4" >> $file
+fi
+echo "! $file:"
+cat $file

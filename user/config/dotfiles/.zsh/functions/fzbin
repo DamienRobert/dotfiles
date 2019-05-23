@@ -1,0 +1,36 @@
+fzbin() {
+	local result
+	result=("$(echo ${(j:\0:)path} | fzv -- --read0 --header="[bin:path ($@)]")")
+	[[ -n $result ]] && fzbins $@ ${(f)result}
+}
+
+fzbins() {
+	local OPTS=$(getopt -o 'xf' --long 'exec,fork' -- "$@") || return 1
+	local mode result i dirs=()
+	eval set -- "$OPTS"
+	while true; do
+		case $1 in
+			-- ) shift; break ;;
+			-f|--fork ) shift; mode=fork ;;
+			-x|--exec ) shift; mode=exec ;;
+		esac
+	done
+	for i in $@; do
+		[[ -d $i ]] && dirs+=$i
+	done
+	# limit to one thread so that the results are sorted by $dirs order
+	result=$(fd -j1 --type l --type x -d1 . $dirs | fzv -- +0 --header="[bin:exe ($mode)] => $dirs")
+	if [[ -n $result ]]; then
+		for i in ${(f)result}; do
+			case $mode in
+				fork) exec $i & ;;
+				exec) $i ;;
+				*) echo $i ;;
+			esac
+		done
+	else
+		fzbin
+	fi
+}
+
+fzbin $@

@@ -1,3 +1,10 @@
+Mouse
+=====
+
+Better mouse shortcuts, see:
+https://bbs.archlinux.org/viewtopic.php?id=204091
+https://github.com/tmux/tmux/issues/145
+
 Default bindings
 ================
 
@@ -75,3 +82,31 @@ bind-key -r  C-Down resize-pane -D
 bind-key -r  C-Left resize-pane -L
 bind-key -r C-Right resize-pane -R
 
+Plugins
+=======
+
+- https://github.com/tmux-plugins/tmux-resurrect
+Persists tmux environment across system restarts.
+
+Misc
+====
+
+http://stackoverflow.com/questions/22138211/how-do-i-disconnect-all-other-users-in-tmux
+=> <prefix> D
+
+Commands
+========
+
+http://hyperpolyglot.org/multiplexers
+                                  screen 		tmux
+create session and attach 	$ screen 		$ tmux
+create session foo and attach 	$ screen -S foo 	$ tmux new -s foo
+create detached session foo 	$ screen -S foo -d -m 	$ tmux new -s foo -d
+list sessions 			$ screen -list 		$ tmux ls
+attach 	$ screen -r 		$ tmux attach
+attach to session foo 		$ screen -r foo 	$ tmux attach -t foo
+attach to session by pid 	$ screen -r pid 	
+kill session foo 		$ screen -r foo -X quit $ tmux kill-session -t foo
+send command to session foo 	$ screen -r foo -X command 	$ tmux command -t foo
+run ls in session foo 		$ screen -r foo -X stuff "ls $(echo -ne '\015')" 	$ tmux send-keys -t foo 'ls' C-m
+run vi in new window 		$ screen vi /etc/motd 	$ tmux new-window vi /etc/motd

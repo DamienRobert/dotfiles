@@ -1,0 +1,31 @@
+* https://en.wikipedia.org/wiki/Binary-to-text_encoding
+
+uuencoding https://en.wikipedia.org/wiki/Uuencoding
+Old version of the base64 format (uuencode now uses base64)
+
+* https://en.wikipedia.org/wiki/Base64
+Used by mime; Encode to A-Za-z0-9+/ (= is used for padding)
+(for some other schemes the '+/' characters are replaced by other characters)
+Ex: dWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRo
+ZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
+
+* https://en.wikipedia.org/wiki/Quoted-printable
+  J'interdis aux marchands de vanter trop leur marchandises. Car ils se font =
+  vite p=C3=A9dagogues et t'enseignent comme but ce qui n'est par essence qu'=
+  un moyen, et te trompant ainsi sur la route =C3=A0 suivre les voil=C3=A0 bi=
+  ent=C3=B4t qui te d=C3=A9gradent, car si leur musique est vulgaire ils te f=
+  abriquent pour te la vendre une =C3=A2me vulgaire.
+
+* Percent encoding: https://en.wikipedia.org/wiki/Percent-encoding
+application/x-www-form-urlencoded: old form of url percent encoding
+Ex: http://%C3%A9%C3%A0%E2%82%AC@m%C3%A9lias%E2%82%AC.com
+
+* Punycode and IDN: https://en.wikipedia.org/wiki/Internationalized_domain_name
+Ex: xn--bcher-kva.ch
+Algo on when to show punycode/unicode for idn: http://www.chromium.org/developers/design-documents/idn-in-google-chrome
+
+Tools:
+- uuencode/uudecode (use -m for base64)
+- ens.forum.informatique.os.linux:42711
+  recode b64..data
+  recode qp..data

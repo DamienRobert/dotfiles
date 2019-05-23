@@ -1,0 +1,52 @@
+#!/bin/zsh
+
+ALL=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -a|--all ) shift; ALL=t ;;
+    *) break;;
+  esac
+done
+
+AlbumArt=$HOME/mine/script/mpd/album_art.rb
+MpdNotify=$HOME/mine/script/mpd/mpd_notify.rb
+
+# if [[ -x $MpdNotify ]]; then
+# 	mpc "$@"
+# 	exec $MpdNotify
+# fi
+
+FORMAT='[%artist%|%name%]\n[%track%	]<b>[%title%|%file%]</b>	[<i>%album%</i>][ (%disc%)]'
+[[ -n $ALL ]] && FORMAT+='[ -A:%albumartist%][ -C:%composer%][ -P:%performer%]'
+
+STATUS=("${(@f)$(mpc -f $FORMAT "$@")}")
+
+if [[ -z $ICON && -x $AlbumArt ]]; then
+  file=$($AlbumArt 2>/dev/null)
+  [[ -e $file ]] && ICON=$file
+  #test if the file is a real cover
+  if [[ -h $file ]]; then
+    link=$(readlink $file)
+    [[ $(basename $link) == "unknown.png" ]] && ICON=
+  fi
+fi
+[[ -z $ICON ]] && ICON="multimedia-player"
+
+fixamp() {
+	#notify-send n'affiche rien s'il y a un & dans le message!!
+	echo "$@" | sed -e 's/&/\&amp;/g' -e 's/<\([^bi/]\)/\&lt;\1/g' -e 's/\([^bi]\)>/\1\&gt;/g'
+}
+
+AUTHOR=$STATUS[1]; [[ -z $AUTHOR ]] && AUTHOR="mpc"
+SONG=$STATUS[2];
+STATE=(${=STATUS[3]});
+if [[ -z $1 ]]; then COMMAND=$STATE[1]; else; COMMAND="[$1]"; fi
+POSITION=$STATE[2]
+TIME=$STATE[3]
+#VOLUME=${${STATE[4]}[2,-2]}
+STATE=(${=STATUS[4]});
+VOLUME=$STATE[2]
+
+notify-send -t 5000 -u low -i $ICON $AUTHOR "$(fixamp "$SONG\n$COMMAND $TIME	$POSITION (Vol:$VOLUME)")"

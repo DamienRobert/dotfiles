@@ -1,0 +1,61 @@
+#!/usr/bin/env zsh
+
+LFANT=(
+aenge
+kbelabas
+jcouveig
+ballombe
+jcerri
+hecohen
+plezowsk
+emilio
+hiveylaw
+sionica
+fjohansson
+gcastagn
+damienrobert
+)
+
+while [[ $# -gt 0 ]]; do
+	repo=$1; shift
+	echo "$repo (press a key)"; read
+	chmod u=rwX,go=rX -R $repo #Clean up (Otherwise nfs keep all added acls)
+	for user in $LFANT; do
+		echo "$user"
+		#nfs4_setfacl -R -a A:df:$user@math.u-bordeaux1.fr:RXW $repo
+		#this does not continue as soon as there is an error :-(
+		for file in **/*; do
+			#the -R is still needed to appy on dirs
+			nfs4_setfacl -R -a A:df:$user@math.u-bordeaux1.fr:RXW $file
+		done
+		#approxamitively equal to
+		#setfacl -m u:$i:rwX -R $repo
+		#setfacl -dm u:$i:rwX -R $repo
+	done
+done
+
+#more details on nfs4-acl:
+#see http://linux.die.net/man/5/nfs4_acl
+#http://linux.die.net/man/1/nfs4_setfacl
+#ex: cd /scratch/public_html/pages_institutionnelles/logiciels
+#nfs4_getfacl
+#A:fd:ballombe@math.u-bordeaux1.fr:rwaDxtTnNcCy [...]
+#A:fd:www@math.u-bordeaux1.fr:r
+#A::OWNER@:rwaDxtTnNcCoy
+#A:g:GROUP@:rxtncy
+#A::EVERYONE@:rxtncy
+
+#make repo:
+#cd ~/Public
+#g clone --bare ../mathrice/lfant
+#Note: nfs4_acls take into account the umask of the owner, so we need to
+#set the git config like so:
+#	sharedRepository=umask
+#	logAllRefUpdates=true
+#and to push (on my end, not on the others end, I need to do umask 002; git push)
+#
+#Eventuellement créer tous les répertoires:
+#umask 002
+#for i in {0..9} a b c d e f; do for j in {0..9} a b c d e f; do mkdir -p "objects/$i$j"; done; done
+#mkdir -p objects/{info,pack} refs/{heads,tags}
+

@@ -1,0 +1,117 @@
+ln:
+       ln [OPTION]... [-T] TARGET LINK_NAME   (1st form)
+       ln [OPTION]... TARGET                  (2nd form)
+       ln [OPTION]... TARGET... DIRECTORY     (3rd form)
+       ln [OPTION]... -t DIRECTORY TARGET...  (4th form)
+
+       --backup[=CONTROL]
+              make a backup of each existing destination file
+       -f, --force
+              remove existing destination files
+       -i, --interactive
+              prompt whether to remove destinations
+       -n, --no-dereference
+              treat  LINK_NAME  as a normal file if it is a symbolic link to a
+              directory
+       -r, --relative
+              create symbolic links relative to link location
+       -T, --no-target-directory
+              treat LINK_NAME as a normal file always
+
+cp:
+       cp [OPTION]... [-T] SOURCE DEST
+       cp [OPTION]... SOURCE... DIRECTORY
+       cp [OPTION]... -t DIRECTORY SOURCE...
+       
+       -a, --archive
+              same as -dR --preserve=all
+       --backup[=CONTROL]
+              make a backup of each existing destination file
+       -d     same as --no-dereference --preserve=links
+       -f, --force
+       -i, --interactive
+       -n, --no-clobber
+       -L, --dereference
+              always follow symbolic links in SOURCE
+       -P, --no-dereference
+              never follow symbolic links in SOURCE
+       -p     same as --preserve=mode,ownership,timestamps
+       --preserve[=ATTR_LIST]
+              preserve the specified attributes (default: mode,ownership,time‐
+              stamps), if  possible  additional  attributes:  context,  links,
+              xattr, all
+       -R, -r, --recursive
+              copy directories recursively
+       --reflink[=WHEN]
+              control clone/CoW copies. See below
+       --remove-destination
+              remove  each existing destination file before attempting to open
+              it (contrast with --force)
+       -s, --symbolic-link
+              make symbolic links instead of copying
+       -t, --target-directory=DIRECTORY
+              copy all SOURCE arguments into DIRECTORY
+       -T, --no-target-directory
+              treat DEST as a normal file
+       -u, --update
+              copy only when the SOURCE file is  newer  than  the  destination
+              file or when the destination file is missing
+       -v, --verbose
+              explain what is being done
+
+mv: 
+       mv [OPTION]... [-T] SOURCE DEST
+       mv [OPTION]... SOURCE... DIRECTORY
+       mv [OPTION]... -t DIRECTORY SOURCE...
+
+       -f/-i/-n
+       -u, --update
+
+rm:
+       -f/-i
+       -I     prompt once before removing  more  than  three  files,  or  when
+              removing recursively; less intrusive than -i, while still giving
+              protection against most mistakes
+       --interactive[=WHEN]
+              prompt according to WHEN: never,  once  (-I),  or  always  (-i);
+              without WHEN, prompt always
+       -d, --dir
+              remove empty directories
+
+mkdir:
+       -m, --mode=MODE
+              set file mode (as in chmod), not a=rwx - umask
+       -p, --parents
+              no error if existing, make parent directories as needed
+       -v, --verbose
+              print a message for each created directory
+
+rmdir:
+       --ignore-fail-on-non-empty
+          ignore each failure that is solely because a directory is non-empty
+       -p, --parents
+              remove  DIRECTORY  and  its ancestors; e.g., 'rmdir -p a/b/c' is
+              similar to 'rmdir a/b/c a/b a'
+       -v, --verbose
+              output a diagnostic for every directory processed
+
+install:
+       install [OPTION]... [-T] SOURCE DEST
+       install [OPTION]... SOURCE... DIRECTORY
+       install [OPTION]... -t DIRECTORY SOURCE...
+       install [OPTION]... -d DIRECTORY...
+
+       -d, --directory
+              treat all arguments as directory names; create all components of
+              the specified directories
+       -D     create all leading components of DEST except the last, then copy
+              SOURCE to DEST
+                     -g, --group=GROUP
+              set group ownership, instead of process' current group
+       -m, --mode=MODE
+              set permission mode (as in chmod), instead of rwxr-xr-x
+       -o, --owner=OWNER
+              set ownership (super-user only)
+       -p, --preserve-timestamps
+              apply access/modification times of SOURCE files to corresponding
+              destination files

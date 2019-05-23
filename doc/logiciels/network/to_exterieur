@@ -1,0 +1,142 @@
+SSH via http/https
+==================
+http: port 80, https: port 443
+
+- phare2.normalesup.org:443 est un serveur ssh
+
+- Shellinabox, un émulateur de terminal accessible via navigateur web, a
+  été installé sur phare (il remplace Ajaxterm qui a divers problèmes):
+  https://www.normalesup.org/phare/shellinabox/
+
+Port forwarding
+==============+
+
+in représente la machine subissant le firewall
+out la machine à laquelle on veut se connecter
+middle la machine par laquelle on va passer
+
+* in -> out:
+in $  ssh -fCNT -L port_in:out:port_out middle
+localhost:port_in -ssh> middle -> out:port_out
+
+* out -> in -> in2: (ex: seul in peut voir in2)
+in $ ssh -fCNT -R middle_port:in2:in2_port middle
+middle:middle_port -ssh> in -> in2:in2
+
+Tunneling TCP
+=============
+(sous windows: cf mon script perl forward.pl)
+
+* in -> out:
+in $ socat -d -d TCP4-LISTEN:port_in,fork,reuseaddr TCP4:middle:port_middle
+middle $ socat -d -d TCP4-LISTEN:port_middle,fork,reuseaddr TCP4:out:port_out
+
+* out -> in -> in2 (si in peut voir middle, mais pas réciproquement):
+middle $ socat -d -d TCP4-LISTEN:port_in,fork,reuseaddr TCP4:in:port_in
+in $ socat -d -d TCP4-LISTEND:port_in TCP4:in2:port_in2
+
+Proxy Http
+==========
+
+- httptunnel [last release 2007, bugfix in 2010]
+  HTTPTunnel is a tunneling software that can tunnel network connections
+  through restrictive HTTP proxies over pure HTTP "GET" and "POST" requests. 
+  -> setup http tunnel
+
+  in $ htc [-P proxy:80] -F port_in middle 8080
+  redirige le port port_in vers middle:8080 avec une encapsulation http
+  (qui peut passer par le proxy proxy:80 avec l'option -P)
+  
+  middle $ hts -F out:port_out 8080
+  desencapsule l'http reçu sur le port 8080 et l'envoie sur out:port_out
+
+- stunnel [active]
+  Stunnel is a proxy designed to add TLS encryption functionality to
+  existing clients and servers without any changes in the programs' code.
+  -> setup ssl tunnel
+
+- corkscrew [last release 2007], proxytunnel [last release 2008]
+  Tunnel through http/https proxies.
+  httptunnel can also be used to tunnel through proxies
+
+Proxy Socks
+===========
+ssh -D port
+    Specifies a local “dynamic” application-level port forwarding. This
+    works by allocating a socket to listen to port on the local side, and
+    whenever a connection is made to this port, the connec‐ tion is
+    forwarded over the secure channel, and the application protocol is then
+    used to determine where to connect to from the remote machine.
+    Currently the SOCKS4 and SOCKS5 protocols are supported, and ssh will
+    act as a SOCKS server.  Only root can forward privileged ports.
+    Dynamic port forwardings can also be specified in the configuration
+    file.
+-> sv start ssh_socks
+
+Proxy socks: tsocks [last relase 2002], dante [active] (socksv5, compatible udp, donc utilisable avec ssh pour faire un vpn).
+
+Dante: SOCKS5_SERVER=localhost:44000 socksify ...
+ 
+VPN
+===
+
+https://www.zerotier.com/
+https://www.wireguard.com/
+
+Sshuttle
+--------
+https://github.com/sshuttle/sshuttle [was https://github.com/apenwarr/sshuttle]
+
+sshuttle -r username@sshserver 0/0 -vv
+sudo -E sshuttle -e "ssh -F $HOME/.ssh/config" -r 4a 0/0 -v
+
+Alternative: https://github.com/ivanilves/xiringuito
+
+openvpn
+-------
+Freebox: VPN routed (ie NAT)
+cp ~/mine/crypt/openvpn/config* /tmp
+sudo openvpn /tmp/config_openvpn_routed_dams.ovpn
+
+If udp is blocked, use a udp forwarding:
+  socat udp4-listen:30875,reuseaddr,fork STDOUT| ssh phare2 socat STDIN udp-sendto:gondolin.hd.free.fr:30875
+Change the openvpn config to use localhost
+  sudo openvpn /tmp/config_openvpn_routed_dams.ovpn
+
+Tun tunnel
+----------
+cf systemd.networkd et systemd.netdev
+http://sleepmap.de/2015/ssh-tunnel-with-single-hop-using-systemd-network-and-autossh.html
+https://help.ubuntu.com/community/SSH_VPN
+http://www.noah.org/wiki/tun/tap_driver
+
+Set up fowarding (see ip#foward)
+    ip tuntap add tun1 mode tun #or let ssh -w create the tuns: ssh -NTCf -w 0:0 1.2.3.4
+    ip link set tun1 up
+    ip addr add 10.0.0.100/32 peer 10.0.0.200 dev tun1
+Configure a tun on the server too and then
+    ssh -NTCf -w 1:1 server
+Then set up routing
+    ip route add 10.0.0.0/24 via 10.0.0.100
+    sudo arp -sD 10.0.0.200 eth0 pub #to go back from 10.0.0.100 to 10.0.0.200
+    ip route add 1.2.3.4/32 via 192.168.0.1 #ensure we keep the route to B
+    ip route replace default via 10.0.0.1 #route everything via the tunnel
+
+# Using systemd-networkd to set up the tun
+sudo mkdir /run/systemd/network
+sudo tee /run/systemd/network/00-tun.netdev <<EOS
+[NetDev]
+Description=Netdev for ssh tunnel
+Name=tun1
+Kind=tun
+User=dams
+EOS
+sudo tee /run/systemd/network/00-tun.network <<EOS
+[Match]
+Name=tun1
+[Network]
+Address=10.0.42.1
+[Address]
+Address=10.0.42.2
+Peer=10.0.42.1
+EOS

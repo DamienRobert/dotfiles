@@ -1,0 +1,59 @@
+#!/bin/zsh
+
+#format date: 070423
+
+date2=$1
+date=$1
+URL=mms://vipmms.canalplus.fr/canalplus/guignols_${date}_a.wmv
+OUT=guignols-$date2.wmv
+
+if [[ -n $JUST_PRINT ]]; then
+  print $URL
+  exit
+fi
+
+if [[ -e $OUT ]]; then
+  print "$OUT is in the way."
+  exit 1
+fi
+
+function stat_size {
+  d=`du $OUT 2> /dev/null`
+  d=${d%	*}
+  [[ $d == "" ]] && d=0
+}
+
+try=1
+while (( try++ < 10 )); do
+  mplayer -really-quiet -dumpstream -dumpfile $OUT $URL &
+  child=$!
+
+  killed=no
+  timeout=30
+  while kill -0 $child 2> /dev/null; do
+    stat_size
+    (( $d > 40 )) && timeout=""
+    if [[ -n $timeout ]]; then
+      timeout=$[timeout-1]
+      if (( $timeout == 0 )); then
+	kill $child
+	killed=yes
+	rm -f $OUT
+      fi
+    fi
+    print -n "\\r${(l:5:: :)d} / ~15000 $timeout  "
+    sleep 1
+  done
+  [[ $killed != yes ]] && break
+done
+
+print
+
+stat_size
+if (( $d <= 40 )); then
+  print "Output file is empty, removing."
+  rm -f $OUT
+  exit 1
+fi
+
+exit 0

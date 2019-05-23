@@ -1,0 +1,43 @@
+#!/usr/bin/zsh
+
+CRONDIR="$HOME/mine/user/crontab"
+tmuxname=crontab
+unlock=
+init=
+greptmux() {
+	grep "^$@\$"
+}
+
+while true;
+do
+	case $1 in
+		-- ) shift; break ;;
+		--unlock ) shift; unlock=t ;;
+		--init ) shift; init=t ;;
+		*) break;;
+	esac
+done
+CRONDIR="$CRONDIR/$1"
+
+[[ -n $init ]] && . "$HOME/.initenv"
+[[ -n $unlock ]] && $HOME/mine/script/unlock --crontab
+
+. $HOME/script/lib/local_daemons
+set_local_infos
+
+if tmux has-session -t $tmuxname; then
+	#be sure we update the session environment
+	[[ -n $GPG_AGENT_INFO ]] && tmux set-environment -t $tmuxname GPG_AGENT_INFO $GPG_AGENT_INFO
+	[[ -n $SSH_AUTH_SOCK ]] && tmux set-environment -t $tmuxname SSH_AUTH_SOCK $SSH_AUTH_SOCK
+else
+	#we need to set up a pane, this also has the bonus that errors in the config pane affect this pane and not the crontab launched
+	tmux new-session -d -s $tmuxname && echo "#Launched new tmux: $tmuxname"
+fi
+
+for script in $CRONDIR/*(x^/); do
+	name=$(basename $script)
+	tmux list-windows -t $tmuxname -F '#W' | greptmux $name || {
+		echo "-> Launching $script"
+		tmux new-window -t $tmuxname -n $name $script
+	}
+done

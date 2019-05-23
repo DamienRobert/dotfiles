@@ -1,0 +1,16 @@
+#!/usr/bin/zsh
+
+NAME=$1
+TOSAVE=$2
+
+if [[ -z $NAME ]]; then
+	. $HOME/.initvars
+	NAME=$MYHOSTNAME
+fi
+[[ -z $TOSAVE ]] && TOSAVE=$HOME
+
+rm -rf $NAME
+XFCONF=xfce4/xfconf/xfce-perchannel-xml
+mkdir -p $NAME/$XFCONF/
+cp -r $TOSAVE/.config/xfce4/panel $NAME/xfce4/
+cp $TOSAVE/.config/$XFCONF/xfce4-panel.xml $NAME/$XFCONF/

@@ -1,23 +1,58 @@
-wget -A regular_exp??.ssion -r -l 1 http://www.server.com
+=> wget -rkpENnp mysite
 
--H : pour traverser les hosts
--P: pour qu'un chargement de la page charge les images contenues dedans
-
+# Common options:
+-P: directory prefix [default to '.']
+-O: output name
+-c: continue getting a partially dl file
+-r: recursive
 -k: convert links
--r: recursive
 -l: depth
-
------------------------
-
-wget -r -l1 --no-parent -A "*.jpg" http://www.server.com/dir/
-
-################################
-wget -P ~/.fonts -A ttf -r -np -nd http://garamond.org/urw/
--P: prefix
--A ttf: download *.ttf
--r: recursive
--nd: don't create directory
+-p: download also inlined images and stylesheets
 -np: don't ascend
+-nd: don't create directory (ie save all files in current folder)
+-E: --adjust-extension (ie add .html to html pages)
+-N: --timestamping [only dl again newer files]
+--no-check-certificate #skip certificate check
 
-##### Aspirer une section de site:
-wget -r -np mysite
+# Other options:
+-A regular_exp??.ssion 
+-H: pour traverser les hosts
+-i file: read urls from file
+
+# Cookies:
+--load-cookies cookies.txt
+[cookies format: http://unix.stackexchange.com/questions/36531/format-of-cookies-when-using-wget
+    The layout of Netscape's cookies.txt file is such that each line contains one name-value pair. An example cookies.txt file may have an entry that looks like this:
+    .netscape.com   TRUE   /   FALSE   946684799   NETSCAPE_ID   100103
+    Each line represents a single piece of stored information. A tab is inserted between each of the fields.
+    From left-to-right, here is what each field represents:
+    - domain - The domain that created AND that can read the variable.
+    - flag - A TRUE/FALSE value indicating if all machines within a given domain can access the variable. This value is set automatically by the browser, depending on the value you set for domain.
+    - path - The path within the domain that the variable is valid for.
+    - secure - A TRUE/FALSE value indicating if a secure connection with the domain is needed to access the variable.
+    - expiration - The UNIX time that the variable will expire on. UNIX time is defined as the number of seconds since Jan 1, 1970 00:00:00 GMT.
+    - name - The name of the variable.
+    - value - The value of the variable.]
+
+# Exemples:
+
+- wget -O filename ...
+- wget -r -l1 http://www.server.com
+- wget -r -l1 --no-parent -A "*.jpg" http://www.server.com/dir/
+
+- Aspirer une section de site: wget -r -np -k -p -E -N mysite
+- Aspirer des fontes:
+wget -P ~/.fonts -A ttf -r -np -nd http://garamond.org/urw/
+[-P: prefix, -A ttf: download *.ttf, -r: recursive, -np: don't ascend]
+
+- http://stackoverflow.com/questions/18350808/save-dynamic-generated-web-page-in-firefox-from-bash-script
+  wget --recursive --no-clobber --page-requisites --html-extension --convert-links --restrict-file-names=unix --domains google.com --no-parent www.google.com
+[   -r/--recursive : download the full website
+    --domains google.com : do not follow (thus download) links outsite of google.com
+    -np/--no-parent : do not follow links outsite the folder you're calling (this means, if you want to download www.google.com/firefox, you won't follow links outsite this firefox folder).
+    -p/--page-requisites : get all elements from the page (CSS, images, scripts, etc).
+    --html-extension : save the files with .html extension. [was renamed --adjust-extension]
+    --convert-links : convert links of type http://site.domain/folder/doc.html to folder/doc.html, so they'll work locally.
+    --restrict-file-names=unix : modify filenames (if they are weird) to work fully compatible with UNIX filename conventions (this could be =windows for MS Windows filesystems, but I assume you're using an UNIX-compatible operating system).
+    [default] --no-clobber : do not overwrite existing files (only download what's missing).
+]

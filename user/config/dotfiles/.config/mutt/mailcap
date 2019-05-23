@@ -1,0 +1,33 @@
+text/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+application/pgp-encrypted; totxt --mutt --mime=%t --charset=%{charset} %s; needsterminal; copiousoutput
+application/x-pkcs7-signature; totxt --mutt --mime=%t --charset=%{charset} %s; needsterminal; copiousoutput
+
+application/vnd.oasis.opendocument.text; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+application/vnd.oasis.opendocument.presentation; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+application/msword; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+application/vnd.ms-powerpoint; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+application/vnd.ms-excel; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+application/vnd.msexcel; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; totxt --pdf --view --mutt --orig-mime=%t --charset=%{charset} %s; test=haslocaldisplay
+
+application/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+audio/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+chemical/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+image/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+inode/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+message/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+model/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+multipart/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+text/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+video/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
+
+application/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+audio/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+chemical/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+image/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+inode/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+message/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+model/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+multipart/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+video/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput

@@ -1,36 +1,35 @@
 #!/usr/bin/env ruby
 
-def inspect_libraries(*progs)
+def inspect_libraries(*progs,ldd: "ldd")
 	deps=[]
 	progs.each do |prog|
-		out=`ldd #{$opts[:recursive]? '-v' : ''} #{prog}`
+		out=`#{ldd} #{prog}`
 		out.each_line do |l|
-			if l =~ /=>\s*(\/.*)\s\(.*\)$/
-				deps.push($1) unless deps.include?($1)
+			l.match(/=>\s*(\/.*)\s\(.*\)$/) do |m|
+				deps.push(m[1]) unless deps.include?(m[1])
 			end
 		end
 	end
 	return deps
 end
 
+#todo: use pkgfile to speed up the process?
+def libraries_to_packages(*libs)
+	`pacman -Qqo #{libs.shelljoin}`.split("\n")
+end
+
 if __FILE__ == $0
 	require "optparse"
 	require "shellwords"
-	$opts={}
+	opts={}
 	optparse = OptionParser.new do |opt|
 		opt.banner = "Show libraries needed"
-		opt.on("-r", "--[no-]recursive", "Recursive") do |v| $opts[:recursive]=v end
-		opt.on("--[no-]packages", "Looks from which package the libs come") do |v| $opts[:packages]=v end
+		opt.on("-p", "--[no-]packages", "Looks from which packages the libs come") do |v| opts[:packages]=v end
 	end
 	optparse.parse!
 	deps=inspect_libraries(*ARGV)
-	if $opts[:packages]
-		pkgs=[]
-		deps.each do |dep|
-			pkg=`pacman -Qqo #{dep}`
-			pkgs.push(pkg) unless pkgs.include?(pkg)
-		end
-		puts pkgs.sort
+	if opts[:packages]
+		puts libraries_to_packages(*deps).sort.uniq
 	else
 		puts deps.sort
 	end

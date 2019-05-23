@@ -1,0 +1,24 @@
+[ui]
+username = Damien Robert <robert@numenor.night-elves>
+ignore = ~/.hgignorerc
+editor = vim -f
+
+[extensions]
+hgext.fetch =
+hgext.extdiff =
+hgext.transplant =
+#hgext.churn =
+#hgext.purge =
+#hgext.graphlog =
+hgext.hgk =
+hgext.convert =
+
+[extdiff]
+cmd.kdiff3 =
+cmd.meld =
+cmd.colordiff =
+cmd.vimdiff = vim
+opts.vimdiff = -f '+next' '+execute "DirDiff" argv(0) argv(1)'
+
+[convert]
+hg.saverev=False

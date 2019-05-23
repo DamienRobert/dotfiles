@@ -1,0 +1,37 @@
+#!/bin/zsh
+. $HOME/.initvars
+# call with 'all' to proxy everything
+
+# Inria logins
+eval $(ruby <<EOS
+require 'dr/config/authinfo'
+auth=DR::AuthInfo.get_authinfo
+puts "export INRIA_USER=\"#{auth[:inria][:default].user}\""
+puts "export INRIA_PASS=\"#{DR::AuthInfo.extraquote(auth[:inria][:default].password)}\""
+EOS
+)
+
+# For sudo
+vars=$(gpg -q -d $CFGFILES/.keys.gpg) || exit 1
+eval $vars
+
+expect <<EOS
+spawn sudo openconnect --script /etc/vpnc/vpnc-script --cafile $SYSTFILES/config/files/etc/wpa_supplicant/eduroam-inria.pem https://vpn.inria.fr/$1
+expect "$USER@$HOST:$USER->root:"
+send "$SUDO\n"
+expect "Username:"
+send "$INRIA_USER\n"
+expect "Password:"
+send "$INRIA_PASS\n"
+set timeout -1
+expect eof
+exit
+EOS
+
+# Autres serveurs: https://vpn1-roc.national.inria.fr, https://vpn3-sop.national.inria.fr
+
+# Cf aussi https://vpn1-roc.national.inria.fr/+CSCO+1h75676763663A2F2F6A7678762E766165766E2E7365++/support/VPN
+# - Dans le mode par défaut "VPN standard", seul le trafic à destination des réseaux internes de tous les centres Inria emprunte le tunnel VPN. Le reste du trafic emprunte l'interface réseau native de la machine. C'est le mode d'utilisation le plus courant.
+# => Connectez-vous à l'adresse https://vpn.inria.fr (profil VPN_INRIA).
+# - Dans le mode "VPN total", tout le trafic sauf l'accès à des ressources directement raccordées au réseau local transite dans le tunnel VPN. Dans le cadre d'un déplacement dans un pays ou établissement soumis à filtrage Internet, il peut être utile de renvoyer tout son trafic réseau à l'intérieur du VPN. Cela permet de faire sortir l'ensemble de sa navigation par les accès Internet Inria.
+#  => Connectez-vous avec https://vpn.inria.fr/all.

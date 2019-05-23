@@ -28,7 +28,7 @@ findmergebase() {
 		then
 			subject=$(git show -s --format=%s $commit)
 			case "$subject" in
-				Trivial\ merge*|Trivial\ fast-forward*) 
+				Trivial\ merge*|Trivial\ fast-forward*)
 				mergebase=$commit
 				break
 				;;

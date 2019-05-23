@@ -1,0 +1,10 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+url="gh:spesmilo/$(basename $0)"
+version="3.2.2"
+
+CUSTOM_COMPILE="copy_srcdir $progname-$version"
+
+build_helper $@
+build_git

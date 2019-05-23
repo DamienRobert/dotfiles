@@ -1,0 +1,4 @@
+# m h  dom mon dow   command
+
+@reboot exec $HOME/mine/user/crontab/@boot-imb
+00 12 * * 5 exec sh -c ". $HOME/.initenv; $HOME/pro/lfant-seminar/talks.rb --crontab send-mail 'next week'"

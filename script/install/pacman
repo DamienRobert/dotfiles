@@ -1,0 +1,41 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+pacman="pacman-5.1.0"
+libarchive="libarchive-3.3.2"
+
+do_build libarchive $libarchive $libarchive.tar.gz http://www.libarchive.org/downloads/$libarchive.tar.gz
+do_build pacman $pacman $pacman.tar.gz https://sources.archlinux.org/other/pacman/$pacman.tar.gz
+#--disable-internal-download
+
+#For alpm database
+cd $OPT/packages/$pacman/etc
+mv pacman.conf pacman.conf.bak
+ARCHFULL="$HOME/opt/archroot"
+cat <<EOS >pacman.conf
+#Adapted from <~/.config/pacman/pacman.conf>
+[options]
+RootDir     = $ARCHFULL
+DBPath      = $ARCHFULL/var/lib/pacman/
+CacheDir    = $ARCHFULL/var/cache/pacman/
+LogFile     = $ARCHFULL/var/log/pacman.log
+GPGDir      = $ARCHFULL/etc/pacman.d/gnupg/
+HookDir     = $ARCHFULL/etc/pacman.d/hooks/
+
+HoldPkg     = pacman glibc
+Architecture = auto
+Color
+ILoveCandy
+TotalDownload
+CheckSpace
+#VerbosePkgLists
+#SigLevel    = Required DatabaseOptional
+#LocalFileSigLevel = Optional
+
+[core]
+Include = $HOME/.config/pacman/mirrorlist
+[extra]
+Include = $HOME/.config/pacman/mirrorlist
+[community]
+Include = $HOME/.config/pacman/mirrorlist
+EOS

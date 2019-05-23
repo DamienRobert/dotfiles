@@ -1,0 +1,92 @@
+Guides:
+http://www.reddit.com/r/ruby/comments/2ynzxw/which_tools_should_i_be_using_for_testing/
+
+Minitest 6.0 new expect style spec:
+- http://chriskottom.com/blog/2015/04/unexpected-the-new-minitest-spec-syntax/
+- http://blog.zenspider.com/blog/2015/04/great-expectations.html
+
+Test one method in one file:
+rake test TEST=test/test_foobar.rb TESTOPTS="--name=test_foobar1 -v"
+
+helper.rb:
+require 'minitest/autorun'
+#require 'pry-rescue/minitest'
+require 'minitest/reporters'
+Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
+#Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+
+Implementation: cf minitest.rb
+  # The overall structure of a run looks like this:
+  #   Minitest.autorun
+  #     Minitest.run(args)
+  #       Minitest.__run(reporter, options)
+  #         Runnable.runnables.each [*]
+  #           runnable.run(reporter, options)
+  #             self.runnable_methods.each [**]
+  #               self.run_one_method(self, runnable_method, reporter)
+  #                 Minitest.run_one_method(klass, runnable_method)
+  #                   klass.new(runnable_method).run
+
+[*] This is randomised, cf self.__run
+    use Maxitest.static_class_order = true no longer sort tests class/sub-classes in random order (require 'maxitest')
+[**] This is also randomised, use in a Test class 'i_suck_and_my_tests_are_order_dependent!' to not randomize.
+  Maxitest add the alias order_dependent!: 'alias_method :order_dependent!, :i_suck_and_my_tests_are_order_dependent!'
+Note: one can also add 'parallelize_me!' in a test class to run the tests
+in parallel. Or to do that for all tests:
+~~~ ruby
+class Minitest::Test
+  parallelize_me!
+end
+~~~
+Or simply call 'require "minitest/hell"' which does exactly this (in the
+commit version, the version of ruby 2.4 has a bug, cf
+https://github.com/seattlerb/minitest/issues/661)
+
+Plugins:
+- minitest-autotest autotest is a continuous testing facility meant to be used during development.
+- minitest-bisect (zenspider) Helps you isolate and debug random test failures.
+- minitest-focus (zenspider) Focus on one test at a time.
+  Adapted from https://github.com/seattlerb/minitest/issues/213
+- minitest-sprint (zenspider) https://github.com/seattlerb/minitest-sprint
+  Add 'minitest' binary+shell completion for test names
+  minitest test/test_whatever.rb -n test_thingy<TAB><TAB>
+- pry-rescue A pry plugin w/ minitest support. See pry-rescue/minitest.rb.
+- minitest-reporters Create customizable Minitest output formats.
+  https://github.com/jbodah/minitest-reporters-pride_reporter
+  Add Minitest::Reporters::PrideReporter
+
+Maxitest: https://github.com/grosser/maxitest
+- Ctrl+c stops tests and prints failures
+- pastable rerun snippet for failures (disabled/integrated on rails 5)
+- multiple before & after blocks
+- around blocks around { |t| Dir.chdir(...) { t.call } }
+- red-green output (disabled/integrated on rails 5)
+- mtest executable to run by line number and by folder (disabled/integrated on rails 5)
+- full backtrace for errors and assertions with verbose (-v)
+- let! 
+  let that is run automatically
+  [=> 'let ...; before{ send(name) }'
+- let_all execute once for all tests in a class and it's subclasses
+  (it just define a memoized method)
+  [let is called anew in each new test, it is only memoized during a test run]
+- order_dependent! to make your tests run in given order
+- Maxitest.static_class_order = true no longer sort tests class/sub-classes in random order
+- context for more expression
+- pending { assert false } is skip when it fails, but fails when it passes
+- implicit subject via require 'maxitest/implicit_subject'
+- xit to skip test (also does not call setup or teardown)
+- require 'maxitest/timeout' to make hanging tests fail after Maxitest.timeout seconds
+Plugins used:
+- running by line number from minitest-line
+  Exemple: ruby -r'maxitest/autorun' -Itest test/test_authinfo.rb -l 30
+  Or mtest -r'maxitest/autorun' -Itest test/test_authinfo.rb:30
+- around from minitest-around
+- mtest from testrbl
+  (mtest is just a wrapper calling testrbl, but it scan *_test.rb files
+  rather than test_*.rb so it does not work with my test naming when
+  passing directories!
+  + it does not pass -Itest by default
+  However 'minitest' from minitest-sprint has not these drawbacks, but
+  when using 'minitest --binstub' to get back the failing tests I get the
+  correct '-n' option to pass, but not the files...
+- red-green from minitest-rg

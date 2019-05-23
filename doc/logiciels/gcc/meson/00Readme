@@ -1,0 +1,5 @@
+http://mesonbuild.com/Tutorial.html
+$ meson builddir
+$ cd builddir
+$ ninja
+$ ./demo

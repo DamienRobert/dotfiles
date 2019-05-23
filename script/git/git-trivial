@@ -6,23 +6,25 @@ cd_to_toplevel
 
 help() {
 	echo "1) git-trivial parents
-Create a trivial commit with parents 'parents' ('parents' can be empty)
+Create a trivial commit with parents 'parents' ('parents' can be empty) and empty worktree
 -b|-B|--branch branch: create branch at commit
 --ff: update HEAD to commit
 --no-date: create commit at time EPOCH
 
 2) git-trivial --merge/--prepare-merge branches
-Do a trivial merge with branches 'branches'
+Do a ours merge of current branch with branches 'branches'
 -b|-B|--branch branch: checkout to 'branch' first
 --no-commit: don't do final commit
 --prepare-merge: shortcut for --merge+--no-commit
 
 Common options:
---ours: use 'ours' tree
+--empty: use 'empty' tree [default for non merge]
+--ours: use 'ours' tree   [default for merge]
 --theirs: use 'theirs' tree (ie tree from first commit passed as argument)
 -t|--tree tree: use tree 'tree' rather than an empty tree
 -g|--go: don't edit commit message
 -m msg: use 'msg' as commit message
+--use commit: use the tree, date, message of commit
 
 Note: while the result is the same (a commit with the arguments [+the
 current branch with --merge] as parents and a certain tree as tree), the
@@ -30,11 +32,18 @@ first method is to be thought as a 'trivial commit' whereas the second is
 more of the form 'a trivial merge'. Hence the difference in the commit
 message and the action of the -b option
 
-Warning: in the first form, git trivial --ours does not add the current branch to the parents, it just uses ours tree for the commit.
+Warning: 
+- in the first form, git trivial --ours does not add the current branch to the parents, it just uses ours tree for the commit.
+- 'git trivial --merge foo' uses ours worktree, add --empty to have an empty merge
 
 Example:
-	git trivial -b deploy --merge --theirs next
+	- Their merge:
+	git trivial --merge --theirs -m msg [--go] upstream
+	-> git trivial -b deploy --merge --theirs next
 will allow to deploy the branch next while keeping fastforwardibility
+	- git trivial --use HEAD parent1 parent2
+	-> change the parents of HEAD while retaining the tree/date/message
+	(this does something similar to git-reparent)
 "
 }
 
@@ -53,7 +62,7 @@ treename=
 ff=
 merge=
 nocommit=
-mode=
+mode=default
 GO=
 msg=
 
@@ -61,19 +70,26 @@ while true;
 do
 	case "$1" in
 		-- ) shift; break ;;
-		-b|--branch ) shift; branchopt="-b";branch=$1; shift ;;
-		-B ) shift; branchopt="-B"; branch=$1; shift ;;
-		--no-date) shift; nodate=1;;
+		-b|--branch ) shift; branch=$1; shift ;;
+		-B ) shift; branchopt="-f"; branch=$1; shift ;;
+		--no-date) shift; date='Thu, 01 Jan 1970 00:00:00 +0000' ;;
+		--date) shift; date=$1; shift ;;
 		-t|--tree) shift; gettree $1; shift;;
 		--ff) shift; ff=1 ;;
 		--no-commit) shift; nocommit=1 ;;
 		--merge) shift; merge=1 ;;
 		--prepare-merge) shift; merge=1; nocommit=1 ;;
+		--empty) shift; mode="empty" ;;
 		--ours) shift; mode="ours" ;;
 		--theirs) shift; mode="theirs" ;;
+		--use) shift; reuse="$1"; shift
+				gettree $reuse
+				msg=$(git log --format=%B -n 1 $reuse)
+				date=$(git log --format=%ad -n 1 $reuse)
+			;;
 		-m ) shift; msg=$1; shift ;;
 		-g|--go ) shift; GO=1 ;;
-		-h|--help|-* ) help ;;
+		-h|--help|-* ) shift; help ;;
 		*) break;;
 	esac
 done
@@ -85,7 +101,7 @@ fail() {
 
 getmsg() {
 	msg='Trivial commit'
-	if [[ $# -gt 0 ]]; then 
+	if [[ $# -gt 0 ]]; then
 		msg="$msg with parents"
 		for parent in "$@"; do
 			msg="$msg '$parent'"
@@ -114,12 +130,21 @@ getmrgmsg() {
 }
 
 if [[ -z $treename ]]; then
+	if [[ $mode == default ]]; then
+		mode=empty
+		[[ -n $merge ]] && mode=ours
+	fi
 	case $mode in
 		theirs)
 			gettree $1
 			;;
 		ours)
 			gettree $(git current-branch -a)
+			;;
+		empty)
+			tree=$nulltree
+			treename=empty
+		;;
 	esac
 fi
 
@@ -128,18 +153,19 @@ if [[ -z $merge ]]; then
 	[[ -z $msg ]] && getmsg "$@"
 	opts=()
 	for parent in "$@"; do
-		opts=($opts '-p' $(git rev-parse --verify $parent))
+		parentcommit=$(git rev-parse --verify $parent)
+		[[ -n $parentcommit ]] && opts=($opts '-p' $parentcommit)
 	done
 	ev="git commit-tree \$opts \$tree"
-	[[ -n $nodate ]] && ev="GIT_AUTHOR_DATE='Thu, 01 Jan 1970 00:00:00 +0000' GIT_COMMITTER_DATE='Thu, 01 Jan 1970 00:00:00 +0000' $ev"
+	[[ -n $date ]] && ev="GIT_AUTHOR_DATE='${date}' GIT_COMMITTER_DATE='${date}' $ev"
 	[[ -z $GO ]] && ev="vipe|$ev"
 	ev="echo \$msg|$ev"
 	commit=$(eval $ev)
 	echo $commit
 	echo >&2 "$commit: $msg"
-	[[ -n $branch ]] && git branch $branchop $branch $commit
+	[[ -n $branch ]] && git branch $branchopt $branch $commit
 	[[ -n $ff ]] && git merge --ff-only $commit
-
+	exit 0
 else
 
 	CURRENT=$(git current-branch -a)
@@ -161,4 +187,5 @@ else
 		git commit $commitopts || fail
 		[[ -n $branch ]] && git checkout $CURRENT
 	fi
+	exit 0
 fi

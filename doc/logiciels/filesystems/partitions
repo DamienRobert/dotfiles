@@ -7,7 +7,7 @@ Disque layout:
 Typiquement:
 255 heads, 63 sectors/track
 -> un cylindre a 63*255=16065 secteurs
-1 secteur fait 512 bytes -> un cylindre fait 8225280B=8032.5kiB, 
+1 secteur fait 512 bytes -> un cylindre fait 8225280B=8032.5kiB,
                             un track 32256B=31.5kiB
 
 Sur numenor fdisk me dit: 30401 cylinders, total 488397168 sectors
@@ -39,7 +39,7 @@ Units = cylinders of 8225280 bytes, blocks of 1024 bytes, counting from 0
    Device Boot Start     End   #cyls    #blocks   Id  System
    /dev/sda1   *      0+  30400   30401- 244196001   83  Linux
 
-cfdisk -P s parle en secteurs 
+cfdisk -P s parle en secteurs
 cfdisk -P t parle en head/sect/cyl (sachant que les heads et cylindres
 commencent à 0, mais pas les secteurs)
          ---Starting----      ----Ending-----    Start     Number of
@@ -58,4 +58,3 @@ cfdisk quand il dit cyl 0 head 1 secteur 1, il s'agit du premier cylindre,
 cfdisk rajoute une * quand la partition n'est pas alignée sur un cylindre,
 mais combiner alignement sur un cylindre et sur 8 secteurs impose de faire
 des trucs de 8032.5kiB, ce qui est pénible, ça n'a pas l'air important.
-

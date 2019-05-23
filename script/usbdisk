@@ -1,0 +1,37 @@
+#!/usr/bin/zsh
+
+mode=64
+while true;
+do
+	case $1 in
+		-- ) break ;;
+		-32 ) mode=32 ;;
+		-64 ) mode=64 ;;
+		*) break;;
+	esac
+done
+
+action=$1
+shift
+
+case $action in
+	mount)
+		dir=$1
+		[[ -z $dir ]] && dir="/mnt/usb"
+		MOUTOPTS="defaults,space_cache,compress=lzo"
+		SUBVOL=slash
+		[[ $mode == "32" ]] && SUBVOL=slash32
+		dev=$(findfs LABEL=usbkey)
+		bootdev=$(findfs LABEL=usbkey-fat)
+		mount -o $MOUTOPTS,subvol=$SUBVOL $dev $dir
+		mount -o $MOUTOPTS,subvol=home $dev $dir/home
+		mount -o $MOUTOPTS,subvol=data $dev $dir/data
+		mount -o $MOUTOPTS $dev $dir/rootleaf
+		mount $bootdev $dir/boot
+		;;
+	umount)
+		dir=$1
+		[[ -z $dir ]] && dir="/mnt/usb"
+		umount -R $dir
+		;;
+esac

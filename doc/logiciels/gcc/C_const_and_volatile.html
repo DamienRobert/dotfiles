@@ -1,0 +1,840 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>The C Book &#8212; Const and volatile</title>
+
+<link rel="SHORTCUT ICON" href="http://global.gbdirect.co.uk/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="http://global.gbdirect.co.uk/Themes/Quarters.css" />
+<link rel="prev" href="/c_book/chapter8/typedef.html" />
+<link rel="next" href="/c_book/chapter8/sequence_points.html" />
+<link rel="contents" href="/c_book/chapter8/" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+<!-- order 5-->
+<!-- lastmod 2005-11-10T16:42:05Z-->
+
+<link rel="canonical" href="http://publications.gbdirect.co.uk/c_book/chapter8/const_and_volatile.html"/>
+</head>
+
+<body>
+  <div class="Banner">
+    <span id="Logo">
+      <a href="http://ebusiness.gbdirect.co.uk">
+        <img src="http://global.gbdirect.co.uk/Themes/gbdirect.gif"
+             alt="GBdirect Homepage"
+             title="GBdirect Homepage"
+             border="0" /></a>
+    </span>
+<!-- Original homebrew search
+    <form action="http://global.gbdirect.co.uk/search.cgi"
+          method="get" id="Search">
+      <label for="search_textbox">Search</label>
+      <input type="text" name="query" size="12" id="search_textbox" value="" />
+      <input type="submit" name="Submit" value="Go" />
+    </form>
+-->
+<!-- Google search -->
+    <span id="Search"><form action="http://www.google.com/cse" id="cse-search-box">
+      <input type="hidden" name="cx" value="010270212093732037646:4pvgkishmkg" />
+      <input type="hidden" name="ie" value="UTF-8" />
+      <label for="search_textbox">Search</label>
+      <input type="text" name="q" id="search_textbox" size="12" />
+      <input type="submit" name="sa" value="Go" />
+    </form></span>
+    <script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&amp;lang=en&amp;sitesearch=true"></script>
+<!-- End Google search -->
+  </div>
+  <div class="Tabsbar"><span class="Tab" id="ThisTab"><a class="global"
+href="http://training.gbdirect.co.uk/">Training</a></span> <span
+class="NoCSS2">| </span> <span class="Tab"><a class="global"
+href="http://ebusiness.gbdirect.co.uk/contact.html">Contact</a></span></div>
+  <div id="container">
+    <div class="Tabsbar" id="tabsbar" style="position: absolute; width: 100%">
+      <span class="skiplink"><a href="#main">Skip to page content</a></span>
+      <span class="skiplink"><a href="#menu">Skip to section menu</a></span>
+      <span class="skiplink"><a href="#sitewidenav">Skip to site-wide navigation</a></span>
+      <a name="sitewidenav" class="skiplink"></a>
+
+
+
+    <span class="Tab"><a class="global" href="http://ebusiness.gbdirect.co.uk/">About Us</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://training.gbdirect.co.uk/">Training</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://consulting.gbdirect.co.uk/">Consultancy</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://development.gbdirect.co.uk/">Software</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab" id="ThisTab">Publications</span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://open-source.gbdirect.co.uk/">Open&nbsp;Source</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://software-support.gbdirect.co.uk/">Support</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://open-standards.gbdirect.co.uk/">Open&nbsp;Standards</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://faq.gbdirect.co.uk/">FAQ</a></span>
+
+
+  <span class="NoCSS2">| </span>
+
+    <span class="Tab"><a class="global" href="http://jobs.gbdirect.co.uk/">Jobs</a></span>
+
+
+
+      <div class="NoCSS2">
+        <a href="http://ebusiness.gbdirect.co.uk/howtos/web_site_design_with_css.html">Site Style Info</a>
+      </div>
+    </div>
+    <div id="main">
+
+		<div id="breadcrumb">
+
+			<a href="http://publications.gbdirect.co.uk/">Publications</a>
+
+			 &gt; <a href="http://publications.gbdirect.co.uk/c_book/">The C&nbsp;Book</a>
+
+			 &gt; <a href="http://publications.gbdirect.co.uk/c_book/chapter8/">Specialized areas</a>
+
+			 &gt; Const &amp; volatile
+
+		</div>
+		<br />
+
+      <h1>8.4. Const and volatile</h1>
+
+
+
+
+
+  <p>These are new in Standard <a href="http://training.gbdirect.co.uk/courses/c/">C</a>, although the idea of <code>const</code>
+   has been borrowed from <a href="http://training.gbdirect.co.uk/courses/c++/">C++</a>. Let us get one thing straight: the concepts
+   of <code>const</code> and <code>volatile</code> are <em>completely
+   independent</em>. A common misconception is to imagine that somehow
+   <code>const</code> is the opposite of <code>volatile</code> and vice
+   versa. They are unrelated and you should remember the fact.</p>
+
+  <p>Since <code>const</code> declarations are the simpler, we'll look at
+   them first, but only after we have seen where both of these type
+   qualifiers may be used. The complete list of relevant keywords is</p>
+
+<pre>
+char      long      float     volatile
+short     signed    double    void
+int       unsigned  const</pre>
+
+  <p>In that list, <code>const</code> and <code>volatile</code> are type
+   qualifiers, the rest are <dfn>type specifiers</dfn>. Various combinations
+   of type specifiers are permitted:</p>
+
+<pre>
+char, signed char, unsigned char
+int, signed int, unsigned int
+short int, signed short int, unsigned short int
+long int, signed long int, unsigned long int
+float
+double
+long double</pre>
+
+  <p>A few points should be noted. All declarations to do with an
+   <code>int</code> will be <code>signed</code> anyway, so signed is
+   redundant in that context. If <em>any</em> other type specifier or
+   qualifier is present, then the int part may be dropped, as that is the
+   default.</p>
+
+  <p>The keywords <code>const</code> and <code>volatile</code> can be
+   applied to any declaration, including those of structures, unions,
+   enumerated types or <code>typedef</code> names. Applying them to
+   a declaration is called <dfn>qualifying</dfn> the declaration&#8212;that's
+   why const and volatile are called type qualifiers, rather than type
+   specifiers. Here are a few representative examples:</p>
+
+<pre>
+volatile i;
+volatile int j;
+const long q;
+const volatile unsigned long int rt_clk;
+struct{
+        const long int li;
+        signed char sc;
+}volatile vs;</pre>
+
+  <p>Don't be put off; some of them are deliberately complicated: what they
+   mean will be explained later. Remember that they could also be further
+   complicated by introducing storage class specifications as well! In fact,
+   the truly spectacular</p>
+
+<pre>
+extern const volatile unsigned long int rt_clk;</pre>
+
+  <p>is a strong possibility in some real-time operating system kernels.</p>
+
+  <h2><a name="section-1"></a>8.4.1.&#160;Const</h2>
+
+
+   <p>Let's look at what is meant when <code>const</code> is used. It's
+    really quite simple: <code>const</code> means that something is not
+    modifiable, so a data object that is declared with <code>const</code> as
+    a part of its type specification must not be assigned to in any way
+    during the run of a program. It is very likely that the definition of
+    the object will contain an initializer (otherwise, since you can't
+    assign to it, how would it ever get a value?), but this is not always
+    the case. For example, if you were accessing a hardware port at a fixed
+    memory address and promised only to read from it, then it would be
+    declared to be <code>const</code> but not initialized.</p>
+
+   <p>Taking the address of a data object of a type which isn't
+    <code>const</code> and putting it into a pointer to the
+    <code>const</code>-qualified version of the same type is both safe and
+    explicitly permitted; you will be able to use the pointer to inspect the
+    object, but not modify it. Putting the address of a const type into
+    a pointer to the unqualified type is much more dangerous and
+    consequently prohibited (although you can get around this by using
+    a cast). Here is an example:</p>
+
+<div class="inset-example"><a name="example-3"></a><pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+main(){
+        int i;
+        const int ci = 123;
+
+        /* declare a pointer to a const.. */
+        const int *cpi;
+
+        /* ordinary pointer to a non-const */
+        int *ncpi;
+
+        cpi = &amp;ci;
+        ncpi = &amp;i;
+
+        /*
+         * this is allowed
+         */
+        cpi = ncpi;
+
+        /*
+         * this needs a cast
+         * because it is usually a big mistake,
+         * see what it permits below.
+         */
+        ncpi = (int *)cpi;
+
+        /*
+         * now to get undefined behaviour...
+         * modify a const through a pointer
+         */
+        *ncpi = 0;
+
+        exit(EXIT_SUCCESS);
+}</pre><cite>Example&#160;8.3</cite></div>
+
+   <p>As the example shows, it is possible to take the address of a constant
+    object, generate a pointer to a non-constant, then use the new pointer.
+    This is an <em>error</em> in your program and results in undefined
+    behaviour.</p>
+
+   <p>The main intention of introducing const objects was to allow them to
+    be put into read-only store, and to permit compilers to do extra
+    consistency checking in a program. Unless you defeat the intent by doing
+    naughty things with pointers, a compiler is able to check that
+    <code>const</code> objects are not modified explicitly by the user.</p>
+
+   <p>An interesting extra feature pops up now. What does this mean?</p>
+
+<pre>
+char c;
+char *const cp = &amp;c;</pre>
+
+   <p>It's simple really; <code>cp</code> is a pointer to
+    a <code>char</code>, which is exactly what it would be if the
+    <code>const</code> weren't there. The <code>const</code> means that
+    <code>cp</code> is not to be modified, although whatever it points to
+    can be&#8212;the pointer is constant, not the thing that it points to.
+    The other way round is</p>
+
+<pre>
+const char *cp;</pre>
+
+   <p>which means that now cp is an ordinary, modifiable pointer, but the
+    thing that it points to must not be modified. So, depending on what you
+    choose to do, both the pointer and the thing it points to may be
+    modifiable or not; just choose the appropriate declaration.</p>
+
+
+
+  <h2><a name="section-2"></a>8.4.2.&#160;Volatile</h2>
+
+
+   <p>After const, we treat <code>volatile</code>. The reason for having
+    this type qualifier is mainly to do with the problems that are
+    encountered in real-time or embedded systems programming using C.
+    Imagine that you are writing code that controls a hardware device by
+    placing appropriate values in hardware registers at known absolute
+    addresses.</p>
+
+   <p>Let's imagine that the device has two registers, each 16 bits long, at
+    ascending memory addresses; the first one is the control and status
+    register (csr) and the second is a data port. The traditional way of
+    accessing such a device is like this:</p>
+
+<div class="inset-example"><a name="example-4"></a><pre>
+/* Standard C example but without const or volatile */
+/*
+* Declare the device registers
+* Whether to use int or short
+* is implementation dependent
+*/
+
+struct devregs{
+        unsigned short  csr;    /* control &amp; status */
+        unsigned short  data;   /* data port */
+};
+
+/* bit patterns in the csr */
+#define ERROR   0x1
+#define READY   0x2
+#define RESET   0x4
+
+/* absolute address of the device */
+#define DEVADDR ((struct devregs *)0xffff0004)
+
+/* number of such devices in system */
+#define NDEVS   4
+
+/*
+* Busy-wait function to read a byte from device n.
+* check range of device number.
+* Wait until READY or ERROR
+* if no error, read byte, return it
+* otherwise reset error, return 0xffff
+*/
+unsigned int read_dev(unsigned devno){
+
+        struct devregs *dvp = DEVADDR + devno;
+
+        if(devno &gt;= NDEVS)
+                return(0xffff);
+
+        while((dvp-&gt;csr &amp; (READY | ERROR)) == 0)
+                ; /* NULL - wait till done */
+
+        if(dvp-&gt;csr &amp; ERROR){
+                dvp-&gt;csr = RESET;
+                return(0xffff);
+        }
+
+        return((dvp-&gt;data) &amp; 0xff);
+}</pre><cite>Example&#160;8.4</cite></div>
+
+   <p>The technique of using a structure declaration to describe the device
+    register layout and names is very common practice. Notice that there
+    aren't actually any objects of that type defined, so the declaration
+    simply indicates the structure without using up any store.</p>
+
+   <p>To access the device registers, an appropriately cast constant is used
+    as if it were pointing to such a structure, but of course it points to
+    memory addresses instead.</p>
+
+   <p>However, a major problem with previous C compilers would be in the
+    while loop which tests the status register and waits for the
+    <code>ERROR</code> or <code>READY</code> bit to come on. Any
+    self-respecting optimizing compiler would notice that the loop tests the
+    same memory address over and over again. It would almost certainly
+    arrange to reference memory once only, and copy the value into
+    a hardware register, thus speeding up the loop. This is, of course,
+    exactly what we don't want; this is one of the few places where we must
+    look at the place where the pointer points, every time around the
+    loop.</p>
+
+   <p>Because of this problem, most C compilers have been unable to make
+    that sort of optimization in the past. To remove the problem (and other
+    similar ones to do with when to write to where a pointer points), the
+    keyword <code>volatile</code> was introduced. It tells the compiler that
+    the object is subject to sudden change for reasons which cannot be
+    predicted from a study of the program itself, and forces every reference
+    to such an object to be a genuine reference.</p>
+
+   <p>Here is how you would rewrite the example, making use of
+    <code>const</code> and <code>volatile</code> to get what you want.</p>
+
+<div class="inset-example"><a name="example-5"></a><pre>
+/*
+* Declare the device registers
+* Whether to use int or short
+* is implementation dependent
+*/
+
+struct devregs{
+        unsigned short volatile csr;
+        unsigned short const volatile data;
+};
+
+/* bit patterns in the csr */
+#define ERROR   0x1
+#define READY   0x2
+#define RESET   0x4
+
+/* absolute address of the device */
+#define DEVADDR ((struct devregs *)0xffff0004)
+
+/* number of such devices in system */
+#define NDEVS   4
+
+/*
+* Busy-wait function to read a byte from device n.
+* check range of device number.
+* Wait until READY or ERROR
+* if no error, read byte, return it
+* otherwise reset error, return 0xffff
+*/
+unsigned int read_dev(unsigned devno){
+
+        struct devregs * const dvp = DEVADDR + devno;
+
+        if(devno &gt;= NDEVS)
+                return(0xffff);
+
+        while((dvp-&gt;csr &amp; (READY | ERROR)) == 0)
+                ; /* NULL - wait till done */
+
+        if(dvp-&gt;csr &amp; ERROR){
+                dvp-&gt;csr = RESET;
+                return(0xffff);
+        }
+
+        return((dvp-&gt;data) &amp; 0xff);
+}</pre><cite>Example&#160;8.5</cite></div>
+
+   <p>The rules about mixing <code>volatile</code> and regular types
+    resemble those for <code>const</code>. A pointer to
+    a <code>volatile</code> object can be assigned the address of a regular
+    object with safety, but it is dangerous (and needs a cast) to take the
+    address of a <code>volatile</code> object and put it into a pointer to
+    a regular object. Using such a derived pointer results in undefined
+    behaviour.</p>
+
+   <p>If an array, union or structure is declared with <code>const</code> or
+    <code>volatile</code> attributes, then all of the members take on that
+    attribute too. This makes sense when you think about it&#8212;how could
+    a member of a <code>const</code> structure be modifiable?</p>
+
+   <p>That means that an alternative rewrite of the last example would be
+    possible. Instead of declaring the device registers to be
+    <code>volatile</code> in the structure, the pointer could have been
+    declared to point to a <code>volatile</code> structure instead, like
+    this:</p>
+
+<pre>
+struct devregs{
+      unsigned short  csr;    /* control &amp; status */
+      unsigned short  data;   /* data port */
+};
+volatile struct devregs *const dvp=DEVADDR+devno;</pre>
+
+   <p>Since <code>dvp</code> points to a <code>volatile</code> object, it
+    not permitted to optimize references through the pointer. Our feeling is
+    that, although this would work, it is bad style. The
+    <code>volatile</code> declaration belongs in the structure: it is the
+    device registers which are <code>volatile</code> and that is where the
+    information should be kept; it reinforces the fact for a human
+    reader.</p>
+
+   <p>So, for any object likely to be subject to modification either by
+    hardware or asynchronous interrupt service routines, the volatile type
+    qualifier is important.</p>
+
+   <p>Now, just when you thought that you understood all that, here comes
+    the final twist. A declaration like this:</p>
+
+<pre>
+volatile struct devregs{
+      /* stuff */
+}v_decl;</pre>
+
+   <p>declares the type <code>struct devregs</code> and also
+    a <code>volatile</code>-qualified object of that type, called
+    <code>v_decl</code>. A later declaration like this</p>
+
+<pre>
+struct devregs nv_decl;</pre>
+
+   <p>declares <code>nv_decl</code> which is <em>not</em> qualified with
+    <code>volatile</code>! The qualification is <em>not</em> part of the
+    type of <code>struct devregs</code> but applies only to the declaration
+    of <code>v_decl</code>. Look at it this way round, which perhaps makes
+    the situation more clear (the two declarations are the same in their
+    effect):</p>
+
+<pre>
+struct devregs{
+      /* stuff */
+}volatile v_decl;</pre>
+
+   <p>If you do want to get a shorthand way of attaching a qualifier to
+    another type, you can use <code>typedef</code> to do it:</p>
+
+<pre>
+struct x{
+      int a;
+};
+typedef const struct x csx;
+
+csx const_sx;
+struct x non_const_sx = {1};
+
+const_sx = non_const_sx;        /* error - attempt to modify a const */</pre>
+
+   <h3><a name="section-2.1"></a>8.4.2.1.&#160;Indivisible Operations</h3>
+
+
+    <p>Those of you who are familiar with techniques that involve hardware
+     interrupts and other &#8216;real time&#8217; aspects of programming will
+     recognise the need for <code>volatile</code> types. Related to this
+     area is the need to ensure that accesses to data objects are
+     &#8216;atomic&#8217;, or uninterruptable. To discuss this is any depth would
+     take us beyond the scope of this book, but we can at least outline some
+     of the issues.</p>
+
+    <p>Be careful not to assume that any operations written in C are
+     uninterruptable. For example,</p>
+
+<pre>
+extern const volatile unsigned long realtimeclock;</pre>
+
+    <p>could be a counter which is updated by a clock interrupt routine. It
+     is essential to make it <code>volatile</code> because of the
+     asynchronous updates to it, and it is marked <code>const</code> because
+     it should not be changed by anything other than the interrupt routine.
+     If the program accesses it like this:</p>
+
+<pre>
+unsigned long int time_of_day;
+
+time_of_day = real_time_clock;</pre>
+
+    <p>there may be a problem. What if, to copy one <code>long</code> into
+     another, it takes several machine instructions to copy the two words
+     making up <code>real_time_clock</code> and <code>time_of_day</code>? It
+     is possible that an interrupt will occur in the middle of the
+     assignment and that in the worst case, when the low-order word of
+     <code>real_time_clock</code> is <code>0xffff</code> and the high-order
+     word is <code>0x0000</code>, then the low-order word of
+     <code>time_of_day</code> will receive <code>0xffff</code>. The
+     interrupt arrives and increments the low-order word of
+     <code>real_time_clock</code> to <code>0x0</code> and then the
+     high-order word to <code>0x1</code>, then returns. The rest of the
+     assignment then completes, with <code>time_of_day</code> ending up
+     containing <code>0x0001ffff</code> and <code>real_time_clock</code>
+     containing the correct value, <code>0x00010000</code>.</p>
+
+    <p>This whole class of problem is what is known as a critical region,
+     and is well understood by those who regularly work in asynchronous
+     environments. It should be understood that Standard C takes no special
+     precautions to avoid these problems, and that the usual techniques
+     should be employed.</p>
+
+    <p>The header <code>&#8216;signal.h&#8217;</code> declares a type called
+     <code>sig_atomic_t</code> which is guaranteed to be modifiable safely
+     in the presence of asynchronous events. This means only that it can be
+     modified by assigning a value to it; incrementing or decrementing it,
+     or anything else which produces a new value depending on its previous
+     value, is not safe.</p>
+
+
+
+
+
+ <div class="cbook_next_prev"><p><a href="typedef.html">Previous section</a> | <a href="../chapter8/">Chapter contents</a> | <a href="sequence_points.html">Next section</a></p></div>
+    </div>
+    <div id="menu" class="Left">
+      <a name="NavBlock"></a>
+
+
+
+  <div class="nav">
+<script src="http://global.gbdirect.co.uk/Themes/lhmenu.js"></script>
+
+
+		  <div class="nav0">
+
+			  <a href="/">Publications</a>
+
+
+		</div>
+
+
+
+		  <div class="nav1">
+
+			  <a href="/c_book/">The C&nbsp;Book</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/preface/">Preface</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter1/">Introduction</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter2/">Variables &amp; arithmetic</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter3/">Control flow</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter4/">Functions</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter5/">Arrays &amp; pointers</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter6/">Structures</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter7/">Preprocessor</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter8/">Specialized areas</a>
+
+
+		</div>
+
+
+
+		  <div class="nav3">
+
+			  <a href="/c_book/chapter8/health_warning.html">Health warning</a>
+
+
+		</div>
+
+
+
+		  <div class="nav3">
+
+			  <a href="/c_book/chapter8/declarations_and_definitions.html">Declarations &amp; definitions</a>
+
+
+		</div>
+
+
+
+		  <div class="nav3">
+
+			  <a href="/c_book/chapter8/typedef.html">Typedef</a>
+
+
+		</div>
+
+
+
+		  <div class="nav3">
+
+			  <strong>Const &amp; volatile</strong>
+
+
+		</div>
+
+
+
+		  <div class="nav3">
+
+			  <a href="/c_book/chapter8/sequence_points.html">Sequence points</a>
+
+
+		</div>
+
+
+
+		  <div class="nav3">
+
+			  <a href="/c_book/chapter8/summary.html">Summary</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter9/">Libraries</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/chapter10/">Complete Programs</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/answers/">Answers</a>
+
+
+		</div>
+
+
+
+		  <div class="nav2">
+
+			  <a href="/c_book/copyright.html">Copyright</a>
+
+
+		</div>
+
+
+
+</div>
+
+
+
+      <div class="ColBtm">
+        <hr />
+<h1><a href="http://ebusiness.gbdirect.co.uk/contact.html">Contact Us</a></h1>
+
+      </div>
+
+    </div>
+    <div id="sidebar" class="Right">
+
+ <div class="box">
+
+
+<img src="http://global.gbdirect.co.uk/Themes/printer-friendly-12x12.png" alt="" title="Printer-friendly version of this page" />
+<a href="?format=pf">
+  Printer-friendly version
+</a>
+
+ </div>
+
+ <div class="box">
+  <h3>The C Book</h3>
+
+<p>This book is published as a matter of historical interest.
+ Please read the
+ <a href="/c_book/copyright.html">copyright and disclaimer information</a>.</p>
+
+<p>GBdirect Ltd provides up-to-date training and consultancy in
+ <a href="http://training.gbdirect.co.uk/courses/c/">C</a>,
+ <a href="http://training.gbdirect.co.uk/courses/c/real_time_linux_embedded_c_training.html">Embedded C</a>,
+ <a href="http://training.gbdirect.co.uk/courses/c++/">C++</a>
+ and a wide range of
+ <a href="http://training.gbdirect.co.uk/courses/">other subjects based on
+ open standards</a> if you happen to be interested.</p>
+
+ </div>
+
+
+    </div>
+  </div>
+<script type="text/javascript"> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-3566842-1']); _gaq.push(['_setDomainName', '.gbdirect.co.uk']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
+</script>
+<script type="text/javascript">
+        var maxheight = 0;
+        var a =  Array('main', 'menu', 'sidebar');
+        for(index in a){
+                var name = a[index];
+                // alert(name);
+                var id = document.getElementById(name);
+                if(id){
+                        if(id.offsetHeight > maxheight){
+                                maxheight = id.offsetHeight;
+                        }
+                }
+        }
+        var tabbar = document.getElementById('tabsbar');
+        if(tabbar){
+                if(tabbar.style) tabbar=tabbar.style;
+                tabbar.left = 0+'px';
+                tabbar.top = maxheight+'px';
+        }
+
+</script>
+</body>
+</html>

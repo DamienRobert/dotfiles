@@ -1,0 +1,52 @@
+---
+:phare:
+  :default: "//robert@phare.normalesup.org"
+  :imap: "imaps:"
+  :smtp: "smtps:"
+  :maildir: "phare"
+  :mail: "mailto:damien.robert@normalesup.org"
+  :webmail: "https://www.normalesup.org/phare/squirrelmail/src/login.php"
+:4a:
+  :default: "//robert@quatramaran.salle-s.org"
+  :imap: "imaps:"
+  :smtp: "smtps:"
+  :mail: "mailto:damien.robert@{host}"
+  :webmail: "https://quatramaran.salle-s.org/roundcube"
+:inria:
+  :default: "//roberdam@inria.fr"
+  :imap: "imaps://zimbra.inria.fr"
+  :smtp: "smtp://smtp.inria.fr:587"
+  :maildir: "inria"
+  :mail: "mailto:damien.robert@{host}"
+  :webmail: "https://zimbra.inria.fr"
+:imb:
+  :default: "//damienrobert@math.u-bordeaux.fr"
+  :imap: "imaps://smail.math.u-bordeaux.fr"
+  :smtp: "smtps://smtpauth.u-bordeaux.fr"
+  :mail: "mailto:damien.robert@{host}"
+  :webmail: "https://ent.u-bordeaux.fr/"
+:ub:
+  :default: "//damienrobert@u-bordeaux.fr"
+  :imap: "imaps://imap.u-bordeaux.fr"
+  :mail: "mailto:damien.robert@{host}"
+  :webmail: "https://ent.u-bordeaux.fr/"
+:yahoo:
+  :default: "//robertdamien@yahoo.com"
+  :imap: "imaps://imap.mail.yahoo.com"
+  :oldimap: "imaps://imap.mail.att.net"
+  :mail: "mailto:{user}@{host}"
+  :webmail: "https://mail.yahoo.com"
+:gmailpp:
+  :default_user: "ploum.plam"
+  :maildir: true
+:gmaildor:
+  :default_user: "damien.olivier.robert"
+  :maildir: true
+:gmailrd:
+  :default_user: "robertdami"
+:gmaildrd2i:
+  :default_user: "damien.robert.d2i"
+:gmaildr1984:
+  :default_user: "damien.robert.1984"
+:gmailppp:
+  :default_user: "ploum.plam.plim"

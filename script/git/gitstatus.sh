@@ -19,12 +19,7 @@ if [[ -x /usr/bin/ruby ]]; then
     function precmd_update_git_status() {
       if [[ -z $__GIT_NOSTATUS ]]; then
         __GIT_CURRENT_STATUS=$(gitstatus.rb --prompt 2>/dev/null)
-        case $MYHOSTTYPE in
-          imb) __GIT_NOSTATUS=1 ;;
-        esac
-        case $MYHOSTNAME in
-          Numenor) __GIT_NOSTATUS=1 ;;
-        esac
+        #__GIT_NOSTATUS=1 #to not rerun
       fi
     }
   fi

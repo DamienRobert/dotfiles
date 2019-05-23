@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#sur mon ssh-config, local_forward renvoit sur brique, fait du dynamic
+#forward sur le port 44000, utilise une identity sans password, auquel
+#est associée la commande exit pour pas qu'un méchant puisse me pirater
+
+exec ssh -N local_forward &

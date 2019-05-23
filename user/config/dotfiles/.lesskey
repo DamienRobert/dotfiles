@@ -1,0 +1,7 @@
+#From: http://chneukirchen.org/blog/archive/2015/02/six-hacks-for-less-1.html
+#command
+Q quit \1
+:cq quit \1
+
+#command
+D noaction j/\^diff|commit|From \n\eu

@@ -1,0 +1,43 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+$ENV{TERM}="xterm-color";
+
+my $avant_re='\[31m\[1m(?:\[4m)?';
+my $apres_re='\[m';
+my $avant="\[31m\[1m";
+my $apres="\[m";
+
+open (QUI, "q |");
+
+my %logue;
+
+while(<QUI>) {
+  (my $ordinateur)=/(?:\[m)?([a-z][a-z0-9]*):/;
+  my @l=/\[?$avant_re[^\s;,]*(?:$apres_re)?\]?/go;
+  foreach my $i (@l) {
+    $i=~s/$avant_re|$apres_re//go;
+    if($i=~s/^\[(.*)\]/$1/) {
+      $logue{$i}{$ordinateur}=exists($logue{$i}{$ordinateur})?$logue{$i}{$ordinateur}:0;
+    } else {
+      $logue{$i}{$ordinateur}=1;
+    }
+  }
+}
+
+foreach my $key (sort keys %logue) {
+  print "$avant$key$apres : ";
+  my $first=1;
+  foreach (sort keys %{$logue{$key}}) {
+    print ", " unless $first;
+    print "[" unless $logue{$key}{$_};
+    print;
+    print "]" unless $logue{$key}{$_};
+    $first=0;
+  }
+  print "\n";
+}
+
+close(QUI);

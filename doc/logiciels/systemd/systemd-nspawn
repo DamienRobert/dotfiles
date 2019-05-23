@@ -1,0 +1,96 @@
+https://wiki.archlinux.org/index.php/Systemd-nspawn
+http://0pointer.net/blog/systemd-for-administrators-part-xxi.html
+
+Ex: systemd-nspawn -bD foo/
+    systemd-nsapwn -bM arch #/var/lib/machines/arch-test
+From http://dabase.com/e/12009/, to run an X app [runs firefox as pid 1 may
+not be very prudent]:
+    sudo systemd-nspawn --setenv=DISPLAY=:0 \
+               --setenv=XAUTHORITY=~/.Xauthority \
+               --bind=/tmp/.X11-unix \
+               --bind-ro=$HOME/.Xauthority:/root/.Xauthority \
+               -D ~/containers/firefox \
+               firefox
+
+machinectl start arch-container
+-> systemd-nspawn --quiet --keep-unit --boot --link-journal=try-guest --network-veth --machine=arch-container
+
+To imitate: systemd-nspawn -qbjnM machine
+(--keep-unit is only relevant when called systemd-nspawn is called from a systemd unit file)
+
+sudo systemd-nspawn -x --bind=/var/lib/machines -bnM arch-container
+[the -x and --bind combination bugs out...]
+
+Machinectl
+==========
+Note that a special image ".host" always implicitly exists and
+refers to the image the host itself is booted from.
+
+- Login in a container
+  $ machinectl login MyContainer
+- Spawn a new shell inside a running container:
+  $ machinectl shell MyContainer
+  Ex: machinectl shell dams@.host
+- Show detailed information about a container:
+  $ machinectl status MyContainer
+- Reboot a container:
+  $ machinectl reboot MyContainer
+- Poweroff a container:
+  $ machinectl poweroff MyContainer
+
+Container support
+=================
+
+systemctl -M, hostnamectl -M, journalctl -M
+journalctl -m #merge all journal entries
+ps -eo pid,machine,args
+systemctl list-machines
+nsenter: run program with namespaces of other processes
+
+Network
+=======
+
+By default the container has the same interfaces as the host.
+With systemd-nspawn -n, configure a virtual veth network. On the container
+this gives a 'host0' interface which connects to the host (and
+systemd-networkd by default configure this interface via dhcp). Moreover
+with nss-mymachines we get name resolution!
+
+Options
+=======
+-D, --directory=
+    Directory to use as file system root for the container.
+    If neither --directory=, nor --image= is specified the directory is determined as /var/lib/machines/ suffixed by the machine name as specified with --machine=. If neither --directory=, --image=, nor --machine= are specified, the current directory will be used. May not be specified together with --image=.
+
+--template=
+    Directory or "btrfs" subvolume to use as template for the container's root directory. If this is specified and the container's root directory (as configured by --directory=) does not yet exist it is created as "btrfs" subvolume and populated from this template tree. Ideally, the specified template path refers to the root of a "btrfs" subvolume, in which case a simple copy-on-write snapshot is taken, and populating the root directory is instant. If the specified template path does not refer to the root of a "btrfs" subvolume (or not even to a "btrfs" file system at all), the tree is copied, which can be substantially more time-consuming. Note that if this option is used the container's root directory (in contrast to the template directory!) must be located on a "btrfs" file system, so that the "btrfs" subvolume may be created. May not be specified together with --image= or --ephemeral.
+    Note that this switch leaves host name, machine ID and all other settings that could identify the instance unmodified.
+
+-x, --ephemeral
+    If specified, the container is run with a temporary "btrfs" snapshot of its root directory (as configured with --directory=), that is removed immediately when the container terminates. This option is only supported if the root file system is "btrfs". May not be specified together with --image= or --template=.
+    Note that this switch leaves host name, machine ID and all other settings that could identify the instance unmodified.
+
+-i, --image=
+    Disk image to mount the root directory for the container from. Takes a path to a regular file or to a block device node. The file or block device must contain either:
+        An MBR partition table with a single partition of type 0x83 that is marked bootable.
+        A GUID partition table (GPT) with a single partition of type 0fc63daf-8483-4772-8e79-3d69d8477de4.
+        A GUID partition table (GPT) with a marked root partition which is mounted as the root directory of the container. Optionally, GPT images may contain a home and/or a server data partition which are mounted to the appropriate places in the container. All these partitions must be identified by the partition types defined by the Discoverable Partitions Specification.
+    Any other partitions, such as foreign partitions, swap partitions or EFI system partitions are not mounted. May not be specified together with --directory=, --template= or --ephemeral.
+
+-b, --boot
+    Automatically search for an init binary and invoke it instead of a shell or a user supplied program. If this option is used, arguments specified on the command line are used as arguments for the init binary. This option may not be combined with --share-system. 
+
+-u, --user=
+    After transitioning into the container, change to the specified user-defined in the container's user database. Like all other systemd-nspawn features, this is not a security feature and provides protection against accidental destructive operations only.
+
+-M, --machine=
+    Sets the machine name for this container. This name may be used to identify this container during its runtime (for example in tools like machinectl(1) and similar), and is used to initialize the container's hostname (which the container can choose to override, however). If not specified, the last component of the root directory path of the container is used, possibly suffixed with a random identifier in case --ephemeral mode is selected. If the root directory selected is the host's root directory the host's hostname is used as default instead.
+
+-n, --network-veth
+    Create a virtual Ethernet link ("veth") between host and container. The host side of the Ethernet link will be available as a network interface named after the container's name (as specified with --machine=), prefixed with "ve-". The container side of the Ethernet link will be named "host0". Note that --network-veth implies --private-network.
+
+--network-bridge=
+    Adds the host side of the Ethernet link created with --network-veth to the specified bridge. Note that --network-bridge= implies --network-veth. If this option is used, the host side of the Ethernet link will use the "vb-" prefix instead of "ve-".
+
+-j
+  Equivalent to --link-journal=try-guest.

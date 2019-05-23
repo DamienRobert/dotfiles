@@ -1,0 +1,18 @@
+forum.informatique.materiel:14329
+
+Je n'ai pas compris si finalement tu veux faire de l'OCR ou pas.
+
+Personnellement je n'en fais pas.  J'utilise un scanner CanoScan LIDE
+110 qui marche parfaitement sous Linux et qui m'a coûté une somme
+ridiculement faible (je ne me souviens pas combien, mais j'étais
+étonné) et qui est tout à fait correct.  Je scanne à 300dpi et ensuite
+je comprime en DjVu avec c44 :
+
+scanimage -d genesys:libusb:001:004 --mode gray --resolution 300 \
+    -x 210 -y 297 > /tmp/page.pgm
+mogrify -level 18%,72% /tmp/page.pgm
+c44 -dpi 300 -bpp 0.125,0.25,0.5 /tmp/page.pgm /tmp/page.djvu
+
+(Le mogrify c'est pour que le blanc soit vraiment blanc et le noir
+vraiment noir.)
+============================================================

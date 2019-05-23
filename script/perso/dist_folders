@@ -1,0 +1,56 @@
+#!/bin/zsh
+
+cd
+rm -rf ~/dist
+mkdir -p dist
+cd dist
+
+dolink() {
+	orig=$1
+	target=$2
+	[[ -e $orig ]] && ln -snf $orig $target
+}
+
+dolink_indir() {
+	local link
+	for link in $@; do
+		dolink $link .
+	done
+}
+
+dolink ../script/extra/dist_folders 00dist_folders
+
+#folders
+for folder in ../mine/ruby/gems ../mine/progs ../pro/magma ../var/vim-script ../latex/{articles,slides,cv,latex-packages,lettres} perso/website; do
+	dolink $folder "@$(basename $folder)"
+done
+for folder in opt pro var; do
+	dolink ../$folder/dist "@$folder"
+done
+dolink @var/DamienRobert @DamienRobert
+
+#shortcuts
+for folder in @gems @pro @progs; do
+	dolink_indir $folder/*(/N)
+done
+
+setopt extended_glob
+dolink_indir @opt/^svn(/N)
+dolink_indir @opt/svn/*(/N)
+
+#forks
+( mkdir -p @forks
+cd @forks
+dolink_indir ../@var/bup
+)
+
+#github
+#Remark: gitfolders -l github is more precise
+( mkdir -p @github
+cd @github
+dolink_indir ../@DamienRobert/*(/N)
+dolink_indir ../@progs/*(/N)
+dolink_indir ../@gems/*(/N)
+)
+
+#clean up: rm -rf ~/dist

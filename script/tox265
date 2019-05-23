@@ -1,0 +1,139 @@
+#!/bin/zsh
+
+EXT="mkv" #warning: with 'avi' its better to use mp3 than vorbis
+VF="hqdn3d"
+EXTRAOPT=(-threads 0 -avoid_negative_ts 0)
+REMOVE=
+PRESET=veryslow
+
+acodec() {
+	ACODEC=$1
+	case $ACODEC in
+		vorbis ) AQUALITY=3 ;; #3 by default (higher is better)
+		opus ) AQUALITY=96000 ;; #opus uses vbr bitrates/channels
+		mp3 ) AQUALITY=6 ;; #6 by default (smaller is better)
+		#6 corresponds to 128k/s on stereo; use 2 for 192k/s
+		aac ) AQUALITY=4 ;; #? by default (higher is better).
+		#4 corresponds to 64k/channels so 128k/s on stereo
+	esac
+}
+vcodec() {
+	VCODEC=$1
+	case $VCODEC in
+		x264) VQUALITY=25 ;; #23 by default (smaller is better)
+		x265) VQUALITY=28 ;; #28 by default
+		xvid) VQUALITY=25 ;; #? by default
+		vp*) VQUALITY=10 ;; #? by default
+	esac
+}
+
+acodec opus
+vcodec x265
+
+while true;
+do
+	case $1 in
+		-- ) break ;;
+		-f ) shift; REMOVE=1 ;;
+		-a ) shift; vcodec none; acodec "opus"; EXT="opus"; ;;
+		#opus in mkv is not yet very widely supported
+
+		-avi ) shift; EXT="avi"; acodec "mp3"; vcodec "x265" ;;
+		-mp4 ) shift; EXT="mp4"; acodec "aac"; vcodec "x265" ;;
+		-webm ) shift; EXT="webm"; acodec "vorbis"; vcodec "vp9" ;;
+		-movie|-mkv ) shift; EXT="mkv"; acodec "opus"; vcodec "x265" ;; #default
+		-mts ) shift; VF+=",scale=1024:576"; acodec copy;
+			[[ $VCODEC == x264 ]] && VQUALITY=23 #scale down but improve quality
+					;;
+		-himts ) shift; VF+=",scale=1024:576"; acodec copy;
+			[[ $VCODEC == x264 ]] && VQUALITY=23 #scale down but improve quality
+			[[ $VCODEC == x265 ]] && VQUALITY=25 #scale down but improve quality
+					;;
+		-vcodec ) shift; vcodec  $1; shift ;;
+		-x264 ) shift; vcodec "x264" ;;
+		-x265 ) shift; vcodec "x265" ;;
+		-xvid ) shift; vcodec "xvid" ;;
+		-vp9 ) shift; vcodec "vp9" ;;
+		-vp8 ) shift; vcodec "vp8" ;;
+		-q ) shift; VQUALITY=$1; shift ;;
+		-preset|--preset )  shift; PRESET=$1; shift ;;
+
+		-acodec ) shift; acodec $1; shift ;;
+		-acopy ) shift; acodec "copy" ;;
+		-aq ) shift; AQUALITY=$1; shift ;;
+
+		-ext ) shift; EXT=$1; shift ;;
+		-scale ) shift; VF+=",scale=iw/2:ih/2" ;;
+
+		-ss|-t|-ab|-ar) #time options/audio options
+			EXTRAOPT+=($1 $2); shift; shift ;;
+		-vf ) shift; VF+="$1"; shift ;;
+		-* ) EXTRAOPT+=($1); shift ;;
+		*) break;;
+	esac
+done
+
+encode_opts() {
+	case $ACODEC in
+		#https://trac.ffmpeg.org/wiki/Encode/HighQualityAudio
+		none) AOPT=(-an) ;;
+		copy) AOPT=(-c:a copy) ;;
+		opus) AOPT=(-c:a libopus -b:a $AQUALITY) ;;
+		#https://www.ffmpeg.org/ffmpeg-codecs.html#libopus
+		#by default: -compression_level 10 [highest] -vbr on
+		vorbis) AOPT=(-c:a libvorbis -q:a $AQUALITY) ;;
+		#https://trac.ffmpeg.org/wiki/TheoraVorbisEncodingGuide
+		mp3) AOPT=(-c:a libmp3lame -q:a $AQUALITY) ;;
+		#https://trac.ffmpeg.org/wiki/Encode/MP3
+		#-compression_level: 2 by default (recommanded), 0 is highest
+		aac) AOPT=(-c:a aac -strict -2 -q:a $AQUALITY) ;;
+		#https://trac.ffmpeg.org/wiki/Encode/AAC
+		#-strict -2 because aac is 'experimental'
+	esac
+	case $VCODEC in
+		none ) VOPT=(-vn) ;;
+		x264 )
+			VOPT=(-c:v libx264 -preset:v $PRESET -tune:v film -crf $VQUALITY)
+			#https://trac.ffmpeg.org/wiki/Encode/H.264
+			;;
+		x265 )
+			VOPT=(-c:v libx265 -preset:v $PRESET -crf $VQUALITY)
+			;;
+		xvid )
+			VOPT=(-c:v mpeg4 -preset:v $PRESET -tune film -v:q $VQUALITY)
+			#https://trac.ffmpeg.org/wiki/Encode/MPEG-4
+			#libxvid is the external library, mpeg4 the internal ffmpeg's one
+			;;
+		vp8)
+			VOPT=(-c:v libvpx -b:v 1M -crf $VQUALITY)
+			#cf: https://trac.ffmpeg.org/wiki/Encode/VP8
+			#b:v gives the maximum bitrate and crf is used for constant quality mode
+			;;
+		vp9)
+			VOPT=(-c:v libvpx-vp9 -b:v 1M -crf $VQUALITY)
+			;;
+	esac
+	OPTS=($VOPT $AOPT)
+	[[ -n $VF ]] && OPTS+=(-vf $VF)
+	OPTS+=($EXTRAOPT)
+}
+
+extract() {
+	INFO=$VCODEC
+	[[ $VCODEC == "none" ]] && INFO=$ACODEC
+	OUTPUT="$1.${INFO}-working.$EXT"
+	FINAL="$1.$INFO.$EXT"
+	[[ $INFO == $EXT ]] && FINAL="$1.$EXT"
+	if [[ ! -e $FINAL || -n $REMOVE ]]; then
+		echo allnice ffmpeg -i "$@" $OPTS $OUTPUT
+		allnice ffmpeg -i "$@" $OPTS $OUTPUT
+		[[ $? -eq 0 ]] && mv $OUTPUT $FINAL
+	else
+		echo "$FINAL already exists"
+	fi
+}
+
+encode_opts
+for i in "$@"; do
+	extract $i
+done

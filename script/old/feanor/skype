@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#-p: pour garder l'environnement
+#-q: pour -quiet
+
+#pour symlinker les commandes que j'appelle souvent
+
+exec schroot -c 32 -p -- /usr/local/util/packages/NOT_TRUSTED/skype-1.2.0.18/skype "$@"

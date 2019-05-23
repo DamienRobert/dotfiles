@@ -1,0 +1,44 @@
+#!/bin/zsh
+#arch-chroot:TMPDIR
+
+#Warning: USER and USERNAME are already taken by the environment
+user() {
+	USERNEWNAME=$1
+	PASSWD=$2
+	echo "User: $USERNEWNAME"
+	case $USERNEWNAME in
+		#TODO: would it be better to just use useradd to create the user and
+		#then use usermod to configure it? This way calling the script again
+		#with a different user config would work
+		root) ;; #do nothing
+		dams)
+			groupadd -g 2000 sshc #do not pollutes normal groups gid
+			useradd -u 1000 -m --comment "Damien Robert" -G users,wheel,systemd-journal,sshc,power,network -s /bin/zsh $USERNEWNAME
+			#vérifier que /bin/zsh est dans /etc/shells
+			;;
+		dina)
+			useradd -m --comment "Blandine Belin" -G users $USERNEWNAME ;;
+		provision)
+			useradd -u 1500 -m --comment "$USERNEWNAME" -G users $USERNEWNAME ;;
+		*)
+			useradd -m --comment "$USERNEWNAME" -G users $USERNEWNAME ;;
+	esac
+	if [[ -n $PASSWD ]]; then
+		case $PASSWD in
+			#no password
+			NONE) usermod --password '' $USERNEWNAME ;;
+			#assume this is a hash, or to lock the password
+			x|!*|\$*) usermod --password $PASSWD $USERNEWNAME ;;
+			#use crypt
+			*) echo "$USERNEWNAME:$PASSWD" | chpasswd ;;
+		esac
+	fi
+	if [[ -d $TMPDIR/users/$USERNEWNAME ]]; then
+		$TMPDIR/helpers/copydir -s -c "${USERNEWNAME}:users" "$TMPDIR/users/$USERNEWNAME" "/home/$USERNEWNAME"
+	fi
+}
+
+for USERINFO in $USERS; do
+	split=(${(s/:/)USERINFO})
+	user $split[1] $split[2]
+done

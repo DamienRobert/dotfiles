@@ -1,0 +1,143 @@
+#compdef clean_tmp comment.rb copyerror daemonize ethconfig get_http_links gpgfiles lint mime-open mylatexmk reduce_pdf_size rrd set_title unlock word_to_code.pl
+
+case $service in
+
+  clean_tmp )
+    _arguments \
+    '-d[Directory to clean (default ~/tmp)]:Directory:_files -/'
+    ;;
+
+  comment.rb)
+    _arguments \
+    '-u[uncomment]' \
+    '*:Files:_files'
+    ;;
+
+  copyerror)
+    _arguments \
+    '1:Orig file:_files' \
+    '2:Dest dir:_files -/'
+    ;;
+
+  daemonize)
+    _arguments \
+    '-c[ionice class]:ionice class:' \
+    '-p[ionice priority]:ionice priority:' \
+    '-n[nice priority]:nice priority:' \
+    ':Command:_command_names -e' \
+    '*::arguments: _normal'
+    ;;
+
+  ethconfig )
+    _arguments \
+    ':IP:' \
+    ':Broadcast:' \
+    ':Netmask:' \
+    ':Gateway:' \
+    ':Nameserver:'
+    ;;
+
+  get_http_links )
+    if [[ $CURRENT -gt 2 && $words[2] = "-dl" ]]; then
+      (( CURRENT-- ))
+       _arguments \
+        ':links file:_files' \
+        ':dest dir:_files -/'
+    else
+      _arguments  \
+      '-dl[download links]' \
+      '*:url:_urls'
+    fi
+    ;;
+
+  gpgfiles)
+    if [[ $CURRENT -gt 3 && $words[2] = "--keyring" ]]; then
+      words[1]="gpg"
+      _gpg
+    else
+      keyrings=($HOME/.gnupg/keyrings/*.{gpg,kbx}(N:t))
+      _arguments \
+    '-c[crypt folder]' \
+    '-ca[crypt folders]' \
+    '-d[decrypt archive]' \
+    '-l[list packets]' \
+    '-v[verbosely list packets]' \
+    "--keyring[update specified keyring]:Keyring:($keyrings)" \
+    "*:File:_files"
+    fi
+    ;;
+
+  lint)
+    _arguments \
+    '--allb[check all browsers]' \
+    {-s,--strict}'[strict mode]' \
+    {-c,--check}'[check mode]' \
+    '--mode[set linter]:linter:(css css_check css_style css_doiuse css_postcss stylelint_scss scss html5validator html js js_minify js_babel py rb rb_check rb_style)' \
+    {--no-browsers,--browsers}"[Uses tools.d/.browserslistrc (on by default)]" \
+    '*:Files to lint:_files'
+    ;;
+
+  mime-open)
+    _arguments \
+    '--fallback[fallback]' \
+    '--print-mime[only show mime type]' \
+    '--query[show mime type + default application]' \
+    '--mime[set mime type]:Mime:' \
+    '--desktop[use desktop files]:Desktop:' \
+    '--generic[generic xdg-open]' \
+    '1:File to open:_files'
+    ;;
+
+  mylatexmk)
+    _arguments \
+    '--plain[do not use latexmk]' \
+    '--pdf[use pdflatex]' \
+    '--lua[use lualatex]' \
+    '--xetex[use xetex]' \
+    '--synctex[use synctex]' \
+    '--bib8[use bibtex8]' \
+    '--aux[symlink aux]' \
+    '--once[do not rerun latexmk]' \
+    '--out[$out_dir for old latexmk]' \
+    '*:tex files:_files -g \*.tex'
+    ;;
+
+  reduce_pdf_size)
+    _arguments \
+    '*:pdf file:_files -g \*.pdf'
+    ;;
+
+  rrd)
+    _arguments \
+    '*:directory:_files -/'
+    ;;
+
+  set_title)
+    _arguments \
+    '-hs[only set hardstatus]' \
+    '-s[only set status]' \
+    '*:title:'
+    ;;
+
+  unlock)
+    if [[ $CURRENT -gt 2 && $words[2] = "-s" ]]; then
+        shift words
+        (( CURRENT-- ))
+        _command
+    else
+      _arguments \
+      '-l[lock]' \
+      '-s[unlock sudo]' \
+      '--ssh[unlock ssh]' \
+      '--encfs[unlock encfs]:command:_command' \
+      '--perso[unlock perso/crypt]' \
+      '--pro[unlock pro/crypt]' \
+      '--no-services[do not launch unlock target]'
+    fi
+    ;;
+
+  word_to_code.pl)
+    _arguments \
+    '1:message:'
+    ;;
+esac

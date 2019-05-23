@@ -1,3 +1,7 @@
 #!/bin/sh
 
-VIMFAST=true exec vim "$@"
+if command -v nvim >/dev/null 2>&1; then
+	exec nvim "$@"
+else
+	VIMFAST=true exec vim "$@"
+fi

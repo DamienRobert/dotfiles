@@ -1,9 +1,0 @@
--autosync / -framedrop / -hardframedrop
-
-  -lavdopts fast=1:skiploopfilter=all
-
-  si dual core:
-   -lavdopts threads=2
-
-   zoom bilinéraire:
-   -zoom -sws 0 

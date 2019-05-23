@@ -1,0 +1,11 @@
+[Unit]
+Description=Watch for X
+PartOf=graphical-session.target
+
+[Service]
+SyslogIdentifier=xwatch
+ExecStart=/bin/sh -c 'exec %h/mine/script/services/xwatch'
+Nice=19
+
+[Install]
+WantedBy=graphical-session.target

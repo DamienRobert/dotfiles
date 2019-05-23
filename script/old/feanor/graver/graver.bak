@@ -1,0 +1,62 @@
+#!/bin/sh
+
+if [ x$1 = x-h ]
+then
+  echo "$0 [-V CDNAME] [-now] [cd] [-graver] [-nomkiso] OPTIONS_MKISOFS FILES"
+  echo "-V CDNAME: nom du cd, facultatif, demande par read sinon"
+  echo "-now: on pipe mkisofs dans cdrecord"
+  echo "cd: on mkisofs le cd"
+  echo "-graver: on grave après"
+  echo "-nomkiso: on ne fait pas l'iso"
+  exit 1
+fi
+
+if [ x$1 = x-V ]
+then shift
+     CDNAME="$1"
+     shift
+else
+     echo "Nom du CD?"
+     read CDNAME
+fi
+
+CDPATH=""
+PIPE=""
+CDRECORD=""
+CDOUTPUT="-o cd.iso"
+NOMKISO=""
+GRAVER=""
+
+COMMAND="cdrecord -pad -v dev=/dev/hdc -tao"
+
+if [ x$1 = x-now ]
+then PIPE="|$COMMAND -"
+     CDOUTPUT=""
+     shift
+fi
+
+if [ x$1 = xcd ]
+then mount /cdrom
+     CDPATH="/media/cdrom0"
+     shift
+fi
+
+if [ x$1 = x-graver ]
+then GRAVER=yes
+     shift
+fi
+
+if [ x$1 = x-nomkiso ]
+then NOMKISO=yes
+     shift
+fi
+
+if [ x$NOMKISO != xyes ]
+then
+  mkisofs $CDOUTPUT -r -l -V "$CDNAME" "$@" $CDPATH $PIPE
+fi
+
+if [ x$GRAVER = xyes ]
+then
+ $COMMAND cd.iso
+fi

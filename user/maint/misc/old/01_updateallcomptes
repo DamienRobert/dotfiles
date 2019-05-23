@@ -1,0 +1,20 @@
+#!/bin/zsh
+# Launch 00update on computers
+. $HOME/.initvars
+CFGFILESNAME="${CFGFILES#$HOME/}"
+
+eval $($MYCOMPUTERS -l --export)
+COMPUTERS=($TOUNISON)
+
+for comp in $COMPUTERS; do
+  eval $($MYCOMPUTERS --export $comp)
+  echo "-- $comp --"
+  ssh2 $COMPUTER[sshu] cat .initvars | grep MYHOST
+done
+echo "Update config files? (Press a key to continue)"
+read a
+
+for comp in $COMPUTERS; do
+  echo "-- $comp --"
+  ssh2 $COMPUTER[sshu] $CFGFILESNAME/generate.rb --all
+done

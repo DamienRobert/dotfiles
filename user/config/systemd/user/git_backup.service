@@ -1,0 +1,14 @@
+[Unit]
+Description=Git backup
+ConditionPathIsDirectory=%h/var/backups/gitbackup
+
+[Service]
+Type=simple
+SyslogIdentifier=gitbackup
+ExecStart=/bin/sh -c 'exec %h/mine/script/gitbackup -v save'
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=crontab.target

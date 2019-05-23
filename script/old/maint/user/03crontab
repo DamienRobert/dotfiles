@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+cronfile="$USERFILES/crontab/$MYHOSTNAME.crontab"
+if [[ -r $cronfile ]]; then
+	echo "## -> crontab: $cronfile"
+	crontab $cronfile
+fi

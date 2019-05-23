@@ -1,0 +1,13 @@
+#bundles_activate - activates ruby Gemfile bundle
+bundles_activate() {
+	eval $(ruby - <<EOF
+	bundler_path=(File.read(ENV['HOME']+"/.bundle/config"))[/^BUNDLE_PATH: "(.*)"/,1].sub(/^~/,ENV['HOME'])
+	gempath=([bundler_path, Gem.dir]+Gem.path).uniq
+	path=(["#{bundler_path}/bin"]+ENV['PATH'].split(':')).uniq
+	puts "export GEM_PATH='#{gempath.join(':')}'"
+	puts "export GEM_HOME='#{bundler_path}'"
+	puts "export PATH='#{path.join(':')}'"
+EOF
+	)
+	rehash
+}

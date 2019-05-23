@@ -1,0 +1,64 @@
+Configure devices:
+=> By type:
+  sensor:
+    - platform: mqtt
+      state_topic: "home/bedroom/temperature"
+      name: "MQTT Sensor 1"
+    - platform: mqtt
+      state_topic: "home/kitchen/temperature"
+      name: "MQTT Sensor 2"
+    - platform: rest
+      resource: http://IP_ADDRESS/ENDPOINT
+
+  switch:
+    - platform: vera
+
+  light: !include devices/lights.yaml
+
+  Contents of lights.yaml (notice it does not contain light: ):
+  - platform: hyperion
+    host: 192.168.1.98
+    ...
+
+=> Individually:
+  media_player livingroom:
+    platform: mpd
+    server: IP_ADDRESS
+
+  media_player kitchen:
+    platform: plex
+
+  camera 1:
+    platform: generic
+
+  camera 2:
+    platform: mjpeg
+
+Check config:
+    Listing all loaded files: hass --script check_config --files
+    Viewing a component’s config: hass --script check_config --info light
+    Or all components’ config: hass --script check_config --info all
+    You can get help from the command line using: hass --script check_config --help
+
+Noms:
+- Pour les objets automatiques, on peut changer le nom de l'entity_id dans entity.yaml:
+    binary_sensor.door_window_sensor_158d00011c43c4 => binary_sensor.door_window_sensor_garage:
+  On peut aussi changer l'attribut name:
+  (c'est ce qui est changé par l'interface graphique quand on change le nom
+  d'un objet)
+- Dans customize.yaml, on peut aussi changer le nom d'une entity en mettant
+  l'attribut friendly_name. Il a précédence sur name plus haut.
+
+L'algo a l'air d'être le suivant: dans l'autodetection, ha affecte un
+entity_id et découle le 'name' de l'entity_id (en remplaçant _ par ' ' et
+en capitalisant) si 'name:' dans entity_registry.yaml est laissé vide. Si
+on configure un objet, alors l'entity_id découle du 'name' (downcase et
+remplace les caractères spéciaux par _)
+
+Dans le style "camera foo"; le 'foo' n'intervient pas dans le nom.
+
+Visibilité:
+On peut mettre 'hidden: true' seulement dans customize.yaml, le mettre
+directement dans entity ne marche pas.
+Pour un groupe: 'view: yes' le met dans une tab dans l'interface (et il
+n'apparaît alors pas dans default_view; mais ses sous-groupes si).

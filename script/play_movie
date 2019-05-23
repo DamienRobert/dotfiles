@@ -4,7 +4,7 @@ help() {
 	echo "play_movie: play a movie :)
 	play_movie [-play] SEASON EPI SUBSEASON SUBEPI
 play_movie -rename season number_of_subtiles: rename the subtitles to match the name of the movies
-	
+
 OPTIONS:
 	-ss: set subtitle separation
 	-ms: set movie separation
@@ -23,6 +23,7 @@ GLOBSEP=
 REPLAY=
 GO=
 FORMATSUB=
+SUBFOLDER="sub/"
 #Sourced: EPI, SUBEPI (use SUBEPI=NONE when the sub is already in the mkv)
 
 rename=
@@ -77,15 +78,15 @@ find_files() {
 		SUBGLOB="*$SUBSEASON$SUBSEP$SUBEPI*"
 	fi
 	MOVIES=($~MOVIEGLOB.{avi,mkv,mp4,ogm}(N))
-	SUBS=({sub/,}$~SUBGLOB.{srt,ass,sub}(N))
+	SUBS=({$SUBFOLDER,}$~SUBGLOB.{srt,ass,sub}(N))
 	echo "------ Movie: $SEASON$MOVIESEP$EPI ------"
-	echo ${(j:,:)MOVIES}
+	echo ${(j:|:)MOVIES}
 	for MOVIE in $MOVIES; do
 		handle $MOVIE "Movie"
 	done
 	if [[ $SUBEPI != "NONE" ]]; then
-		echo "------ Subtitle: $SUBSEASON$SUBSEP$EPI  ------"
-		echo ${(j:,:)SUBS}
+		echo "------ Subtitle: $SUBSEASON$SUBSEP$SUBEPI  ------"
+		echo ${(j:|:)SUBS}
 		for SUB in $SUBS; do
 			handle $SUB "Subtitle"
 		done
@@ -101,9 +102,6 @@ launch_movie() {
 		SUB=$SUBF
 	fi
 	COMMAND=(mpl)
-	#case $MYHOSTNAME in
-	#	Numenor) COMMAND=($COMMAND -slow) ;;
-	#esac
 	if [[ -n $SUB ]]; then
 		COMMAND=($COMMAND --sub $SUB)
 	fi
@@ -132,28 +130,27 @@ else
 		4 ) SEASON=$1; EPI=$2; SUBSEASON=$3; SUBEPI=$4 ;;
 	esac
 	if [[ -n $FILE ]]; then . "./$FILE"; fi
-	if [[ -z $SUBEPI ]]; then 
+	if [[ -z $SUBEPI ]]; then
 		SUBEPI=$EPI
 	else
-		WRITESUBEPI="true"
+		[[ $SUBEPI != "NONE" ]] && WRITESUBEPI=t
 	fi
-	if [[ -z $SUBSEASON ]]; then 
-		SUBSEASON=$SEASON
-	fi
+	[[ -z $SUBSEASON ]] && SUBSEASON=$SEASON
+	[[ -z $SUBSEP ]] && SUBSEP=$MOVIESEP
 
 	if [[ -n $REPLAY ]]; then
 		PLAYMOVIEFILE=".${SEASON}x${EPI}"
-		if [[ ! -f $PLAYMOVIEFILE ]]; then 
+		if [[ ! -f $PLAYMOVIEFILE ]]; then
 			launch_movie
 			echo $COMMAND >$PLAYMOVIEFILE
 		fi
-		echo "Will play $PLAYMOVIEFILE (press a key to continue):";
+		echo "-> Will play $PLAYMOVIEFILE (press a key to continue):";
 		cat "$PLAYMOVIEFILE"
 		[[ -n $GO ]] || read a
 		. "./$PLAYMOVIEFILE"
 	else
 		launch_movie
-		echo "Will launch: $COMMAND (press a key to continue)"
+		echo "-> Will launch: $COMMAND (press a key to continue)"
 		[[ -n $GO ]] || read a
 		$COMMAND
 	fi
@@ -161,7 +158,7 @@ else
 	if [[ -n $FILE ]]; then
 		NEWEPI=$(newep $EPI)
 		echo "EPI=$NEWEPI" >> $FILE
-		if [[ -n $WRITESUBEPI && $SUBEPI != "NONE" ]]; then
+		if [[ -n $WRITESUBEPI ]]; then
 			NEWSUBEPI=$(newep $SUBEPI)
 			echo "SUBEPI=$NEWSUBEPI" >> $FILE
 		fi

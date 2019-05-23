@@ -1,0 +1,4 @@
+#!/bin/sh
+sudo modprobe -r snd-intel8x0m
+sudo modprobe snd-intel8x0
+aumix

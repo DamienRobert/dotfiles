@@ -1,7 +1,0 @@
-#!/bin/zsh 
-DIRS=(systemd pacman.d boot)
-rm -rf $DIRS
-mkdir -p $DIRS
-cp -r /etc/systemd/{bootchart.conf,system} systemd/
-cp -r /etc/pacman.d/*(.) pacman.d/
-cp /boot/{cmdline.txt,config.txt} boot/

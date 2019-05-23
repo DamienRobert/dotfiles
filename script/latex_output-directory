@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#Cf http://tex.stackexchange.com/questions/64313/pdflatex-xelatex-output-directory-and-subdirectories-when-using-include
+#When using --output-directory out/ with \include, we need to recreate the directory structure in out/
+
+OUTDIR="out"
+find . -mindepth 1 -name "$OUTDIR" -prune -o -type d -print -exec mkdir -p "$OUTDIR/{}" \;

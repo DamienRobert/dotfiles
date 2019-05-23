@@ -1,0 +1,8 @@
+#!/bin/zsh
+#arch-chroot
+
+# install packages
+pacman -Syyu --noconfirm &&
+if [[ -n $PKGS && -n $PKGSINIT && $PKGS != $PKGSINIT ]]; then
+	pacman -S --needed --noconfirm $PKGS
+fi

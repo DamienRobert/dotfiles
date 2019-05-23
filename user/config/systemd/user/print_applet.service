@@ -1,0 +1,12 @@
+[Unit]
+Description=Print Applet
+Documentation=man:system-config-printer-applet(1)
+ConditionFileIsExecutable=/usr/bin/system-config-printer-applet
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/system-config-printer-applet
+StandardOutput=null
+
+[Install]
+WantedBy=graphical-session.target

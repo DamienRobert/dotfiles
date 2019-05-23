@@ -1,0 +1,17 @@
+#! /bin/sh
+# vim: nobackup textwidth=0
+#PATH="$HOME/.procmail/bin:$HOME/.procmail/bin/`uname -s`:$PATH"
+PATH="$HOME/progs/binaries/local/:$PATH"
+export PATH
+umask 0177
+tmpf="/tmp/tmp-`basename \"$0\"`-`date`-$$"
+cat > "$tmpf"
+cmd="`reformime -i < \"$tmpf\" | awk -f \"$HOME/script/local/textpart.awk\"`"
+if [ $? != 0 ]; then exit 1; fi
+egrep "(From:|To:|Cc:|Subject:|Date:)" "$tmpf"
+echo "\n-----------------------------------------------------------------------"
+eval "$cmd" < "$tmpf"
+echo "-----------------------------------------------------------------------"
+reformime -i < "$tmpf" | egrep "(section:|content-(type|name|disposition): .|^$)"
+
+rm -f "$tmpf"

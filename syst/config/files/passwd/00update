@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. $HOME/.initvars
+cp /etc/passwd passwd-$MYHOSTNAME
+cp /etc/group group-$MYHOSTNAME

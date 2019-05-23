@@ -1,0 +1,4 @@
+- name: refresh the master package lists
+  pacman: update_cache=yes
+- name: update packages
+  command: "pacman -Su --noconfirm"

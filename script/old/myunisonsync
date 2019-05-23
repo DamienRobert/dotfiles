@@ -1,0 +1,75 @@
+#!/bin/zsh
+. $HOME/.initvars
+#sync to server
+#then use server to sync
+#le principe est le suivant: i représente le lient entre le client et le
+#serveur
+#o représente le lien entre le serveur et la ligne de commande
+#donc par exemple myunisonsync -ioi imb synchronise le client au serveur,
+#le serveur à l'imb, puis à nouveau le client au serveur
+
+SERVERNAME=imb
+#should get this from 00COMPUTERS.rb
+OPTS=
+IOPTS=""
+OOPTS=""
+SSHCOMMAND="ssh"
+SSHOPTS="-Y"
+MODE=""
+while true;
+do
+  case "$1" in
+    -- ) shift; break ;;
+    -photos ) shift; SERVERNAME=oimb;   OPTS="$OPTS -t perso";;
+    -perso ) shift; SERVERNAME=feanor;  OPTS="$OPTS -t perso";;
+    -perso2 ) shift; SERVERNAME=feanor; OPTS="$OPTS -t perso2";;
+    -ioi ) shift; MODE="ioi" ;;
+    -oio ) shift; MODE="oio" ;;
+    -io ) shift; MODE="io" ;;
+    -oi ) shift; MODE="oi" ;;
+    -i ) shift; MODE="i" ;;
+    -o ) shift; MODE="o" ;;
+    -Oo ) shift; OOPTS="$OOPTS $1"; shift ;;
+    -Oi ) shift; IOPTS="$IOPTS $1"; shift ;;
+    -Os ) shift; SSHOPTS="$SSHOPTS $1"; shift ;;
+    -O ) shift; OPTS="$OPTS $1"; shift;;
+    -Y ) shift; SSHOPTS="$SSHOPTS -Y" ;;
+    -x ) shift; SSHOPTS="$SSHOPTS -x" ;;
+    -t ) OPTS="$OPTS $1 $2"; shift; shift;;
+    -Sname) shift; SERVERNAME="$1"; shift;;
+    -Sssh) shift; SSHCOMMAND="$1"; shift;;
+    -* ) OPTS="$OPTS $1"; shift ;;
+    *) break;;
+  esac
+done
+
+eval $($MYCOMPUTERS --export)
+eval $($MYCOMPUTERS --export --value unison $SERVERNAME)
+
+ARGS="$@"
+#mode par défaut si rien n'est spécifié
+if [[ -z $MODE ]]; then
+  if [[ -z $1 ]]; then
+    MODE="i";
+  else
+    MODE="o";
+  fi
+fi
+
+isync() {
+  echo "myunison $OPTS $IOPTS $SERVERNAME"
+  eval "myunison $OPTS $IOPTS $SERVERNAME"
+}
+osync() {
+  echo "$SSHCOMMAND $SSHOPTS $COMPUTER[sshu] '. ./.initenv; \"\$HOME\"/mine/script/myunison $OPTS $OOPTS $ARGS'"
+  eval "$SSHCOMMAND $SSHOPTS $COMPUTER[sshu] '. ./.initenv; \"\$HOME\"/mine/script/myunison $OPTS $OOPTS $ARGS'"
+}
+
+case $MODE in
+  i ) isync ;;
+  o ) osync ;;
+  io ) isync; osync ;;
+  oi ) osync; isync ;;
+  ioi ) isync; osync; isync ;;
+  oio ) osync; isync; osync ;;
+esac

@@ -1,0 +1,5 @@
+# m h  dom mon dow   command
+
+@reboot exec $HOME/mine/user/crontab/@boot-phare
+01 00 * * 0 exec sh -c ". $HOME/.initenv; exec $HOME/script/anniversaire --crontab 'now..in 7 days'"
+05 00 * * * exec sh -c ". $HOME/.initenv; exec $HOME/script/anniversaire --crontab"

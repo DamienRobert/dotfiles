@@ -1,0 +1,3 @@
+DIR=$PWD
+encfs $DIR/.XXX-crypt $DIR/.XXX
+echo "encfs $DIR/.XXX-crypt/ $DIR/.XXX" > .Xmount

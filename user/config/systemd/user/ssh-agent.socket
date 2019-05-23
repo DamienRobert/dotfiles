@@ -1,0 +1,9 @@
+[Unit]
+Description=ssh-agent socket
+Documentation=man:ssh-agent(1)
+
+[Socket]
+ListenStream=%t/ssh_auth_sock
+
+[Install]
+WantedBy=sockets.target

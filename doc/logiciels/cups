@@ -1,3 +1,36 @@
+ssd start org.cups.cupsd.service
+(eventuellement regarder avec avahi les imprimantes réseaux)
+Exemple d'url: lpd://melies.math.u-bordeaux.fr/melies31
+
+https://www.math.u-bordeaux.fr/imb/cellule/imprimer-et-scanner-a-l-imb
+  lpr -H melies.math.u-bordeaux.fr -PmeliesXX mon_fichier.pdf
+  cups: lpd://melies.math.u-bordeaux.fr/melies31
+
+man lpoptions: -> lpoptions -d meliesXX
 .cups/lpoptions
   -> Default cupsnull
-  -> Default melies31
+  -> Default melies31 Trays
+
+http://man7.org/linux/man-pages/man1/lpr.1.html
+lpr -P melies31 -3 (copies) -o sides=two-sided-long-edge
+
+GUI:  firefox localhost:631
+      system-config-printer
+      system-config-printer-applet
+
+Get access to the admin panels via the web interface:
+https://unix.stackexchange.com/questions/235477/cups-add-printer-page-returns-forbidden-on-web-interface
+https://ro-che.info/articles/2016-07-08-debugging-cups-forbidden-error
+
+=> `cupsd.conf` contains
+  # Restrict access to configuration files...
+  <Location /admin/conf>
+    AuthType Default
+    Require user @SYSTEM
+    Order allow,deny
+  </Location>
+and in `cups-files.conf` we have
+  SystemGroup sys root
+but I am not member of group 'sys', but I am of 'wheel' so in
+~etc/cups/cups-files.conf I put
+  SystemGroup sys root wheel

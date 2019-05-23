@@ -1,0 +1,216 @@
+#!/bin/zsh
+#A lot of this is stolen from wifi-menu in netctl
+
+help() {
+	echo "wpa_helper [-i interface] scan/commit"
+	echo "	menu/add/save/pass ssid pass"
+	exit 1
+}
+
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+	-i) shift; INTERFACE=$1; shift ;;
+		*) break;;
+	esac
+done
+
+if [[ -z "$INTERFACE" ]]; then
+		INTERFACE=(/sys/class/net/*/wireless/)
+		if [[ "${#INTERFACE[@]}" -ne 1 || ! -d "$INTERFACE" ]]; then
+				echo "No interface found in $INTERFACE"
+				exit 255
+		fi
+		INTERFACE=$(basename $(dirname $INTERFACE))
+fi
+echo "# Using interface $INTERFACE"
+
+wpa_call() {
+		local args
+		args=("-i" $1)
+		shift
+		wpa_cli $args "$@"
+}
+
+wpa_is_active(){
+		[[ $(wpa_call "$1" ping 2> /dev/null) == "PONG" ]]
+}
+
+wpa_action() {
+		local action=$1 interface=$2
+		echo "systemctl $action wpa_supplicant@$interface.service"
+		systemctl $action "wpa_supplicant@$interface.service"
+}
+
+## Retrieves the state of an instance of the wpa supplicant
+## Displays one of: DISCONNECTED, INTERFACE_DISABLED, INACTIVE, SCANNING,
+##									AUTHENTICATING, ASSOCIATING, ASSOCIATED, 4WAY_HANDSHAKE,
+##									GROUP_HANDSHAKE, COMPLETED
+# $1: interface name
+wpa_get_state() {
+		local state
+		state=$(wpa_call $1 status | grep -m1 "^wpa_state=") || return 1
+		echo ${state#wpa_state=}
+}
+
+## Waits until a statement succeeds or a timeout occurs
+# $1: timeout in seconds
+# $2...: condition command
+timeout_wait() {
+		local timeout=$1
+		(( timeout *= 5 ))
+		shift
+		until eval "$*"; do
+				(( timeout-- > 0 )) || return 1
+				sleep 0.2
+		done
+		return 0
+}
+
+## Waits while the wpa supplicant is in a listed state
+# $1: timeout
+# $2: interface name
+# $3...: rejected states
+wpa_wait_while_state() {
+		local timeout=$1 interface=$2
+		shift; shift;
+		states=("$@")
+		timeout_wait "$timeout" \
+			'[[ -z ${(M)states:#$(wpa_get_state $interface)} ]]'
+}
+
+## Scan for networks within range
+# $1: interface name
+# $2: fields of the wpa_supplicant scan_results
+wpa_supplicant_scan() {
+		local interface=$1 fields=$2 spawned_wpa=0 essids
+
+		[[ -n $interface ]] || return 1
+
+		if ! wpa_is_active $interface; then
+			wpa_action start $interface  || return 1
+			spawned_wpa=1
+		fi
+
+		wpa_call "$interface" scan > /dev/null || return 1
+		# Wait at least 2 seconds for scan results
+		sleep 2
+		# Sometimes, that is not enough
+		wpa_wait_while_state 7 "$interface" "SCANNING"
+		essids=$(wpa_call "$interface" scan_results |
+				tail -n+2 |
+				sort -rn -k3 |
+				sort -u -k5 |
+				sort -rn -k3 |
+				cut -f"$fields")
+
+		# Fields are tab delimited
+		# Remove extraneous output from wpa_cli
+		# Sort by strength
+		# Remove duplicates
+		# Re-sort by strength as the removal disorders the list
+		# Cut to the AP/essid fields only
+
+		(( spawned_wpa == 1 )) && wpa_action stop "$interface"
+
+		echo "$essids"
+}
+
+do_add() {
+	ssid=$1 passphrase=$2
+	[[ -z $passphrase ]] && passphrase="NONE"
+	network=$(wpa_call $INTERFACE add_network)
+	echo "Network: $network"
+	wpa_call $INTERFACE set_network $network ssid "\"$ssid\""
+	if [[ $passphrase == "NONE" ]]; then
+		wpa_call $INTERFACE set_network $network key_mgmt NONE
+	else
+		wpa_call $INTERFACE set_network $network psk "\"$passphrase\""
+	fi
+	wpa_call $INTERFACE enable_network $network
+}
+
+
+do_scan() {
+	#Scan colums are bssid / frequency / signal level / flags / ssid
+	essids=$(wpa_supplicant_scan $INTERFACE 3,4,5)
+}
+
+action=$1
+if [[ -n $action ]]; then
+	shift
+else
+	action="scan"
+fi
+
+case $action in
+	cli)
+		wpa_cli -i $INTERFACE "$@" ;;
+	menu)
+		do_scan
+		[[ $? == 0 && -n $essids ]] || exit $?
+		[[ -n $essids ]] || exit
+		#essids="-60	[ESS]	foo\n-70	[WPA]	bar"
+		for sel in fzf percol; do
+			command -v $sel >/dev/null && break
+		done
+		line=$(echo $essids | awk -F '\t' '{ print $1 "	" $3 "	" $2}' | $sel)
+		essid=$(echo $line | cut -f2)
+		flags=$(echo $line | cut -f3)
+		if [[ $flags != "[ESS]" ]]; then
+			echo -n "Password: "
+			pass=
+			read pass
+			echo "$(basename $0) add \"$essid\" \"$pass\""
+			do_add $essid $pass
+		else
+			echo "$(basename $0) add \"$essid\""
+			do_add $essid
+		fi
+		;;
+	scan)
+		do_scan #signal_level/flags/ssid
+		[[ $? == 0 ]] && echo $essids | awk -F '\t' '{ print $1 " |" $3 "|	" $2}'
+		#See http://stackoverflow.com/questions/2129123/rearrange-columns-using-cut to rearrange columns
+		;;
+	list)
+		wpa_cli -i $INTERFACE list_networks
+		;;
+	add)
+		do_add $@
+		;;
+	commit)
+		#use 'wpa_cli -i $INTERFACE save_config' if the config is correct
+		wpa_call $INTERFACE save_config;;
+	save)
+		ssid=$1 passphrase=$2
+		[[ -n $ssid ]] || exit 1
+		[[ -z $passphrase ]] && passphrase="NONE"
+		if [[ $passphrase == "NONE" ]]; then
+			sudo cat >>/etc/wpa_supplicant/wpa_supplicant-$INTERFACE.conf <<EOS
+network={
+	key_mgmt=NONE
+	ssid="$ssid"
+}
+EOS
+		else
+			sudo cat >>/etc/wpa_supplicant/wpa_supplicant-$INTERFACE.conf <<EOS
+network={
+	ssid="$ssid"
+	psk="$passphrase"
+}
+EOS
+		fi
+		wpa_call $INTERFACE reconfigure
+		;;
+	pass)
+			out=$(wpa_passphrase $@) && echo $out >> /etc/wpa_supplicant/wpa_supplicant-$INTERFACE.conf || echo "Error: $out"
+		wpa_call $INTERFACE reconfigure
+		;;
+	*)
+		help
+		;;
+esac
+
+#wpa_helper scan/add ssid pass/commit/save ssid pass/pass ssid pass

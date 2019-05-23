@@ -1,18 +1,12 @@
-sudo hciconfig hci0 down
-sudo rmmod hci_usb
-sudo rmmod lib80211_crypt_tkip
-sudo rmmod wl;
+See TLP – Linux Advanced Power Management
+=> I use it for tlp stat (the rest [useful for me] is already in syst
+powersave)
+(cf powersave status for less informations)
 
-sudo modprobe wl;
-sudo modprobe hci0
-sudo hciconfig hci0 up ; 
-#sudo modprobe lib80211
-#sudo modprobe wl;
-sudo modprobe lib80211_crypt_tkip
+Note: in powersave I don't unload wifi/bluetooth module anymore since
+rfkilling them should be enough
+Note the bluetooth.target is automatically activated/desactivated when bt becomes available/unavailable, so no need to stop/start it in powersave either
 
-echo 1 > /sys/module/snd_hda_intel/parameters/power_save
-echo ondemand > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo powersave > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo min_power > /sys/class/scsi_host/host0/link_power_management_policy
+=> check if 'uvcvideo' (webcam) uses power
 
-pm-powersave true
+

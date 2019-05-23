@@ -1,0 +1,15 @@
+# GENERATE WHEN @computer.name =~/Baggins/
+# mkinitcpio preset file for the 'linux' package
+
+ALL_config="/etc/mkinitcpio.conf"
+ALL_kver="/boot/arch/<%= @computer[:syst][:arch] =%>/vmlinuz-linux"
+
+PRESETS=('default' 'fallback')
+
+#default_config="/etc/mkinitcpio.conf"
+default_image="/boot/arch/<%= @computer[:syst][:arch] =%>/initramfs-linux.img"
+#default_options=""
+
+#fallback_config="/etc/mkinitcpio.conf"
+fallback_image="/boot/arch/<%= @computer[:syst][:arch] =%>/initramfs-linux-fallback.img"
+fallback_options="-S autodetect"

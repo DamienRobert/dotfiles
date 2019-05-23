@@ -1,0 +1,61 @@
+Cours
+=====
+
+Cours: http://galileoandeinstein.physics.virginia.edu/home.html
+       http://aether.lbl.gov/www/classes/p139/welcome.html => Gedanken: http://aether.lbl.gov/www/classes/p139/exp/gedanken.html
+       http://math.ucr.edu/home/baez/gr/gr.html
+       http://www.staff.science.uu.nl/~hooft101/lectures/genrel_2010.pdf
+
+       https://physics.stackexchange.com/questions/363/books-for-general-relativity
+       => A First Course in General Relativity by Bernard Schutz
+          http://www.preposterousuniverse.com/grnotes/
+       => Spacetime and Geometry: An Introduction to General Relativity by Sean Carroll 
+
+E=mc^2
+======
+
+https://thecuriousastronomer.wordpress.com/2017/10/03/derivation-of-latex-emc2/
+dE = Fdx et F=dp/dt (p moment), donne dE=v dp
+or p=mv où m=m_0/\sqrt{1-v^2/c^2}
+donc dp=v dm + m dv et on calcule dm/dv=mv/(c^2-m^2), donc dE=c^2m
+donc E-E0=c^2 \int_m0^m dm = c^2(m-m0) d'où E0=m0c^2 et E=mc^2.
+
+https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence
+https://arxiv.org/pdf/physics/0308039.pdf A simple derivation of E = mc 
+References: https://physics.stackexchange.com/questions/363/getting-started-self-studying-general-relativity
+
+Mécanique relativiste
+=====================
+
+Wikipedia: https://en.wikipedia.org/wiki/Lorentz_transformation
+https://en.wikipedia.org/wiki/Energy%E2%80%93momentum_relation
+ E^2 = (pc)^2 + (m0 c^2)^2 = mc^2
+ Autrement dit, si pp est le four momentum (E/c, mv)=(E/c, \gamma m_0 v),
+ on a pp^2=-m0^2 c^2
+https://en.wikipedia.org/wiki/Four-momentum
+ On a xx=(ct, x), donc vv=dxx/dt=\gamma (c, v), pp=m_0 vv=(E/c, mv)
+
+  Lorentz boost (x direction)
+      t ′ = γ (t−vx/c^2), x′=γ(x−vt), y′=y, z′=z
+  where v is the relative velocity between frames in the x-direction, c is the speed of light, and γ = 1/\sqrt{1−v^2/c^2}
+
+https://www.quora.com/Is-there-a-relativistic-equivalent-of-each-of-Newtons-3-laws
+https://en.wikipedia.org/wiki/Relativistic_Lagrangian_mechanics
+
+https://en.wikipedia.org/wiki/Geodesics_in_general_relativity
+https://en.wikipedia.org/wiki/Stress%E2%80%93energy_tensor
+https://en.wikipedia.org/wiki/Cauchy_stress_tensor
+
+Articles
+========
+https://journals.aps.org/rmp/pdf/10.1103/RevModPhys.48.393
+General relativity with spin and torsion: FoUndations and prospects
+
+Maxwell et GR
+=============
+
+https://physics.stackexchange.com/questions/944/noticing-that-newtonian-gravity-and-electrostatics-are-equivalent-is-there-also
+https://physics.stackexchange.com/questions/575/is-it-possible-correct-to-describe-electromagnetism-using-curved-space-time
+https://physics.stackexchange.com/questions/340371/why-does-the-analogy-between-electromagnetism-and-general-relativity-differ-if-y
+https://physics.stackexchange.com/questions/71476/gravity-as-a-gauge-theory
+https://physics.stackexchange.com/questions/76354/geometric-interpretation-of-electromagnetism

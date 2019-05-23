@@ -1,0 +1,65 @@
+#GENERATE WHEN has_base_package?("pacman") and @computer[:syst][:arch]!="armv6l"
+<% 
+require 'dr/config/read_config'
+servers=""
+mirrorlist=@dir[:target]+"etc/pacman.d/mirrorlist"
+@processor.squel_exit("The mirrorlist already exists") if @processor.opts[:mirror]=~/init/ and @processor.present? and mirrorlist.exist? and !DR::ReadConfig.is_empty?(mirrorlist)
+servers=%x/reflector -p http -a 24 -f 10 --sort rate/ if @processor.local? and @processor.opts[:mirror]=~/reflector/ and SH.find_executable("reflector") %>
+<% unless servers.empty? %>
+<%= servers %>
+<% else %>
+# Score: 0.5, France
+Server = http://archlinux.polymorf.fr/$repo/os/$arch
+# Score: 1.4, France
+Server = http://mir.archlinux.fr/$repo/os/$arch
+# Score: 0.5, United States
+Server = http://mirror.us.leaseweb.net/archlinux/$repo/os/$arch
+# Score: 2.1, United States
+Server = http://mirrors.kernel.org/archlinux/$repo/os/$arch
+# Score: 0.5, Germany
+Server = http://mirror.gnomus.de/$repo/os/$arch
+# Score: 0.6, Denmark
+Server = http://mirror.one.com/archlinux/$repo/os/$arch
+# Score: 0.6, Netherlands
+Server = http://mirror.nl.leaseweb.net/archlinux/$repo/os/$arch
+# Score: 0.6, Germany
+Server = http://mirror.de.leaseweb.net/archlinux/$repo/os/$arch
+# Score: 0.7, Belarus
+Server = http://mirror.datacenter.by/pub/archlinux/$repo/os/$arch
+# Score: 0.8, Germany
+Server = http://mirror.js-webcoding.de/pub/archlinux/$repo/os/$arch
+# Score: 0.8, Poland
+Server = http://mirror.chmuri.net/archmirror/$repo/os/$arch
+# Score: 0.8, Germany
+Server = http://ftp.tuxdroid.org/archlinux/$repo/os/$arch
+# Score: 0.8, France
+Server = http://mirror.bpiotrowski.pl/archlinux/$repo/os/$arch
+# Score: 0.8, Germany
+Server = http://archlinux.limun.org/$repo/os/$arch
+
+# Score: 0.3, France
+Server = http://archlinux.polymorf.fr/$repo/os/$arch
+# Score: 0.3, Denmark
+Server = http://mirror.one.com/archlinux/$repo/os/$arch
+# Score: 0.3, Germany
+Server = http://mirror.js-webcoding.de/pub/archlinux/$repo/os/$arch
+# Score: 0.4, France
+Server = http://arch.tamcore.eu/$repo/os/$arch
+#Score: 1.1, United States
+Server = http://mirrors.kernel.org/archlinux/$repo/os/$arch
+# Score: 0.4, Netherlands
+Server = http://ftp.nluug.nl/os/Linux/distr/archlinux/$repo/os/$arch
+# Score: 0.5, Germany
+Server = http://archlinux.my-universe.com/$repo/os/$arch
+# Score: 0.5, France
+Server = http://mirror.lightcone.eu/archlinux/$repo/os/$arch
+# Score: 0.5, Norway
+Server = http://os-sharing.org/archlinux/$repo/os/$arch
+# Score: 0.8, United States
+Server = http://lug.mtu.edu/archlinux/$repo/os/$arch
+# Score: 0.8, United States
+Server = http://mirror.us.leaseweb.net/archlinux/$repo/os/$arch
+#Worldwide
+Server = https://dgix.ru/mirrors/archlinux/$repo/os/$arch
+Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch
+<% end %>

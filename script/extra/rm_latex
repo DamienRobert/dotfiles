@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-rm **/*.nav(N) **/*.snm(N) **/*.run.xml(N) **/*.bbl(N) **/*.vrb(N) **/*.aux(N) **/*.toc(N) **/*.log(N) **/*.out(N)

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# require 'dr/all' ## deep_merge! conflicts with ActiveSupport version
+code="require 'dr/config/computers'; include SH::FU; @computer=DR::Computer.new; Pathname=DR::Pathname"
+exec pry --exec "$code" "$@"

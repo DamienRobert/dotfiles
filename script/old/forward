@@ -1,0 +1,9 @@
+#!/bin/sh
+
+CONTROL_PATH="$HOME/script/.control/%l_%r@%h:%p"
+SSH_OPT="-nNT -o ExitOnForwardFailure=yes -o ControlMaster=auto -o ControlPath=$CONTROL_PATH"
+
+#while true; do
+     exec ssh $SSH_OPT -D :44444 localhost true &
+#     sleep 60;
+#done

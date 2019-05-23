@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#From .mutt/mailcap:
+#text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -dump %s; nametemplate=%s.html; copiousoutput
+#text/html; w3m -I %{charset} -T %t '%s'; copiousoutput
+
+#https://news.ycombinator.com/item?id=11425642:
+#text/html; lynx -dump -localhost -force_html -width 80 %s; copiousoutput
+#text/html; /usr/bin/w3m -I %{charset} -T text/html -o display_link_number=1 -dump; copiousoutput
+
+file="$1"
+filetype="$2"
+charset="$3"
+
+if command -v lynx >/dev/null; then
+	lynxopts=""
+	. $HOME/.initvars
+	case "$MYHOSTNAME" in
+		imb) lynxopts="-cfg=$HOME/opt/archfull/etc/lynx.cfg" ;;
+	esac
+	lynx "$lynxopts" "-assume_charset=$charset" -display_charset=utf-8 -force_html -dump "$lyxopts" "$file"
+else
+	w3m -I "$charset" -T "$filetype" "$file"
+fi

@@ -1,0 +1,4 @@
+sudo dmidecode -s system-serial-number
+
+#Firmware version:
+sudo dmidecode | grep "BIOS Information" -A3

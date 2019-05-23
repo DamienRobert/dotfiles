@@ -1,0 +1,17 @@
+Legend: -> Wants, -|> Wants+After
+
+xsession.target -> session.target -> core.target -|> init.target = default.target -> basic.target
+                   graphical-session.target, graphical-session-pre.target
+unlock.target -> network.target
+
+- basic.target (special): run sockets, timers and paths targets
+- init.target: initialisation [environment.service]
+- core.target: services run under ssh or local [ssh-agent]
+- session.target: services run on console
+- xsession.target: services run on X
+
+Divers:
+- network.target: start/stop by powersave
+- unlock.target: launched by unlock
+- mail.target: services for mailchecking
+- crontab.target: services run through timers, to launch them all by hand if needed

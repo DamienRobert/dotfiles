@@ -1,0 +1,5 @@
+path = deploy
+#magma
+ignore = Name *.sig
+
+follow = Name deploy/*

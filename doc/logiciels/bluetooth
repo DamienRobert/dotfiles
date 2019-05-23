@@ -1,5 +1,49 @@
 - Install bluez, bluez-utils
 
+- rfkill:
+rfkill list
+rfkill unblock <num> 
+rfkill unblock bluetooth
+
+- hciconfig:
+sudo hciconfig hci0 up
+#check:
+hciconfig -a hci0
+(cf hcitool too)
+
+- sudo systemctl start bluetooth.target
+
+- bluetoothctl:
+1) First Connection
+dev="88:C6:26:06:F4:D1" #UE BOOM Left
+dev="88:82:54:00:13:1E" #samsung galaxy 3 mini
+-> sudo bluetoothctl
+power on #like hciconfig hci0 up
+#agent KeyboardOnly; default-agent
+agent on
+scan on
+devices #list found devices
+pair $dev
+trust $dev #allows the device to initiate connection by itself
+connect $dev
+
+2) Reconnect
+bluetoothctl connect $dev
+
+- restart pulseaudio if needed: pkill pulseaudio; start-pulseaudio-x11)
+
+==========================================================================
+Malheureusement android ne se présent que comme source, pas comme sink,
+donc on peut s'en servir comme micro, mais pas faire un appel depuis
+l'ordi.
+
+cf:
+- https://wiki.archlinux.org/index.php/bluetooth
+- http://stackoverflow.com/questions/15818704/is-it-possible-to-send-receive-voice-from-pc-to-android-device-over-bluetooth
+-> http://stackoverflow.com/questions/15557933/receive-audio-via-bluetooth-in-android/15559902#15559902
+- http://askubuntu.com/questions/2573/can-i-use-my-computer-as-an-a2dp-receiver
+- https://bbs.archlinux.org/viewtopic.php?pid=1376448
+
 bluetoothctl:
   list                       List available controllers
   show [ctrl]                Controller information
@@ -21,24 +65,3 @@ bluetoothctl:
   remove <dev>               Remove device
   connect <dev>              Connect device
   disconnect <dev>           Disconnect device
-
-- sudo bluetoothctl
-power on
-agent KeyboardOnly
-scan on
-trust 88:82:54:00:13:1E
-pair 88:82:54:00:13:1E
-connect 88:82:54:00:13:1E
-
-- restart pulseaudio
-
-Malheureusement android ne se présent que comme source, pas comme sink,
-donc on peut s'en servir comme micro, mais pas faire un appel depuis
-l'ordi.
-
-cf: 
-- https://wiki.archlinux.org/index.php/bluetooth
-- http://stackoverflow.com/questions/15818704/is-it-possible-to-send-receive-voice-from-pc-to-android-device-over-bluetooth
--> http://stackoverflow.com/questions/15557933/receive-audio-via-bluetooth-in-android/15559902#15559902
-- http://askubuntu.com/questions/2573/can-i-use-my-computer-as-an-a2dp-receiver
-- https://bbs.archlinux.org/viewtopic.php?pid=1376448

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Opera Next
+GenericName=Web browser
+GenericName[fr]=Un navigateur web
+Comment=Fast and secure web browser and Internet suite
+Icon=opera-next-browser
+TryExec=/usr/bin/opera-next
+Exec=/usr/bin/opera-next %U
+Terminal=false
+MimeType=text/html;text/xml;application/xhtml+xml;text/vnd.wap.wml;text/wml;application/x-mimearchive;application/mime;application/xml;application/rss+xml;application/rdf+xml;image/svg+xml;application/x-opera-extension;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/mailto;video/ogg;audio/ogg;video/webm;image/webp;
+Categories=Network;WebBrowser;
+StartupNotify=true
+X-AppInstall-Package=opera-next
+X-XFCE-Source=file:///usr/share/applications/opera-next-browser.desktop

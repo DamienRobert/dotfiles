@@ -1,0 +1,13 @@
+ssh mygale
+VERSION=2.20.5
+tar cvJf "magma-$VERSION.tar.xz" -C /opt/cluster/plafrim-dev/magma --transform s/^$VERSION/magma-$VERSION/ $VERSION
+
+#For --transform, see http://stackoverflow.com/questions/9729793/rename-directory-name-before-tar-happenso
+#Another possibility is to use a symlink: http://superuser.com/questions/98053/specify-root-dir-inside-tarball
+
+#back on host
+cd ~/data/Isos/magma
+transfert mygale:"magma-$VERSION.tar.xz" .
+
+#On plafrim2: /cm/shared/apps/magma/2.19.5
+#Note: magma-2.20.5 is statically linked so LD_PRELOAD won't work

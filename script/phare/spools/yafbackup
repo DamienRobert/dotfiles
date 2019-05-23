@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+rsync -vaczP 4a:/opt/yaf .
+rsync -vaczP 4a:/home/yaf/yafdir/ yaf/lib/yafdir/
+git add -A
+git commit -m ' ' --allow-empty-message --untracked-files=no

@@ -1,24 +1,26 @@
 #!/bin/zsh
 
-case $MYHOSTTYPE in
+#. $HOME/.initvars
+case $MYHOSTNAME in
 	imb)
 		PDFVIEWER=evince texdoc "$@"
 		;;
 	*)
 		FILE=$1
-		BASE=$(basename $FILE)
-		BASEF=${BASE%.pdf}.pdf
+		BASE=${$(basename $FILE)%.pdf}
+		BASEF=${BASE}.pdf
 		DOCDIR="/var/tmp/latex"
 		mkdir -p $DOCDIR && cd $DOCDIR
 		if [[ -e $BASEF ]]; then
-			evince $BASEF
+			xdg-open $BASEF
 		else
-			if [[ $BASE == $FILE ]]; then
-				#intuites the directory
-				wget "ftp://tug.org/texlive/Contents/live/texmf-dist/doc/latex/$FILE/$FILE.pdf" && evince "$FILE.pdf"
-			else
-				wget "ftp://tug.org/texlive/Contents/live/texmf-dist/doc/$FILE" && evince $BASEF
-			fi
+			#if [[ $BASE == $FILE ]]; then
+			#	#intuites the directory
+			#	wget "ftp://tug.org/texlive/Contents/live/texmf-dist/doc/latex/$FILE/$FILE.pdf" && evince "$FILE.pdf"
+			#else
+			#	wget "ftp://tug.org/texlive/Contents/live/texmf-dist/doc/$FILE" && evince $BASEF
+			#fi
+			wget -O $BASEF "http://texdoc.net/show.php?pkg=$BASE" && xdg-open $BASEF
 		fi
 		;;
 esac

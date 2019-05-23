@@ -1,0 +1,16 @@
+Generate: webgen generate [-v]
+
+webgen create bundle/website
+webgen show bundles/config/deps/extensions/tree
+
+# Docs
+http://webgen.gettalong.org/documentation/reference/configuration_options.html
+http://webgen.gettalong.org/documentation/reference/meta_information_keys.html
+http://webgen.gettalong.org/documentation/reference/extensions/path_handler/copy.html #+pipeline
+Default pipeline: https://github.com/gettalong/webgen/blob/master/data/webgen/passive_sources/default.metainfo
+
+# API
+require 'webgen/website'
+require 'webgen/context' #for Webgen::Context
+w=Webgen::Website.new('.')
+w.execute_task("generate_website") #=> Webgen::Task::GenerateWebsite

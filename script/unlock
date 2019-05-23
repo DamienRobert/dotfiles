@@ -1,19 +1,30 @@
 #!/bin/zsh
 . $HOME/.initvars
-mylog "usual" "$0 ($@)"
+. $HOME/script/lib/local_daemons
+mylog "user" "$0 $@"
 services=t
-mode=
+modes=()
+gpgdone=
+local_socket=
 
 while true;
 do
 	case "$1" in
 		-- ) break ;;
-		-l ) shift; LOCK="true" ;;
-		-s ) shift; mode="sudo" ;;
-		--no-services ) shift; services="" ;;
-		--pro ) shift; mode="pro" ;;
-		--crontab ) shift; mode="crontab" ;;
-		--ssh ) shift; mode="ssh" ;;
+		-l|--lock ) shift; LOCK="true" ;;
+		-s|--sudo ) shift; modes+="sudo" ;;
+		--no-services ) shift; services= ;;
+		--crontab ) shift; modes+="crontab"; local_socket=t ;;
+		--sshagent ) shift; modes+="sshagent"; local_socket=t ;;
+		--encfs ) shift; modes+="encfs" ;;
+		--ssh ) shift; modes+="mine"; modes+="ssh" ;;
+		# --forward ) shift; modes+="forward" ;;
+		--pro ) shift; modes+="pro" ;;
+		--perso ) shift; modes+="perso" ;;
+		--mode ) shift; modes+=$1; shift ;;
+		--mine ) shift; modes+="mine" ;;
+		--default ) shift; modes+="default" ;;
+		--all ) shift; modes+="all" ;;
 		*) break;;
 	esac
 done
@@ -21,162 +32,254 @@ done
 #systemctl --user start basic.target
 
 GPGPRESET="/usr/lib/gnupg/gpg-preset-passphrase"
-PERSOCRYPTDIR="$HOME/.crypt-perso"
-PROCRYPTDIR="$HOME/.crypt-pro"
 IPERSOCRYPTDIR="$HOME/perso/.crypt"
+PERSOCRYPTDIR="$HOME/.crypt-perso"
 IPROCRYPTDIR="$HOME/pro/.crypt"
+PROCRYPTDIR="$HOME/.crypt-pro"
+IMINECRYPTDIR="$HOME/mine/.crypt"
+MINECRYPTDIR="$HOME/.crypt-mine"
 #I have problem mounting encfs on top of the nfs $HOME
-if [[ $MYHOSTTYPE = "imb" ]]; then
-	mkdir -m 700 -p /tmp/damienrobert || exit 2
-	PERSOCRYPTDIR="/tmp/damienrobert/.crypt-perso"
-	PROCRYPTDIR="/tmp/damienrobert/.crypt-pro"
+if [[ $MYHOSTNAME = "imb" ]]; then
+	mkdir -m 700 -p $XDG_RUNTIME_DIR/crypt || exit 2
+	PERSOCRYPTDIR="$XDG_RUNTIME_DIR/crypt/.crypt-perso"
+	PROCRYPTDIR="$XDG_RUNTIME_DIR/crypt/.crypt-pro"
+	MINECRYPTDIR="$XDG_RUNTIME_DIR/crypt/.crypt-mine"
 fi
 
 mountcrypt() {
+	local idir odir
 	idir=$1; odir=$2
 	if [[ -d $idir ]]; then
-		echo "# encfs"
-		mkdir -m 700 -p $odir
-		if mount | grep "encfs on $odir" >/dev/null;
-		then
-			echo "## encfs already mounted"
+		echo "# encfs: $idir -> $odir"
+		if findmnt -t fuse.encfs $odir >/dev/null; then
+			echo "## encfs already mounted on $odir"
 		else
+			mkdir -m 700 -p $odir
 			encfs --stdinpass $idir $odir <<< $ENCFS
 		fi
 	fi
 }
 
 gpgread() {
-	case $MYHOSTTYPE in
-		imb )
-			gpg-agent -q || gpg-agent --daemon --use-standard-socket &
-			;;
-	esac
-	gpg-agent -q || exit 1
-	eval $(gpg -q -d $CFGFILES/.keys.gpg)
+	local vars
+	if [[ -z $gpgdone ]]; then
+		launch_gpg_agent
+		#.keys.gpg was encoded with mainkey and internal; but we only want to
+		#decrypt with internal :-(, so we need to crypt only with internal
+		vars=$(gpg -q -d $CFGFILES/.keys.gpg) || exit 1
+		eval $vars
+		gpgdone=t
+	fi
 }
 
-case $mode in
-sudo )
-	eval $(gpg -q -d $CFGFILES/.keys.gpg)
+unlock_sudo() {
+	gpgread
 	if (( $# > 0 )); then
-		expect <<EOS
-		spawn sudo $@
-expect "dams@$HOSTNAME:dams->root:"
-send "$SUDO\n"
-expect eof
-exit
-EOS
+		echo $SUDO | sudo -S $@
+# 		expect <<EOS
+# 		spawn sudo $@
+# expect "$USER@$HOST:$USER->root:"
+# send "$SUDO\n"
+# expect eof
+# exit
+# EOS
 	else
-		expect <<EOS
-spawn sudo -v
-expect "dams@$HOSTNAME:dams->root:"
-send "$SUDO\n"
-expect eof
-exit
-EOS
+		echo $SUDO | sudo -S -v
+# 		expect <<EOS
+# spawn sudo -v
+# expect "$USER@$HOST:$USER->root:"
+# send "$SUDO\n"
+# expect eof
+# exit
+# EOS
 	fi
-	exit $?
-	;;
+}
 
-pro )
+handle_encfs() {
+	local idir odir
+	idir=$1; odir=$2
 	if [[ -z $LOCK ]]; then
 		gpgread
-		mountcrypt $IPROCRYPTDIR $PROCRYPTDIR
+		mountcrypt $idir $odir
 	else
-		fusermount -u $PROCRYPTDIR
+		echo "encfs: unmounting $odir"
+		fusermount -u $odir
 	fi
-	;;
+}
 
-crontab )
-	gpgread
-	ssh-add -l
-	if [[ $? -ne 2 ]] ; then
-		echo "# ssh-agent (RSA)"
+handle_ssh() {
+	local file pass
+	file=$1; pass=$2
+	[[ -e $HOME/.ssh/$file ]] || { echo "Keyfile: $file does not exist"; return 1 }
+		echo "# ssh-agent ($file)"
 		expect <<EOS
-spawn ssh-add $HOME/.ssh/id_rsa
-expect "id_rsa:"
-send "$SSHRSA\n"
+spawn ssh-add $HOME/.ssh/$file
+expect "$file:"
+send "$pass\n"
 expect eof
 exit
 EOS
+}
+
+start_ssh_agent() {
+	if [[ -n $local_socket ]]; then
+		#start local socket in XDG_RUNTIME even if there is already a socket
+		#available through ssh; usefull for crontab like operations
+		launch_local_ssh_agent
+	else
+		launch_ssh_agent
 	fi
-	;;
+}
 
-* )
-if [[ -z $LOCK ]]; then
-	gpgread
-
-	ssh-add -l
-	#ssh-add -l has error code 1 if there are no identities, 2 if it could not
-	#connect to an agent
+mode_ssh-add() {
+	local file pass
+	ssh-add -l >/dev/null
 	if [[ $? -ne 2 ]] ; then
-		echo "# ssh-agent (EC25519)"
-		expect <<EOS
-spawn ssh-add $HOME/.ssh/id_ed25519
-expect "id_ed25519:"
-send "$SSHECDSA\n"
-expect eof
-exit
-EOS
-		echo "# ssh-agent (ECDSA)"
-		expect <<EOS
-spawn ssh-add $HOME/.ssh/id_ecdsa
-expect "id_ecdsa:"
-send "$SSHECDSA\n"
-expect eof
-exit
-EOS
-		echo "# ssh-agent (RSA)"
-		expect <<EOS
-spawn ssh-add $HOME/.ssh/id_rsa
-expect "id_rsa:"
-send "$SSHRSA\n"
-expect eof
-exit
-EOS
+		if [[ -z $LOCK ]]; then
+			gpgread
+			for file in $@; do
+				case $file in
+					id_ed25519|id_ecdsa) pass=$SSHECDSA;;
+					id_rsa) pass=$SSHRSA;;
+					*) pass="";
+				esac
+			handle_ssh $file $pass
+			done
+		else
+			echo "ssh: Foget $@"
+			for file in $@; do
+				ssh-add -d "$HOME/.ssh/$file"
+			done
+		fi
 	else
 		echo "## Could not connect to ssh agent"
 	fi
+}
 
-	[[ $mode == "ssh" ]] && exit 0
+mode_ssh() {
+	[[ -z $LOCK ]] && start_ssh_agent
+	keys=($@)
+	if [[ -z $keys ]]; then
+		keys=(id_ed25519 id_rsa)
+	fi
+	mode_ssh-add $keys
+}
 
+mode_sudo() {
+	if [[ -z $LOCK ]]; then
+		unlock_sudo $@
+	else
+		sudo -K
+	fi
+}
+
+mode_services() {
+	if [[ -n $services && -x /bin/systemctl ]]; then
+		if [[ -z $LOCK ]]; then
+			echo "# unlock.target"
+			systemctl --user start unlock.target
+		fi
+	fi
+}
+
+mode_gpgpreset() {
 	if [[ -x $GPGPRESET ]]; then
-		echo "# gpg"
-		$GPGPRESET --preset "E5AE1E400B618654974575C3DFEA373BCBC32853" <<< "$GPGPUBLICKEY"
+		KEYGRIPS=(D93D937753504524056BD012F0323009276D7F84 07D1533CF54B6EBDE0D8E83417B5826B9010BAE6) #public, old_public
+		if [[ -z $LOCK ]]; then
+			gpgread
+			echo "# gpg: preset public keys"
+			for keygrip in $KEYGRIPS; do
+				$GPGPRESET --preset $keygrip <<< "$GPGPUBLICKEY"
+			done;
+		else
+			echo "# gpg: forget public keys preset"
+			for keygrip in $KEYGRIPS; do
+				$GPGPRESET --forget $keygrip
+			done;
+		fi
 	fi
+}
 
-	mountcrypt $IPERSOCRYPTDIR $PERSOCRYPTDIR
-
-	if [[ -n $services && -x /usr/bin/systemctl ]]; then
-		#started by internet.target
-		#echo "# unlock.target"
-		#systemctl --user start unlock.target
-		echo "# internet.target"
-		systemctl --user start internet.target
+mode_gpg() {
+	if [[ -z $LOCK ]]; then
+		gpgread
+	else
+		echo "# gpg: forget all passphrases"
+		gpgconf --reload gpg-agent #flush the cache [ie forget all passphrases]
 	fi
+}
 
-else #lock
-	## Not drastic enough
-	#echo "ssh: Foget id_rsa id_ecdsa id_ed25519"
-	#ssh-add -d "$HOME/.ssh/id_ed25519"
-	#ssh-add -d "$HOME/.ssh/id_rsa"
-	#ssh-add -d "$HOME/.ssh/id_ecdsa"
+mode_encfs() {
+	if [[ -z $LOCK ]]; then
+		gpgread
+		expect <<EOS
+spawn sh -c "$@"
+expect "EncFS Password:"
+send "$ENCFS2\n"
+expect eof
+exit
+EOS
+	else #unmount all encfs systems
+		for fileenc in $(findmnt -t fuse.encfs -o TARGET -n); do
+			echo "# encfs: umount $fileenc"
+			fusermount -u $fileenc
+		done
+	fi
+}
 
-	#echo "gpg: forget public key"
-	#[[ -x $GPGPRESET ]] && $GPGPRESET --forget "E5AE1E400B618654974575C3DFEA373BCBC32853"
+mode_pro() { handle_encfs $IPROCRYPTDIR $PROCRYPTDIR }
+mode_perso() { handle_encfs $IPERSOCRYPTDIR $PERSOCRYPTDIR }
+mode_mine() { handle_encfs $IMINECRYPTDIR $MINECRYPTDIR }
 
-	echo "ssh: clear keys"
-	ssh-add -D
-	echo "gpg: forget passphrases"
-	pkill -HUP gpg-agent
+## Done by a global systemd service
+# mode_forward() {
+# 	if [[ -z $LOCK ]]; then
+# 		case $MYHOSTNAME in
+# 			Mithrim)
+# 				echo "# forward port 44002 on aimb"
+# 				ssh -fNT -R 44002:localhost:22 aimb ;;
+# 		esac
+# 	fi
+# }
 
-	echo "encfs: unmount"
-	fusermount -u $PERSOCRYPTDIR
-	fusermount -u $PROCRYPTDIR
-
-	echo "# To stop systemd services:"
-	echo "systemctl --user stop unlock.target"
-fi
-;;
-esac
+modes+=($@)
+[[ -z $modes ]] && modes=(default)
+for mode in $modes; do
+	echo "# $mode"
+	case $mode in
+		sudo ) mode_sudo $@ ;;
+		mine ) mode_mine ;; #encfs for mine/crypt
+		pro ) mode_pro ;; #encfs for pro/crypt
+		perso ) mode_perso ;; #encfs for perso/crypt
+		encfs ) mode_encfs $@ ;;
+		crontab ) mode_ssh id_rsa ;;
+		sshagent ) start_ssh_agent ;;
+		gpgpreset ) mode_gpgpreset;;
+		gpg ) mode_gpg;;
+		ssh ) mode_ssh;;
+		# forward )  mode_forward;;
+		all )
+			if [[ -z $LOCK ]]; then
+				echo "! all mode only available with --lock"
+			else
+				echo "# ssh: clear all keys"
+				#the difference with 'mode_ssh' is that we also clear keys not
+				#added by 'unlock'
+				ssh-add -D
+				mode_gpg
+				mode_encfs
+				echo "-> To stop systemd services:"
+				echo "$ systemctl --user stop unlock.target"
+			fi
+			;;
+		default)
+			mode_mine
+			mode_ssh
+			mode_perso
+			mode_gpgpreset
+			mode_services
+			# mode_forward
+			;;
+	esac
+done
+exit $?

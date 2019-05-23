@@ -1,0 +1,65 @@
+#!/bin/zsh
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -v ) shift; VERSION="-$1"; shift;;
+    -date ) shift; FAKE_TIME="$1"; shift;;
+    -pass ) shift; MAGMAPASSFILE="$1"; shift;;
+    -fake ) shift; FAKE_MAC="$1"; shift;;
+    -flavour ) shift; MAGMA_FLAVOUR="$1"; shift;;
+    *) break;;
+  esac
+done
+
+LAUNCHROOT="$HOME/mine/script/magma-launch"
+OPT="$HOME/opt/local/packages"
+ROOT="$OPT/magma$VERSION/"
+[[ -z $MAGMAPASSFILE ]] && MAGMAPASSFILE="$ROOT/magmapassfile"
+[[ -z $FAKE_MAC ]] && FAKE_MAC=00:30:48:cb:c1:8a #mygale
+
+export ROOT MAGMAPASSFILE MAGMA_FLAVOUR FAKE_MAC FAKE_TIME
+
+LD_PRELOAD=$LAUNCHROOT/fake_mac.so
+LD_PRELOAD=$LD_PRELOAD exec "$LAUNCHROOT/magma-launch"
+
+##magma-2.20.5 is static so we setup a virtual interface
+##TODO: do that in a container?
+#sudo ip link add link eth0 name eth0.1 address 00:30:48:cb:c1:8a type macvlan
+#magma -v 2.20.5
+
+#magma -fake '00:30:48:cb:c1:8a' -v 2.19.5
+#magma -date '-20y' -fake '00:0d:60:14:a6:fe' -v 2.17-7
+#magma -fake '00:0d:60:14:a6:fe' -v 2.16-10
+#magma -date '-20y' -fake '00:0d:60:14:a6:fe' -v 2.15.5
+
+#Old hwaddr
+#[[ -z $FAKE_MAC ]] && FAKE_MAC=00:30:48:c9:52:fe #devel03
+#[[ -z $FAKE_MAC ]] && FAKE_MAC=00:30:48:c8:f1:3a #new mygale
+#mygale 00:30:48:cb:c1:8a
+#devel03 00:30:48:c9:52:fe
+#mygale on plafrim2 00:30:48:c8:f1:3a
+#achille 00:0d:60:14:a6:fe
+#andromaque 00:0d:60:14:a6:da
+#cassandre 00:0d:60:14:c2:be
+#cookie 00:19:b9:0d:02:72
+#dixsept 00:0f:1f:8b:33:29
+#fleur 00:19:b9:0c:fa:bd
+#foo 00:0f:1f:8b:33:4d
+#greux 00:02:a5:1b:4e:3c
+#hector 00:0d:60:14:a7:54
+#hecube 00:0d:60:14:a7:5a
+#helene 00:0d:60:14:a8:3a
+#itanium 00:d0:b7:f9:fd:8a
+#jouy 00:c0:4f:62:46:58
+#lamaxe 00:01:02:f4:af:2c
+#latour 00:c0:4f:2a:4f:00
+#lepuid 00:10:a7:17:97:b6
+#mermoz 00:0d:56:04:71:f8
+#morpork 00:0d:56:04:71:2e
+#paris 00:0d:60:14:a7:58
+#pasta 00:19:b9:2a:88:b1
+#priam 00:0d:60:14:a7:56
+#tate 00:0d:56:04:9b:43
+#ulysse 00:0d:60:14:a6:d2

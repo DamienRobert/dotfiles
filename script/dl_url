@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+if check_com curl; then
+	WGET_CMD="curl -L -k -s"
+elif check_com wget; then
+	WGET_CMD="wget -q --no-check-certificate"
+elif check_com htttp; then
+	WGET_CMD="http --download"
+else
+	print "ERROR: neither wget nor curl is installed" >&2
+	exit 1
+fi
+
+for i in $@; do
+# if [[ ! -f $i && "$i" == (#s)(https|http|ftp)://* ]] ; then
+	print "-- Downloading '$i' --"
+	${=WGET_CMD} "$i"
+done

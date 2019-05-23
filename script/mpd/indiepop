@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# I have a playlist, If I call this script I want to use mpv
+## I have a playlist, If I call this script I want to use mpv
 # mpc clear
 # wget --quiet -O - http://somafm.com/indiepop.pls \
 # | grep '^File1=' \
@@ -13,13 +13,7 @@ play() {
 }
 
 [ -z "$1" ] && play indiepop
-
 case "$1" in
-	digitalis) play digitalis ;;
-	groovesalad) play groovesalad ;;
-	indiepop) play indiepop ;;
-	lush) play lush ;;
-	airwaves) play airwaves ;;
-	deepspaceone) play deepspaceone ;;
+	#digitalis/groovesalad/indiepop/lush/airwaves/deepspaceone
 	*) play "$1" ;;
 esac

@@ -1,0 +1,370 @@
+#raccourcis claviers:
+       keyboard control
+              <- and ->
+                   Seek backward/forward 10 seconds.
+              up and down
+                   Seek forward/backward 1 minute.
+              pgup and pgdown
+                   Seek forward/backward 10 minutes.
+              [ and ]
+                   Decrease/increase current playback speed by 10%.
+              { and }
+                   Halve/double current playback speed.
+              backspace
+                   Reset playback speed to normal.
+              < and >
+                   Go backward/forward in the playlist.
+              ENTER
+                   Go forward in the playlist, even over the end.
+              HOME and END
+                   next/previous playtree entry in the parent list
+              INS and DEL (ASX playlist only)
+                   next/previous alternative source.
+              p / SPACE
+                   Pause (pressing again unpauses).
+              .
+                   Step  forward.   Pressing once will pause movie, every con�
+                   secutive press will play one frame and then go  into  pause
+                   mode again (any other key unpauses).
+              q / ESC
+                   Stop playing and quit.
+              + and -
+                   Adjust audio delay by +/- 0.1 seconds.
+              / and *
+                   Decrease/increase volume.
+              9 and 0
+                   Decrease/increase volume.
+              m
+                   Mute sound.
+              # (MPEG and Matroska only)
+                   Cycle through the available audio tracks.
+              f
+                   Toggle fullscreen (also see -fs).
+              T
+                   Toggle stay-on-top (also see -ontop).
+              w and e
+                   Decrease/increase pan-and-scan range.
+              o
+                   Toggle  OSD  states:  none  /  seek / seek + timer / seek +
+                   timer + total time.
+              d
+                   Toggle frame dropping states: none / skip  display  /  skip
+                   decoding (see -framedrop and -hardframedrop).
+              v
+                   Toggle subtitle visibility.
+              b / j
+                   Cycle through the available subtitles.
+              y and g
+                   Step forward/backward in the subtitle list.
+              F
+                   Toggle displaying "forced subtitles".
+              a
+                   Toggle subtitle alignment: top / middle / bottom.
+              x and z
+                   Adjust subtitle delay by +/- 0.1 seconds.
+              r and t
+                   Move subtitles up/down.
+              i (-edlout mode only)
+                   Set  start  or  end  of an EDL skip and write it out to the
+                   given file.
+              s (-vf screenshot only)
+                   Take a screenshot.
+              S (-vf screenshot only)
+                   Start/stop taking screenshots.
+              I
+                   Show filename on the OSD.
+              ! and @
+                   Seek to the beginning of the previous/next chapter.
+
+              (The following keys are valid only when using a hardware  accel�
+              erated  video  output  (xv, (x)vidix, (x)mga, etc), the software
+              equalizer (-vf eq or -vf eq2) or hue filter (-vf hue).)
+
+              1 and 2
+                   Adjust contrast.
+              3 and 4
+                   Adjust brightness.
+              5 and 6
+                   Adjust hue.
+              7 and 8
+                   Adjust saturation.
+              (The following keys are only valid if GUI support is compiled in
+              and will take precedence over the keys defined above.)
+
+              ENTER
+                   Start playing.
+              ESC
+                   Stop playing.
+              l
+                   Load file.
+              t
+                   Load subtitle.
+              c
+                   Open skin browser.
+              p
+                   Open playlist.
+              r
+                   Open preferences.
+              mouse control
+                     button 3 and button 4
+                          Seek backward/forward 1 minute.
+                     button 5 and button 6
+                          Decrease/increase volume.
+
+#mplayer.conf
+
+vo=xv
+ao=alsa
+#srate=48000
+#af-adv=force=1
+
+#ass=yes
+#ass-font-scale=14
+fontconfig=yes
+#font="DejaVu Sans Mono"
+font="MySans"
+#font="monospace"
+#subfont-text-scale=3.5
+#ass-font-scale=2
+
+use-filedir-conf=yes
+
+#options que j'utilise:
+
+-ass
+-embedded-fonts
+
+-softvol-max
+-softvol-max <10.0-10000.0> Set  the  maximum amplification level
+in percent (default: 110). A value of 200 will allow you to adjust the volume
+up to a maxi� mum of double the current level.  With values below 100 the ini�
+tial volume (which is 100%) will be  above  the  maximum,  which e.g. the OSD
+cannot display correctly.
+
+
+#options int�ressantes:
+
+  #Player
+
+  -autoq <quality> (use with -vf [s]pp)
+     Dynamically changes the level of postprocessing depending
+     on the available spare CPU time.
+
+  -autosync <factor>
+      En cas de pbs de synchro audio/videos
+
+  -benchmark
+      Pour tester la vitesse
+
+  -enqueue
+
+  -fixed-vo
+       Pour ouvrir plusieurs vid�os sous la m�me fen�tre.
+
+  -framedrop
+       Pour les ordis lents
+
+  -identify
+       Show file parameters in an easily parseable format
+
+  -loop <number>
+        Loops movie playback <number> times.  0 means forever.
+
+  -playlist <file>
+
+  -quiet/-really-quiet
+        Moins de blabla
+
+  -shuffle
+
+  -softsleep
+      Use high-quality software timers instead of the RTC.
+
+  -speed <0.01-100>
+       Slow  down or speed playback
+
+  -sstep <sec>
+       Display one frame every <sec> seconds.  Useful for slideshows.
+
+# Pour l'audio d�mixage
+
+  -aid <id>
+	Select  audio  channel
+
+   -audiofile <filename>
+
+   -audiofile-cache <kBytes>
+
+   -cache <kBytes>
+
+ -cdda <option1:option2> (CDDA only)
+               This option can be used to tune the CD Audio reading
+	       feature  of MPlayer.
+
+	       Available options are:
+                  speed=<value> set CD spin speed
+		  paranoia=<0-2>
+		    0: disable checking
+		    1: overlap checking only (default)
+		    2: full data correction and verification
+
+    -channel
+      Nombre de canaux de sons (d�fault 2=st�r�o)
+
+  -rawaudio <option1:option2:...>
+
+# Pour la vid�o
+
+   -fps <value>
+        Si la vid�o est trop lente/rapide
+
+   -frames <number>
+      Joue les n premi�res frames
+
+   -idx (also see -forceidx)
+              Rebuilds index of files if no index  was  found (for
+	      seeking)
+    -saveidx <filename>/loadidx
+   Obsol�te
+
+   -rawvideo <option1:option2:...>
+
+   -sb <byte position>
+   -ss <time>
+      seek to time/byte position (ex: -ss 01:10:00, 1 hour 10 mn)
+
+    -tskeepbroken
+      Sometimes needed to play brokken MPEG-TS files
+
+    -vid <id>
+                Select  video  channel
+
+#Sous-titres:
+
+  -sub  <subtitlefile1,subtitlefile2,...>
+     j pour switcher de sous-titre
+
+ -dumps*
+    Pour changer le sous-titre en un autre format
+
+ -ffactor <number> (OSD only)
+               Resample alphamap of the font.
+
+-subalign <0-2> (OSD only)
+-subwidth <10-100> (OSD only)
+-subpos <0-100> (OSD only)
+
+-subdelay <sec>
+-subfont-autoscale <0-3> (FreeType only)
+
+-subfps <rate>
+  pour le mettre � autre chose que celui du film
+
+#DVD
+
+  -chapter <chapter id>[-<end chapter id>] (DVD only)
+
+  -alang
+    Works  only for DVD playback.  It selects the DVD audio languag
+       -alang hu,en
+             Plays Hungarian and falls back to English  if
+	     Hungarian is not available.
+(-v pour avoir les modes de -aid et -alang)
+
+   -dvdangle <angle id>
+
+    -sid <id>
+    -slang <two letters country code>
+       Pour les sous-titres dvd
+
+#Dumping
+
+   -dump(audio|file|stream|video)
+
+#Audio drivers
+-ao <driver1[:suboption1[=value]:...],driver2,...[,]>
+              Specify a priority list of audio output drivers to be used.
+-ac <[-]codec1,[-]codec2,...[,]>
+              Pour d�coder
+-af <filter1[=option1:option2:...],filter2,...>
+              pour filtrer
+-nosound
+-stereo <mode>
+              Select type of MP2/MP3 stereo output.
+
+#Videos options
+   ##Affichage
+-brightness <-100-100>
+-contrast <-100-100>
+ -double
+      Enables doublebuffering.
+  -fs
+                Fullscreen  playing
+  -geometry x[%][:y[%]] or [WxH][+x+y]
+   -rootwin (X11 only)
+      jouer la vid�o dans le fond d'�cran
+ -stop-xscreensaver (X11 only)
+               Turns off xscreensaver at startup and turns it on again on
+	       exit.
+ -zrbw (-vo zr only)
+     Affichage en noir et blanc
+
+##D�codage
+-aspect <ratio>
+   L'aspect ration 4:3 ou 1.3333, 16:9 ou 1.7777
+-flip
+   flip image upside down
+-novideo
+
+-zoom
+              Allow software scaling, where available.  Could be used to
+	      force scaling with -vf scale.
+-x <x>
+  Scales image to x width
+-y <y>
+-xy <value>
+  Pour zoomer.
+-sws <software scaler type>
+This option sets the quality (and speed,  respectively)  of  the
+              software scaler,
+
+-vo <driver1[:suboption1[=value]:...],driver2,...[,]>
+      POur les drivers vid�os
+ -vc <[-]codec1,[-]codec2,...[,]>
+      Pour le d�codage de la vid
+ -vf
+   ex: pp[=filter1[:option1[:option2...]]/[-]filter2...]
+   -vf pp=hb/vb/dr/al/lb
+        horizontal and vertical deblocking, deringing,
+	automatic brightness/contrast and linear blend deinterlacer
+   (see -pphelp)
+
+############################################################################
+
+           ************************************************
+           **** Your system is too SLOW to play this!  ****
+           ************************************************
+
+Possible reasons, problems, workarounds:
+- Most common: broken/buggy _audio_ driver
+  - Try -ao sdl or use ALSA 0.5 or the OSS emulation of ALSA 0.9.
+  - Experiment with different values for -autosync, 30 is a good start.
+((autosync regle l'algo de compensation audio/video))
+- Slow video output
+  - Try a different -vo driver (-vo help for a list) or try -framedrop!
+((framedrop: on s'autorise a ne pas decoder des frames))
+- Slow CPU
+  - Don't try to play a big DVD/DivX on a slow CPU! Try -hardframedrop.
+((pareil en plus intense))
+- Broken file
+  - Try various combinations of -nobps -ni -forceidx -mc 0.
+(( forceidx: reconstruit l'index, -ni: non-interleaved AVI parser, -nobps: do not use average bit for A/V sync, -mc: maximum A/V correction per frame))
+- Slow media (NFS/SMB mounts, DVD, VCD etc)
+  - Try -cache 8192.
+- Are you using -cache to play a non-interleaved AVI file?
+  - Try -nocache.
+Read DOCS/HTML/en/devices.html for tuning/speedup tips.
+If none of this helps you, read DOCS/HTML/en/bugreports.html.
+
+Ex: mplayer Pirates.Of.The.Caribbean.The.Curse.Of.The.Black.Pearl.2003.720p.BluRay.x264-SiNNERS.mkv -slang en -ass -softvol-max 1000 -ass-font-scale 2 -softvol
+

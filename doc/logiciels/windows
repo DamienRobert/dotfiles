@@ -1,0 +1,19 @@
+http://www.reddit.com/r/technology/comments/2t6s6h/windows_10_will_be_a_free_upgrade_from_windows_7/
+-> http://lifehacker.com/5984278/how-to-do-a-clean-install-of-windows-8-with-an-upgrade-disc
+
+# wine
+## setup 32 bits prefix:
+WINEPREFIX=~/.wine32 WINEARCH=win32 wineboot
+
+## Launch wine appli
+env WINEPREFIX="/home/dams/.wine" wine C:\\windows\\command\\start.exe /Unix /home/dams/.wine/dosdevices/c:/users/Public/Desktop/Hearthstone.lnk
+
+## Bug fixes:
+https://appdb.winehq.org/objectManager.php?sClass=version&iId=28855#viewHowTo
+Add "HardwareAcceleration": "false", to "Client" section in file $WINEPREFIX/users/$(whoami)/Application\ Data/Battle.net/Battle.net.config.
+
+Option on hearthstone: -force-d3d9
+
+# Battle.net
+# => launch the game directly, cf https://steamcommunity.com/sharedfiles/filedetails/?id=1113049716
+env WINEPREFIX="/home/dams/.wine" wine C:\\\\windows\\\\command\\\\start.exe /Unix /home/dams/.wine/dosdevices/c:/Program\ Files\ \(x86\)/Blizzard\ App/Battle.net.exe battlenet://HS

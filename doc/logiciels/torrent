@@ -1,0 +1,7 @@
+Transmission:
+transmission-daemon et transmission-remote-cli
+=> http://localhost:9091/transmission/web/
+transmission-remote -a torrent
+
+Blocklist:
+http://john.bitsurge.net/public/biglist.p2p.gz

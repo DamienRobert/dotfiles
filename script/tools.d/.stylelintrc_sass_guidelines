@@ -1,0 +1,74 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-no-unsupported-browser-features"
+  ],
+  "rules": {
+    "plugin/no-unsupported-browser-features": [true, {
+      "severity": "warning",
+      "ignore": ["rem"]
+    }],
+    # From stylelint-config-recommended-scss
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    # From stylelint-config-sass-guidelines; rules not in config-standard
+    "at-rule-blacklist": ["debug"],
+    "at-rule-no-vendor-prefix": true,
+    "color-named": "never",
+    "declaration-property-value-blacklist": {
+      "/^border/": ["none"]
+    },
+    "function-url-quotes": "always",
+    "max-nesting-depth": 1,
+    "media-feature-name-no-vendor-prefix": true,
+    "order/order": [
+      [
+        "custom-properties",
+        "dollar-variables",
+        {
+          "type": "at-rule",
+          "name": "extend"
+        },
+        {
+          "type": "at-rule",
+          "name": "include",
+          "hasBlock": false
+        },
+        "declarations",
+        {
+          "type": "at-rule",
+          "name": "include",
+          "hasBlock": true
+        },
+        "rules"
+      ]
+    ],
+    "order/properties-alphabetical-order": true,
+    "property-no-vendor-prefix": true,
+    "scss/at-extend-no-missing-placeholder": true,
+    "scss/at-function-pattern": "^[a-z]+([a-z0-9-]+[a-z0-9]+)?$",
+    "scss/at-import-no-partial-leading-underscore": true,
+    "scss/at-import-partial-extension-blacklist": ["scss"],
+    "scss/at-mixin-pattern": "^[a-z]+([a-z0-9-]+[a-z0-9]+)?$",
+    "scss/dollar-variable-colon-space-after": "always",
+    "scss/dollar-variable-colon-space-before": "never",
+    "scss/dollar-variable-pattern": "^[_]?[a-z]+([a-z0-9-]+[a-z0-9]+)?$",
+    "scss/percent-placeholder-pattern": "^[a-z]+([a-z0-9-]+[a-z0-9]+)?$",
+    "scss/selector-no-redundant-nesting-selector": true,
+    "selector-class-pattern": [
+      "^[a-z0-9\\-]+$",
+      {
+        "message":
+          "Selector should be written in lowercase with hyphens (selector-class-pattern)"
+      }
+    ],
+    "selector-max-compound-selectors": 3,
+    "selector-max-id": 0,
+    "selector-no-qualifying-type": true,
+    "selector-no-vendor-prefix": true,
+    "shorthand-property-no-redundant-values": true,
+    "string-quotes": "single",
+    "value-no-vendor-prefix": true
+  }
+}

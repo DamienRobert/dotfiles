@@ -1,0 +1,8 @@
+#!/bin/sh
+
+file="$@";
+echo "$file"
+dir=`dirname "$file"`
+mkdir -p "/tmp/ocaml.result/$dir"
+
+TERM= ~/perl/toplevel.pl ocaml > /tmp/ocaml.result/"$file"

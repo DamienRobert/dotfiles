@@ -1,0 +1,30 @@
+https://notmuchmail.org/special-tags/
+
+# Synchronization between tags and maildir flags
+- draft
+- flagged
+- passed
+- replied
+- unread
+
+# Automatic tags
+- attachment
+- signed
+- encrypted
+
+# Default tags for new messages
+- unread
+- inbox
+
+# Default excluded tags
+- deleted
+- spam
+
+## Show all tags
+notmuch search --output=tags \*
+
+https://notmuchmail.org/faq/
+How do I search for messages that have no tags?
+
+$ notmuch search $(notmuch search --output=tags \* | \
+     sed 's/^/not tag:/;2~1s/^/and /')

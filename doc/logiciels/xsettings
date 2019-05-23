@@ -1,0 +1,100 @@
+Xsettings: http://crunchbang.org/forums/viewtopic.php?pid=369231
+
+Daemons: gnome-settings-daemon, Xfsettingsd [xfce], xsettingsd (which contains dump_xsettings)
+Note: without an xsettings daemon, gtk applications fallback to their default settings, cf [gnome]
+
+xsettings registry: http://www.freedesktop.org/wiki/Specifications/XSettingsRegistry/
+(Note the registry is outdated, a lot of the Gtk/* settings are deprecated,
+noted [] here and other gtk-settings don't appear here)
+
+- Xft/Antialias Whether to antialias Xft fonts; 0no, 1yes, -1=default [int -1]
+- Xft/Hinting Whether to hint Xft fonts; 0no, 1yes, -1=default [int -1]
+- Xft/HintStyle What degree of hinting to use; "hintnone", "hintslight", "hintmedium", or "hintfull" [string "hintnone"]
+- Xft/RGBA Type of subpixel antialiasing; "none", "rgb", "bgr", "vrgb", "vbgr" [string "none"]
+- Xft/DPI Resolution for Xft, in 1024 * dots/inch. -1 to use default value [int -1]
+
+- Net/DoubleClickTime Maximum time allowed between two clicks for them to be considered a double click (in milliseconds) * int 250 
+- Net/DoubleClickDistance Maximum distance allowed between two clicks for them to be considered a double click (in pixels) * int 5 
+- Net/DndDragThreshold Number of pixels the cursor can move before dragging * int 8 
+- Net/CursorBlink Whether the cursor should blink * bool True 
+- Net/CursorBlinkTime Length of the cursor blink cycle, in milleseconds * int 1200 
+- Net/ThemeName Name of theme to use. This is a directory either in ~/.themes (except on Debian), or the 'system' theme directory, which depends on where GTK was installed. Basically, it could be anywhere. This should really use the base dir spec or something similar to locate the theme. * string "Default" 
+- Net/IconThemeName Name of icon theme to use for icons. * string "hicolor" 
+
+[- Gtk/CanChangeAccels Whether menu accelerators can be changed by pressing a key over the menu item. * bool False ]
+[- Gtk/ColorPalette Palette to use in the color selector. * string "black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90" ]
+- Gtk/FontName Name of default font to use * string "Sans 10" 
+[- Gtk/IconSizes List of icon sizes (gtk-menu16,16;gtk-button20,20... * string NULL ]
+- Gtk/KeyThemeName Name of key theme RC file to load. * string NULL 
+[- Gtk/ToolbarStyle Whether default toolbars have text only, text and icons, icons only, etc. * enum {Icons, Text, Both, Both_Horiz} Both ]
+[- Gtk/ToolbarIconSize Size of icons in default toolbars. * enum LARGE_TOOLBAR ]
+[- Gtk/IMPreeditStyle How to draw the input method preedit string. * enum Callback ]
+[- Gtk/IMStatusStyle How to draw the input method statusbar. * enum Callback ]
+[- Gtk/MenuImages Whether images should be shown in menus * bool True ]
+[- Gtk/ButtonImages Whether stock icons should be shown in buttons * bool True ]
+[- Gtk/MenuBarAccel The accelerator for moving the focus to the menubar * string "F10" ]
+
+Par contre il y a ces réglages gtk/gdk en plus:
+  "Gtk/Modules",             "gtk-modules"
+  ["Gtk/ButtonImages",        "gtk-button-images"]
+  ["Gtk/MenuImages",          "gtk-menu-images"]
+  "Gtk/CursorThemeName",     "gtk-cursor-theme-name"
+  "Gtk/CursorThemeSize",     "gtk-cursor-theme-size"
+  ["Gtk/ColorScheme",         "gtk-color-scheme"]
+  "Gtk/EnableAnimations",    "gtk-enable-animations"
+  "Gtk/EnableAccels",        "gtk-enable-accels"
+  ["Gtk/ScrolledWindowPlacement", "gtk-scrolled-window-placement"]
+  "Gtk/IMModule",            "gtk-im-module"
+  "Fontconfig/Timestamp",    "gtk-fontconfig-timestamp"
+  "Net/SoundThemeName",      "gtk-sound-theme-name"
+  "Net/EnableInputFeedbackSounds", "gtk-enable-input-feedback-sounds"
+  "Net/EnableEventSounds",   "gtk-enable-event-sounds"
+  "Gtk/CursorBlinkTimeout",  "gtk-cursor-blink-timeout"
+  "Gtk/ShellShowsAppMenu",   "gtk-shell-shows-app-menu"
+  "Gtk/ShellShowsMenubar",   "gtk-shell-shows-menubar"
+  "Gtk/ShellShowsDesktop",   "gtk-shell-shows-desktop"
+  "Gtk/SessionBusId",        "gtk-session-bus-id"
+  "Gtk/DecorationLayout",    "gtk-decoration-layout"
+  "Gtk/TitlebarDoubleClick", "gtk-titlebar-double-click"
+  "Gtk/TitlebarMiddleClick", "gtk-titlebar-middle-click"
+  "Gtk/TitlebarRightClick", "gtk-titlebar-right-click"
+  "Gtk/DialogsUseHeader",    "gtk-dialogs-use-header"
+  "Gtk/EnablePrimaryPaste",  "gtk-enable-primary-paste"
+  "Gtk/PrimaryButtonWarpsSlider", "gtk-primary-button-warps-slider"
+  "Gtk/RecentFilesMaxAge",   "gtk-recent-files-max-age"
+  "Gtk/RecentFilesEnabled",  "gtk-recent-files-enabled"
+  "Gtk/KeynavUseCaret",      "gtk-keynav-use-caret"
+  "Gdk/WindowScalingFactor", "gdk-window-scaling-factor"
+  "Gdk/UnscaledDPI",         "gdk-unscaled-dpi"
+
+Exemple: ./dump_xsettings # note that some of these settings are not in the registry (a priori the xsettings can hold the full gtksettings, cf [gnome])
+  Fontconfig/Timestamp 1516727823
+  Gtk/ButtonImages 1
+  Gtk/CanChangeAccels 0
+  Gtk/ColorPalette "black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90"
+  Gtk/CursorThemeName ""
+  Gtk/CursorThemeSize 0
+  Gtk/DecorationLayout "menu:minimize,maximize,close"
+  Gtk/FontName "Sans 10"
+  Gtk/IconSizes ""
+  Gtk/KeyThemeName ""
+  Gtk/MenuBarAccel "F10"
+  Gtk/MenuImages 1
+  Gtk/ToolbarIconSize 3
+  Gtk/ToolbarStyle "icons"
+  Net/CursorBlink 0
+  Net/CursorBlinkTime 1200
+  Net/DndDragThreshold 8
+  Net/DoubleClickDistance 5
+  Net/DoubleClickTime 400
+  Net/EnableEventSounds 0
+  Net/EnableInputFeedbackSounds 0
+  Net/IconThemeName "Adwaita"
+  Net/SoundThemeName "default"
+  Net/ThemeName "Adwaita"
+  Xft/Antialias 1
+  Xft/DPI 98304
+  Xft/HintStyle "hintslight"
+  Xft/Hinting 1
+  Xft/RGBA "rgb"
+  Xft/dpi -1

@@ -1,11 +1,11 @@
-#!/bin/sh 
+#!/bin/sh
 
 #bs=2k car c'est la longueur d'un secteur sur cdrom, moins la place pour les
 #codes correcteurs.
 #see also ddrescue and dd_rescue
 
-copy() 
-for i in $1/*; do 
+copy()
+for i in $1/*; do
   basename="`basename \"$i\"`"
   if [ -d "$i" ]; then
     mkdir "$2/$basename"

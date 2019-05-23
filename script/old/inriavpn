@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sudo route add -net 129.199.0.0 netmask 255.255.0.0 dev vpn0
+sudo route add -net 147.210.16.0 netmask 255.255.255.0 dev vpn0
+#sudo route add default gw 128.93.177.121

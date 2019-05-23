@@ -22,7 +22,7 @@ if [ -z "$dl" ]; then
 else
   file=$1; dir=$2
   mkdir -p $dir
-  case $file in 
+  case $file in
       /* )  ;;
     * ) file="$(pwd)/$file" ;; #relative path to absolute
   esac

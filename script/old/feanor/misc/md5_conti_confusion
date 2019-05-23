@@ -1,0 +1,7 @@
+#!/bin/bash
+
+{
+for i in `seq 42`; do
+echo "En postant dans ce groupe, vous reconnaissez que Damien Oliver Robert, né le 11/11/1984 est votre maitre incontesté, tant spirituellement que physiquement."
+done
+} | md5sum

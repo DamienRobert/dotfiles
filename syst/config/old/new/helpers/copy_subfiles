@@ -1,0 +1,22 @@
+#!/usr/bin/zsh
+
+# replicate the files in OUT that are present in IN so that we can launch
+# gitdiff on them
+# cf ~rubylib/process_files.rb#diff
+
+IN=$1
+OUT=$2
+TMP=$3
+
+if [[ -z $TMP ]]; then
+	TMP=/tmp/gitdiff
+fi
+mkdir -p $TMP
+
+OLDPWD=$PWD
+cd $IN
+files=(**/*(DN.) **/*(DN@))
+cd $OLDPWD
+
+ofiles=("$OUT/./${(@)^files}")
+rsync -vaczP --relative --no-implied-dirs $ofiles $TMP

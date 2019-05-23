@@ -1,0 +1,74 @@
+journalctl -b: only show logs from current boot
+journalctl -F _SYSTEMD_UNIT: show all systemd units that have ever written to the journal
+journalctl -b -p err: shows all messages of priority levels ERROR and worse, from the current boot
+
+## Options
+-b [ID][±offset], --boot=[ID][±offset]
+  If the boot ID is omitted, a positive offset will look up the boots starting
+  from the beginning of the journal, and an equal-or-less-than zero offset will
+  look up boots starting from the end of the journal. Thus, 1 means the first
+  boot found in the journal in chronological order, 2 the second and so on; 
+  while -0 is the last boot, -1 the boot before last, and so on. An empty
+  offset is equivalent to specifying -0 [...]
+-k, --dmesg
+  Show only kernel messages. This implies -b and adds the match
+  "_TRANSPORT=kernel".
+  => journalctl -fk = tail -f /var/log/kernel.log
+-u/--unit=
+  For each unit name, a match is added for messages from the unit
+  ("_SYSTEMD_UNIT=UNIT"), along with additional matches for messages
+  from systemd and messages about coredumps for the specified unit.
+--user-unit=
+  This will add a match for messages from the unit ("_SYSTEMD_USER_UNIT=" and
+  "_UID=") and additional matches for messages from session systemd and
+  messages about coredumps for the specified unit.
+--system, --user
+  Show messages from system services and the kernel (with --system).
+  Show messages from service of current user (with --user). If
+  neither is specified, show all messages that the user can see.
+
+## Journal fields
+https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html
+- _PID=, _UID=, _GID=
+    The process, user, and group ID of the process the journal entry originates from formatted as a decimal string.
+- _SYSTEMD_CGROUP=, _SYSTEMD_SESSION=, _SYSTEMD_UNIT=, _SYSTEMD_USER_UNIT=, _SYSTEMD_OWNER_UID=, _SYSTEMD_SLICE=
+    The control group path in the systemd hierarchy, the systemd session ID (if any), the systemd unit name (if any), the systemd user session unit name (if any), the owner UID of the systemd session (if any) and the systemd slice unit of the process the journal entry originates from.
+
+## Examples:
+- journalctl --user seems to be the same as journalctl _UID=$UID
+- journalctl _SYSTEMD_OWNER_UID=$UID is a bit different; it adds log lines
+  like session/sudo:
+Jan 01 22:22:13 mithrim systemd[1059]: pam_unix(systemd-user:session): session o
+pened for user dams by (uid=0)
+Jan 01 22:31:13 mithrim sudo[3312]:     dams : TTY=pts/0 ; PWD=/home/dams ; USER
+=root ; COMMAND=/usr/bin/powerpill -Syu
+Jan 01 22:31:13 mithrim sudo[3312]: pam_unix(sudo:session): session opened for u
+ser root by (uid=0)
+  but it miss lines like
+Jan 04 21:30:45 mithrim unison_backup[12246]: PING acces.math.u-bordeaux1.fr (14
+7.210.16.150) 56(84) bytes of data.
+Jan 04 21:30:45 mithrim unison_backup[12246]: 64 bytes from acces4.math.u-bordea
+ux1.fr (147.210.16.150): icmp_seq=1 ttl=54 time=31.5 ms
+- journalctl _UID=0 only show messages from root services; but a lot of
+  them use a different user name like none
+
+Logging
+=======
+
+[Note on verbosity: the command line option 'quiet' affects both the kernel
+and set systemd.show_status=false. To only affect systemd use
+systemd.show_status=false; to only affect the kernel use loglevel=3, this
+corresponds to 'quiet', the normal loglevel is 4]
+
+logger "ploum plam"
+-> logs to syslog, and so to systemd:
+  dams[13412]: ploum plam
+Use -p user.notice (the default) to change the priority
+
+Can be integrated with journald directly:
+printf "%s\n%s\n" SYSLOG_IDENTIFIER=mytest MESSAGE="ploum plam plim" | logger --journald
+mytest[14241]: ploum plam plim
+
+systemd-cat:
+- systemd-cat ls -t identifier
+- ls | systemd-cat -t identifier

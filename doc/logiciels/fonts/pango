@@ -1,0 +1,18 @@
+http://www.pango.org/
+    Pango is designed to be modular; the core Pango layout engine can be used with different font backends. There are three basic backends, with multiple options for rendering with each.
+    Client side fonts using the FreeType and fontconfig libraries, using HarfBuzz for complex-text handling. Rendering can be with with Cairo or Xft libraries, or directly to an in-memory buffer with no additional libraries. 
+
+http://cairographics.org/
+    Cairo is a 2D graphics library with support for multiple output devices.
+[Used by gtk]
+
+https://en.wikipedia.org/wiki/Xft
+    Xft, the X FreeType interface library, is a free computer program library written by Keith Packard. As of version 2.1, it is licensed under a quasi-BSD license.
+
+pango-view
+==========
+
+pango-view -t 'fcgray antialias' --backend=cairo/xft/ft2
+
+Check which family is used for a character, from https://eev.ee/blog/2015/05/20/i-stared-into-the-fontconfig-and-the-fontconfig-stared-back-at-me/
+    DISPLAY=:0 FC_DEBUG=4 pango-view --font=monospace -t ☺ | grep family:

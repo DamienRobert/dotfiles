@@ -1,0 +1,51 @@
+whatwhen() {
+	emulate -L zsh
+	local usage help ident format_l format_s first_char remain first last all
+	usage='USAGE: whatwhen [options] <searchstring> <search range>'
+	ident=${(l,${#${:-Usage: }},, ,)}
+	format_l="${ident}%s\t\t\t%s\n"
+	format_s="${format_l//(\\t)##/\\t}"
+
+	local first_default="-100" opts=(-i)
+	while true; do
+		case $1 in
+			-- ) shift; break ;;
+			-a ) shift; first_default=0 ;;
+			-q ) shift; opts=() ;;
+			-h ) shift; 
+					printf '%s\n\n' ${usage}
+					print 'OPTIONS:'
+					printf $format_l '-h' 'show help text'
+					printf $format_l "-a" 'use the whole history,'
+					printf $format_l "-q" "don't show dates"
+					print '\f'
+					print 'SEARCH RANGE:'
+					printf $format_l "'0'" 'the whole history,'
+					printf $format_l '-<n>' 'offset to the current history number; (default: -100)'
+					printf $format_s '<[-]first> [<last>]' 'just searching within a give range'
+					printf '\n%s\n' 'EXAMPLES:'
+					printf ${format_l/(\\t)/} 'whatwhen grml' "# Range is set to $first_default by default."
+					printf $format_l 'whatwhen zsh -250'
+					printf $format_l 'whatwhen foo 1 99'
+					return 1
+					;;
+			*) break;;
+		esac
+	done
+	# Make the first char of the word to search for case
+	# insensitive; e.g. [aA]
+	first_char=[${(L)1[1]}${(U)1[1]}]
+	remain=${1[2,-1]}
+	# Default search range is `-100'.
+	first=${2:-$first_default}
+	# Optional, just used for `<first> <last>' given.
+	last=$3
+	if [[ -z $1 ]]; then
+		fc -l $opts $first $last
+	else
+		# -l list results on stout rather than invoking $EDITOR.
+		# -i Print dates as in YYYY-MM-DD.
+		# -m Search for a - quoted - pattern within the history.
+		fc -l $opts -m "*${first_char}${remain}*" $first $last
+	fi
+}

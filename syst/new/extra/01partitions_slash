@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-/usr/bin/sgdisk --new=1:0:0 -c '0:slash' -t '0:8300' -u 4f68bce3-e8cd-4db1-96e7-fbcaf984b709 --attributes=1:set:2 ${DISK}

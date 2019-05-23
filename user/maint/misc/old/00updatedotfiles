@@ -1,0 +1,3 @@
+#!/bin/sh
+
+$HOME/mine/bootstrap $HOME/mine/config/generate.rb --process-now

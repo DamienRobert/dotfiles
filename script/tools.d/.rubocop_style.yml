@@ -1,0 +1,13 @@
+Layout/Tab:
+  Enabled: false
+Layout/IndentationWidth: #if enabled one tab indentation get counted as one space and gives an error
+  Enabled: false
+# Layout/SpaceAroundOperators:
+#   Enabled: false
+
+# Style/GlobalVars:
+#   Enabled: false
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+# Style/PercentLiteralDelimiters:
+#   Enabled: false

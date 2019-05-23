@@ -1,0 +1,69 @@
+#!/usr/bin/env zsh
+
+editfile=$1
+echo "editfile: $editfile"
+
+update_postname() {
+	formail -f -I 'From: damien.robert__forum@normalesup.org ('"$POSTNAME"')' < $editfile > "$editfile.TMPploum"
+	mv "$editfile.TMPploum" $editfile
+}
+
+name=$EDITOR_VERSION
+DIR="$HOME/posts"
+NG=$(grep '^Newsgroups:' $editfile | head -n 1)
+NG=${NG#*:}
+case $name in
+	forum)
+		POSTNAME="Dam's"
+		case "$NG" in
+			*mael-roy-de-france*)
+				#POSTNAME='Bouffon du Roy';;
+				#POSTNAME='Anti-Royaliste';;
+				POSTNAME='Futur Assassin du Roy';;
+		esac
+		update_postname
+		;;
+	yaf|zorglub)
+		POSTNAME="Gondolin"
+		YAFDIR="$HOME/posts/.yaf"
+		DATE=$(date -R)
+		UTF8=
+		case "$NG" in
+			*utf-.38*) UTF8=t ;;
+			*usurpation*)
+				POSTNAME=$(rotesque); #mets à jour nbposts, aussi
+				[[ $POSTNAME == LUC ]] && POSTNAME=$(ocaml  2>&1 > /dev/null <<EOF
+#load "unix.cma";;
+let _ = Random.init (int_of_float (Unix.gettimeofday ()));;
+let n=Random.int 6+2;;
+let _ =
+  for i = 0 to n-1 do
+    output_char stderr (char_of_int (97+Random.int 26-if i=0 then 32 else 0))
+  done;
+  output_string stderr "\n";
+  flush stderr;;
+EOF)
+				;;
+		esac
+		while true; do
+		  echo "Postname actuel: $POSTNAME"
+		  echo "123456789012345678901234567890"
+		  read NEWPOSTNAME
+		  if [[ ${#NEWPOSTNAME} -gt 30 ]] then
+		    echo "Postname '$NEWPOSTNAME' trop long!"
+		  else
+		    break
+		  fi
+		done;
+		[[ -n $NEWPOSTNAME ]] && POSTNAME="$NEWPOSTNAME"
+		printf '%s\n' "$DATE: $POSTNAME" >> "$YAFDIR/timestamp"
+		update_postname
+		if [[ -n $UTF8 ]]; then
+		  recode UTF-8..ISO8859-1 $editfile
+		fi
+		;;
+esac
+vi "$@"
+FILE="$DIR/.$name/posts"
+cat $editfile >> $FILE
+printf '%s\n' "-----" >> $FILE

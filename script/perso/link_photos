@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+cd ~/Photos/all
+
+setopt extended_glob
+dolink() {
+  SEL=$1
+  DIR=$2
+  for file in $DIR/2*(/N); do
+    base=$(basename $file)
+    target="$base@$SEL"
+    [[ -e $target ]] || { echo "$file -> $target"; ln -ns $file $target }
+  done
+}
+
+phoneglob="(LeEco|Samsung)*"
+for dir in ../Photos_de_Damien/^$~phoneglob; do
+  dolink D $dir
+done
+
+for dir in ../Photos_de_Damien/$~phoneglob; do
+  dolink P $dir
+done
+
+dolink B ../Photos_de_Blandine
+dolink F ../Photos_de_autres/Famille
+dolink G ../Photos_de_autres/Gaetan_Bisson
+
+DIR=(../Photos_de_Damien ../Photos_de_Blandine)
+SQUEL="Sel"
+for i in ${^DIR}/*/*/$SQUEL(/N); do
+	file="../$i"
+	bname=$(basename $(dirname $i))
+	target="$SQUEL/$bname"
+	#[[ -e $target ]] || echo "$file -> $target"
+	[[ -e $target ]] || { echo "$file -> $target"; ln -ns $file $target }
+done

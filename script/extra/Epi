@@ -2,6 +2,7 @@ MOVIESEP=x
 SUBSEP=x
 GO=1 #don't ask confirmation
 FORMATSUB=1 #format subtitles
+#SUBEPI=NONE #No subtitle
 
 SEASON=01
 EPI=01

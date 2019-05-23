@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+
+while (<>) {
+    chop;
+    for (my $i = 0; $i < length($_); $i += 4) {
+  my $nibble = '0b'.substr($_, $i, 4);
+  printf('%x', oct($nibble));
+    }
+    print "\n";
+}

@@ -1,1 +1,1 @@
-../../../var/dist/dotfiles/chneukirchen.org/dotfiles/bin/uni
+../../../usr/dist/@dotfiles/chneukirchen.org/dotfiles/bin/uni

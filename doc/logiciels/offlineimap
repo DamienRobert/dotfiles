@@ -1,0 +1,7 @@
+Config:
+quick=5 #do 5 quick sync between a full sync
+autorefresh=10 #sync every 10 minutes
+
+- https://wiki.archlinux.org/index.php/OfflineIMAP#Overriding_UI_and_autorefresh_settings
+ synchronize everything once:
+ offlineimap -o -u blinkenlights

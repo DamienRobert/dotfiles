@@ -1,0 +1,14 @@
+---
+# This playbook bootstrap a virtual machine
+
+- name: bootstrap
+  hosts: all
+  sudo: yes
+  gather_facts: no
+  roles:
+    - init
+- name: apply common configuration to all nodes
+  hosts: all
+  sudo: yes
+  roles:
+    - common

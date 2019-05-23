@@ -1,0 +1,2 @@
+#!/bin/sh
+perl -n -e 'm#<!--m--><a href="(.*?)">#; print "$1\n"' $@ | uniq

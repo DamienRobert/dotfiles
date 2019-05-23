@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sudo ifconfig eth0:1 up
+sudo ifconfig eth0:1 192.168.42.3 broadcast 192.168.42.255 netmask 255.255.255.0

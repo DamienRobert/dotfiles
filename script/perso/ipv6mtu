@@ -1,0 +1,7 @@
+#!/bin/sh
+
+ping -6 -c1 -s 1430 $1
+ping -6 -c1 -s 1435 $1
+ping -6 -c1 -s 1440 $1
+ping -6 -c1 -s 1445 $1
+ping -6 -c1 -s 1450 $1

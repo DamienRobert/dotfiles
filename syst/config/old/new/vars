@@ -1,0 +1,29 @@
+#example of vars file (name=virtual)
+TARGET_DIR='/mnt'
+TMPDIR='/var/tmp/@init'
+DISK='/dev/sda'
+FS='ext4'
+MOUNTOPTS='noatime,errors=remount-ro'
+BOOTBACKUP=''
+LOCALE_LANG='en_US.UTF-8'
+TIMEZONE='UTC'
+ROOTLEAF=''
+SLASHPARTLABEL='slash'
+HOMEPARTLABEL='home'
+BOOTPARTLABEL='boot'
+SWAPPARTLABEL='swap'
+SLASHLABEL='slash'
+HOMELABEL='home'
+BOOTLABEL='boot'
+SWAPLABEL='swap'
+MKFSOPTS=(-F -m 0 -q)
+LANGS=(en_US.UTF-8)
+USERS=('root' 'provision:provision')
+PKGS=(acpi atop base base-devel bridge-utils btrfs-progs cpupower encfs expect fbset git gptfdisk hddtemp hdparm htop hwinfo iftop inotify-tools iotop ldns lftp lm_sensors lz4 memtest86+ mlocate moreutils nethogs nmon openssh powertop rsync ruby smartmontools socat sshfs syslinux sysstat tmux tree unison upower vim-minimal w3m wget whois zsh)
+PKGSFULL=()
+typeset -A COMPUTER;
+COMPUTER=(ssh virtual xorg \{\} syst \{:type\=\>\"server\",\ :mkinitcpio_modules\=\>\[\],\ :mkinitcpio_hooks\=\>\[\"systemd\",\ \"autodetect\",\ \"modconf\",\ \"block\",\ \"filesystems\",\ \"fsck\"\],\ :boot\=\>\"bios\",\ :bootloader\=\>\"syslinux\"\} unison \{\} config \{:extra\=\>\[\],\ :install\=\>\[\]\} sshu virtual sync rsync names \{:init_name\=\>\"virtual\",\ :orig_name\=\>\"virtual\",\ :name\=\>\"virtual\"\} name virtual);
+typeset -A syst;
+syst=(type server mkinitcpio_modules \[\] mkinitcpio_hooks \[\"systemd\",\ \"autodetect\",\ \"modconf\",\ \"block\",\ \"filesystems\",\ \"fsck\"\] boot bios bootloader syslinux);
+bootloader=syslinux;
+services=;

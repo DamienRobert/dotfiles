@@ -1,0 +1,63 @@
+$ sqlite3 home-assistant_v2.db
+sqlite> .header on
+sqlite> .mode column
+$ sqlite3 -column -header #shortcut
+
+Table informations
+==================
+
+sqlite> .databases
+main: /home/dams/.homeassistant/home-assistant_v2.db
+
+sqlite> .tables
+
+Get all available tables from your current Home Assistant database:
+sqlite> SELECT sql FROM sqlite_master;
+This get the sql queries which created the tables.
+
+To only show the details about the states table (since we are using that one in the next examples):
+sqlite> SELECT sql FROM sqlite_master WHERE type = 'table' AND tbl_name = 'states';
+
+Shortcut: `.schema`, `.schema tablename`
+
+# Exemple with firefox//places.sqlite
+sqlite> SELECT sql FROM sqlite_master WHERE type = 'table' AND tbl_name = 'moz_places';
+
+ CREATE TABLE moz_places (   id INTEGER PRIMARY KEY, url LONGVARCHAR, title LONGVARCHAR, rev_host LONGVARCHAR, visit_count INTEGER DEFAULT 0, hidden INTEGER DEFAULT 0 NOT NULL, typed INTEGER DEFAULT 0 NOT NULL, favicon_id INTEGER, frecency INTEGER DEFAULT -1 NOT NULL, last_visit_date INTEGER , guid TEXT, foreign_count INTEGER DEFAUL
+
+sqlite> PRAGMA table_info(moz_places);
+cid         name        type        notnull     dflt_value  pk        
+----------  ----------  ----------  ----------  ----------  ----------
+0           id          INTEGER     0                       1         
+1           url         LONGVARCHA  0                       0         
+2           title       LONGVARCHA  0                       0         
+3           rev_host    LONGVARCHA  0                       0         
+4           visit_coun  INTEGER     0           0           0         
+5           hidden      INTEGER     1           0           0         
+6           typed       INTEGER     1           0           0         
+7           favicon_id  INTEGER     0                       0         
+8           frecency    INTEGER     1           -1          0         
+9           last_visit  INTEGER     0                       0         
+10          guid        TEXT        0                       0         
+11          foreign_co  INTEGER     1           0           0         
+12          url_hash    INTEGER     1           0           0         
+13          descriptio  TEXT        0                       0         
+14          preview_im  TEXT        0                       0         
+15          origin_id   INTEGER     0                       0         
+
+Delete
+======
+
+If you don’t want to keep certain entities, you can delete them permanently:
+sqlite> DELETE FROM states WHERE entity_id="sensor.cpu";
+
+The VACUUM command cleans the your database.
+sqlite> VACUUM;
+
+
+Queries
+=======
+
+sqlite> .width 30, 10,
+sqlite> SELECT entity_id, COUNT(*) as count FROM states GROUP BY entity_id ORDER BY count DESC LIMIT 10;
+

@@ -1,0 +1,55 @@
+#0) On SERVER: Generate script
+#edit 00COMPUTERS.rb
+NAME=current
+~/syst/new/generate $NAME
+eval $(~/mine/00COMPUTERS.rb --export=HOSTSSH:ssh $NAME)
+
+#1) On HOST: Set up net connection
+loadkeys fr
+loadkeys fr-latin9 #too hard to type if not in fr mode...
+dhclient/dhcpcd/wifi-menu
+#pacman -Sy vim git
+
+#2) Configure ssh
+#a) On HOST:
+#systemctl start sshd.service #update: i want to use another port
+ssh-keygen -A #or `systemctl start sshdgenkeys.service`
+/usr/bin/sshd -p 2222
+passwd #set root passwd
+
+#b) On SERVER:
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@$HOSTSSH -p 2222
+ssh root@$HOSTSSH -p 2222
+#if needed put a reverse ssh link so that $HOST can acess $SERVER via `ssh -p 44022 localhost`
+#ssh -fNT root@$HOST -R 44022:localhost:22
+
+#3) Get the install scripts
+#a) On SERVER:
+rsync -e 'ssh -p 2222' -vaczP --delete-after ~comps/$NAME/{@init,slash} root@$HOSTSSH:
+#To regenerate: ~/mine/syst/new/generate $NAME && rsync -e 'ssh -p 2222' -vaczP --delete-after ~comps/$NAME/{@init,slash} root@$HOSTSSH:
+
+#b) Alternative on HOST:
+SERVER=damienrobert@acces.math.u-bordeaux.fr
+rsync -vaczP $SERVER:.cache/@comps/$NAME/{@init,slash} .
+cp -a @init/users/dams/.ssh /root/ #to log-in on $SERVER
+
+#b) SERVER -> HOST
+#On HOST:
+
+#3) On HOST: Launch the scripts
+#(eventually fill fs creation)
+/root/$NAME/@init/00install -p
+
+#4) If needed, once 'dams' account is set up
+# ~/mine/syst/generate --all
+# ~/mine/@infos/00savedata
+# + synchronize 'dams' with unison
+
+#todo:
+#- nspawn-b does not work because the bus is not launched. Launch the
+#machines via systemd-nspawn directly and then use hostnamectl -M mnt ...?
+#- Boot: does not work because the intel microcode is not mounted and the
+#slash subvolume is not specified => modify syst//booloader.rb
+#- remember to incorporate /etc/fstab
+#- genfstab is not launched anymore
+#- we need to run wpa_supplicant

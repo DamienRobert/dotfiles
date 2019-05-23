@@ -1,0 +1,61 @@
+See also inhibitor: https://www.freedesktop.org/wiki/Software/systemd/inhibit/
+
+Hooks in /usr/lib/systemd/system-sleep
+======================================
+
+systemd runs all executables in /usr/lib/systemd/system-sleep/, passing two arguments to each of them:
+
+    Argument 1: either pre or post, depending on whether the machine is going to sleep or waking up
+    Argument 2: suspend, hibernate or hybrid-sleep, depending on which is being invoked
+
+In contrast to pm-utils, systemd will run these scripts concurrently and not one after another.
+
+The output of any custom script will be logged by systemd-suspend.service, systemd-hibernate.service or systemd-hybrid-sleep.service. You can see its output in systemd's journal:
+
+# journalctl -b -u systemd-suspend
+
+Targets
+=======
+
+       sleep.target
+           A special target unit that is pulled in by suspend.target,
+           hibernate.target and hybrid-sleep.target and may be used to hook
+           units into the sleep state logic.
+
+=> Before=sleep.target to run before sleep
+   After=sleep.target to run after sleep
+
+Example for a combined script:
+/etc/systemd/system/wicd-sleep.service
+
+[Unit]
+Description=Wicd sleep hook
+Before=sleep.target
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=-/usr/share/wicd/daemon/suspend.py
+ExecStop=-/usr/share/wicd/daemon/autoconnect.py
+
+[Install]
+WantedBy=sleep.target
+
+    RemainAfterExit=yes: After started, the service is considered active until it is explicitly stopped.
+    StopWhenUnneeded=yes: When active, the service will be stopped if no other active service requires it. In this specific example, it will be stopped after sleep.target is stopped.
+    Because sleep.target is pulled in by suspend.target, hibernate.target and hybrid-sleep.target and sleep.target itself is a StopWhenUnneeded service, the hook is guaranteed to start/stop properly for different tasks.
+
+Lock
+====
+
+loginctl lock sends a lock event
+Use xss-lock to register to it [which also as an inhibitor on sleep to lock
+the screen before suspend]
+
+Or systemd-lock-handler to catch lock events:
+http://unix.stackexchange.com/questions/149959/how-to-run-systemd-user-service-to-trigger-on-sleep-aka-suspend-hibernate
+https://github.com/grawity/hacks/blob/master/desktop/systemd-lock-handler
+
+Or light-locker which register to logind events and uses lightdm for
+locking

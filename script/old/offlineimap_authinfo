@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+GPGFILE="$HOME/.gpg-agent-info-offlineimap"
+if [[ -e $GPGFILE ]]; then
+  . $GPGFILE
+  export GPG_AGENT_INFO
+fi
+gpg-agent -q ||  eval $(gpg-agent --daemon --no-use-standard-socket --write-env-file $GPGFILE) && echo "Launched new gpg-agent: $GPG_AGENT_INFO"
+
+gpg -d ~/.authinfo.gpg >/dev/null
+exec tmux new-session -s offlineimap -n offlineimap -d 'nice -n 19 ionice -n 7 offlineimap -u Basic 2>&1 >$HOME/.offlineimap.log'

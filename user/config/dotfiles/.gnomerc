@@ -1,0 +1,12 @@
+#!/bin/sh
+[ -z "$_INITVARS" -a -f "$HOME/.initvars" ] && . "$HOME/.initvars"
+mylog session ".gnomerc ($0 $@ DISPLAY=$DISPLAY)]"
+
+case "$_INIT" in
+	*e*) ;;
+	*) [ -f "$HOME/.initenv" ] && . "$HOME/.initenv";;
+esac
+case "$_INIT" in
+	*"x($DISPLAY)"*) ;;
+	*) [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile" ;;
+esac

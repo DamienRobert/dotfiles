@@ -1,0 +1,90 @@
+#! /bin/sh
+
+AMULEGUI=true
+
+INITD="$HOME"/bin/init.d/
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -gui ) shift; $AMULEGUI=true ;;
+    -daemon ) shift; $AMULEGUI=true ;;
+    *) break;;
+  esac
+done
+
+
+
+start ()
+{
+    echo "Starting downloading"
+    $INITD/torrent start
+    if [ $AMULEGUI == true ];
+    then
+      $INITD/amule-gui start
+    else
+      $INITD/amule-daemon start
+    fi
+    #klibido
+    echo "."
+}
+
+gui ()
+{
+    echo "Starting downloading"
+    $INITD/torrent start
+    AMULEGUI=true;
+    $INITD/amule-gui start
+    echo "."
+}
+daemon ()
+{
+    echo "Starting downloading"
+    $INITD/torrent start
+    AMULEGUI=false;
+    $INITD/amule-daemon start
+    echo "."
+}
+
+stop ()
+{
+    echo  "Stopping downloading"
+    $INITD/torrent stop
+    if [ $AMULEGUI == true ];
+    then
+      $INITD/amule-gui stop
+    else
+      $INITD/amule-daemon stop
+    fi
+    echo "."
+}
+
+
+case "$1" in
+  start)
+	start
+    ;;
+  stop)
+	stop
+    ;;
+  gui)
+	gui
+    ;;
+  daemon)
+	daemon
+    ;;
+  reload)
+	  stop
+	  start
+    ;;
+  force-reload|restart)
+	stop
+	start
+	;;
+  *)
+    echo "Usage: /etc/init.d/$0 {start|stop|restart|force-reload|reload}"
+    exit 1
+    ;;
+esac
+
+exit 0

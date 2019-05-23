@@ -1,9 +1,0 @@
-How I handle my patches
-
-#create a dummy branch to store old patches
-git my trivial -- -g -b old-patches
-#merge patch branch 'noconflict' into old-patches
-git my trivial -- -g --merge -b old-patches noconflict
-
-#rebase
-git co noconflict && git rb -i

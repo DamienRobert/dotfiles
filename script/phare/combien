@@ -1,0 +1,37 @@
+#!/bin/zsh
+LIST1=(forum zorglub)
+LIST2=(gmane)
+LIST3=(afp news)
+
+LIST=($LIST1)
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+  -c ) shift; LIST=($LIST1 $LIST2 ) ;;
+  -a ) shift; LIST=($LIST1 $LIST2 $LIST3) ;;
+  -n ) shift; TAIL=true ;;
+    *) break;;
+  esac
+done
+
+for l in $LIST; do
+  if [ -n "$TAIL" ]; then
+    echo $l; flrn -n $l -c | tail -n 1
+  else
+    echo $l; flrn -n $l -c
+  fi
+done
+
+# if [ $# -gt 0 ]; then
+#   echo "forum:"; flrn -n forum -c | tail -n 1
+#   echo "yaf:";   flrn -n yaf -c | tail -n 1
+#   echo "gmane:";   flrn -n gmane -c | tail -n 1
+# #  echo "cachan:";   flrn-utf8 -n cachan -c | tail -n 1
+# else
+#   echo "forum:"; flrn -n forum -c
+#   echo "yaf:"; flrn -n yaf -c
+#   echo "gmane:"; flrn -n gmane -c
+# #  echo "cachan:"; flrn-utf8 -n cachan -c
+# fi

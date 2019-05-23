@@ -1,51 +1,92 @@
+stty -a: print terminal line settings
 infocmp: pour comparer (ou afficher) des terminfos
-tput: pour afficher le caractère
-tic: pour compiler une terminfo
-(installe dans ~/.terminfo/)
+  Ex: infocmp -d screen.xterm-256color tmux-256color
+tput: pour afficher le caractère. Ex: tput bce
+tic: pour compiler une terminfo (installe dans ~/.terminfo/)
+man terminfo pour avoir les capabilities
+
+Terminfos: /usr/share/terminfo, ~/.terminfo
+
+Title
+=====
 
 Normalement pour changer le titre, il faut faire:
   tput hs && print -Pn "$(tput tsl)New title$(tput fsl)"
 (tput hs pour vérifier si le term a une status line)
-Malheureusement sur archlinux screen-256color ne définit pas tsl et fsl,
-donc il faut faire à la main
-  print -Pn "\e]2;Title\a"
-( print -Pn "\e]0;Title\a" a l'air de marcher aussi)
-screen-256color-s a justement cette propriété en plus par rapport à
-screen-256color
 
-screen-256color-bce a par rapport à screen-256color la propriété background
-color erase qui permet de reseter le term avec la couleur voulue par le
-terminal, cf http://sunaku.github.io/vim-256color-bce.html
+Malheureusement sur archlinux screen-256color ne définit pas tsl et fsl, donc il faut faire à la main (cf plus bas)
+screen-256color-s a justement tsl/fsl en plus par rapport à screen-256color
+De même pour xterm-256color
 
-tmux
-====
-
-tmux peut envoyer les échappements Ctrl-Fleches de xterm si on spécifie:
-  setw -g xterm-keys on
-mais pour que les applications puissent interpréter ça il faut changer la
-terminfo, c'est ce que fait xterm-screen-256color.src dans 
-~config/files/terminfo que j'ai compilé avec tic dans ~dotfiles/.terminfo
+Tmux/Screen
+------------
 
 Pour changer le nom d'une tab, il faut utiliser
-  print -Pn "\ekTabName\e\\", comme dans screen
+  print -Pn "\ekTabName\e\\"
 ça correspond à #W
+
 Pour changer le hardstatus, il faut faire:
   print -Pn "\e_ \e\\"
-ou les alias (cf Operating System Command in man screen)
+ou les alias (qui viennent d'xterm, cf Operating System Command in man screen)
   print -Pn "\e]2; \a"
   print -Pn "\e]0; \a"
 ça correspond à #T
 
-tmux/screen envoit ça au terminal contenant (avec set-titles on/hardstatus
-on)
+tmux/screen envoie ça au terminal contenant (avec set-titles on/hardstatus on)
+
+Capabilities
+============
+
+Background Color Erase
+----------------------
+
+screen-256color-bce a par rapport à screen-256color la propriété background
+color erase qui permet de reseter le term avec la couleur voulue par le
+terminal. 
+
+Or tmux ne supporte pas bce 'https://github.com/tmux/tmux/issues/109'
+donc il faut faire attention de ne pas utiliser un TERM avec 'bce' dans
+tmux, sinon vim va essayer de l'utiliser. [update: il supporte depuis la
+version 2.5, mais ce n'est pas marqué dans la terminfo]
+
+On peut aussi régler ça directement dans vim, cf http://sunaku.github.io/vim-256color-bce.html:
+   set t_ut= " desactivate bce
+   set t_Co=256 " the terminal support 256 colors
+
+smcup/rmcup
+-----------
+Cf https://gist.github.com/KevinGoodsell/744284
+
+#smcup@ and rmcup@ allows to scroll (they prevent the terminal to restore to the previous point), Cr (cursor reset) is not implemented in xfce-terminal so it bugs (it is \e112\a)
+#set -ga terminal-overrides ",xterm*:XT:smcup@:rmcup@:Cr@"
+set -ga terminal-overrides ",xterm*:Cr@"
+
+Plus précisément smcup@, rmcup@ enlèvent la capabilité "alternate screen".
+Quand on quitte tmux, le terminal hote ne restore pas l'écran d'origine. Un
+effet secondaire est qu'il ajoute l'output de tmux dans son historique.
+
+screen
+======
+
+When  screen  tries  to  figure  out  a  terminal name for itself, it first
+looks for an entry named "screen.<term>", where  <term>  is the contents of
+your $TERM variable.  If no such entry exists, screen tries "screen" (or
+"screen-w" if the terminal is wide (132 cols or more)).  If even this entry
+cannot be found, "vt100" is used as a substitute.
+
+tmux
+====
+
+titres
+------
 
 Note: quand tmux utilise set-titles on, le problème avec
 xterm/xfce4-terminal c'est que xterm-256color n'a pas les tsl et fsl, donc
-il faut le donner à tmux: 
+il faut le donner à tmux:
   set-option -g terminal-overrides "*:tsl=\e]2;,*:fsl=\\007"
-(update: non si TERM commence par xterm il rajoute ça tout seul)
+Si TERM commence par xterm tmux rajoute ça automatiquement.
 
-Remarque: tmux ajoute les capabilities suivantes au terminal quand TERM=xterm*
+[Il ajoute les capabilities suivantes au terminal quand TERM=xterm*:
   Cr: (string) \033]112\007
   Cs: (string) \033]12;%p1%s\007
   fsl: (string) \007
@@ -53,10 +94,184 @@ Remarque: tmux ajoute les capabilities suivantes au terminal quand TERM=xterm*
   Se: (string) \033[2 q
   Ss: (string) \033[%p1%d q
   tsl: (string) \033]0;
-  XT: (flag) true
+  XT: (flag) true]
 
-Example:
-in ~/config/files/terminfo I copied the terminfo in archlinux of
-screen-256color* and xterm-256color.
-I added xterm-screen-256color which uses screen-256-color-bce-s but also
-add some xterm escape characters
+xterm-keys
+----------
+
+tmux peut envoyer les échappements Ctrl-Fleches de xterm si on spécifie:
+  setw -g xterm-keys on
+mais pour que les applications puissent interpréter ça il faut changer la
+terminfo (par ex si TERM=screen dans tmux), c'est ce que fait
+screen-256color-bce-s-keys dans ~config/files/terminfo:
+   use=screen-256color-bce-s #+rajoute les escapes pour les ctrl-fleches:
+   # As of Nov'11, the below keys are picked up by
+   # .../tmux/blob/master/trunk/xterm-keys.c:
+     kDC=\E[3;2~, kEND=\E[1;2F, kHOM=\E[1;2H,
+     kIC=\E[2;2~, kLFT=\E[1;2D, kNXT=\E[6;2~, kPRV=\E[5;2~,
+     kRIT=\E[1;2C,
+-> compilé avec tic dans ~dotfiles/.terminfo
+
+Update: both screen.xterm-256color [used by screen by default when TERM=xterm-256color] and tmux contains these bindings
+See http://invisible-island.net/ncurses/terminfo.ti.html#tic-screen-256color
+-> set -g default-terminal "tmux-256color"
+
+Truecolor
+=========
+
+https://gist.github.com/XVilka/8346728
+
+* Setting colors
+https://unix.stackexchange.com/questions/139018/what-is-the-difference-between-tputs-setf-and-setaf
+(setf is deprecated, use setaf=set ansi foreground)
+$ tput setaf 1 | xxd
+00000000: 1b5b 3331 6d                             .[31m
+$ tput setaf 51 | xxd
+00000000: 1b5b 3338 3b35 3b35 316d                 .[38;5;51m
+$ tput setab 15 | xxd
+00000000: 1b5b 3130 376d                           .[107m
+(i don't know how to set up truecolors)
+
+https://bruinsslot.jp/post/how-to-enable-true-color-for-neovim-tmux-and-gnome-terminal/
+-> For italic: sitm=\E[3m, ritm=\E[23m; eg tput sitm && echo foo && tput ritm
+
+* $TERM: xterm-direct
+$ infocmp -d xterm-256color xterm-direct
+comparing xterm-256color to xterm-direct.
+    comparing booleans.
+	ccc: T:F. [ccc: term car redefine existing colors]
+    comparing numbers.
+	colors: 256, 16777216.
+
+Detection: tput colors [=16777216]
+$COLORTERM=truecolor/24bit
+tput Tc (non standard terminfo, but used by tmux, cf `tmux info`)
+
+* Colorchange:
+- check => ccc
+- change: tput initc colornumber r g b
+          tput initp colorpairnumber r g b background_r g b
+- reset:  'op' (original pair) string resets foreground and background colors to their default values for the terminal. The 'oc' string resets all colors or color-pairs to their default values for the terminal.
+  => for xterm/vte: tput initc 01 10 20 30 | xxd = "\e]4;1;rgb:02/05/07\e\\"
+
+-> In tmux:
+# most 256 color terminals actually support true color, but this is not
+# exported in their terminfo; override this
+set -ga terminal-overrides ",*256col*:Tc"
+
+-> In nvim (help xterm-truecolor), it essentially works out of the box
+vim emits true (24-bit) colours in the terminal, if 'termguicolors' is set.
+It uses the "setrgbf" and "setrgbb" terminfo extensions.
+Another convention, pioneered in 2016 by tmux, is the "Tc" terminfo extension.
+If terminfo has this flag, Nvim will add constructed "setrgbf" and "setrgbb"
+capabilities as if they had been in the terminfo definition.
+If terminfo does not (yet) have this flag, Nvim will fall back to $TERM and
+other environment variables.  It will add constructed "setrgbf" and "setrgbb"
+capabilities in the case of the the "rxvt", "linux", "st", "tmux", and "iterm"
+terminal types, or when Konsole, genuine Xterm, a libvte terminal emulator
+version 0.36 or later, or a terminal emulator that sets the COLORTERM
+environment variable to "truecolor" is detected.
+
+-> In vim 8
+One has to set the |t_8f| and |t_8b| options explicitly. Default values of
+these options are "^[[38;2;%lu;%lu;%lum" and "^[[48;2;%lu;%lu;%lum"
+respectively, but it is only set when `$TERM` is `xterm`.
+Exemple:
+if &term =~# '^screen'
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+Terminfos
+==========
+http://invisible-island.net/ncurses/terminfo.ti.html
+
+Note: 
+  screen-*-s -> dsl, fsl, tsl (but no hs)
+  screen-*-bce -> bce
+      screen-256color-bce-s -> tsl but no ctrl-fleche, hs
+      screen.xterm-256color -> ctrl-fleche but no hs, tsl, bce
+      tmux-256color -> ctrl-fleche, hs, tsl but no bce
+      xterm-256color -> ctrl-fleche, bce but no hs, tsl
+
+vte
+----
+
+vte-256color|VTE with xterm 256-colors,
+        use=xterm+256color, use=vte,
+
+xterm
+------
+Note that xterm-new contains xterm+pcfkeys which contains xterm+pce2 which contains the ctrl-fleches
+
+xterm-256color=xterm+256color + xterm-new
+xterm+256setaf: to get the 256 colors in other terminfos
+
+xterm-256color|xterm with 256 colors,
+        rs1=\Ec\E]104\007, use=xterm+256color, use=xterm-new,
+xterm+256color|xterm 256-color feature,
+        ccc,
+        colors#0x100, pairs#0x7fff,
+        initc=\E]4;%p1%d;rgb\:%p2%{255}%*%{1000}%/%2.2X/%p3%{255}%*
+              %{1000}%/%2.2X/%p4%{255}%*%{1000}%/%2.2X\E\\,
+        oc=\E]104\007,
+        setab=\E[%?%p1%{8}%<%t4%p1%d%e%p1%{16}%<%t10%p1%{8}%-%d%e48;
+              5;%p1%d%;m,
+        setaf=\E[%?%p1%{8}%<%t3%p1%d%e%p1%{16}%<%t9%p1%{8}%-%d%e38;5
+              ;%p1%d%;m,
+        setb@, setf@,
+xterm+256setaf|xterm 256-color (set-only),
+        ccc@,
+        colors#0x100, pairs#0x7fff,
+        initc@,
+        setab=\E[%?%p1%{8}%<%t4%p1%d%e%p1%{16}%<%t10%p1%{8}%-%d%e48;
+              5;%p1%d%;m,
+        setaf=\E[%?%p1%{8}%<%t3%p1%d%e%p1%{16}%<%t9%p1%{8}%-%d%e38;5
+              ;%p1%d%;m,
+        setb@, setf@,
+xterm-new|modern xterm terminal emulator,
+        npc,
+        indn=\E[%p1%dS, kb2=\EOE, kcbt=\E[Z, kent=\EOM,
+        rin=\E[%p1%dT, use=ansi+rep, use=ansi+enq,
+        use=xterm+pcfkeys, use=xterm+tmux, use=ecma+strikeout,
+        use=xterm-basic,
+
+screen
+------
+
+screen.xterm-256color= xterm+256setaf + screen.xterm-new
+screen.xterm-new = xterm-new + screen+italics + screen+fkeys
+[strangely this does not uses the 'screen' terminfo]
+
+screen.xterm-256color|GNU Screen with xterm using 256 colors,
+        use=xterm+256setaf, use=screen.xterm-new,
+screen.xterm-xfree86|screen.xterm-new|screen customized for modern xterm,
+        bce@, bw,
+        invis@, kIC@, kNXT@, kPRV@, meml@, memu@, rep@,
+        sgr=%?%p9%t\E(0%e\E(B%;\E[0%?%p6%t;1%;%?%p2%t;4%;%?%p1%p3%|
+            %t;7%;%?%p4%t;5%;%?%p5%t;2%;m,
+        E3@, use=screen+italics, use=screen+fkeys, use=xterm-new,
+
+screen.vte-256color|GNU Screen with vte using 256 colors,
+        use=xterm+256setaf, use=screen.vte,
+
+screen-256color|GNU Screen with 256 colors,
+        use=xterm+256setaf, use=screen,
+screen-256color-bce-s|GNU Screen with 256 colors using BCE and status line,
+        bce, use=xterm+256setaf, use=screen-s,
+
+tmux
+-----
+
+tmux-256colors= xterm+256setaf + tmux
+tmux = screen + xterm+...
+
+tmux-256color|tmux with 256 colors,
+        use=xterm+256setaf, use=tmux,
+
+# tmux is compatible with screen, but has support for italics, and some of the
+# xterm cursor bits.
+tmux|tmux terminal multiplexer,
+        rmso=\E[27m, smso=\E[7m, use=ecma+italics,
+        use=ecma+strikeout, use=xterm+edit, use=xterm+pcfkeys,
+        use=xterm+sl, use=xterm+tmux, use=screen,

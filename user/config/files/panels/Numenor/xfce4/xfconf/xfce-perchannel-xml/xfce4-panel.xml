@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-panel" version="1.0">
+  <property name="configver" type="int" value="2"/>
+  <property name="panels" type="array">
+    <value type="int" value="1"/>
+    <property name="panel-1" type="empty">
+      <property name="position" type="string" value="p=6;x=0;y=0"/>
+      <property name="length" type="uint" value="100"/>
+      <property name="position-locked" type="bool" value="true"/>
+      <property name="size" type="uint" value="30"/>
+      <property name="plugin-ids" type="array">
+        <value type="int" value="4"/>
+        <value type="int" value="1"/>
+        <value type="int" value="11"/>
+        <value type="int" value="9"/>
+        <value type="int" value="22"/>
+        <value type="int" value="34"/>
+        <value type="int" value="14"/>
+        <value type="int" value="40"/>
+        <value type="int" value="15"/>
+        <value type="int" value="6"/>
+        <value type="int" value="26"/>
+        <value type="int" value="3"/>
+        <value type="int" value="19"/>
+        <value type="int" value="39"/>
+        <value type="int" value="27"/>
+        <value type="int" value="29"/>
+        <value type="int" value="30"/>
+        <value type="int" value="21"/>
+        <value type="int" value="2"/>
+      </property>
+      <property name="mode" type="uint" value="0"/>
+      <property name="span-monitors" type="bool" value="true"/>
+      <property name="disable-struts" type="bool" value="true"/>
+      <property name="background-style" type="uint" value="0"/>
+      <property name="background-color" type="array">
+        <value type="uint" value="60909"/>
+        <value type="uint" value="60652"/>
+        <value type="uint" value="60395"/>
+        <value type="uint" value="65535"/>
+      </property>
+      <property name="enter-opacity" type="uint" value="100"/>
+      <property name="background-alpha" type="uint" value="100"/>
+      <property name="leave-opacity" type="uint" value="100"/>
+      <property name="autohide-behavior" type="uint" value="0"/>
+    </property>
+  </property>
+  <property name="plugins" type="empty">
+    <property name="plugin-1" type="string" value="applicationsmenu">
+      <property name="show-generic-names" type="bool" value="false"/>
+      <property name="show-tooltips" type="bool" value="true"/>
+      <property name="button-title" type="string" value="Applications Menu"/>
+      <property name="show-button-title" type="bool" value="false"/>
+    </property>
+    <property name="plugin-2" type="string" value="actions"/>
+    <property name="plugin-15" type="string" value="separator">
+      <property name="expand" type="bool" value="true"/>
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-4" type="string" value="pager">
+      <property name="rows" type="uint" value="1"/>
+      <property name="miniature-view" type="bool" value="true"/>
+    </property>
+    <property name="plugin-6" type="string" value="systray">
+      <property name="names-visible" type="array">
+        <value type="string" value="thunar"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="task manager"/>
+        <value type="string" value="skype"/>
+        <value type="string" value="volumeicon"/>
+        <value type="string" value="clipit"/>
+        <value type="string" value="orage"/>
+        <value type="string" value="pidgin"/>
+        <value type="string" value="ekiga softphone"/>
+        <value type="string" value="parcellite"/>
+        <value type="string" value="bluetooth"/>
+        <value type="string" value="xfce4-power-manager"/>
+        <value type="string" value="deluge"/>
+        <value type="string" value="mail notification"/>
+        <value type="string" value="banshee"/>
+        <value type="string" value="deluge-gtk"/>
+        <value type="string" value="clipman"/>
+      </property>
+    </property>
+    <property name="plugin-9" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="13643302621.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-11" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="13643302623.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-14" type="string" value="directorymenu">
+      <property name="base-directory" type="string" value="/home/dams"/>
+    </property>
+    <property name="plugin-3" type="string" value="mixer">
+      <property name="sound-card" type="string" value="HDAudioGenericAlsamixer"/>
+      <property name="track" type="string" value=""/>
+      <property name="command" type="string" value="xfce4-mixer"/>
+      <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+    </property>
+    <property name="plugin-18" type="string" value="xfce4-cpufreq-plugin"/>
+    <property name="plugin-19" type="string" value="cpugraph"/>
+    <property name="plugin-21" type="string" value="datetime"/>
+    <property name="plugin-22" type="string" value="xfce4-dict-plugin"/>
+    <property name="plugin-26" type="string" value="mailwatch"/>
+    <property name="plugin-27" type="string" value="netload"/>
+    <property name="plugin-29" type="string" value="xfce4-sensors-plugin"/>
+    <property name="plugin-30" type="string" value="weather"/>
+    <property name="plugin-34" type="string" value="xfce4-mount-plugin"/>
+    <property name="plugin-39" type="string" value="wavelan"/>
+    <property name="plugin-40" type="string" value="windowmenu">
+      <property name="style" type="uint" value="0"/>
+    </property>
+  </property>
+</channel>

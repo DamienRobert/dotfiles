@@ -1,0 +1,122 @@
+#!/bin/zsh
+. $HOME/.initxvars
+
+FVWMSCREEN="tmux new -As fvwm"
+
+get_custom() {
+	local term terms
+	#[[ -z "$DM" ]] && DM=$DESKTOP_SESSION
+	#case "$DM" in
+	#	fvwm ) CUSTOM=screen ;;
+	#	fvwm-xfce ) CUSTOM=xfce ;;
+	#	gnome|mate ) CUSTOM=gnome ;;
+	#	xfce ) CUSTOM=xfce ;;
+	#	* ) CUSTOM=xterm ;;
+	#esac
+	terms=(xfce4-terminal gnome-terminal xterm) #roxterm
+	for term in $terms; do
+		if command -v $term >/dev/null 2>&1; then
+			CUSTOM=$term
+			break
+		fi
+	done
+}
+
+small_window() {
+	local wtype geom geopos opts
+	wtype=$1
+	geopos=$2
+	shift; shift
+	opts=($@)
+	case $wtype in
+		xterm*|urxvt* ) geom="$SXTERMG$geopos"
+			## when using fenetre I prefer to let .initxvars values get precedence
+			## over Xresources values
+			# opts=("-name" "small_term" $opts) ;;
+			opts=("-fa" $SFONT);;
+		* ) geom="$SXTERMG$geopos" ;;
+	esac
+	launch_window $wtype $geom $opts
+}
+
+medium_window() {
+	local wtype geom geopos opts
+	wtype=$1
+	geopos=$2
+	shift; shift
+	opts=($@)
+	case $wtype in
+		xterm*|urxvt* ) geom="$XTERMG$geopos"
+			opts=("-fa" $FONT);;
+		* ) geom="$GTERMG$geopos" ;;
+	esac
+	launch_window $wtype $geom $opts
+}
+
+launch_window() {
+	local wtype geom opts
+	wtype=$1
+	geom=$2
+	shift; shift
+	opts=($@)
+	case $wtype in
+		gnome-terminal )
+			echo $wtype --geometry $geom $opts &
+			exec $wtype --geometry $geom $opts & #--tab-with-profile default --tab-with-profile default $opts &
+			;;
+		xterm* )
+			echo $wtype -geometry $geom $opts &
+			exec $wtype -geometry $geom $opts &
+			;;
+		* )
+			echo exec $wtype --geometry=$geom $opts &
+			exec $wtype --geometry=$geom $opts &
+			;;
+	esac
+}
+
+process() {
+	local wtype geom
+	wtype=$1; shift;
+	opts=($@)
+	case $wtype in
+		FVWMsinglecommand )
+			launch_window xterm $HORIZx1$GEO_UR -name FVWMsinglecommand -title Executer -e runprg ;;
+		FVWMmulticommand )
+			medium_window xterm $GEO_UR -name FVWMmulticommand -title Console -e tmux new -As FVWMmulticommand ;;
+		FVWMmulticommandCP )
+			medium_window xterm $GEO_UR -name FVWMmulticommandCP -title ConsoleCurrentPage -e tmux new -As FVWMmulticommandCP ;;
+
+		custom* )
+			[[ -z $CUSTOM ]] && get_custom
+			process "${CUSTOM}${wtype#custom}" $opts ;;
+		screen* ) wtype="custom${wtype#screen}"
+			process $wtype -e $FVWMSCREEN ;;
+
+		*_dl ) wtype=${wtype%_dl}; geom=$GEO_DL;
+			medium_window $wtype $GEO_DL $@ ;;
+		*_dr ) wtype=${wtype%_dr}; geom=$GEO_DR;
+			medium_window $wtype $GEO_DR $@ ;;
+		*_ul ) wtype=${wtype%_ul}; geom=$GEO_UL;
+			medium_window $wtype $GEO_UL $@ ;;
+		*_ur ) wtype=${wtype%_ur}; geom=$GEO_UR;
+			medium_window $wtype $GEO_UR $@ ;;
+		*_2 ) wtype=${wtype%_2};
+			process "${wtype}_dl" $opts; process "${wtype}_dr" $opts ;;
+		*_sdl ) wtype=${wtype%_sdl}; geom=$GEO_DL;
+			small_window $wtype $GEO_DL $@ ;;
+		*_sdr ) wtype=${wtype%_sdr}; geom=$GEO_DR;
+			small_window $wtype $GEO_DR $@ ;;
+		*_sul ) wtype=${wtype%_sul}; geom=$GEO_UL;
+			small_window $wtype $GEO_UL $@ ;;
+		*_sur ) wtype=${wtype%_sur}; geom=$GEO_UR;
+			small_window $wtype $GEO_UR $@ ;;
+		*_s2 ) wtype=${wtype%_2};
+			process "${wtype}_sdl" $opts; process "${wtype}_sdr" $opts ;;
+		* ) medium_window $wtype $GEO_DL $opts ;;
+	esac
+}
+
+for cmd in $@; do
+	process $cmd
+done

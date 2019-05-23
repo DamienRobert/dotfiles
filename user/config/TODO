@@ -1,0 +1,53 @@
+TODO
+====
+
+- unison file monitor
+- uim
+- pacman-hook to run patchelf
+
+- newer version of magma
+- offlineimap: use notification rather than inotify like checkmail does?
+  cf https://bbs.archlinux.org/viewtopic.php?id=159790
+     https://bitbucket.org/raymonad/offlineimap-notify
+- volume: update notification rather than make a new one
+  cf https://bugzilla.xfce.org/show_bug.cgi?id=10795
+  [for now i just use xfce4-pulseaudio-plugin]
+  wrapper around ponymix?
+
+website
+-------
+- Switch to html5 (use Foundation?)
+  -> flexbox + [compass] + webgen
+
+ruby
+----
+
+- more tests
+- cv: (finish) rewrite into a more OO way (and extract logic independant code), tests
+- nanooptparse [don't use slop; look at new features of optparse, write wrapper around optparse]
+- binaries for shell_utils
+- play with 'yield from' and lazy piping of Enumerators?
+- finish aur.rb
+- write a mail icon using yad
+- gitstatus.rb: use libgit2?
+
+ruby wrappers:
+? ruby wrappers around scripts for ~maint/onetime
+? rewrite powersave, unlock in ruby?
+? rewrite @infos scripts + ~maint/comptes/ in ruby
+? mpd: rewrite the playlist scripts in ruby
+? handle git folders (and dist/) via ruby rather than via zsh
+
+config
+------
+
+- keep a list of installed files so that deletion works
+- syst//boot.rb: kernel-install?
+
+Long term:
+---------
+- latex: revoir MyPackages/ quand latex3 et luatex seront stables...
+  [au moins adapter pour unicode-math et polyglossia, et utiliser lualatex
+  par défaut dans latexmk (partially done)]
+- vim colorscheme + new plugins (attendre neovim?)
+- nftable for firewall

@@ -1,0 +1,38 @@
+#!/usr/bin/zsh
+
+DIR=$HOME/var/@DamienRobert/dotfiles
+mkdir -p $DIR
+cd $DIR
+
+DIRS=(bin config doc maint/gems ruby script syst)
+rm -rf $DIRS
+
+for dir in $DIRS; do
+  cp -a ~/mine/$dir .
+done
+
+#config
+rm -f config/{AAnewcomputer,TODO,hosttype.local,.*.gpg}
+rm -rf config/dotfiles/{.*.gpg,.abook,.gem,.gnupg,.ssh,.fonts,.config/hub,.config/goa*,.gist,.vim/.netrwhist,.mutt}
+rm -rf config/files/{.subversion,.gnome2,.procmailrc*,imb,phare,panels}
+rm -rf config/{crontab,infos,old,unison}
+
+mkdir -p config/{crontab,dotfiles/.mutt}
+cp -r ~/.mutt/muttrc config/dotfiles/.mutt/
+cp ~/mine/config/crontab/@boot config/crontab
+
+#doc
+rm -f doc/Sc2/{BattleTag,TS}
+rm -rf doc/{clip,todo,books,old,serials,vim,video,logiciels/gpg,logiciels/256colors/syntax}
+
+#script
+rm -rf script/{dico,ethlocal,magma-launch,old,phare}
+rm -f script/{anniversaire.yaml,extra/photos}
+
+#syst
+rm -rf syst/{@comps,MBR,network,users}
+rm -f syst/new/generate-perso
+rm -f syst/pkgs/{groups-*,packages*-*}
+
+#00COMPUTERS.rb
+ln -snf ../../../00COMPUTERS.rb ruby/lib/config/computers.rb

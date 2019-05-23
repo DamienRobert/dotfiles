@@ -1,0 +1,155 @@
+https://en.wikipedia.org/wiki/C*-algebra
+
+C*-algèbres de dim finie = somme directe d'algèbres de matrices:
+  Theorem. A finite-dimensional C*-algebra, A, is canonically isomorphic
+  to a finite direct sum A = ⨁ {e ∈ min A} Ae
+  where min A is the set of minimal nonzero self-adjoint
+  central projections of A.
+
+  Each C*-algebra, Ae, is isomorphic (in a noncanonical way) to the full matrix
+  algebra M(dim(e), C). The finite family indexed on min A given by {dim(e)}_e
+  is called the dimension vector of A. This vector uniquely determines the
+  isomorphism class of a finite-dimensional C*-algebra. In the language of
+  K-theory, this vector is the positive cone of the K0 group of A. 
+
+C*-algèbres commutatives
+========================
+https://en.wikipedia.org/wiki/Gelfand_representation
+https://ncatlab.org/nlab/show/Gelfand+duality
+
+For any locally compact Hausdorff topological space X, the space C0(X) of
+continuous complex-valued functions on X which vanish at infinity is in a
+natural way a commutative C*-algebra.
+Note that C0(X) is unital if and only if X is compact, in which case C0(X)
+is equal to C(X), the algebra of all continuous complex-valued functions on
+X.
+
+A algèbre de Banach commutative, \Phi(A) ses caractères est Hausdorff loc.
+compact pour la topo *-faible (et compact pour cette topologie ssi A a une
+identité); le morphisme d'évaluation donne un morphisme continu A ->
+C_0(\Phi(A)).
+
+Si A a une unité, \Phi(A) est en bijection avec les idéaux maximaux de A
+(Gelfand–Mazur theorem: a Banach algebra with unit over the complex numbers
+in which every nonzero element is invertible is isometrically isomorphic to
+the complex numbers; the theorem follows from the fact that the spectrum of
+any element of a complex Banach algebra is nonempty)
+As a consequence, the kernel of the Gelfand representation A → C0(ΦA) may
+be identified with the Jacobson radical of A. Thus the Gelfand
+representation is injective if and only if A is (Jacobson) semisimple.
+
+Théorème: Let A be a commutative C*-algebra and let X be the spectrum of A. Let γ : A → C0(X) be the Gelfand representation defined above.
+Theorem. The Gelfand map γ is an isometric *-isomorphism from A onto C0(X).
+
+Ici le spectre X (=Gelfand space) de A représente les caractères de A.
+"Note that spectrum is an overloaded word. It also refers to the spectrum
+σ(x) of an element x of an algebra with unit 1, that is the set of complex
+numbers r for which x - r 1 is not invertible in A. For unital C*-algebras,
+the two notions are connected in the following way: σ(x) is the set of
+complex numbers f(x) where f ranges over Gelfand space of A. Together with
+the spectral radius formula, this shows that Â is a subset of the unit ball
+of A* and as such can be given the relative weak-* topology"
+
+Rem: If A is a separable C*-algebra, the weak-* topology is metrizable on
+bounded subsets. Thus the spectrum of a separable commutative C*-algebra A
+can be regarded as a metric space.
+
+On a donc une anti-équivalence de catégorie entre 'C*-algebras with unit and unit-preserving continuous *-homomorphisms' et 'the category of compact Hausdorff spaces and continuous maps', via A -> X=Spectre(A), X -> C_0(X).
+
+Cette anti-équivalence vient de l'adjonction suivante (Brandenburg, Remark
+3.4.6):
+the functor C(−,C) from  topological spaces to the  dual  category of (involutive) C-algebras  which is left adjoint to the Gelfand spectrum Hom(−, C). The Theorem of Gelfand-Naimark states that this adjunction restricts to an equivalence of categories between compact Hausdorff spaces and the  dual category of unital commutative C∗-algebras.
+
+C*-algèbre comme algèbre d'opérateurs
+=====================================
+
+https://en.wikipedia.org/wiki/Gelfand%E2%80%93Naimark_theorem
+https://ncatlab.org/nlab/show/Gelfand-Naimark+theorem
+
+The Gelfand–Naimark theorem states that an arbitrary C*-algebra A is
+isometrically *-isomorphic to a C*-algebra of bounded operators on a
+Hilbert space.
+
+Calcul holomorphe sur des opérateurs bornés
+===========================================
+
+https://en.wikipedia.org/wiki/Holomorphic_functional_calculus
+
+Si T est un opérateur borné, et f est analytique de rayon de convergence supérieur à ||T||, alors on peut définir f(T)=\sum a_i T^i.
+Plus généralement on peut définir f(T) via l'intégrale de Cauchy:
+  f(T)=1/2πi ∫_Γ f(ζ)/(ζ−T)dζ
+qui sera bien définie si f n'a pas de pôles sur le spectre de T (par définition du spectre).
+
+The mapping ζ → (ζ−T)^−1 is called the resolvent mapping of T, il est analytique en dehors du spectre de T. https://en.wikipedia.org/wiki/Resolvent_formalism
+
+En fait on a besoin que f soit holomorphe sur un ouvert contenant le spectre
+(compact), et pas seulement sur un chemin \Gamma, pour avoir (f_1f_2)(T)=f_1(T)
+f_2(T). De plus si f_i -> f (uniformément sur les compacts), f_i(T) converge aussi.
+
+Spectral mapping theorem: σ(f(T)) = f(σ(T)), où σ est le spectre.
+
+Applications: Spectral projections, Invariant subspace decomposition
+
+Extensions:
+With stronger assumptions, when T is a normal operator acting on a Hilbert
+space, the domain of the functional calculus can be broadened. When comparing
+the two results, a rough analogy can be made with the relationship between the
+spectral theorem for normal matrices and the Jordan canonical form. When T is a
+normal operator, a continuous functional calculus can be obtained, that is, one
+can evaluate f(T) with f being a continuous function defined on σ(T). Using the
+machinery of measure theory, this can be extended to functions which are only
+measurable (see Borel functional calculus). The Borel functional calculus
+extends to unbounded self-adjoint operators on a Hilbert space.
+
+In slightly more abstract language, the holomorphic functional calculus can
+be extended to any element of a Banach algebra, using essentially the same
+arguments as above. Similarly, the continuous functional calculus holds for
+normal elements in any C*-algebra and the measurable functional calculus
+for normal elements in any von Neumann algebra. 
+
+Calcul continu
+--------------
+
+https://en.wikipedia.org/wiki/Continuous_functional_calculus
+Theorem. Let x be a normal element of a C*-algebra A with an identity
+element e. Then there is a unique mapping π : f → f(x) defined for a
+continuous function f on the spectrum σ(x) of x, such that π is a
+unit-preserving morphism of C*-algebras and π(1) = e and π(id) = x.
+
+The proof of this fact is almost immediate from the Gelfand representation:
+it suffices to assume A is the C*-algebra of continuous functions on some
+compact space X and define π(f)=f∘x.
+Uniqueness follows from application of the Stone-Weierstrass theorem.
+
+In particular, this implies that bounded normal operators on a Hilbert
+space have a continuous functional calculus. 
+
+Calcul en mesure
+----------------
+
+https://en.wikipedia.org/wiki/Borel_functional_calculus
+The Borel functional calculus allows us to apply an arbitrary Borel
+function to a self-adjoint operator
+
+Dualité espace/fonctions
+========================
+
+https://ncatlab.org/nlab/show/Serre-Swan+theorem
+- the category of finitely-generated projective R-modules is equivalent to the category of algebraic vector bundles
+-  X Hausdorff compact space; the category of finitely generated projective modules over the continuous-function algebra C(X) is equivalent to the category of finite-rank vector bundles on X
+- smooth Serre-Swan theorem: For X a smooth manifold with ℝ-algebra of smooth functions C^∞(X) there is an equivalence of categories between that of finite rank smooth vector bundles over X and finitely generated projective modules over C^∞(X)
+
+https://ncatlab.org/nlab/show/Isbell+duality
+Under the interpretation of presheaves as generalized spaces and copresheaves as generalized quantities modeled on C (Lawvere 86, see at space and quantity), Isbell duality is the archetype of the duality between geometry and algebra that permeates mathematics (such as Gelfand duality or the embedding of smooth manifolds into formal duals of R-algebras.)
+
+https://ncatlab.org/nlab/show/embedding+of+smooth+manifolds+into+formal+duals+of+R-algebras
+The functor C^∞(−):SmoothMfd⟶Alg ℝ^op which sends a smooth manifold (finite dimensional, paracompact, second countable) to (the formal dual of) its ℝ-algebra of smooth functions is a full and faithful functor.
+In other words, for two smooth manifolds X,Y there is a natural bijection between the smooth functions X→Y and the ℝ-algebra homomorphisms C^∞(X)←C^∞(Y).
+
+https://ncatlab.org/nlab/show/Gelfand-Kolmogorov+theorem
+C(−,ℝ):Top cptHaus↪ℝ-Alg^op is a fully faithful functor.
+It follows in particular that compact Hausdorff spaces X and Y are homeomorphic precisely if the algebras C(X,ℝ) and C(Y,ℝ) are isomorphic.
+
+Voir aussi
+https://ncatlab.org/nlab/show/smooth+algebra
+https://ncatlab.org/nlab/show/geometry+of+physics+--+supergeometry

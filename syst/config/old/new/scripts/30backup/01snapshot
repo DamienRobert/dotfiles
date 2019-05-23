@@ -1,0 +1,14 @@
+#!/bin/zsh
+#arch-chroot
+
+if [[ -n $BOOTBACKUP ]]; then
+	case $FS in
+		btrfs)
+			#subvolume
+			if [[ -d /rootleaf/$SLASHLABEL ]]; then
+				#/ is a subvolume of a partition that is mounted in /rootleaf/
+				btrfs subvolume snapshot -r /rootleaf/$SLASHLABEL /rootleaf/${SLASHLABEL}-init
+			fi
+			;;
+	esac
+fi

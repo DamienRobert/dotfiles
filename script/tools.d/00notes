@@ -1,0 +1,250 @@
+vim: foldmethod=expr ft=markdownlight
+
+Syntax check:
+- ruby -c -w
+- bash/zsh -n
+- node -c
+
+# Config and modules resolution
+
+When doing foo-cli /tmp/test/file, foo can either look at .foorc
+recursively from /tmp/test or from the CWD or both (most cli also have a
+--config option).
+Once the config file is found, the plugins can be looked at from the file
+path, the config path, the CWD, or the path where the cli is installed.
+It can also look at global plugins. This often depend on whether the tool
+is run from the local or global node modules too.
+
+When global nodules are not looked after, we have as a solution to use
+absolute file path in the config file or `ln -s` the global node_modules...
+We can also set NODE_PATH, but this does not always work (cf below for why
+this does not work with babel)
+
+Note on NODE_PATH: https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders
+If the NODE_PATH environment variable is set to a colon-delimited list of absolute paths, then Node.js will search those paths for modules if they are not found elsewhere.
+Additionally, Node.js will search in the following list of GLOBAL_FOLDERS:
+    1: $HOME/.node_modules
+    2: $HOME/.node_libraries
+    3: $PREFIX/lib/node
+Where $HOME is the user's home directory, and $PREFIX is Node.js's configured node_prefix. (cf .npmrc, I set this to ~/opt/pkgmgr/npm)
+
+When installing system wide, this can be used for plugins:
+NODE_PATH=/home/dams/opt/pkgmgr/yarn/global/node_modules eslint test/app.js
+can find the eslint plugins installed via 'yarn global add'
+Unfortunately this does not work for babel:
+1) babel-cli in arch's is not the last version
+2) the resolution of babel does not honor NODE_PATH
++ yarn global add foo-plugin
+  does not see that foo is installed system wide, so it warns that
+  foo-plugin has unmet peer dep foo.
+So it seems better not to mix global and system node modules.
+
+Babel:
+- config file from the file path only.
+- module resolution from the config path.
+- no global modules cf https://github.com/babel/babel/issues/3831.
+  According to this `NODE_PATH="$(npm root -g)" babel app.js` should work but it does not :-(
+  Indeed, babel uses require.resolve from resolve https://github.com/browserify/resolve, but it does not handle NODE_PATH:
+  https://github.com/browserify/resolve/issues/39#issuecomment-306223854
+
+Stylelint:
+- config file from the file path and then the CWD, cf getConfigForFile.js:39
+- module resolution from the config path and then the CWD, cf utils/getModulePath.js:11 and augmenConfig.js:117
+- no global modules: https://github.com/stylelint/stylelint/issues/1973
+  To get global config files, there is a solution of require.resolveing the config file name: {"extends": require.resolve("stylelint-config-standard")}
+  [the require.resolve() trick helps only when both stylelint and a shareable config are installed the same way: both locally or both globally]
+  Update: this is fixed by https://github.com/stylelint/stylelint/pull/3642
+
+Postcss:
+- config file from the file path only.
+- modules from config path
+- look at global modules when installed globally
+  https://stackoverflow.com/questions/36509185/postcss-cli-using-locally-vs-globally-installed-postcss-modules
+    Look up plugins starting from node_modules located in the current working directory. Without this option, postcss-cli will look for the plugins in the node_modules in which it is installed - specifically if it is installed globally it will only look for plugins that are globally installed.
+  Note: current working directory probably means config path.
+
+Eslint:
+- config file from the file path only.
+- only global modules (when installed globally)
+  https://github.com/eslint/eslint/issues/1238
+  Both local and global modules when installed locally (from config path
+  probably but did not check).
+
+Browserslist: autoprefixer => only from the file; stylelint => only from (.) due
+to a bug in doiuse that i corrected in a pr
+https://github.com/anandthakker/doiuse/pull/81
+This has been merged so doiuse (both in cli and library mode) pick up the
+browserslist from the path.
+
+Browsers list
+=============
+https://github.com/ai/browserslist#queries
+http://browserl.ist/, https://caniuse.com/
+https://evilmartians.com/chronicles/autoprefixer-7-browserslist-2-released
+
+- browserslist => $BROWSERSLIST, package.json#browserslist / browserslist / .browserslistrc
+  If called by a tool foo, can also (usually) be specified in .foorc
+  (From browserslist/index.js, if the query is undefined looks for the
+  config files above starting from `opts.path || '.'` and defaults to
+  `browserslists.defaults` if no file is found)
+
+List of software using it: https://www.npmjs.com/package/browserslist
+  - Autoprefixer  (css)
+  - babel-preset-env  (to configure transform and polyfill needed)
+  - eslint-plugin-compat (js lint non supported browsers)
+  - stylelint-no-unsupported-browser-features (same for css; uses doiuse)
+  - postcss-normalize (Use the parts of normalize.css you need from your browserlist)
+  - postcss-preset-env
+
+Ex:
+- --browserslist 'defaults, not ie < 11'
+- package.json
+  ~~~
+  {
+    "browserslist": "defaults, not ie < 11"
+  }
+  ~~~
+- .browserslistrc:
+  ~~~
+  defaults
+  not ie < 11
+  ~~~
+Defaults: '> 1%, last 2 versions, Firefox ESR' cf browserslist/index.js
+          Update: thisis '> 0.5%, last 2 versions, Firefox ESR, not dead'
+All: '> 0%'
+
+Cli: browserslist "defaults"
+
+babel (es6)
+===========
+
+- @babel/cli, @babel/core => .babelrc (json5) / .babelrc.js / package.json#babel
+- presets:
+  - @babel/preset-env # https://github.com/babel/babel/tree/master/packages/babel-preset-env
+    https://babeljs.io/docs/en/babel-preset-env
+  - babel-minify #for minification
+- plugins:
+  - @babel/polyfill # polyfill that includes a custom regenerator runtime and core-js; needed by 'useBuiltIns' option of preset-env
+    Update: https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md
+    This is deprecated => import "@babel/polyfill"; should be replaced by
+    import "core-js/stable"; //polyfills
+    import "regenerator-runtime/runtime"; //polyfills for generators
+  - @babel/plugin-syntax-dynamic-import # to parse webpack's dynamic import
+    Cf https://webpack.js.org/guides/code-splitting/#dynamic-imports
+       https://babeljs.io/docs/en/babel-plugin-syntax-dynamic-import
+
+Exemple: babel foo.js
+babel --plugins @babel/plugin-syntax-dynamic-import script.js
+
+postcss
+=======
+https://github.com/postcss/postcss
+
+- postcss-cli => postcss.config.js
+- plugins: 
+  - autoprefixer
+  - cssnano # minifier
+  - https://github.com/csstools/postcss-preset-env
+    PostCSS Preset Env lets you convert modern CSS into something most browsers can understand, determining the polyfills you need based on your targeted browsers or runtime environments. [ie like @babel/preset-env]
+  - https://github.com/csstools/postcss-normalize
+    Use the parts of normalize.css you need from your browserslist
+
+Used by
+  - stylelint #cf below
+  - doiuse # Lint CSS for browser support against caniuse database.
+    doiuse --browsers "ie >= 9, > 1%, last 2 versions" main.css
+  - css-colorguard # Keep a watchful eye on your css colors.
+
+Exemples: postcss -u autoprefixer cssnano -- app.css
+          doiuse app.css # => test/app.css:8:1: CSS Flexible Box Layout Module only partially supported by: IE (11) (flexbox) 
+          colorguard --file theme.css
+
+eslint (javascript)
+===================
+
+- eslint => .eslintrc (json5/yaml)/.eslintrc.[js,yml,yaml,json (=json5)] / package.json#eslintConfig
+- style: eslint-config-airbnb-base
+- plugins: 
+  eslint-plugin-import # => support linting of ES2015+ (ES6+) import/export syntax (in particular support for parsing dynamic imports); needed by airbnb-base. cf https://www.npmjs.com/package/eslint-plugin-import
+  eslint-plugin-compat: Lint the browser compatibility of your code
+   cf https://www.npmjs.com/package/eslint-plugin-compat
+
+Note: A globally-installed instance of ESLint can only use globally-installed ESLint plugins. A locally-installed ESLint can make sure of both locally- and globally- installed ESLint plugins
+
+Exemple of modern eslint:
+https://gist.github.com/ivanhoe011/ad51cffb487e7f5c5e268ec8a79a1d27
+ESLint setup for react, jsx, es2018, class properties, etc... 
+
+stylelint (css)
+===============
+
+- stylelint => .stylelintrc (yaml) / .stylelintrc[.json,.yaml,.yml,.js] / stylelint.config.js / package.json#stylelint
+- styles:
+  - stylelint-config-standard         => stylelint-config-recommended
+  - stylelint-config-recommended-scss =>
+  - stylelint-config-sass-guidelines
+- plugins:
+  - stylelint-order #needed by stylelint-sass-guidelines, to check order of properties
+  - stylelint-scss #to parse scss
+  - stylelint-no-unsupported-browser-features #uses 'doiuse'
+
+- stylelint-config-recommended-scss:
+    ~~~
+    module.exports = {
+      extends: ["stylelint-config-recommended"],
+      plugins: ["stylelint-scss"],
+      rules: {
+        "at-rule-no-unknown": null,
+        "scss/at-rule-no-unknown": true
+      }
+    };
+    ~~~
+So it simply allows '@rules' scss rules in the linting.
+
+- stylelint-config-recommended: turns on all the possible errors rules within stylelint.
+  ~npm/stylelint-config-standard/node_modules/stylelint-config-recommended/index.js
+- stylelint-config-standard: Turns on additional rules to enforce the common stylistic conventions found within a handful of CSS styleguides, including: The Idiomatic CSS Principles, GitHub's PrimerCSS Guidelines, Google's CSS Style Guide, Airbnb's Styleguide, and @mdo's Code Guide.
+  ~npm/stylelint-config-standard/index.js
+- stylelint-config-sass-guidelines: based on the guidelines in https://sass-guidelin.es/
+  => I created .stylelintrc_sass_guidelines which has these guidelines (only add rules not in config-standard so they are clearer)
+
+.stylelintrc_custom: my coding styles
+    => Uses "stylelint-no-unsupported-browser-features", "stylelint-order"
+.stylelintrc: based on stylelint-config-standard + .stylelintrc_custom
+.stylelintrc_sass: based on .stylelintrc + some of the config of .stylelinttrc_sass_guidelines
+
+html
+====
+
+- htmllint: https://github.com/htmllint/htmllint
+  => htmllint-cli #not really maintained
+
+- html5-lint => python script 'html5check.py' downloaded in script/others
+  Exemple: html5check.py --service=https://checker.html5.org/ index.html
+  (I use the service 'checker.html5.org' which prints warning too)
+
+- html5validator (pip): https://github.com/svenkreiss/html5validator
+  Python interface to the validator.nu java backend
+  Exemple: html5validator --show-warnings --root .
+
+Minifier: html-minifier (npm): https://github.com/kangax/html-minifier
+
+posthtml: https://github.com/posthtml/posthtml
+- lint: https://github.com/posthtml/posthtml-hint
+- minifier (they don't seem very active, less than html-minifier):
+  - https://github.com/Rebelmail/posthtml-minifier
+    Wraps html-minifier
+  - https://github.com/posthtml/htmlnano
+
+rubocop
+=======
+
+The default ~/.rubocop.yml config is
+
+AllCops:
+  DisabledByDefault: true
+  TargetRubyVersion: 2.5
+Lint:
+  Enabled: true
+
+This is also .rubocop_check.yml. .rubocop_style has almost all cops.

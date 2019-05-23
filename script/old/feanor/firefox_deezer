@@ -1,0 +1,6 @@
+#!/bin/sh
+
+LD_PRELOAD="$HOME/opt/packages/deezer/librmflv.so.1.0.1"
+export LD_PRELOAD
+
+exec firefox "$@"

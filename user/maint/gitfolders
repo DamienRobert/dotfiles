@@ -1,0 +1,58 @@
+#!/usr/bin/zsh
+# calls `vcs ...`
+. ~/.initvars
+. $MYFILES/user/maint/.folders
+
+add_to_list() {
+	get_vcs $@
+	local ilist
+	for ilist in $@; do
+		list+=(${(P)${ilist:u}}) #put in uppercase and recursively update
+	done
+}
+
+opts=()
+list=()
+mode=
+while [[ $# -gt 0 ]]; do
+	case $1 in
+		-- ) shift; break ;;
+		-l | --list ) shift;
+			add_to_list ${(s/,/)1}; shift ;;
+		--mirror ) shift; mode="mirror" ;;
+		-d) shift; list+=$1; shift ;;
+		-*) opts+=$1; shift ;;
+		*) break;;
+	esac
+done
+#[[ -z $list ]] && add_to_list all
+
+case $mode in
+	mirror) #ex: gitfolders --mirror durin
+		# ex: gitfolders -d ~/mine/progs/archlinux_image --mirror github
+		# ex: gitfolders --mirror github
+		args=($@)
+		[[ -z $args ]] && args=(durin mathrice)
+		for name in $args; do
+			if [[ -z $list ]]; then
+				get_vcs $name
+				topush=(${(P)${name:u}})
+			else
+				topush=($list)
+			fi
+			vcs pushall -o $name $topush
+		done
+		;;
+	*) #ex: gitfolders -l mine list
+		if [[ $# -gt 0 ]]; then
+			vcs $opts $@ $list
+		else
+			vcs status $opts $list
+		fi
+		;;
+esac
+# for the list, cf ~maint/users/.folders
+# local = mine, perso, pro, latex, magma, usr
+# dist = prodist, optdist, usrdist
+# all = local, dist
+# durin, mathrice, github, prosvn, imb_local

@@ -1,0 +1,75 @@
+Readline wrapper
+----------------
+
+- socat
+socat READLINE EXEC:cat
+see also script/socat_readline:
+-> socat READLINE EXEC:"$@",pty,setsid,ctty
+
+- rlwrap
+rlwrap cat
+(also support keywords completion)
+
+Keybindings
+-----------
+http://readline.kablamo.org/emacs.html
+
+Moving:
+^a, ^e: move to beginning/end
+^f, ^b: move forward/back a character
+Alt-f, Alt-b: move forward/back a word
+^l: clear the screen
+
+Killing/Yanking:
+^k: Kill (cut) forwards to the end of the line.
+^u, ^x Delete: Kill (cut) backwards to the start of the line.
+Alt-d: Kill (cut) forwards to the end of the current word.
+Alt-Delete, ^w: Kill (cut) backwards to the start of the current word.
+Alt-\: Delete whitespace around the cursor.
+^y: Yank (paste) the top of the kill ring.
+Alt-y: Rotate the kill ring, and yank (paste) the new top. Only works after a yank.
+
+Changing Text:
+^d: Delete the character under the cursor.
+Delete: Delete the character before the cursor.
+^v, ^q: Add the next character you type verbatim.
+^t: Transpose characters.
+Alt-t: Transpose words.
+Alt-u: Uppercase the current word.
+Alt-l: Lowercase the current word.
+Alt-c: Capitalize the current word.
+
+Completing:
+Tab: Autocomplete.
+Alt-?: List possible completions.
+Alt-*: Insert possible completions.
+
+History:
+^p: Fetch the previous command from the history list.
+^n: Fetch the next command from the history list.
+Alt-<: Move to the first line in the history.
+Alt->: Move to the last line in the history.
+^r: Search backward through history.
+^s: Search forward through history.
+Alt-p: Search backward through history for a given string.
+Alt-n: Search forward through history for a given string.
+Ctrl-Alt-y: Insert the first argument to the previous command. With an argument n, insert the nth word from the previous command.
+Alt-., Alt-_: Insert the last argument to the previous command. With an argument n, insert the nth word from the previous command.
+
+Macros:
+^x (: Begin saving the characters typed as a macro.
+^x ): Stop saving the characters typed as a macro.
+^x e: Execute the most recent macro.
+
+Miscellaneous:
+^x^r: Read in the contents of the inputrc file.
+^g: Abort current editing command
+^_i, ^x^u: Incremental undo, separately remembered for each line.
+Alt-r: Undo all changes made to this line. This is like executing the undo command enough times to return the line to its initial state.
+Alt-Space, ^@: Set the mark (save this location).
+^x^x: Set the mark and jump to the previous mark.
+^]: Search forwards for a single character in the current line and jump to that location.
+^Alt-]: Search backwards for a single character in the current line and jump to that location.
+Alt-#: Comment the current line and start a new one.
+^e: Enter Emacs editing mode
+Ctrl-Alt-j: Enter Vi editing mode

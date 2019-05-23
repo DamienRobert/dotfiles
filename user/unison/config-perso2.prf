@@ -1,0 +1,9 @@
+path=data/Music
+path=data/.XXX
+ignore = Name Music/Albums/01Other
+ignore = Name Music/A_Trier
+ignore = Name Music/Divers
+ignore = Name Music/Mirrors
+ignore = Name Music/MP3Albums
+
+follow = Name data/.XXX/*

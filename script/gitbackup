@@ -1,12 +1,9 @@
 #!/bin/zsh
 
-[[ -z $MYHOSTNAME ]] && . $HOME/mine/config/hosttype.local
-
-#FILES=("${(@f)$(bupbackuplist common)}")
 DIRS=(mine/ perso/ pro/ latex/)
 #Rather than to use SKIP, I prefer to put good .gitignore files
 SKIP=()
-GITDIR="$HOME/backups/gitbackup"
+GITDIR="$HOME/var/backups/gitbackup"
 mkdir -m 700 -p $GITDIR || exit 1
 
 while true;
@@ -35,20 +32,28 @@ function get_env_info() {
 }
 
 process() {
-  case $1 in 
+  case $1 in
     myinit )
-gitbarecmd init #--bare 
+. $HOME/.initvars
+gitbarecmd init #--bare
 #gitbarecmd config core.logAllRefUpdates true
 gitbarecmd config core.excludesfile $HOME/mine/script/gitbackup_ignore
+gitbarecmd config core.worktree $HOME
 gitbarecmd symbolic-ref "refs/heads/$MYHOSTNAME" refs/heads/master
-gitbarecmd remote add -t $MYHOSTNAME origin ssh://imbunison/home/imb/drobert/backups/gitbackup
+server="ssh://imbu/home/imb/damienrobert/var/backups/gitbackup"
+gitbarecmd remote remove origin #upgrade old $origin
+gitbarecmd remote add -t $MYHOSTNAME origin $server
 ;;
-    myadd ) 
+    myadd )
 [[ -d $GITDIR/.git ]] || process myinit
 for dir in $DIRS; do
   cd $HOME
+  # in a git dir foo/, with a submodule foo/sub, then
+  # `git add -A foo` will add `foo/sub` as a submodule, while here we want
+  # to recurse inside.
+  # So we need to add the submodules first.
   SUBMODULES=("${(@f)$(find $dir -name .git | sort -r)}")
-  for subdir in $SUBMODULES; do 
+  for subdir in $SUBMODULES; do
     sub=${subdir%.git}
     if [[ -n ${(M)SKIP:#${sub}} ]] ; then
       #echo "skipped"
@@ -70,12 +75,13 @@ exit $?
     save ) process myadd
       [[ -n $VERBOSE ]] && process list
            process mycommit;;
-    mypush ) 
+    mypush )
       #find a ssh-agent
       [[ -e "/run/user/$UID/ssh_auth_sock" ]] && SSH_AUTH_SOCK="/run/user/$UID/ssh_auth_sock"
       [[ -z $SSH_AUTH_SOCK ]] && pid=$(pgrep -U $UID polkit-gnome)  &&  get_env_info $pid
       [[ -z $SSH_AUTH_SOCK ]] && pid=$(pgrep -U $UID ssh-agent)  &&  get_env_info $pid
       export SSH_AUTH_SOCK
+      . $HOME/.initvars
       gitbarecmd push origin +$MYHOSTNAME:$MYHOSTNAME
     ;;
 

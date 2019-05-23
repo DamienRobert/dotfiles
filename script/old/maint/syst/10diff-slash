@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+OPTS=()
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -* ) OPTS+=$1; shift ;;
+    *) break;;
+  esac
+done
+
+DEFAULT="$HOME/tmp/@comps/$MYHOSTNAME/slash"
+INDIR=${1-$DEFAULT}
+OUTDIR=${2-/}
+$HOME/script/lib/diff-generate $OPTS $INDIR $OUTDIR

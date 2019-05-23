@@ -1,0 +1,236 @@
+<html lang="en">
+<head>
+<title>The GNU C Programming Tutorial</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name=description content="The GNU C Programming Tutorial">
+<meta name=generator content="makeinfo 4.2">
+<link href="http://www.gnu.org/software/texinfo/" rel=generator-home>
+</head>
+<body>
+<h5 class="menu">
+<a href="http://www.crasseux.com/art/">Art and Comics</a>
+<a href="http://www.crasseux.com/criticalmass/">Critical Mass</a>
+<a href="http://www.crasseux.com/emacs/">Emacs</a>
+<a href="http://www.crasseux.com/freedom/">Free Stuff</a>
+<a href="http://www.crasseux.com/games/">Games</a>
+<a href="http://www.crasseux.com/linux/">Gnu/Linux</a>
+<a href="http://www.crasseux.com/">Home</a>
+
+<a href="http://www.crasseux.com/japanese/">Learn Japanese</a>
+<a href="http://www.crasseux.com/links/">Links</a>
+<a href="http://www.crasseux.com/montreal/">Montreal</a>
+<a href="http://www.crasseux.com/music/">Music</a>
+<a href="http://www.crasseux.com/news/">News</a>
+<a href="http://www.crasseux.com/essays/">Some Essays</a>
+<a href="http://crasseux.com/priv_stats/">Statistics</a>
+</h5>
+<div class="main">
+<script type="text/javascript"><!--
+google_ad_client = "pub-6874593486068970";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_type = "text_image";
+google_ad_channel ="";
+google_color_border = "578A24";
+google_color_bg = "CCFF99";
+google_color_link = "00008B";
+google_color_url = "00008B";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<p>
+Node:<a name="Building%20a%20library">Building a library</a>,
+Next:<a rel=next accesskey=n href="Questions-17.html#Questions%2017">Questions 17</a>,
+Previous:<a rel=previous accesskey=p href="Writing-a-makefile.html#Writing%20a%20makefile">Writing a makefile</a>,
+Up:<a rel=up accesskey=u href="Putting-a-program-together.html#Putting%20a%20program%20together">Putting a program together</a>
+<hr><br>
+
+<h3>Building a library</h3>
+
+<p>We explored what libraries are and how to use them in a previous
+chapter.  (See <a href="Libraries.html#Libraries">Libraries</a>, if you need to refresh your memory.)  You
+may have wondered how libraries are written in the first place.  Is the
+whole process too complicated for a mortal C programmer to attempt?  Not
+at all.
+
+<p>Suppose you have a function (or set of functions) that you would like to
+use widely across the various C programs you write.  You might even like
+to make it available to other users in a convenient way.  To create a
+code library that will enable you to achieve this, follow the sequence
+below.  We will use a code example, but you can create your own library
+by taking similar steps.
+
+<ol type=1 start=1>
+
+</p><li>
+Here's an example of the kind of function you might like to use in
+multiple programs.  It accepts one string containing some text to print,
+and then prints it on the default printer.
+
+<p>For the sake of example, the file below is named <code>lpr_print.c</code>.
+
+<br><pre>#include &lt;stdio.h&gt;
+
+void lpr_print (char *the_text)
+{
+  FILE *printer;
+
+  printer = popen ("lpr", "w");
+  fprintf (printer, the_text);
+  pclose (printer);
+}
+</pre>
+
+<p>(See <a href="Programming-with-pipes.html#Programming%20with%20pipes">Programming with pipes</a>, for the rationale behind this function.)
+
+</p><li>
+Now we will create a library.
+
+<ul>
+
+<li>To create a static library called <code>liblprprint.a</code> containing this
+function, just type the following two command lines in your GNU shell:
+
+<br><pre>gcc -c lpr_print.c
+ar rs liblprprint.a lpr_print.o
+</pre>
+
+<p>The <code>-c</code> option to <code>gcc</code> produces only a <code>.o</code> object code file,
+without linking it, while the <code>ar</code> command (with its <code>rs</code> options)
+permits the creation of an <dfn>archive</dfn> file, which can contain a bundle of other
+files that can be re-extracted later (for example, when executing library code).
+In this case, we are only archiving one object code file, but in some cases, you might
+want to archive multiple ones.  (See the <code>man</code> page for <code>ar</code>
+for more information.)
+
+</p><li>To create a shared library called <code>liblprprint.so</code> instead, enter
+the following sequence of commands:<a rel=footnote href="#fn-1"><sup>1</sup></a>
+
+<br><pre>gcc -c -fpic lpr_print.c
+gcc -shared -o liblprprint.so lpr_print.o
+</pre>
+
+<p>(For the record, <code>pic</code> stands for "position-independent code", an
+object-code format required for shared libraries.  You might need to use
+the option <code>-fPIC</code> instead of <code>-fpic</code> if your library is
+very large.)
+
+</ul>
+
+</p><li>Now create a header file that will allow users access to the functions
+in your library.  You should provide one function prototype for each
+function in your library.  Here is a header file for the library we
+have created, called <code>liblprprint.h</code>.
+
+<br><pre>/*
+   liblprprint.h:
+   routines in liblprprint.a
+   and liblprprint.so
+*/
+
+extern void lpr_print (char *the_text);
+</pre>
+
+<li>
+Now you should put your libraries and include file somewhere your code
+can access them.  For the sake of this example, create the directories
+<code>include</code> and <code>lib</code> in your home directory.  Once you have
+done so, move the <code>.a</code> and <code>.so</code> files you have created to
+<code>lib</code>, and the <code>.h</code> file to <code>include</code>.
+
+<li>
+If you have taken the last step, and you want to run a program linked to
+a shared version of your library, you should type a line like the
+following into your shell (the following command line assumes you are
+using the Bash shell and that your home directory is named
+<code>/home/fred</code>):
+
+<br><pre>export LD_LIBRARY_PATH=/home/fred/lib:$LD_LIBRARY_PATH
+</pre>
+
+<p>This command line sets an environment variable that makes the linker
+search the <code>/home/fred/lib</code> directory before it searches anywhere
+else.  You can include it in your <code>.bashrc</code> or <code>.bash_profile</code>
+file.  If you don't execute this command before you attempt to run a program
+using your shared library, you will probably receive an error.
+
+</p><li>
+Now you can write programs that use your library.  Consider the following
+short program, called <code>printer.c</code>:
+
+<br><pre>#include &lt;liblprprint.h&gt;
+
+/* To shorten example, not using argp */
+int main ()
+{
+  lpr_print ("Hello, Multiverse!\nHowarya?\n");
+  return 0;
+}
+</pre>
+
+<ul>
+
+<p>To compile this program using your static library,
+type something like the following command line:
+
+<br><pre>gcc --static -I../include -L../lib -o printer printer.c -llprprint
+</pre>
+
+<p>The <code>--static</code> option forces your static library to be linked;
+the default is your shared version.  The <code>-llprprint</code> option
+makes GCC link in the <code>liblprprint</code> library, just as you would need
+to type <code>-lm</code> to link in the <code>libm</code> math library.
+
+<p>The <code>-I../include</code> and <code>-L../lib</code> options specify that the
+compiler should look in the <code>../include</code> directory for include
+files and in the <code>../lib</code> directory for library files.  This
+assumes that you have created the <code>include</code> and <code>lib</code>
+directories in your home directory as outlined above, and that you are
+compiling your code in a subdirectory of your home directory.  If you
+are working two directories down, you would specify
+<code>-I../../include</code>, and so on.
+
+<p>The above command line assumes you are using only one <code>.c</code>
+source code file; if you are using more than one, simply include them
+on the command line as well. (See <a href="Compiling-multiple-files.html#Compiling%20multiple%20files">Compiling multiple files</a>.)
+
+<p><strong>Note:</strong>
+Using the <code>--static</code> option will force the compiler to link
+all libraries you are using statically.
+If you want to use the static version of your library,
+but some shared versions of other libraries, you can omit the
+<code>--static</code> option from the command line and specify the
+static version of your library explicitly, as follows:
+
+<br><pre>gcc -I../include -L../lib -o printer printer.c ../lib/liblprprint.a
+</pre>
+
+</p><li>To compile this program using your shared library, type
+something like the following command line.
+
+<br><pre>gcc -I../include -L../lib -o printer printer.c -llprprint
+</pre>
+
+</ul>
+
+<li>The executable produced is called <code>printer</code>.  Try it!
+
+</ol>
+
+<hr><h4>Footnotes</h4>
+<ol type="1">
+<li><a name="fn-1"></a>
+<p>To create library files
+containing multiple object files, simply include the object files on the
+same command line.  For example, to create a static library with
+multiple object files, type a command such as <code>ar rs
+liblprprint.a lpr_print.o lpr_print2.o lpr_print3.o</code>.  Similarly, to
+create a shared library, type <code>gcc -shared -o liblprprint.so
+lpr_print.o lpr_print2.o lpr_print3.o</code>.</p>
+
+</ol><hr>
+
+</body></html>

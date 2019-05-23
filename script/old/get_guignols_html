@@ -1,0 +1,35 @@
+#!/bin/zsh
+
+# http://213.41.65.178/canalplus/player/index_guignols.html
+#DAY=1
+#URL=http://213.41.65.178/canalplus/player/pages/guignols/guignolsvideo$DAY.html
+#rpm=`curl -s $URL`
+#rpm=${rpm%%.rpm\"*}.rpm
+#rpm=${rpm##*\"}
+#rm=`curl -s $rpm`
+
+date2=`date +'%Y%m%d' -d "$*"`
+
+# Obsolète depuis le 2004-11-03
+# date=`date +'%d%m%y' -d "$*"`
+# #URL=rtsp://realserver.coltfrance.com/canalplus/guignols/guignols_$date.rm
+# #URL=rtsp://rm.coltstream.net/325555678/real/canal/guignols/guignols_$date.rm
+# PREURL=http://a455.g.akamai.net/7/455/1879/v1/213.41.65.178/coltreal/canalplus/guignols/guignols_$date.rpm
+# OUT=guignols-$date2.rm
+#
+# if [[ -e $OUT ]]; then
+#   print "$OUT is in the way."
+#   exit 1
+# fi
+#
+# URL=`curl -s $PREURL`
+# if [[ $URL != rtsp://* ]]; then
+#   print -u2 "Preurl failed: $URL"
+#   exit 1
+# fi
+
+date=`date +'%y%m%d' -d "$*"`
+URL=mms://vipmms.canalplus.fr/canalplus/guignols_${date}_a.wmv
+OUT=guignols-$date2.wmv
+
+echo $URL

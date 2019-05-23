@@ -1,0 +1,26 @@
+#!/bin/sh
+#!/usr/local/util/bin/zsh4
+
+nickserv() {
+echo "$DATE"
+{ sleep 10
+  echo "/msg nickserv identify lunenoire"
+  sleep 5
+  echo "/join #lesoiseauxgazouillentdanslepre"
+  sleep 1
+  echo "/join #lesoiseauxgazouillentdanslepré"
+  sleep 1
+  echo "/join #lesoiseauxgazouillentdansleprÃ©"
+  sleep 1
+  echo "/join #ploum"
+  sleep 1
+  echo "/join #dami"
+  sleep 1
+ } |
+  "$HOME/progs/local/binaries/sirc/sirc" -d -8 -p 8080 -L "$HOME"/.sircrc-dami "$1" irc.langochat.net
+}
+
+nickserv dams
+nickserv dami
+#un nom aleatoire pour etre sur de tout visiter.
+nickserv A12KBD

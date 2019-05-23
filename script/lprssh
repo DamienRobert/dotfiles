@@ -1,0 +1,17 @@
+#!/usr/bin/zsh
+
+server="imb"
+opts=()
+
+while true; do
+	case $1 in
+		-- ) shift; break ;;
+		-s|--server ) shift; server=$1; shift ;;
+		-o|--options ) shift; opts+=(${=1}); shift ;;
+		*) break ;;
+	esac
+done
+
+for file in $@; do
+	cat $file | ssh $server lpr $opts
+done

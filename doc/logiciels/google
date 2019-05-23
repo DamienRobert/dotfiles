@@ -1,0 +1,14 @@
+Gmail
+=====
+
+https://security.google.com/settings/security/activity
+(pour vérifier les activités et dire que les suspicious sign-in sont de
+moi, sinon il me force à changer mon password...)
+
+Drive
+=====
+
+Google Drive CLI
+- https://github.com/odeke-em/drive#why-another-google-drive-client
+  https://aur.archlinux.org/packages/drive/
+

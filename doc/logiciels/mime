@@ -1,0 +1,195 @@
+https://wiki.archlinux.org/index.php/Default_applications
+
+Mime
+====
+
+Mime types:
+- The list of possible mime types are in /usr/share/mime/types, ~/.local/share/mime/types
+- Mime types can be defined in /usr/share/mime/packages/
+  Local mime types can be set up in ~/.local/share/mime/packages/application-x-foobar.xml [here to define application/x-foobar]
+-> update-mime-database: build the Shared MIME-Info database cache
+  Global: /usr/share/mime/mime.cache
+  Local mime info cache: ~/.local/share/mime/mime.cache
+  Cf http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.18.html
+  The mime info cache allows to associate a mimetype to a file (via a glob
+  on the name or a magic value or...)
+
+Mime database:
+- desktop files are in /usr/share/applications
+  and locally in ~/.local/share/applications
+- The shared mime database is stored in
+  ~/.local/share/applications/mimeapps.list and the user can override it in
+  ~/.config/mimeapps.list cf
+  http://standards.freedesktop.org/mime-apps-spec/mime-apps-spec-1.0.html
+  http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec/
+  [Warning: stracing xdg-mime shows that it does not read ~/.config/mimeapps.list but only ~/.local/share/applications/mimeapps.list!]
+- The shared mime database cache is stored in
+  /usr/share/applications/mimeinfo.cache
+  Locally: .local/share/applications/mimeinfo.cache
+  Ex: 'application/bzip2=org.gnome.Nautilus.desktop;'
+-> update-desktop-database: Build cache database of MIME types handled by
+  desktop files in $XDG_DATA_DIRS/applications/mimeinfo.cache
+
+How it works:
+in foo.desktop the application foo can declare the type of mimetypes it
+handles: `MimeType=application/x-foobar`. In mimeapps.list, we have
+    [Default Associations]
+    text/foo=ploum.desktop;plam.desktop #try to use ploum then plam to open text/foo
+    [Added Associations]
+    text/foo=plam.desktop #make as if plam.desktop had a `MimeType=text/foo`
+    [Removed Associations]
+    text/foo=plum.desktop #blacklist plum.desktop to handle text/foo
+
+Then a program goes through the mimeapps.list files, and try each of the
+program defined in [Default Association] for the mimetype such that the
+application.desktop handle this mimetype and is not blacklisted.
+(Once all programs have been checked, if no entry could be found, the
+implementations can pick any of the .desktop files associated with the
+mimetype [in practice this looks to be the first corresponding element in
+/usr/share/applications/mimeinfo.cache], taking into account added and
+removed associations.)
+
+Mime tools
+==========
+
+perl
+----
+
+perl-file-mimeinfo: mimetype, mimeopen
+    mimetype [-d] file.ext //-d: description
+    mimeopen -d /path/to/file //set default application
+
+$ mimetype ploum.html
+ploum.html: text/html
+$ mimetype -d ploum.html
+ploum.html: HTML document
+$ mimeopen ploum.html
+
+xdg
+---
+
+freedesktop: xdg-open and xdg-mime
+    xdg-mime query filetype file.ext
+    xdg-mime query default mime/type
+    xdg-mime default application.desktop mime/type # set application as default for mime/type
+    xdg-open foo
+
+Loop warning: xdg-open on a generic file calls run-mailcap if it exists
+before falling back to mimeopen
+[http://cgit.freedesktop.org/xdg/xdg-utils/tree/scripts/xdg-open.in#n266].
+So if xdg-open is used in mailcap it can cause loops if run-mailcap exists.
+
+xdg-open:
+- finds the current desktop from XDG_CURRENT_DESKTOP, DESKTOP_SESSION and
+  some custom fallbacks (the code is interesting)
+- uses the desktop open program (gvfs-open for gnome, exo-open for xfce...)
+  else fallback to open_generic()
+- open_generic():
+  if is_file_url_or_path #Returns true if argument is a file:// URL or path
+    - run open_generic_xdg_mime "$file" "$filetype"
+      [this is a bug it redoes the work of open_generic_xdg_mime :)]
+    - fallback to run-mailcap
+    - fallback to mimeopen
+  - fallback to open_generic_xdg_x_scheme_handler (if has_display)
+  - fallback to open_envvar()
+  - fallback to BROWSER=x-www-browser:firefox:iceweasel:seamonkey:mozilla:epiphany:konqueror:chromium-browser:google-chrome:www-browser:links2:elinks:links:lynx:w3m open_envvar()
+- open_generic_xdg_mime file filetype
+  - uses xdg-mime query default "$filetype" to get the default application
+  - look for the corresponding desktop file [search_desktop_file]
+- open_generic_xdg_file_mime():
+  - uses xdg-mime query filetype "$1" to get the filetype
+  - calls open_generic_xdg_mime $1 $filetype
+- open_generic_xdg_x_scheme_handler():
+  - like above but for a ploum://plam scheme:
+    filetype="x-scheme-handler/$scheme"
+    open_generic_xdg_mime "$1" "$filetype"
+- open_envvar(): parse $BROWSER to find a suitable browser to launch on file
+  Ex: BROWSER=firefox:chrome
+
+xdg-mime:
+  query filetype => info_*
+  query default => defapp_*
+  default => make_default_*
+
+  info_generic: uses 'mimetype', fallback to 'file'
+  info_gnome: uses 'gvfs-info', fallback to 'gnomevfs-info'
+  make_default_generic: change mimeapps.list
+  defapp_generic: look at mimeapps.list, with fallback to [the deprecated] ~/.local/share/applications/defaults.list
+
+  install => copy to ~/.local/share/mime/ -> calls update-mime-database
+
+exo-open
+--------
+
+On xfce, xdg-open calls exo-open.
+Examples:
+    exo-open /home/dude/file1.mp3 /home/dude/file2.txt
+Exo-open also accepts default applications WebBrowser, MailReader, TerminalEmulator, FileManager:
+    exo-open --launch TerminalEmulator mutt #run mutt under the  default terminal
+[Default helpers from /etc/xdg/xfce4/helpers.rc:
+WebBrowser=firefox
+MailReader=thunderbird
+TerminalEmulator=xfce4-terminal
+FileManager=Thunar]
+
+These default applications are set in .config/xfce4/helpers.rc, /etc/xdg/xfce4/helpers.rc and can be set via `exo-preferred-applications`. The corresponding desktop files are exo-file-manager.desktop [Exec=exo-open --launch FileManager %u], exo-mail-reader.desktop, exo-terminal-emulator.desktop, exo-web-browser.desktop
+Eg to generically allow MailReader for 'mailto:' urls, use in mimeapps.list:
+    [Added Associations]
+    x-scheme-handler/mailto=exo-mail-reader.desktop
+In exo-preferred-applications, one can set one of the application listed in
+/usr/share/xfce4/helpers/,~/.local/share/xfce4/helpers/
+So for instance to set a custom TerminalEmulator,
+exo-preferred-applications will put the value in helpers.rc as
+`TerminalEmulator=custom-TerminalEmulator`
+and create the desktop file in
+~/.local/share/xfce4/helpers/custom-TerminalEmulator.desktop
+
+One can use xfce4-mime-settings to configure .config/mimeapps.list
+
+Mailcap
+=======
+
+.mailcap, /etc/mailcap is used by firefox, mutt, run-mailcap or metamail to open a file according to its mime type.
+[firefox has its own logic, with fallback to the xdg mime types and
+.mailcap, cf 'firefox']
+
+Ex: application/x-pdf;   pdftotext -enc UTF-8 '%s' -; copiousoutput
+
+Customisation:
+- The nametemplate token can be used in a mailcap file to indicate mutt how to name the file that is about to pass to a viewer. For example, nametemplate="%s.docx" tells mutt to add the extension docx to the file. Adding the extension to a file helps the viewer to open the file correctly. 
+- test=...
+- copiousoutput -> needs a pager
+- needsterminal -> in graphic mode launches a terminal
+
+=> mutt config:
+  set mailcap_path=~/.mutt/mailcap #don't put in ~/.mailcap to avoid xdg-open loops
+  auto_view text/html application/x-pkcs7-signature
+  alternative_order text/enriched text/plain text/html text
+  mime_lookup application/octet-stream
+
+octet-stream
+============
+
+Des scripts mutt.octet.filter pour essayer de décoder les application/octet-stream:
+http://permalink.gmane.org/gmane.mail.mutt.user/36946
+http://www.davep.org/mutt/mutt.octet.filter.pl
+
+I simply use 'mime_lookup application/octet-stream' which looks up mime.types:
+http://www.mutt.org/doc/manual/manual.html#toc5.2
+
+    Mutt's mime_lookup list specifies a list of MIME types that should not be
+    treated according to their mailcap entry. This option is designed to
+    deal with binary types such as application/octet-stream. When an
+    attachment's MIME type is listed in mime_lookup, then the extension of
+    the filename will be compared to the list of extensions in the
+    mime.types file. The MIME type associated with this extension will then
+    be used to process the attachment according to the rules in the mailcap
+    file and according to any other configuration options (such as
+    auto_view) specified.
+
+-> in my .muttrc:
+  # for this mime type, look up the real mime in mime.types
+  mime_lookup application/octet-stream
+
+[mutt looks at ~/.mime.types, /usr/local/share/mutt/mime.types, /etc/mime.types;
+mime.types are like an elementary version of the shared mime database mime.cache]

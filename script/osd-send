@@ -2,4 +2,4 @@
 
 info=$(eval "$*" 2>/dev/null)
 notify-send -t $((1000+300*`echo -n $info | wc -w`)) -u low  "$*" "$info" || exit 2
-#-i gtk-dialog-info si on veut une iconne
+#-i gtk-dialog-info si on veut une icone

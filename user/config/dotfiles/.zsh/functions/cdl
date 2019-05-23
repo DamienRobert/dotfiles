@@ -1,0 +1,27 @@
+# cd and ls
+
+ls() {
+	#TODO this is my alias, and I use `autoload -z` without -U, so I should not have to redefine it
+	command ls --color=auto -F -T 0 --quoting-style=literal $@
+}
+
+cdl() {
+	emulate -L zsh
+	local make dir
+	while true; do
+		case $1 in
+			-- ) shift; break ;;
+			-m ) shift; make=t ;;
+			*) break;;
+		esac
+	done
+	if [[ -n $@ ]]; then
+		[[ -n $make ]] && mkdir -p -- $1
+		[[ -d $1 ]] && dir=$1 || dir=${1:h}
+		cd -- $dir && ls
+		[[ $#@ > 1 ]] && shift && ls $@
+	fi
+	return 0
+}
+
+cdl $@

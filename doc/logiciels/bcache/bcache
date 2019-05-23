@@ -1,0 +1,87 @@
+https://wiki.archlinux.org/index.php/Bcache
+
+Set up:
+ make-bcache -B /dev/sda3 -C /dev/sdb
+Register (without udev; make-bcache register automatically):
+  echo /dev/sda3 > /sys/fs/bcache/register
+  echo /dev/sdb > /sys/fs/bcache/register
+Attach (If creating the backup and cache device separatly, we need to attach the cache device to the backup device): 
+  echo <CSET-UUID> > /sys/block/bcache0/bcache/attach
+Configure:
+ echo writeback > /sys/block/bcache0/bcache/cache_mode
+
+Stop:
+  echo 1 > /sys/block/<bdevice>/bcache/stop (stop bdevice)
+  [don't do it]
+
+Detaching the cache device:
+  echo 1 > /sys/block/<bdevice>/bcache/detach (detach cdevice)
+  echo 1 > /sys/fs/bcache/ca0f729a-d290-43e6-9e03-b012a9148aabe/unregister (=> detach all backup devices)
+    stop
+      Write to this file to shut down the cache set - waits until all attached
+      backing devices have been shut down.
+    unregister
+      Detaches all backing devices and closes the cache devices; if dirty data is
+      present it will disable writeback caching and wait for it to be flushed.
+    [The difference between stop and unregister seems to be that stop is
+    temporary but unregister unregister the caching device]
+
+If you're booting up and your cache device is gone and never coming back, you
+can force run the backing device:
+  echo 1 > /sys/block/sda3/bcache/running
+
+Force flush of cache to backing device:
+ # echo 0 > /sys/block/bcache0/bcache/writeback_percent
+This will flush the dirty data of the cache to the backing device in less a minute. Revert back the value after with
+ # echo 10 > /sys/block/bcache0/bcache/writeback_percent
+
+Recreate cache device:
+  wipefs -a /dev/sdb
+  #eventually fully wipe (cf https://wiki.archlinux.org/index.php/Securely_wipe_disk#dd)
+  #dd if=/dev/zero of=/dev/sdb iflag=nocache oflag=direct bs=4096
+  make-bcache -C --wipe-bcache --cset-uuid ca0f729a-d290-43e6-9e03-b012a9148aab /dev/sdb
+  # cset-uuid is from bcache-super-show /dev/sdb
+  # echo /dev/sdb > /sys/fs/bcache/register # done automatically by udev
+  echo ca0f729a-d290-43e6-9e03-b012a9148aab > /sys/block/bcache0/bcache/attach
+
+Tools
+=====
+bcache-super-show /dev/sdb
+
+sysfs
+=====
+
+SYSFS - BACKING DEVICE:
+Available at /sys/block/<bdev>/bcache, /sys/block/bcache*/bcache and
+(if attached) /sys/fs/bcache/<cset-uuid>/bdev*
+
+$ /sys/block/bcache0/bcache/
+attach                     running             writeback_delay
+cache_mode                 sequential_cutoff   writeback_metadata
+clear_stats                state               writeback_percent
+detach                     stats_day/          writeback_rate
+dev@                       stats_five_minute/  writeback_rate_d_term
+dirty_data                 stats_hour/         writeback_rate_debug
+label                      stats_total/        writeback_rate_p_term_inverse
+partial_stripes_expensive  stop                writeback_rate_update_seconds
+readahead                  stripe_size         writeback_running
+
+(alias: /sys/block/sda/sda3/bcache)
+
+SYSFS - CACHE DEVICE:
+$ /sys/block/sdb/bcache
+block_size     cache_replacement_policy  io_errors         priority_stats
+btree_written  clear_stats               metadata_written  set@
+bucket_size    discard                   nbuckets          written
+
+SYSFS - CACHE SET:
+$ /sys/fs/bcache/ca0f729a-d290-43e6-9e03-b012a9148aab/
+average_key_size             congested_write_threshold_us  stats_five_minute/
+block_size                   errors                        stats_hour/
+btree_cache_size             flash_vol_create              stats_total/
+bucket_size                  internal/                     stop
+cache0@                      io_error_halflife             synchronous
+cache_available_percent      io_error_limit                tree_depth
+clear_stats                  journal_delay_ms              unregister
+congested                    root_usage_percent
+congested_read_threshold_us  stats_day/

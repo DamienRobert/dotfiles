@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+/usr/bin/sgdisk --new=1:0:0 -c "0:$SLASHPARTLABEL" -t '0:8300' --attributes=1:set:2 ${DISK}

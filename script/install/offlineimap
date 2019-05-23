@@ -1,0 +1,9 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+version="LAST"
+
+vcs clone_or_update --checkout $version "https://github.com/OfflineIMAP/offlineimap" "$OPT/packages/offlineimap"
+
+cd $OPT/bin
+ln -s ../packages/offlineimap/offlineimap.py offlineimap

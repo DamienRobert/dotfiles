@@ -1,0 +1,1 @@
+gems/tiny_singleton/lib/tiny_singleton.rb

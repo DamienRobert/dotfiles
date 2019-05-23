@@ -1,118 +1,242 @@
 #!/bin/zsh
 help() {
-  echo "archive dir: compress dir into a .tax.xz
-archive -u foo: unarchive foo
+	echo "archive dir: compress dir into a .tax.xz
+archive -u foo.tar.xz: unarchive foo
+archive -i foo.tar.xz: infos on foo
 
 OPTIONS:
-  -r|-rm: in compression mode ask to remove the dir
-          in decompression mode ask (or not in -rm) to remove foo"
-  -tmp: extract archive in /tmp
-  exit 1
+	-i: infos on archive
+	-r|--rm: in compression mode ask to remove the dir
+					 in decompression mode ask (or not wit --rm) to remove foo.tar.xz
+	-t/--tmp: extract archive foo in /tmp/archives/foo
+	--tmpdir: specify tmpdir (default to /tmp/archives)
+	--out: specify output file/directory
+	--zip/lrzip: archive mode (rather than tar.xz)"
+	exit 1
 }
 
-UNARCHIVE=
+MODE=archive
 REMOVE=
+SIMPLE=
 TEMP=
-TMPDIR="/tmp/xz"
+TMPDIR="/tmp/archives"
+ext=xz
 OPTIONS=()
 while true;
 do
-  case "$1" in
-    -- ) break ;;
-    -u ) shift ;  UNARCHIVE=true  ;;
-    -tmp) shift; TEMP=true ;;
-    -tmpdir) TMPDIR=$1; shift; TEMP=true ;;
-    -r ) shift; REMOVE="true" ;;
-    -rm ) shift; REMOVE="force" ;;
-    -*) OPTIONS=($OPTIONS $1); shift ;;
-    -h|-help|--help ) shift; help ;;
-    *) break;;
-  esac
+	case $1 in
+		-- ) break ;;
+		-i) shift; MODE=info ;;
+		--zip) shift; ext="zip" ;;
+		--lrz|--lrzip) shift; ext="lrz" ;;
+		-r) shift; REMOVE="true" ;;
+		--rm) shift; REMOVE="force" ;;
+		--out) shift; TARGET=$1; shift ;;
+		--simple) shift; SIMPLE=t ;; #extract in place
+		-u) shift; MODE=unarchive ;;
+		-t|--tmp) shift; TEMP=true ;;
+		--tmpdir) shift; TMPDIR=$1; shift; TEMP=true ;;
+		-*) OPTIONS+=$1; shift ;;
+		-h|-help|--help) shift; help ;;
+		*) break;;
+	esac
 done
 
-doremove() {
-  file=$1
-  case $REMOVE in
-    true ) rm -i $file;;
-    force ) rm $file;;
-  esac
+do_remove() {
+	local file=$1
+	case $REMOVE in
+		true ) rm -i $file;;
+		force ) rm $file;;
+	esac
 }
 
-if [[ -z $UNARCHIVE ]]; then
-  for name in "$@"; do
-    DIR=${name%/}
-    XZFILE="$DIR.tar.xz"
-    echo "***** Archiving $DIR in $XZFILE *********"
-    if [[ -f $XZFILE ]]; then
-      echo "!! $XZFILE exist, rm it? (^C to abort)"
-      rm -i $XZFILE
-    fi
-    tar cvf - $DIR | xz $OPTIONS - > $XZFILE
-    xz -l $XZFILE
+do_remove_dir() {
+	if [[ -n $REMOVE ]]; then
+		echo "!! Erase all dirs $@? (^C to abort)"
+		read
+		rm -rf $@
+	fi
+}
 
-    if [[ -n $REMOVE ]]; then
-      echo "!! Erase dir $DIR? (^C to abort)"
-      read a;
-      rm -rf "$DIR"
-    fi
-  done
+common_root() {
+	ruby - $@ << 'EOS'
+require 'pathname'
+require 'shellwords'
 
-else
-  if [[ -n $TEMP ]]; then
-    #extra files to /tmp
-    mkdir -p $TMPDIR
-    for i in "$@"; do
-      TARGET="${i:t:r}"
-      case "$i" in
-        *.tar* ) 
-          TARGET=${TARGET:t:r}
-          DIR=$TMPDIR/$TARGET
-          mkdir -p $DIR
-          echo "-- $DIR --"
-          tar xvf $i -C $DIR;;
-        *.xz) 
-          FILE=$TMPDIR/$TARGET
-          echo "-- $FILE --"
-          unxz --keep --stdout "$i" > $FILE ;;
-        *) echo "'$i' cannot be extracted" 1>&2; continue ;;
-      esac
-    done
+def common_root(*files)
+	roots=files.map {|f| Pathname.new(f).descend.first.basename}.uniq
+	roots.delete(Pathname.new("__MACOSX"))
+	if roots.count==1
+		roots.first
+	else
+		Pathname.new(".")
+	end
+end
 
-  else
-    setopt extended_glob noclobber
-    for i in "$@"; do
-      if [[ ! -f $i && "$i" == (#s)(https|http|ftp)://* ]] ; then
-        if check_com curl; then
-          WGET_CMD="curl -L -k -s"
-        elif check_com wget; then
-          WGET_CMD="wget -q --no-check-certificate"
-        else
-          print "ERROR: neither wget nor curl is installed" >&2
-          continue
-        fi
-        print "-- Downloading '$i' --"
-        ${=WGET_CMD} "$i"
-      fi
-      if [[ -f $i ]] ; then
-        TARGET="${i:t:r}"
-        echo "-- Extracting archive '$i' --"
-        case "$i" in
-          *.zip|*.jar) unzip "$i" -d $TARGET ;;
-          *.rar ) unrar e -ad $i ;;
-          *.tar* ) tar xvf $i ;; 
-          *.tgz ) tar xvf $i ;; 
-          *.gz) gunzip -c "$i" > $TARGET ;;
-          *.bz2) bunzip2 -c "$i" > $TARGET ;;
-          *.xz) unxz --keep "$i" ;;
-          *.lzma) unlzma --keep "$i" ;;
-          *.lzh) lha x "$i" ;;
-          *.Z) uncompress "$i" ;;
-          *deb) ar -x $i ;;
-          *.7z) 7za x "$i" ;;
-          *) echo "'$i' cannot be extracted" 1>&2; continue ;;
-        esac
-        (( $? == 0 )) && doremove $i
-      fi
-    done
-  fi
-fi
+def extract_root(ar)
+	ar=Pathname.new(ar)
+	if ar.file?
+		ext=ar.extname
+		ext='.tar' if ar.to_s.match(/\.tar\.[^\/]*/)
+		case ext
+		when '.tar'
+			# List archive: `tar tf archive`
+			# Extract to a dir: tar xvf archive -C /target/directory
+			files=`tar -tf #{ar.to_s.shellescape}`.split
+			return common_root(*files)
+		when '.zip'
+			files=`zipinfo -1 #{ar.to_s.shellescape}`.split
+			return common_root(*files)
+		end
+	end
+end
+
+puts extract_root(ARGV.first)
+EOS
+}
+
+show_archive() {
+	local archive=$1
+	case $archive in
+		*.xz ) xz -l $archive ;;
+		*.gz ) gzip -l $archive ;;
+		*.lrz ) lrzip -i $archive ;;
+		*.tar ) tar --list -f $archive ;;
+		*.zip ) zipinfo -t $archive ;; #without '-t' list all files name in $archive
+		# cf aussi 'zipinfo -1' (only list files name), and 'unzip -l'
+	esac
+}
+
+do_archive() {
+	local archive is_file
+	if [[ -n $TARGET ]]; then
+		archive=$TARGET
+	else
+		if [[ $#@ == 1 && -f $1 ]]; then #we have a file
+			archive="$1.$ext"
+			is_file=t #not used
+		else #we have a dir or multiple files/dir
+			case $ext in
+				zip) archive="${1%/}.zip" ;;
+				*) archive="${1%/}.tar.$ext" ;;
+			esac
+		fi
+	fi
+	echo "***** Archiving '$@' in '$archive' *********"
+	if [[ -f $archive ]]; then
+		echo "!! Archive '$archive' already exists, continue? (^C to abort)"
+		show_archive $archive
+		read
+	fi
+	case $archive in
+		*.zip) zip -r $archive $@ ;;
+		*.tar.xz) tar cvf - $@ | xz $OPTIONS - > $archive ;;
+		#note: switch to lrztar -z dir?
+		*.tar.lrz) tar cvf - $@ | lrzip $OPTIONS - > $archive ;;
+		*.xz) cat $@ | xz $OPTIONS - > $archive ;;
+		*.lrz) cat $@ | lrzip $OPTIONS - > $archive ;;
+	esac
+	show_archive $archive
+	(( $? == 0 )) && do_remove_dir $@
+}
+
+# extract to a target
+do_unarchive_to_target() {
+	local archive=$1 target=$2
+	setopt noclobber
+		case $archive in
+			*.tar*|*.tgz|*.zip|*.jar|*.rar|*.7z|*deb) mkdir -p $target ;;
+			*) mkdir -p ${target:h}
+		esac
+		case $archive in
+			*.tar.lrz ) lrzuntar -O $target $archive ;;
+			*.tar*|*.tgz ) tar -C $target -xvf $archive ;;
+			*.zip|*.jar) unzip $archive -d $target ;;
+
+			*.xz ) unxz --keep --stdout $archive > $target ;;
+			*.gz) gunzip -c $archive > $target ;;
+			*.bz2) bunzip2 -c $archive > $target ;;
+			*) echo "'$archive' cannot be extracted to target '$target'" 1>&2; continue ;;
+		esac
+}
+
+# simply extract
+do_unarchive_simple() {
+	local archive=$1
+	case $archive in
+		*.tar.lrz ) lrzuntar $archive ;;
+		*.tar*|*.tgz ) tar -xvf $archive ;;
+		*.zip|*.jar) unzip $archive ;;
+		*.rar ) unrar e -ad $archive ;;
+		*.7z) 7za x $archive ;;
+		*deb) ar -x $archive ;;
+
+		*.lz4) lz4 -d $archive ;;
+		*.lzo) lzop -d $archive ;;
+		*.lzh) lha x $archive ;;
+		*.Z) uncompress $archive ;;
+		*.gz) gunzip -k $archive > $output ;; #we want to keep the archive
+		*.bz2) bunzip2 -k $archive > $output ;;
+		*.zst) unzstd $archive ;;
+		*.lzma) unlzma --keep $archive ;;
+		*.xz) unxz --keep $archive ;;
+		*.lrz ) lrunzip $archive ;;
+		*) echo "'$archive' cannot be extracted" 1>&2; continue ;;
+	esac
+}
+
+do_unarchive() {
+	local archive=$1 target=$2
+	# setopt extended_glob noclobber
+	setopt noclobber
+	local root
+	if [[ -f $archive ]] ; then
+		output=${archive:t:r}
+		case $output in
+			*.tar ) output=${output:t:r} ;; #remove the 'tar' suffix
+		esac
+		if [[ -n $target ]]; then
+			echo "-- Extracting archive '$archive' in '$target' --"
+			do_unarchive_to_target $archive $target
+		else
+			echo "-- Extracting archive '$archive' --"
+			if [[ -n $SIMPLE ]]; then
+				do_unarchive_simple $archive
+			else
+				case $archive in
+					*.tar*|*.tgz|*.zip ) 
+						root=$(common_root $archive)
+						if [[ $root != "." ]]; then
+						echo "# Extracting to the archive root: $root/"
+							do_unarchive_simple $archive 
+						else
+						echo "# The archive root is '.', extracting to: $output/"
+							do_unarchive_to_target $archive $output
+						fi ;;
+					*) do_unarchive_simple $archive ;;
+				esac
+			fi
+		fi
+		(( $? == 0 )) && do_remove $archive
+	fi
+}
+
+#archiving
+case $MODE in
+	info )
+		for i in $@; do
+			echo "## Infos on archive '$i':"
+			show_archive $i
+		done ;;
+	unarchive )
+		if [[ -n $TEMP ]]; then
+			for i in $@; do
+				do_unarchive $i $TMPDIR/${i:t:r}
+			done
+		else
+			for i in $@; do
+				do_unarchive $i $TARGET
+			done
+		fi ;;
+	archive ) do_archive $@ ;;
+esac

@@ -1,0 +1,31 @@
+#compdef unison.rb
+
+local UNISONTYPES;
+UNISONTYPES=(default all init common data large perso perso2 minimal sh book booklight photoslight backup)
+
+case $service in
+	unison.rb )
+		_arguments \
+			{-b,--batch,--no-batch}"[unison batch mode]" \
+			{-g,--gui,--no-gui}"[gui]" \
+			"-c[no gui]" \
+			{-a,--auto,--no-auto}"[unison -auto option]" \
+			"--prog[path to unison]:prog" \
+			"-o[unison options]:unison option" \
+			{-t,--type}"[config types]:type:($UNISONTYPES)" \
+			"--all[use all types]" \
+			"--expand[how to expand default/all types]:computer" \
+			{--cat,--no-cat}"[cat types]" \
+			{--push,--no-push}"[Push files]" \
+			{--pull,--no-pull}"[Pull files]" \
+			{--merge,--no-merge}"[Merge files (on by default)]" \
+			{--cpush,--cpull}"[Batch text mode]" \
+			"--server[server to connect to]:server" \
+			"--mode[inbound/outbound]:mode" \
+			"--ssh_command[ssh command]:ssh" \
+			"--ssh[ssh client]:client:_hosts" \
+			"-s[sync mode]" \
+			"--sync=[sync mode]:sync:(perso perso2 photos)" \
+			'*:host:_hosts'
+		;;
+esac

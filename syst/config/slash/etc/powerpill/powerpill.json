@@ -1,0 +1,71 @@
+#GENERATE WHEN has_package?("powerpill")
+<%
+@processor.squel_exit("powerpill.json already exists") if @processor.opts[:mirror]=~/init/ and @processor.present? and (@dir[:target]+"etc/powerpill/powerpill.json").exist?
+
+rsync_servers=%W(rsync://yourlabs.org/arch/$repo/os/$arch
+  rsync://archlinux.polymorf.fr/archlinux/$repo/os/$arch
+  rsync://mirror.js-webcoding.de/pub/archlinux/$repo/os/$arch
+  rsync://mirror.one.com/archlinux/$repo/os/$arch
+  rsync://archlinux.bln-ua.net/archlinux/$repo/os/$arch)
+if @processor.local? and @processor.opts[:mirror]=~/reflector/ and SH.find_executable("reflector")
+  reflector=%x/reflector -p rsync -a 24 -f 5 --sort rate/
+  reflector_servers=[]
+  reflector.each_line do |l|
+    l.match(/Server = (.*)/) do |m|
+      reflector_servers << m[1]
+    end
+  end
+  rsync_servers=reflector_servers if reflector_servers.length > 0
+end
+def rsync_json(list)
+  list.map {|i| '"'+i+'"'}.join(",")
+end
+%>
+{
+  "aria2": {
+    "args": [
+      "--allow-overwrite=true",
+      "--always-resume=false",
+      "--auto-file-renaming=false",
+      "--check-integrity=true",
+      "--conditional-get=true",
+      "--continue=true",
+      "--file-allocation=none",
+      "--log-level=error",
+      "--max-concurrent-downloads=100",
+      "--max-connection-per-server=5",
+      "--min-split-size=5M",
+      "--remote-time=true",
+      "--show-console-readout=true"
+    ],
+    "path": "/usr/bin/aria2c"
+  },
+  "pacman": {
+    "config": "/etc/powerpill/pacman.conf",
+    "path": "/usr/bin/pacman"
+  },
+  "pacserve": {
+    "server": null
+  },
+  "powerpill": {
+    "select": true,
+    "reflect databases": false
+  },
+  "reflector": {
+    "args.unused": [
+      "--protocol",
+      "http",
+      "--latest",
+      "50"
+    ]
+  },
+  "rsync": {
+    "args": [
+      "--no-motd",
+      "--progress"
+    ],
+    "db only": true,
+    "path": "/usr/bin/rsync",
+    "servers": [<%= rsync_json(rsync_servers) =%>]
+  }
+}

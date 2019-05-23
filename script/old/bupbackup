@@ -1,0 +1,166 @@
+#!/bin/zsh
+. $HOME/.initvars
+. "$CFGFILES/hosttype.local"
+PATH=$HOME/opt/bin:$PATH #for crontab
+
+MYNAME=${MYBACKUPNAME-${MYHOSTNAME-$(hostname)}}
+PUSHSERVER=${MYBACKUPSERVER-imbunison}
+PUSHDIR=${MYBACKUPSERVERDIR-backups}
+
+COMMONFILES=(mine dist latex perso pro)
+ALLFILES=($COMMONFILES var data/Photos)
+TYPES=(common all)
+
+#find SSH_AUTH_SOCK while running in cron
+function get_env_info() {
+  vars=(SSH_AUTH_SOCK)
+    pid=$1
+    eval "unset ${vars[@]}; $(printf "export %s;" $(sed 's/\x00/\n/g' /proc/${pid//[^0-9]/}/environ | grep $(printf -- "-e ^%s= " "${vars[@]}")) )"
+}
+
+varinit() {
+      branch=${1-common}
+      export BUP_DIR="$HOME/.bup_$branch"
+      BUP_BRANCH="$MYNAME-$branch"
+      SYNCDIR=${MYBACKUPSYNC-$HOME}
+}
+
+myfind() {
+  findfile=$1;
+  shift;
+  OLDIFS=$IFS
+  IFS="
+"
+  INDEXFILES=($INDEXFILES $(find  $findfile  -regextype posix-egrep -not -regex ".*(/\.git/|/\.hg/|/\.svn/|/out/|\.tar|\.zip|\.sig|\.pdf|\.ps|\.orig).*" "$@" -not -type d))
+  IFS=$OLDIFS
+}
+
+index() {
+  cd $SYNCDIR
+  INDEXFILES=""
+  SAVEFILES=""
+  case $1 in
+    common)
+      for file in $COMMONFILES; do
+        if [ -e $file ]; then
+          ofile="$file/"
+          SAVEFILES=($SAVEFILES $ofile)
+          case $file in
+            mine)
+              myfind $ofile -not -regex ".*/(old|playlists|local|pixmaps|socket|sudoku/Doc|git/Documentation)/.*" -not -name 'random_seed'
+              ;;
+          latex)
+              myfind $ofile -regex ".*(\.tex|\.sty|\.bib)" -not -regex '.*/amssymb\.sty|.*/texmf/.*|.*/OthersExamples/.*'
+              ;;
+          dist)
+              #do nothing
+              #myfind $file/github/ #is in prog
+              ;;
+          perso)
+              myfind "$file/ViePratique" -not -regex ".*/(References|Voyages)/.*/.*" #-not -regex ".*(\.html|\.htm|\.pdf)"
+              myfind "$file/website" -not -regex ".*(\.pdf|\.png|\.jpg|\.bak|fontface.*)|.*/(old-site|essai|images|maruku)/.*"
+              myfind "$file/ChatLogs/purple"
+              ;;
+          pro )
+              myfind "$file/magma" -not -regex ".*(\.git\.bak|/CRT/CRT/).*"
+              myfind "$file/Work" -not -regex "(.*/web/.*|.*\.pdf|.*/talks/.*)"
+              myfind "$file/gforge/iii" -regex ".*(\.tex|\.sty|\.bib)"
+              myfind "$file/gforge/chic/articles" -regex ".*(\.tex|\.sty|\.bib)"
+              myfind "$file/gforge/chic2/code/weil_obstruction" -not -regex "(.*\.pdf|.*/avisogenies-experimental/.*)"
+              ;;
+          *)
+              myfind $ofile
+              ;;
+          esac
+        fi
+      done
+    ;;
+  all)
+    for dir in $ALLFILES; do
+      for file in $dir/{.*,*}(N); do
+        if [ -e $file ]; then
+          ofile="$file/"
+          INDEXFILES=($INDEXFILES $ofile)
+        fi
+      done
+    done
+    SAVEFILES=($INDEXFILES)
+    ;;
+  esac
+}
+
+bup_process() {
+  STRIP=$SYNCDIR
+  cd $SYNCDIR;
+  [ -d $BUP_DIR ] || bup init
+  [ -z "$SKIPINDEX" ] && bup index $INDEXFILES
+  bup save --strip-path=$STRIP -n $BUP_BRANCH $SAVEFILES
+  #bup fsck -g
+}
+
+SKIPINDEX=
+process() {
+  case $1 in
+    continue ) shift; SKIPINDEX="true"; process "save" "$@";;
+    save ) shift; varinit $1
+      index $branch
+      # i do not comment this so that the other modes give a noop
+      case $branch in
+        common|all ) bup_process ;;
+      esac
+    ;;
+    list ) shift; varinit $1
+      index $branch; for i in  $INDEXFILES; do echo $i; done
+    ;;
+    push ) shift; varinit $1; shift;
+      #find a ssh-agent
+      [ -e "/run/user/$UID/ssh_auth_sock" ] && SSH_AUTH_SOCK="/run/user/$UID/ssh_auth_sock"
+      [ -z "$SSH_AUTH_SOCK" ] && pid=$(pgrep -U $UID polkit-gnome)  &&  get_env_info $pid
+      [ -z "$SSH_AUTH_SOCK" ] && pid=$(pgrep -U $UID ssh-agent)  &&  get_env_info $pid
+      export SSH_AUTH_SOCK
+      BACKUPDIR="$PUSHDIR/$MYNAME/$branch"
+      ssh $PUSHSERVER "mkdir -p $BACKUPDIR"
+      rsync -vaz --delete-after "$@" $BUP_DIR "$PUSHSERVER:$BACKUPDIR"
+    ;;
+    copy ) shift; varinit $1;
+      BACKUPDIR="$2/$MYNAME/$branch"
+      shift; shift;
+      mkdir -p $BACKUPDIR
+      rsync -vazP --delete-after "$@" $BUP_DIR $BACKUPDIR
+    ;;
+    show ) shift; varinit $1;
+      if [[ -n ${(M)TYPES:#${1}} ]] ; then
+        shift
+      fi
+      for file in "$@"; do
+        bup ls "$BUP_BRANCH/$file"
+      done
+      ;;
+    refresh ) shift; varinit $1
+      #OLDIFS=$IFS
+      #IFS="
+#"
+      #MODIFIED=$(bup index -m)
+      #IFS=$OLDIFS
+      #echo $MODIFIED
+      #cd $BUP_DIR && git reset --soft $BUP_BRANCH
+      #we want a symlink, not a copy of the ref
+      cd $BUP_DIR && git symbolic-ref HEAD refs/heads/$BUP_BRANCH
+      echo "rm $BUP_DIR/bupindex (press a key to continue)"
+      read a
+      rm "$BUP_DIR/bupindex"
+      ;;
+
+    * ) echo  "Usage: bupbackup list/save/continue/push/copy/show/refresh common/all
+      - list: list files saved
+      - save: save the files
+      - continue: if the indexing was done, only call bup save
+      - copy common ploum: rsync .bup_common in ploum/$MYNAME/common
+      - push: push the saved folders at imb
+      - show: call bup ls
+      - refresh: list currently modified files, and set up the bup dir so that git work on it"
+      ;;
+  esac
+}
+
+process "$@"

@@ -1,0 +1,389 @@
+" vim: set foldmethod=marker:
+" Options {{{
+if &compatible
+  " `:set nocp` has many side effects. Therefore this should be done only when 'compatible' is set.
+  set nocompatible
+endif
+if !has("nvim") "get the same defaults as neovim
+  "set nocompatible "activate only once, see above
+  set autoindent autoread backspace=indent,eol,start complete-=i
+  set display+=lastline encoding=utf-8 history=10000
+  set hlsearch incsearch laststatus=2 mouse=a
+  set sessionoptions-=options smarttab tabpagemax=50
+  "set tags="./tags;,tags" 
+  set ttyfast viminfo+=!
+  if has("wildmenu") | set wildmenu | endif
+  if has("langnoremap") | set langnoremap | endif
+  set viminfo+=n$HOME/.local/share/viminfo "move .viminfo into $XDG_DATA_HOME like for nvim shada files
+endif
+
+if !isdirectory($HOME . "/.cache/vim") | call mkdir($HOME . "/.cache/vim", "p", 0700) | endif
+set directory=$HOME/.cache/vim,. " swap.swp
+set backup backupdir=$HOME/.cache/vim,. " backup~
+set undofile undodir=$HOME/.cache/vim,. " %undofile
+set tags="tags,.tags,./tags;,./.tags;" " foo; means search up for a file foo up
+set hlsearch incsearch ignorecase smartcase
+set expandtab smarttab
+set nojoinspaces nostartofline preserveindent copyindent
+set ruler showmatch showcmd shortmess=aIoOt
+set modeline nodigraph hidden visualbell
+set undolevels=4000 switchbuf+=useopen
+set timeout timeoutlen=1000 ttimeout ttimeoutlen=50 "ttimeout* these are the defaults in neovim, even if not listed in nvim-defaults
+set matchpairs+=<:> wildmode=list:longest,full completeopt+=longest
+set virtualedit=block mousemodel=popup_setpos
+set isprint=@,160-255
+set textwidth=75 shiftwidth=2
+set kp=viewdoc nrformats-="octal"
+set scrolloff=1 sidescrolloff=5
+set whichwrap=b,s,<,>,[,],h,l
+set wrap breakindent "linebreak
+"set clipboard+=autoselect,unnamed
+set clipboard+=unnamed
+if !has("nvim")
+  "not yet supported by neovim, cf https://github.com/neovim/neovim/issues/2325
+  set clipboard+=autoselect
+else
+  "hack meanwhile in neovim
+  vmap <LeftRelease> "*ygv
+endif
+if has("termguicolors") "recent vim and neovim
+  set termguicolors
+  if !has("nvim") "neovim autodetection is better
+    if &term =~# '^screen' || &term =~# '^tmux'
+      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    endif
+  endif
+endif
+
+set list listchars=tab:•·,trail:˙,extends:>,precedes:<,nbsp:×
+  "set listchars=eol:¶ showbreak:˻
+
+set formatoptions+=tcqjlor
+  " t, c: formater le texte et les commentaires
+  " q: autoriser gq dans les commentaires
+  " j: join works with comments delimiters
+  " l: do not break existing long lines
+  " or: dans un commentaire, un retour à la ligne continue le commentaire
+  " n: bien formater les listes
+  " 2: lors du formatage d'un paragraphe, se base sur la deuxième ligne pour connaitre l'indentation
+
+" La complétion automatique ignore les fichiers suivants. Use wildignore to ignore them completly
+set suffixes+=.aux,.dvi,.log,.toc,.tof
+set suffixes+=.o,.out,.obj,.git,.rbc,.rbo,.class,.svn,.gem
+set suffixes+=.zip,.tar.gz,.tar.bz2,.rar,.tar.xz
+
+" Indentation
+set cino+=n1s "extra indentation pour les if inlines
+set cino+=l1 "indentation des case sur le case et pas le label
+set cino+=(0u0U1W2s "alignement des parenthèses non fermées
+set cino+=j1J1 "compatibilité java
+set cino+=#1 "commentaires perl/shell
+
+" silence error when spellfiles not found
+silent set spell spelllang=fr,en
+let g:vimball_home=expand("~/.vim/vim-script/vimballs")
+"}}}
+
+" Fonctions  {{{
+
+" From defaults.vim
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+" Revert with: ":delcommand DiffOrig".
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+    \ | wincmd p | diffthis
+endif
+
+":Underline - pour underliner with -
+function! s:Underline(chars)
+  let chars = empty(a:chars) ? '-' : a:chars
+  let nr_columns = virtcol('$') - 1
+  let uline = repeat(chars, (nr_columns / len(chars)) + 1)
+  put =strpart(uline, 0, nr_columns)
+endfunction
+command! -nargs=? Underline call s:Underline(<q-args>)
+
+" }}}
+
+" Les autocommandes  {{{
+if has('autocmd')
+  filetype plugin indent on
+endif
+
+" From https://github.com/justinmk/config/blob/fcf0a54432664be79500b833c1302251e06278e1/.config/nvim/init.vim#L227-L231
+if has("nvim")
+  augroup nvimrc_aucmd
+    autocmd!
+    " https://github.com/neovim/neovim/issues/3463#issuecomment-148757691
+    autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+  augroup END
+endif
+
+augroup myfiles_settings
+autocmd!
+
+autocmd Filetype c,ruby,python,perl,sh,zsh,gitconfig setlocal ts=2 noexpandtab
+autocmd FileType mail setlocal fo-=o
+autocmd Filetype tex compiler tex "pour dire qu'un fichier tex est par defaut du latex et pas du plain tex
+
+autocmd BufNewFile,BufRead *mutt-* setlocal nobk ft=mail "Pas de backup des fichiers temporaires de mail faits par mutt dans /tmp:
+autocmd BufRead,BufNewFile .article.* setlocal ft=mail nobk "forum
+autocmd BufRead,BufNewFile *.tex.latexmain setlocal ft=vim " latexsuite
+autocmd BufRead,BufNewFile *.m setlocal ft=magma "magma
+autocmd BufRead,BufNewFile *.kramdown setlocal ft=markdown
+autocmd BufRead,BufNewFile */.zsh/completion/* setlocal ft=zsh
+autocmd BufRead,BufNewFile */.zsh/functions/* setlocal ft=zsh
+autocmd BufRead,BufNewFile */avisogenies*/*.m setlocal foldmethod=expr foldexpr=MyMagmaFoldExpr(v:lnum)
+autocmd BufRead,BufNewFile */doc/ruby/* map <leader>shl :call SyntaxRange#Include('@begin=ruby@', '@end=ruby@', 'ruby', 'NonText')<Enter> "ruby doc
+"autocmd BufRead,BufNewFile */var/dist/pari/* setlocal tags+=$HOME/var/dist/pari/src/tags
+augroup END
+
+augroup vimrc
+au!
+" Source .vimrc when I write it.  The nested keyword allows 'autocommand ColorScheme' to fire when sourcing ~/.vimrc.
+au BufWritePost .vimrc nested source $MYVIMRC
+augroup END
+
+augroup mybuffers
+au!
+" From defaults.vim
+" When editing a file, always jump to the last known cursor position. Don't
+" do it when the position is invalid or when inside an event handler
+" (happens when dropping a file on gvim) and for a commit message (it's
+" likely a different one than last time).
+" Also don't do it when the mark is in the first line, that is the default
+" position when opening a file.
+" Rem: the package lastpos does that too, it works a bit better for evim
+autocmd BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
+
+"http://dominique.pelle.free.fr/.vimrc.html
+"if version >= 700 && has('autocmd')
+"  " Undo break if I don't press a key in insert mode for a few seconds.
+"  au! CursorHoldI * call feedkeys("\<C-G>u", "nt")
+"endif
+augroup END
+
+" vim -b : edit binary using xxd-format " See :help hex-editing
+augroup Binary
+  au!
+  au BufReadPre   *.dat let &bin=1
+  au BufReadPost  *.dat if  &bin   | %!xxd
+  au BufReadPost  *.dat set ft=xxd | endif
+  au BufWritePre  *.dat if  &bin   | %!xxd -r
+  au BufWritePre  *.dat endif
+  au BufWritePost *.dat if  &bin   | %!xxd
+  au BufWritePost *.dat set nomod  | endif
+augroup END
+" }}}
+
+" Syntax highlight {{{
+" Let the autodetection work
+set background=light "broken in recent neovim versions :-(
+if has('syntax')
+  syntax sync fromstart
+  if !exists('g:syntax_on')
+    syntax enable
+  endif
+endif
+
+let g:markdown_fenced_languages=['c', 'cpp', 'html', 'python', 'bash=sh', 'ruby']
+
+if $TERM =~ '^linux'
+  " autodetection does not work for this term
+  set background=dark
+endif
+" nvim seems to always set this value to 256
+" eg in linux console, t_Co=256 in nvim but 8 in vim
+if &t_Co == 256
+  try
+   colorscheme my256
+  catch /^Vim\%((\a\+)\)\=:E185/
+    silent! colorscheme minimal
+  endtry
+
+  " Note: setting terminfo cap is a nop in neovim
+  " _CURSOR_* are exported in .zshrc
+  let &t_SI = "\033]12;".$_CURSOR_INSERT."\007"
+  let &t_EI = "\033]12;".$_CURSOR_NORMAL."\007"
+  " Terminfo for cursor reset for xterm
+  au VimLeave * :sil !echo -ne "\033]112\007"
+  " Not understood by gnome-terminal, so explicitely set it back
+  if &term =~ '^gnome' || expand("$COLORTERM") =~ '^gnome-terminal'
+    au VimLeave * :sil !echo -ne "\033]12;".$_CURSOR_NORMAL."\007"
+  endif
+else
+  silent! colorscheme minimal
+endif
+
+"from defaults.vom
+let c_comment_strings=1
+" }}}
+
+" Paste {{{
+if !has("nvim") && &term =~ "xterm"
+  " Code from: http://stackoverflow.com/questions/5585129/pasting-code-into-terminal-window-into-vim-on-mac-os-x
+  " cf doc//clipboard
+  let &t_ti = &t_ti . "\e[?2004h"
+  let &t_te = "\e[?2004l" . &t_te
+  function! XTermPasteBegin(ret)
+    set pastetoggle=<Esc>[201~
+    set paste
+    return a:ret
+  endfunction
+  map <expr> <Esc>[200~ XTermPasteBegin("i")
+  imap <expr> <Esc>[200~ XTermPasteBegin("")
+  vmap <expr> <Esc>[200~ XTermPasteBegin("c")
+  cmap <Esc>[200~ <nop>
+  cmap <Esc>[201~ <nop>
+endif
+" }}}
+
+"Mappings  {{{
+"Rappel: parcourir le tag stack, ^] et ^T, ^I et ^O pour parcourir les jumps
+let mapleader = ","
+nnoremap <leader>; ,
+
+nnoremap <leader>lr :bufdo e<Enter>
+
+" From vim-sensible: Use <C-L> to clear the highlighting of :set hlsearch.
+nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+
+" Le BackSpace fonctionne aussi en mode normal.
+map <BS> X
+map <c-h> X
+" La touche Q fonctionne comme dans vim 4
+nmap Q gqap
+vmap Q gq
+nnoremap q! Q "q! to do the original Q mapping
+" La touche Y fait quelque chose de raisonnable
+nmap Y y$
+nnoremap <leader>/ :nohlsearch<CR>
+
+"move through visual lines with down and up
+noremap <Down> gj
+noremap <Up>   gk
+"I want PageUp/Down to complete the current line, not Up/Down
+cnoremap <Up> <PageUp>
+cnoremap <Down> <PageDown>
+cnoremap <PageUp> <Up>
+cnoremap <PageDown> <Down>
+" Les Control-flèches (mapping original: page-up et page-down)
+map <S-Up> {
+map <S-Down> }
+map! <S-Up> <C-O>{
+map! <S-Down> <C-O>}
+" Make shift-insert work like in Xterm for gvim
+noremap <S-Insert> <MiddleMouse>
+noremap! <S-Insert> <MiddleMouse>
+"Ctrl-A permettait de copier ce qui avait déjà été inséré
+"Ctrl-E permettait de copier le caractère de la ligne du dessous
+" on les remplace par C-\ C-A (les C-\ C-? sont libres)
+inoremap <C-\><C-A> <C-A>
+inoremap <C-\><C-E> <C-E>
+inoremap <C-A> <Home>
+inoremap <C-E> <End>
+" ces commandes sont libres!
+inoremap <C-B> <Left>
+inoremap <C-F> <Right>
+"C-A will go at the beginning of the line, C-B will insert all completions
+cnoremap <C-A> <C-B>
+cnoremap <C-B> <C-A>
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+" pareil pour le retour à la ligne (ça me fait deux <Enter!> avec les plugins de vim :-()
+"inoremap <Enter> <C-G>u<Enter>
+
+" gz in command mode closes the current buffer
+noremap gz :Kwbd<cr>
+" g[bB] in command mode switch to the next/prev. buffer
+noremap gb :bnext<cr>
+noremap gB :bprev<cr>
+" Visually select the text that was last edited/pasted
+nnoremap gV `[v`]
+"swap char
+nnoremap <silent> gsc xph
+"swap paragraph
+nnoremap gsp {dap}p{
+"swap words:
+nnoremap <silent> gsl :<C-U>call myswap#TransposeWords('next','follow')<CR>
+nnoremap <silent> gsh :<C-U>call myswap#TransposeWords('prev','follow')<CR>
+nnoremap <silent> gsw :<C-U>call myswap#TransposeWords('next','keep')<CR>
+nnoremap <silent> gsW :<C-U>call myswap#TransposeWords('prev','keep')<CR>
+nnoremap <silent> gsp :call myswap#SwapColWithBefore()<cr>
+nnoremap <silent> gsn :call myswap#SwapColWithBehind()<cr>
+"unimpaired for lines
+nnoremap <silent> gsj ]e
+nnoremap <silent> gsk [e
+"exchange visual selection with last cut
+vmap <silent> gse :call myswap#SwapVisualWithCut()<cr>
+""" the three belows are from bundle/visswap
+"yank visual selection; and then replace
+vmap <silent> gsy <Plug>VisualPreSwap
+vmap <silent> gsr <Plug>VisualSwap
+"select a block, escape, gss => the block will be copied to the pos of the
+"cursor (warning if lines conflict it does strange things)
+nmap <silent> gss <Plug>VisualReplace
+
+" Toggle paste mode, marche pour inverser même en mode paste
+set pastetoggle=<F12>
+nnoremap <F2> :NERDTreeToggle<cr>
+nnoremap <F3> :BuffergatorToggle<cr>
+nnoremap <F4> :TagbarToggle<cr>
+nnoremap <F11> :UndotreeToggle<cr>
+
+" cd to the directory containing the file in the buffer
+nnoremap <silent> <leader>sC :lcd %:h<CR>
+" Create the directory containing the file in the buffer
+nnoremap <silent> <leader>sM :!mkdir -p %:p:h<CR>
+" script de bubu
+noremap <leader>sc  "zyl:echom system("unicodeprop.pl '".@z."'")<Enter>
+" Tip #99: display syntax group under the cursor.
+noremap  ,sk :echo "hi<"
+\ . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
+\ . ">"<CR>
+" find merge conflict markers (From https://github.com/carlhuda/janus)
+nnoremap <silent> <leader>sm <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+" Underline the current line with '='
+nnoremap <silent> <leader>su :t.\|s/./=/g\|:nohls<cr>
+
+"set text wrapping toggles
+nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+"show hidden char toggle
+function! ToggleShowbreak()
+  if empty(&showbreak)
+    set showbreak=˻
+  else
+    set showbreak=
+  endif
+endfunction
+nnoremap <silent> <leader>tl :set invlist<CR>:set list?<CR>
+nnoremap <silent> <leader>tb :call ToggleShowbreak()<CR>
+"show lines toggle
+nnoremap <silent> <leader>tn :set invnumber<CR>:set number?<CR>
+noremap <silent> <leader>ts :if exists("g:syntax_on") <Bar> syntax off <Bar> else <Bar> syntax enable <Bar> endif <CR>
+"Close the quickfix and preview window and location list
+nmap <buffer> <Leader>tq :lcl<CR>:ccl<CR>:pc<CR>
+
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+nmap <leader>ee :edit %%
+nmap <leader>es :split %%
+nmap <leader>eS :vsplit %%
+nmap <leader>et :tabedit %%
+nnoremap <leader>ev :tabedit $MYVIMRC<CR>
+nnoremap <silent> <leader>eV :source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+" http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+nnoremap <silent> <leader>l :call my#ToggleList("Location List", 'l')<CR>
+nnoremap <silent> <leader>e :call my#ToggleList("Quickfix List", 'c')<CR>
+
+command! AllMappings :call my#GetCommandOutputInTab("map | command") " autocmd
+" }}}

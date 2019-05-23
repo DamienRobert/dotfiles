@@ -1,0 +1,9 @@
+fzpdf() {
+  fd '.pdf$' | fast-p \
+  | fzf --read0 --reverse -e -d $'\t' --print0 \
+        --preview-window down:80% --preview '
+            v=$(echo {q} | tr " " "|");
+            echo -e {1}"\n"{2} | grep -E "^|$v" -i --color=always;
+        ' \
+  | cut -z -f 1 -d $'\t' | xargs -d$'\n' -r -L1 xdg-open
+}

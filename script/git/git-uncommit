@@ -1,8 +1,8 @@
 #!/bin/zsh
 #arguments: -p -> select chunks to uncommit
 #           files -> files to uncommit
-#           no argument: -> remove commit, and even let you edit the commit
-#           message of the previous commit
+#           no argument: -> remove commit, and even let you edit the commit message of the previous commit [arguably a bug, just use 'git reset HEAD^']
+# Adapted from https://github.com/ConradIrwin/git-aliae/blob/master/bin/git-uncommit
 
 opts=()
 while true;

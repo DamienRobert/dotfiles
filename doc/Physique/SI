@@ -1,0 +1,119 @@
+Base unit
+=========
+
+https://en.wikipedia.org/wiki/SI_base_unit
+length m, mass kg, time s, ampere A, kelvin K, mole mol, candela cd
+
+Second: Radiation of the caesium 133 atom
+Metre: from c
+Kilogram: prototype
+Kelvin: 1K= the fraction 1⁄273.16 of the thermodynamic temperature of the triple point of water.
+mole: nombre d'atomes dans 0.012 kilogram of carbon 12
+
+Ampere: The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 metre apart in vacuum, would produce between these conductors a force equal to 2 × 10−7 newton per metre of length.
+
+Candela: The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540×1012 hertz and that has a radiant intensity in that direction of  1⁄683 watt per steradian.
+
+Derived unit
+============
+
+https://en.wikipedia.org/wiki/SI_derived_unit
+
+Newton: 1N=1kg*1m/s²
+Watt: 1W=1J/1s=1A*1V
+Joule: 1J=1kg m²/s²= 1N*1m =1Pa.m^3 =1W.s=1 C.V
+Pascal: 1Pa=1N/1m²
+Coulomb: 1C=1A*1s=1F*1V
+Volt: 1V=1W/1A=1J/1C (potential energy/charge)=kg⋅m^2⋅s^−3⋅A^−1
+Ampere: 1A=1C/1s
+Ohm: 1\Omega=1V/1A
+Farad: 1F=1C/1V=1s/\Omega
+Henri: 1H=1V/(1A/1s)=1\Omega.s
+Weber (magnetic flux): 1Wb/m²=1T
+Tesla: 1N=1T*1m/s*1C; 1T=1kg/Cs
+Gray (dose of radiation), Sievert (equivalent dose): 1J/1kg
+Lumen: 1 lm = 1 cd ⋅ sr (steradian)
+
+Name 	Symbol 	Quantity 	Equivalents 	SI base unit Equivalents
+hertz 	Hz 	frequency 	1/s 	s−1
+radian 	rad 	angle 	m/m 	dimensionless
+steradian 	sr 	solid angle 	m2/m2 	dimensionless
+newton 	N 	force, weight 	kg⋅m/s2 	kg⋅m⋅s−2
+pascal 	Pa 	pressure, stress 	N/m2 	kg⋅m−1⋅s−2
+joule 	J 	energy, work, heat 	N⋅m C⋅V W⋅s 	kg⋅m2⋅s−2
+watt 	W 	power, radiant flux 	J/s V⋅A 	kg⋅m2⋅s−3
+coulomb 	C 	electric charge or quantity of electricity 	s⋅A F⋅V 	s⋅A
+volt 	V 	voltage, electrical potential difference, electromotive force 	W/A J/C 	kg⋅m2⋅s−3⋅A−1
+farad 	F 	electrical capacitance 	C/V s/Ω 	kg−1⋅m−2⋅s4⋅A2
+ohm 	Ω 	electrical resistance, impedance, reactance 	1/S V/A 	kg⋅m2⋅s−3⋅A−2
+siemens 	S 	electrical conductance 	1/Ω A/V 	kg−1⋅m−2⋅s3⋅A2
+weber 	Wb 	magnetic flux 	J/A T⋅m2 	kg⋅m2⋅s−2⋅A−1
+tesla 	T 	magnetic field strength, magnetic flux density 	V⋅s/m2 Wb/m2 N/(A⋅m) 	kg⋅s−2⋅A−1
+henry 	H 	electrical inductance 	V⋅s/A Ω⋅s Wb/A 	kg⋅m2⋅s−2⋅A−2
+degree Celsius 	°C 	temperature relative to 273.15 K 	K 	K
+lumen 	lm 	luminous flux 	cd⋅sr 	cd
+lux 	lx 	illuminance 	lm/m2 	m−2⋅cd
+becquerel 	Bq 	radioactivity (decays per unit time) 	1/s 	s−1
+gray 	Gy 	absorbed dose (of ionizing radiation) 	J/kg 	m2⋅s−2
+sievert 	Sv 	equivalent dose (of ionizing radiation) 	J/kg 	m2⋅s−2
+katal 	kat 	catalytic activity 	mol/s 	s−1⋅mol
+
+# Constants
+https://en.wikipedia.org/wiki/Physical_constant
+
+- G=9.80665 m/s^2 (gravitational constant)
+   F = G m_1 m_2 /r^2
+
+- Coulomb constant: k_e = 1/4πε0 = 8.9875517873681764×10^9 m/F
+  F = k_e q_1 q_2 /r^2
+
+- 1 (metric) Horse power: lift 75 kilograms by 1 meter in 1 second=75*G=735.5W
+
+- 1 cal is the approximate amount of energy needed to raise the temperature of one gram of water by one degree Celsius at a pressure of one atmosphere = 4.184J
+  1 Cal=1kcal
+
+# Quantum constants (with the future redefinition of SI units)
+
+- Plank constant: https://en.wikipedia.org/wiki/Planck_constant
+  E=hf, h=6.62606X×10−34 J.s, f fréquence 
+   =ℏω wtih ω=2πf the angular frequency and ℏ=h/2π
+- Planck length l_P = \sqrt{ℏG/c^3} =1.616 199(97) × 10−35 m
+- Planck mass m_P = \sqrt{ℏc/G} =2.176 51(13) × 10−8 kg
+- Planck time t_P=l_P/c = ℏ/m_Pc^2 =5.391 06(32) × 10−44 s
+- Planck charge q_P = \sqrt{4πε0ℏc} =1.875 545 956(41) × 10−18 C
+- Planck temperature T_P = m_Pc^2/k_B =1.416 833(85) × 10^32 K
+
+- von Klitzing constant RK = h/e^2 = 25812.807557(18) Ω (quantum hall effect)
+- Φ_0 = h/(2e) ≈ 2.067833831(13)×10−15 Wb (magnetic flux quantum); K_J:=1/Φ_0 :=the Josephson constant
+- boltzman constant k=1.38064852(79)×10−23 J⋅K−1
+  p V = N k T, p pressure, V volume, N nombre d'atomes, T température
+
+- electron mass m_e=2hR_\infty / c\alpha^2 =9.10938356×10-31 kilograms
+- electron charge e=1.60217X× 10−19 coulomb (C).
+- electron volt 1eV=1e*1v=1.6217X×10−19J
+
+ε0 μ0 c^2=1
+- µ0 =~ 4π×10−7 H.m-1 (H.m-1=N.A^-2) (magnetic constant) = 2hα/ce^2
+- ε0 = 8.854 187 817... × 10−12 F·m−1
+- Impedance of free space Z0=E/H=μ0 c=\sqrt{μ0/ε0}≈ 376.73031346177…Ω.
+- Fine structure constant α: 4πε0ħcα = e^2; α=(e/q_P)^2
+  α^−1 = 137.035999139(31).
+
+- 1 dalton (Da)= 1M (molar mass constant) =~ 1g/mol; mass of a nucleon
+
+# Redefinition of the SI units
+
+https://en.wikipedia.org/wiki/Proposed_redefinition_of_SI_base_units
+The kilogram, ampere, kelvin and mole will be redefined by choosing exact numerical values for the Planck constant, the elementary electric charge, the Boltzmann constant, and the Avogadro constant, respectively:
+- The Planck constant h is exactly 6.62606X×10−34 joule second (J·s).
+- The elementary charge e is exactly 1.60217X× 10−19 coulomb (C).
+- The Boltzmann constant k is exactly 1.38065X×10−23 joule per kelvin (J·K−1).
+- The Avogadro constant NA is exactly 6.02214X×10^23 reciprocal mole (mol−1).
+
+Constants already defined:
+- The speed of light c is exactly 299792458metres per second (m·s−1).
+- The ground state hyperfine splitting frequency of the caesium-133 atom Δν(133Cs)hfs is exactly 9192631770 hertz (Hz).
+- The luminous efficacy Kcd of monochromatic radiation of frequency 540×1012Hz is exactly 683 lumen per watt (lm·W−1).
+
+Constants that were exactly defined but will not be:
+- µ0 = 4π×10−7 N.A^-2 (from the ampere)

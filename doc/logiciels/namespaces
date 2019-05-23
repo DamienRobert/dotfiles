@@ -1,0 +1,37 @@
+- doc: man namespaces
+  /proc/[pid]/ns/
+
+         Bind  mounting  (see  mount(2))  one  of the files in this directory to
+       somewhere else in the filesystem keeps the corresponding  namespace  of
+       the  process  specified by pid alive even if all processes currently in
+       the namespace terminate.
+
+- Créer de nouveaux namespaces: unshare
+  Les namespaces peuvent être rendus persistents:
+  http://karelzak.blogspot.com/2015/04/persistent-namespaces.html
+
+  # hostname => ws
+  # touch /root/ns-uts
+  # unshare --uts=/root/ns-uts
+  # hostname FooBar
+  # exit
+
+Now there is no process in the namespace, try to enter the namespace by --uts=/root/ns-uts reference:
+
+  # nsenter --uts=/root/ns-uts
+  # hostname => FooBar 
+  # exit
+
+ The reference to the namespace is bind mount to /proc/[pid]/ns/[type], so umount(8) is enough to remove the reference:
+
+  # umount /root/ns-uts
+
+If there is no another reference or any running process within the namespace then the namesapce is destoyed. 
+
+- Entrer dans le namespace d'un autre process: nsenter
+  Eg `nsenter --target pid` --all
+
+- Namespace ip (cf doc/logiciels/network/ip):
+  sudo ip netns add ns1 #=> bind mounted from /run/netns/ns1
+  sudo ip netns exec ns1 ...
+  ip netns identify

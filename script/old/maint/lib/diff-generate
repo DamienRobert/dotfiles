@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+diff="gitdiff"
+ACTION=cp
+ACTION_OPTS=(-a)
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -s ) shift; SUDO=t;;
+    --meld ) shift; diff="meld" ;;
+    --ln ) shift; ACTION="ln"; ACTION_OPTS=() ;;
+    *) break;;
+  esac
+done
+PRE=""
+[[ -n $SUDO ]] && PRE="sudo -E "
+
+INDIR=$1
+OUTDIR=$2
+SNAPSHOT=$3
+
+TMPDIR="/var/tmp/snapshot/$SNAPSHOT"
+rm -rf "$TMPDIR"
+mkdir -p "$TMPDIR"
+
+if which rsync >/dev/null; then
+	LIST=$( cd $INDIR; find . -type f -o -type l )
+	LIST=("${(f)LIST}")
+	RSYNC_OPT=(-vaczP)
+	rsync $RSYNC_OPT -R $OUTDIR/${^LIST} $TMPDIR/
+else
+	cd $INDIR
+	for file in **/*(.ND); do
+		OUT="$TMPDIR/$file"
+		mkdir -p $(dirname $OUT)
+		${=PRE} $ACTION $ACTION_OPTS "$OUTDIR/$file" $OUT
+	done
+fi
+
+${=PRE} $diff $TMPDIR $INDIR

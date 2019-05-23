@@ -1,3 +1,0 @@
-GEM_HOME=%h/opt/pkgmgr/gems
-RUBYLIB=%h/mine/ruby/lib:
-#PATH=%h/bin:%h/mine/bin:%h/opt/bin:

@@ -1,0 +1,15 @@
+#!/usr/bin/zsh
+
+NAME=$1
+TARGET=$2
+
+[[ -z $TARGET ]] && TARGET=$HOME
+if [[ -z $NAME ]]; then
+	. $HOME/.initvars
+	NAME=$MYHOSTNAME
+fi
+
+XFCONF=xfce4/xfconf/xfce-perchannel-xml
+mkdir -p $TARGET/.config/$XFCONF/
+cp -r $NAME/xfce4/panel $TARGET/.config/xfce4/
+cp $NAME/$XFCONF/xfce4-panel.xml $TARGET/.config/$XFCONF/

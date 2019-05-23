@@ -1,0 +1,35 @@
+List of scripts:
+- http://www.fmwconcepts.com/imagemagick/index.php
+- http://im.snibgo.com
+
+Resize:
+convert -resize 160 P1040714.JPG output.jpg #-resize 20%
+
+Pdf to jpeg:
+convert -density 600 facture.pdf facture.jpeg
+
+Tile image:
+montage canard.jpg +clone +clone +clone -tile 4x -geometry +0+0 _1col.jpg
+
+Grayscale
+=========
+
+http://www.imagemagick.org/script/command-line-options.php#grayscale
+http://www.imagemagick.org/script/command-line-options.php#colorspace
+http://www.imagemagick.org/script/command-line-options.php#intensity
+
+$ convert in.png -grayscale Rec709Luminance out.png
+which is equivalent to:
+$ convert in.png -colorspace RGB -colorspace Gray out.png
+or $ convert in.png -colorspace LinearGray out.png
+
+Similarly, to convert an image to (non-linear) Rec709Luma grayscale, type:
+$ convert in.png -grayscale Rec709Luma out.png
+which is equivalent to:
+$ convert in.png -colorspace Gray out.png
+
+http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279
+- Pure black and white: convert <input> -threshold xx% <output>
+=> http://www.fmwconcepts.com/imagemagick/color2gray/index.php
+=> http://im.snibgo.com/mmono.htm
+=> convert color.png -separate -poly "0.25,1, 0.5,1, 0.25,1" grey.png

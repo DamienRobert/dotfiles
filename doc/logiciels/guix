@@ -1,0 +1,29 @@
+GNU Guix est désormais disponible sur PlaFRIM.  Guix permet d’installer
+des logiciels parmi plus de 7000 paquets sans droits d’administrateur,
+le plus souvent sans recompilation et de façon reproductible.  Exemples :
+
+  # Installer hwloc et GCC 7.
+  guix package -i hwloc gcc-toolchain
+
+  # Mettre à jour la liste des paquets (prend ~10 mn).
+  guix pull
+
+  # Mettre à jour les paquets précédemment installés.
+  guix package -u
+
+  # Chercher des solutionneurs.
+  guix package -s sparse -s solver | less
+
+Ces commandes peuvent être exécutées sur un nœud « devel » sans gêner
+les autres usagers.  Les logiciels installés apparaissent dans
+~/.guix-profile par défaut.
+
+Plus d’infos pratiques sur :
+
+  https://gnu.org/software/guix/manual/html_node/Invoking-guix-package.html
+
+Cette installation en est encore au stade expérimental et vos retours
+sont donc les bienvenus !  Cette démarche s’inscrit dans le cadre du
+projet Guix-HPC :
+
+  https://guix-hpc.bordeaux.inria.fr/

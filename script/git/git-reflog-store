@@ -39,10 +39,11 @@ store_stash () {
 	[[ -z $stash_msg ]] && stash_msg="Created via \"$prog $@\"."
 
 	# Make sure the reflog for stash is kept.
-	[[ -n $baseref ]] && mkdir -p "$GIT_DIR/logs/$baseref"
-	: >>"$GIT_DIR/logs/$branch"
+	# [[ -n $baseref ]] && mkdir -p "$GIT_DIR/logs/$baseref"
+	# : >>"$GIT_DIR/logs/$branch"
+	# git update-ref -m "$stash_msg" $branch $w_commit
 	echo "Store $w_commit in $branch"
-	git update-ref -m "$stash_msg" $branch $w_commit
+	git update-ref --create-reflog -m "$stash_msg" $branch $w_commit
 	ret=$?
 	[[ $ret != 0 ]] && die "Cannot update $branch with $w_commit"
 	return $ret
@@ -57,7 +58,8 @@ list_stash () {
 	have_stash "$@" || die "No store in $1"
 	get_branch $1
 	shift
-	git log --format="%gd: %gs" -g "$@" $branch --
+	# git log --format="%gd: %gs" -g "$@" $branch --
+	git reflog show "$@" $branch
 }
 
 show_stash () {
@@ -96,12 +98,14 @@ done
 # Main command set
 case "$1" in
 #argument: branch
-clear) shift; clear_stash "$@" ;;
+clear) shift; clear_stash "$@" ;; #clear the full branch of stash
+#argument: branch
 list) shift; list_stash "$@" ;;
 #arguments: branch, 'commit', ['stash message']
-store) shift; store_stash "$@" ;;
+create|store) shift; store_stash "$@" ;;
 #arguments: branch, 'commit'
-drop) shift; drop_stash "$@" ;;
+drop) shift; drop_stash "$@" ;; #drop the top stash
+#argument: branch
 show) shift; show_stash "$@" ;;
 *) list_stash "$@" ;;
 esac

@@ -1,0 +1,73 @@
+#!/bin/zsh
+
+# https://aur.archlinux.org/packages/ttf-google-fonts-git/ has cantarell-fonts noto-fonts noto-fonts-extra ttf-croscore ttf-fira-mono ttf-fira-sans ttf-inconsolata ttf-merriweather ttf-merriweather-sans ttf-opensans ttf-oswald ttf-quintessential ttf-roboto ttf-signika ttf-ubuntu-font-family [I include all]
+# https://aur.archlinux.org/packages/fonts-meta-extended-lt/ has cantarell-fonts fonts-meta-base gsfonts tex-gyre-fonts ttf-caladea ttf-carlito ttf-droid ttf-gelasio-ib ttf-impallari-cantora ttf-merriweather ttf-merriweather-sans ttf-opensans ttf-oswald ttf-quintessential ttf-signika ttf-ubuntu-font-family [I don't include: ttf-impallari-cantora]
+
+PKGS=(
+  adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts
+  noto-fonts noto-fonts-emoji # google's noto family #not added: noto-fonts-cjk, noto-fonts-extra
+  tex-gyre-fonts gsfonts      # gsfonts: URW fonts
+  ttf-bitstream-vera ttf-dejavu
+  ttf-droid ttf-croscore
+  ttf-freefont ttf-liberation ttf-ubuntu-font-family
+  ttf-fira-mono  ttf-fira-sans ttf-fira-code # Firefox os
+  cantarell-fonts ttf-gentium ttf-junicode ttf-linux-libertine 
+  ttf-roboto ttf-opensans #fonts from google
+  ttf-lato #nice sans font
+  ttf-anonymous-pro ttf-hack ttf-inconsolata  # monospace
+  awesome-terminal-fonts # ttf-symbola          # symbols
+  font-mathematica
+  otf-fira-mono otf-fira-sans ttf-fira-mono ttf-fira-sans #firefox os
+)
+
+AURPKGS=(
+  ttf-gelasio-ib # Georgia
+  ttf-caladea-ib # Cambria
+  ttf-carlito-ib # Calibri
+  ttf-signika    # Comic Sans MS
+  ttf-heuristica # Adobe Utopia
+  ttf-merriweather ttf-merriweather-sans # misc google fonts
+  ttf-oswald ttf-quintessential # misc fonts from google
+  ttf-paratype ttf-astra-sans #PT Sans/Mono/Serif
+  otf-libertinus # fork of linux libertine
+  ttf-nerd-fonts-symbols #nerdfonts
+  )
+
+texfonts=(tex-gyre-math lm lm-math Asana-Math mdsymbol mnsymbol stix xits)
+#texlive-core; texlive-fontsextra (in fact texlive-fontsextra has all the fonts above + some more)
+
+TARGET=~/tmp/Fonts/Free/archlinux
+FONTS=/tmp/arch_free_fonts
+mkdir -p $FONTS $TARGET
+
+sudo pacman -Sw $PKGS
+CACHE=/var/cache/pacman/pkg/
+for pkg in $PKGS; do
+  pkgs=($CACHE/$pkg*)
+  lastpkg=$pkgs[-1]
+  cp -f $lastpkg $FONTS
+done
+
+aur.rb install --local --no-install $AURPKGS
+AURCACHE=~/.cache/arch_aur
+for pkg in $AURPKGS; do
+  pkgs=($AURCACHE/$pkg/$pkg*.pkg.tar.xz)
+  lastpkg=$pkgs[-1]
+  cp -f $lastpkg $FONTS
+done
+
+cd $FONTS
+unarchive --simple *.tar.xz
+cp -rf $FONTS/usr/share/fonts/* $TARGET
+
+mkdir -p $TARGET/.fontconfig $TARGET/texmf
+cp -rf $FONTS/etc/fonts/* $TARGET/.fontconfig
+
+cp -rf /usr/share/texmf-dist/fonts/opentype/public/${^texfonts} $TARGET/texmf
+
+## Copy expert fonts:
+# cd ~/Fonts
+# rm -rf Expert
+# mkdir -p Expert
+# cp Expert-symlinks/* Expert/
+

@@ -1,0 +1,1936 @@
+<!doctype html>
+<html xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Thomas Leitner" />
+    <meta name="copyright" content="2009-2013 Thomas Leitner" />
+    <meta name="description" content="kramdown is a fast, pure-Ruby Markdown-superset converter" />
+    <meta name="keywords" content="ruby, kramdown, markdown, text markup" />
+    <link href="default.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="news.atom" type="application/atom+xml" rel="alternate" />
+    <script src="http://kramdown.rubyforge.org/MathJax/MathJax.js" type="text/javascript"></script>
+    <title>Syntax | kramdown</title>
+  </head>
+  <body>
+    <header>
+      <hgroup>
+        <h1 id="logo"><a href="index.html" title="Homepage">kramdown</a></h1>
+        <h2 id="slogan">fast, pure-Ruby Markdown-superset converter</h2>
+      </hgroup>
+
+      <nav>
+        <ul><li class="webgen-menu-level1"><a href="index.html" hreflang="en">Home</a></li><li class="webgen-menu-level1"><a href="installation.html" hreflang="en">Installation</a></li><li class="webgen-menu-level1"><a href="documentation.html" hreflang="en">Documentation</a></li><li class="webgen-menu-level1"><a href="quickref.html" hreflang="en">Quick Reference</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><a href="syntax.html" hreflang="en">Syntax</a></li></ul>
+      </nav>
+    </header>
+
+    <div id="wrapper">
+
+
+      <aside>
+        <h1>Contents</h1>
+
+<ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="#kramdown-syntax">kramdown Syntax</a><ul><li class="webgen-menu-level2 webgen-menu-submenu"><a href="#source-text-formatting">Source Text Formatting</a><ul><li class="webgen-menu-level3"><a href="#line-wrapping">Line Wrapping</a></li><li class="webgen-menu-level3"><a href="#usage-of-tabs">Usage of Tabs</a></li><li class="webgen-menu-level3"><a href="#automatic-and-manual-escaping">Automatic and Manual Escaping</a></li></ul></li><li class="webgen-menu-level2"><a href="#block-boundaries">Block Boundaries</a></li></ul></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="#structural-elements">Structural Elements</a><ul><li class="webgen-menu-level2"><a href="#blank-lines">Blank lines</a></li><li class="webgen-menu-level2"><a href="#paragraphs">Paragraphs</a></li><li class="webgen-menu-level2 webgen-menu-submenu"><a href="#headers">Headers</a><ul><li class="webgen-menu-level3"><a href="#setext-style">Setext Style</a></li><li class="webgen-menu-level3"><a href="#atx-style">atx Style</a></li><li class="webgen-menu-level3"><a href="#specifying-a-header-id">Specifying a Header ID</a></li></ul></li><li class="webgen-menu-level2"><a href="#blockquotes">Blockquotes</a></li><li class="webgen-menu-level2 webgen-menu-submenu"><a href="#code-blocks">Code Blocks</a><ul><li class="webgen-menu-level3"><a href="#standard-code-blocks">Standard Code Blocks</a></li><li class="webgen-menu-level3"><a href="#fenced-code-blocks">Fenced Code Blocks</a></li><li class="webgen-menu-level3"><a href="#language-of-code-blocks">Language of Code Blocks</a></li></ul></li><li class="webgen-menu-level2 webgen-menu-submenu"><a href="#lists">Lists</a><ul><li class="webgen-menu-level3"><a href="#ordered-and-unordered-lists">Ordered and Unordered lists</a></li><li class="webgen-menu-level3"><a href="#definition-lists">Definition Lists</a></li></ul></li><li class="webgen-menu-level2"><a href="#tables">Tables</a></li><li class="webgen-menu-level2"><a href="#horizontal-rules">Horizontal Rules</a></li><li class="webgen-menu-level2"><a href="#math-blocks">Math Blocks</a></li><li class="webgen-menu-level2"><a href="#html-blocks">HTML Blocks</a></li></ul></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="#text-markup">Text Markup</a><ul><li class="webgen-menu-level2 webgen-menu-submenu"><a href="#links-and-images">Links and Images</a><ul><li class="webgen-menu-level3"><a href="#automatic-links">Automatic Links</a></li><li class="webgen-menu-level3"><a href="#inline-links">Inline Links</a></li><li class="webgen-menu-level3"><a href="#reference-links">Reference Links</a></li><li class="webgen-menu-level3"><a href="#link-definitions">Link Definitions</a></li><li class="webgen-menu-level3"><a href="#images">Images</a></li></ul></li><li class="webgen-menu-level2"><a href="#emphasis">Emphasis</a></li><li class="webgen-menu-level2"><a href="#code-spans">Code Spans</a></li><li class="webgen-menu-level2"><a href="#html-spans">HTML Spans</a></li><li class="webgen-menu-level2"><a href="#footnotes">Footnotes</a></li><li class="webgen-menu-level2"><a href="#abbreviations">Abbreviations</a></li><li class="webgen-menu-level2"><a href="#typographic-symbols">Typographic Symbols</a></li></ul></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="#non-content-elements">Non-content elements</a><ul><li class="webgen-menu-level2"><a href="#eob-marker">End-Of-Block Marker</a></li><li class="webgen-menu-level2"><a href="#attribute-list-definitions">Attribute List Definitions</a></li><li class="webgen-menu-level2 webgen-menu-submenu"><a href="#inline-attribute-lists">Inline Attribute Lists</a><ul><li class="webgen-menu-level3"><a href="#block-ials">Block Inline Attribute Lists</a></li><li class="webgen-menu-level3"><a href="#span-ials">Span Inline Attribute Lists</a></li></ul></li><li class="webgen-menu-level2"><a href="#extensions">Extensions</a></li></ul></li></ul>
+
+
+        <h2>News</h2>
+
+<p>The latest version of kramdown is <span class="inline-important">1.2.0</span> and it was released
+on <span class="inline-important">2013-08-31</span></p>
+
+<p>More <a href="news.html">news</a>…</p>
+
+<h2>Support kramdown</h2>
+
+<p>If you like kramdown and would like to support it, you are welcome to make a small
+donation (PayPal or Pledgie) -- it will surely be appreciated! Thanks!</p>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="99HUWKWPMUHWG">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+<a href='http://www.pledgie.com/campaigns/16657'><img alt='Click here to lend your support to: kramdown and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16657.png?skin_name=chrome' border='0' /></a>
+
+<h2>Sponsors</h2>
+
+<p>GROSSWEBER provides <a href="http://grossweber.com/b/kramdown" target="_blank">software
+development consulting and training services</a>. <em>We like to work on open source. We use it heavily.
+We love kramdown!</em></p>
+
+      </aside>
+
+      <div id="content">
+
+<h1 id="kramdown-syntax">kramdown Syntax</h1>
+
+<p>This is version <strong>1.1.0</strong> of the syntax documentation.</p>
+
+<p>The kramdown syntax is based on the Markdown syntax and has been enhanced with features that are
+found in other Markdown implementations like <a href="http://maruku.rubyforge.org">Maruku</a>, <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown Extra</a> and <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a>. However,
+it strives to provide a strict syntax with definite rules and therefore isn’t completely compatible
+with Markdown. Nonetheless, most Markdown documents should work fine when parsed with kramdown. All
+places where the kramdown syntax differs from the Markdown syntax are highlighted.</p>
+
+<p>Following is the complete syntax definition for all elements kramdown supports. Together with the
+documentation on the available converters, it is clearly specified what you will get when a kramdown
+document is converted.</p>
+
+<h2 id="source-text-formatting">Source Text Formatting</h2>
+
+<p>A kramdown document may be in any encoding, for example ASCII, UTF-8 or ISO-8859-1, and the output
+will have the same encoding as the source.</p>
+
+<p>The document consists of two types of elements, block-level elements and span-level elements:</p>
+
+<ul>
+  <li>
+    <p>Block-level elements define the main structure of the content, for example, what part of the text
+should be a paragraph, a list, a blockquote and so on.</p>
+  </li>
+  <li>
+    <p>Span-level elements mark up small text parts as, for example, emphasized text or a link.</p>
+  </li>
+</ul>
+
+<p>Thus span-level elements can only occur inside block-level elements or other span-level elements.</p>
+
+<p>You will often find references to the “first column” or “first character” of a line in a block-level
+element descriptions. Such a reference is always to be taken relative to the current indentation
+level because some block-level elements open up a new indentation level (e.g. blockquotes). The
+beginning of a kramdown document opens up the default indentation level which begins at the first
+column of the text.</p>
+
+<h3 id="line-wrapping">Line Wrapping</h3>
+
+<p>Some lightweight markup syntax don’t work well in environments where lines are hard-wrapped. For
+example, this is the case with many email programs. Therefore kramdown allows content like
+paragraphs or blockquotes to be hard-wrapped, i.e. broken across lines. This is sometimes referred
+to as “lazy syntax” since the indentation or line prefix required for the first line of content is
+not required for the consecutive lines.</p>
+
+<p>Block-level elements that support line wrapping always end when one of the following conditions is
+met:</p>
+
+<ul>
+  <li>
+    <p>a <a href="#blank-lines">blank line</a>, an <a href="#eob-marker">EOB marker line</a>, a <a href="#block-ials">block IAL</a> or the
+end of the document (i.e. a <a href="#block-boundaries">block boundary</a>),</p>
+  </li>
+  <li>
+    <p>or an <a href="#html-blocks">HTML block</a>.</p>
+  </li>
+</ul>
+
+<p>Line wrapping is allowed throughout a kramdown document but there are some block-level elements that
+do <em>not</em> support being hard-wrapped:</p>
+
+<dl>
+  <dt><a href="#headers">headers</a></dt>
+  <dd>
+    <p>This is not an issue in most situations since headers normally fit on one line. If a header text
+gets too long for one line, you need to use HTML syntax instead.</p>
+  </dd>
+  <dt><a href="#fenced-code-blocks">fenced code blocks</a></dt>
+  <dd>
+    <p>The delimiting lines of a fenced code block do not support hard-wrapping. Since everything between
+the delimiting lines is taken as is, the content of a fenced code block does also not support
+hard-wrapping.</p>
+  </dd>
+  <dt><a href="#definition-lists">definition list terms</a></dt>
+  <dd>
+    <p>Each definition term has to appear on a separate line. Hard-wrapping would therefore introduce
+additional definition terms. The definitions themselves, however, do support hard-wrapping.</p>
+  </dd>
+  <dt><a href="#tables">tables</a></dt>
+  <dd>
+    <p>Since each line of a kramdown table describes one table row or a separator, it is not possible to
+hard-wrap tables.</p>
+  </dd>
+</dl>
+
+<p><strong>Note</strong> that it is <strong>NOT</strong> recommended to use lazy syntax to write a kramdown document. The
+flexibility that the kramdown syntax offers due to the issue of line wrapping hinders readability
+and should therefore not be used.</p>
+
+<h3 id="usage-of-tabs">Usage of Tabs</h3>
+
+<p>kramdown assumes that tab stops are set at multiples of four. This is especially important when
+using tabs for indentation in lists. Also, tabs may only be used at the beginning of a line when
+indenting text and must not be preceded by spaces. Otherwise the results may be unexpected.</p>
+
+<h3 id="automatic-and-manual-escaping">Automatic and Manual Escaping</h3>
+
+<p>Depending on the output format, there are often characters that need special treatment. For example,
+when converting a kramdown document to HTML one needs to take care of the characters <code>&lt;</code>, <code>&gt;</code> and
+<code>&amp;</code>. To ease working with these special characters, they are automatically and correctly escaped
+depending on the output format.</p>
+
+<p>This means, for example, that you can just use <code>&lt;</code>, <code>&gt;</code> and <code>&amp;</code> in a kramdown document and need not
+think about when to use their HTML entity counterparts. However, if you <em>do use</em> HTML entities or
+HTML tags which use one of the characters, the result will be correct nonetheless!</p>
+
+<p>Since kramdown also uses some characters to mark-up the text, there needs to be a way to escape
+these special characters so that they can have their normal meaning. This can be done by using
+backslash escapes. For example, you can use a literal back tick like this:</p>
+
+<pre><code>This \`is not a code\` span!
+</code></pre>
+
+<p>Following is a list of all the characters (character sequences) that can be escaped:</p>
+
+<pre><code>\         backslash
+.         period
+*         asterisk
+_         underscore
++         plus
+-         minus
+=         equal sign
+`         back tick
+()[]{}&lt;&gt;  left and right parens/brackets/braces/angle brackets
+#         hash
+!         bang
+&lt;&lt;        left guillemet
+&gt;&gt;        right guillemet
+:         colon
+|         pipe
+"         double quote
+'         single quote
+$         dollar sign
+</code></pre>
+
+<h2 id="block-boundaries">Block Boundaries</h2>
+
+<p>Some block-level elements have to start and/or end on so called block boundaries, as stated in their
+documentation. There are two cases where block boundaries come into play:</p>
+
+<ul>
+  <li>
+    <p>If a block-level element has to start on a block boundary, it has to be preceded by either a
+<a href="#blank-lines">blank line</a>, an <a href="#eob-marker">EOB marker</a>, a <a href="#block-ials">block IAL</a> or it has to
+be the first element.</p>
+  </li>
+  <li>
+    <p>If a block-level element has to end on a block boundary, it has to be followed by either a <a href="#blank-lines">blank
+line</a>, an <a href="#eob-marker">EOB marker</a>, a <a href="#block-ials">block IAL</a> or it has to be the
+last element.</p>
+  </li>
+</ul>
+
+<h1 id="structural-elements">Structural Elements</h1>
+
+<p>All structural elements are block-level elements and they are used to structure the content. They
+can mark up some text as, for example, a simple paragraph, a quote or as a list item.</p>
+
+<h2 id="blank-lines">Blank lines</h2>
+
+<p>Any line that just contains white space characters such as spaces and tabs is considered a blank
+line by kramdown. One or more consecutive blank lines are handled as one empty blank line. Blank
+lines are used to separate block-level elements from each other and in this case they don’t have
+semantic meaning. However, there are some cases where blank lines do have a semantic meaning:</p>
+
+<ul>
+  <li>When used in headers – see the <a href="#headers">headers section</a></li>
+  <li>When used in code blocks – see the <a href="#code-blocks">code blocks section</a></li>
+  <li>When used in lists – see the <a href="#lists">lists section</a></li>
+  <li>When used in math blocks – see the <a href="#math-blocks">math blocks section</a></li>
+  <li>When used for elements that have to start/end on <a href="#block-boundaries">block boundaries</a></li>
+</ul>
+
+<h2 id="paragraphs">Paragraphs</h2>
+
+<p>Paragraphs are the most used block-level elements. One or more consecutive lines of text are
+interpreted as one paragraph. The first line of a paragraph may be indented up to three spaces, the
+other lines can have any amount of indentation because paragraphs support <a href="#line-wrapping">line
+wrapping</a>. In addition to the rules outlined in the section about line wrapping, a
+paragraph ends when a <a href="#definition-lists">definition list line</a> is encountered.</p>
+
+<p>You can separate two consecutive paragraphs from each other by using one or more blank lines. Notice
+that a line break in the source does not mean a line break in the output (due to the <a href="#line-wrapping">lazy
+syntax</a>)!. If you want to have an explicit line break (i.e. a <code>&lt;br /&gt;</code> tag) you need
+to end a line with two or more spaces or two backslashes! Note, however, that a line break on the
+last text line of a paragraph is not possible and will be ignored. Leading and trailing spaces will
+be stripped from the paragraph text.</p>
+
+<p>The following gives you an example of how paragraphs look like:</p>
+
+<pre class="show-whitespaces ws-lr"><code>This<span class="ws-space">&#8901;</span>para<span class="ws-space">&#8901;</span>line<span class="ws-space">&#8901;</span>starts<span class="ws-space">&#8901;</span>at<span class="ws-space">&#8901;</span>the<span class="ws-space">&#8901;</span>first<span class="ws-space">&#8901;</span>column.<span class="ws-space">&#8901;</span>However,
+<span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span>the<span class="ws-space">&#8901;</span>following<span class="ws-space">&#8901;</span>lines<span class="ws-space">&#8901;</span>can<span class="ws-space">&#8901;</span>be<span class="ws-space">&#8901;</span>indented<span class="ws-space">&#8901;</span>any<span class="ws-space">&#8901;</span>number<span class="ws-space">&#8901;</span>of<span class="ws-space">&#8901;</span>spaces/tabs.
+<span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span>The<span class="ws-space">&#8901;</span>para<span class="ws-space">&#8901;</span>continues<span class="ws-space">&#8901;</span>here.
+
+<span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span>This<span class="ws-space">&#8901;</span>is<span class="ws-space">&#8901;</span>another<span class="ws-space">&#8901;</span>paragraph,<span class="ws-space">&#8901;</span>not<span class="ws-space">&#8901;</span>connected<span class="ws-space">&#8901;</span>to<span class="ws-space">&#8901;</span>the<span class="ws-space">&#8901;</span>above<span class="ws-space">&#8901;</span>one.<span class="ws-space">&#8901;</span>But<span class="ws-space-r">&#8901;</span><span class="ws-space-r">&#8901;</span>
+with<span class="ws-space">&#8901;</span>a<span class="ws-space">&#8901;</span>hard<span class="ws-space">&#8901;</span>line<span class="ws-space">&#8901;</span>break.<span class="ws-space">&#8901;</span>\\
+And<span class="ws-space">&#8901;</span>another<span class="ws-space">&#8901;</span>one.
+</code></pre>
+
+<h2 id="headers">Headers</h2>
+
+<p>kramdown supports so called Setext style and atx style headers. Both forms can be used inside a
+single document.</p>
+
+<h3 id="setext-style">Setext Style</h3>
+
+<p>Setext style headers have to start on a <a href="#block-boundaries">block boundary</a> with a line of text (the
+header text) and a line with only equal signs (for a first level header) or dashes (for a second
+level header). The header text may be indented up to three spaces but any leading or trailing spaces
+are stripped from the header text. The amount of equal signs or dashes is not significant, just one
+is enough but more may look better. The equal signs or dashes have to begin at the first column. For
+example:</p>
+
+<pre><code>First level header
+==================
+
+Second level header
+------
+
+   Other first level header
+=
+</code></pre>
+
+<p>Since Setext headers start on block boundaries, this means in most situations that they have to be
+preceded by a blank line. However, blank lines are not necessary after a Setext header:</p>
+
+<pre><code>This is a normal
+paragraph.
+
+And A Header
+------------
+And a paragraph
+
+&gt; This is a blockquote.
+
+And A Header
+------------
+</code></pre>
+
+<p>However, it is generally a good idea to also use a blank line after a Setext header because it looks
+more appropriate and eases reading of the document.</p>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax allows one to omit the blank line before a Setext header. However,
+this leads to ambiguities and makes reading the document harder than necessary. Therefore it is
+not allowed in a kramdown document.</p>
+</blockquote>
+
+<p>An edge case worth mentioning is the following:</p>
+
+<pre><code>header
+---
+para
+</code></pre>
+
+<p>One might ask if this represents two paragraphs separated by a <a href="#horizontal-rules">horizontal rule</a>
+or a second level header and a paragraph. As suggested by the wording in the example, the latter is
+the case. The general rule is that Setext headers are processed before horizontal rules.</p>
+
+<h3 id="atx-style">atx Style</h3>
+
+<p>atx style headers have to start on a <a href="#block-boundaries">block boundary</a> with a line that contains
+one or more hash characters and then the header text. No spaces are allowed before the hash
+characters. The number of hash characters specifies the heading level: one hash character gives you
+a first level heading, two a second level heading and so on until the maximum of six hash characters
+for a sixth level heading. You may optionally use any number of hashes at the end of the line to
+close the header. Any leading or trailing spaces are stripped from the header text. For example:</p>
+
+<pre><code># First level header
+
+### Third level header    ###
+
+## Second level header ######
+</code></pre>
+
+<blockquote class="markdown-difference">
+  <p>Again, the original Markdown syntax allows one to omit the blank line before an atx style header.</p>
+</blockquote>
+
+<h3 id="specifying-a-header-id">Specifying a Header ID</h3>
+
+<p>kramdown supports a nice way for explicitly setting the header ID which is taken from <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown
+Extra</a> and <a href="http://maruku.rubyforge.org">Maruku</a>: If you follow the header text with an opening curly bracket (separated from the
+text with a least one space), a hash, the ID and a closing curly bracket, the ID is set on the
+header. If you use the trailing hash feature of atx style headers, the header ID has to go after the
+trailing hashes. For example:</p>
+
+<pre><code>Hello        {#id}
+-----
+
+# Hello      {#id}
+
+# Hello #    {#id}
+</code></pre>
+
+<blockquote class="markdown-difference">
+  <p>This additional syntax is not part of standard Markdown.</p>
+</blockquote>
+
+<h2 id="blockquotes">Blockquotes</h2>
+
+<p>A blockquote is started using the <code>&gt;</code> marker followed by an optional space and the content of the
+blockquote. The marker itself may be indented up to three spaces. All following lines, whether they
+are started with the blockquote marker or just contain text, belong to the blockquote because
+blockquotes support <a href="#line-wrapping">line wrapping</a>.</p>
+
+<p>The contents of a blockquote are block-level elements. This means that if you are just using text as
+content that it will be wrapped in a paragraph. For example, the following gives you one blockquote
+with two paragraphs in it:</p>
+
+<pre><code>&gt; This is a blockquote.
+&gt;     on multiple lines
+that may be lazy.
+&gt;
+&gt; This is the second paragraph.
+</code></pre>
+
+<p>Since the contents of a blockquote are block-level elements, you can nest blockquotes and use other
+block-level elements (this is also the reason why blockquotes need to support line wrapping):</p>
+
+<pre><code>&gt; This is a paragraph.
+&gt;
+&gt; &gt; A nested blockquote.
+&gt;
+&gt; ## Headers work
+&gt;
+&gt; * lists too
+&gt;
+&gt; and all other block-level elements
+</code></pre>
+
+<p>Note that the first space character after the <code>&gt;</code> marker does <em>not</em> count when counting spaces for
+the indentation of the block-level elements inside the blockquote! So <a href="#code-blocks">code blocks</a>
+will have to be indented with five spaces or one space and one tab, like this:</p>
+
+<pre><code>&gt; A code block:
+&gt;
+&gt;     ruby -e 'puts :works'
+</code></pre>
+
+<p><a href="#line-wrapping">Line wrapping</a> allows one to be lazy but hinders readability and should therefore
+be avoided, especially with blockquotes. Here is an example of using blockquotes with line wrapping:</p>
+
+<pre><code>&gt; This is a paragraph inside
+a blockquote.
+&gt;
+&gt; &gt; This is a nested paragraph
+that continues here
+&gt; and here
+&gt; &gt; and here
+</code></pre>
+
+<h2 id="code-blocks">Code Blocks</h2>
+
+<p>Code blocks can be used to represent verbatim text like markup, HTML or a program fragment because
+no syntax is parsed within a code block.</p>
+
+<h3 id="standard-code-blocks">Standard Code Blocks</h3>
+
+<p>A code block can be started by using four spaces or one tab and then the text of the code block. All
+following lines containing text, whether they adhere to this syntax or not, belong to the code block
+because code blocks support <a href="#line-wrapping">line wrapping</a>). A wrapped code line is automatically
+appended to the preceding code line by substituting the line break with a space character. The
+indentation (four spaces or one tab) is stripped from each line of the code block.</p>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax does not allow line wrapping in code blocks.</p>
+</blockquote>
+
+<p>Note that consecutive code blocks that are only separate by <a href="#blank-lines">blank lines</a> are merged
+together into one code block:</p>
+
+<pre><code>    Here comes some code
+
+    This text belongs to the same code block.
+</code></pre>
+
+<p>If you want to have one code block directly after another one, you need to use an <a href="#eob-marker">EOB
+marker</a> to separate the two:</p>
+
+<pre><code>    Here comes some code
+^
+    This one is separate.
+</code></pre>
+
+<h3 id="fenced-code-blocks">Fenced Code Blocks</h3>
+
+<blockquote class="markdown-difference">
+  <p>This alternative syntax is not part of the original Markdown syntax. The idea and syntax comes
+from the <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown Extra</a> package.</p>
+</blockquote>
+
+<p>kramdown also supports an alternative syntax for code blocks which does not use indented blocks but
+delimiting lines. The starting line needs to begin with three or more tilde characters (<code>~</code>) and the
+closing line needs to have at least the number of tildes the starting line has. Everything between
+is taken literally as with the other syntax but there is no need for indenting the text. For
+example:</p>
+
+<pre><code>~~~~~~~~
+Here comes some code.
+~~~~~~~~
+</code></pre>
+
+<p>If you need lines of tildes in such a code block, just start the code block with more tildes. For
+example:</p>
+
+<pre><code>~~~~~~~~~~~~
+~~~~~~~
+code with tildes
+~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+</code></pre>
+
+<p>This type of code block is especially useful for copy-pasted code since you don’t need to indent the
+code.</p>
+
+<h3 id="language-of-code-blocks">Language of Code Blocks</h3>
+
+<p>You can tell kramdown the language of a code block by using an <a href="#inline-attribute-lists">IAL</a>:</p>
+
+<pre><code>~~~
+def what?
+  42
+end
+~~~
+{: .language-ruby}
+</code></pre>
+
+<p>The specially named class <code>language-ruby</code> tells kramdown that this code block is written in the Ruby
+language. Such information can be used, for example, by converters to do syntax highlighting on the
+code block.</p>
+
+<p>Fenced code blocks provide an easier way to specify the language, namely by appending the language
+of the code block to the end of the starting line:</p>
+
+<pre><code>~~~ ruby
+def what?
+  42
+end
+~~~
+</code></pre>
+
+<h2 id="lists">Lists</h2>
+
+<p>kramdown provides syntax elements for creating ordered and unordered lists as well as definition
+lists.</p>
+
+<h3 id="ordered-and-unordered-lists">Ordered and Unordered lists</h3>
+
+<p>Both ordered and unordered lists follow the same rules.</p>
+
+<p>A list is started with a list marker (in case of unordered lists one of <code>+</code>, <code>-</code> or <code>*</code> – you can
+mix them – and in case of ordered lists a number followed by a period) followed by one tab or at
+least one space, optionally followed by an <a href="#inline-attribute-lists">IAL</a> that should be applied to
+the list item and then the first part of the content of the list item. The leading tabs or spaces
+are stripped away from this first line of content to allow for a nice alignment with the following
+content of a list item (see below). All following list items with the same marker type (unordered or
+ordered) are put into the same list. The numbers used for ordered lists are irrelevant, an ordered
+list always starts at 1.</p>
+
+<p>The following gives you an unordered list and an ordered list:</p>
+
+<pre><code>* kram
++ down
+- now
+
+1. kram
+2. down
+3. now
+</code></pre>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax allows the markers of ordered and unordered lists to be mixed, the
+first marker specifying the list type (ordered or unordered). This is not allowed in kramdown. As
+stated, the above example will give you two lists (an unordered and an ordered) in kramdown and
+only one unordered list in Markdown.</p>
+</blockquote>
+
+<p>The first list marker in a list may be indented up to three spaces. The column number of the first
+non-space character which appears after the list item marker on the same line specifies the
+indentation that has to be used for the following lines of content of the list item. If there is no
+such character, the indentation that needs to be used is four spaces or one tab. Indented lines may
+be followed by lines containing text with any amount of indentation due to <a href="#line-wrapping">line
+wrapping</a>. Note, however, that in addition to the rules outlined in the section
+about line wrapping, a list item also ends when a line with another list item marker is encountered
+– see the next paragraph.</p>
+
+<p>The indentation is stripped from the content and the content (note that the content naturally also
+contains the content of the line with the item marker) is processed as text containing block-level
+elements. All other list markers in the list may be indented up to three spaces or the number of
+spaces used for the indentation of the last list item minus one, whichever number is smaller. For
+example:</p>
+
+<pre><code>* This is the first line. Since the first non-space characters appears in
+  column 3, all other indented lines have to be indented 2 spaces.
+However, one could be lazy and not indent a line but this is not
+recommended.
+*       This is the another item of the list. It uses a different number
+   of spaces for indentation which is okay but should generally be avoided.
+   * The list item marker is indented 3 spaces which is allowed but should
+     also be avoided and starts the third list item. Note that the lazy
+     line in the second list item may make you believe that this is a
+     sub-list which it isn't! So avoid being lazy!
+</code></pre>
+
+<p>So, while the above is possible and creates one list with three items, it is not advised to use
+different (marker and list content) indents for same level list items as well as lazy indentation!
+It is much better to write such a list in the following way:</p>
+
+<pre><code>* This is the first list item bla blabla blabla blabla blabla blabla
+  blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla
+  blabla blabla blabla bla
+* This is the another item of the list. bla blabla blabla blabla blabla
+  blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla
+</code></pre>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax also allows you to indent the marker, however, the behaviour of what
+happens with the list items is not clearly specified and may surprise you.</p>
+
+  <p>Also, Markdown uses a fixed number of spaces/tabs to indent the lines that belong to a list item!</p>
+</blockquote>
+
+<p>When using tabs for indenting the content of a list item, remember that tab stops occur at multiples
+of four for kramdown. Tabs are correctly converted to spaces for calculating the indentation. For
+example:</p>
+
+<pre><code>*   Using a tab to indent this line, the tab only counts as three spaces
+    and therefore the overall indentation is four spaces.
+
+   1.   The tab after the marker counts here as three spaces. Since the
+        indentation of the marker is three spaces and the marker itself
+        takes two characters, the overall indentation needed for the
+        following lines is eight spaces or two tabs.
+</code></pre>
+
+<p>It is clear that you might get unexpected results if you mix tabs and spaces or if you don’t have
+the tab stops set to multiples of four in your editor! Therefore this should be avoided!</p>
+
+<p>The content of a list item is made up of either text or block-level elements. Simple list items only
+contain text like in the above examples. They are not even wrapped in a paragraph tag. If the first
+list text is followed by one or more blank lines, it will be wrapped in a paragraph tag:</p>
+
+<pre><code>* kram
+
+* down
+* now
+</code></pre>
+
+<p>In the above example, the first list item text will be wrapped in a paragraph tag since it is
+followed by a blank line whereas the second list item contains just text. There is obviously a
+problem for doing this with the last list item when it contains only text. You can circumvent this
+by leaving a blank line after the last list item and using an EOB marker:</p>
+
+<pre><code>* Not wrapped in a paragraph
+* Wrapped in a paragraph due to the following blank line.
+
+* Also wrapped in a paragraph due to the
+  following blank line and the EOB marker.
+
+^
+</code></pre>
+
+<p>The text of the last list item is also wrapped in a paragraph tag if <em>all</em> other list items contain
+a proper paragraph as first element. This makes the following use case work like expected, i.e.
+<em>all</em> the list items are wrapped in paragraphs:</p>
+
+<pre><code>* First list item
+
+* Second list item
+
+* Last list item
+</code></pre>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax page specifies that list items which are separated by one or more
+blank lines are wrapped in paragraph tags. This means that the first text will also be wrapped in
+a paragraph if you have block-level elements in a list which are separated by blank lines. The
+above rule is easy to remember and lets you exactly specify when the first list text should be
+wrapped in a paragraph. The idea for the above rule comes from the <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a> package.</p>
+</blockquote>
+
+<p>As seen in the examples above, blank lines between list items are allowed.</p>
+
+<p>Since the content of a list item can contain block-level elements, you can do the following:</p>
+
+<pre><code>*   First item
+
+    A second paragraph
+
+    * nested list
+
+    &gt; blockquote
+
+*   Second item
+</code></pre>
+
+<p>However, there is a problem when you want to have a code block immediately after a list item. You
+can use an EOB marker to circumvent this problem:</p>
+
+<pre><code>*   This is a list item.
+
+    The second para of the list item.
+^
+    A code block following the list item.
+</code></pre>
+
+<p>You can have any block-level element as first element in a list item. However, as described above,
+the leading tabs or spaces of the line with the list item marker are stripped away. This leads to a
+problem when you want to have a code block as first element. The solution to this problem is the
+following construct:</p>
+
+<pre class="show-whitespaces ws-lr"><code>*<span class="ws-space-r">&#8901;</span>
+<span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span>This<span class="ws-space">&#8901;</span>is<span class="ws-space">&#8901;</span>a<span class="ws-space">&#8901;</span>code<span class="ws-space">&#8901;</span>block<span class="ws-space">&#8901;</span>(indentation<span class="ws-space">&#8901;</span>needs<span class="ws-space">&#8901;</span>to<span class="ws-space">&#8901;</span>be<span class="ws-space">&#8901;</span>4(1)+4(1)
+<span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span><span class="ws-space-l">&#8901;</span>spaces<span class="ws-space">&#8901;</span>(tabs)).
+</code></pre>
+
+<p>Note that the list marker needs to be followed with at least one space or tab! Otherwise the line is
+not recognized as the start of a list item but interpreted as a paragraph containing the list
+marker.</p>
+
+<p>If you want to have one list directly after another one (both with the same list type, i.e. ordered
+or unordered), you need to use an EOB marker to separate the two:</p>
+
+<pre><code>* List one
+^
+* List two
+</code></pre>
+
+<p>Since paragraphs support <a href="#line-wrapping">line wrapping</a>, it would usually not be possible to create
+compact nested list, i.e. a list where the text is not wrapped in paragraphs because there is no
+blank line but a sub list after it:</p>
+
+<pre><code>*   This is just text.
+    * this is a sub list item
+      * this is a sub sub list item
+* This is just text,
+    spanning two lines
+  * this is a nested list item.
+</code></pre>
+
+<p>However, this is an often used syntax and is therefore support by kramdown.</p>
+
+<p>If you want to start a paragraph with something that looks like a list item marker, you need to
+escape it. This is done by escaping the period in an ordered list or the list item marker in an
+unordered list:</p>
+
+<pre><code>1984\. It was great
+\- others say that, too!
+</code></pre>
+
+<p>As mentioned at the beginning, an optional IAL for applying attributes to a list item can be used
+after the list item marker:</p>
+
+<pre><code>* {:.cls} This item has the class "cls".
+  Here continues the above paragraph.
+
+* This is a normal list item.
+</code></pre>
+
+<h3 id="definition-lists">Definition Lists</h3>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The idea and syntax comes from
+the <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown Extra</a> package.</p>
+</blockquote>
+
+<p>Definition lists allow you to assign one or more definitions to one or more terms.</p>
+
+<p>A definition list is started when a normal paragraph is followed by a line with a definition marker
+(a colon which may be optionally indented up to three spaces), then at least one tab or one space,
+optionally followed by an <a href="#inline-attribute-lists">IAL</a> that should be applied to the list item and
+then the first part of the definition. The line with the definition marker may optionally be
+separated from the preceding paragraph by a blank line. The leading tabs or spaces are stripped away
+from this first line of the definition to allow for a nice alignment with the following definition
+content. Each line of the preceding paragraph is taken to be a term and the lines separately parsed
+as span-level elements.</p>
+
+<p>The following is a simple definition list:</p>
+
+<pre><code>kramdown
+: A Markdown-superset converter
+
+Maruku
+:     Another Markdown-superset converter
+</code></pre>
+
+<p>The column number of the first non-space character which appears after a definition marker on the
+same line specifies the indentation that has to be used for the following lines of the definition.
+If there is no such character, the indentation that needs to be used is four spaces or one tab.
+Indented lines may be followed by lines containing text with any amount of indentation due to <a href="#line-wrapping">line
+wrapping</a>. Note, however, that in addition to the rules outlined in the section
+about line wrapping, a list item also ends when a line with another definition marker is encountered.</p>
+
+<p>The indentation is stripped from the definition and it (note that the definition naturally also
+contains the content of the line with the definition marker) is processed as text containing block
+level elements. If there is more than one definition, all other definition markers for the term may
+be indented up to three spaces or the number of spaces used for the indentation of the last
+definition minus one, whichever number is smaller. For example:</p>
+
+<pre><code>definition term 1
+definition term 2
+: This is the first line. Since the first non-space characters appears in
+column 3, all other lines have to be indented 2 spaces (or lazy syntax may
+  be used after an indented line). This tells kramdown that the lines
+  belong to the definition.
+:       This is the another definition for the same term. It uses a
+        different number of spaces for indentation which is okay but
+        should generally be avoided.
+   : The definition marker is indented 3 spaces which is allowed but
+     should also be avoided.
+</code></pre>
+
+<p>So, while the above is possible and creates a definition list with two terms and three definitions
+for them, it is not advised to use different (definition marker and definition) indents in the same
+definition list as well as lazy indentation!</p>
+
+<p>The definition for a term is made up of text and/or block-level elements. If a definition is <em>not</em>
+preceded by a blank line, the first part of the definition will just be text if it would be a
+paragraph otherwise:</p>
+
+<pre><code>definition term
+: This definition will just be text because it would normally be a
+  paragraph and the there is no preceding blank line.
+
+  &gt; although the definition contains other block-level elements
+
+: This definition *will* be a paragraph since it is preceded by a
+  blank line.
+</code></pre>
+
+<p>The rules about having any block-level element as first element in a list item also apply to a
+definition.</p>
+
+<h2 id="tables">Tables</h2>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The syntax is based on the one
+from the <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown Extra</a> package.</p>
+</blockquote>
+
+<p>Sometimes one wants to include simple tabular data in a kramdown document for which using a
+full-blown HTML table is just too much. kramdown supports this with a simple syntax for ASCII
+tables.</p>
+
+<p>Tables can be created with or without a leading pipe character: If the first line of a table
+contains a pipe character at the start of the line (optionally indented up to three spaces), then
+all leading pipe characters (i.e. pipe characters that are only preceded by whitespace) are ignored
+on all table lines. Otherwise they are not ignored and count when dividing a table line into table
+cells.</p>
+
+<p>There are four different line types that can be used in a table:</p>
+
+<ul>
+  <li>
+    <p><em>Table rows</em> define the content of a table.</p>
+
+    <p>A table row is any line that contains at least one pipe character and is not identified as any
+other type of table line! The table row is divided into individual table cells by pipe characters.
+An optional trailing pipe character is ignored. Note that literal pipe characters need to be
+escaped <em>except</em> if they occur in code spans or HTML <code>&lt;code&gt;</code> elements!</p>
+
+    <p>Header rows, footer rows and normal rows are all done using these table rows. Table cells can only
+contain a single line of text, no multi-line text is supported. The text of a table cell is parsed
+as span-level elements.</p>
+
+    <p>Here are some example table rows:</p>
+
+    <pre><code>| First cell|Second cell|Third cell
+| First | Second | Third |
+
+First | Second | | Fourth |
+</code></pre>
+  </li>
+  <li>
+    <p><em>Separator lines</em> are used to split the table body into multiple body parts.</p>
+
+    <p>A separator line is any line that contains only pipes, dashes, pluses, colons and spaces and which
+contains at least one dash and one pipe character. The pipe and plus characters can be used to
+visually separate columns although this is not needed. Multiple separator lines after another are
+treated as one separator line.</p>
+
+    <p>Here are some example separator lines:</p>
+
+    <pre><code>|----+----|
++----|----+
+|---------|
+|-
+| :-----: |
+-|-
+</code></pre>
+  </li>
+  <li>
+    <p>The first separator line after at least one table row is treated specially, namely as <em>header
+separator line</em>. It is used to demarcate header rows from normal table rows and/or to set column
+alignments. All table rows above the header separator line are considered to be header rows.</p>
+
+    <p>The header separator line can be specially formatted to contain column alignment definitions: An
+alignment definition consists of an optional space followed by an optional colon, one or more
+dashes, an optional colon and another optional space. The colons of an alignment definition are
+used to set the alignment of a column: if there are no colons, the column uses the default
+alignment, if there is a colon only before the dashes, the column is left aligned, if there are
+colons before and after the dashes, the column is center aligned and if there is only a colon
+after the dashes, the column is right aligned. Each alignment definition sets the alignment for
+one column, the first alignment definition for the first column, the second alignment definition
+for the second column and so on.</p>
+
+    <p>Here are some example header separator lines with alignment definitions:</p>
+
+    <pre><code>|---+---+---|
++ :-: |:------| ---:|
+| :-: :- -: -
+:-: | :-
+</code></pre>
+  </li>
+  <li>
+    <p>A <em>footer separator line</em> is used to demarcate footer rows from normal table rows. All table rows
+below the footer separator line are considered to be footer rows.</p>
+
+    <p>A footer separator line is like a normal separator line except that dashes are replaced by equal
+signs. A footer separator line may only appear once in a table. If multiple footer separator lines
+are used in one table, only the last is treated as footer separator line, all others are treated
+as normal separator lines. Normal separator lines that are used after the footer separator line
+are ignored.</p>
+
+    <p>Here are some example footer separator lines:</p>
+
+    <pre><code>|====+====|
++====|====+
+|=========|
+|=
+</code></pre>
+  </li>
+</ul>
+
+<p>Trailing spaces or tabs are ignored in all cases. To simplify table creation and maintenance,
+header, footer and normal separator lines need not specify the same number of columns as table rows;
+even <code>|-</code> and <code>|=</code> are a valid separators.</p>
+
+<p>Given the above components, a table is specified by</p>
+
+<ul>
+  <li>an optional separator line,</li>
+  <li>optionally followed by zero, one or more table rows followed by a header separator line,</li>
+  <li>one or more table rows, optionally interspersed with separator lines,</li>
+  <li>optionally followed by a footer separator line and zero, one or more table rows and</li>
+  <li>an optional trailing separator line.</li>
+</ul>
+
+<p>Also note</p>
+
+<ul>
+  <li>that the first line of a table must not have more than three spaces of indentation before the
+first non-space character,</li>
+  <li>that each line of a table needs to have at least one not escaped pipe character so that kramdown
+recognizes it as a line belonging to the table and</li>
+  <li>that tables have to start and end on <a href="#block-boundaries">block boundaries</a>!</li>
+</ul>
+
+<blockquote class="markdown-difference">
+  <p>The table syntax differs from the one used in <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown Extra</a> as follows:</p>
+
+  <ul>
+    <li>kramdown tables do not need to have a table header.</li>
+    <li>kramdown tables can be structured using separator lines.</li>
+    <li>kramdown tables can contain a table footer.</li>
+    <li>kramdown tables need to be separated from other block-level elements.</li>
+  </ul>
+</blockquote>
+
+<p>Here is an example for a kramdown table with a table header row, two table bodies and a table footer
+row:</p>
+
+<pre><code>|-----------------+------------+-----------------+----------------|
+| Default aligned |Left aligned| Center aligned  | Right aligned  |
+|-----------------|:-----------|:---------------:|---------------:|
+| First body part |Second cell | Third cell      | fourth cell    |
+| Second line     |foo         | **strong**      | baz            |
+| Third line      |quux        | baz             | bar            |
+|-----------------+------------+-----------------+----------------|
+| Second body     |            |                 |                |
+| 2 line          |            |                 |                |
+|=================+============+=================+================|
+| Footer row      |            |                 |                |
+|-----------------+------------+-----------------+----------------|
+</code></pre>
+
+<p>The above example table is rather time-consuming to create without the help of an ASCII table
+editor. However, the table syntax is flexible and the above table could also be written like this:</p>
+
+<pre><code>|---
+| Default aligned | Left aligned | Center aligned | Right aligned
+|-|:-|:-:|-:
+| First body part | Second cell | Third cell | fourth cell
+| Second line |foo | **strong** | baz
+| Third line |quux | baz | bar
+|---
+| Second body
+| 2 line
+|===
+| Footer row
+</code></pre>
+
+<h2 id="horizontal-rules">Horizontal Rules</h2>
+
+<p>A horizontal rule for visually separating content is created by using three or more asterisks,
+dashes or underscores (these may not be mixed on a line), optionally separated by spaces or tabs, on
+an otherwise blank line. The first asterisk, dash or underscore may optionally be indented up to
+three spaces. The following examples show different possibilities to create a horizontal rule:</p>
+
+<pre><code>* * *
+
+---
+
+  _  _  _  _
+
+---------------
+</code></pre>
+
+<h2 id="math-blocks">Math Blocks</h2>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The idea comes from the <a href="http://maruku.rubyforge.org">Maruku</a>
+and <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a> packages.</p>
+</blockquote>
+
+<p>kramdown has built-in support for block and span-level mathematics written in LaTeX.</p>
+
+<p>A math block needs to start and end on <a href="#block-boundaries">block boundaries</a>. It is started using
+two dollar signs, optionally indented up to three spaces. The math block continues until the next
+two dollar signs (which may be on the same line or on one of the next lines) that appear at the end
+of a line, i.e. they may only be followed by whitespace characters. The content of a math block has
+to be valid LaTeX math. It is always wrapped inside a <code>\begin{displaymath}...\end{displaymath}</code>
+enviroment except if it begins with a <code>\begin</code> statement.</p>
+
+<p>The following kramdown fragment</p>
+
+<pre><code>$$
+\begin{align*}
+  &amp; \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  &amp; (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) &amp; \cdots &amp; \phi(e_1, e_n) \\
+      \vdots &amp; \ddots &amp; \vdots \\
+      \phi(e_n, e_1) &amp; \cdots &amp; \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+$$
+</code></pre>
+
+<p>renders as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+\begin{align*}
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+ %]]></script>
+
+<p>Using inline math is also easy: just surround your math content with two dollar signs, like with a
+math block. If you don’t want to start an inline math statement, just escape the dollar signs and
+they will be treated as simple dollar signs.</p>
+
+<p>If you have a paragraph that looks like a math block but should actually be a paragraph with just an
+inline math statement, you need to escape the first dollar sign:</p>
+
+<pre><code>The following is a math block:
+
+$$ 5 + 5 $$
+
+But next comes a paragraph with an inline math statement:
+
+\$$ 5 + 5 $$
+</code></pre>
+
+<p>If you don’t even won’t the inline math statement, escape the first two dollar signs:</p>
+
+<pre><code>\$\$ 5 + 5 $$
+</code></pre>
+
+<h2 id="html-blocks">HTML Blocks</h2>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax specifies that an HTML block must start at the left margin, i.e. no
+indentation is allowed. Also, the HTML block has to be surrounded by blank lines. Both
+restrictions are lifted for kramdown documents. Additionally, the original syntax does not allow
+you to use Markdown syntax in HTML blocks which is allowed with kramdown.</p>
+</blockquote>
+
+<p>An HTML block is potentially started if a line is encountered that begins with a non-span-level HTML
+tag or a general XML tag (opening or closing) which may be indented up to three spaces.</p>
+
+<p>The following HTML tags count as span-level HTML tags and <em>won’t</em> start an HTML block if found at
+the beginning of an HTML block line:</p>
+
+<pre><code>a abbr acronym b big bdo br button cite code del dfn em i img input
+ins kbd label option q rb rbc rp rt rtc ruby samp select small span
+strong sub sup textarea tt var
+</code></pre>
+
+<p>Further parsing of a found start tag depends on the tag and in which of three possible ways its
+content is parsed:</p>
+
+<ul>
+  <li>
+    <p>Parse as raw HTML block: If the HTML/XML tag content should be handled as raw HTML, then only
+HTML/XML tags are parsed from this point onwards and text is handled as raw, unparsed text until
+the matching end tag is found or until the end of the document. Each found tag will be parsed as
+raw HTML again. However, if a tag has a <code>markdown</code> attribute, this attribute controls parsing of
+this one tag (see below).</p>
+
+    <p>Note that the parser basically supports only correct XHTML! However, there are some exceptions.
+For example, attributes without values (i.e. boolean attributes) are also supported and elements
+without content like <code>&lt;hr /&gt;</code> can be written as <code>&lt;hr&gt;</code>. If an invalid closing tag is found, it is
+ignored.</p>
+  </li>
+  <li>
+    <p>Parse as block-level elements: If the HTML/XML tag content should be parsed as text containing
+block-level elements, the remaining text on the line will be parsed by the block-level parser as
+if it appears on a separate line (<strong>Caution</strong>: This also means that if the line consists of the
+start tag, text and the end tag, the end tag will not be found!). All following lines are parsed
+as block-level elements until an HTML block line with the matching end tag is found or until the
+end of the document.</p>
+  </li>
+  <li>
+    <p>Parse as span-level elements: If the HTML/XML tag content should be parsed as text containing span
+level elements, then all text until the <em>next</em> matching end tag or until the end of the document
+will be the content of the tag and will later be parsed by the span-level parser. This also means
+that if the matching end tag is inside what appears to be a code span, it is still used!</p>
+  </li>
+</ul>
+
+<p>If there is text after an end tag, it will be parsed as if it appears on a separate line except when
+inside a raw HTML block.</p>
+
+<p>Also, if an invalid closing tag is found, it is ignored.</p>
+
+<p>Note that all HTML tag and attribute names are converted to lowercase!</p>
+
+<p>By default, kramdown parses all block HTML tags and all XML tags as raw HTML blocks. However, this
+can be configured with the <code>parse_block_html</code>. If this is set to <code>true</code>, then syntax parsing in HTML
+blocks is globally enabled. It is also possible to enable/disable syntax parsing on a tag per tag
+basis using the <code>markdown</code> attribute:</p>
+
+<ul>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="0"</code>, then the tag is parsed as raw HTML block.</p>
+  </li>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="1"</code>, then the default mechanism for parsing syntax in
+this tag is used.</p>
+  </li>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="block"</code>, then the content of the tag is parsed as block
+level elements.</p>
+  </li>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="span"</code>, then the content of the tag is parsed as span
+level elements.</p>
+  </li>
+</ul>
+
+<p>The following list shows which HTML tags are parsed in which mode by default when <code>markdown="1"</code> is
+applied or <code>parse_block_html</code> is <code>true</code>:</p>
+
+<dl>
+  <dt>Parse as raw HTML block</dt>
+  <dd>
+    <pre><code>script math option textarea
+</code></pre>
+
+    <p>Also, all general XML tags are parsed as raw HTML blocks.</p>
+  </dd>
+  <dt>Parse as block-level elements</dt>
+  <dd>
+    <pre><code>applet button blockquote body colgroup dd div dl fieldset form iframe li
+map noscript object ol table tbody thead tfoot tr td ul
+</code></pre>
+  </dd>
+  <dt>Parse as span-level elements</dt>
+  <dd>
+    <pre><code>a abbr acronym address b bdo big cite caption code del dfn dt em
+h1 h2 h3 h4 h5 h6 i ins kbd label legend optgroup p pre q rb rbc
+rp rt rtc ruby samp select small span strong sub sup th tt var
+</code></pre>
+  </dd>
+</dl>
+
+<blockquote>
+  <p>Remember that all span-level HTML tags like <code>a</code> or <code>b</code> do not start a HTML block! However, the
+above lists also include span-level HTML tags in the case the <code>markdown</code> attribute is used on a
+tag inside a raw HTML block.</p>
+</blockquote>
+
+<p>Here is a simple example input and its HTML output with <code>parse_block_html</code> set to <code>false</code>:</p>
+
+<pre><code>This is a para.
+&lt;div&gt;
+Something in here.
+&lt;/div&gt;
+Other para.
+</code></pre>
+<pre><code>&lt;p&gt;This is a para.&lt;/p&gt;
+&lt;div&gt;
+Something in here.
+&lt;/div&gt;
+&lt;p&gt;Other para.&lt;/p&gt;
+</code></pre>
+
+<p>As one can see the content of the <code>div</code> tag will be parsed as raw HTML block and left alone.
+However, if the <code>markdown="1"</code> attribute was used on the <code>div</code> tag, the content would be parsed as
+block-level elements and therefore converted to a paragraph.</p>
+
+<p>You can also use several HTML tags at once:</p>
+
+<pre><code>&lt;div id="content"&gt;&lt;div id="layers"&gt;&lt;div id="layer1"&gt;
+This is some text in the `layer1` div.
+&lt;/div&gt;
+This is some text in the `layers` div.
+&lt;/div&gt;&lt;/div&gt;
+This is a para outside the HTML block.
+</code></pre>
+
+<p>However, remember that if the content of a tag is parsed as block-level elements, the content that
+appears after a start/end tag but on the same line, is processed as if it appears on a new line:</p>
+
+<pre><code>&lt;div markdown="1"&gt;This is the first part of a para,
+which is continued here.
+&lt;/div&gt;
+
+&lt;p markdown="1"&gt;This works without problems because it is parsed as
+span-level elements&lt;/p&gt;
+
+&lt;div markdown="1"&gt;The end tag is not found because
+this line is parsed as a paragraph&lt;/div&gt;
+</code></pre>
+
+<p>Since setting <code>parse_block_html</code> to <code>true</code> can lead to some not wanted behaviour, it is generally
+better to selectively enable or disable block/span-level elements parsing by using the <code>markdown</code>
+attribute!</p>
+
+<p>Unclosed block-level HTML tags are correctly closed at the end of the document to ensure correct
+nesting and invalidly used end tags are removed from the output:</p>
+
+<pre><code>This is a para.
+&lt;div markdown="1"&gt;
+Another para.
+&lt;/p&gt;
+</code></pre>
+<pre><code>&lt;p&gt;This is a para.&lt;/p&gt;
+&lt;div&gt;
+  &lt;p&gt;Another para.&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>The parsing of processing instructions and XML comments is also supported. The content of both, PIs
+and XML comments, may span multiple lines. The start of a PI/XML comment may only appear at the
+beginning of a line, optionally indented up to three spaces. If there is text after the end of a PI
+or XML comment, it will be parsed as if it appears on a separate line. kramdown syntax in PIs/XML
+comments is not processed:</p>
+
+<pre><code>This is a para.
+&lt;!-- a *comment* --&gt;
+&lt;? a processing `instruction`
+   spanning multiple lines
+?&gt; First part of para,
+continues here.
+</code></pre>
+
+<h1 id="text-markup">Text Markup</h1>
+
+<p>These elements are all span-level elements and used inside block-level elements to markup text
+fragments. For example, one can easily create links or apply emphasis to certain text parts.</p>
+
+<p>Note that empty span-level elements are not converted to empty HTML tags but are copied as-is to the
+output.</p>
+
+<h2 id="links-and-images">Links and Images</h2>
+
+<p>Three types of links are supported: automatic links, inline links and reference links.</p>
+
+<h3 id="automatic-links">Automatic Links</h3>
+
+<p>This is the easiest one to create: Just surround a web address or an email address with angle
+brackets and the address will be turned into a proper link. The address will be used as link target
+and as link text. For example:</p>
+
+<pre><code>Information can be found on the &lt;http://example.com&gt; homepage.
+You can also mail me: &lt;me.example@example.com&gt;
+</code></pre>
+
+<p>It is not possible to specify a different link text using automatic links – use the other link
+types for this!</p>
+
+<h3 id="inline-links">Inline Links</h3>
+
+<p>As the wording suggests, inline links provide all information inline in the text flow. Reference
+style links only provide the link text in the text flow and everything else is defined
+elsewhere. This also allows you to reuse link definitions.</p>
+
+<p>An inline style link can be created by surrounding the link text which must contain at least one
+character with square brackets, followed immediately by the link URL (and an optional title in
+single or double quotes preceded by at least one space) in normal parentheses. For example:</p>
+
+<pre><code>This is [a link](http://rubyforge.org) to a page.
+A [link](../test "local URI") can also have a title.
+And [spaces](link with spaces.html)!
+</code></pre>
+
+<p>Notes:</p>
+
+<ul>
+  <li>
+    <p>The link text is treated like normal span-level text and therefore is parsed and converted.
+However, if you use square brackets within the link text, you have to either properly nest them or
+to escape them. It is not possible to create nested links!</p>
+  </li>
+  <li>
+    <p>The link URL must not contain single or double quotes and it has to contain properly nested
+parentheses if no title is specified, or the link URL must be contained in angle brackets
+(incorrectly nested parentheses are allowed).</p>
+  </li>
+  <li>
+    <p>The link title may not contain its delimiters and may not be empty.</p>
+  </li>
+</ul>
+
+<h3 id="reference-links">Reference Links</h3>
+
+<p>To create a reference style link, you need to surround the link text with square brackets (as with
+inline links), followed by optional spaces/tabs/line breaks and then optionally followed with
+another set of square brackets with the link identifier in them. A link identifier may not contain a
+closing bracket and, when specified in a link definition, newline characters; it is also not case
+sensitive, line breaks and tabs are converted to spaces and multiple spaces are compressed into one.
+For example:</p>
+
+<pre><code>This is a [reference style link][linkid] to a page. And [this]
+[linkid] is also a link. As is [this][] and [THIS].
+</code></pre>
+
+<p>If you don’t specify a link identifier (i.e. only use empty square brackets) or completely omit the
+second pair of square brackets, the link text is converted to a valid link identifier by removing
+all invalid characters and inserting spaces for line breaks. If there is a link definition found for
+the link identifier, a link will be created. Otherwise the text is not converted to a link.</p>
+
+<h3 id="link-definitions">Link Definitions</h3>
+
+<p>The link definition can be put anywhere in the document. It does not appear in the output. A link
+definition looks like this:</p>
+
+<pre><code>[linkid]: http://www.example.com/ "Optional Title"
+</code></pre>
+
+<blockquote class="information">
+  <p>Link definitions are, despite being described here, non-content block-level elements.</p>
+</blockquote>
+
+<p>The link definition has the following structure:</p>
+
+<ul>
+  <li>The link identifier in square brackets, optionally indented up to three spaces,</li>
+  <li>then a colon and one or more spaces/tabs,</li>
+  <li>then the link URL which must not contain any single or double quotes and which must contain at
+least one non-space character, or a left angle bracket, the link URL and a right angle bracket,</li>
+  <li>then optionally the title in single or double quotes, separated from the link URL by one or more
+spaces or on the next line by itself indented any number of spaces/tabs.</li>
+</ul>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax also allowed the title to be specified in parenthesis. This is not
+allowed for consistency with the inline title.</p>
+</blockquote>
+
+<p>If you have some text that looks like a link definition but should really be a link and some text,
+you can escape the colon after the link identifier:</p>
+
+<pre><code>The next paragraph contains a link and some text.
+
+[Room 100]\: There you should find everything you need!
+
+[Room 100]: link_to_room_100.html
+</code></pre>
+
+<h3 id="images">Images</h3>
+
+<p>Images can be specified via a syntax that is similar to the one used by links. The difference is
+that you have to use an exclamation mark before the first square bracket and that the link text of a
+normal link, which may also be the empty string in case of image links, becomes the alternative text
+of the image link. As with normal links, image links can be written inline or reference style. For
+example:</p>
+
+<pre><code>Here comes a ![smiley](../images/smiley.png)! And here
+![too](../images/other.png 'Title text'). Or ![here].
+With empty alt text ![](see.jpg)
+</code></pre>
+
+<p>The link definition for images is exactly the same as the link definition for normal links.</p>
+
+<h2 id="emphasis">Emphasis</h2>
+
+<p>kramdown supports two types of emphasis: light and strong emphasis. Text parts that are surrounded
+with single asterisks <code>*</code> or underscores <code>_</code> are treated as text with light emphasis, text parts
+surrounded with two asterisks or underscores are treated as text with strong emphasis. Surrounded
+means that the starting delimiter must not be followed by a space and that the stopping delimiter
+must not be preceded by a space.</p>
+
+<p>Here is an example for text with light and strong emphasis:</p>
+
+<pre><code>*some text*
+_some text_
+**some text**
+__some text__
+</code></pre>
+
+<p>The asterisk form is also allowed within a single word:</p>
+
+<pre><code>This is un*believe*able! This d_oe_s not work!
+</code></pre>
+
+<p>Text can be marked up with both light and strong emphasis, possibly using different delimiters.
+However, it is not possible to nest strong within strong or light within light emphasized text:</p>
+
+<pre><code>This is a ***text with light and strong emphasis***.
+This **is _emphasized_ as well**.
+This *does _not_ work*.
+This **does __not__ work either**.
+</code></pre>
+
+<p>If one or two asterisks or underscores are surrounded by spaces, they are treated literally. If you
+want to force the literal meaning of an asterisk or an underscore you can backslash-escape it:</p>
+
+<pre><code>This is a * literal asterisk.
+These are ** two literal asterisk.
+As \*are\* these!
+</code></pre>
+
+<h2 id="code-spans">Code Spans</h2>
+
+<p>This is the span-level equivalent of the <a href="#code-blocks">code block</a> element. You can markup a text
+part as code span by surrounding it with backticks <code>`</code>. For example:</p>
+
+<pre><code>Use `&lt;html&gt;` tags for this.
+</code></pre>
+
+<p>Note that all special characters in a code span are treated correctly. For example, when a code span
+is converted to HTML, the characters <code>&lt;</code>, <code>&gt;</code> and <code>&amp;</code> are substituted by their respective HTML
+counterparts.</p>
+
+<p>To include a literal backtick in a code span, you need to use two or more backticks as delimiters.
+You can insert one optional space after the starting and before the ending delimiter (these spaces
+are not used in the output). For example:</p>
+
+<pre><code>Here is a literal `` ` `` backtick.
+And here is ``  `some`  `` text (note the two spaces so that one is left
+in the output!).
+</code></pre>
+
+<p>A single backtick surrounded by spaces is treated as literal backtick. If you want to force the
+literal meaning of a backtick you can backslash-escape it:</p>
+
+<pre><code>This is a ` literal backtick.
+As \`are\` these!
+</code></pre>
+
+<p>As with <a href="#language-of-code-blocks">code blocks</a> you can set the language of a code span by using an
+<a href="#inline-attribute-lists">IAL</a>:</p>
+
+<pre><code>This is a Ruby code fragment `x = Class.new`{:.language-ruby}
+</code></pre>
+
+<h2 id="html-spans">HTML Spans</h2>
+
+<p>HTML tags cannot only be used on the block-level but also on the span-level. Span-level HTML tags
+can only be used inside one block-level element, it is not possible to use a start tag in one block
+level element and the end tag in another. Note that only correct XHTML is supported! This means that
+you have to use, for example, <code>&lt;br /&gt;</code> instead of <code>&lt;br&gt;</code> (although kramdown tries to fix such errors
+if possible).</p>
+
+<p>By default, kramdown parses kramdown syntax inside span HTML tags. However, this behaviour can be
+configured with the <code>parse_span_html</code> option. If this is set to <code>true</code>, then syntax parsing in HTML
+spans is enabled, if it is set to <code>false</code>, parsing is disabled. It is also possible to
+enable/disable syntax parsing on a tag per tag basis using the <code>markdown</code> attribute:</p>
+
+<ul>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="0"</code>, then no parsing (except parsing of HTML span tags)
+is done inside that HTML tag.</p>
+  </li>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="1"</code>, then the content of the tag is parsed as span
+level elements.</p>
+  </li>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="block"</code>, then a warning is issued because HTML spans
+cannot contain block-level elements and the attribute is ignored.</p>
+  </li>
+  <li>
+    <p>If an HTML tag has an attribute <code>markdown="span"</code>, then the content of the tag is parsed as span
+level elements.</p>
+  </li>
+</ul>
+
+<p>The content of a span-level HTML tag is normally parsed as span-level elements. Note, however, that
+some tags like <code>&lt;script&gt;</code> are not parsed, i.e. their content is not modified.</p>
+
+<p>Processing instructions and XML comments can also be used (their content is not parsed). However, as
+with HTML tags the start and the end have to appear in the same block-level element.</p>
+
+<p>Span-level PIs and span-level XML comments as well as general span-level HTML and XML tags have to
+be preceded by at least one non whitespace character on the same line so that kramdown correctly
+recognizes them as span-level element and not as block-level element. However, all span HTML tags,
+i.e. <code>a</code>, <code>em</code>, <code>b</code>, …, (opening or closing) can appear at the start of a line.</p>
+
+<p>Unclosed span-level HTML tags are correctly closed at the end of the span-level text to ensure
+correct nesting and invalidly used end tags or block HTML tags are removed from the output:</p>
+
+<pre><code>This is &lt;/invalid&gt;.
+
+This &lt;span&gt;is automatically closed.
+</code></pre>
+<pre><code>&lt;p&gt;This is .&lt;/p&gt;
+
+&lt;p&gt;This &lt;span&gt;is automatically closed.&lt;/span&gt;&lt;/p&gt;
+</code></pre>
+
+<p>Also note that one or more consecutive new line characters in an HTML span tag are replaced by a
+single space, for example:</p>
+
+<pre><code>Link: &lt;a href="some
+link"&gt;text&lt;/a&gt;
+</code></pre>
+<pre><code>&lt;p&gt;Link: &lt;a href="some link"&gt;text&lt;/a&gt;&lt;/p&gt;
+</code></pre>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The idea and syntax comes from
+the <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown Extra</a> package.</p>
+</blockquote>
+
+<p>Footnotes in kramdown are similar to reference style links and link definitions. You need to place
+the footnote marker in the correct position in the text and the actual footnote content can be
+defined anywhere in the document.</p>
+
+<p>More exactly, a footnote marker can be created by placing the footnote name in square brackets.
+The footnote name has to start with a caret (<code>^</code>), followed by a word character or a digit and then
+optionally followed by other word characters, digits or dashes. For example:</p>
+
+<pre><code>This is some text.[^1]. Other text.[^footnote].
+</code></pre>
+
+<p>Footnote markers with the same name will link to the same footnote definition. The actual naming of
+a footnote does not matter since the numbering of footnotes is controlled via the position of the
+footnote markers in the document (the first found footnote marker will get the number 1, the second
+new footnote marker the number 2 and so on). If there is a footnote definition found for the
+identifier, a footnote will be created. Otherwise the footnote marker is not converted to a footnote
+link. Also note that all attributes set via a span IAL are ignored for a footnote marker!</p>
+
+<p>A footnote definition is used to define the content of a footnote and has the following structure:</p>
+
+<ul>
+  <li>The footnote name in square brackets, optionally indented up to three spaces,</li>
+  <li>then a colon and one or more optional spaces,</li>
+  <li>then the text of the footnote</li>
+  <li>and optionally more text on the following lines which have to follow the syntax for <a href="#standard-code-blocks">standard code
+blocks</a> (the leading four spaces/one tab are naturally stripped from the
+text)</li>
+</ul>
+
+<blockquote class="information">
+  <p>Footnote definitions are, despite being described here, non-content block-level elements.</p>
+</blockquote>
+
+<p>The whole footnote content is treated like block-level text and can therefore contain any valid
+block-level element (also, any block-level element can be the first element). If you want to have a
+code block as first element, note that all leading spaces/tabs on the first line are stripped away.
+Here are some example footnote definitions:</p>
+
+<pre><code>[^1]: Some *crazy* footnote definition.
+
+[^footnote]:
+    &gt; Blockquotes can be in a footnote.
+
+        as well as code blocks
+
+    or, naturally, simple paragraphs.
+
+[^other-note]:       no code block here (spaces are stripped away)
+
+[^codeblock-note]:
+        this is now a code block (8 spaces indentation)
+</code></pre>
+
+<p>It does not matter where you put a footnote definition in a kramdown document; the content of all
+referenced footnote definitions will be placed at the end of the kramdown document. Not referenced
+footnote definitions are ignored. If more than one footnote definitions have the same footnote name,
+all footnote definitions but the last are ignored.</p>
+
+<h2 id="abbreviations">Abbreviations</h2>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The idea and syntax comes from
+the <a href="http://michelf.com/projects/php-markdown/extra/">PHP Markdown Extra</a> package.</p>
+</blockquote>
+
+<p>kramdown provides a syntax to assign the full phrase to an abbreviation. When writing the text, you
+don’t need to do anything special. However, once you add abbreviation definitions, the
+abbreviations in the text get marked up automatically. Abbreviations can consist of any character
+except a closing bracket.</p>
+
+<p>An abbreviation definition is used to define the full phrase for an abbreviation and has the
+following structure:</p>
+
+<ul>
+  <li>An asterisk and the abbreviation in square brackets, optionally indented up to three
+spaces,</li>
+  <li>then a colon and the full phrase of the abbreviation on one line (leading and trailing spaces are
+stripped from the full phrase).</li>
+</ul>
+
+<p>Later abbreviation definition for the same abbreviation override prior ones and it does not matter
+where you put an abbreviation definition in a kramdown document. Empty definitions are also allowed.</p>
+
+<p>Here are some examples:</p>
+
+<pre><code>This is some text not written in HTML but in another language!
+
+*[another language]: It's called Markdown
+*[HTML]: HyperTextMarkupLanguage
+</code></pre>
+
+<blockquote class="information">
+  <p>Abbreviation definitions are, despite being described here, non-content block-level elements.</p>
+</blockquote>
+
+<h2 id="typographic-symbols">Typographic Symbols</h2>
+
+<blockquote class="markdown-difference">
+  <p>The original Markdown syntax does not support these transformations.</p>
+</blockquote>
+
+<p>kramdown converts the following plain ASCII character into their corresponding typographic symbols:</p>
+
+<ul>
+  <li><code>---</code> will become an em-dash (like this —)</li>
+  <li><code>--</code> will become an en-dash (like this –)</li>
+  <li><code>...</code> will become an ellipsis (like this …)</li>
+  <li><code>&lt;&lt;</code> will become a left guillemet (like this «) – an optional following space will become a
+non-breakable space</li>
+  <li><code>&gt;&gt;</code> will become a right guillemet (like this ») – an optional leading space will become a
+non-breakable space</li>
+</ul>
+
+<p>The parser also replaces normal single <code>'</code> and double quotes <code>"</code> with “fancy quotes”. There <em>may</em> be
+times when kramdown falsely replace the quotes. If this is the case, just 'escape" the quotes and
+they won’t be replaced with fancy ones.</p>
+
+<h1 id="non-content-elements">Non-content elements</h1>
+
+<p>This section describes the non-content elements that are used in kramdown documents, i.e. elements
+that don’t provide content for the document but have other uses such as separating block-level
+elements or attaching attributes to elements.</p>
+
+<p>Three non-content block-level elements are not described here because they fit better where they
+are:</p>
+
+<ul>
+  <li><a href="#link-definitions">link definitions</a></li>
+  <li><a href="#footnotes">footnote definitions</a></li>
+  <li><a href="#abbreviations">abbreviation definition</a></li>
+</ul>
+
+<h2 id="eob-marker">End-Of-Block Marker</h2>
+
+<blockquote class="markdown-difference">
+  <p>The EOB marker is not part of the standard Markdown syntax.</p>
+</blockquote>
+
+<p>The End-Of-Block (EOB) marker – a <code>^</code> as first character on an otherwise empty line – is a block
+level element that can be used to specify the end of a block-level element even if the block-level
+element, after which it is used, would continue otherwise. If there is no block-level element to
+end, the EOB marker is simply ignored.</p>
+
+<p>You won’t find an EOB marker in most kramdown documents but sometimes it is necessary to use it to
+achieve the wanted results which would be impossible otherwise. However, it should only be used when
+absolutely necessary!</p>
+
+<p>For example, the following gives you one list with two items:</p>
+
+<pre><code>* list item one
+
+* list item two
+</code></pre>
+
+<p>By using an EOB marker, you can make two lists with one item each:</p>
+
+<pre><code>* list one
+^
+* list two
+</code></pre>
+
+<h2 id="attribute-list-definitions">Attribute List Definitions</h2>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The idea and syntax comes from
+the <a href="http://maruku.rubyforge.org">Maruku</a> package.</p>
+</blockquote>
+
+<p>This is an implementation of <a href="http://maruku.rubyforge.org">Maruku</a>’s feature for adding attributes to block and span-level
+elements (the naming is also taken from Maruku). This block-level element is used to define
+attributes which can be referenced later. The <a href="#block-ials">Block Inline Attribute List</a> is used to
+attach attributes to a block-level element and the <a href="#span-ials">Span Inline Attribute List</a> is used
+to attach attributes to a span-level element.</p>
+
+<p>Following are some examples of attribute list definitions (ALDs) and afterwards comes the syntax
+explanation:</p>
+
+<pre><code>{:ref-name: #myid .my-class}
+{:other: ref-name #id-of-other title="hallo you"}
+{:test: key="value \" with quote" and other='quote brace \}'}
+</code></pre>
+
+<p>An ALD line has the following structure:</p>
+
+<ul>
+  <li>a left brace, optionally preceded by up to three spaces,</li>
+  <li>followed by a colon, the reference name and another colon,</li>
+  <li>followed by attribute definitions (allowed characters are backslash-escaped closing braces or any
+character except a not escaped closing brace),</li>
+  <li>followed by a closing brace and optional spaces until the end of the line.</li>
+</ul>
+
+<p>The reference name needs to start with a word character or a digit, optionally followed by other
+word characters, digits or dashes.</p>
+
+<p>There are four different types of attribute definitions which have to be separated by one or more
+spaces:</p>
+
+<dl>
+  <dt>references</dt>
+  <dd>
+    <p>This must be a valid reference name. It is used to reference an other ALD so that the attributes
+of the other ALD are also included in this one. The reference name is ignored when collecting the
+attributes if no attribute definition list with this reference name exists. For example, a simple
+reference looks like <code>id</code>.</p>
+  </dd>
+  <dt>key-value pairs</dt>
+  <dd>
+    <p>A key-value pair is defined by a key name, which must follow the rules for reference names, then
+an equal sign and then the value in single or double quotes. If you need to use the value
+delimiter (a single or a double quote) inside the value, you need to escape it with a backslash.
+Key-value pairs can be used to specify arbitrary attributes for block or span-level elements. For
+example, a key-value pair looks like <code>key1="bef \"quoted\" aft"</code> or <code>title='This is a title'</code>.</p>
+  </dd>
+  <dt>ID name</dt>
+  <dd>
+    <p>An ID name is defined by using a hash and then the identifier name which needs to start with an
+ASCII character, optionally followed by other ASCII characters, digits, dashes or colons. This is
+a short hand for the key-value pair <code>id="IDNAME"</code> since this is often used. The ID name specifies
+the unique ID of a block or span-level element. For example, an ID name looks like <code>#myid</code>.</p>
+  </dd>
+  <dt>class names</dt>
+  <dd>
+    <p>A class name is defined by using a dot and then the class name. This is (almost, but not quite) a
+short hand for the key-value pair <code>class="class-name"</code>. Almost because it actually means that the
+class name should be appended to the current value of the <code>class</code> attribute. The following ALDs
+are all equivalent:</p>
+
+    <pre><code>{:id: .cls1 .cls2}
+{:id: class="cls1" .cls2}
+{:id: class="something" class="cls1" .cls2}
+{:id: class="cls1 cls2"}
+</code></pre>
+  </dd>
+</dl>
+
+<p>As can be seen from the example of the class names, attributes that are defined earlier are
+overwritten by ones with the same name defined later.</p>
+
+<blockquote class="information">
+  <p>Also, everything in the attribute definitions part that does not match one of the above four types
+is ignored.</p>
+</blockquote>
+
+<p>If there is more than one ALD with the same reference name, the attribute definitions of all the
+ALDs are processed like they are defined in one ALD.</p>
+
+<h2 id="inline-attribute-lists">Inline Attribute Lists</h2>
+
+<p>These elements are used to attach attributes to another element.</p>
+
+<h3 id="block-ials">Block Inline Attribute Lists</h3>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The idea and syntax comes from
+the <a href="http://maruku.rubyforge.org">Maruku</a> package.</p>
+</blockquote>
+
+<p>This block-level element is used to attach attributes to a block-level element. A block inline
+attribute list (block IAL) has the same structure as an <a href="#attribute-list-definitions">ALD</a> except
+that the colon/reference name/colon part is replaced by a colon. A block IAL (or two or more block
+IALs) has to be put directly before or after the block-level element to which the attributes should
+be attached. If a block IAL is directly after <em>and</em> before a block-level element, it is applied to
+preceding element. The block IAL is ignored in all other cases, for example, when the block IAL is
+surrounded by blank lines.</p>
+
+<p>Key-value pairs of an IAL take precedence over equally named key-value pairs in referenced ALDs.</p>
+
+<p>Here are some examples for block IALs:</p>
+
+<pre><code>A simple paragraph with an ID attribute.
+{: #para-one}
+
+&gt; A blockquote with a title
+{:title="The blockquote title"}
+{: #myid}
+
+{:.ruby}
+    Some code here
+</code></pre>
+
+<h3 id="span-ials">Span Inline Attribute Lists</h3>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax. The idea and syntax comes from
+the <a href="http://maruku.rubyforge.org">Maruku</a> package.</p>
+</blockquote>
+
+<p>This is a version of the <a href="#block-ials">block inline attribute list</a> for span-level elements. It has
+the same structure as the block IAL except that leading and trailing spaces are not allowed. A span
+IAL (or two or more span IALs) has to be put directly after the span-level element to which it
+should be applied, no additional character is allowed between, otherwise it is ignored and only
+removed from the output.</p>
+
+<p>Here are some examples for span IALs:</p>
+
+<pre><code>This *is*{:.underline} some `code`{:#id}{:.class}.
+A [link](test.html){:rel='something'} and some **tools**{:.tools}.
+</code></pre>
+
+<h2 id="extensions">Extensions</h2>
+
+<blockquote class="markdown-difference">
+  <p>This syntax feature is not part of the original Markdown syntax.</p>
+</blockquote>
+
+<p>Extensions provide additional functionality but use the same syntax for it. They are available as
+block as well as span-level elements.</p>
+
+<p>The syntax for an extension is very similar to the syntax of <a href="#attribute-list-definitions">ALDs</a>.
+Here are some examples of how to specify extensions and afterwards is the syntax definition:</p>
+
+<pre><code>{::comment}
+This text is completely ignored by kramdown - a comment in the text.
+{:/comment}
+
+Do you see {::comment}this text{:/comment}?
+{::comment}some other comment{:/}
+
+{::options key="val" /}
+</code></pre>
+
+<p>An extension can be specified with or without a body. Therefore there exist a start and an end tag
+for extensions. The start tag has the following structure:</p>
+
+<ul>
+  <li>a left brace,</li>
+  <li>followed by two colons and the extension name,</li>
+  <li>optionally followed by a space and attribute definitions (allowed characters are backslash-escaped
+closing braces or any character except a not escaped closing brace – same as with ALDs),</li>
+  <li>followed by a slash and a right brace (in case the extension has no body) or only a right
+brace (in case the extension has a body).</li>
+</ul>
+
+<p>The stop tag has the following structure:</p>
+
+<ul>
+  <li>a left brace,</li>
+  <li>followed by a colon and a slash,</li>
+  <li>optionally followed by the extension name,</li>
+  <li>followed by a right brace.</li>
+</ul>
+
+<p>A stop tag is only needed if the extension has a body!</p>
+
+<p>The above syntax can be used as is for span-level extensions. The starting and ending lines for block-level
+extensions are defined as:</p>
+
+<ul>
+  <li>The starting line consists of the extension start tag, optionally preceded by up to three spaces,
+and followed by optional spaces until the end of the line.</li>
+  <li>The ending line consists of the extension stop tag, optionally preceded by up to three spaces,
+and followed by optional spaces until the end of the line.</li>
+</ul>
+
+<p>If no end tag can be found for an extension start tag, the start tag is treated as if it has no
+body. If an invalid extension stop tag is found, it is ignored. If an invalid extension name is
+specified the extension (and the eventually specified body) are ignored.</p>
+
+<p>The following extensions can be used with kramdown:</p>
+
+<dl>
+  <dt><code>comment</code></dt>
+  <dd>
+    <p>Treat the body text as a comment which does not show in the output.</p>
+  </dd>
+  <dt><code>nomarkdown</code></dt>
+  <dd>
+    <p>Don’t process the body with kramdown but output it as-is. The attribute <code>type</code> specifies which
+converters should output the body: if the attribute is missing, all converters should output it.
+Otherwise the attribute value has to be a space separated list of converter names and these
+converters should output the body.</p>
+  </dd>
+  <dt><code>options</code></dt>
+  <dd>
+    <p>Should be used without a body since the body is ignored. Is used for setting the global options
+for the kramdown processor (for example, to disable automatic header ID generation). Note that
+options that are used by the parser are immediately effective whereas all other options are not!
+This means, for example, that it is not possible to set converter options only for some part of a
+kramdown document.</p>
+  </dd>
+</dl>
+
+
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+    <footer>
+      <div class="float-left">Copyright © 2009-2013 Thomas Leitner</div>
+      <div class="float-right">Generated by <a href="http://webgen.rubyforge.org">webgen</a></div>
+    </footer>
+
+    <!-- Start of StatCounter Code -->
+    <script type="text/javascript">
+      var sc_project=4267845;
+      var sc_invisible=1;
+      var sc_partition=46;
+      var sc_click_stat=1;
+      var sc_security="41321455";
+    </script>
+
+    <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script>
+    <noscript><div class="statcounter">
+        <a title="web counter" class="statcounter" href="http://www.statcounter.com/free_hit_counter.html">
+          <img class="statcounter" src="http://c.statcounter.com/4267845/0/41321455/1/" alt="web counter" />
+        </a>
+    </div></noscript>
+    <!-- End of StatCounter Code -->
+
+  </body>
+</html>

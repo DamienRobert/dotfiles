@@ -1,0 +1,10 @@
+[Unit]
+Description=XSession
+BindsTo=graphical-session.target
+BindsTo=xwatch.service
+Wants=session.target
+Wants=graphical-session-pre.target
+AllowIsolate=yes
+
+[Install]
+Alias=default.target

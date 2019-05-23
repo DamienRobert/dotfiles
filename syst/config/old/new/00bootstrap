@@ -1,0 +1,28 @@
+# vim: ft=zsh
+
+DEST=${DEST-/tmp}
+
+MYFILENAME=$(basename $MYFILES)
+rsync -vaczP --exclude 'old' --exclude ".git" --exclude "$MYFILENAME/doc" --exclude "$MYFILENAME/@infos" $MYFILES $DEST
+
+cat <<EOS >$DEST/$MYFILENAME/initenv
+_INITVARS=t
+
+MYFILES="${MYFILES-$HOME/mine}"
+USERFILES="${USERFILES-{$MYFILES/user}}"
+CFGFILES="${CFGFILES-{$MYFILES/user/config}}"
+DOTFILES="${DOTFILES-{$MYFILES/user/config/dotfiles}}"
+SYSTFILES="${SYSTFILES-{$MYFILES/syst}}"
+MAINTFILES="${MAINTFILES-{$MYFILES/maint}}"
+MYCOMPUTERS="${MYCOMPUTERS-{$MYFILES/00COMPUTERS.rb}}"
+
+MYHOSTNAME=XXX
+MYHOSTTYPE=
+
+mylog() {
+  file="${1%.log}"; shift;
+  echo "# $file: @`date --iso-8601=seconds` - $@"
+}
+
+. $DOTFILES/.initenv
+EOS

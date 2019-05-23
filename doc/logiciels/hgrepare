@@ -1,3 +1,0 @@
-hg clone ~/FichiersConfig /tmp/toconvert
-hg convert --config convert.hg.ignoreerrors=True --filemap /tmp/filemap toconvert converted
-hg debugrebuildstate -r tip 

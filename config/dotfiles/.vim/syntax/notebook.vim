@@ -1,1 +1,0 @@
-../vim-script/vimscript/ervandew/vim/syntax/notebook.vim

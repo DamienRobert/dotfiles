@@ -1,0 +1,16 @@
+/etc/pulse/default.pa
+=====================
+
+set-default-sink alsa_output.usb-DAC_FOR_USB_FOCAL_XS-00-XS.iec958-stereo
+
+Logiciels
+=========
+
+- pavucontrol
+- ponymix
+- paprefs: http://freedesktop.org/software/pulseaudio/paprefs/
+- padevchooser (dead use pasystray instead), pavumeter (also obsolete)
+- qpaeq: equalizer
+  (with 
+  $ pactl load-module module-equalizer-sink
+  $ pactl load-module module-dbus-protocol)

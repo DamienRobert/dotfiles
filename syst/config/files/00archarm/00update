@@ -1,0 +1,6 @@
+#!/bin/zsh
+DIRS=(pacman.d boot)
+rm -rf $DIRS
+mkdir -p $DIRS
+cp -r /etc/pacman.d/mirrorlist pacman.d/
+cp /boot/{cmdline.txt,config.txt} boot/

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+then
+ DIR="."
+else
+ DIR="$1"
+fi
+
+for i in "$DIR/"*
+do
+  if [ -L "$i" ]
+  then
+    rm -f "$i"
+  elif [ -d "$i" ]
+  then
+    rm -rf "$i"/*
+  fi
+done

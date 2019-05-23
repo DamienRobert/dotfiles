@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# eg: dict -d moby-thesaurus food | colorit
+
+dict "$@" | colorit

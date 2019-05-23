@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for i in "$@"; do
+  echo "**** Converting $i ****"
+  allnice tox264 "$i"
+done

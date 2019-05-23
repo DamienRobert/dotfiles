@@ -1,0 +1,9 @@
+[Settings]
+mpd_host=/run/user/1000/mpd_sock
+mpd_port=6600
+mpd_password=
+show_frame=true
+client_appl=SETME
+tooltip_format=Mpd %status% (%vol%%)%newline%%artist% - %album%%newline%#%track% - %title%
+playlist_format=%artist% - %album% -- #%track% - %title%
+

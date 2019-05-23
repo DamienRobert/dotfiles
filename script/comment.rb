@@ -50,7 +50,7 @@ ARGV.each do |filename|
         #we need to add 'comment' to 'text'
         text.concat(comment)
       end
-      write_file(filename,text)
+      write_file(filename, text)
     end
   end
 end

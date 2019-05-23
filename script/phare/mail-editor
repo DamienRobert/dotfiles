@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+if [ -x /usr/bin/formail ]; then
+	SUB="`formail -X "Subject" < $1| sed '1,/^$/s/^Subject: *\(Re:\)* *\[!.*!\]/Subject: /'`"
+
+	formail -f -I "$SUB" < "$1" > "$1".TMPploum
+	mv "$1".TMPploum "$1"
+fi
+
+#can't use EDITOR here
+vim "$@"

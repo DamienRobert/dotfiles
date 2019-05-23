@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+
+require 'simplecolor'
+require 'optparse'
+COLORED_REGEXP = /\e(?:\[(?:(?:[349]|10)[0-7]|[0-9])?m|\(B)/
+SimpleColor.mix_in_string
+
+class String
+	def uncolor
+		return self.dup.gsub(COLORED_REGEXP,'')
+	end
+end
+
+def get_users(qui)
+	login={}
+	qui.each_line do |l|
+		l=l.uncolor
+		re=l.match(/^(\w+):\s*(.*)$/)
+		comp=re[1]; users=re[2]
+		users.split(',').each do |user|
+			re=user.match(/^\[(.*)\]$/)
+			if re
+				user=re[1]
+				usercomp="[#{comp}]" 
+			else
+				usercomp=comp
+			end
+			(login[user]||=[])<< usercomp
+		end
+	end
+	return login
+end
+
+def show_users(users)
+	users.sort.each do |u,comps|
+		puts "#{u.color(:blue,:bold)}: #{comps.sort.join(", ")}"
+	end
+end
+
+def clean_qui(qui)
+	r=""
+	qui.each_line do |l|
+		r+=l if not l.uncolor =~ /^(\w+):\s*(\(down\))?$/
+	end
+	return r
+end
+
+def qui
+	return %x!qui s t infi jourdan montrouge rezo bio 46 -too all phare -nomap!
+end
+
+@opts={}
+optparse = OptionParser.new do |opt|
+	opt.banner = "logged in users"
+	opt.on("-u", "--[no-]users", "group by users") do |v|
+		@opts[:users]=v
+	end
+	opt.on("-a", "--[no-]all", "show all machines") do |v|
+		@opts[:all]=v
+	end
+end
+optparse.parse!
+
+q=qui
+q=clean_qui(q) unless @opts[:all]
+if @opts[:users]
+	show_users(get_users(q))
+else
+	puts q
+end

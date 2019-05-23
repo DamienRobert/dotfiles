@@ -1,0 +1,9 @@
+#logkill: kill vi before logout
+logkill() {
+	pkill '^vi$'
+	pkill '^vim$'
+	pkill '^gvim$'
+	pkill '^pry$'
+	pkill '^zathura$'
+	pkill '^evince$'
+}

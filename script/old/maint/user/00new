@@ -1,0 +1,57 @@
+#!/bin/zsh
+# vim: ft=zsh
+. $HOME/.initvars
+CFGFILESNAME="${CFGFILES#$HOME/}"
+
+MODE="auto" #use rsync or unison according to 00COMPUTERS.rb
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		--ssh ) SSH=t ;; #install ssh key-id
+		--rsync ) MODE=rsync ;;
+		--unison ) MODE=unison ;;
+		*) break;;
+	esac
+done
+
+name=$1
+[[ -z $name ]] && exit 1
+eval $($MYCOMPUTERS --export=COMPUTER:/,CONFIG:config $name)
+NEWHOSTNAME=$CONFIG[hostname]
+NEWHOSTTYPE=$CONFIG[hosttype]
+targetssh=$COMPUTER[sshu]
+
+echo "Init new computer '$name' (-> $targetssh) with hostname '$NEWHOSTNAME' and hosttype '$NEWHOSTTYPE'"
+
+if [[ -n $SSH ]]; then
+	echo "Installing ssh key"
+	ssh-copy-id -i ~/.ssh/id_rsa.pub $targetssh
+fi
+
+if [[ $MODE == "auto" ]]; then
+	MODE=$COMPUTER[sync]
+fi
+
+case $MODE in
+	unison)
+		unison.rb -s -t init $name
+		;;
+	rsync)
+		#Pour les comptes qui n'ont pas unison...
+		#I want to reuse the same path as in unison sh config
+		mypaths=()
+		upaths=$(grep path ~/mine/config/unison/config-sh.prf)
+		hpaths=("${(f)upaths}") #convert to array
+		for ipath in $hpaths; do
+			right=("${(s/=/)ipath}")
+			mypaths+="$right[2]"
+		done
+		cd $HOME
+		rsync -vazP --relative $mypaths "$1:"
+		#rsync -vazP --relative $mypaths "$1:"
+		;;
+esac
+
+#ssh2 $targetssh '$HOME'/$CFGFILESNAME/10update
+ssh2 $targetssh $CFGFILESNAME/10update $NEWHOSTNAME $NEWHOSTTYPE

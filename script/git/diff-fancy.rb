@@ -1,0 +1,1 @@
+../../ruby/gems/git_helpers/bin/diff-fancy.rb

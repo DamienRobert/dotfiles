@@ -1,0 +1,44 @@
+#!/bin/sh
+
+MAGMA_HELP_DIR="$ROOT"/InternalHelp
+export MAGMA_HELP_DIR
+MAGMA_HTML_DIR="$ROOT"/doc/html
+export MAGMA_HTML_DIR
+MAGMA_SYSTEM_SPEC="$ROOT/package/spec"
+export MAGMA_SYSTEM_SPEC
+
+if [ "${MAGMA_STARTUP_FILE}" = "" ]
+then
+	if [ -f "${HOME}/.magmarc" ]
+	then
+		MAGMA_STARTUP_FILE="${HOME}/.magmarc"
+		export MAGMA_STARTUP_FILE
+	fi
+fi
+
+if [ "$MAGMA_LIBRARIES" = "" ]
+then
+	MAGMA_LIBRARY_ROOT="$ROOT/libs"
+	MAGMA_LIBRARIES="examples:galpols:intro:isolgps:matgps:pergps:simgps:solgps"
+
+	export MAGMA_LIBRARY_ROOT
+	export MAGMA_LIBRARIES
+fi
+
+EXE="$ROOT/magma.exe"
+if [ -n "$MAGMA_FLAVOUR" ] ; then
+	EXE="$ROOT/magma.exe.$MAGMA_FLAVOUR"
+fi
+if [ ! -x "$EXE" ] ; then
+	echo "Executable $EXE missing"
+	exit 1
+fi
+
+if [ -n "$FAKE_TIME" ]; then
+	echo "- date: $(faketime -f $FAKE_TIME date)"
+	EXE="faketime -f $FAKE_TIME $EXE"
+fi
+echo "- LD PRELOAD: $LD_PRELOAD [$FAKE_MAC]"
+echo "- Launching: $EXE"
+
+exec $EXE "$@"

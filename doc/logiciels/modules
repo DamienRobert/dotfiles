@@ -1,0 +1,49 @@
+modprobe --show-depends <module
+
+i915
+====
+
+To check which options are currently enabled, run
+
+# systool -m i915 -av
+
+A list of all options along with short descriptions and default values can be generated with the following command:
+
+$ modinfo -p i915
+
+Ex of /etc/modprobe.d/i915.conf:
+    options i915 enable_rc6=1 enable_fbc=1 lvds_downclock=1
+(These options are already on by default)
+Higher powersave: enable_rc6=3, or even enable_rc6=7
+But for i915_enable_rc6=7 check before #https://wiki.archlinux.org/index.php?title=Talk:Intel_Graphics&oldid=327547#Kernel_Module_options
+See also https://bbs.archlinux.org/viewtopic.php?id=181651
+
+Default values without modprobe settings on Mithrim:
+  disable_display N
+  disable_power_well 1
+  disable_vtd_wa N
+  enable_cmd_parser 1
+  enable_execlists 0
+  enable_fbc 1
+  enable_hangcheck Y
+  enable_ips 1
+  enable_ppgtt 1
+  enable_psr 0
+  enable_rc6 1
+  fastboot N
+  invert_brightness 0
+  load_detect_test N
+  lvds_channel_mode 0
+  lvds_downclock 1
+  lvds_use_ssc -1
+  mmio_debug 0
+  modeset -1
+  nuclear_pageflip N
+  panel_ignore_lid 1
+  prefault_disable N
+  preliminary_hw_support 0
+  reset Y
+  semaphores -1
+  use_mmio_flip 0
+  vbt_sdvo_panel_type -1
+  verbose_state_checks Y

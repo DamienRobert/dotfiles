@@ -1,19 +1,35 @@
+findfs NAME=value: find the first matching devices
+blkid [-t NAME=value]: find all the matching devices
+  (It  is  recommended  to  use  lsblk(8) command to get information about block devices rather than blkid.)
+lsblk: list block devices
+findmnt: list mount points
+partx: show partitions of a device
+  Given a device or disk-image, partx tries to parse the partition  table
+  and  list  its  contents.  It can also tell the kernel to add or remove
+  partitions from its bookkeeping.
+  Ex: sudo partx --show --output NR,START,END,SECTORS,SIZE,NAME,TYPE,FLAGS,SCHEME,UUID /dev/sdb
+
+blkid
+=====
+Note: sometime I need to use sudo to refresh the cache (is there a
+different way?)
+
 Get UID of blocks:
 $ blkid
 /dev/sda: LABEL="linux-home" UUID="32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e"
-UUID_SUB="efec281f-9720-462e-a916-d074f5f85cb2" TYPE="btrfs" 
+UUID_SUB="efec281f-9720-462e-a916-d074f5f85cb2" TYPE="btrfs"
 /dev/sdb1: SEC_TYPE="msdos" UUID="9D37-7B22" TYPE="vfat" PARTLABEL="UEFI"
-PARTUUID="2b1dec6b-73c5-435e-bee7-29fe64b90e93" 
+PARTUUID="2b1dec6b-73c5-435e-bee7-29fe64b90e93"
 /dev/sdb2: UUID="382E89A02E895830" TYPE="ntfs" PARTLABEL="Windows"
-PARTUUID="48faf05a-38c7-4157-a5ec-4af142a91bfc" 
+PARTUUID="48faf05a-38c7-4157-a5ec-4af142a91bfc"
 /dev/sdb3: LABEL="linux-home" UUID="32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e"
 UUID_SUB="68ab821c-da77-43c4-a266-09a4ce6b1b5c" TYPE="btrfs"
-PARTLABEL="Linux-raid" PARTUUID="44242e86-a23d-4fdb-be59-821bcff28d8f" 
+PARTLABEL="Linux-raid" PARTUUID="44242e86-a23d-4fdb-be59-821bcff28d8f"
 /dev/sdb4: LABEL="linux-root" UUID="ba8d1474-88ec-4342-a63d-e4d4732511af"
 UUID_SUB="c274b3ce-72e3-4155-96dd-9e5084bb55ad" TYPE="btrfs"
-PARTLABEL="Linux-Main" PARTUUID="986178da-85b0-4a7c-a0ec-600adfa32be7" 
+PARTLABEL="Linux-Main" PARTUUID="986178da-85b0-4a7c-a0ec-600adfa32be7"
 /dev/sdc: LABEL="large" UUID="33e81fa8-6a49-4294-8bc9-bf6295ac39d1"
-UUID_SUB="fb505410-ae35-4d0a-a9bb-d28899bfa422" TYPE="btrfs" 
+UUID_SUB="fb505410-ae35-4d0a-a9bb-d28899bfa422" TYPE="btrfs"
 
 Feanor /large $ findfs LABEL=large
 /dev/sdc
@@ -21,23 +37,146 @@ Feanor /large $ findfs LABEL=large
 #The labels defined in mkfs are labels for the filesystem, not to confuse with
 #the PARTLABEL defined in sgdisk for the gpt partitions. This is the same
 #difference as UUID (uid of the fs) vs PARTUUID (uid of the gpt partition)
-sgdisk -n 1:0:+100M -c '0:boot' -t ef00 -u c12a7328-f81f-11d2-ba4b-00a0c93ec93b --attributes=1:set:2 ...
-mkfs.ext4 -L label
+  sgdisk -n 1:0:+100M -c '0:partlabel' -t ef00  --attributes=1:set:2 ...
+  mkfs.ext4 -L label
+
+Find a LABEL in some devices:
+Feanor ~ $ sudo blkid -t LABEL="linux-home" /dev/sdb*                    ✘2⚡211
+/dev/sdb4: LABEL="linux-home" UUID="32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e" UUID_SUB="68ab821c-da77-43c4-a266-09a4ce6b1b5c" TYPE="btrfs" PARTLABEL="Linux-raid" PARTUUID="44242e86-a23d-4fdb-be59-821bcff28d8f"
+Feanor ~ $ sudo blkid -L"linux-home" /dev/sdb*                             ⚡212
+/dev/sdb4
 
 lsblk
 =====
 
-See also lsblk -f to list the partitions:
-Feanor ~ $ lsblk -f                                                        ⚡34
-NAME   FSTYPE LABEL      UUID                                 MOUNTPOINT
-sda    btrfs  linux-home 32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e 
-sdb                                                           
-├─sdb1 vfat              9D37-7B22                            /boot
-├─sdb2 ntfs              382E89A02E895830                     
-├─sdb3 ntfs              8C20B7DA20B7C98A                     
-├─sdb4 btrfs  linux-home 32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e /home
-└─sdb5 btrfs  linux-root ba8d1474-88ec-4342-a63d-e4d4732511af /
-sdc    btrfs  large      33e81fa8-6a49-4294-8bc9-bf6295ac39d1 /large
+See also lsblk -f (aka --fs) to list the partitions:
+
+Feanor ~ $ lsblk --fs                                                      ⚡185
+NAME   FSTYPE  LABEL       UUID                                 MOUNTPOINT
+sda    btrfs   linux-home  32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e
+sdb
+├─sdb1 vfat                9D37-7B22                            /boot
+├─sdb2 ntfs                382E89A02E895830
+├─sdb3 ntfs                8C20B7DA20B7C98A
+├─sdb4 btrfs   linux-home  32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e /home
+└─sdb5 btrfs   linux-root  ba8d1474-88ec-4342-a63d-e4d4732511af /
+sdc    btrfs   large       33e81fa8-6a49-4294-8bc9-bf6295ac39d1 /large
+sdd
+├─sdd1 vfat    USBKEY-FAT  C9E7-7D13
+└─sdd2 ext4    usbkey      376ad66c-865c-493c-b5d0-c31fad1ce181
+loop0  iso9660 ARCH_201408 2014-08-01-03-12-56-00               /mnt/loop
+
+Feanor ~ $ lsblk                                                           ⚡166
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 298.1G  0 disk
+sdb      8:16   0 465.8G  0 disk
+├─sdb1   8:17   0   150M  0 part /boot
+├─sdb2   8:18   0 124.7G  0 part
+├─sdb3   8:19   0   349M  0 part
+├─sdb4   8:20   0 298.1G  0 part /home
+└─sdb5   8:21   0  42.5G  0 part /
+sdc      8:32   0   2.7T  0 disk /large
+sdd      8:48   1  14.5G  0 disk
+├─sdd1   8:49   1   1.9G  0 part
+└─sdd2   8:50   1  12.6G  0 part
+loop0    7:0    0   559M  0 loop /mnt/loop
+
+$ lsblk -O (show all columns)
+
+findmnt
+=======
+
+♒Gondolin ~ $        findmnt --fstab --evaluate #(read fstab and interpretate UUIDS)
+
+TARGET    SOURCE                      FSTYPE OPTIONS
+swap      /dev/mapper/MainGroup-swap  swap   defaults
+/home     /dev/mapper/MainGroup-home  ext4   defaults,noauto,x-systemd.automount
+/         /dev/mapper/MainGroup-slash ext4   defaults
+/mnt/usbdisk
+
+♒Gondolin ~ $ findmnt --df                                                  ⚡18
+SOURCE                      FSTYPE     SIZE  USED  AVAIL USE% TARGET
+dev                         devtmpfs 119.2M     0 119.2M   0% /dev
+run                         tmpfs    122.6M  448K 122.2M   0% /run
+/dev/mapper/MainGroup-slash ext4       4.8G  4.3G 214.3M  90% /
+tmpfs                       tmpfs    122.6M     0 122.6M   0% /dev/shm
+tmpfs                       tmpfs    122.6M     0 122.6M   0% /sys/fs/cgroup
+tmpfs                       tmpfs    122.6M    4K 122.6M   0% /tmp
+/dev/mapper/MainGroup-home  ext4       9.7G  9.2G     4K  95% /home
+tmpfs                       tmpfs     24.5M     0  24.5M   0% /run/user/1000
+
+♒Gondolin ~ $ findmnt                                                       ⚡13
+TARGET                           SOURCE     FSTYPE   OPTIONS
+/                                /dev/mapper/MainGroup-slash
+                                            ext4     rw,relatime,data=ordered
+├─/proc                          proc       proc     rw,nosuid,nodev,noexec,rela
+│ └─/proc/sys/fs/binfmt_misc     systemd-1  autofs   rw,relatime,fd=22,pgrp=1,ti
+├─/sys                           sys        sysfs    rw,nosuid,nodev,noexec,rela
+│ ├─/sys/kernel/security         securityfs security rw,nosuid,nodev,noexec,rela
+│ ├─/sys/fs/cgroup               tmpfs      tmpfs    ro,nosuid,nodev,noexec,mode
+│ │ ├─/sys/fs/cgroup/systemd     cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ │ ├─/sys/fs/cgroup/cpuset      cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ │ ├─/sys/fs/cgroup/cpu,cpuacct cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ │ ├─/sys/fs/cgroup/memory      cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ │ ├─/sys/fs/cgroup/devices     cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ │ ├─/sys/fs/cgroup/freezer     cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ │ ├─/sys/fs/cgroup/net_cls     cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ │ └─/sys/fs/cgroup/blkio       cgroup     cgroup   rw,nosuid,nodev,noexec,rela
+│ ├─/sys/fs/pstore               pstore     pstore   rw,nosuid,nodev,noexec,rela
+│ ├─/sys/kernel/debug            debugfs    debugfs  rw,relatime
+│ └─/sys/kernel/config           configfs   configfs rw,relatime
+├─/dev                           dev        devtmpfs rw,nosuid,relatime,size=122
+│ ├─/dev/shm                     tmpfs      tmpfs    rw,nosuid,nodev
+│ ├─/dev/pts                     devpts     devpts   rw,nosuid,noexec,relatime,g
+│ ├─/dev/mqueue                  mqueue     mqueue   rw,relatime
+│ └─/dev/hugepages               hugetlbfs  hugetlbf rw,relatime
+├─/run                           run        tmpfs    rw,nosuid,nodev,relatime,mo
+│ └─/run/user/1000               tmpfs      tmpfs    rw,nosuid,nodev,relatime,si
+├─/home                          systemd-1  autofs   rw,relatime,fd=23,pgrp=1,ti
+│ └─/home                        /dev/mapper/MainGroup-home
+                                            ext4     rw,relatime,data=ordered
+├─/mnt/usbdisk                   systemd-1  autofs   rw,relatime,fd=35,pgrp=1,ti
+└─/tmp                           tmpfs      tmpfs    rw
+
+♒Gondolin ~ $ findmnt -o SOURCE /
+SOURCE
+/dev/mapper/MainGroup-slash
+♒Gondolin ~ $ findmnt -o UUID /
+UUID
+e7775584-22a9-49a4-adf1-6afc8683a37a
+
+Available columns:
+      SOURCE  source device
+      TARGET  mountpoint
+      FSTYPE  filesystem type
+     OPTIONS  all mount options
+ VFS-OPTIONS  VFS specific mount options
+  FS-OPTIONS  FS specific mount options
+       LABEL  filesystem label
+        UUID  filesystem UUID
+   PARTLABEL  partition label
+    PARTUUID  partition UUID
+     MAJ:MIN  major:minor device number
+      ACTION  action detected by --poll
+  OLD-TARGET  old mountpoint saved by --poll
+ OLD-OPTIONS  old mount options saved by --poll
+        SIZE  filesystem size
+       AVAIL  filesystem size available
+        USED  filesystem size used
+        USE%  filesystem use percentage
+      FSROOT  filesystem root
+         TID  task ID
+          ID  mount ID
+  OPT-FIELDS  optional mount fields
+ PROPAGATION  VFS propagation flags
+        FREQ  dump(8) period in days [fstab only]
+      PASSNO  pass number on parallel fsck(8) [fstab only]
+Default: TARGET SOURCE      FSTYPE  OPTIONS
+
+findmnt -l -o SOURCE,TARGET,FSTYPE,OPTIONS,VFS-OPTIONS,FS-OPTIONS,LABEL,UUID,PARTLABEL,PARTUUID,MAJ:MIN,SIZE,AVAIL,USED,USE%,FSROOT,TID,ID,OPT-FIELDS,PROPAGATION,FREQ,PASSNO
+findmnt -l -o SOURCE,TARGET,FSTYPE,OPTIONS,LABEL,UUID,PARTLABEL,PARTUUID,FSROOT
+lsblk -l -o NAME,MOUNTPOINT,FSTYPE,LABEL,UUID,PARTTYPE,PARTLABEL,PARTUUID,PARTFLAGS,TYPE
+
 
 /etc/fstab
 ==========

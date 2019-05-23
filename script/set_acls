@@ -1,0 +1,74 @@
+#!/bin/sh
+
+perms="rX"
+user="$USER"
+default=
+acl_opts=""
+
+die() { printf "$1\n" "${@:2}"; exit 1; } >&2
+usage() { echo "Usage: ${0##*/} [-R] [-d] [-r/-w/-p perms] [-u user/g:group] files"; 
+echo <<EOS
+-R: recursive
+-d: set default acl too
+-w: "rwX"
+-r: "rX" [default]
+-p: perms
+-u: user, u:user, g:group
+-X: recursively add the X perm to the parent dirs
+Examples: sudo set_acls -u g:wheel -w /var/lib/machines
+          sudo set_acls -u g:wheel -w /var/lib/machines/*(.)
+          set_acls -u dina -dRXw ~backups/dina
+          set_acls -u dina -dR ~/Photos ~/data/Scans
+EOS
+}
+
+while getopts ':drwRu:p:X' flag; do
+  case "$flag" in
+    d) default=t ;;
+    R) acl_opts+="-R " ;;
+    r) perms="rX" ;;
+    w) perms="rwX" ;;
+    u) user="$OPTARG" ;;
+    p) perms="$OPTARG" ;;
+    X) recurX=t ;;
+    h) usage ;;
+    :) usage; die '%s: option requires an argument -- '\''%s'\' "${0##*/}" "$OPTARG" ;;
+    ?) usage; die '%s: invalid option -- '\''%s'\' "${0##*/}" "$OPTARG" ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+case "$user" in
+	u:*|g:*) ;; #do nothing
+	*) user="u:$user"
+esac
+
+echo_and_exec() {
+	echo "$@"
+	exec "$@"
+}
+
+echo_and_eval() {
+	echo "$@"
+	"$@"
+}
+
+do_recurX() {
+	local dir="$(realpath -- "$1")"
+	if echo_and_eval setfacl -m "$user:X" "$dir"; then
+		if [ "x$dir" != "x/" ]; then
+			do_recurX "$(dirname "$dir")"
+		fi
+	fi
+}
+
+dir_recurX() {
+	local dir
+	for dir in "$@"; do
+		do_recurX "$dir"
+	done
+}
+
+[ -n "$default" ] && acl_opts+="-m default:$user:$perms "
+[ -n "$recurX" ] && dir_recurX "$@"
+echo_and_exec setfacl -m "$user:$perms" $acl_opts "$@"

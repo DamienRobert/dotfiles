@@ -22,7 +22,7 @@ for name in "$@"; do
   ssh "$name" "/tmp/SSH_$COMMAND" $ARGS
 done
 exit 0
-fi 
+fi
 if [ -n "$USESHELL" ]; then
   COMMAND="sh -c '$COMMAND'"
 else

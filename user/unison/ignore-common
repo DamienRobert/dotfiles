@@ -1,0 +1,20 @@
+ignore = Name wallpaper/wallpaper.local.png
+ignore = Name config/dotfiles/.vim/.netrwhist
+#gpg
+ignore = Name user/config/dotfiles/.gnupg/gpg.conf
+ignore = Name user/config/dotfiles/.gnupg/gpg-agent.conf
+ignore = Name user/config/dotfiles/.gnupg/random_seed
+ignorenot = Name config/home/mine/user/config/dotfiles/.gnupg/gpg.conf
+ignorenot = Name config/home/mine/user/config/dotfiles/.gnupg/gpg-agent.conf
+#sockets
+ignore = Name config/dotfiles/.fvwm/.FvwmConsole-Socket
+ignore = Name config/dotfiles/.uim.d/socket
+#objects
+ignore = Name script/magma-launch/fake_mac.o
+ignore = Name script/magma-launch/fake_mac.so
+#magma
+ignore = Regex .*/code-avisogenies/.*\.sig$
+#zsh compile files
+ignore = Name *.zwc
+ignore = Name *.zwc.old
+ignore = Name .tags

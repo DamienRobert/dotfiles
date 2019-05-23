@@ -1,0 +1,33 @@
+#!/bin/zsh
+#1) transferer unison sur imb:opt/unison
+#2) Lancer updateunison
+. $HOME/.initvars
+
+#VERSION=unison-2.40.102
+VERSION=unison-2.51.2
+## on feanor
+# rsync -vaczP /bin/unison-text imbu:opt/unison/${VERSION}-64
+# rsync -vaczP /bin/unison-gtk2 imbu:opt/unison/${VERSION}-gtk2-64
+# rsync -vaczP /bin/unison-fsmonitor imbu:opt/unison/
+## on 4a: compile unison and upload it to imb as ${VERSION}-text-64
+## this gives a binary that use the older libc from debian...
+## so this is the same as ${VERSION}-64 apart from the older libc
+
+COMPS=($@)
+if [[ -z $@ ]]; then
+	eval $($MYCOMPUTERS -l --export)
+	COMPS=($TOUNISON)
+fi
+for comp in $COMPS; do
+  eval $($MYCOMPUTERS --export $comp)
+  UNISON="$VERSION-gtk2-64"
+  case $comp in
+    plafrim|4a|phare)
+      UNISON=$VERSION-text-64 ;;
+  esac
+  SSHUNISON=$COMPUTER[sshu]
+  echo "-- $comp [$SSHUNISON]: $UNISON --"
+  # read
+  ssh2 --batch imbu rsync -vaczP "opt/unison/$UNISON" "$SSHUNISON:bin/"
+  ssh2 --batch $SSHUNISON ln -snf "$UNISON" "bin/unison"
+done

@@ -1,1 +1,0 @@
-for i in /cdrom/iso/SharedFolder/*; do dd if="$i" of="`basename \"$i\"`" bs=2k conv=noerror,sync; done;

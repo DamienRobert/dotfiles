@@ -1,0 +1,12 @@
+[Unit]
+Description=lock screen
+Documentation=man:xss-lock(1)
+ConditionFileIsExecutable=/usr/bin/xss-lock
+ConditionFileIsExecutable=/usr/bin/i3lock
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/xss-lock -- i3lock -n -i %h/mine/medias/wallpaper/wallpaper.png
+
+[Install]
+WantedBy=graphical-session.target

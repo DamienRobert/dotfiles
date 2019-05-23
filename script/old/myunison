@@ -1,0 +1,145 @@
+#!/bin/zsh
+. $HOME/.initvars
+
+#wrapper around unison
+#use a custom catconfig.sh to specify the files I want to synchronize
+#according to the type I pass to myunison
+#use 00COMPUTERS.rb to find default type and default server name for unison
+eval $($MYCOMPUTERS --export)
+
+MYHOSTFILE="$CFGFILES/hosttype.local"
+[[ -z $MYHOSTNAME ]] && MYHOSTNAME=$COMPUTER[hostname]
+[[ -z $MYHOSTNAME && -f "$MYHOSTFILE" ]] && . "$MYHOSTFILE"
+[[ -n $MYHOSTNAME ]] && eval $($MYFILES/00COMPUTERS.rb --export --value unison $MYHOSTNAME)
+
+GUI="true"
+if [[ -n $UNISON[path] ]]; then
+  PROG=$UNISON[path]
+else
+  PROG="unison"
+  [[ -x "/usr/bin/unison-gtk" ]] && PROG="unison-gtk"
+  [[ -x "/usr/bin/unison-gtk2" ]] && PROG="unison-gtk2"
+fi
+OPTS=()
+#VERSION=`$PROG -version | cut -d ' ' -f 3 | cut -d '.' -f 1-2`
+TYPE=()
+ALL=
+PUSH=
+PULL=
+CAT_FILES=
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -b ) shift; OPTS=($OPTS -batch);;
+    -c ) shift; GUI="false"; OPTS=($OPTS -ui text) ;;
+    -g ) shift; GUI="true"; OPTS=($OPTS -ui graphic) ;;
+    -P ) shift; PROG="$1"; shift;;
+    # add an option to unison
+    -o ) shift; OPTS=($OPTS $1); shift;;
+    # select a type of config file
+    -t ) shift;  TYPE=($TYPE $1); shift;;
+    # select all types of config file (from 00COMPUTERS.rb)
+    -ta) shift; ALL="true";;
+    -cat ) shift; CAT_FILES="true";; #qd il y a différent type, ne pas lancer un unison par type mais concaténer les fichiers
+    #shortcut for -ta -cat
+    -tc) shift; ALL="true"; CAT_FILES="true" ;;
+    #only push changes
+    -push) shift; PUSH=true ;;
+    #only pull changes
+    -pull) shift; PULL=true ;;
+    -cpush) shift; PUSH=true; GUI=false; OPTS=($OPTS -auto) ;; #server mode
+    -cpull) shift; PULL=true; GUI=false; OPTS=($OPTS -auto) ;; #server mode
+
+    -batch ) #equivalent to 'myunison -c -b -push'
+          PUSH=true;
+          OPTS=($OPTS -batch)
+          GUI="false"; OPTS=($OPTS -ui text) ;;
+
+    -* ) OPTS=($OPTS $1); shift;;
+    *) break;;
+  esac
+done
+
+process() {
+  CONFIGNAME="config-$COMPUTER[hostname]-$type.prf"
+  CONFIGFILE="$HOME/.unison/$CONFIGNAME"
+  ADDPREFSFILE="prefs-$COMPUTER[hostname]-$type"
+  [[ -n $UNISON[path] ]] && COPTS=($COPTS -servercmd $UNISON[path])
+  [[ -n $PUSH ]] && COPTS=($COPTS -nocreation $ROOT1 -nodeletion $ROOT1 -noupdate $ROOT1)
+  [[ -n $PULL ]] && COPTS=($COPTS -nocreation $ROOT2 -nodeletion $ROOT2 -noupdate $ROOT2)
+
+  COPTS=($COPTS -addprefsto $ADDPREFSFILE)
+  exec 3>&1
+  exec >$CONFIGFILE
+
+  echo "root = $ROOT1"
+  echo "root = $ROOT2"
+  cat "$CFGFILES/unison/default_config.prf"
+
+  if [[ $GUI == "false" ]]; then
+    echo 'diff = gdiff'
+    echo 'merge = Name * -> screen -DmS unisonmerge vimdiff CURRENT1 CURRENT2 CURRENTARCHOPT'
+    echo 'merge = Name .* -> screen -DmS unisonmerge vimdiff CURRENT1 CURRENT2 CURRENTARCHOPT'
+  fi
+
+  #with cat, we need to cat each configtype separably
+  if [[ -n $CAT_FILES ]]; then
+    foreach itype in $TYPELIST; do
+      $CFGFILES/unison/catconfig.sh $itype
+    done
+  else
+    $CFGFILES/unison/catconfig.sh $type
+  fi
+  [[ -e "$CFGFILES/unison/$ADDPREFSFILE.prf" ]] && cat "$CFGFILES/unison/$ADDPREFSFILE.prf"
+  [[ -e "$HOME/.unison/$ADDPREFSFILE.prf" ]] && cat "$HOME/.unison/$ADDPREFSFILE.prf"
+  exec 1>&3
+}
+
+sync() {
+  name=$1
+  case $name in
+    usb) COMPUTER[hostname]="usb"
+         ROOT1=$HOME
+         ROOT2="$HOME/media/usbkey/dams/unison"
+         ;;
+    *) eval $($MYFILES/00COMPUTERS.rb --export $name)
+       infos=$($MYFILES/00COMPUTERS.rb --export --value unison $name)
+       if [[ $? != 0 ]]; then exit $?; fi
+       eval $infos
+       ROOT1=$HOME
+       ROOT2=ssh://$COMPUTER[sshu]
+       ;;
+  esac
+  if [[ -z $ALL ]]; then
+    if [[ -z $TYPE ]]; then
+      TYPELIST=($UNISONTYPE[1])
+    else
+      TYPELIST=($TYPE)
+    fi
+  else
+    TYPELIST=($UNISONTYPE)
+  fi
+  COPTS=$OPTS
+  if [[ -z $CAT_FILES ]]; then
+    foreach type in $TYPELIST; do
+      process
+      echo "$PROG $COPTS $CONFIGNAME"
+      $PROG $COPTS $CONFIGNAME
+    done
+  else
+    type=""
+    foreach itype in $TYPELIST; do
+      type="$type-$itype"
+    done
+    process
+    echo "$PROG $COPTS $CONFIGNAME"
+    $PROG $COPTS $CONFIGNAME
+  fi
+}
+
+for CLIENT in "$@"; do
+  echo $CLIENT
+  sync "$CLIENT"
+done

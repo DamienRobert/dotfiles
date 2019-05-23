@@ -1,0 +1,2 @@
+#!/bin/sh
+BROWSER="chromium" sage -c "notebook(require_login=false,open_viewer=true)" "$@"

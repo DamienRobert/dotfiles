@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+DEFAULT="$HOME/tmp/@comps/$MYHOSTNAME/slash"
+INDIR=${1-$DEFAULT}
+OUTDIR=${2-/}
+$HOME/script/lib/commit-generate $INDIR $OUTDIR

@@ -1,0 +1,20 @@
+Configure 'dams' user
+
+Minimal config (via rsync+ssh):
+- ~/config/generate.rb --minimal --all -c dams@arch_virtual
+- ~/config/generate.rb --minimal --all --keyid -c frimax
+
+Fully featured config (configured over the host, needs git+ruby):
+- ~/config/run.rb -c dams@arch_virtual --bootstrap :config --all
+- ~/config/run.rb -c cremi --keyid --bootstrap=rsync :config --all
+
+Full client:
+- ~/config/run.rb -c feanor --bootstrap=unison :config --all ...
+  ou `unison ...`; `ssh ... ~/mine/initenv ~/mine/config/generate --all`
+- xfce: configure panel
+- firefox: activate sync and lastpass
+    greasemonkey: ~config/generate.rb ~maint/user/misc/greasemonkey.rb
+    ublock: ~config/files/firefox/my-ublock-backup*
+- deluge: ip block list http://list.iblocklist.com/?list=fr&fileformat=p2p&archiveformat=gz
+[- ~maint/packages.rb --shell=exec -t arch_aur bootstrap]
+- ~maint/packages.rb get

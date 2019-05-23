@@ -1,0 +1,1 @@
+--markup markdown -M kramdown --title "~rubylib Documentation" --protected --private --output-dir yardoc

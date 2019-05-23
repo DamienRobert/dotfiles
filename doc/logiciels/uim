@@ -1,8 +1,0 @@
-Latin characters: utilise compose
-ELatin: plein de dead keys
-m17n-fr-azerty: le clavier azerty
-     rfc1345: & est le raccourci
-		 unicode: ^U et le numéro unicode
-		 latn-pre: dead key puis key
-		 latn-post: key puis dead key
-phonetic: taper les caractères phonétiques

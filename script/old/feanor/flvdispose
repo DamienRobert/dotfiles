@@ -1,0 +1,35 @@
+#!/bin/sh
+
+into () {
+    D=`sanitize "$1"`
+    mkdir -p "$D"
+    cd "$D"
+}
+sanitize() {
+    tr / '|' <<EOF
+$1
+EOF
+}
+
+cd ~/.deezerdump || exit 1
+IFS='|'
+for f in v/*; do
+    read -r A L T < "$f";
+    rm -- "$f"
+    break
+done
+cd u
+if test -n "$A"; then into "$A"; fi
+if test -n "$L"; then into "$L"; fi
+
+if test -n "$T"; then
+    TT=`sanitize "$T"`.mp3
+else
+    TT=`tempfile -d . -s .mp3`
+fi
+
+OUT=`sanitize "$T"`.mp3
+rm -f -- "$OUT"
+ffmpeg -i "$1" -vn -acodec copy -author "$A" -album "$L" -title "$T" --
+"$OUT"
+rm "$1"

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd $HOME/sshfs
+mysshfs phare:/ phare-root/
+mysshfs gimb:/ imb-root/

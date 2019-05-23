@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-$RUNDIR/copydir -b -u root $DIR/slash /

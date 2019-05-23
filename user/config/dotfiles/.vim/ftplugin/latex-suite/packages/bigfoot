@@ -1,0 +1,15 @@
+if exists("bigfoot_package_file")
+	finish
+endif
+let bigfoot_package_file = 1
+
+let g:TeX_package_option_bigfoot = 'para'
+
+let g:TeX_package_bigfoot =
+\ 'bra:newfootnote,bra:newfootnote[para],'
+\.'bra:footnoteA,bra:footnoteB,'
+\.'bra:FootnoteA,bra:FootnoteB,'
+\.'bra:Footnotemark,bra:Footnotetext,'
+\.'SplitNote'
+
+" vim:ft=vim:ff=unix:

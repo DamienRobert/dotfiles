@@ -1,0 +1,127 @@
+Opentype: stored in cff or cff2 file format, use cubic Bézier and reduced
+hinting information.
+TrueType: ttf, quadratic Bézier and lots of hinting information.
+https://blog.typekit.com/2010/12/02/the-benefits-of-opentypecff-over-truetype/
+
+OpenType Properties
+===================
+
+http://ilovetypography.com/OpenType/opentype-features.html
+https://en.wikipedia.org/wiki/List_of_typographic_features
+(cf la doc de fontspec)
+
+Ligatures
+---------
+[*=Activated by default]
+
+*rlig, *liga, *clig, dlig, hlig, tlig/trep
+Ligatures={Required, Common, Contextual, Rare/Discretionary, Historic, TeX}
+Desactivate: Ligatures=NoCommon
+
+liga: ff/ffi, Historic/hlig: st/ct, Discretionary/dlig: tz
+clig: activate ligatures based on context
+
+Letters
+-------
+case,smcp,pcap,c2sc,c2pc,unic
+Letters=Uppercase,SmallCaps,PetiteCaps,UppercaseSmallCaps,UppercasePetiteCaps,Unicase
+
+Numbers
+-------
+lnum,onum,pnum,tnum,zero,anum
+Numbers=Uppercase/Lining,Lowercase/OldStyle,Proportional,Monospaced,SlashedZero,Arabic
+
+Contextuals
+-----------
+http://ilovetypography.com/2011/04/01/engaging-contextuality/
+
+cswh,calt,init,fina,falt,medi
+Contextuals=Swash,Alternate,WordInitial,WordFinal,LineFinal,Inner
+
+calt: activate Alternates based on context
+cswh: activate Swash based on context
+
+VerticalPosition
+----------------
+(for numbers)
+sups,subs,numr,dnom,sinf,ordn
+VerticalPosition=Superior,Inferior,Numerator,Denominator,ScientificInferior,Ordinal
+
+Ordinal: ordn
+
+Fractions
+---------
+frac,afrc
+Fractions={On,Alternate}
+
+Stylistic Set variation
+-----------------------
+ss01,ss02
+StylisticSet={1,2}
+
+Character Variants
+------------------
+cv01,...
+CharacterVariant={4,5:3,}
+
+Alternates
+----------
+Alternate=0 (0 is equivalent to Style=Alternate)
+
+Style
+-----
+salt,ital,ruby,swsh,hist,titl
+Style={Alternate,Italic,Ruby,Swash,Historic,TitlingCaps,HorizontalKana,VerticalKana}
+
+Kerning
+-------
+Kerning=Uppercase -> small amount of tracking between upercase letters
+
+Others: Diacritics (*mark, *mkmk, *abvm, *blwm)
+        CJKShape (trad,smpl,jp78,jp83,jp90,expt,nlck)
+        Annotation=3
+        CharacterWidth (pwid,fwid,hwid,twid,qwid,palt,halt)
+        Ornaments (ornm)
+        Script=latin
+        Language=French
+
+Exemple: http://www.twardoch.com/download/typotechnica2005_zapfino.pdf
+  ss01: Default Set
+  salt=ss02: Stylistic Alternates
+  swsh=ss03: Swash
+  swsh+salt=ss04: Swash Stylistic Alternates
+
+Opticals
+========
+
+Opticals Fonts: Caption, Text, Subhead, and Display
+
+http://tex.stackexchange.com/questions/120428/garamond-premier-pro-optical-sizes-xelatex-v-lualatex
+http://tex.stackexchange.com/questions/21297/how-should-fontspec-be-set-up-to-exploit-the-best-features-of-pro-fonts/21423#21423
+
+Ex in lualatex+fontspec (normally done automatically):
+\setmainfont[SizeFeatures={
+{Size=-8,Font=GaramondPremrPro-Capt},
+{Size=8-14,Font=GaramondPremrPro},
+{Size=14-21,Font=GaramondPremrPro-Subh},
+{Size=21-,Font=GaramondPremrPro-Disp}}
+]{Garamond Premier Pro}
+
+ declaration \ class option  10pt      11pt       12pt
+ \tiny                        5pt       6pt        6pt
+ \scriptsize                  7pt       8pt        8pt
+ \footnotesize                8pt       9pt       10pt
+ \small                       9pt      10pt       11pt
+ \normalsize                 10pt      11pt       12pt
+ \large                      12pt      12pt       14pt
+ \Large                      14pt      14pt       17pt
+ \LARGE                      17pt      17pt       20pt
+ \huge                       20pt      20pt       25pt
+ \Huge                       25pt      25pt       25pt
+
+Design    Size  Size Ranges
+Caption:   8    point 5–8.5 point
+SmText:   10    point 8.6–11
+Regular:  12    point 11.1–14 point
+Subhead:  18    point 14.1–21.5 point
+Display:  36    point 21.5+ point

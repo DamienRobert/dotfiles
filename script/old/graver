@@ -1,0 +1,96 @@
+#!/bin/sh
+
+help() {
+  echo "$0 [-V CDNAME] [-N ISONAME] [-now] [-g] [-noiso] [-cd] [-f] [-nodu] OPTIONS_MKISOFS FILES"
+  echo "-V CDNAME: nom du cd, facultatif, demande par read sinon"
+  echo "-N ISONAME: nom de l'iso, par défaut cd.iso"
+  echo "-now: on pipe mkisofs dans cdrecord (désactive -g)"
+  echo "-g: on lance la gravure ensuite"
+  echo "-noiso: on ne fait pas l'iso"
+  echo "-cd: on mkisofs le cd"
+  echo "-f: pour suivre les liens symboliques"
+  echo "-nodu: on n'affiche pas la place disque prise"
+  echo "OPTIONS_MKISOFS: options de MKISOFS"
+  echo "Options par défaut: -r (RockRidge) et -l (noms iso-9660 longs)"
+  echo "Ex: fais l'iso puis grave"
+  echo "  $0 -f -g ."
+  echo "Ex: grave, on a deja l'iso"
+  echo "  $0 -noiso -g"
+  echo "Ex: on grave directement"
+  echo "  $0 -f -now ."
+
+  exit 1
+}
+
+du_usage() {
+  if [ x$NODU != xyes ]
+  then
+    eval $DU_COMMAND
+  fi
+}
+
+#commandes
+CDRECORD_COMMAND="cdrecord -pad -v dev=/dev/hdc -tao"
+MKISO_COMMAND='mkisofs $CDOUTPUT $MKISO_OPTIONS -r -l -V "$CDNAME" "$@" $CDPATH'
+DU_COMMAND='du $DU_OPTIONS -sh .'
+
+#variables
+ISONAME="cd.iso"
+
+#options de MKISO
+CDNAME=""
+CDPATH=""
+CDOUTPUT="-o $ISONAME"
+
+#flags
+NOMKISO=""
+GRAVE=""
+PIPE=""
+NODU=""
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -V ) shift; ISONAME="$1"; CDOUTPUT="-o $ISONAME" shift ;;
+    -N ) shift; ISONAME="$1"; shift ;;
+    -now) PIPE="yes"; CDOUTPUT=""; shift ;;
+    -g) GRAVER="yes"; shift ;;
+    -noiso) NOISO="yes"; shift ;;
+    -cd) mount /cdrom; CDPATH="/media/cdrom0"; shift ;;
+    -f) DU_OPTIONS="-L"; MKISO_OPTIONS="-f"; shift ;;
+    -nodu) NODU="yes"; shift ;;
+    -h) help ;;
+    *) break;;
+  esac
+done
+
+du_usage
+
+if [ -z "$CDNAME" -a "x$NOISO" != "xyes" ]
+then
+   echo "Nom du CD?"
+   read CDNAME
+fi
+
+if [ x$NOISO != xyes ]
+then
+  if [ -n "$CDOUTPUT" -a -f "$ISONAME" ]
+  then echo "Je vais effacer le fichier $ISONAME"
+       read PLOUM
+       rm -f "$ISONAME"
+       du_usage
+  fi
+  if [ x$PIPE = xyes ]
+  then
+    COMMAND="$MKISO_COMMAND | $CDRECORD_COMMAND -"
+  else
+    COMMAND="$MKISO_COMMAND"
+  fi
+  eval "$COMMAND"
+fi
+
+if [ x$GRAVER = xyes -a x$PIPE != xyes ]
+then
+ eval $CDRECORD_COMMAND "$ISONAME"
+fi

@@ -1,17 +1,3 @@
-Control Master:
-http://unix.stackexchange.com/questions/24005/how-to-close-kill-ssh-controlmaster-connections-manually
-
-From the manual:
-
-    -O ctl_cmd
-    Control an active connection multiplexing master process. When the -O option is specified, the ctl_cmd argument is interpreted and passed to the master process. Valid commands are: check (check that the master process is running), forward (request forwardings without command execution), cancel (cancel forwardings), exit (request the master to exit), and stop (request the master to stop accepting further multiplexing requests).
-
-Older versions only have check and exit, but that's enough for your purpose.
-
-ssh -O check host.example.com
-
-If you want to delete all connections (not just the connection to a particular host) in one fell swoop, then fuser /tmp/ssh_mux_* or lsof /tmp/ssh_mux_* will list the ssh clients that are controlling each socket. Use fuser -HUP -k tmp/ssh_mux_* to kill them all cleanly (using SIGHUP as the signal is best as it lets the clients properly remove their socket).
-
 Multiple identities
 ==================
 
@@ -34,6 +20,7 @@ already do that.
 
 Background
 ==========
+-C  compress
 -N  Do not execute a remote command.
 -n  Redirects  stdin from /dev/null
 -f  Requests  ssh to go to background just before command execution.
@@ -41,7 +28,7 @@ Background
 -T  Disable ptty
 
 ex: ssh -fNT -D 44000 ens
-ssh -f -R 
+ssh -f -R ...
 
 Escape characters
 =================
@@ -74,3 +61,51 @@ Ctl cmd
        (request  the  master  to  stop  accepting  further multiplexing
        requests).
 ex: ssh -O exit ens
+ssh -O check host.example.com
+
+http://unix.stackexchange.com/questions/24005/how-to-close-kill-ssh-controlmaster-connections-manually
+If you want to delete all connections (not just the connection to a particular host) in one fell swoop, then fuser /tmp/ssh_mux_* or lsof /tmp/ssh_mux_* will list the ssh clients that are controlling each socket. Use fuser -HUP -k tmp/ssh_mux_* to kill them all cleanly (using SIGHUP as the signal is best as it lets the clients properly remove their socket).
+
+ssh-keygen
+==========
+
+ssh-keygen -b 256 -t ecdsa -C"$(id -un)@$(hostname)-$(date --iso-8601=date)"
+ssh-keygen -b 2048 -t rsa -C"$(id -un)@$(hostname)-$(date --iso-8601=date)"
+  -t ed25519
+Get fingerprint: ssh-keygen -lf id_ed25519_forward.pub 
+
+sshd
+====
+
+Subsystem       sftp    internal-sftp
+
+Match User cosmic
+        ChrootDirectory %h
+        ForceCommand internal-sftp
+        AllowTcpForwarding no
+        X11Forwarding no
+
+# Note sur control master: j'ai fait un test de transfert de gros fichiers
+# multiplexés (3 fois), et j'ai deux fois moins de débit que si je fais
+# trois connexions indépendantes. Donc par défaut je ne fais pas de control
+# master, mais j'utilise ssh2 pour les connections intéractives
+
+Forwarding
+==========
+
+- ssh -L 9000:server:5432 user@example.com
+  localhost:9000 -> example.com -> server:5432
+  ssh -L 9000:localhost:5432 user@example.com
+  localhost:9000 -> example:5432
+- ssh -R 9000:server:5432 user@example.com
+  example:9000 -> localhost -> server:5432
+  ssh -R 9000:localhost:5432 user@example.com
+  example:9000 -> localhost:5432
+
+http://superuser.com/questions/53103/udp-traffic-through-ssh-tunnel
+Forwarding udp: forward tcp with -L and then use socat
+  ssh -L 5353:localhost:5353 server.foo.com
+  Server side: socat tcp4-listen:5353,reuseaddr,fork UDP:nameserver:53
+  Client side: socat udp4-listen:53,reuseaddr,fork tcp:localhost:5353
+Or directly
+  socat udp4-listen:4003,reuseaddr,fork STDOUT| ssh server socat STDIN udp-sendto:localhost:4003

@@ -1,8 +1,0 @@
-mktexlsr / texhash : create ls-R database
-mktexfmt / fmtutil, fmtutil-sys: TeX format files
-
-updmap, updmap-sys: manage TeX font maps
-
-mktextfm: create tfm file for a font
-mktexmf: create metafont
-mktexpk: create pk file for a font

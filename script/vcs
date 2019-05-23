@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 autoload -Uz colors && colors
+QUIET=
 
 mklist() {
 	list=($@)
@@ -14,9 +15,16 @@ mklist() {
 
 msg() {
 	msg="${fg[yellow]}=====${fg[yellow]} $1"
-	[[ $folder != "." ]] && msg+=" for $foldername"
+	[[ -n $folder && $folder != "." ]] && msg+=" for $foldername"
 	msg+=" =====${reset_color}";
-	echo -e $msg
+	[[ -z $QUIET ]] && echo -e $msg
+}
+
+pushgitrepo() {
+	local orig; orig=$1
+	msg "Pushing to $orig"
+	git push --prune --all $orig
+	git push --prune --tags $orig
 }
 
 doaction() {
@@ -25,7 +33,7 @@ doaction() {
 		foldername=$namelist[i]
 		case $action in
 			fetch )
-				if [[ -d $folder && -d $folder/.git ]]; then 
+				if [[ -d $folder && -d $folder/.git ]]; then
 					msg "fetch"
 					( cd $folder
 					git fetch --all -p
@@ -33,42 +41,64 @@ doaction() {
 				fi
 				;;
 			update )
-				if [[ -d $folder ]]; then 
+				if [[ -d $folder ]]; then
 					msg "update $AUTO"
 					( cd $folder;
-					if git rev-parse 2>/dev/null; then 
-						if [[ -n $AUTO ]]; then
-							#update svn if it exists, otherwise update master
-							if [[ -d $(git rev-parse --git-dir)/svn ]]; then
-								git my update svn
-							else
-								git my update master
-							fi
-						else
-							#update current branch
-							#(note: git my update now automatically correctly updates svn
-							#branches)
-							git my update
-						fi
+					if git rev-parse 2>/dev/null; then
+							git my update $AUTO $OPTS
 					fi
 					if [[ -d .hg ]]; then hg pull -u; fi
 					if [[ -d .svn ]]; then svn update; fi
 					)
 				fi
 				;;
-			list )
+			push )
+				if [[ -d $folder ]]; then
+					msg "push"
+					( cd $folder;
+					if git rev-parse 2>/dev/null; then
+						git push
+					fi
+					[[ -d .hg ]] && hg push
+					[[ -d .svn ]] && svn commit
+					)
+				fi
+				;;
+			pushall )
+				if [[ -d $folder ]]; then
+					( cd $folder;
+					if git rev-parse 2>/dev/null; then
+						pushgitrepo $orig
+					fi
+					)
+				fi
+				;;
+			type )
 				if [[ -d "$folder/.git" ]]; then echo "$foldername: git"; fi
 				if [[ -d "$folder/.hg"  ]]; then echo "$foldername: hg" ; fi
 				if [[ -d "$folder/.svn" ]]; then echo "$foldername: svn"; fi
 				if [[ -d "$folder/.bzr" ]]; then echo "$foldername: bzr"; fi
 				if [[ -d "$folder/.svk" ]]; then echo "$foldername: bzk"; fi
 				;;
+			list )
+				echo $foldername
+				;;
 			action )
-				if [[ -d $folder ]]; then 
+				if [[ -d $folder ]]; then
 				  msg "action: $command"
-					( 
+					(
 					cd $folder
 					eval $command
+					)
+				fi
+				;;
+			last_tag )
+				if [[ -d $folder ]]; then
+					msg "last tag"
+					( cd $folder;
+					if git rev-parse 2>/dev/null; then
+							git tag | sort --version-sort | tail -n1
+					fi
 					)
 				fi
 				;;
@@ -76,42 +106,113 @@ doaction() {
 	done
 }
 
-action=$1; shift
+# these opts are for 'vcs status' because of the shortcut 'vcs -> vcs status'
+opts=()
+while [[ $# -gt 0 ]]; do
+	case $1 in
+		-- ) shift; break ;;
+		-*) opts+=$1; shift ;;
+		*) break;;
+	esac
+done
+if [[ $# -gt 0 ]]; then
+	action=$1; shift
+else
+	action="status"
+fi
+
 case $action in
 	status )
 		#this case is special because I want to call gitstatus.rb only once
 		#since ruby can be a bit slow
-		OPTS=()
 		while true; do
 			case $1 in
 				-- ) shift; break ;;
-				-*) OPTS+=$1; shift ;;
+				-*) opts+=$1; shift ;;
 				*) break;;
 			esac
 		done
 		mklist "$@"
-		gitstatus.rb $OPTS $list
+		gitstatus.rb $opts $list
 		exit 0
 		;;
 	update )
 		AUTO=
+		OPTS=()
 		while true; do
 			case $1 in
 				-- ) shift; break ;;
-				--auto) shift; AUTO="--auto" ;;
+				-a|--auto) shift; AUTO="--auto" ;;
+				-*) OPTS+=$1; shift ;;
 				*) break;;
 			esac
 		done
+		;;
+	pushall )
+		orig="origin"
+		while true; do
+			case $1 in
+				-- ) shift; break ;;
+				-o|--orig) shift; orig=$1; shift ;;
+				*) break;;
+			esac
+		done
+		;;
+	gc )
+		action=action
+		command="git gc --aggressive"
 		;;
 	action )
 		command=$1
 		shift
 		;;
-	list | fetch )
+	last_tag )
+		while true; do
+			case $1 in
+				-- ) shift; break ;;
+				-q|--quiet) shift; QUIET=t ;;
+				*) break;;
+			esac
+		done
+		;;
+	list | type | fetch )
 		#no preparation to do
 		;;
-	* )
-		echo "$0 list/update/fetch/status/action dirs"
+	clone | clone_or_update )
+		OPTS=()
+		local git_opt_dist
+		while true; do
+			case $1 in
+				-- ) shift; break ;;
+				-c|--checkout) shift; checkout=$1; shift ;;
+				-d|--dist) shift; git_optdist=t ;;
+				-*) OPTS+=$1; shift ;;
+				*) break;;
+			esac
+		done
+			url=$1
+			[[ -n $git_optdist ]] && url=$(~/mine/ruby/lib/dr/packages/handlers/git_optdist.rb --repo $url)
+			dir=$2
+			[[ -z $dir ]] && dir="./"
+			[[ $dir[-1] == "/" ]] && dir+=${$(basename $url)%.git}
+			mkdir -p $(dirname $dir)
+			if [[ -d $dir ]]; then
+				# msg "updating $dir" (vcs update will log)
+				vcs update $OPTS $dir
+			else
+				msg "cloning $url to $dir"
+				git clone $url $dir
+			fi
+			if [[ -n $checkout ]]; then
+				[[ $checkout == "LAST" ]] && checkout=$(vcs last_tag -q $dir)
+				git -C $dir checkout $checkout
+			fi
+		;;
+	help )
+		echo "$0 list/type/update/fetch/status/action/last_tag dirs"
+		echo "$0 clone_or_update [-c/--checkout tag/LAST] url dir"
+		# Exemples: vcs action 'git remote show origin | grep Fetch' *
+		exit 1
 		;;
 esac
 

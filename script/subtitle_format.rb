@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require "dr/encoding"
+require "dr/base/encoding"
 
 file = ARGV[0]
 out = ARGV[1] || STDOUT
@@ -7,13 +7,20 @@ text = File.readlines(file)
 abort "No lines in #{file}" if text.empty?
 otext=""
 
+#time are of the form hh:mm:ss,msms
+#but some subtitles are of the form hh:mm:ss:msms
+#which omxplayer does not recognize
+def normalize_ms(line)
+	line.gsub(/(\d\d:\d\d:\d\d):(\d\d\d)/,'\1,\2')
+end
+
 def format_line(line,col=50)
   cursor=0
   r=""
   while cursor < line.length do
     chunk = line[cursor...(cursor+col)]
     match=/.*\s+/.match(chunk)
-    if match 
+    if match
       cursoradv=match.offset(0)[1]
     else
       cursoradv=col
@@ -36,7 +43,7 @@ text.each do |line|
   end
   if state == :time and line =~ /.*\s*-->\s*.*/
     state=:text
-    otext << line
+    otext << normalize_ms(line)
     next
   end
   if state == :text and line =~ /^\n$/

@@ -20,22 +20,20 @@ show() {
   git --no-pager log -1 --format=$format $branch
 }
 
-for branch in $(git branch -a --merged $cur) # | grep -v 'shelf\|HEAD' | sed -n "/remotes\\/$remote/p")
+list() {
+	git branch --format='%(refname)' $@
+}
+
+for branch in $(list -a --merged $cur)
 do
-    #open="%C(magenta)[3m"
-    #close="[0m"
     open="%C(magenta)"
     close="%Creset"
-
-    #echo "$(git log -1 --format="* %C(red)%aN%Creset ($open${branch#remotes/$remote/}$close)  %Creset%cr%Creset" $branch)"
 		show
 done
 
-for branch in $(git branch -a --no-merged $cur) # | tr -d '*' | grep -v 'shelf\|HEAD' | sed -n "/remotes\\/$remote/p")
+for branch in $(list --no-merged $cur)
 do
     open="%C(red)"
     close="%Creset"
-
-    #echo "$(git log -1 --format="* %C(red)%aN%Creset ($open${branch#remotes/$remote/}$close)  %Creset%cr%Creset %s" $branch)"
 		show
 done

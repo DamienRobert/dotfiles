@@ -1,0 +1,10 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+- include: pacman.yml
+  tags: pacman
+  when: "'archlinux' in group_names"
+- include: virtualbox.yml
+  tags: virtualbox
+  when: "'virtual' in group_names"
+- include: users.yml tags=users
+- include: openssh.yml tags=ssh

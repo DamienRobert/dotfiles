@@ -1,0 +1,6 @@
+# don't export $COLUMNS for ps, to allow long lines on "ps | grep ..."
+# 09nov2012  +chris+
+(
+unset COLUMNS;
+exec command ps "$@"
+)

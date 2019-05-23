@@ -1,1 +1,0 @@
-for i in *.*; do base=${i%.*}; out="$base.mp3"; if [ -e out/"$out" ]; then continue; else ffmpeg -i $i out/"$out"; fi; done

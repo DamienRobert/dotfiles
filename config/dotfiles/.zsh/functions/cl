@@ -1,5 +1,0 @@
-# cd and ls
-cl() {
-    emulate -L zsh
-    cd $@ && ls
-}

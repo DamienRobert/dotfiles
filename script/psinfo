@@ -2,4 +2,22 @@
 
 # PS=$(pgrep "$@")
 # [ -n "$PS" ] && ps -ww -fp $PS
-ps uwwp ${$(pgrep -d, "${(j:|:)@}"):?no matches}
+
+help() {
+	echo "$@ [-p pid1,pid2] [pgrepopts] name1 name2"
+}
+OPTS=()
+LIST=()
+while true;
+do
+	case $1 in
+		-- ) break ;;
+		-p ) shift; LIST+=$1; shift ;;
+		-h ) shift; msg ;;
+		-* ) OPTS+=$1; shift ;;
+		*) break ;;
+	esac
+done
+
+[[ -n $@ ]] && LIST+=${$(pgrep $OPTS -d, "${(j:|:)@}"):?no matches}
+[[ -n $LIST ]] && ps uwwp $LIST

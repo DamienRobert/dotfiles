@@ -1,0 +1,103 @@
+# Guards
+r||=foo
+r&&=foo
+
+They are essentially equivalent to
+r || (r=foo) and r && (r=foo)
+See http://www.rubyinside.com/what-rubys-double-pipe-or-equals-really-does-5488.html
+Essentially because x||=x works (x=nil) whereas x || x=x does not (because the way the ruby parser works to detect local variables)
+
+Ruby 2.3: foo&.bar
+
+# Strings
+s.slice!(ploum) #return the same thing as s.slice(ploum), ie s[ploum] but changes s to remove the sliced data
+
+# Regexps
+s[/regexp/] #return the matching portion
+s[/(regexp)/,1] #get the numbered match
+s.match(/(regexp)/) {|m| m[1]} #ditto
+
+# Arrays
+
+array[ploum]: Returns the element at _index_,
+or returns a subarray starting at _start_ and
+continuing for _length_ elements, or returns a subarray
+specified by _range_.
+Negative indices count backward from the end of the
+array (-1 is the last element).
+
+array * "string" #equivalent to array.join("string")
+
+# Hash
+
+foo[key]||fallback #does not work if foo[key]=nil or false
+foo.fetch(key,fallback)
+foo[key1][key2][key3] rescue fallback
+
+Convert an array [:a, :b, :c] to a hash {a: [], b:[], c:[]}
+  a.zip([[]]*a.length
+
+# Constructing an array
+r=[];foo.each do |bar|
+  r << bar if baz
+end #changing the name r needs to be done twice
+
+r=foo.map {|bar| next bar if baz}.compact #here we only need to change the left assignment
+r=[].itself {|r| foo.each do |bar|
+  r << bar if baz
+end }
+evens = (1..10).each_with_object([]) { |i, a| a << i*2 }
+
+Hash[keys.zip(values)] #note: Hash[] uses to_h, while Hash() uses to_hash
+
+# Enumeration
+
+[*items].each do ... #works for both items an Array or a single item
+Similarly: Array(items) [looks to be the exactly the same as [*items]]
+But use to_a which may be annoying if items is a hash (they will be converted to an array).
+See https://github.com/rails/rails/blob/71fc7892399bcb3ca24eff0a8f528e3bc8d7d82d/activesupport/lib/active_support/core_ext/array/wrap.rb
+for Array.wrap in ActiveSupport
+
+  def self.wrap(object)
+    if object.nil?
+      []
+    elsif object.respond_to?(:to_ary)
+      object.to_ary || [object]
+    else
+      [object]
+    end
+  end
+
+# Case
+case obj
+when proc
+when :itself.to_proc #test if obj is true
+
+# recursive hash
+
+Ruby 2.3: hash/array.dig(:foo,:bar,1,:ploum)
+http://stackoverflow.com/questions/34620469/safely-assign-value-to-nested-hash-using-hashdig-or-lonely-operator
+h.dig(:data, :user)&.[]=(:value, "Bob")    # or equivalently
+h.dig(:data, :user)&.store(:value, "Bob")
+hash = Hash.new {|h,k| h[k] = h.class.new(&h.default_proc) }
+hash[:data][:user][:value] = "Bob"
+
+# Concatenate enumerators
+# http://stackoverflow.com/questions/38859505/how-can-i-make-a-ruby-enumerator-that-does-lazy-iteration-through-two-other-enum
+enums.lazy.flat_map{|enum| enum.lazy }
+
+#https://redmine.ruby-lang.org/issues/709
+class Enumerator
+	def +(other)
+		Enumerator.new do |y|
+			each { |e| y << e }
+			other.each { |e| y << e }
+		end
+	end
+	alias * cycle
+	def -@
+		Enumerator.new { |y| to_a.reverse_each { |i| y << i } }
+	end
+end
+e = -[1,4,7].each * 3 + ("a".."c").each
+p e.to_a #=> [3, 2, 1, 3, 2, 1, 3, 2, 1, "a", "b", "c"]

@@ -1,0 +1,41 @@
+Tutorials: https://netguru.co/blog/best-online-resources-to-master
+Ruby on Rails tutorial on github: https://github.com/railstutorial
+And https://github.com/mhartl/sample_app_3rd_edition
+
+Style:
+https://github.com/bbatsov/rails-style-guide
+
+Documentation:
+http://itsignals.cascadia.com.au/?p=7 (Rails naming convention)
+https://agilewarrior.wordpress.com/cheat-sheets/how-to-create-a-new-repository-on-github/
+
+Rails autoloading: http://guides.rubyonrails.org/autoloading_and_reloading_constants.html
+
+Rails tricks:
+http://6ftdan.com/allyourdev/2015/03/31/rails-4s-awesome-enums/
+
+Internals of rails:
+http://www.monkeyandcrow.com/series/reading_rails/
+
+Asset:
+http://www.krisquigley.co.uk/2017/02/17/replacing-the-asset-pipeline-with-webpack-2-in-rails.html
+
+Rails 5:
+http://blog.bigbinary.com/categories/Rails-5
+https://news.ycombinator.com/item?id=13717557
+  Rails 5.1.0 Beta 1  (yarn and webpack)
+
+- Rails 5 with Webpack: https://medium.com/statuscode/introducing-webpacker-7136d66cddfb#.ybkmuj5km
+  http://pixelatedworks.com/articles/embracing-change-rails51-adopts-yarn-webpack-and-the-js-ecosystem/
+- Rails 5 api: https://github.com/vasilakisfil/rails5_api_tutorial
+
+Tests
+=====
+
+Factory vs Fixtures:
+- http://fr.slideshare.net/mtoppa/2014-03-11factorygirl
+- http://brandonhilkert.com/blog/7-reasons-why-im-sticking-with-minitest-and-fixtures-in-rails/
+- https://github.com/andreareginato/betterspecs/issues/11
+
+(Factories: FactoryGirl or Fabrication (http://www.fabricationgem.org/)
+Use seeds for FactoryGirl to imitate fixtures: https://github.com/evrone/factory_girl-seeds)

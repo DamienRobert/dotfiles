@@ -1,0 +1,120 @@
+require 'net/http'
+
+uri=URI("http://foo/bar")
+params = {a: 1, b: 2}
+uri.query = URI.encode_www_form(params)
+res = Net::HTTP.get_response(uri)
+r= res.body if res.is_a?(Net::HTTPSuccess)
+
+~~~ ruby
+# => GET body
+def HTTP.get(uri_or_host, path = nil, port = nil)
+  get_response(uri_or_host, path, port).body
+end
+
+# HTTP.get_response => HTTP.start(...).request_get
+def HTTP.get_response(uri_or_host, path = nil, port = nil, &block)
+  if path
+    host = uri_or_host
+    new(host, port || HTTP.default_port).start {|http|
+      return http.request_get(path, &block)
+    }
+  else
+    uri = uri_or_host
+    start(uri.hostname, uri.port,
+          :use_ssl => uri.scheme == 'https') {|http|
+      return http.request_get(uri, &block)
+    }
+  end
+end
+
+# HTTP.start is a wrapper around HTTP.new(...).start
+def HTTP.start(address, *arg, &block) # :yield: +http+
+  port, p_addr, p_port, p_user, p_pass = *arg
+  http = new(address, port, p_addr, p_port, p_user, p_pass)
+  http.start(&block) #=> if block not provided, the user must call 'http.finish' to close the connection
+end
+
+def start  # :yield: http
+  raise IOError, 'HTTP session already opened' if @started
+  if block_given?
+    begin
+      do_start
+      return yield(self)
+    ensure
+      do_finish
+    end
+  end
+  do_start
+  self
+end
+
+#  response = http.request_get('/index.html')
+#  # The entity body is already read in this case.
+#  p response['content-type']
+#  puts response.body
+#
+#  # Using a block
+#  http.request_get('/index.html') {|response|
+#    p response['content-type']
+#    response.read_body do |str|   # read body now
+#      print str
+#    end
+#  }
+def request_get(path, initheader = nil, &block) # :yield: +response+
+  request(Get.new(path, initheader), &block)
+end
+def get(path, initheader = nil, dest = nil, &block) # :yield: +body_segment+
+  res = nil
+  request(Get.new(path, initheader)) {|r|
+    r.read_body dest, &block
+    res = r
+  }
+  res
+end
+
+# Same as get/request_get: but only ask for the head
+def request_head(path, initheader = nil, &block)
+   request(Head.new(path, initheader), &block)
+end
+def head(path, initheader = nil)
+  request(Head.new(path, initheader))
+end
+
+Note on response.read_body:
+  # Gets the entity body returned by the remote HTTP server.
+  #
+  # If a block is given, the body is passed to the block, and
+  # the body is provided in fragments, as it is read in from the socket.
+=> res.read_body; res.read_body do |chunk| ... end
+   res.read_body(dest) => read to `dest`, so that res.read_body([]) will return an array, while res.read_body('') a string
+~~~
+
+Exemples:
+- check head before downloading the full web page
+1) Only check head
+http = Net::HTTP.start('www.planetpdf.com')
+resp = http.head('/codecuts/pdfs/ooc.pdf')
+http.finish
+
+ou Net::HTTP.start(...) {|http| http.head(...)}
+
+2) GET request but read head first
+http.request_get('/largefile.jpg') {|response|
+  if (response['content-length'] < max_length)
+    response.read_body do |str|   # read body now
+      # save to file
+    end
+  end
+}
+
+3) Via HTTP.get_response:
+HTTP.get_response(uri) do |response| ... end
+
+- streaming:
+HTTP.get_response(uri) do |res|
+open 'large_file', 'w' do |io|
+  response.read_body do |chunk|
+     io.write chunk
+  end
+end

@@ -1,0 +1,178 @@
+#Me
+alias Damien.Robert-nsup Damien Robert <Damien.Robert@normalesup.org>
+alias Damien.Robert-inria Damien Robert <Damien.Robert@inria.fr>
+alias Damien.Robert-imb Damien Robert <Damien.Robert@math.u-bordeaux.fr>
+alias Damien.Robert-gmail Damien Robert <ploum.plam@gmail.com>
+alias Damien.Olivier.Robert Damien Robert <damien.olivier.robert@gmail.com>
+alias Dams Damien.Robert-nsup
+alias Damien.Robert Damien.Robert-nsup
+
+#Dina
+alias Blandine.Belin Blandine Belin <blandine.belin@gmail.com>
+#alias Dina2 Blandine Belin <blandine.belin@laposte.net>
+alias Blandine.Belin-dde  Blandine Belin <Blandine.Belin@developpement-durable.gouv.fr>
+alias Blandine.Belin-gironde "BELIN Blandine (Chef d\'unité) - DDTM 33/SAR/Aménagement du Sud-Gironde" <blandine.belin@gironde.gouv.fr>
+alias Dina Blandine.Belin, Blandine.Belin-gironde
+
+#Famille
+alias Olivia.Robert-ESDES Olivia Robert <olivia.robert@esdes.ucly.fr>
+alias Olivia.Robert-hotmail Olivia Robert <olivia.robert@hotmail.fr>
+alias Olivia.Robert-pro Olivia Robert <o.robert@omnium1947.com>
+alias Olivia.Robert Olivia Robert <olivia.robert.01@gmail.com>
+alias Benoit.Robert Benoit Robert <thebigfanofben@hotmail.com>
+alias Sylvie.Robert Sylvie Robert <sylvierobertbrignais@gmail.com>
+alias Gabriel.Chevalier Gabriel Chevalier <gabriel.chevalier@free.fr>
+alias Yves.Robert Yves Robert <Yves.Robert@ens-lyon.fr>
+alias Yves.Robert-gmail Yves Robert <yvesbob.robert@gmail.com>
+alias Pierre-Olivier.Robert Pierre-Olivier Robert <pierre.olivier.robert@gmail.com>
+
+alias gp-Famille Yves.Robert Benoit.Robert Olivia.Robert Sylvie.Robert Gabriel.Chevalier
+
+alias Pierre-Yves.Chevalier Pierre-Yves Chevalier <dr2pitch@yahoo.fr>
+alias Loïcia.Margot Margotat Loïcia <younakali@hotmail.fr>
+alias Anne.Chevalier Anne Chevalier <annechevalier38@gmail.com>
+# BRACHOTTE Patrice et Cecile <pbrachotte@free.fr>
+# BRACHOTTE Gilles <gilles.brachotte@u-bourgogne.fr>
+# BRACHOTTE Marc <marc.brachotte@free.fr>,
+# BRACHOTTE Rene et Marie Claude <rene.brachotte@bbox.fr>
+alias Gaelle <gaelle@gmail.com>
+
+#Belin
+alias Nadine.Belin Nadine Belin <nadine.belin@ac-grenoble.fr>
+alias NadineJL.Belin Nadine et Jean-Louis Belin <nadine.jl.belin@gmail.com>
+alias Xavier.Belin Xavier Belin <xavier.belin@gmail.com>
+alias gp-Belin NadineJL.Belin Xavier.Belin
+
+# Voisins Brignais
+alias Marie.Carmel Marie Carmel <mariecar.bourret@sfr.fr>
+alias Carla.Colombo Carla Colombo <carla.colombo@laposte.net>
+alias Carlo.Colombo Carlo Colombo <ColomboC@wanadoo.fr>
+
+# Amis
+#alias Stephanie Stephanie Mathieu <stephanie.mathieu@lyxor.com>
+alias David.Armand-Perso  David Armand <abaddon2345@wanadoo.fr>
+alias David.Armand  David Armand <david.armand@orange.com>
+alias Francois.Bonnet Francois Bonnet <Francois.Bonnet@irisa.fr>
+alias Lionel.Perrin Lionel Perrin <lionel.perrin@gmail.com>
+alias Marielle.De.La.Salle Marielle Bouvier <oxymalou@yahoo.fr>
+alias Mikael.De.La.Salle Mikael De La Salle <delasall@phare.normalesup.org>
+alias Sandrine.Rosamont Sandrine Rosamont <sandrine.rosamont@googlemail.com>
+alias Simon.Dolle Simon Dolle <simon.dolle@gmail.com>
+alias Thomas.Breda  Thomas Breda <Thomas.Breda@ens.fr>
+alias Renaud.Heitz Renaud Heitz <renaud.heitz@gmail.com>
+alias Vivien.Ripoll Vivien Ripoll <vivien.ripoll@ens.fr>
+#alias HX3 David,Fanfoue,Lionel,Marielle,Mika,Sandrine,Simon,Tom,Stephanie,Reno,Vivien
+
+alias Adrian.Daerr Adrian Daerr <daerr@pmmh.espci.fr>
+
+alias Anne-Laure.Masson.DDT Anne-Laure Masson <anne-laure.masson@gironde.gouv.fr>
+alias Anne-Laure.Masson Anne-Laure Masson <al_coeur@hotmail.com>
+alias Lionel.Nicoud Lionel Nicoud <io.nicoud@laposte.net>
+alias Fabrice.Richieri Fabrice Richieri <f.richieri2@gmail.com>
+alias Valerie.Walser Valerie Walser Richieri <valwalser@free.fr>
+
+####
+# Work
+####
+
+alias Guillaume.Hanrot Guillaume Hanrot <Guillaume.Hanrot@ens-lyon.fr>
+alias Guillaume.Hanrot-free Guillaume Hanrot <ghanrot@free.fr>
+
+alias Kristin.Lauter Kristin Lauter <klauter@microsoft.com>
+alias David.Lubicz David Lubicz <david.Lubicz@univ-rennes1.fr>
+alias Francois.Morain Francois Morain <morain@lix.polytechnique.fr>
+alias Vanessa.Vitse Vanessa Vitse <vanessa.vitse@ujf-grenoble.fr>
+alias Daniel.Augot Daniel Augot <daniel.augot@inria.fr>
+
+# Loria
+#alias Pierrick.Gaudry Pierrick Gaudry <pierrick.gaudry@gmail.com>
+alias Pierrick.Gaudry Pierrick Gaudry <pierrick.gaudry@loria.fr>
+alias Emmanuel.Thome Emmanuel Thomé <Emmanuel.Thome@normalesup.org>
+alias Paul.Zimmermann Paul Zimmermann <Paul.Zimmermann@loria.fr>
+#alias JLB Jean-Luc Beuchat <beuchat@risk.tsukuba.ac.jp>
+alias gp-LoriaWork Guillaume.Hanrot,Pierrick.Gaudry,Emmanuel.Thome
+
+alias Romain.Cosset romain cosset <romain.cosset@crans.org>
+alias Gaetan.Bisson Gaetan Bisson <gaetan@fenua.org>
+  #<gaetan.bisson@normalesup.org>
+alias Jeremie.Detrey Jérémie Detrey <Jeremie.Detrey@loria.fr>
+alias Alexander.Kruppa Alexander Kruppa <kruppaal@loria.fr>
+alias Nicolas.Estibals Nicolas Estibals <Nicolas.Estibals@loria.fr>
+alias gp-LoriaFun Romain.Cosset,Gaetan.Bisson,Jeremie.Detrey,Alexander.Kruppa, Nicolas.Estibals
+
+# LFANT
+alias Andreas.Enge-imb Andreas Enge <andreas.enge@math.u-bordeaux.fr>
+alias Andreas.Enge Andreas Enge <andreas.enge@inria.fr>
+alias Karim.Belabas Karim Belabas <Karim.Belabas@math.u-bordeaux.fr>
+alias Jean-Marc.Couveignes Jean-Marc Couveignes <Jean-Marc.Couveignes@math.u-bordeaux.fr>
+alias Bill.Allombert Bill Allombert <Bill.Allombert@math.u-bordeaux.fr>
+alias Jean-Paul.Cerri Jean-Paul Cerri <Jean-Paul.Cerri@math.u-bordeaux.fr>
+alias Henri.Cohen Henri Cohen <cohen@math.u-bordeaux.fr>
+
+#alias Nicolas.Mascot Nicolas Mascot <nmascot@math.u-bordeaux.fr>
+#alias Aurel.Page Aurel Page <aurel.page@math.u-bordeaux.fr>
+alias Aurel.Page-Warwick Aurel Page <a.r.page@warwick.ac.uk>
+alias Aurel.Page-Gmail Aurel Page <aurel.page@gmail.com>
+alias Aurel.Page Aurel Page <aurel.page@normalesup.org>
+alias Nicolas.Mascot Nicolas Mascot <n.a.v.mascot@warwick.ac.uk>
+alias Pierre.Lezowski <pierre.lezowski@math.u-bordeaux.fr>
+alias Enea.Milio Enea Milio <Enea.Milio@inria.fr>
+alias Barinder.Banwait Barinder Banwait <barinder.banwait@inria.fr>
+alias Fredrik.Johansson Fredrik Johansson <Fredrik.Johansson@inria.fr>
+alias Fredrik.Johansson-UB Fredrik Johansson <Fredrik.Johansson@u-bordeaux.fr>
+
+#alias gp-LFANT Bill.Allombert Andreas.Enge Karim.Belabas Jean-Marc.Couveignes Henri.Cohen Jean-Paul.Cerri Nicolas.Mascot Aurel.Page Enea.Milio Pierre.Lezowski
+alias gp-LFANT Bill.Allombert Andreas.Enge Karim.Belabas Jean-Marc.Couveignes Henri.Cohen Jean-Paul.Cerri Fredrik.Johansson #Enea.Milio
+alias lfant LFANT Team <lfant@inria.fr>
+alias lfant-seminar LFANT Seminar <lfant-seminar@math.u-bordeaux.fr>
+
+alias gp-IMB gp-LFANT Guilhem.Castagnos Fabien.Pazuki
+
+#INRIA
+alias Anne-Laure.Gautier Anne-Laure Gautier <anne-laure.gautier@inria.fr>
+alias Lola.Kovacic Lola Kovacic <lola.kovacic@inria.fr>
+alias Isabelle.Terrasse Isabelle Terrasse <isabelle.terrasse@inria.fr>
+alias Nadia.Mado Nadia Mado <nadia.mado@inria.fr>
+alias Severine.Valerius Severine Valerius <severine.valerius@inria.fr>
+
+#IMB
+alias Guilhem.Castagnos Guilhem Castagnos <guilhem.castagnos@math.u-bordeaux.fr>
+alias Fabien.Pazuki  Fabien Pazuki <Fabien.Pazuki@math.u-bordeaux.fr>
+alias Karine.Lecuona Karine Lecuona <Karine.Lecuona@math.u-bordeaux.fr>
+alias Christine.Bachoc Christine Bachoc <Christine.Bachoc@math.u-bordeaux.fr>
+alias Jean.Gillibert Jean Gillibert <Jean.Gillibert@math.u-bordeaux.fr>
+alias Dajano.Tossici Dajano Tossici <Dajano.Tossici@math.u-bordeaux.fr>
+alias a2xall A2X <theorie-des-nombres@math.u-bordeaux.fr>
+alias Qing.Liu Qing Liu <Qing.Liu@math.u-bordeaux.fr>
+alias Pierre.Chretien Pierre Chretien <Pierre.Chretien@math.u-bordeaux.fr>
+alias Giulio.Di.Piazza Giulio Di Piazza <giulio.di.piazza@gmail.com>
+alias Nicolas.Delfosse Nicolas Delfosse <delfosse@lix.polytechnique.fr>
+alias Stephanie.Reglade Stephanie Reglade <Stephanie.Reglade@math.u-bordeaux.fr>
+
+#Agreg
+
+alias gp-modc Alain Couvreur <alain.couvreur@lix.polytechnique.fr>, Magali Bardet <magali.bardet@univ-rouen.fr>, Christophe Bertault <christophebertault@free.fr>, Delphine Boucher <delphine.boucher@univ-rennes1.fr>, Alin Bostan <alin.bostan@inria.fr>, Robert Brouzet <robert.brouzet@gmail.com>, Claire Dartyge <claire.dartyge@math.univ-toulouse.fr>, Christophe Delaunay <christophe.delaunay@math.cnrs.fr>, Stephane Fischler <Stephane.Fischler@math.u-psud.fr>, <jimena.fischler@univ-paris8.fr>, Stéphane Flon <stephane.flon@gmail.com>, Philippe Fontaine <philippe.fontaine@ac-poitiers.fr>, Richard Leroy <richard.leroy2@gmail.com>, Marc Rezzouk <mrezzouk@free.fr> , <sauloy@math.univ-toulouse.fr>, Lara Thomas <larathom79@gmail.com>, Charles Torossian <charles.torossian@education.gouv.fr>, Annick Valibouze <annick.valibouze@gmail.com>, Vanessa Vitse <vanessa.vitse@ujf-grenoble.fr>, <mhm@math.univ-paris-diderot.fr>, clemence.durvye@gmail.com, c.durvye@yahoo.fr 
+
+#WORK
+alias Macisa Hardy Hortense <hortense_boudjou@yahoo.fr>, Emmanuel Fouotsa <emmanuelfouotsa@yahoo.fr>, Daniel Tieudjo <tieudjo@yahoo.com> Tonga Marcel <tongamarcel@yahoo.fr> Tony Ezome <latonyo2000@yahoo.fr> Guy-Martial Nkiet <gnkiet@hotmail.com> Abdoul Aziz Ciss <azouciss@yahoo.fr> Sow Djiby <sowdjibab@yahoo.fr> Jean-Marc Couveignes <jcouveig@math.u-bordeaux.fr> Andreas Enge <andreas.enge@inria.fr> Sylvain Duquesne <sylvain.duquesne@univ-rennes1.fr> Kodjo Egadédé Kpognon <kox52002@yahoo.fr> Reynald Lercier <reynald.lercier@m4x.org> David Lubicz <david.lubicz@univ-rennes1.fr> Julien Sebag <julien.sebag@univ-rennes1.fr> Christophe Ritzenthaler <ritzenthalerchristophe@gmail.com>
+alias Macisa2 Tony Ezome  <latonyo2000@yahoo.fr>, Djiby Sow <sowdjibab@yahoo.fr>, Abdoul Aziz Ciss <azouciss@yahoo.fr>, Abdoulaye Maiga <abdoulaye.maiga@aims-senegal.org>, Emmanuel Fouotsa <emmanuelfouotsa@yahoo.fr>, Thierry Mefenza <thierrymefenza@yahoo.fr>, Aminatou Pecha <aminap2001@outlook.fr>, Andreas Enge <andreas.enge@inria.fr>, Jean-Marc Couveignes <Jean-Marc.Couveignes@math.u-bordeaux.fr>
+
+alias David.Kohel David Kohel <David.Kohel@univ-amu.fr>
+alias Tanja.Lange Tanja Lange <tanja@hyperelliptic.org>
+alias Sorina.Ionica Sorina Ionica <sorina.ionica@gmail.com>
+alias Hamish.Ivey-Law Hamish Ivey-Law <hamish.ivey-law@inria.fr>
+alias Chloe.Barriere barriereclo <barriereclo@gmail.com>
+alias Christophe.Ritzenthaler Christophe Ritzenthaler <ritzenthalerchristophe@gmail.com>
+alias Alain.Couvreur Alain Couvreur <alain.couvreur@lix.polytechnique.fr>
+alias Tony.Ezome tony ezome <latonyo2000@yahoo.fr>
+alias Jean-Pierre.Flori Jean-Pierre Flori <jpflori@gmail.com>
+alias Dimitar.Jetchev Dimitar Jetchev <dimitar.jetchev@epfl.ch>
+alias Sylvain.Duquesne Sylvain Duquesne <sylvain.duquesne@univ-rennes1.fr>
+alias Chloe.Martindale Chloe Martindale <chloemartindale@gmail.com>
+alias Pascale.Chevalier Pascale Chevalier <Pascale.Chevalier@laposte.net>
+alias Luca.De.Feo Luca De Feo <luca.defeo@polytechnique.edu>
+alias Nathalie.Robin Nathalie ROBIN <nathalie.robin@inria.fr>
+alias Sabrina.Blondel Sabrina Blondel duthil <sabrina.blondel-duthil@inria.fr>
+alias Linette.Chevalier Linette Chevalier <linette.chevalier@free.fr>
+alias Jean.Kieffer Jean Kieffer <jean.kieffer@ens.fr>
+alias Abdoulaye.Maiga Abdoulaye Maiga <abdoulaye.maiga@aims-senegal.org>

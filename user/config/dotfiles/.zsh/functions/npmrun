@@ -1,0 +1,6 @@
+#npmrun: run local npm binary
+#See also `npx` which does that and even install the package in the cache
+#if the binary does not exist and is not in the local .node_modules
+npmrun() {
+	PATH="$(npm bin):$PATH" $@
+}

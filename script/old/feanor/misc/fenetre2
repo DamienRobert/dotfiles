@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec xterm -name alpha &
+exec xterm -name alpha2 &

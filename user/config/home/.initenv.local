@@ -1,0 +1,8 @@
+#GENERATE WHEN @computer.name =~/imb/
+#vim: ft=sh
+#<%= generated_from %>
+
+<% case @computer.name %>
+<% when "imb" %>
+SHELL="/bin/zsh"
+<% end %>

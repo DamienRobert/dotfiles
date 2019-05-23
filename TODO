@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+#See also:
+LIST=(~/perso/TODO ~/pro/Work/TODO ~/mine/config/TODO ~/mine/progs/TODO ~/mine/maint/TODO ~/mine/doc/todo/*)
+
+case $1 in
+	"-e"| "--edit") vi $LIST ;;
+	"-v"| "--visual") gvim -p $LIST ;;
+	*)
+	for i in $LIST; do
+		echo "\n####################	$i	####################\n"
+		cat $i
+	done
+esac

@@ -1,16 +1,18 @@
 # vim: ft=zsh
 #this can be sourced
 #Usage:
-#gth_get_branch_name #name a branch
-#gth_branch #find a branch
-#gth_topic #find topic branches
-#gth_tmp_index #set up a tmp index file in .git/index.tmp
-#gth_special_branches #find a branches, but handle WORKTREE and INDEX
+#- gth_get_branch_name #name a branch
+#- gth_branch #find a branch
+#  -> $gth_branch, $gth_branch_rev, $gth_rest
+#- gth_topic #find topic branches
+#  -> $gth_local, $gth_local_rev, $gth_remote, $gth_remote_rev, $gth_rest
+#- gth_tmp_index #set up a tmp index file in .git/index.tmp and export GIT_INDEX_FILE=$TMPINDEX
+#- gth_special_branches #find a branch like gth_branch, but handle WORKTREE and INDEX (which returns tree objects)
 
 #Options:
-gth_only_full_branch= #only process branches that resolve to a real branch (not a detached head)
-gth_verify=true #verify that branches resolve correctly
-gth_local_branch= #when given one parameter, takes it as the local branch rather than the remote branch
+gth_only_full_branch= #true/false; only process branches that resolve to a real branch (not a detached head)
+gth_verify=true #true/false; verify that branches resolve correctly
+gth_local_branch= #true/false; when gth_topic is given one parameter, takes it as the local branch rather than the remote branch
 gth_default_remote=UPSTREAM #default remote if one is not configured, the special value UPSTREAM means to use the upstream of the local branch
 gth_default_local=CURRENT #the special value CURRENT means the branch pointed by HEAD
 gth_default_branch=CURRENT #for gth_branch, special values: CURRENT/UPSTREAM
@@ -28,6 +30,7 @@ function gth_get_branch_name() {
     git rev-parse --symbolic-full-name "$@"
   else
     git current-branch -a --name "$@"
+    #=git rev-parse --abbrev-ref with fallback to git describe --all --always
   fi
 }
 
@@ -92,7 +95,7 @@ function gth_topic() {
   while true;
   do
     case "$1" in
-      -- ) shift; break ;;
+      -- ) break ;;
       --gth-from ) shift; gth_local=$1; shift ;;
       --gth-to ) shift; gth_remote=$1; shift ;;
       --gth-verify ) shift; gth_verify=1;  ;;
@@ -132,7 +135,7 @@ function gth_topic() {
           gth_auto_remote_branch
         else
           #the arg given was actually for gth_remote
-         gth_remote=$gth_local
+          gth_remote=$gth_local
           gth_local=
           gth_auto_local_branch
         fi
@@ -153,7 +156,8 @@ function gth_topic() {
 function gth_tmp_index() {
   local GITDIR=$(git rev-parse --git-dir)
   local TMPINDEX=$GITDIR/index.tmp
-  cp ${GIT_INDEX_FILE-"$GITDIR/index"} $TMPINDEX
+  GIT_OLD_INDEX_FILE = ${GIT_INDEX_FILE-"$GITDIR/index"}
+  cp $GIT_OLD_INDEX_FILE $TMPINDEX
   export GIT_INDEX_FILE=$TMPINDEX
   git update-index --refresh >/dev/null
 }

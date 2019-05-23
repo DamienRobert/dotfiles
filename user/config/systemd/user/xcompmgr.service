@@ -1,0 +1,12 @@
+[Unit]
+Description=xcompmgr
+PartOf=graphical-session.target
+ConditionFileIsExecutable=/usr/bin/xcompmgr
+Documentation=man:xcompmgr(1)
+
+[Service]
+ExecStart=/usr/bin/xcompmgr
+StandardOutput=null
+
+[Install]
+WantedBy=graphical-session.target

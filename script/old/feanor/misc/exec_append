@@ -1,0 +1,8 @@
+#!/bin/sh
+
+file="$1"
+shift
+pty=`tty`
+
+exec "$@" &
+sleep 1; cat "$file" > "$pty"

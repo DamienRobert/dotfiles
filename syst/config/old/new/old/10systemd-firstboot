@@ -1,0 +1,8 @@
+#!/bin/zsh
+#arch-chroot
+
+#It's better to run in the chroot because here we have the last version of systemd.
+systemd-firstboot --root=/ --locale=$LOCALE_LANG --timezone=$TIMEZONE --hostname="$COMPUTER[name]" --setup-machine-id
+#locale: /etc/locale.conf
+#timezone: /etc/localtime
+#Note: systemd-firstboot does not change existing setting (unlike the *ctl options)

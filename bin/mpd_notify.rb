@@ -1,0 +1,1 @@
+../script/mpd/mpd_notify.rb

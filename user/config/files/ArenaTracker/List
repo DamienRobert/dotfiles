@@ -1,0 +1,14 @@
+https://trackobot.com/profile/history?username=$USER&token=$TOKEN
+https://trackobot.com/profile/history.json?username=$USER&token=$TOKEN
+
+Doriath:
+USER=red-si7-agent-7084
+TOKEN=xTVjcMLv7C-HAqovz-fW
+
+Feanor:
+USER=wandering-deathwing-3549
+TOKEN=-82Ajj5TCryWhwHayFBy
+
+Mithrim:
+USER=weathered-nozdormu-1258
+TOKEN=Dexsk7ZuZonqFAVHzPfA

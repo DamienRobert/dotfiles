@@ -1,0 +1,19 @@
+poll vs select vs epoll
+https://daniel.haxx.se/docs/poll-vs-select.html
+
+epoll > poll > select
+
+Wrapper librairies: libuv > libev > libevent
+Cf http://willfaught.com/post/131383132618/libevent-vs-libev-vs-libuv
+   https://github.com/facebook/hhvm/issues/2047
+Libuv: libuv is a multi-platform support library with a focus on asynchronous I/O. It was primarily developed for use by Node.js, but it’s also used by Luvit, Julia, pyuv, and others.
+  Book: https://nikhilm.github.io/uvbook/index.html
+
+signalfd: signalfd() creates a file descriptor that can be used to accept
+       signals targeted at the caller.  This provides an alternative to the
+       use of a signal handler or sigwaitinfo(2), and has the advantage that
+       the file descriptor may be monitored by select(2), poll(2), and
+       epoll(7).
+eventfd: http://man7.org/linux/man-pages/man2/eventfd.2.html
+
+Blocking vs non blocking sockets: https://www.scottklement.com/rpg/socktut/nonblocking.html

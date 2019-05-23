@@ -1,0 +1,79 @@
+#! /bin/sh
+
+AMULEGUI=true
+
+INITD="$HOME"/bin/init.d/
+
+all ()
+{
+    echo "*** Starting all applications ***"
+    start
+    echo "*** Starting chat ***"
+    echo "Starting gaim."
+    exec gaim &
+    echo "Starting xchat."
+    exec xchat &
+    echo "."
+}
+
+start ()
+{
+    go
+    echo "*** Starting downloading ***"
+    exec ~/bin/init.d/downloading start &
+    echo "."
+}
+
+go ()
+{
+    echo "*** Starting usefull applications ***"
+    echo "Starting firefox."
+    exec firefox32 &
+    echo "Starting amarok."
+    exec amarok &
+    echo "Starting kontact."
+    exec kontact &
+    echo "."
+}
+
+
+stop ()
+{
+    echo  "Stopping applications"
+    $INITD/ktorrent stop
+    $INITD/amule-gui stop
+    echo "."
+}
+
+
+case "$1" in
+  all)
+        all
+    ;;
+  go)
+        go
+    ;;
+  start)
+	start
+    ;;
+  stop)
+	stop
+    ;;
+  reload)
+	  stop
+	  start
+    ;;
+  force-reload|restart)
+	stop
+	start
+	;;
+  *)
+    echo "Usage: /etc/init.d/$0 {go|start|all|stop|restart|force-reload|reload}"
+    echo "go: firefox/amarok/kontact"
+    echo "start: +download"
+    echo "all: +chat"
+    exit 1
+    ;;
+esac
+
+exit 0

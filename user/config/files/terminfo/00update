@@ -1,0 +1,1 @@
+for i in *(.); do cp /usr/share/terminfo/$i[1]/$i .; done

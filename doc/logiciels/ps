@@ -1,0 +1,16 @@
+Standard options:
+-e: select all processes
+-f: full format listing
+
+BSD options:
+a: show process of other users
+x: show process which don't have a tty
+u: display user-oriented format
+T: show processes associated to this terminal
+   ['ps' is a shortcut for 'ps T'; this explains why 'ps u' show user
+   informations of all processes that have a tty, and 'ps ut' gives the
+   user information of the processes shown by 'ps' ]
+
+Default: PID TTY          TIME CMD
+-f       UID        PID  PPID  C STIME TTY          TIME CMD
+u        USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND

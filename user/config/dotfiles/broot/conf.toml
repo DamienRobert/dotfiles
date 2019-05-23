@@ -1,0 +1,37 @@
+
+# This configuration file lets you define new commands
+# or change the shortcut of built-in verbs.
+# You can change the colors of broot too.
+#
+# Configuration documentation is available at https://dystroy.org/broot
+#
+
+###############################
+# shortcuts for built-in verbs:
+
+[[verbs]]
+invocation = "p"
+execution = ":parent"
+
+#####################
+# user defined verbs:
+
+# If $EDITOR isn't set on your computer, you should either set it
+#  or just replace it with your editor of choice in the 'execution'
+#  pattern.
+# Example:
+#  execution = "/usr/bin/nvim {file}"
+[[verbs]]
+invocation = "edit"
+shortcut = "e"
+execution = "$EDITOR {file}"
+
+[[verbs]]
+invocation = "create {subpath}"
+execution = "$EDITOR {directory}/{subpath}"
+
+[[verbs]]
+name = "view"
+invocation = "view"
+execution = "less {file}"
+

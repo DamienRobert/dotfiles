@@ -1,0 +1,12 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+url=git
+progname=$(basename $0)
+
+#export NO_CURL=true
+## Unfortunately this does not seems to work...
+CUSTOM_COMPILE='make prefix=$prefix CFLAGS="${CFLAGS} -static-libgcc" install quick-install-man'
+
+build_helper $@
+build_git

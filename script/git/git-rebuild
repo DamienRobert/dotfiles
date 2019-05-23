@@ -1,0 +1,92 @@
+#!/usr/bin/zsh
+#Helper to rebase patches and rebuild branches
+
+#PATCH=("origin:upstream:br1,br2")
+#(if upstream is empty looks at the upstream of br1, br2)
+#-> rebase branches onto 'upstream'
+#BUILD=("origin:upstream:br1,br2")
+#(if upsteam is empty looks at the upstream of origin)
+#-> move 'origin' to 'upstream' and merge the branches together
+#Ex for bup: git my rebuild -- -s --build build-arch:build:archlinux,index --build build-python2:build:index patch-origin:master:build,archlinux,index
+
+BUILD=()
+PATCH=()
+SAVEBR=
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -s|--save ) shift ; SAVEBR=t ;;
+    --save-name ) shift ; OLDBR=$1; shift ;;
+    -b|--build ) shift ; BUILD+=($1); shift ;;
+    -p|--patch ) shift ; PATCH+=($1); shift ;;
+    *) break;; #go to PATCH
+  esac
+done
+
+split_string() {
+	split=("${(s/:/)1}")
+	origin=$split[1]
+	orig_upstream=$split[2]
+	upstream=$orig_upstream
+	[[ -z $upstream && -n $origin ]] && upstream=$(git name-rev --name-only --always "$origin@{u}")
+	[[ -z $upstream ]] && upstream="master"
+	branches=$split[3]
+	branches=("${(s/,/)branches}")
+	echo "! orig: $origin, upstream: $upstream [$orig_upstream], branches: $branches"
+}
+
+doorfail() {
+	echo "# $@"
+	$@ || exit 1
+}
+
+savebr() {
+	local msg
+	msg=($@)
+	doorfail git my trivial -- -m "Save branches: $msg" -g -B $OLDBR $OLDBR $@
+}
+
+PATCH+=($@)
+curbr=$(git current-branch -a)
+[[ -z $OLDBR ]] && OLDBR="old-patches"
+[[ -n $SAVEBR ]] && { git rev-parse --verify $OLDBR 2>/dev/null || doorfail git my trivial -- -g -b $OLDBR }
+
+for patch in $PATCH; do
+	echo "! patch: $patch"
+	split_string $patch
+	[[ -n $SAVEBR ]] && savebr $origin $branches
+	for branch in $branches; do
+		#hack if no upstream nor origin was specified, we look at the upstream of each branch individually
+		if [[ -z $orig && -z $orig_upstream ]]; then
+			upstream=$(git rev-parse --name-only --always "$branch@{u}")
+			[[ -z $upstream ]] && upstream="master"
+		fi
+		if git merge-base --is-ancestor $upstream $branch;
+		then
+			#nothing to do
+		else
+			#we need to rebase
+			if [[ -n $origin ]]; then
+				doorfail git rebase --onto $upstream $origin $branch
+			else
+				doorfail git rebase $upstream $branch
+			fi
+		fi
+		#update $origin to new location
+		if [[ -n $origin ]]; then
+			doorfail git checkout -B $origin $upstream
+		fi
+	done
+done
+
+for build in $BUILD; do
+	echo "! build: $build"
+	split_string $build
+	[[ -n $SAVEBR ]] && git rev-parse --verify $origin 2>/dev/null && savebr $origin
+	doorfail git checkout -B $origin $upstream
+	doorfail git merge $branches
+done
+
+doorfail git co $curbr

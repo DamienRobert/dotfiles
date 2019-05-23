@@ -1,0 +1,81 @@
+Youtube-dl
+----------
+Cf https://wiki.archlinux.org/index.php/mpv
+
+The default --ytdl-format is bestvideo+bestaudio/best.
+Possible configurations:
+  ytdl-format=bestvideo[height<=?1080]+bestaudio/best
+  ytdl-format=bestvideo[height<=?1080][vcodec!=vp9]+bestaudio/best
+If you prefer best quality open codecs (VP9 and Opus), use:
+  ytdl-format="((bestvideo[vcodec^=vp9]/bestvideo)+(bestaudio[acodec=opus]/bestaudio[acodec=vorbis]/bestaudio[acodec=aac]/bestaudio))/best"
+
+- youtube-dl audio with search (cf .zsh/functions/mpvyoutube):
+    mpv --no-video --ytdl-format=bestaudio ytdl://ytsearch:"$@"
+
+Sous-titre
+----------
+
+Si le sous-titre est trop rapide:
+   --sub-speed=25/23.976`  plays  frame  based  subtitles
+   which  have been loaded assuming a framerate of 23.976
+   at 25 FPS.
+Si le sous-titre est trop lent:
+   --sub-speed=23.976/25
+(expérimentalement c'est inversé par rapport à la doc)
+
+Décodage vidéo hardware (qui utilise peu de batterie, contrairement à
+vdpau): --hwdec=vaapi
+
+Volume
+------
+
+mpv --volume-max=1000 Gravity.2013.1080p.BluRay.x264.YIFY.mp4
+(changer avec / et * ou 9 et 0)
+
+Decoding
+--------
+For slow videos:
+--vd-lavc-fast
+--vd-lavc-skiploopfilter=all
+
+Bindings
+--------
+
+ Improving mpv as a music player with Lua scripts
+https://web.archive.org/web/20160320001546/http://bamos.github.io/2014/07/05/mpv-lua-scripting/
+
+======================================================================
+Sample mpv config
+-----------------
+hwdec=auto
+
+# try to use high quality opengl output, with standard opengl, classic xv, and wayland as fallbacks (note: opengl has numerous quality/performance trade-off options.)
+# as per the mpv(1), "opengl-hq" is just an alias for "opengl:lscale=lanczos2:dither-depth=auto:fbo-format=rgb16"
+vo=opengl-hq,opengl,xv,wayland
+ao=pulse,alsa,oss
+
+# prefer using 5.1 channels audio (defaults to 2 - see mpv --channels=help)
+# mixing is handled by libavcodec unless using "--af-add=pan" (see below)
+#audio-channels=5.1
+
+# disable screensaver
+stop-screensaver="yes"
+
+# correct pitch when speed is faster or slower than 1.0
+af=scaletempo
+
+# allow to seek in a file which is still downloading whilst watching it
+# from manpage:"this switch has no effect in the typical case" (usually done automatically by demuxers)
+# idx=yes
+
+# allow to increase the maximal volume to 600%
+#softvol-max=600
+
+# skip displaying some frames to maintain A/V sync on slow systems
+#framedrop=yes
+#
+# scale the subtitles to the 3% of the screen size
+# sub-scale=3
+
+# set the window title using the media filename (see Property Expansion section of mpv(1))
+#title="${filename}"

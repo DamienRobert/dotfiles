@@ -1,0 +1,42 @@
+# WHEN !@computer[:xorg].empty?
+!<%= generated_from %>
+*vt100.scrollBar: on
+*vt100.scrollbar.thickness: 6
+*vt100.scrollKey: on
+*vt100.scrollTtyOutput: off
+*vt100.reverseWrap: on
+*vt100.saveLines: 2000
+*vt100.visualBell: on
+*vt100.translations: #override \
+  Shift<Key>Up: scroll-back(1,line)\n\
+  Shift<Key>Down: scroll-forw(1,line)\n
+
+URxvt.perl-ext-common: default,tabbed,url-select
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.urlLauncher: firefox
+URxvt.underlineURLs: true
+
+gv.antialias: true
+gv.scratchDir: /tmp/
+
+Emacs.foreground: Black
+Emacs.background: BlanchedAlmond
+Emacs.cursorColor: red
+Emacs.pointerColor: red
+
+<%=
+xtermg=@computer.terminal_geometry(:vt)
+sxtermg=@computer.terminal_geometry(:small_vt)
+
+<<EOS
+URxvt.font: xft:#{@computer.terminal_font(:vt, type: :xft)}
+*vt100.faceName: #{@computer.terminal_font(:vt, type: :xft)}
+*vt100.geometry: #{xtermg}
+small_term.vt100.faceName: #{@computer.terminal_font(:small_vt, type: :xft)}
+small_term.vt100.geometry: #{sxtermg}
+EOS
+=%>
+
+<% @computer.xresources.each do |k,v| %>
+<%= k %>: <%= v %>
+<% end %>

@@ -1,0 +1,59 @@
+#!/bin/zsh
+
+while true; do
+  case $1 in
+    (-l) only_list=yes; shift;;
+    (-m) file_match=$2; shift; shift;;
+    (*) break;;
+  esac
+done
+
+USER_AGENT1='Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.8.1.6)'
+USER_AGENT2='Gecko/20070723 Iceweasel/2.0.0.6 (Debian-2.0.0.6-0etch1+lenny1)'
+USER_AGENT="$USER_AGENT1 $USER_AGENT2"
+INDEX_URL=http://www.canalplus.fr/c-humour/pid1784-c-les-guignols.html
+#QUALITY=L
+QUALITY=H
+
+
+function get_guignols {
+  date=`date +'%Y%m%d' -d "$*"`
+  out=guignols-$date.flv
+  if [[ -e $out ]]; then
+    print "$out is in the way."
+    return 1
+  fi
+  index=`wget -o /dev/null -O - -U $USER_AGENT $INDEX_URL`
+  #index=`</tmp/guignols.html`
+  index=(${(f)index})
+  #index=(${(M)index:#*LES_GUIGNOLS_EMISSION*.jpg*})
+  index=(${(M)index:#*LES_GUIGNOLS_*.jpg*})
+  index=(${index%%_image_L.jpg*})
+  index=(${index##*/})
+  if [[ -n $only_list ]]; then
+    for i in $index
+      print "  $i"
+    return
+  fi
+  file=(${(M)index:#*_$date[3,8]_*})
+  [[ -n $file_match ]] && file=(${(M)index:#*$file_match*})
+  if (( $#file == 0 )); then
+    print "$date pas trouve, disponibles:"
+    for i in $index
+      print "  $i"
+    return 1
+  elif (( $#file > 1 )); then
+    print "Plusieurs possibilites:"
+    for i in $file
+      print "  $i"
+      for i in $file
+        print http://vod-flash.canalplus.fr/${i}_video_$QUALITY.flv
+    return 1
+  fi
+  url=http://vod-flash.canalplus.fr/${file}_video_$QUALITY.flv
+  print $url
+  print $url >> .log
+  wget -A $USER_AGENT -O $out $url
+}
+
+get_guignols $*

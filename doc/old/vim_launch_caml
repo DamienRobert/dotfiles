@@ -1,0 +1,2 @@
+: execute "'<,'> w !perl/cat_sleep.pl | socat - EXEC:ocaml,pty > /tmp/ploum.ml"
+| ped /tmp/ploum.ml

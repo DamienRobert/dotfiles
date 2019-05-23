@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+#clearing all partition table
+sgdisk --zap-all ${DISK}

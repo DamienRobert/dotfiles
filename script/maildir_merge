@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd ~/Mail
+mkdir -p virtual/unionfs
+unionfs phare/Inbox=RO:inria/Inbox=RO:damien.olivier.robert@gmail/Inbox=RO:ploum.plam@gmail/Inbox=RO virtual/unionfs

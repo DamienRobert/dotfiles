@@ -1,0 +1,91 @@
+#!/bin/bash
+
+play_rec() {
+  play "$1"
+  for i in "$1"/*
+  do
+    [ -d "$i" ] && play_rec "$i"
+  done
+}
+
+play() {
+
+NB_TRACKS=`ls -l "$1"/*.mp3 "$1"/*.ogg | wc -l`
+
+for nb in `seq "$NB_TRACKS"`
+do
+  for i in "$1"/*.mp3 "$1"/*.ogg
+  do
+#   echo "$i"
+   case "$i" in
+   *.mp3 )
+     if [ x`mp3info -p '%n' "$i"` = x"$nb" ]
+     then
+       echo "$nb: $i"
+       ARGS="$ARGS \"$i\""
+     fi
+     ;;
+   *.ogg )
+     if  ogginfo "$i" | fgrep "tracknumber=$nb"
+     then
+       echo "$nb: $i"
+       ARGS="$ARGS \"$i\""
+     fi
+     ;;
+   esac
+  done
+done
+
+#on rajoute les tracks qui n'ont pas de num
+  for i in "$1"/*.mp3 "$1/"*.ogg
+  do
+   case "$i" in
+   *.mp3 )
+     if [ x`mp3info -p '%n' "$i"` = x ]
+     then
+       echo "Nonum: $i"
+       ARGS="$ARGS \"$i\""
+     fi
+     ;;
+   *.ogg )
+     if  ! ogginfo "$i" | fgrep "tracknumber"
+     then
+       echo "Nonum: $i"
+       ARGS="$ARGS \"$i\""
+     fi
+     ;;
+   esac
+  done
+
+}
+
+DUMMY=0;
+ARGS="";
+LOGICIEL=mplayer
+
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -c ) shift; LOGICIEL="mplayer -cache $1"; shift ;;
+    -C ) shift; LOGICIEL=="mplayer -cache 10000" ;;
+    -d ) shift; DUMMY=1 ;;
+    -x ) shift; LOGICIEL="xmms" ;;
+    -xe ) shift; LOGICIEL="xmms -e" ;;
+    -l ) shift; LOGICIEL="$1"; shift ;;
+    *) break;;
+  esac
+done
+
+for i in  "$@"
+do
+  echo "$i"
+  play_rec "$i"
+done
+
+if [ "x$DUMMY" = "x1" ]
+then
+  printf '%s\n' "$LOGICIEL $ARGS"
+else
+  eval "$LOGICIEL $ARGS &"
+fi

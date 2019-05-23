@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-sudo rm -rf $DIR "$DIR.tar.xz"

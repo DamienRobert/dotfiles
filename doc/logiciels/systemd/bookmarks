@@ -1,0 +1,14 @@
+http://0pointer.net/blog/mkosi-a-tool-for-generating-os-images.html
+http://0pointer.net/blog/casync-a-tool-for-distributing-file-system-images.html
+http://0pointer.net/blog/ip-accounting-and-access-lists-with-systemd.html
+http://0pointer.net/blog/dynamic-users-with-systemd.html
+http://0pointer.net/blog/walkthrough-for-portable-services.html
+
+Containers without a Container Manager, with systemd: https://linuxpiter.com/system/attachments/files/000/001/337/original/Lennart_Poettering.pdf?1509552116
+
+https://gitlab.com/BrunoVernay/systemd-playground/
+
+Martin Pitt: graphical-session.target
+https://www.youtube.com/watch?v=hq18daxTkLA
+
+https://github.com/systemd/systemd/blob/master/doc/BOOT_LOADER_SPECIFICATION.md

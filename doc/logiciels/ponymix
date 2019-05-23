@@ -1,0 +1,7 @@
+sink: hauts-parleurs
+source: micros (monitor => enregistre le sink correspondant)
+sink-input: logiciel faisant du son
+source-ouptut: logiciel enregistrant du son
+
+Enregistrement: source => source-output
+Playback: sink-input => sink

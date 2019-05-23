@@ -1,0 +1,2 @@
+#automatically get name and email (a la git)
+"${NAME:-$(getent passwd ${USER:-$(whoami)} | cut -d : -f 5 | cut -d , -f 1)} <${EMAIL:-${USER:-$(whoami)}@$(hostname --fqdn)}>"

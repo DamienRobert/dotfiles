@@ -1,0 +1,32 @@
+#!/bin/sh
+
+tmpf="/tmp/tmp-`basename \"$0\"`-`date`-$$"
+$HOME/script/local/mail2text > "$tmpf"
+
+FROM=`egrep "^From:" "$tmpf" | sed 's/^From: *//'`
+SUBJECT=`egrep "^Subject:" "$tmpf" | sed 's/^Subject: *//'`
+FROM=`printf '%s' "$FROM" | sed 's/\=\?.*\?\=//g'`
+FROM=`printf '%s' "Mailco: $FROM" | dd bs=1 count=29`
+
+
+{ echo "POST";
+  echo "From: damien@clipper.ens.fr ($FROM)";
+  echo "Subject: plam"
+  echo "Message-ID:<mail_trop_nul@plim>"
+  echo "Newsgroups: yaf.mails.5fco"
+  echo ""
+  echo "$SUBJECT"
+  echo ""
+  cat "$tmpf";
+  echo "."
+  echo "quit"
+} |
+netcat quatramaran.ens.fr 2319 |
+grep "240 Got it" || {
+rm -f "$tmpf"
+echo "Impossible d'envoyer le message"
+exit 1
+}
+
+rm -f "$tmpf"
+echo "Message envoyé le `date`"

@@ -1,0 +1,41 @@
+#!/bin/sh
+PORT=${1-44001}
+ACTIVE=remote_forward
+DESACTIVE=remote_forward_kill
+PROG=script/enable_forwarding
+MACHINE="jonque.ens.fr"
+
+
+#mon .ssh_config dit d'utiliser la clé remote_forwarding_id_rsa
+#le authorized_keys de jonque dit qu'à cette clé est associée la commande
+#script/enable_forwarding 44001:
+#!/bin/sh
+#exec ssh -gN -L "$1:localhost:$1" jonque.ens.fr
+
+#on execute quand même une pipo commande pour qu'il forke en bg
+
+#en fait, ça lui dit de pas utiliser de pseudo-tty, ie ~ à -T
+#la commande est finalement la vraie commande, en cas de ssh-add de
+#ma vraie clé, c'est celle-ci qui est utilisée
+
+#dans le ssh-config de clipper, je dis de ne pas faire de
+#host_verification pour me loguer sur localhost ou jonque
+#je peux donc me loguer sur ma machine sans soucis
+
+#quand je quitte, j'intercepte pour killer le forward -g qui tourne sur
+#jonque, le remote_forward_kill utilise une autre idendity_file dont la
+#commande associée est script/enable_forwarding kill
+
+#j'enlève le remote forwarding global, il me sert à rien pour l'instant
+#c'est à dire que j'ai remplacé remote_forward par jonque.ens.fr, donc
+#il n'appelle pas le truc de forwarding dans le .ssh/config
+
+#quit() {
+#  ssh "$DESACTIVE" "$PROG" kill;
+#  exit
+#}
+#trap quit HUP INT QUIT TERM
+
+#ssh -gn -R "$PORT:localhost:22" "$ACTIVE" "exec $PROG $PORT"
+
+ssh -gN -R "$PORT:localhost:22" "$MACHINE"

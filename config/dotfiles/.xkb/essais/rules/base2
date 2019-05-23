@@ -1,5 +1,0 @@
-inculde(xorg);
-
-! model         layout          variant         =       symbols
-  *             mysymbols       us              =       pc+mysymbols(us)
-

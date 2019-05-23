@@ -1,0 +1,187 @@
+Standard TvZ is 1 rax hellion expand, but there is a lot of follows-up:
+
+  10 depot
+  12 barracks
+  13 gas
+  15 OC
+  16 depot
+  build 2 marines then stop
+  18 factory
+  19 reactor
+  21 Command Center
+  22 depot ( use the SCV that built the factory to make it )
+  switch factory onto the reactor
+  23 build 2 hellions
+  27 techlab on rax
+
+The bio centric build searches stim on the tech lab rax. The tank centric build
+switch back after 2/4 hellions and search siege mode.
+
+1) Standard (3 tanks push)
+  4 hellions
+  Stim
+  Add two rax (one on the reactor from fact)
+  => 3 raxes 1 fact 1 starport
+  Starport
+  Tanks+siege (construct new tech lab)
+
+2) Fast drop
+  4 hellions
+  Add 1 rax only rather than two
+  Starport (switch with new reactor from fact)
+
+3) Bio centric
+   6 hellions
+   Marauders on tech lab rax
+   Add two rax -> reactors (use fact to construct a new reactor)
+   Starport (switch with yet a new reactor from fact)
+
+4) Fast tank push
+  2 hellions (switch back)
+  Add 2 raxes (search combat shield)
+  push@ 4 tanks
+  (Faster push: build only one new rax, push @ 2 tanks, no combat shield)
+
+5) Fast 3cc
+  Build 3th cc after 4 hellions
+  Switch back
+  Tanks
+  Add 2 raxes (tech lab and reactor)
+
+The workflow is
+3 raxes (two reactor one tech lab) one fact (tech lab) one starport (reactor)
+- Agressive: Add 1 rax 1 fact when pushing
+- Macro: 3th cc -> Ebay (upgrades!); Add one fact and two raxes when taking
+  third (or 0 fact 3 raxes when bio centric) => 5 raxes 2 fact 1 starport
+
+Late game: Add three raxes 1 fact and take 4th => 8 raxes 3 fact 1 starport
+
+6) Mech
+  2nd gaz when fact about to finish (after cc)
+  Continuous hellions
+  Starport -> banshee
+  Armory
+  Two fact -> switch with tech lab from starport and one made from rax
+  => 3 fact (1 reactor 2 tech labs) 1 starport
+
+===================================================
+Max Standard TvZ
+
+Std reactor hellion expo
+stim on tech lab
+add 2 raxes after 4 hellions (switch one with fact after six hellion)
+put fact next to third rax to build reactor
+ebay + 2nd gaz
+starport + reactor on fact
+third gaz
+tech lab on fact
+third cc
+
+Remark: envoyer le 15 scv pour faire le supply, il fera la facto puis le
+        3th supply vers 20 (il y aura un petit supply block a 27/27)
+        Il y a besoin d'un scv pour le supply de 35
+- après les deux rines, ne pas produire jusqu'à ce que les 6 hellions sont
+  faits -> rauders
+
+========================================
+Demuslim TvZ
+http://www.teamliquid.net/forum/viewmessage.php?topic_id=251694&currentpage=234
+
+10 depot
+12 rax
+15 depot to like 10% -> halt and scout (rax scv finishes) Or anytime before
+   to deny scout, doesn't change the BO at all.
+16 gas
+17 marine
+17 OC
+21 CC at natural (once OC is done, make an SCV and rally it to natural
+      400 minerals once it gets there)
+23 factory
+24 depot (start wall off)
+25 rax
+25 rax
+
+      Go with constant scv production and 4 marines -> reactor. Keep
+      scouting SCV alive. Check gas, and pool timing, then go to natural to
+      scout for a spine if they make it. If they make a spine, move out
+      with 3 marines to pressure with 3 marine 1 scv. If no spine, go on 4
+      marines 1 scv. Kite lings (they're slow) and snipe any OLs you can.
+      Spines are my priority, as they die very fast to 4 marines 1 scv.
+      With decent control, you can get 1-2 drones, 3-4 lings, maybe a queen
+      if they're sloppy, or maybe an OL.
+
+      Once the 2/3 rax are done, one gets a tech lab other starts marines.
+      Once tech lab is about 50-75% done, start ebay at wall of.
+      Depot well before you need them to not be blocked.
+
+      Constant hellions to keep map control, and constant marines to
+      bolster your army. Start stim once tech lab is done, and
+      +1 likewise with the ebay. After about 15-20 seconds of starting plus
+      1, start 2nd tech lab, and CS once it's done.
+
+      Move out a bit before stim cs and +1 finish to establish map control
+      if it's 'safe'. Most zergs now a days go multiple queens, and a
+      faster third. This push shits on those 3rds, as stim/cs/+1 marines
+      with hellion support rolllllllll zerg units early. I personally delay
+      the push by a bit, and make 3-4 marauders to pick off queens, and
+      spines faster.
+
+      Once +1 is done, start +1 armor. When +1 armor is 70% start a 2nd
+      ebay, and an armory.
+
+      Start 3rd cc 70-80 supply, in that range.
+
+      From there, get 2nd and 3rd gas, 2 more rax, starport, and 2nd
+      factory. If they go ling infestor -> 2 factories start hellions
+      constant with blue flame started. I have 5 rax, 2 tech lab, 3
+      reactor, 6 marine/2 marauder/2 hellion cycles. With this composition,
+      you can be out on the map sniping lings and forcing more lings = less
+      drones.
+
+      Once they establish a bit of order, tech lab 2nd factory, and get
+      double factory siege tank production as you continue 5 rax, 2 fac, 1
+      port production.
+
+    http://www.teamliquid.net/forum/viewmessage.php?topic_id=251694&currentpage=237
+
+     I drop gas 2 and 3, get +1 armor, get starport -> reactor it, and then
+     drop 2 more raxes, armory and 2nd ebay at 40% of +1 armor.
+
+     I lift one of the tech lab raxes, and land the factory on it, the rax
+     lands and makes a reactor.
+
+     Start 3rd CC, then 2nd factory. That way, when third base is done, I'm
+     on 5 rax 2 fac 1 port, standard marine tank with double ebay follow
+     up. When third gets saturated, start 3rd fac, and 2-3 more rax. 3
+     base, I aim for 7-9 rax, 3 fac, 1 port.
+
+================== Post 1.5 patch builds ==================
+11/11:
+Send the 10th scv to proxy
+Send the scv building the depot to proxy
+13 scvs: orbitals
+Send the 2 scvs building rax to scout+1 more + queue scv building second
+depot to rally too (so 4 scvs in total)
+Bunker rush
+Build third rax at wall, 2 cc
+
+3oc 1/1/1 opening
+No gas fe
+3th cc
+2 gas
+fact -> switch with reactor -> starport -> switch with tech lab
+build 2nd rax (add reactors to the 2 raxes)
+at 4 hellions+banshees add 2 eng bay
+lift starport -> reactor
+lift fact -> tech lab
+build raxes 3 and 4 to adds-ons (ie 1 reactor 1 tech lab)
+
+Less greedy opening
+No gas fe
+16 double gas
+17 supply
+fact, starport, 3th cc after banshee started
+double ebay
+tech lab on rax: stim, add two raxes, starport go reactor for medivac
+fact goes to tech lab from starport
+-> 3 raxes (2react1tech), 1 fact 1 starport, add 3 raxes

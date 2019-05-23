@@ -1,0 +1,92 @@
+xfce 4.12: http://www.xfce.org/about/news/?post=1425081600
+
+- xfconfd is the deamon for setting/reading xfce settings in xfconf/
+Edit with xfce4-settings-editor
+- Xfsettingsd is the daemon for the XSettings registry
+  Cf [xsettings]
+
+~/.config/xfce4/xfconf/xfce-perchannel-xml:
+keyboard-layout.xml: default keyboard layout
+keyboards.xml: numlock, capslock status
+xfce4-desktop.xml: desktop background
+  The icons are in xfce4/desktop/icons*
+xfce4-keyboard-shortcuts.xml: keyboard shortcuts (see ./fvwm-bindings)
+xfce4-panel.xml: plugins in the panel
+  The plugins config are in xfce4/panel/*.rc
+xsettings.xml: xsettings configuration
+xfce4-session.xml: session manager
+  The session cache is in ~/.cache/sessions/xfce4-session-$HOSTNAME${DISPLAY%.?}
+thunar.xml, xfce4-notifyd.xml, xfce4-settings-manager.xml, xfwm4.xml: application configurations
+
+My custom configs (cf ~user/configure/scripts/02dmsettings):
+xfconf-query -n -c keyboard-layout -p /Default/XkbDisable -t bool -s true
+xfconf-query -n -c keyboards -p /Default/Numlock -t bool -s true
+xfconf-query -n -c xsettings -p /Xft/DPI -t int -s -1
+xfconf-query -n -c xfce4-session -p /startup/ssh-agent/enabled -t bool -s false
+xfconf-query -n -c xfce4-session -p /general/SaveOnExit -t bool -s false
+xfconf-query -n -c xfce4-session -p /sessions/Failsafe/Client0_Command -a -t string -s fvwm
+xfconf-query -n -c xfce4-keyboard-shortcuts -p '/commands/custom/<Control><Alt>l' -t string -s "dm-tool lock"
+xfconf-query -n -c xfce4-notifyd -p /theme -t string -s "Smoke"
++ Writting of .config/xfce4/terminal/terminalrc
+
+Default xfce settings
+=====================
+Cf /etc/xdg/xfce4:
+- helpers.rc:
+  WebBrowser=firefox
+  MailReader=thunderbird
+  TerminalEmulator=xfce4-terminal
+  FileManager=Thunar
+- xinitrc, Xft.xrdb: cf [Xsession]
+- panel/default.xml: default panel
+- panel/xfce4-clipman-actions.xml: possible default commands actions for clipman
+- xfconf//xfce4-session.xml: 'Failsafe session' launches
+    xfwm4, xfsettingsd, xfce4-panel, Thunar --daemon, xfdesktop
+- xfconf//xsettings.xml
+  Net:
+    ThemeName="Adwaita"
+    IconThemeName="gnome"
+    DoubleClickTime="400"
+    DoubleClickDistance="5"
+    DndDragThreshold="8"
+    CursorBlink="true"
+    CursorBlinkTime="1200"
+    SoundThemeName="default"
+    EnableEventSounds="false"
+    EnableInputFeedbackSounds="false"
+  Xft:
+    Xft (empty), DPI (empty), <!-- Lcdfilter="none" -->
+    Antialias="1", Hinting="-1", HintStyle="hintfull", RGBA="none"
+  Gtk:
+    CanChangeAccels="false"
+    ColorPalette="black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90"
+    FontName="Sans 10"
+    IconSizes=""
+    KeyThemeName=""
+    ToolbarStyle="icons"
+    ToolbarIconSize="3"
+    <!-- <property name="IMPreeditStyle" type="string" value=""/> -->
+    <!-- <property name="IMStatusStyle" type="string" value=""/> -->
+    <!-- <property name="IMModule" type="string" value=""/> -->
+    MenuImages="true"
+    ButtonImages="true"
+    MenuBarAccel="F10"
+    CursorThemeName=""
+    CursorThemeSize="0"
+    DecorationLayout="menu:minimize,maximize,close"
+    <!-- IMPreeditStyle="", IMStatusStyle="", IMModule="" -->
+- xfconf//xfce4-keyboard-shortcuts (Primary=Ctrl)
+  Alt-F1: xfce4-popup-applicationsmenu
+  Alt-F2: xfce4-appfinder --collapsed
+  Alt-F3: xfce4-appfinder
+  Ctrl-Alt-(Delete|l): xflock4
+  XF86Display/Super+p: xfce4-display-settings --minimal
+  Ctrl+Escape: xfdesktop --menu
+  XF86WWW: exo-open --launch WebBrowser
+  XF86Mail: exo-open --launch MailReader
+  + xfwm4 key bindings
+
+Scripting the panel
+===================
+
+https://forum.xfce.org/viewtopic.php?id=8619

@@ -1,4 +1,5 @@
 #!/bin/sh
+#See: http://linux-mm.org/Drop_Caches
 echo "Dropping caches (press a key)"
 read a
 echo -e "BEFORE EMPTY CACHES"

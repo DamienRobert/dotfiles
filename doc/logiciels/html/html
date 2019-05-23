@@ -1,0 +1,302 @@
+vim: foldmethod=marker
+
+URI {{{1
+See also [ruby/stdlib/uri]
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+
+data:[<mediatype>][;base64],<data>
+The mediatype is a MIME type string, such as 'image/jpeg' for a JPEG image file. If omitted, defaults to text/plain;charset=US-ASCII
+
+data:,Hello%2C%20World!
+    Simple text/plain data
+data:text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D
+    base64-encoded version of the above
+data:text/html,%3Ch1%3EHello%2C%20World!%3C%2Fh1%3E
+    An HTML document with <h1>Hello, World!</h1>
+data:text/html,<script>alert('hi');</script>
+    An HTML document that executes a JavaScript alert. Note that the closing script tag is required. 
+
+uuencode -m infile /dev/stdout
+
+HTML {{{1
+Reference: http://htmlreference.io/
+
+- Block
+  <p>: paragraphe
+  <h1>: titre
+  <br>: aller à la ligne
+  <ol type="i">: liste numéroté (type="i" pour chiffres romains, "a" pour lettres, rien pour num)
+  <ul>: liste non numéroté
+  <li>: élément de la liste
+
+- Inline
+  <strong>: gras
+  <em>: italique
+  <cite>: citer un livre (italique en pratique)
+  <code>: citer un bout de code
+  <dfn>: pour une définition
+
+- Format
+  <center> centrer le texte
+  <i>: italique
+
+  <blockquote>: citation (poésie...)
+  <pre>: texte préformaté (affiché tel quel)
+  
+  <dl> : pour un lexique
+    <dt>: nom
+      <dd>: définition
+  
+- Balises
+  <img src="nom fichier" alt="descriptif">: pour une image
+  <a href="page web"> nom du lien </A>: pour un lien hypertexte
+  <a name="nom ancre">nom</A>: définir une ancre
+  <a href="page web.html#nom ancre">: revenir à l'ancre
+  <a href="mailto:Nom&#45;Prénom&#46;&#64;ens&#46;fr>adress mail</a>
+
+Linking:
+- link: in a header. http://www.w3schools.com/tags/tag_link.asp
+    - crossorigin=...
+    - rel=alternate archives author bookmark external first help icon last license next nofollow noreferrer pingback prefetch prev search sidebar stylesheet tag up
+    - media=
+
+- a: http://www.w3schools.com/tags/tag_a.asp
+   - download=
+   - media=
+   - rel=alternate author bookmark help license next nofollow noreferrer prefetch prev search tag
+   - target=_blank _parent _self _top framename
+
+HTML5 {{{1
+
+Html5: http://en.wikipedia.org/wiki/HTML5
+http://www.w3schools.com/html/html5_intro.asp
+Docs: 
+- http://dev.w3.org/html5/html-author/
+- https://www.webplatform.org/
+  The latest information on how to use the technology that runs the web — HTML, CSS, JavaScript and more.
+- https://whatwg.org/ #a soft fork of w3c
+  -> https://html.spec.whatwg.org/multipage/
+  -> https://developers.whatwg.org/
+
+Reference:
+- https://developer.mozilla.org/en/docs/Web/HTML/Element
+- http://www.w3schools.com/tags/
+
+# Validator: 
+- html5: https://whatwg.org/validator/, both based on the nu validator
+  => - https://html5.validator.nu/ (From: https://validator.nu/)
+  => - https://checker.html5.org/ (gives warning too)
+- all: https://validator.w3.org/
+- java tool: https://www.totalvalidator.com/
+Browsers compatibility: http://browsershots.org/
+
+Style guides: http://styleguides.io/
+
+Cut and copy: http://updates.html5rocks.com/2015/04/cut-and-copy-commands
+
+# Quirks Mode:
+http://en.wikipedia.org/wiki/Quirks_mode
+http://stackoverflow.com/questions/6771258/whats-the-difference-if-meta-http-equiv-x-ua-compatible-content-ie-edge-e
+Note: <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+is used to make IE<=10 use standard mode (when there is a DOCTYPE) on the intranet. Not necessary for IE>10.
+
+# Minimal html5
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/normalize.css">
+  </head>
+  <body>
+    <p>Hello world! This is HTML5 Boilerplate.</p>
+  </body>
+
+Access via a server:
+ruby -run -ehttpd . -p8080
+firefox localhost:8080/index.html
+
+</html>
+
+# Features:
+- entities are predefined https://dev.w3.org/html5/html-author/charref
+- no namespace
+- <math> and <svg> can be used as if they were under the mathml and svg
+  default namespaces
+- custom attributes starting with data:
+  http://html5doctor.com/html5-custom-data-attributes/
+  <foo data-bar="ploum">...</foo>
+- title and textarea are in RCDATA, script and style in CDATA
+  => no need to escape <,> and &
+
+Main new elements: section, article, main, aside, hgroup, header, footer, nav,
+figure/figcaption, template
+https://html-differences.whatwg.org/
+
+TODO: <a>, <link>, cookies
+
+XHTML5 {{{1
+
+# Entities
+  &#nnnn;
+  &#xhhhh;
+
+xml entities: &quot ("); &amp (&); &lt (<); &gt (>); &apos; (') [not supported as an html entity]
+
+http://stackoverflow.com/questions/16164835/spec-for-handling-of-html-entities-in-ahref
+For xml, it is necessary to escape '&' in attributes, although html5 as a
+special mode to handle things like
+'href="test/example.jsp?item=123&currentSize=S&currentQty=1"
+
+# CData
+
+PCDATA means parsed character data.
+CDATA means character data. (not parsed)
+<![CDATA[ ... ]]>
+RCDATA: like CDATA but parse character references (entities)
+
+http://dev.w3.org/html5/spec-LC/syntax.html#rcdata-elements
+- Void elements
+    area, base, br, col, command, embed, hr, img, input, keygen, link, meta, param, source, track, wbr
+- Raw text elements
+    script, style
+- RCDATA elements
+    textarea, title
+- Foreign elements
+    Elements from the MathML namespace and the SVG namespace.
+- Normal elements
+    All other allowed HTML elements are normal elements.
+
+# Xml declaration
+
+<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+http://stackoverflow.com/questions/7007427/does-a-valid-xml-file-require-an-xml-declaration
+The xml declaration is optional for xml 1.0 but obligatory for xml 1.1
+
+# DTD
+https://en.wikipedia.org/wiki/Document_type_definition
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+# Xml namespaces
+
+http://www.w3schools.com/xml/xml_namespaces.asp
+
+<root>
+<h:table xmlns:h="http://www.w3.org/TR/html4/">
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table xmlns:f="http://www.w3schools.com/furniture">
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+
+<!-- Default Namespace -->
+<table xmlns="http://www.w3.org/TR/html4/">
+  <tr>
+    <td>Apples</td>
+    <td>Bananas</td>
+  </tr>
+</table>
+</root> 
+
+http://www.w3.org/TR/2011/WD-html5-20110405/namespaces.html
+The HTML namespace is: http://www.w3.org/1999/xhtml
+The MathML namespace is: http://www.w3.org/1998/Math/MathML
+The SVG namespace is: http://www.w3.org/2000/svg
+The XLink namespace is: http://www.w3.org/1999/xlink
+The XML namespace is: http://www.w3.org/XML/1998/namespace
+The XMLNS namespace is: http://www.w3.org/2000/xmlns/
+
+# Xhtml 1.1
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <!--<meta http-equiv="content-type" content="text/html; charset=utf-8" />-->
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+    <title></title>
+  </head>
+  <body>
+  </body>
+</html>
+
+# Html5
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <!-- page content -->
+  </body>
+</html>
+
+# Html5 as xml (XHTML5)
+http://en.wikipedia.org/wiki/Polyglot_markup
+http://dev.w3.org/html5/html-polyglot/html-polyglot.html
+https://wiki.whatwg.org/wiki/HTML_vs._XHTML
+
+Minimal polyglot markup:
+
+  <!DOCTYPE html>
+  <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+    <head>
+      <title></title>
+    </head>
+    <body>
+    </body>
+  </html>
+
+Encoding: <meta charset="UTF-8"/>
+Namespaces: (only html,math, and svg are allowed in html5)
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <svg xmlns="http://www.w3.org/2000/svg">
+CDATA: <script>//<![CDATA[ FOO; //]]></script>
+ See https://wiki.whatwg.org/wiki/HTML_vs._XHTML#Element-specific_parsing
+and https://dev.w3.org/html5/html-polyglot/html-polyglot.html#safe-CDATA-content
+http://stackoverflow.com/questions/3302648/should-i-use-cdata-in-html5
+(<script> and <style> are parsed as CDDATA in html5 but not in xhtml, so we need to escape them for compatibility. CDDATA is a xml type, it does not exist in html5)
+
+XML {{{1
+Namespaces:
+http://www.w3schools.com/xml/xml_namespaces.asp
+
+<root>
+<h:table xmlns:h="http://www.w3.org/TR/html4/">
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table xmlns:f="http://www.w3schools.com/furniture">
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+</root> 
+
+xlink:
+https://en.wikipedia.org/wiki/XLink
+Link in an xml document (almost not implemented)
+
+Special xml attributes:
+http://www.informit.com/articles/article.aspx?p=31837&seqNum=9
+xml:id, xml:base, xml:space, xml:lang, xmlns [the xml namespace is automatically
+defined in xml documents; base, lang and id are like their html equivalent)

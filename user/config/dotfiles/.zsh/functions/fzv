@@ -1,0 +1,106 @@
+fzv() {
+	local fzf_start fzf_post preargs result i action=print do_start
+	local fd_bin="fd" fd_type='f' fd_args=("--color=always")
+	local fzf_bin=fzf
+	local fzfp_orientation=down fzfp_height='50%' fzfp_post=(wrap)
+	#local fzf_opts=("-0" "--ansi" "--preview" "'[ -d {} ] && ls -lF --color=always {} || bat --plain --color always {}'")
+	local fzf_preview_file="bat --plain --color always {}"
+	# local fzf_preview_file="unbuffer -p vimcat {}"
+	local fzf_preview_dir="ls -lF --color=always {}"
+	local fzf_opts=("-0" "--ansi")
+	local fzf_preview_launch
+	local OPTS=$(getopt -o 'l:bdfevoa' --long 'bookmarks,locate:,dir,files,edit,visual,open,cd,cdup,complete,hidden,tmux,height:,pre:,all,bare,post:,preview:,filepreview:,dirpreview:,bat,cat,vimcat' -- "$@") || return 1
+	eval set -- "$OPTS"
+	while true; do
+		case $1 in
+			-- ) shift; break ;;
+			# File selection:
+			-b|--bookmarks ) shift; fd_args+=('.' ~/{mine,latex,perso,pro} $GEM_HOME/gems /etc /usr/lib/{systemd/system,ruby} /usr/share/{vim,zsh}) ;;
+			-a|--all ) shift; fd_type= ;;
+			-d|--dir ) shift; fd_type="d" ;;
+			-f|--files ) shift; fd_type="f" ;;
+			-l|--locate ) shift; fzf_start=("locate" "-A" "$1"); shift ;;
+			# Generic $fzf_start(=fd) arg
+			--pre ) shift; preargs=$1; shift ;;
+			# Set up $fzf_post (default to $fzf_bin=fzf/fzf-tmux)
+			--post ) shift; fzf_post=$1; shift ;;
+			# Use fzf-tmux
+			--tmux ) shift; fzf_bin='fzf-tmux' ;;
+			# Preview arguments
+			--hidden ) shift; fzfp_post+=(hidden) ;;
+			--height ) shift; fzfp_height=$1; shift ;;
+			# Preview bin
+			--preview ) shift; fzf_preview_launch=$1; shift ;;
+			--filepreview ) shift; fzf_preview_file=$1; shift ;;
+			--dirpreview ) shift; fzf_preview_dir=$1; shift ;;
+			--bat ) shift; fzf_preview_file=bat ;;
+			--cat ) shift; fzf_preview_file=cat ;;
+			--vimcat ) shift; fzf_preview_file=vimcat ;; #default
+			# Action after fzf selection
+			-e|--edit ) shift; action=edit ;;
+			-v|--visual ) shift; action=visual ;;
+			-o|--open ) shift; action=open ;;
+			--print0 ) shift; action=print0 ;;
+			--cd ) shift; action='cd' ;;
+			# Misc
+			--cdup ) shift; action='cd'
+				local dirs=() dir=$PWD
+				while [[ $dir != "/" ]]; do
+					dirs+=$dir; dir=${dir:h}
+				done
+				fzf_start=(printf '%s\n' $dirs /)
+				;;
+			# for use in other completion functions
+			--complete ) shift; do_start=t; fzf_post=(_fzf_complete '-m'); action= ;;
+			# don't use print0 and don't expect alt-c; and don't parse the result afterwards
+			--bare ) shift; action= ;;
+			*) printf "[$0] Error: unsupported option '%s'" $1; return 1 ;;
+		esac
+	done
+	local fzf_preview=($fzfp_orientation $fzfp_height $fzfp_post)
+	fzf_opts+=("--preview-window=${(j,:,)fzf_preview}")
+	case $fzf_preview_file in
+		bat) fzf_preview_file="bat --plain --color always {}" ;;
+		vimcat) fzf_preview_file="unbuffer -p vimcat {}" ;;
+		cat) fzf_preview_file="cat {}" ;;
+	esac
+	[[ -z $fzf_preview_launch ]] && fzf_preview_launch="'if [[ -d {} ]]; then $fzf_preview_dir; elif [[ -f {} ]]; then $fzf_preview_file; fi'"
+	fzf_opts+=("--preview" $fzf_preview_launch)
+	[[ -n $action ]] && fzf_opts+=("--expect" "alt-c" "--print0")
+	if [[ -z $fzf_post ]]; then
+		fzf_post=($fzf_bin)
+	fi
+	if [[ -z $fzf_start && ( -t 0 || -n $do_start ) ]]; then
+		fzf_start=($fd_bin)
+		[[ -n $fd_type ]] && fzf_start+=("--type" $fd_type)
+		fzf_start+=($fd_args)
+	fi
+	if [[ -z $action ]]; then
+		if [[ -z $fzf_start ]]; then
+			# we pass the fzf_opts to FZF_DEFAULT_OPTS in case fzf_posts is not fzf
+			FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $fzf_opts" $fzf_post $@
+		else
+			$fzf_start ${=preargs} | FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $fzf_opts" $fzf_post $@
+		fi
+	else
+		if [[ -z $fzf_start ]]; then
+			result=("$(FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $fzf_opts" $fzf_post $@)")
+		else
+			result=("$($fzf_start ${=preargs} | FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $fzf_opts" $fzf_post $@)")
+		fi
+		result=("${(0@)result}")
+		local key=$result[1]; result=("${(@)result[2,-1]}")
+		[[ -n $result ]] || return 1
+		case $key in
+			alt-c) cdl $result ;;
+			*) case $action in
+				edit) $EDITOR -- $result ;;
+				visual) gvi -p -- $result ;;
+				open) for i in $result; do xdg-open $i; done  ;;
+				cd) cd $result ;;
+				print0) printf '%s\0' $result ;;
+				*) printf '%s\n' $result ;;
+			esac
+		esac
+	fi
+}

@@ -1,0 +1,142 @@
+#!/bin/zsh
+
+RUNDIR=$(dirname $0)
+TARGET_DIR="/"
+TMPSCRIPT="/var/tmp/cur_script"
+PAUSE=
+#to run only one script, do
+#./00install --runfile /dev/null script
+while true;
+do
+  case $1 in
+    -- ) break;;
+    --rundir ) shift; RUNDIR=$1; shift ;;
+    --runfile ) shift; RUNFILE=$1; shift ;;
+    --vars ) shift; VARFILE=$1; shift ;;
+    -d|--target ) shift; OTARGET_DIR=$1; shift ;;
+    -p|--pause ) shift; PAUSE=t ;;
+    *) break;;
+  esac
+done
+[[ -z $VARFILE ]] && VARFILE="$RUNDIR/vars"
+[[ -z $RUNFILE ]] && RUNFILE="$RUNDIR/torun.sh"
+
+[[ -f $VARFILE ]] && . $VARFILE
+[[ -f $RUNFILE ]] && . $RUNFILE
+#command line has precedence
+[[ -n $OTARGET_DIR ]] && TARGET_DIR=OTARGET_DIR
+TORUN=($@ $TORUN)
+echo "!! Running scripts in $RUNDIR/: $TORUN"
+export RUNDIR
+
+cleanup() {
+	rm -f $TARGET_DIR/$TMPSCRIPT
+	rm -f $TARGET_DIR/etc/systemd/system/initboot.service
+	[[ -d $TARGET_DIR/$TMPDIR ]] && rm -rf $TARGET_DIR/$TMPDIR
+}
+
+fail() {
+	echo "! Failed: $?"
+	cleanup
+	exit 1
+}
+
+tmpdir() {
+	[[ -z $TMPDIR ]] && { echo "TMPDIR option used but TMPDIR not set"; exit 1 }
+	[[ -d $TARGET_DIR/$TMPDIR ]] && return 0 #already exist
+	rm -rf $TARGET_DIR/$TMPDIR
+	cp -r $RUNDIR $TARGET_DIR/$TMPDIR
+	if [[ -h $RUNDIR/slash ]]; then
+		(
+		cd $RUNDIR
+		slashdir=$(readlink slash)
+		rm $TARGET_DIR/$TMPDIR/slash
+		cp -r $slashdir $TARGET_DIR/$TMPDIR/slash
+		)
+	fi
+}
+
+prepare() {
+	echo "#!/bin/zsh" > $TARGET_DIR/$TMPSCRIPT
+	cat $VARFILE $RUNDIR/$cur_script >> $TARGET_DIR/$TMPSCRIPT
+	chmod 755 $TARGET_DIR/$TMPSCRIPT
+}
+
+#scripts are of the form name:type:opt1,opt2
+launch() {
+	cur_script=$1
+	script_type=$2
+	if [[ -z $script_type ]]; then
+		split=(${(s/:/)cur_script})
+		cur_script=$split[1]
+		script_type=$split[2]
+		opts=$split[3]
+		opts=(${(s/,/)opts})
+	else
+		shift; shift
+		opts=($@)
+	fi
+	[[ -z $script_type ]] && script_type="auto"
+	if [[ $script_type == "auto" ]]; then
+		split=$(head -n2 $RUNDIR/$cur_script | tail -n1)
+		split=${split#\#}
+		split=(${(s/:/)split})
+		script_type=$split[1]
+		opts=$split[2]
+		opts=(${(s/,/)opts})
+	fi
+	echo "!! $cur_script: $script_type ($opts)"
+	[[ -n $PAUSE ]] && read
+	for opt in $opts; do
+		case $opt in
+			TMPDIR) tmpdir ;;
+		esac
+	done
+	case $script_type in
+		chroot )
+			prepare
+			chroot $TARGET_DIR $TMPSCRIPT
+			;;
+		arch-chroot )
+			prepare
+			arch-chroot $TARGET_DIR $TMPSCRIPT
+			;;
+		nspawn )
+			prepare
+			systemd-nspawn -D $TARGET_DIR $TMPSCRIPT
+			;;
+		arch-nspawn )
+			prepare
+			arch-nspawn $TARGET_DIR $TMPSCRIPT
+			;;
+		nspawn-b )
+			prepare
+			cat >$TARGET_DIR/etc/systemd/system/initboot.service <<EOF
+[Unit]
+Description=Initial configuration script
+
+[Service]
+ExecStart=$TMPSCRIPT
+ExecStartPost=/usr/bin/systemctl poweroff
+Type=oneshot
+EOF
+			systemd-nspawn -bD $TARGET_DIR systemd.unit=initboot.service
+			;;
+		exec )
+			$RUNDIR/$cur_script
+			;;
+		* ) #source
+			. $RUNDIR/$cur_script
+			;;
+	esac
+}
+
+[[ -n $TORUN ]] && cleanup
+while [[ $#TORUN > 0 ]]; do
+	runscript=$TORUN[1]
+	launch $runscript || fail
+	shift TORUN
+	cat > $RUNFILE <<EOS
+TORUN=($(echo \'${^TORUN}\'))
+EOS
+done

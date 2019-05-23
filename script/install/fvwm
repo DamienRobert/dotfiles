@@ -1,0 +1,8 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+url="gh:fvwmorg/$(basename $0)"
+version="2.6.8"
+
+build_helper $@
+build_git --with-stroke-library

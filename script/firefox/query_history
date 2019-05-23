@@ -1,0 +1,16 @@
+#!/bin/sh
+# this also queries bookmarks
+
+FILE="$@"
+[ -z $FILE ] && FILE=$(ls -t $HOME/.mozilla/firefox/*default/places.sqlite | sed q)
+
+# --: sql comment
+sqlite3 $FILE "
+SELECT DISTINCT
+    title,url FROM moz_places
+-- WHERE
+--    url NOT LIKE '%google%search%'
+ORDER BY
+    visit_count DESC,
+    last_visit_date DESC;" |
+awk -F '|' '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}'

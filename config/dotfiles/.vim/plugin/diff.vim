@@ -1,1 +1,0 @@
-../vim-script/vimscript/ervandew/vim/plugin/diff.vim

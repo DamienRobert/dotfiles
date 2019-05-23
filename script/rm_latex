@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+rm **/*.{nav,snm,run.xml,bbl,vrb,aux,toc,log,out,idx,blg,bcf,maf,mtc,mtc0,mtc1,mtc2,lof,brf,lol,lot,fdb_latexmk,*.synctex.gz}(N)

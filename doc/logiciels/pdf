@@ -1,13 +1,57 @@
-Fabriquer un pdf:
+Fabriquer un pdf
+================
 
 convert -page a4 -size 595x841 -gravity NorthWest -draw "scale 5,5 text 0,0
 'Hello world'" canvas:none test.pdf
-
 595x841 est la taille en pixels d'une page A4 à 72dpi.
 
-ou:
-
-echo '%!PS-Adobe-2.0\n/Helvetica findfont 72 scalefont setfont\n100 500
+ou: echo '%!PS-Adobe-2.0\n/Helvetica findfont 72 scalefont setfont\n100 500
 moveto (Hello World) show showpage' |ps2pdf - helloworld.pdf
-
 cf forum.informatique.bureautique:546
+
+Extraire des pages d'un pdf
+===========================
+
+- pdfjam [-o foo.pdf] my.pdf 1-7,8,9 my2.pdf 3-
+- pdftk in.pdf cat 1-12 14-end output out1.pdf
+
+qpdf
+====
+
+http://tex.stackexchange.com/questions/50069/how-to-change-white-background-of-an-included-pdf-to-transparent
+
+I'm not sure about turning anything to transparent in a PDF. PDF is not an image format, so I guess the only way is to remove the background object entriely from the pages. You could do that manually (on every page) with Acrobat professional (and probably also some free pdf editors), but if you're lucky, the following may work:
+
+    Convert your PDF into something readable with qpdf -qdf file.pdf file-redable.pdf.
+
+    Look in there for the background object. (Luck needed at this point) More often than not, it will look somewhat like this:
+
+    10 765.75 591.75 -729.75 re
+    f
+
+    That is, a filled rectangle large enough to cover the whole page.
+
+    Experimentally remove it.
+    Fix the resulting pdf with fix-qdf file-redable.pdf.
+    Try whether it worked ;-)
+    If you found the right object to remove, you can remove it in all places simultaneously with sed, for instance.
+
+Okular
+======
+
+gvim --remote-wait +%l "+normal %c|" %f
+
+pdfjam
+======
+
+Handout: pdfjam --nup 2x3 slides_public.pdf 22-45
+pdfnup --nup 2x2 --scale 1.7 slides_public-22-45-pdfjam.pdf
+pdfnup --nup 2x2 --noautoscale false --scale 1.3 slides_public-22-45-pdfjam.pdf
+
+pdf*ps
+======
+
+qpdf, cpdf, pdftk, pdfjam, pdfnup
+ps2pdf14
+pdf2ps pdftops pdftocairo pdftohtml pdftoppm pdftosrc pdftotext
+ps2ps pstops

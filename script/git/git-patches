@@ -10,133 +10,157 @@ actiondo=
 actiondone=
 
 help() {
-    echo "git-mypatch format/send check/apply sent/resend/applied/reapply
+		echo "git-mypatch list format/send check/apply sent/resend/applied/reapply
 
-    - git mypatch format [branch] [upstream] [format-patch args]
-    Apply format-patch args. If args is empty, use upstream..branch.
-    Here branch and upstream are found using git-topic-helper
+		- git mypatch format [branch] [upstream] [format-patch args]
+		Apply format-patch args. If args is empty, use upstream..branch.
+		Here branch and upstream are found using git-topic-helper
 
-    - git mypatch send [--cc] name
-      Send patches, eventually applying git-mycc as cc-cmd if --cc is given as parameters
-    
-    - git mypatch check name
-      Check if the patches in name apply on the workdir (usually won't be the case if there is one of them that depend on another). Also check for whitespace error
-    - git mypatch apply name
-      apply patches in name
-    
-    - git mypatch sent/resend name
-    - git mypatch applied/reapply name
-        Move the patches accordingly
+		- git mypatch send [--cc] name
+			Send patches, eventually applying git-mycc as cc-cmd if --cc is given as parameters
 
-    |--dir|: change the patchdir .patches
-    |--dir-from|: change the default dirs send/apply
-    |--dir-to|: change the default dirs sent/applied"
-    exit 0
+		- git mypatch check name
+			Check if the patches in name apply on the workdir (usually won't be the case if there is one of them that depend on another). Also check for whitespace error
+		- git mypatch apply name
+			apply patches in name
+
+		- git mypatch sent/resend name
+		- git mypatch applied/reapply name
+				Move the patches accordingly
+
+		|-v|: patch version
+		|-g|: global patch dir
+		|--dir|: change the patchdir .patches
+		|--dir-from|: change the default dirs send/apply
+		|--dir-to|: change the default dirs sent/applied
+		"
+		exit 0
 }
 
+action=$1
+case $action in
+	list|format|send|check|apply|sent|resend|applied|reapply) shift ;;
+	*) action=format ;;
+esac
+
+version=
+global=
 while true;
 do
-  case "$1" in
-    -- ) shift; break ;;
-  --dir ) shift; patchdir=$1; shift ;;
-  --dir-from )  shift; actiondo=$1; shift ;;
-  --dir-to )  shift; actiondone=$1; shift ;;
-  --cc ) shift; cccmd="--cc-cmd=$HOME/var/dist/git-extra/git-related/git-related" ;;
+	case "$1" in
+		-- ) shift; break ;;
+	--dir ) shift; patchdir=$1; shift ;;
+	-v ) shift; version=$1; shift ;;
+	-g ) shift; global=t ;;
+	--dir-from )	shift; actiondo=$1; shift ;;
+	--dir-to )	shift; actiondone=$1; shift ;;
+	--cc ) shift; cccmd="--cc-cmd='$HOME/usr/dist/@git/git-related/git-related'" ;;
 -h|--help|-* ) help ;;
-    *) break;;
-  esac
+		*) break;;
+	esac
 done
+[[ -n $global ]] && patchdir="$HOME/progs/patches/${PWD:t}"
 
-mvaction() {
-  mkdir -p "$patchdir/$2/"
-  mv -i "$patchdir/$1/$3" "$patchdir/$2/"
+doneaction() {
+	local orig=$1
+	local dest=$2
+	local name=$3
+	mkdir -p "$patchdir/$dest/"
+	if [[ -e "$patchdir/$orig/$name" ]]; then
+		mv -i "$patchdir/$orig/$name" "$patchdir/$dest/"
+	else
+		ln -snf "../$name" "$patchdir/$dest/$name"
+	fi
 }
 
 getlist() {
-    OLDIFS=$IFS
-    IFS='
-'
-    list=($(find "$patchdir/$actiondo/$branch" -type f -not -name '0000*' | sort ))
-    IFS=$OLDIFS
+	local try
+	try="$patchdir/$actiondo/$patchname"
+	[[ -e $try ]] || try="$patchdir/$patchname"
+	list=(${(@0)$(find "$try" -type f -not -name '0000-*' -print0 | sort -nz )})
 }
 
-[[ -z $1 ]] && help
-action=$1; shift
-
 case $action in
-  format|send|sent|resend)
-    [[ -z $actiondo ]] && actiondo=send
-    [[ -z $actiondone ]] && actiondone=sent
-  ;;
-  apply|applied|reapply)
-    [[ -z $actiondo ]] && actiondo=apply
-    [[ -z $actiondone ]] && actiondone=applied
-  ;;
+	format|send|sent|resend)
+		[[ -z $actiondo ]] && actiondo=.send
+		[[ -z $actiondone ]] && actiondone=.sent
+	;;
+	apply|applied|reapply|list|check)
+		[[ -z $actiondo ]] && actiondo=.apply
+		[[ -z $actiondone ]] && actiondone=.applied
+	;;
 esac
 
-. ~/mine/script/git/git-topic-helper
-#this is a bit tricky, when using 'format' I need to find the upstream
-#branch. But otherwise I need only to find the current branch, not the
-#upstream one, so I add -to "" to gth_topic so that it won't look for it.
 if [[ $action == format ]]; then
-  gth_topic "$@"
-  branch=$gth_local
-  upstream=$gth_remote
+	. ~/mine/script/git/git-topic-helper
+	gth_topic "$@"
+	branch=$gth_local
+	upstream=$gth_remote
+	patchname=$branch
 else
-  gth_branch "$@"
-  branch=$gth_branch
+	if [[ -n $1 ]]; then
+		patchname=$1
+		shift
+	else
+		patchname=$(git current-branch -a)
+	fi
 fi
+[[ -n $version ]] && patchname="$patchname.v$version"
 
 case $action in
-  format )
-    [[ -n $upstream ]] && signature="--signature=Patched on top of $(git describe --always $(git merge-base $branch $upstream)) ($(git --version))" || signature=""
-    if [[ -z $gth_rest ]]; then
-      if [[ -n $upstream ]]; then
-        gth_rest="$upstream..$branch"
-      else
-        gth_rest=($branch)
-      fi
-    fi
-    mkdir -p "$patchdir/$actiondo/$branch"
-    echo git format-patch $signature -B -M -C -s --cover-letter -o "$patchdir/$actiondo/$branch" $gth_rest
-    git format-patch $signature -B -M -C -s --cover-letter --numbered --thread -o "$patchdir/$actiondo/$branch" $gth_rest
-    #-M detect move, -C detect copy, -B rewrite are written as a deletion + a creation
-    ;;
-  send )
-    [[ -z $branch ]] && branch=$(git current-branch -a)
-    echo git send-email $cccmd --annotate $gth_rest "$patchdir/$actionddo/$branch/"
-    git send-email $cccmd --annotate $gth_rest "$patchdir/$actiondo/$branch/"  && mvaction $actiondo $actiondone $branch
-    ;;
+	send )
+		echo  "$ git send-email $cccmd $@ \"$patchdir/$actionddo/$patchname/\""
+		git send-email $cccmd $@ "$patchdir/$actiondo/$patchname/"  && doneaction $actiondo $actiondone $patchname
+		;;
 
-  check )
-    getlist
-    for patch in $list; do
-      echo "*** Testing $patch (mostly usefull for whitespace errors) ***"
-      git apply --check --whitespace=error-all $gth_rest $patch 2>&1 | grep --color -E '.*whitespace.*|$'
-      #clever trick to color the match on whitespace: grep match all lines,
-      #but most of them only on the end of line which is not colored
-    done
-    ;;
-  apply )
-    getlist
-    echo "git am -3 $gth_rest $list"
-    git am -3 $gth_rest $list  && mvaction $actiondone $actiondo $branch
-    ;;
+	list)
+		getlist
+		echo $list 
+		;;
 
-  sent )
-    mvaction $actiondo $actiondone $branch
-    ;;
-  resend )
-    mvaction $actiondone $actiondo $branch
-    ;;
-  applied )
-    mvaction $actiondone $actiondo $branch
-    ;;
-  reapply )
-    mvaction $actiondo $actiondone $branch
-  ;;
+	check )
+		getlist
+		for patch in $list; do
+			echo "*** Testing $patch (mostly usefull for whitespace errors) ***"
+			git apply --check --whitespace=error-all $gth_rest $patch 2>&1 | grep --color -E '.*whitespace.*|$'
+			#clever trick to color the match on whitespace: grep match all lines,
+			#but most of them only on the end of line which is not colored
+		done
+		;;
+	apply )
+		getlist
+		echo "$ git am -3 $@ $list"
+		git am -3 $gth_rest $list  && doneaction $actiondone $actiondo $patchname
+		;;
 
-  * )
-    help
-  ;;
+	sent )
+		doneaction $actiondo $actiondone $patchname
+		;;
+	resend )
+		doneaction $actiondone $actiondo $patchname
+		;;
+	applied )
+		doneaction $actiondo $actiondone $patchname
+		;;
+	reapply )
+		doneaction $actiondone $actiondo $patchname
+	;;
+
+	format )
+		[[ -n $upstream ]] && signature="--signature=Patched on top of $(git describe --always $(git merge-base $branch $upstream)) ($(git --version))" || signature=""
+		if [[ -z $gth_rest ]]; then
+			if [[ -n $upstream ]]; then
+				gth_rest=("$upstream..$branch")
+			else
+				gth_rest=($branch)
+			fi
+		fi
+		mkdir -p "$patchdir/$actiondo"
+		mkdir -p "$patchdir/$branch"
+		echo "$ git format-patch '$signature' -B -M -C -o \"$patchdir/$patchname\" $gth_rest"
+		git format-patch $signature -B -M -C -o "$patchdir/$patchname" $gth_rest
+		#-M detect move, -C detect copy, -B rewrite are written as a deletion + a creation
+		doneaction $actiondone $actiondo $patchname
+		;;
+	*) help ;;
 esac

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+~/mine/ruby/gems/birthdays/bin/birthdays --file=$HOME/mine/script/anniversaire.yaml "$@"

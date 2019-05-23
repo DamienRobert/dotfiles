@@ -1,0 +1,10 @@
+#!/bin/sh
+
+for i in "$@"; do
+  echo "$i"
+  j="$i"
+  j=${j#?iso-8859-1?Q?}
+  j=${j%?=}
+  echo "$j"
+  read dummy && mv "$i" "$j"
+done

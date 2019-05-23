@@ -1,5 +1,5 @@
 #!/bin/zsh
-#parse a m3u file to play it with mplayer
+#parse a m3u file to play it with mpv
 
 typeset -a LIST;
 for i in "$@"; do

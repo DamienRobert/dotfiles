@@ -1,0 +1,68 @@
+Calcul de taux: http://droit-finances.commentcamarche.net/forum/affich-3955180-formule-pour-calcul-taux-d-interet
+Capital (c) emprunteable en fonction de la mensualité (m), du taux (t) et du nombre de mois du crédit (n) 
+- c=m * (1-(1+t/12)^{-n}) / (t/12)
+- m=c*(t/12) / (1-(1+t/12)^{-n})
+- Total = m*n= c*n*(t/12) / (1-(1+t/12)^{-n})
+Taux: le taux mensuel en fonction du taux annuel est de (1+t)^{1/12}-1
+mais dans certains calculs il faut simplifier en t/12.
+
+Calcul: 
+  u_n=montant restant à rembourser au mois n, t taux incrémental sur une période dx
+  u_{n+1}=u_n(1+t)-m, u_0=c
+  Point fixe: u=m/t, v_n=u_n-u, v_{n+1}=v_n[1+t]
+  D'où 0=u_N=m/t + (c-m/t)[1+t]^N
+  m=ct/(1-[1+t]^{-N})
+  Coût: m*N-c=c [Nt/(1-[1+t]^{-N})-1]
+En passant à une période dx infinitésimale, on trouve
+  m=ct / (1-e^{-Nt})
+
+Pret gigogne: http://www.cbanque.com/forum/showthread.php?115-Formule-math%C3%A9matique-taux-liss%C3%A9/page2
+Variables suffixées de "a" prêt principal
+Variables suffixées de "a1" prêt principal dans sa première phase
+Variables suffixées de "a2" prêt principal dans sa deuxième phase
+Variables suffixées de "a3" prêt principal dans sa troisième phase
+Variables suffixées de "b" prêt annexe 1
+Variables suffixées de "c" prêt annexe 2
+ Ma1 + Mb = Ma2 et Ma1 + Mb + Mc = Ma2 + Mc = Ma3 (2 égalités III)
+ Les égalités équivalentes a IV sont toujours:
+Ma1 = Ea1 * Ta / (1 - X)
+Ma2 = Ea2 * Ta / (1 - Y)
+Ma3 = Ea3 * Ta / (1 - Z)
+où X=(1 + Ta)^(-Na1) et Y = (1 + Ta)^(-Na2), Z = (1 + Ta)^(-Na3)
+Ea = Ea1 + Ea2X + Ea3XY (égalité V)
+ En remplacant dans l'égalité V Ea1, Ea2 et Ea3 par Ma1, Ma2 et Ma3 grace aux égalités IV, puis en exprimant Ma2 et Ma3 en fonction de Ma1 grace aux égalités III, on obtient apres simplification :
+Ma1 = [Ea * Ta - Mb * X * (1 - Y * Z) - Mc * X * Y * (1 - Z)] / (1 - X * Y * Z)
+Ma2 = [Ea * Ta + Mb * (1 - X) - Mc * X * Y * (1 - Z)] / (1 - X * Y * Z)
+Ma3 = [Ea * Ta + Mb * (1 - X) + Mc * (1 - X * Y)] / (1 - X * Y * Z)
+
+Prêt gigogne pour deux prêts:
+Ea = Ea1 + Ea2X
+Ma1 = [Ea * Ta - Mb * X * (1 - Y)] / (1 - X * Y)
+Ma2 = [Ea * Ta + Mb * (1 - X)] / (1 - X * Y)
+Mb = Eb * Tb / (1 - U); U= (1 + Tb)^(-Nb)
+
+PEL:
+Emprunt minimum: http://www.cbanque.com/forum/showthread.php?9188-Pr%C3%AAt-minimum-pour-prime-PEL/page2
+1) - Un montant minimum de prêt a été fixé à 150€ pour les Comptes Épargne Logement (CEL) => Circulaire ministérielle du 16/03/1994 JORF N° 78 du 2 avril 1994 - Page 4948 = 1.000 FRF converti à 150€.
+2) - Pour les PEL d'avant le 1er mars 2011, il n'y a pas de texte qui fixe explicitement un montant de prêt minimum de prêt.
+Mais l'article R.315-24 du code de la construction et de l'habitation précise cependant :
+" Il est institué une catégorie particulière de compte épargne logement sous la forme de plans contractuels d'épargne à terme déterminé"
+ce qui revient à appliquer au PEL le même plancher de prêt qu'au CEL.
+Une circulaire du 11 juillet 1986 (JO du 24/06/1986 - page 9130) a fixé un montant minimum de droits à utiliser en fonction de l'objet à financer à savoir (après conversion à l'euro) :
++ 75€ pour achat ou construction
++ 37€ pour travaux réparations/améliorations
++ 22,50€ pour travaux économie énergie.
+Le montant minimum des prêts possibles pour percevoir la prime sera donc le montant le plus élevé entre 150€ et le résultat du calcul prenant en compte tant ce minimum de droits à utiliser que la durée retenue.
+Plus de détails sur la réglementation: http://www.cbanque.com/forum/showthread.php?9188-Pr%C3%AAt-minimum-pour-prime-PEL&p=179064&viewfull=1#post179064
+
+Calcul des droits à prêt:
+http://www.cbanque.com/forum/showthread.php?6867-calcul-des-droits-a-pret-PEL&p=49864&posted=1#post49864
+    Le montant et la durée des prêts sont déterminés de sorte que le total des intérêts payés par l'emprunteur (hors frais de gestion) soit égal au total des intérêts utilisés pour le calcul du prêt multiplié par un coefficient de conversion fixé à 2.5 pour les PEL (1.5 pour les parts de SCPI) donc intérêt du prêt (hors frais de gestion et d assurance) = intérêts acquis (hors prime d'état) x coefficient de conversion.
+    Les frais de gestion et frais financiers sont fixés à 1.70 l'an par rapport au capital restant du.
+    Pour les banques cela correspond à une marge 0. La rémunération se faisant sur les dépôts, ce qui explique les difficultés qu'il y a parfois de faire un prêt EL dans un autre établissement que celui qui a eu les dépôts pendant la phase d'épargne 
+=> Pour un PEL à taux annuel de 2.5% (ie taux d'emprunt avec frais de
+4.2%),
+le capital empruntable max c vérifie donc
+coût d'emprunt = c [Nt/(1-[1+t]^{-N})-1] = droits à prêts * 2.5
+où t est le taux mensuel est N la durée en mois.
+

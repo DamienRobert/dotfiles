@@ -1,7 +1,7 @@
 #!/bin/zsh
 help() {
 	echo "mpl [--slow --sub sub] movie
-	play movie (--slow if the computer is too slow to activate framedrop and faster decompression)  
+	play movie (--slow if the computer is too slow to activate framedrop and faster decompression)
 mpl -a|--audio music
 	play music without video"
 	exit 1
@@ -31,7 +31,7 @@ case $PROG in
 		OPTS=(-ass)
 		;;
 	mpv)
-		OPTS=('--sub-ass')
+		OPTS=('--sub-ass' '--profile=en')
 		;;
 esac
 
@@ -50,7 +50,7 @@ fi
 
 if [[ -x /usr/bin/omxplayer && -z $audio ]]; then
 	PROG=omxplayer
-	OPTS=(--font /usr/share/fonts/TTF/FreeSans.ttf --italic-font /usr/share/fonts/TTF/FreeSansOblique.ttf)
+	OPTS=(--font /usr/share/fonts/TTF/FreeSans.ttf --italic-font /usr/share/fonts/TTF/FreeSansOblique.ttf -r)
 fi
 
 if [[ -n $sub ]]; then
@@ -67,5 +67,12 @@ if [[ -n $sub ]]; then
 	esac
 fi
 
+if [[ -z $audio ]] && systemctl --user is-active redshift-gtk.service; then
+	redshift=t
+	systemctl --user stop redshift-gtk.service
+fi
+
 echo $PROG $OPTS "$@"
-exec $PROG $OPTS "$@"
+$PROG $OPTS "$@"
+
+[[ -n $redshift ]] && systemctl --user start redshift-gtk.service

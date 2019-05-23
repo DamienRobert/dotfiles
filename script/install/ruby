@@ -1,0 +1,33 @@
+#!/bin/zsh
+#version=2.3.1
+version=LAST
+dest=
+srcdir=~/usr/dist/@ruby/ruby-build
+[[ -d $srcdir ]] || git clone "https://github.com/rbenv/ruby-build" $srcdir
+prog=$srcdir/bin/ruby-build
+[[ -n $1 ]] && version=$1
+[[ -n $2 ]] && dest=$2
+
+# To use ruby-install rather than ruby-build:
+# ~/usr/dist/@ruby/ruby-install/bin/ruby-install --install-dir /tmp/ruby-2.3.3 ruby 2.3.3 
+
+case $version in
+	"LAST" ) version=$(basename $(ls $srcdir/share/ruby-build/?.* | grep -Ev '.(-dev|-preview.?)$' | sort --version-sort | tail -n1)) ;;
+	"DEV" ) version=$(basename $(ls $srcdir/share/ruby-build/?.*-dev | sort --version-sort | tail -n1)) ;;
+esac
+
+build_ruby() {
+	echo $prog $version $dest
+	$prog $version $dest
+}
+
+if [[ -z $dest ]]; then #install to opt and symlink
+	. "$(dirname $0)/_install_helpers"
+	mkdir -p $OPT/{bin,packages}
+	#vcs update ~/usr/dist/@ruby/ruby-build #if needed to see new versions
+	dest=$OPTPKG/ruby-$version
+	build_ruby
+	do_symlinks ruby "ruby-$version"
+else
+	build_ruby
+fi

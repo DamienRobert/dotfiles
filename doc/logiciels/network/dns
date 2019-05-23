@@ -1,0 +1,25 @@
+cf aussi [bookmarks/dns] pour une liste de dns publics
+cf aussi [local] pour le réglage de nsswitch.conf
+
+- /etc/hosts userfile: $HOSTALIASES
+
+- Query using nss:
+getent hosts www.google.com #the adress used by the dns from nsswitch.conf
+getent ahosts www.google.com #return all adresses
+
+- dig # goes through resolv.conf [dig is from bind]
+dig google.com
+dig A google.com / dig AAAA google.com #ipv4/ipv6
+dig MX google.com
+dig @1.1.1.1 sci-hub.se #request through 1.1.1.1 cloudflare server
+
+host google.com #show A, AAAA and MX records
+
+nslookup google.com
+
+ldns package: -> drill
+  drill [ OPTIONS ] name [ @server ] [ type ] [ class ]
+
+- Reverse ip lookup:
+  https://reverseip.domaintools.com/
+  https://www.shodan.io/host/186.2.163.171

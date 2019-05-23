@@ -1,0 +1,386 @@
+http://leonetix.blogspot.fr/2008/01/best-of-zsh-tips.html
+
+ Best of ZSH Tips
+> zsh -fx # start a "clean" version of zsh (without your startup files)
+
+print $ZSH_VERSION
+http://zshwiki.org/
+http://www.zsh.org/mla/ Searchable Mailing List Archive
+http://grml.org/zsh/zsh-lovers.html
+http://zsh.sunsite.dk/Doc/Release/zsh_toc.html  Everything?
+man zsh
+man zshall
+
+zsh          Zsh overview (this section)
+zshmisc      Anything not fitting into the other sections
+zshexpn      Zsh command and parameter expansion
+zshparam     Zsh parameters
+zshoptions   Zsh options
+zshbuiltins  Zsh built-in functions
+zshzle       Zsh command line editing
+zshcompwid   Zsh completion widgets
+zshcompsys   Zsh completion system
+zshcompctl   Zsh completion control
+zshmodules   Zsh loadable modules
+zshzftpsys   Zsh built-in FTP client
+zshall       Meta-man page containing all of the above
+
+/usr/share/zsh/htmldoc/zsh_toc.html
+
+Global aliases
+Searching and filtering my mysql database with my own utility searchdb
+>searchdb client1 | grep -i website1 | fmt -50 | putclip
+How you can simplify this using 3 zsh Global Aliases
+>searchdb client1 G website1 F P
+alias -g ND='$(ls -d *(/om[1]))' # newest directory
+alias -g NF='$(ls *(.om[1]))'    # newest file
+Example of use
+cp NF ND
+
+
+!!
+!$ (last argument)
+!$:h (last argument, strip one level)
+!?echo
+vi !* (all parameters)
+vi !$ (last parameter)
+vi !^  (first previous parameter)
+vi !:1 (first previous parameter)
+vi !-2:2 (second parameter of second but last command)
+
+history               # View recent commands
+!42                   # Re-execute history command 42
+
+
+# substitute previous command
+r oldstr=newstr
+!!:s/fred/joe/        # edit previous command replace first fred by joe
+!!:gs/fred/joe/       # edit previous command replace all fred by joe
+^fred^joe             # edit previous command replace fred by joe
+^str1^str2^:u:p       # replace str1 by str2 change case and just display
+echo chim
+^chim^&-&ney-&-&-cheree # reuse LHS
+!42:p
+also use control-R
+^str1^str2^:G         # replace as many as possible
+
+cd !?ls   #get command and parameters of a previous ls command
+cd !?ls?:*   #get (just) parameters of a previous ls command
+
+Generating a command from an earlier one
+How to recall the parameters of a previous command, on line 7 below
+recall the parameters of line 5
+
+5> mv somefile1 /home/saket/stuff/books/
+6> acroread somefile.pdf
+7> mv somefile2 /home/saket/stuff/books/
+
+> mv !?saket
+Would bring up the whole line ready for a little editing
+
+or purist
+
+> mv !?saket?:*
+Would just bring up the parameters
+
+If you know the history number of the line (say 5) with desired parameters you can try
+
+> !5:s/somefile1/somefile2/
+
+and if you don't know the history number
+
+!?saket?:s/somefile1/somefile2/
+
+# History Substitution Summary
+#For CURRENT line that you are editing (the # designates current line)
+# Remember Tab will expand the following
+
+!#:0    command
+!#^     first parameter
+!#:1    first parameter
+!#:1-4  first 4 parameters
+!#$     last parameter
+!#*     all parameters
+!#$:s/bash/zsh perform substitution on previous parameter
+
+cp longfilename.php backup_!#^
+cp {,backup_}verylongfilename.tex   # same thing
+mv textfile.{txt,bak}   # expands to mv textfile.txt textfile.bak
+
+#For Previous Command (for comparison)
+!-1     repeat whole command
+!!      repeat (shortcut)
+!:0     command
+!^      first parameter
+!:1     first parameter
+!:1-4   first 4 parameters
+!$      last parameter
+!*      all parameters
+!!:s/bash/zsh (or ^bash^zsh)
+!^:t    just file name of first parameter
+!$:h    just path of last parameter
+!-2$:r  just file name without extension of first parameter
+
+For last but one command
+!-2     repeat last but one command
+!-2^    first parameter last but one command
+!-2$    last parameter last but one command
+!-2:2   second parameter of second but last command
+!-2:s/bash/zsh
+etc
+For history command 42
+!42
+
+
+!:0 is the previous command name
+!^, !:2, !:3, !$ are the arguments
+!* is all the arguments
+!-2, !-3,  are earlier commands
+!-2^, !-2:2, !-2$, !-2* are earlier parameters
+
+cd !$:h  (remove file name)
+cat !!:t (only file name)
+# Convert images (foo.gif => foo.jpg):
+$ for i in **/*.gif; convert $i $i:r.jpg
+
+print ${param:&}   (last substitute)
+
+< readme.txt  # < shorthand for more
+
+# Directory substitution (magic)
+# if you were in directory
+/c/inetpub/dev.somehomes.co.uk/epsystem/eppigeon/
+cd dev www
+#would put you in parallel directory
+/c/inetpub/www.somehomes.co.uk/epsystem/eppigeon/
+
+
+# filtering the output of a command conventionally
+print $(history -n -1|sed 's/.* //')
+# ${${(z)foo}[2]} zsh filtering mechanism
+print ${${(z)$(history -n -1)}[-1]}
+print ${${(z)history[$((HISTCMD-1))]}[-1]}
+
+# ls
+ls -ld **/*(/^F) # list any empty directories
+print **/*(/^F) | xargs -n1 -t rmdir #delete empty directories
+zargs rmdir -- ./**/*(/od) 2> /dev/null # deletes empty directories
+ls ^x*           # list all but x*
+#list all files without an extension ( no dot)
+ls *~*.*(.)
+ls (x*~x3|x5)    # list files x* except x3 and x5
+ls **/fred*~*junk*/* # list all files fred* unless in a junk directory
+gp 'host' **/(*.cfm~(ctpigeonbot|env).cfm)
+grep -i 'host' **/(*.cfm~(ctpigeonbot|env).cfm)~*((#s)|/)junk*/*(.)
+egrep -i "^ *mail\(" **/*.php
+gp "^ *mail\(" **/*.php~*junk*/*  #find all calls to mail, ignoring junk directories
+ls *.h~(fred|foo).h # same thing
+ls (x*~x[3-5])   # list files x* except x3 to x5
+ls *[^2].php~*template*  # list files with 2nd filter
+ls (xx|yy)       # list xx or yy
+ls *.(jpg|gif)   # list graphic files
+ls fred{joe,sid}.pl
+ls fred{09..13}.pl
+ls fred<76->.pl  # list all files fred76.pl to fred9999*.pl etc
+ls {_,}fred.php  # list files _fred.php fred.php
+ls (_|)fred.php  # same effect by globbing
+ls *.{jpg,gif}(.N) # don't break if one or other image type absent
+
+setopt no_case_glob  # set ignore case for ls etc
+
+# globbing modifiers
+# :r removes the suffix from the result,
+# :t takes away the directory part
+# . means must be regular files not directories etc
+# *(om[1]) picks most recently modified file
+# (.N) no warning message if any file absent
+ls (#i)*.pmm     # case insensitive globbing (note exact syntax)
+ls *(om[1])      # print the most recent file
+ls *(.om[1])     # print the most recent file (not directory)
+ls -l *(Om[1])   # oldest file
+ls *(om[1,5])    # print the 5 most recent files
+ls -lt **/*.tex(D.om[1,5]) # list 5 most recent files in hierarchy
+# list 5 most recent files in each sub-directory
+dirs=( '' **/*(DM/) ) eval 'ls ${^dirs}*(ND.om[1,5])'
+ls {^dev*,}/index.php(.N) # ignore directories beginning dev*
+ls **/index.php~dev*(/*)##   # ignore subdirectories dev* multi-level
+vi *(.om[1]^D)   # vi newest file ^D means switch off GLOB_DOTS
+ls -tld **/*(m-2) # list files modified in last 2 days in hierarchy
+ls -l *(m4)      # list files modified exactly 4 days ago
+ls -ltd *(mw3)   # list files 3 weeks old
+ls -1ld *([1,10])# list just 10 files one per line , no directories
+ls *(m-1)        # files modified today
+ls *(m0)         # files modified today
+vi *(m0)         # re-edit all files changed today!
+rm *.{aux,dvi,log,toc}(.N) # rm latex temp files N means no error msg if any file type absent
+rm ./*(Om[1,-11])# removes all files but the ten newest ones (delete all but last 10 files in a directory)
+
+
+ls *(n:t)        # order by name strip directory
+ls **/*(On:t)    # recursive reverse order by name, strip directory
+ls *.c(:r)       # strip suffix
+ls **/*(.)       # only files no directories
+ls -ld *(/)      # list only directories
+
+#oddities
+[[ FOO = (#i)foo ]]  # case insensitive matching
+fred=$((6**2 + 6))      # can do maths
+: > /apache/access.log  # truncate a log file
+
+# arrays
+X=(x1 x2)               # create an array
+print -C 1 $X           # print each array element on it's own line
+ls $X
+print ${#path}          # length of "path" array
+print ${#path[1]}       # length of first element in path array
+print ${$( date )[2,4]} # Print words two to four of output of ’date’:
+array=(~/.zshenv ~/.zshrc ~/.zlogout)
+filelst[$(($#filelst+1))]=$x # append (push) to an array
+filelst+=($x)           # append (push) to an array (better)
+files=(${(f)"$(egrepcmd1l)"} ) # push a sentence to an array (where egrepcmd1l is a global alias
+% print ${array:t}
+.zshenv .zshrc .zlogout
+
+
+# variable substitution
+somevar="bu&^*ck"                  # variable with mucky characters
+print ${somevar//[^[:alnum:]]/_}   # replace all non-alphanumerics with _
+echo ${file##*/}                   # echo just the file name
+echo ${texfilepath%/*.*}           # echo just the path
+echo ${file%.*}                    # strip file extension
+echo $file:r                       # strip file extension
+echo ${0##*[!0-9]}                 # strip all but trailing digit from filename $0
+echo ${(M)0%%<->}                  # strip all but trailing digit from filename
+file=${1/\//C:\/}                  #
+
+# chaining two modifications
+# .om[1] gives newsest file
+# cyg is a zsh function doing a path conversion
+gvim.exe $(echo /c/aax/*(.om[1]))(+cyg) &  ### nested
+gvim.exe /c/aax/*(.om[1]+cyg) &            #### both operations
+
+
+# variable with variable name
+eval "$1=$PWD"
+
+
+cp file ~1                      # where 1 is first entry in pushd stack
+#zsh completion
+startfilename           # will complete matching files anywhere in $PATH
+startfilename           # will list matching files anywhere in $PATH
+vi main*~*temp*         # avoid file with temp in the name
+#directory sizes
+du -sk *(/)
+# Inline aliases, zsh -g aliases can be anywhere in command line
+alias -g G='| grep -'
+alias -g L='| less'
+#this reduces a command like
+ls | grep foo | less
+#to
+ls G foo L
+#
+alias -g R=' > /c/aaa/tee.txt '           # redirect
+alias -g T=' | tee /c/aaa/tee.txt '       # tee
+alias -g F=' | fmt -'                     # format
+alias -g W=' | wc -l'                     # wc
+#
+
+# cd by .. or ... or ... or mv file ..../.
+alias '..'='cd ..'
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+
+#magic equals
+vim =some_file                            # edits file anywhere in $PATH
+ls =some_file                             # lists file anywhere in $PATH
+#magic ** (recursion)
+vim **/some_file                          # edits file under under current dir
+# modifying more than one file (multios)
+# writes ls results to file1 & file2 appends to filec
+ls > file1 > file2 >> file3 | wc          # multi-io
+myscript >&1 >output.txt                  # log a script output
+#Redirection to file as well as send on to pipe:
+make install > /tmp/logfile | grep -i error
+
+
+function g{0..9} { gmark $0 $* }          # declaring multiple functions
+
+# zmv "programmable rename"
+autoload -U zmv
+# Replace spaces in filenames with a underline
+zmv '* *' '$f:gs/ /_'
+# Change the suffix from *.sh to *.pl
+zmv -W '*.sh' '*.pl'
+# lowercase/uppercase all files/directories
+$ zmv '(*)' '${(L)1}' # lowercase
+$ zmv '(*)' '${(U)1}' # uppercase
+
+
+#Wonderful zftp (write ftp scripts as though shell)
+
+# init (could be in .zshenv etc)
+autoload -U zfinit
+zfinit
+zfparams www.someweb.co.uk myuserid mypassword
+zfopen
+zfcd tips
+zfls -l zshtips.html
+zfput zshtips.html
+zfls -l zshtips.html
+
+# replace every occurence of a file
+for f in */include/dbcommon.php; do;cp dbcommon.php $f; done
+
+# using vared
+vared -p "choose 1-3 : " -c ans
+case $ans in
+1|a) sdba $key;;
+2|f) sdbf $key;;
+3|i) sdbi $key;;
+*) echo "wrong answer $ans\n" ;;
+esac
+
+# the powerful select
+PROMPT3="Choose File : "
+select f in $(ls **/*.tex |egrep -i "${param}[^/]*.tex")
+do
+if [[ "$REPLY" = q ]]
+then
+   break
+elif [[ -n "$f" ]]; then
+   gvim $f
+fi
+done
+# editing a variable (You must try this)
+vared PATH
+
+
+bindkey -v # vi mode line editting
+bindkey -M viins '^O' copy-prev-shell-word
+bindkey '^L' push-line # push current command into a buffer, allows you to do another command then returns to previous command
+
+# Prompt at end of command line
+RPROMPT="[%t]" (display the time)
+# colo(u)red prompt
+fg_light_red=$'%{\e[1;31m%}'
+PS3="$fg_light_red Select file : "
+# print fred in blue color
+print '\e[1;34m fred'
+# color module
+autoload colors ; colors
+print "$bg[cyan]$fg[blue]Welcome to man zsh-lovers" >> $TTY
+
+
+# Sources newsgroup gmane.comp.shells.zsh.user
+# Everything here is Simple zsh visit the above newsgroup for the Sick stuff
+# Upload this page (use yy@" on following line, to invoke upload script)!! :!zshtipsftp
+
+https://unix.stackexchange.com/questions/145651/using-exec-and-tee-to-redirect-logs-to-stdout-and-a-log-file-in-the-same-time
+
+exec &> >(tee -a "$log_file")
+echo This will be logged to the file and to the screen
+
+# $log_file will contain the output of the script and any subprocesses, and the output will also be printed to the screen.
+# 
+# >(...) starts the process ... and returns a file representing its standard input. exec &> ... redirects both standard output and standard error into ... for the remainder of the script (use just exec > ... for stdout only). tee -a appends its standard input to the file, and also prints it to the screen.

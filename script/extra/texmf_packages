@@ -2,7 +2,7 @@
 install_package 00Packages/Fonts/MyriadPro-Basic . -v
 
 # Remove packages
-remove_package 00Packages/Fonts/MinionPro . 
+remove_package 00Packages/Fonts/MinionPro .
 
 # MyPackages
 #!/bin/sh

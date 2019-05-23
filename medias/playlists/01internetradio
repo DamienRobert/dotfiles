@@ -1,0 +1,5 @@
+#!/bin/sh
+#Pass a radio station, this script gives a playlist from it
+radio="$1"
+name="${2-$radio}"
+~/script/mpd/m3u_dl_to_pls "http://www.internet-radio.org.uk/stations/$radio" "$name"

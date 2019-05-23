@@ -1,0 +1,143 @@
+Basic Build
+===========
+https://www.icy-veins.com/d3/wizard-leveling-and-fresh-70-guide-patch-2-5-season-10
+
+- Disintegrate (Convergence) / Arcane Torrent (Static Discharge)
+  [Electrocute (surge of power / Chain lighting) / Spectral Blade (thrown blade)]
+- Explosive Blast (Flash / Chain Reaction) /
+  Frost Nova (Bone Chill / Deep Freeze / Frozen Mist)
+- Teleport (Wormhole / Safe Passage / Calamity)
+- Magic Weapon (Force Weapon / Deflection) / Familiar (Sparkflint)
+- Storm Armor (Power of the storm / Scramble) / Ice Armor (Crystallize)
+
+Passives
+- Power Hungry [+distance dmg]
+- Astral Presence [+AP]
+- Illusionist / Unstable Anomaly [defense]
+- Unwavering Will [attack+defense for static build]
+- Audacity [+close damage]
+- Elemental Exposure [tel rasha]
+- Evocation [-cooldown]
+
+Attacks:
+  Familiar (sparkflint), Magic weapon (force weapon)
+Defense helpers:
+  Magic weapon deflection, Teleport safe passage, Ice armor crystallize,
+  Diamond skin (enduring skin), Energy Armor (force armor)
+AP helpers:
+  Electrocute (surge of power +AP),  Magic Weapon (conduit, +AP), Storm Armor
+  (power of the storm, -AP spending), Diamon Skin (prism, -AP spending),
+  Familiar (arcanot, +AP regen)
+  Astral presence passive (+AP regen)
+  + Items (cf utility), Helm + Topaz gem, Paragon
+Cooldown helpers:
+  Evocation passive, +items, Helm + diamond gem
+Movement speed:
+  Teleport (wormhole), Storm armor (scramble)
+
+Lighting Archon
+================
+
+S9: https://us.battle.net/forums/en/d3/topic/20752649109
+S10: https://us.battle.net/forums/en/d3/topic/20753695205
+Hydra: http://www.diablofans.com/builds/88437-s10-2-5-0-gr100-hydra-light-wiz-detailed
+Farm: https://www.icy-veins.com/d3/wizard-lightning-archon-build-with-manald-heal-and-tal-rasha-vyr-sets-patch-2-6-season-11
+Solo: https://www.icy-veins.com/d3/lightning-archon-wizard-solo-progression-variation
+Group: https://www.icy-veins.com/d3/lightning-archon-wizard-group-progression-variation
+
+Mechanics
+=========
+
+Strength and Dexterity: Increase Armor by 1. Int: Increase resist all by 0.1
+Vitality: Increase Life by 100.
+
+https://us.battle.net/forums/en/d3/topic/8770117237
+
+Breakpoints: https://us.battle.net/forums/en/d3/topic/17346266764
+frames_per_attack = floor(60 fps/(speed_coeff * attacks_per_second))
+hit_rate = 60fps / frames_per_attack
+60/(floor(60/(3*1.73)))*1.0
+
+Proc coefficient: on things like life per hit so that spells that hit a lot
+of target are not op.
+
+Armor and vitality:
+https://gaming.stackexchange.com/questions/240535/what-is-a-good-ratio-between-life-armor-and-resistances
+https://www.reddit.com/r/Diablo/comments/23gz1v/should_you_be_stacking_all_res_or_armor_an/
+  Damage Resistance from Armor = Armor / (50*Level + Armor)
+  Damage Resistance from Resistances = Resist / (5*Level + Resist)
+  => Toughness = Health * (1 + Armor/(C*10)) * (1 + Resist/C)
+       [C=5*Level=350]
+     Armor equal to +100 all res = 1000 * (350 + Armor/10) / (350 + Resist)
+
+Heuristic Ration: 
+- CD:CC=10:1
+- Armor:Resit=10:1
+- 50% mitigation for each 500 Vitality over 1000
+
+Items
+=====
+Archon Items:
+- Chantodo's Will (wand) + Chantodo's Force (source); 
+- Fazula's Improbable Chain (belt) [+50 Arch Stacks]
+- The Swami (wizard hat) [Archon stacks last 20sec after archon expires]
+
+Defense:
+- Aquila Cuirass (chest) [-50% damage if > 90% primary ressource]
+- Halo of Arlyse (ring) [Ice Armor reduce melee damage by 60% + cast Frost Nova]
+- Ancient Parthan Defenders (bracers) [Stunned enemies reduce damage by 12%]
+- Ashnagarr's Blood Bracers (bracers) [Shield*2]
+- Unity (ring) [split damage with the wearers of this item]
+
+Attack:
+- Focus + Restraint (rings)
+- Shame of Delsere (belt) [Signature spell => AS+50% +12 AP]
+- Convention of Elements (ring) [+200% to a (rotating) element]
+- Depth Diggers (pants) [Primary skill generating ressource -> damage x2]
+- Wand of Woh (wand) [explosive blast x 3]
+- Fragment of Destiny (wand) [spectral blade]
+- Unstable scepter (wand), triumvirate (source) [arcane orb]
+- Serpent Sparker (wand) [+1 serpent]
+- Starfire (wand) [+lighting]
+- The twisted sword (1h sword) [energy twister]
+- Nilfur's Boast (boots) [meteorite]
+- Tasker and Theo (gloves) [pets]
+- Magefist (gloves [+fire]
+- Deathwish (1h sword), etched sigil (source) [Arcane torrent, Disintegrate or Ray of Frost]
+
+Defense + Attack:
+- The Compass Rose (ring) + The Traveler's Pledge (amulet)
+- Orb of infinite Depth (orb) [for explosive blast]
+- Mantle of channeling (shoulders) [channeling]
+- Legacy of Nightmares set: Litany of the Undaunted and The Wailing Host
+  (rings) [ancient item increase damage]
+
+Utility:
+- Pride's fall (helm) [no damage => -30% AP]
+- Reaper's Wrap (bracers) [healthglobe restore AP]
+- Gloves of Worship (gloves) [shrine=10min]
+- Illusory boots (boots) [no collision]
+- Obsidian Ring of the Zodiac (ring) [Reduce cooldown by 1sec when hit with
+  resource spending attack]
+- Ring of royal grandeur (ring)
+- Avarice Band (ring) [increase pickup] + goldwrap (belt) [gold=armor] +
+  boon of the hoarder
+- Aether walker (wand) [teleport cost 25AP but has no cooldown]
+- Hergbrash's Binding (belt) [-60% AP for Arcane torrent/Disintegrate/Ray
+  of frost]
+- Cindercoat (chest) [-30% AP for fire skills]
+- Leoric's crown (helm) [gem*2]
+
+Speed farm:
+- Nemesis Bracers (bracers) [Shrines spawn enemy champion]
+- Warzechian Armguards (bracers) [destroy object => +speed]
+- In-geom (1h sword) [cooldown -10s after killing elite pack]
+- The Furnace (2h mace) [+50% against elites]
+
+Gems:
+- Bane of the trapped [+damage against control impaired enemies]
+- Bane of the Stricken [+individual damage]
+- Bane of the powerful [+damage after killing elite]
+- Simplicity's strength [+damage for primary skill, ex spectral blade]
+- Gogok of swiftness [+AS +cooldown reduction => archon]
+- Zei's stone of vengence [+damage for long range]

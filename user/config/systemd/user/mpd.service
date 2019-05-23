@@ -1,0 +1,29 @@
+[Unit]
+Description=Music Player Daemon
+Documentation=man:mpd(1) man:mpd.conf(5)
+After=sound.target
+ConditionFileIsExecutable=/usr/bin/mpd
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/mpd --no-daemon --stdout
+
+# allow MPD to use real-time priority 50
+LimitRTPRIO=50
+LimitRTTIME=infinity
+
+# disallow writing to /usr, /bin, /sbin, /etc ...
+ProtectSystem=full
+#ProtectHome=read-only
+#ReadWritePaths=~/.mpd ~/.mpd/playlists
+
+# more paranoid security settings
+NoNewPrivileges=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+#ProtectKernelModules=yes
+# AF_NETLINK is required by libsmbclient, or it will exit() .. *sigh*
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+
+[Install]
+WantedBy=session.target

@@ -1,0 +1,10 @@
+{
+  "extends": "airbnb-base", //https://github.com/airbnb/javascript
+  env: { // global variables that will be already set in the code
+    'es6': true, // ES6 global variables, like Set; also set { "parserOptions": { "ecmaVersion": 6 } }
+    'browser': true, // browser global variables, eg: 'document'
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018 // we want es2018 syntax, (the above only make es6 syntax)
+  }
+}

@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+LINE="\n---------------------------------------------------\n"
+
+for dev in "$@"; do
+	SCHEME=$(sudo partx --noheadings --show --output SCHEME $dev | head -n 1)
+	echo "-> $dev: $SCHEME" >&2
+	[[ -z $SCHEME ]] && continue
+
+	echo "################### $dev #####################"
+	echo "partx -s $dev"
+	sudo partx -s "$dev"
+	echo $LINE
+	echo "partx --show --output NR,START,END,SECTORS,SIZE,NAME,TYPE,FLAGS,SCHEME,UUID $dev"
+	sudo partx --show --output NR,START,END,SECTORS,SIZE,NAME,TYPE,FLAGS,SCHEME,UUID $dev
+	echo $LINE
+
+	case $SCHEME in
+		dos)
+echo "fdisk -l $$dev"
+sudo fdisk -l $dev
+echo $LINE
+echo "sfdisk -l $dev"
+sudo sfdisk -l $dev
+echo $LINE
+echo "sfdisk -luS $dev"
+sudo sfdisk -luS $dev
+echo $LINE
+echo "sfdisk -d $dev"
+sudo sfdisk -d $dev
+echo $LINE
+			;;
+		gpt)
+echo "sgdisk -p $dev"
+sudo sgdisk -p $dev
+echo $LINE
+			;;
+	esac
+done

@@ -1,0 +1,26 @@
+#!/bin/zsh
+. $HOME/.initvars
+
+DIR="@comps/$MYHOSTNAME"
+
+cd $(dirname $0)
+mkdir -p $DIR
+
+for script in 10scripts/*(.x); do
+	echo "# $script"
+	$script > $DIR/$(basename $script)
+done
+
+for script in 20extras/*(.x); do
+	echo "# $script"
+	$script
+done
+
+eval $($MYFILES/00COMPUTERS.rb --local --export=disks:syst/disks)
+if [[ -n $DISKS ]]; then
+	echo "# ./10partitions $DISKS"
+	./10partitions $DISKS > $DIR/partitions
+	cd $DIR
+	echo "# ../../10partitions_save $DISKS"
+	../../10partitions_save $DISKS
+fi

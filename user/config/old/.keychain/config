@@ -1,0 +1,5 @@
+#desactivate automatic keychain launch to use seahorse instead...
+KEYCHAIN_OPTIONS="$KEYCHAIN_OPTIONS --inherit any-once"
+keychain() {
+ return 0
+}

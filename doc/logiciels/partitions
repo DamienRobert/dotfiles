@@ -1,0 +1,295 @@
+# Discoverable partitions
+# =======================
+
+cf http://www.freedesktop.org/wiki/Specifications/DiscoverablePartitionsSpec/
+
+44479540-f297-41b2-9af7-d131d5f0458a   Root Partition (x86)
+4f68bce3-e8cd-4db1-96e7-fbcaf984b709   Root Partition (x86-64)
+933ac7e1-2eb4-4f13-b844-0e14e2aef915   Home Partition
+0657fd6d-a4ab-43c4-84e5-0933c84b4f4f   Swap    Swap
+c12a7328-f81f-11d2-ba4b-00a0c93ec93b   EFI System Partition    VFAT
+bc13c2ff-59e6-4262-a352-b275fd6f7172   Extended Boot Partition         VFAT
+0fc63daf-8483-4772-8e79-3d69d8477de4   Other Data Partitions
+
+Note: the guid can be set via sgdisk -t, with the following shortcuts (cf `sgdisk -L`: efi=ef00, root-x86-64=8300, home=8302, swap=8200
+
+To see the guid:
+sgdisk -p /dev/sda does not show the guid:
+    Disk /dev/sda: 1000215216 sectors, 476.9 GiB
+    Model: SAMSUNG MZNLN512
+    Sector size (logical/physical): 512/4096 bytes
+    Disk identifier (GUID): 333C59DD-9331-49B0-BFD3-1A3C43F68084
+    Partition table holds up to 128 entries
+    Main partition table begins at sector 2 and ends at sector 33
+    First usable sector is 34, last usable sector is 1000215182
+    Partitions will be aligned on 2048-sector boundaries
+    Total free space is 2014 sectors (1007.0 KiB)
+    
+    Number  Start (sector)    End (sector)  Size       Code  Name
+       1            2048          206847   100.0 MiB   EF00  boot
+       2          206848         8595455   4.0 GiB     8200  swap
+       3         8595456      1000215182   472.8 GiB   8300  slash
+
+But it can be seen via sgdisk -i1 /dev/sda:
+    Partition GUID code: C12A7328-F81F-11D2-BA4B-00A0C93EC93B (EFI System)
+    Partition unique GUID: 59A3669A-FABE-4F6F-AD9C-7671817045BB
+    First sector: 2048 (at 1024.0 KiB)
+    Last sector: 206847 (at 101.0 MiB)
+    Partition size: 204800 sectors (100.0 MiB)
+    Attribute flags: 0000000000000004
+    Partition name: 'boot'
+
+
+
+## Partition Flags
+- For the root, server data, home, and swap partitions, the partition flag bit 63 ("no-auto") may be used to turn off auto-discovery for the specific partition. If set, the partition will not be automatically mounted or enabled.
+- For the root, server data, and home partitions, the partition flag bit 60 ("read-only") may be used to mark a partition for read-only mounts only. If set, the partition will be mounted read-only instead of read-write.
+
+# partx
+=======
+
+$ sudo partx --show disk
+NR  START      END  SECTORS  SIZE NAME UUID
+ 1   2048   186367   184320   90M      0004f23a-01
+ 2 186368 31291391 31105024 14.9G      0004f23a-02
+
+$ sudo partx --show --output NR,START,END,SECTORS,SIZE,NAME,TYPE,FLAGS,SCHEME,UUID /dev/sdb
+NR  START      END  SECTORS  SIZE NAME TYPE FLAGS SCHEME UUID
+ 1   2048   186367   184320   90M       0xc 0x80  dos    0004f23a-01
+ 2 186368 31291391 31105024 14.9G      0x83 0x0   dos    0004f23a-02
+
+# Bios partitions:
+# ================
+
+fdisk (dialog), sfdisk, cfdisk (curses)
+
+♒durin ~ $ sudo fdisk -l /dev/mmcblk0                                       ⚡11
+
+Disk /dev/mmcblk0: 14.9 GiB, 16021192704 bytes, 31291392 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x0004f23a
+
+Device         Boot  Start      End  Sectors  Size Id Type
+/dev/mmcblk0p1 *      2048   186367   184320   90M  c W95 FAT32 (LBA)
+/dev/mmcblk0p2      186368 31291391 31105024 14.9G 83 Linux
+
+♒durin ~ $ sudo sfdisk -l /dev/mmcblk0                                      ⚡12
+dams@durin:dams->root:
+
+Disk /dev/mmcblk0: 488928 cylinders, 4 heads, 16 sectors/track
+Units: cylinders of 32768 bytes, blocks of 1024 bytes, counting from 0
+
+   Device Boot Start     End   #cyls    #blocks   Id  System
+/dev/mmcblk0p1   *     32    2911    2880      92160    c  W95 FAT32 (LBA)
+    start: (c,h,s) expected (32,0,1) found (0,64,1)
+    end: (c,h,s) expected (1023,3,16) found (45,63,32)
+/dev/mmcblk0p2       2912  488927  486016   15552512   83  Linux
+    start: (c,h,s) expected (1023,3,16) found (91,0,1)
+/dev/mmcblk0p3          0       -       0          0    0  Empty
+/dev/mmcblk0p4          0       -       0          0    0  Empty
+
+♒durin ~ $ sudo sfdisk -luS /dev/mmcblk0                                    ⚡13
+
+Disk /dev/mmcblk0: 488928 cylinders, 4 heads, 16 sectors/track
+Units: sectors of 512 bytes, counting from 0
+
+   Device Boot    Start       End   #sectors  Id  System
+/dev/mmcblk0p1   *      2048    186367     184320   c  W95 FAT32 (LBA)
+    start: (c,h,s) expected (32,0,1) found (0,64,1)
+    end: (c,h,s) expected (1023,3,16) found (45,63,32)
+/dev/mmcblk0p2        186368  31291391   31105024  83  Linux
+    start: (c,h,s) expected (1023,3,16) found (91,0,1)
+/dev/mmcblk0p3             0         -          0   0  Empty
+/dev/mmcblk0p4             0         -          0   0  Empty
+
+♒durin ~ $ sudo sfdisk -d /dev/mmcblk0                                      ⚡14
+# partition table of /dev/mmcblk0
+unit: sectors
+
+/dev/mmcblk0p1 : start=     2048, size=   184320, Id= c, bootable
+/dev/mmcblk0p2 : start=   186368, size= 31105024, Id=83
+/dev/mmcblk0p3 : start=        0, size=        0, Id= 0
+/dev/mmcblk0p4 : start=        0, size=        0, Id= 0
+
+#GPT Partitions
+===============
+
+gdisk (dialog), sgdisk, cgdisk (curses)
+
+$ gdisk -l
+
+GPT fdisk (gdisk) version 0.8.10
+Partition table scan:
+  MBR: protective
+  BSD: not present
+  APM: not present
+  GPT: present
+Found valid GPT with protective MBR; using GPT.
+Disk /dev/sda: 39070080 sectors, 18.6 GiB
+Logical sector size: 512 bytes
+Disk identifier (GUID): 8A767010-6000-4243-A63F-45D78536285A
+Partition table holds up to 128 entries
+First usable sector is 34, last usable sector is 39070046
+Partitions will be aligned on 2-sector boundaries
+Total free space is 0 sectors (0 bytes)
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1              34            4129   2.0 MiB     EF02  grub
+   2            4130        39070046   18.6 GiB    8E00  lvm
+
+$ sgdisk -p, sgdisk -pi1
+
+♒Gondolin ~ $ sudo sgdisk -p /dev/sda                                        ⚡5
+Disk /dev/sda: 39070080 sectors, 18.6 GiB
+Logical sector size: 512 bytes
+Disk identifier (GUID): 8A767010-6000-4243-A63F-45D78536285A
+Partition table holds up to 128 entries
+First usable sector is 34, last usable sector is 39070046
+Partitions will be aligned on 2-sector boundaries
+Total free space is 0 sectors (0 bytes)
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1              34            4129   2.0 MiB     EF02  grub
+   2            4130        39070046   18.6 GiB    8E00  lvm
+
+♒Gondolin ~ $ sudo sgdisk -pi1 /dev/sda                                     ⚡14
+Disk /dev/sda: 39070080 sectors, 18.6 GiB
+Logical sector size: 512 bytes
+Disk identifier (GUID): 8A767010-6000-4243-A63F-45D78536285A
+Partition table holds up to 128 entries
+First usable sector is 34, last usable sector is 39070046
+Partitions will be aligned on 2-sector boundaries
+Total free space is 0 sectors (0 bytes)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1              34            4129   2.0 MiB     EF02  grub
+   2            4130        39070046   18.6 GiB    8E00  lvm
+Partition GUID code: 21686148-6449-6E6F-744E-656564454649 (BIOS boot partition)
+Partition unique GUID: CE3CA4A9-DA7A-48E6-B0B1-2B4978B7883F
+First sector: 34 (at 17.0 KiB)
+Last sector: 4129 (at 2.0 MiB)
+Partition size: 4096 sectors (2.0 MiB)
+Attribute flags: 0000000000000000
+Partition name: 'grub'
+
+$ sgdisk -bploum (save backup), sgdisk -lploum (load backup)
+
+#MBR:
+=====
+See http://en.wikipedia.org/wiki/Master_boot_record
+
+#MBR=    446 bytes - Bootstrap.
+#        64 bytes - Partition table.
+#        2 bytes - Signature.
+
+$ sudo dd if=$DEV of=MBR-$HOSTNAME-$DISK bs=512 count=1
+$ sudo sfdisk -d $DEV > partition-$HOSTNAME-$DISK.sfdisk
+
+#Restoring:
+$ dd if=MBR-$HOSTNAME-$DISK of=/dev/sdb bs=446 count=1 #Bootloader
+#bs=446: pour ne pas écraser la table des partitions sur SDB
+$ sfdisk /dev/sda < backup-sda.sfdisk #partition table, obtained from sfdisk -d
+
+#MBRGAP:
+======
+http://unix.stackexchange.com/questions/81556/area-on-disk-after-the-mbr-and-before-the-partition-start-point
+
+$ sudo dd if=$DEV of=MBRGAP-$HOSTNAME-$DISK skip=1 bs=512 count=62
+#Restoring:
+$ dd if=MBR-$HOSTNAME-$DISK of=/dev/sdb bs=512 count=62 seek=1
+#dans les legacy system, la première partition commence au secteur 63
+#le secteur 0 est le MBR, les 62 secteurs ensuite sont là où grub2 met son
+#boot.img
+#Note: dans les systèmes plus modernes, la partition commence à 1MO
+
+# GPT layout
+#===========
+
+First logical sector of the disk or First 512 bytes     Protective MBR - Same as a normal MBR but the 64-byte area contains a single 0xEE type Primary partition entry defined over the entire size of the disk or in case of >2 TiB, upto a partition size of 2 TiB.
+Second logical sector of the disk or Next 512 bytes     Primary GPT Header - Contains the Unique Disk GUID, Location of the Primary Partition Table, Number of possible entries in partition table, CRC32 checksums of itself and the Primary Partition Table, Location of the Secondary (or Backup) GPT Header
+16 KiB (by default) following the second logical sector of the disk     Primary GPT Table - 128 Partition entries (by default, can be higher), each with an entry of size 128 bytes (hence total of 16 KiB for 128 partition entries). Sector numbers are stored as 64-bit LBA and each partition has a Partition Type GUID and a Unique Partition GUID.
+16 KiB (by default) before the last logical sector of the disk  Secondary GPT table - It is byte-for-byte identical to the Primary table. Used mainly for recovery in case the primary partition table is damaged.
+#Last logical sector of the disk or Last 512 bytes       Secondary GPT Header - Contains the Unique Disk GUID, Location of the Secondary Partition Table, Number of possible entries in the partition table, CRC32 checksums of itself and the Secondary Partition Table, Location of the Primary GPT Header. This header can be used to recover GPT info in case the primary header is corrupted.
+
+$ sudo dd if=$DEV of=GPT-$HOSTNAME-$DISK bs=1024 count=17
+Or:
+sgdisk --backup=ploum /dev/sda
+sgdisk --load-backup=ploum /dev/sda
+
+#Summary:
+http://www.anchor.com.au/blog/2012/10/the-difference-between-booting-mbr-and-gpt-with-grub/
+
+MBR: 0 (MBR Stage 1+Partition), 1-63: (Grub Stage 1.5), 64/2048: first partition
+GPT: 0 (MBR Stage 1+0xEE Partition), 2-33: (GPT Partition), 34-2047 (Bios boot partition), 2048: Std partition
+
+GPT Types
+- ef00: EFI System (where we can put /boot)
+- ef01: MBR partition scheme (to have a partition which looks like an mbr disk)
+- ef02: bios boot partition
+
+# Wipe
+======
+
+wipefs: wipefs  can erase filesystem, raid or partition-table signatures (magic strings) from the specified device to make the signatures invisible for libblkid.
+
+sgdisk -z: Zap  (destroy)  the  GPT data structures and then exit. (use this to switch from gpt to mbr)
+sgdisk -Z: Zap  (destroy)  the  GPT  and MBR data structures and then exit.
+  This option works much like -z, but as it wipes the MBR as  well as the GPT
+sgdisk -g: -g, --mbrtogpt Convert  an MBR or BSD disklabel disk to a GPT disk.
+
+# sgdisk
+========
+
+sgdisk shortcuts:
+8200 Linux swap 
+8300 Linux filesystem
+8302 Linux /home 
+8303 Linux x86 root (/)    
+8304 Linux x86-64 root (/)  
+8305 Linux ARM64 root (/)
+8306 Linux /srv            
+8307 Linux ARM32 root (/)
+ef00 EFI System
+
+Attributes: $ sgdisk -A list
+0: system partition
+1: hide from EFI
+2: legacy BIOS bootable
+60: read-only
+62: hidden
+63: do not automount
+
+#If needed to zap the partition: /usr/bin/sgdisk --zap ${DISK}
+sudo sgdisk -n 1:0:+100M -c '0:boot' -t '0:ef00' [=-t c12a7328-f81f-11d2-ba4b-00a0c93ec93b] --attributes=1:set:2 \
+  -n 2:0:+2G -c '0:slash' -t '0:8300' [=-t 4f68bce3-e8cd-4db1-96e7-fbcaf984b709] \
+  -n 3:0:0 -c '0:home' -t '0:8302' [=-t 933ac7e1-2eb4-4f13-b844-0e14e2aef915] $DISK
+
+  #For Efi /boot use -c '0:boot' -t '0:ef00'/-t c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+  #For Bios /boot use -c '0:boot' -t '0:ef02'/-t bc13c2ff-59e6-4262-a352-b275fd6f7172 #(if a partition for stage 1.5 #boot is needed)
+  #For Swap use -c '4:swap' -t '0:8200'/-t 0657fd6d-a4ab-43c4-84e5-0933c84b4f4f
+
+Ex on Mithrim:
+sudo sgdisk -n 1:0:+256M -c '0:boot' -t '0:ef00' --attributes=1:set:2 \
+  -n 2:0:+4G -c '0:swap' -t 8200 \
+  -n 3:0:0 -c '0:slash' -t '0:8300' \
+  /dev/sda
+
+#fsck
+=====
+
+https://wiki.archlinux.org/index.php/fstab
+
+https://bbs.archlinux.org/viewtopic.php?pid=1307895#p1307895
+    I don't understand why this is so complicated. There's two players involved, and it's always been this way regardless of the versions involved (at at least as long as the fsck hook has existed):
+    1) mkinitcpio offers you to option to fsck your root device before mounting it via the fsck hook. If you do this, you should mount root read-write via the appropriate 'rw' option on the kernel commandline. Historically, you mounted root read-only so that it could be fsck'd later on in the bootstrap. If root has already been fsck'd, why would you mount it read-only just to be remounted read-write later on?
+    2) systemd will fsck all filesystems assuming three things are true: the filesystem has a fsck pass number greater than 0 (either from /etc/fstab or a user-supplied unit file), the filesystem is not already mounted read-write, and you've not elected to disable fsck entirely via the kernel commandline option fsck.mode=skip.
+    In short, these are the only 2 logical setups:
+    1) Use the 'fsck' hook, use 'rw' on the kernel commandline.
+    2) Don't use the 'fsck' hook, use 'ro' on the kernel commandline.
+    Both of these options result in your root device being checked exactly once. The unlisted option 3 which most people seem to be running into isn't harmful (which is why it's simply a warning). Again, mkinitcpio is pointing out that root might be fsck'd again. mkinitcpio has no way of knowing for sure what will happen after it calls switch_root and it's only rightfully warning you that your config is strange.
+
+Meaning of <dump> and <pass>
+- The fifth field, (fs_freq), is used for these filesystems by the dump(8) command to determine which filesystems need to be dumped. If the fifth field is not present, a value of zero is returned and dump will assume that the filesystem does not need to be dumped.
+- The sixth field, (fs_passno), is used by the fsck(8) program to deter‐ mine the order in which filesystem checks are done at reboot time. The root filesystem should be specified with a fs_passno of 1, and other filesystems should have a fs_passno of 2. Filesystems within a drive will be checked sequentially, but filesystems on different drives will be checked at the same time to utilize parallelism available in the hardware. If the sixth field is not present or zero, a value of zero is returned and fsck will assume that the filesystem does not need to be checked.
+(Note: systemd only looks if fs_passno is 0 or not)

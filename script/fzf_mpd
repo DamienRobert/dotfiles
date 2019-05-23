@@ -1,0 +1,49 @@
+#!/usr/bin/zsh
+
+help() {
+	$0 [options] query
+	--genre genre
+	--artist artist
+	--album album
+	--title title
+	--playlist playlist
+}
+
+# id3info: id3lib
+fzf_select_songs() {
+	fzf --select-1 --exit-0 -m --preview='id3info ~/Music/{}' | mpc add
+}
+
+fzf_mpd() {
+	local mode sel seli song_position
+	# [[ -z $@ ]] && set -- listall
+	[[ -z $@ ]] && mode="playlist"
+	while true; do
+		case $1 in
+			-- ) shift; break ;;
+			-h ) shift; help ;;
+			--genre ) shift; mode="genre" ;;
+			--artist ) shift; mode="artist" ;;
+			--album ) shift; mode="album" ;;
+			--title ) shift; mode="title" ;;
+			--playlist ) shift; mode="playlist" ;;
+			*) break;;
+		esac
+	done
+	case $mode in
+		genre|artist|album|title) sel=(${(0@)"$(mpc list $mode | fzf-tmux -0 -1 --print0 -m --query=$1)"})
+
+			{ for seli in $sel; do
+				mpc search $mode $seli
+			done } | fzf_select_songs ;;
+		playlist)
+			song_position=$(mpc -f "%position%) %artist% - %title%" playlist | \
+				fzf-tmux --query=$1 -0 -1 +m | \
+				sed -n 's/^\([0-9]\+\)).*/\1/p') || return 1
+			  [[ -n $song_position ]] && mpc -q play $song_position
+		;;
+		*) mpc $@ | fzf_select_songs ;;
+	esac
+}
+
+fzf_mpd $@

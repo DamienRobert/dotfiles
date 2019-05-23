@@ -2,29 +2,29 @@
 #
 #    Last Updated
 #            2011-05-03
-# 
+#
 #    This registry is also available in plain text.
-# 
+#
 #    Registry included below
-# 
+#
 #      * Assigned Internet Protocol Numbers
-# 
+#
 # Assigned Internet Protocol Numbers
-# 
+#
 #    Registration Procedures
-# 
+#
 #  IESG Approval or Standards Action
-# 
+#
 #    Reference
 #            [RFC5237]
-# 
+#
 #    Note
-# 
+#
 #  In the Internet Protocol version 4 (IPv4) [RFC791] there is a field
 #  called "Protocol" to identify the next level protocol.  This is an 8
 #  bit field.  In Internet Protocol version 6 (IPv6) [RFC2460], this field
 #  is called the "Next Header" field.
-# 
+#
 #    Decimal     Keyword                   Protocol                                                    Reference
 # protocol   num aliases      # comments
 hopopt         0 HOPOPT       # IPv6 Hop-by-Hop Option                [RFC2460]
@@ -197,9 +197,9 @@ rohc         142 ROHC         # Robust Header Compression             [RFC5858]
 #      253                   Use for experimentation and testing   [RFC3692]
 #      254                   Use for experimentation and testing   [RFC3692]
 reserved     255 Reserved     # [Internet_Assigned_Numbers_Authority]
-# 
+#
 #                                                                         People
-# 
+#
 #                     ID                                  Name                                   Contact URI                   Last Updated
 #    [Barry_Boehm]                         Barry Boehm                         mailto:boehm&arpa.mil
 #    [Barry_Howard]                        Barry Howard                        mailto:Howard&nmfecc.llnl.gov

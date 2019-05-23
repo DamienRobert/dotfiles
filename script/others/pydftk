@@ -112,11 +112,11 @@ def parse_args(argv):
         sys.stderr.write( "too few arguments" )
         halp()
         sys.exit(0)
-    
+
     if argv[1] in ["-h", "--help"]:
         halp()
         sys.exit(0)
-    
+
 
     mode = argv[1]
     files = argv[2:]
@@ -132,12 +132,12 @@ def parse_args(argv):
         files.remove("-v")
     if ("-q" in files):
         verbose = False
-        files.remove("-q") 
+        files.remove("-q")
 
     ###### disable verbose if outputting to <stdout> ######
     if (mode not in ["burst", "split"] and files[-1] == "-"):
         verbose = False
-        
+
     if verbose: print "mode: "+mode
 
     #burst/split does not require an output argument, if none is given then add the default
@@ -162,7 +162,7 @@ def parse_args(argv):
         elif(re.match("^-o=.*", argument)):
             password=argument.replace("-o=","")
             if verbose: print "!!Setting OWNER password to: " + "\"" + password + "\""
-            ownerpassword=password            
+            ownerpassword=password
         else:
             pages[len(infilelist)-1] += [argument]
 
@@ -221,10 +221,10 @@ def getpagequeue(arguments, replacements):
             if "ccw" in rotatearg:
                 angle=-int(rotatearg.replace("ccw",""))
                 modifiers=modifiers.replace(rotateflag+rotatearg,"") #we know that rotatearg is all of ccw command
-            elif "cw" in rotatearg:                
+            elif "cw" in rotatearg:
                 angle=int(rotatearg.replace("cw",""))
                 modifiers=modifiers.replace(rotateflag+rotatearg,"") #we know that rotatearg is all of cw command
-        
+
         if re.search('^[0-9]+-[0-9]+$',pagerange):
             ###set up tests for even, odd, or none
 
@@ -320,7 +320,7 @@ def burst(inpdfargs, outfileformat):
                 applyreplacementlist=(lambda str, list=replacementlist, func=applyreplacement: reduce(func, [str]+list))
 
                 outfilename=applyreplacementlist(outfilename, replacementlist)
-                
+
                 namearg = re.search('%[0-9]+n',outfilename)
                 if namearg:
                     namearg=namearg.group()
@@ -354,7 +354,7 @@ def burst(inpdfargs, outfileformat):
                 outputStream.close()
             else:
                 sys.stderr.write( "Page" + str(page) + " is not found in file" + pdf.stream.name )
-                sys.exit(3) #wrong pages or ranges            
+                sys.exit(3) #wrong pages or ranges
             j=j+1
         i=i+1
     if verbose: print (str(j)+" pages in "+str(i)+" files processed")
@@ -395,7 +395,7 @@ def collate(inpdfargs, outfileformat):
                 if ( (page <= numpages) and (page > 0)):
                     if verbose: print "---add " + pdf.stream.name + ":p" + str(page)
                     output.addPage(pdf.getPage(page-1).rotateClockwise(angle))
-    
+
     ###### filename formatting ######
     outfilename=outfileformat
 
@@ -411,14 +411,14 @@ def collate(inpdfargs, outfileformat):
         filenum=int(namearg.strip("%n"))
         (name, dot, ext) = inpdfargs[filenum-1][0].stream.name.rpartition(".")
         outfilename = outfilename.replace(namearg, name)
-    
+
     extarg = re.search('%[0-9]+e',outfilename)
     if extarg:
         extarg= extarg.group()
         filenum=int(extarg.strip("%e"))
         (name, dot, ext) = inpdfargs[filenum-1][0].stream.name.rpartition(".")
         outfilename = outfilename.replace(extarg, ext)
-    
+
     while os.path.exists(outfilename):
         if verbose: print ('error: '+outfilename+' already exists... appending number')
         (oname, odot, oext) = outfilename.rpartition(".")
@@ -487,14 +487,14 @@ def concatenate(inpdfargs, outfileformat, inverse=False):
         filenum=int(namearg.strip("%n"))
         (name, dot, ext) = inpdfargs[filenum-1][0].stream.name.rpartition(".")
         outfilename = outfilename.replace(namearg, name)
-    
+
     extarg = re.search('%[0-9]*e',outfilename)
     if extarg:
         extarg= extarg.group()
         filenum=int(extarg.strip("%e"))
         (name, dot, ext) = inpdfargs[filenum-1][0].stream.name.rpartition(".")
         outfilename = outfilename.replace(extarg, ext)
-    
+
     while os.path.exists(outfilename):
         if verbose: print ('error: ' + outfilename + ' already exists... appending number')
         (oname, odot, oext) = outfilename.rpartition(".")

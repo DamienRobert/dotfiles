@@ -1,0 +1,15 @@
+Help:
+
+? aide rapide
+?? aide complète (configurée par help=... in gprc)
+??? fonctions liées à la query
+?\: macros
+
+\o{n}  : set output method (0=raw, 1=prettymatrix, 2=prettyprint, 3=2-dim)
+
+gprc
+----
+
+parisize \\pari size at startup
+parisizemax=4G \\ maximum amount of mem GP can use
+read "~/.gprc.gp"

@@ -1,0 +1,11 @@
+cd ~/opt
+mkdir -p local
+mv bin include info lib man packages src local
+ln -s local/* . #we don't want to recompile everything...
+mv arch pkgmgr
+mv ~/var/spool/bundle pkgmgr
+
+cd ~
+mv tmp/* var/tmp
+rmdir tmp
+ln -s var/tmp .

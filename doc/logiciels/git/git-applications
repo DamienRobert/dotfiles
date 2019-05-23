@@ -1,0 +1,218 @@
+vim: foldmethod=expr ft=markdownlight:
+
+# Git scripts and utilities
+(Legend: - already seen, x to see, ! installed, + look promising, look
+again in some future time)
+
+[Installed in archlinux: tig]
+
+## Extra utilities (incorporated in git-my)
+! https://github.com/MarkLodato/git-reparent #changer les parents d'un commit
+! https://github.com/webmat/git_remote_branch #publishing a branch
+! http://gitstats.sourceforge.net/ #stats...
+! https://github.com/felipec/git-reintegrate # This tool allows the regeneration of integration branches.
+! https://github.com/trast/tbdiff.git #topic branch diff
+
+## some usefull scripts (also in git-my)
+! http://git-wt-commit.rubyforge.org/ #git-mainline
+! https://github.com/aspiers/git-config #set of git utilities
+  [-> https://github.com/aspiers/git-deps: git commit dependency analysis tool]
+! https://github.com/tj/git-extras: some extra cmds for git
+! https://github.com/cypher/dotfiles.git #some script for git, copied in git/scripts/
+! https://github.com/mhagger/git-when-merged #-> to integrate in git-my
+
+## Felipe scripts
+! https://github.com/felipec/git-related
+! https://github.com/felipec/git-reintegrate
++ https://github.com/felipec/git-send-series
++ https://github.com/felipec/git-remote-hg
+  See also https://github.com/glandium/git-cinnabar which doesn't use a local mercurial clone under the hood
+  List of remote-hg utilities: https://github.com/buchuki/gitifyhg/wiki/List-of-git-hg-bridges
++ https://github.com/felipec/git-remote-bzr
+
+## git utilities
+! https://github.com/mhagger/git-imerge #git imerge: incremental merge and rebase for git
+! https://github.com/greenrd/topgit  #patch manager, last version (old one was porridge/topgit)
+! https://github.com/mhagger/git-multimail #post receive hook
+! http://rtyley.github.com/bfg-repo-cleaner/ #commme filter-branch, en plus rapide pour ce qu'il fait (effacer des fichiers/du texte) (use java :-()
++ https://github.com/git-series/git-series #Track changes to a patch series over time 
+- https://github.com/aanand/git-up #fetch and rebase all locally-tracked remote branches (a bit like 'git my up' does, but for all tracked branches) [unmaintenand]
++ https://github.com/max630/git-rebase2/ #more powerfull rebase in perl
++ https://github.com/sensorflo/git-draw/wiki #git-draw draws nearly the full content of a tiny git repository as a graph.
++ https://github.com/hoduche/git-graph #another git graph viewer
++ https://github.com/dankeder/git-rebranch #rebase branch according to layout
++ https://github.com/petervanderdoes/gitflow #a workflow helper
++ https://github.com/jeffWelling/ticgit # bug tracker
++ https://github.com/SethRobertson/git-what-branch #Discover what branch a particular commit was made on or near
++ https://github.com/cool-RR/git-cascade
+  # git cascade - Cascade changes from each branch to its dependents.
+  # git forward-merge - Merge branches without checking them out.
++ https://github.com/acaudwell/Gource # software version control visualization (OpenGL-based 3D visualisation tool for source control repositories.)
+- http://git-repair.branchable.com/ #git-repair is a complement to git fsck, which only finds problems, but does not try to fix them.
+- https://github.com/demian85/git-watcher #Git Watcher is a multi-platform desktop app written in pure HTML and Javascript using node-webkit. It shows diff information about local staged/unstaged files and allows you to commit changes. UI is updated in real-time by detecting file changes and git index changes. Submodules also inform changes to their parent module.
+- https://git.csx.cam.ac.uk/x/ucs/git/git-repub.git #The 'git repub' command maintains a "repub branch" that you can use to record the history of another "rebasing branch" that is repeatedly rewound. Updates to the repub branch are fast-forwards, so they are convenient to publish.
+- https://github.com/tpope/git-bump
+  Create Git release commits and tags with changelogs
+- https://github.com/IonicaBizau/git-stats
+  A GitHub-like contributions calendar, but locally, with all your git commits. 
+- https://github.com/mislav/git-deploy
+  Ruby gem that set up git push hooks for deployment
++ git-annex #needs cabal
+  http://git-annex.branchable.com/install/ArchLinux/
+- https://git-lfs.github.com/ #Git Large File Support
+- https://github.com/GitAlias/gitalias
+  Git alias commands for faster easier version control
+  (The readme mention other utilities)
+- https://github.com/magicmonty/bash-git-prompt
+  An informative and fancy bash prompt for Git users
+- https://github.com/src-d/gitbase
+  SQL interface to Git repositories, written in Go. https://docs.sourced.tech/gitbase
+- https://github.com/pomber/git-history
+  Quickly browse the history of a file from any git repository https://githistory.xyz/
+  -> Go to a file in GitHub (or GitLab, or Bitbucket); Replace github.com with github.githistory.xyz
+- https://gitrebasetool.mitmaro.ca/
+  Git Interactive Rebase Tool, An improved sequence editor for Git
+- https://lib.rs/crates/git-brws
+  Command line tool to open a repository, file, commit, diff, tag, pull request, issue or project’s website in your web browser from command line (compatible with github and gitlab)
+- https://lib.rs/crates/git-journal
+  The Git Commit Message and Changelog Generation Framework => generate nice changelogs
+- https://github.com/nosarthur/gita
+  Manage multiple git repos side by side for sanity
+
+Password manager using git:
++ www.passwordstore.org (on arch: pass)
+- https://github.com/peff/pass
+
+Hooks:
+------
+
+git-multimail, use as a post-receivehook [with python2]
+Ex: avisogenies@gforge-inria
+exec /usr/bin/python /home/users/robertdamien/git-multimail/git-multimail/post-receive "$@"
+and in git-config:
+[multimailhook]
+  mailingList = avisogenies-commits@lists.gforge.inria.fr
+  replyTo = avisogenies-commits@lists.gforge.inria.fr
+  announceShortlog = true
+
+exec /usr/bin/python2 /home/imb/damienrobert/usr/dist/@git/git-multimail/git-multimail/git_multimail.py "$@"
+[multimailhook]
+•·mailingList = lfant@inria.fr
+•·refchangeList = "" #reference change email
+•·replyTo = lfant@inria.fr
+•·announceShortlog = true
+
+Gitignore
+---------
+
+Sample gitignore files: https://github.com/github/gitignore
+    gitignore() {
+        wget \
+        https://raw.githubusercontent.com/github/gitignore/master/Global/OSX.gitignore \
+        https://raw.githubusercontent.com/github/gitignore/master/$1.gitignore \
+        -O .gitignore
+    }
+
+- https://www.gitignore.io/
+git config --global alias.ignore '!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi'
+
+# git my
+
+Cf git-my in git for more details
+
+Mine
+----
+
+- git-archive (g my archive)
+- git-changelog.rb (g my changelog)
+- git-current-branch (g my extra current-branch)
+- git-deploy (g my deploy)
+- git-mystash (g my stash)
+- git-patches (g patch)
+- git-rebuild (g my rebuild)
+  Rebase branches and then merge themp
+- git-reflog-rebase #Obsolete; integrated into git
+- git-reflog-store (g my reflog-store)
+  Store things in the reflog
+- git-setrebase (g my setrebase)
+  Set branch to be rebased
+- git-squash (g my squash)
+- git-topic-diverged (g my topic-diverged)
+  Find when two branches first diverged
+- git-trivial (g my trivial)
+- git-uncommit (g my extra-uncommit)
+  Uncommit some commited files from previous commit
+- git-update-worktree (g my worktree-update)
+  Low level update-worktree helper
+- git_move_subdir
+
+Contrib
+-------
+- git-common-hash (g my contrib hash)
+  Largest common hash prefix
+- git-contacts (g my contrib contact)
+  Like git my related
+- git-resurrect (g my contrib resurrect)
+  Resurrect a deleted branch
+- git-subtree.sh (g my subtree)
+- mailmap (g my contrib mailmap)
+  Check for mailmap candidates
+- packinfo.pl (g my contrib packs)
+- rerere-train.sh (g my contrib rerere-train)
+
+Scripts
+-------
+
+- git-diffblame #seems buggy, not integrated
+- git-happening (g my topic-merged)
+- git-merging-rebase (g my merging-rebase)
+- git-neck (g my topic-neck)
+- git-trail (g my topic-trail)
+- git-nows: remove extra whitespaces (g my extra whitespace)
+
+Programs
+--------
+
+- bfg-1.11.6.jar -> g my bfg
+  Faster git-filter-branch to remove files.
+  Ex: java -jar ~/usr/dist/@git/bfg-1.11.6.jar --delete-folders .crypt
+      java -jar ~/usr/dist/@git/bfg-1.11.6.jar --delete-files foo.jpg
+- git-imerge/ (mhagger) -> git my imerge
+  git-imerge can merge/rebase with the smallest patchset each time
+- git-latexdiff/ (Matthieu Moy) -> g my latexdiff
+  git wrapper around latexdiff
+- git-multimail (mhagger)
+  Push hook to send mails
+- git-reintegrate/ (felipec) -> g my reintegrate
+  Merge topic branches on base into integration branch
+- git-related/ (felipec) -> g my related
+  who to send patch to
+- git-remote-hg (felipec) -> g my hg
+- git-when-merged (mhagger) -> g my topic whenmerged
+  find when a commit was merged
+- git_remote_branch/ -> g my grb
+  Manipulates published branches
+- gitstats/ -> g my stats-html
+  stats
+- tbdiff/ (trast) -> g my topic-diff
+  topic branch interdiff
+- topgit/
+  patches via branches [notused]
+- git-deps
+  [Not integrated, it is difficult to install]
+- git-sizer -> g my stat size
+  Infos on different git object sizes
+
+Collection of scripts
+---------------------
+- aspiers_git-config/
+  git-icing and git-cherry-menu: wrappers around git cherry
+  git-rnotes: makes it easier to share notes
+  git-lsdir: git blame for a directory
+  -> g my cherry/cherry-menu/notes-remotes/ls-blame
+- git-aliae/
+  Contains git-nows used above, copied to ~/script/git/scripts
+- git-mainline/
+  git-wtf: shows state of the repo topic branches
+  -> g my topic-status [to rewrite]
+- visionmedia [notused]

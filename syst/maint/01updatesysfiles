@@ -1,0 +1,4 @@
+#!/bin/sh
+
+. $HOME/.initvars
+$SYSTFILES/generate.rb --process-now

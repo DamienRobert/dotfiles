@@ -1,0 +1,9 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+build_git -l "libevent" "release-2.1.8-stable"
+
+url=tmux
+version="2.7"
+build_helper $@
+build_git

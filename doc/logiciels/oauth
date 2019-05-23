@@ -1,0 +1,198 @@
+Google Oauth
+============
+
+Exemple
+-------
+
+https://developers.google.com/identity/protocols/OAuth2
+Play with oauth: https://developers.google.com/oauthplayground/
+See perms: https://myaccount.google.com/permissions
+See api keys: https://console.developers.google.com
+           ou https://console.cloud.google.com (qui pour api & services semble donner la même interface)
+
+1) Get initial access token (cf https://developers.google.com/identity/protocols/OAuth2UserAgent)
+  HTTP/1.1 302 Found
+  => https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://developers.google.com/oauthplayground&prompt=consent&response_type=code&client_id=407408718192.apps.googleusercontent.com&scope=https://www.google.com/m8/feeds/&access_type=offline
+  (this is the authentification screen)
+
+  <= GET /oauthplayground/?code=4/AAA7k6frSK5v9Td3UnGwcDZ8wDYge1dMeTJqjetw0jugtkdBcbuXz_n8a3ZG-OnMktjhugAXcmWyvSkGpcL4c2M HTTP/1.1
+  Host: developers.google.com
+
+2) Get refresh/access token
+  => POST /oauth2/v4/token HTTP/1.1
+  Host: www.googleapis.com
+  Content-length: 277
+  content-type: application/x-www-form-urlencoded
+  user-agent: google-oauth-playground
+  code=4%2FAAA7k6frSK5v9Td3UnGwcDZ8wDYge1dMeTJqjetw0jugtkdBcbuXz_n8a3ZG-OnMktjhugAXcmWyvSkGpcL4c2M&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&client_id=407408718192.apps.googleusercontent.com&client_secret=************&scope=&grant_type=authorization_code
+  (the code is the one from above)
+
+  <= HTTP/1.1 200 OK
+  {
+    "access_token": "ya29.GluWBYUWL0dBKmBNXZ3B_pxHmsj5Ycm6afg6hgxo0etKKRSO0hghYfgOB3fqmFqT-OCvITnPPdtTQTSyVEmGO-bP1cYx8oxbMRbXY-UPuz1RxnfUkzhHKMsg6ebD", 
+    "scope": "https://www.googleapis.com/auth/youtube",
+    "token_type": "Bearer", 
+    "expires_in": 3600, 
+    "refresh_token": "1/iZZeV6StafZ6u0J_e5Wrkv5eaO1Ysu_nlSmaeoQ_UDk"
+  }
+
+3) Use api (eg get list of contacts)
+  => GET /m8/feeds/contacts/default/full/ HTTP/1.1
+  Host: www.google.com
+  Gdata-version: 3.0
+  Content-length: 0
+  Authorization: Bearer ya29.GluWBYUWL0dBKmBNXZ3B_pxHmsj5Ycm6afg6hgxo0etKKRSO0hghYfgOB3fqmFqT-OCvITnPPdtTQTSyVEmGO-bP1cYx8oxbMRbXY-UPuz1RxnfUkzhHKMsg6ebD
+
+  <= HTTP/1.1 200 OK
+
+Types of oauth
+--------------
+
+- https://developers.google.com/identity/protocols/OAuth2WebServer
+  type: Web application + redirect URLs
+  => auth code: https://accounts.google.com/o/oauth2/v2/auth
+     *client_id* *redirect_uri* *scope* access_type=[online]/offline state (include_granted_scopes) (login_hint) (prompt)
+     Legend: *required* recommended (optional)
+  <= get: https://oauth2.example.com/auth?code=4/P7q7W91a-oMsCeLvIaQm6bTrgtp7
+  => access token: https://www.googleapis.com/oauth2/v4/token
+     code client_id client_secret redirect_uri grant_type=authorization_code
+  <= json: access_token refresh_token expires_in token_type=Bearer
+
+- https://developers.google.com/identity/protocols/OAuth2UserAgent
+  (implicit oauth)
+  type: Web application + javascript origins
+  => request access token: https://accounts.google.com/o/oauth2/v2/auth
+     *client_id* *redirect_uri* *scope* state include_granted_scopes _login_hint_ _prompt_
+  <= https://oauth2.example.com/callback#access_token=4/P7q7W91&token_type=Bearer&expires_in=3600
+  => validate the access token: https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=<access_token>
+  <= json: aud=client_id expires_in scope userid
+
+- https://developers.google.com/identity/protocols/OAuth2InstalledApp
+  type: other (=> loopback IP address or manual copy/paste) or type: android (=> Custom URI scheme)
+  => auth code: https://accounts.google.com/o/oauth2/v2/auth
+     *client_id* *redirect_uri* *response_type=code* *scope* state code_challenge_method code_challenge _login_hint_
+     where redirect_uri:
+       - Custom URI scheme 	com.example.app:redirect_uri_path or
+         com.googleusercontent.apps.123:redirect_uri_path
+           - com.example.app is the reverse DNS notation of a domain under your control. The custom scheme must contain a period to be valid.
+           - com.googleusercontent.apps.123 is the reverse DNS notation of the client ID.
+      - Loopback IP address 	http://127.0.0.1:port or http://[::1]:port
+      - Manual copy/paste 	urn:ietf:wg:oauth:2.0:oob
+      - Programmatic extraction 	urn:ietf:wg:oauth:2.0:oob:auto
+  => request access token: https://www.googleapis.com/oauth2/v4/token
+  <= code client_id client_secret redirect_uri grant_type=authorization_code code_verifier
+  <= json: access_token refresh_token expires_in token_type=Bearer
+
+- https://developers.google.com/identity/protocols/OAuth2ForDevices
+  type: other or playstation4
+  => request device and user codes: https://accounts.google.com/o/oauth2/device/code
+     client_id, scope
+  <= json: device_code user_code verification_url expires_in interval
+  => the client enter verification_url, enter user_code and grant access
+  => Poll to check if client gave access: https://www.googleapis.com/oauth2/v4/token
+     client_id client_secret code=device_code grant_type=http://oauth.net/grant_type/device/1.0
+  <= json: access_token refresh_token expires_in token_type=Bearer
+
+All types:
+  => refresh access token: https://www.googleapis.com/oauth2/v4/token
+     refresh_token client_id client_secret grant_type=refresh_token
+  <= json: access_token expires_in token_type=Bearer
+
+  => revoke: curl -H "Content-type:application/x-www-form-urlencoded" \
+        https://accounts.google.com/o/oauth2/revoke?token={token}
+
+  => use api: curl -H "Authorization: Bearer <access_token>" https://www.googleapis.com/drive/v2/files / curl https://www.googleapis.com/drive/v2/files?access_token=<access_token>
+
+Api libraries: https://github.com/google/google-api-ruby-client
+
+Identity: https://developers.google.com/identity/ => Google Sign-In
+Exemples (cf https://developers.google.com/identity/choose-auth):
+  - https://developers.google.com/identity/one-tap/web/
+  - https://developers.google.com/identity/sign-in/web/
+  - google+ signin: https://developers.google.com/+/web/signin/
+  - openid: https://developers.google.com/identity/protocols/OpenIDConnect
+    Très similaire à OAuth2WebServer
+    => auth code: https://accounts.google.com/o/oauth2/v2/auth
+   *client_id* *redirect_uri* *scope* access_type=[online (to get a refresh token)]/offline state include_granted_scopes(for incremental authorisations) _login_hint_ _prompt_
+   *response_type=code/token*(for explicit vs implicit flow) *nonce*
+   Par exemple scope: openid profile email
+   (Note: The id_token property is only returned if your request included an
+identity scope, such as openid, profile, or email.)
+   Plus d'infos sur les openid scopes possibles: https://developers.google.com/+/web/api/rest/oauth#login-scopes
+   ... 
+   => Exchange code for access token and ID token:
+      https://www.googleapis.com/oauth2/v4/token
+      code client_id client_secret redirect_uri grant_type=authorization_code
+      La réponse inclut un id_token en plus des classiques
+      access_token refresh_token expires_in token_type=Bearer
+      Cf la page web pour voir les valeurs possibles.
+
+Gmail oauth for offlineimap:
+----------------------------
+https://github.com/OfflineIMAP/offlineimap/blob/master/offlineimap.conf#L887-L967
+Specify the OAuth2 client id and secret to use for the connection..
+[adapted from the doc for the new version]
+
+  1) Create a new api project
+   - Go to the Gmail API overview console https://console.developers.google.com/
+   - Create a new project, name doesn't matter, e.g. 'gmail-sync-bob'
+
+  2) Enable gmail api
+     Api library => search gmail:
+     https://console.developers.google.com/apis/library/gmail.googleapis.com
+     => 'Enable'
+
+  3) Add client credential
+   - Click 'Create credentials' in the enabled API overview
+   - Click 'What credentials do I need?'
+   - In 'Add credentials to your project' select 'Gmail API' as the
+     API type, and 'Other UI ...' (not 'Other non-UI ...') for
+     'Where will you be calling the API from?'. For 'What data will
+     you be accessing?' select 'User data'.
+     (Or directly create oauth client id)
+
+   - Create an arbitrary 'Create an OAuth 2.0 client ID',
+     e.g. 'gmail-sync-bob-client'. For 'Set up the OAuth 2.0 consent
+     screen' select an arbitrary 'Product name shown to users',
+     e.g. 'gmail-sync-bob-client' & click 'Continue'.
+   - This gives  you your client  ID displayed on the  screen. Click
+    'Download' to get a JSON file that also has the client secret.
+
+  4) Get refresh and access token
+   - Clone this project: https://github.com/google/gmail-oauth2-tools
+   - Type the following command-line in a terminal and follow the instructions
+        python python/oauth2.py --generate_oauth2_token \
+           --client_id=YOUR_CLIENT_ID --client_secret=YOUR_CLIENT_SECRET
+    (configure refresh token for a gmail client; which may be different
+    from the google account running the application. From the source code,
+    this uses the redirect_url=urn:ietf:wg:oauth:2.0:oob from above)
+   - Access token can be obtained using refresh token with command
+        python python/oauth2.py --user=YOUR_EMAIL --client_id=YOUR_CLIENT_ID
+           --client_secret=YOUR_CLIENT_SECRET --refresh_token=REFRESH_TOKEN
+   Access tokens have limited lifetimes. If you need access beyond the lifetime
+   of a single access token, you should use a refresh token. A refresh token
+   allows Offlineimap to obtain new access tokens.
+
+My apis
+-------
+
+Home assistant: homeassistant-200510
+  => Enabled api: HomeGraph (for request_sync),  Google Assistant API (for https://www.home-assistant.io/addons/google_assistant/)
+  => credentials:
+    - API key for Home Assistant 	Apr 8, 2018 ... (for home assistant:google_assistant.request_sync)
+    Note: for the automatically generated browser and server keys, see https://stackoverflow.com/questions/17715572/google-api-keys-what-is-server-key-and-browser-key
+    - Homeassistant client 	Apr 8, 2018 	Other 	24385528011-803c9fj7g74gaj5v4fnd92saln5v5fgd.apps.googleusercontent.com (for the home assistant add ons)
+  + Actions: (for https://www.home-assistant.io/components/google_assistant/)
+    https://console.actions.google.com/u/0/project/homeassistant-200510/overview
+
+
+Offlineimap: offlineimap-191709
+  => Enabled apis: Gmail API 
+  => Credentials:
+offlineimap-dor 	Jan 10, 2018 	Other 	320037077327-75dh55lh2npmsitah8s8i8836a3oho8d.apps.googleusercontent.com
+
+Let's encrypt
+=============
+
+https://www.splitbrain.org/blog/2017-08/10-homeassistant_duckdns_letsencrypt
+https://github.com/lukas2511/dehydrated

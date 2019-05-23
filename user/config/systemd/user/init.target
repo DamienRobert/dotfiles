@@ -1,0 +1,7 @@
+[Unit]
+Description=Initialize Session
+Wants=basic.target
+AllowIsolate=yes
+
+[Install]
+Alias=default.target

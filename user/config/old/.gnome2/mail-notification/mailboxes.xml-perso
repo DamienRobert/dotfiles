@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<mailboxes>
+  <mailbox type="custom-vfs" uri="file:///home/dams/Mail/damien.olivier.robert@gmail/Inbox"/>
+  <mailbox type="custom-vfs" uri="file:///home/dams/Mail/inria/Inbox"/>
+  <mailbox type="custom-vfs" uri="file:///home/dams/Mail/phare/Inbox"/>
+  <mailbox type="custom-vfs" uri="file:///home/dams/Mail/ploum.plam@gmail/Inbox"/>
+</mailboxes>

@@ -1,0 +1,23 @@
+#!/bin/bash
+# From http://billauer.co.il/blog/2013/02/usb-reset-ehci-uhci-linux/
+
+sudo bash - <<'EOS'
+for xhci in /sys/bus/pci/drivers/{?hci_hcd,?hci-pci} ; do
+  if ! cd $xhci ; then
+    echo Weird error. Failed to change directory to $xhci
+    exit 1
+  fi
+
+  echo Resetting devices from $xhci...
+  for i in ????:??:??.? ; do
+    echo $i
+    echo -n "$i" > unbind
+    echo -n "$i" > bind
+  done
+done
+EOS
+
+#sudo modprobe -vr xhci_pci
+#sudo modprobe -va xhci_pci
+#sudo modprobe -vr ehci_pci
+#sudo modprobe -va ehci_pci

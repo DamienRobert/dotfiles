@@ -1,0 +1,72 @@
+#compdef mymp3info mpl play_movie tox265 myxrandr volume
+local medias='*.(#i)(asf|asx|avi|flac|flv|m1v|m2p|m2v|m4v|mjpg|mka|mkv|mov|mp3|mp4|mpe|mpeg|mpg|ogg|ogm|opus|qt|rm|vob|wav|webm|wma|wmv)(-.)'
+
+case $service in
+
+  mymp3info)
+  if [[ $CURRENT -gt 2 && $words[2] = "-a" ]]; then
+      shift words
+      (( CURRENT-- ))
+      _arguments \
+       '*:Album:_files -/'
+  else
+    _arguments \
+    '-a[album mode]' \
+    '*:Mp3:_files -g $medias'
+  fi
+    ;;
+
+  mpl)
+    _arguments \
+      {-h,-help,--help}'[help]' \
+      {-a,--audio}'[audio mode]' \
+      {-sub,--sub}'[subtitle]' \
+      '--alsa[use alsa]' \
+      '*::medias:_files -g $medias'
+    ;;
+
+  play_movie )
+    local -a  rename
+    if [[ $CURRENT -gt 2 && $words[2] = "-rename" ]]; then
+        shift words
+        (( CURRENT-- ))
+        _arguments \
+          ":Season:" \
+          ":Number of subtitles:"
+    else
+    _arguments \
+      {-h,-help,--help}'[help]' \
+      '-ss[subtitle separation]' \
+      '-ms[movie separation]' \
+      '-bs[movie/subtitle separation]' \
+      '-glob[enable globbing]' \
+      {-g,-go}"[don't ask mode]" \
+      '-play[play directly]' \
+      "-rename[Rename subtitles]" \
+      '*:Episodes (00Epi by default):_files'  && ret=0
+    fi
+    ;;
+
+  tox265)
+    _arguments \
+    '-f[force remove]' \
+    '-a[audio mode]' \
+    {-avi,-mp4,-webm,-movie,-mkv,-mts}'[specific output]' \
+    {-x264,-x265,-xvid,-vp9,-vp8}'[specific video codec]' \
+    '-vcodec[video codec]:codec:' \
+    '-acodec[audio codec]:codec:' \
+    '-acopy[copy audio]' \
+    '-q[movie quality]:quality:' \
+    '-aq[audio quality]:quality:' \
+    '-scale[scale movie by half]' \
+    '-ss[start time]:time:' \
+    '-t[duration]:duration:' \
+    '*:video:_files -g $medias'
+    ;;
+
+  myxrandr)
+    _arguments \
+    ':Action:(on off reset)'
+  ;;
+
+esac

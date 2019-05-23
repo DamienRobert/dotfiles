@@ -1,0 +1,40 @@
+# Iptables
+
+-F chain: flush the selected chain
+-P chain accept/drop: set the policy
+-S: print all rules in the selected chain
+    without a chain show all chains (cf iptables-save too)
+
+# UFW
+https://wiki.archlinux.org/index.php/Uncomplicated_Firewall
+
+ufw default deny
+ufw allow from 192.168.0.0/24
+ufw allow Deluge #cf ufw app list
+ufw limit SSH
+
+Check: ufw status; ufw show raw
+
+# Nftables
+
+http://en.wikipedia.org/wiki/Nftables
+
+nftables is a project providing packet filtering and packet classification on Linux, and it is intended to replace existing iptables, ip6tables, arptables and ebtables frameworks. nftables is a combination of a Linux kernel engine, and a userspace utility.
+
+https://home.regit.org/2014/01/why-you-will-love-nftables/
+https://wiki.archlinux.org/index.php/nftables
+https://ungleich.ch/en-us/cms/blog/2018/08/18/iptables-vs-nftables/
+
+* ipv4/ipv6 Simple & Safe Firewall:
+sudo nft -f /etc/nftables.conf
+ #see rules in table 'inet filter': sudo nft list table inet filter
+
+- add rate limiting:
+sudo nft add rule inet filter input tcp dport ssh limit rate 6/minute accept
+- ban ip:
+sudo nft add rule inet filter input ip saddr 59.45.79.69 counter drop
+
+- reloading:
+    echo "flush ruleset" > /tmp/nftables
+    sudo nft list ruleset >> /tmp/nftables
+    sudo nft -f /tmp/nftables

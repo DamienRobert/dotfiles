@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+#!/usr/bin/perl
+while (<>) {
+    chop;
+    for (my $i = 0; $i < length($_); $i += 1) {
+  printf('%04b', hex(substr($_, $i, 1)))
+    }
+    print "\n";
+}

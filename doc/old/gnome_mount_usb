@@ -1,0 +1,7 @@
+if [ "x$1" = "x-u" ]; then
+  fusermount -u ~/fuse/mirror
+  umount /media/mirror
+else
+  gnome-mount --hal-udi /org/freedesktop/Hal/devices/volume_uuid_3b5d6dee_cae0_4e0e_82b6_8e087a0242b2
+  /media/mirror/mountlo-0.5/mountlo /media/mirror/mirror.img ~/fuse/mirror
+fi

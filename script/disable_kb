@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+slave_id=$(xinput list | grep 'AT Translated Set' | cut -f2 | cut -d'=' -f2)
+master_id=$(xinput list | grep 'Virtual core keyboard' | cut -f2 | cut -d'=' -f2)
+mouse_id=$(xinput list | grep 'SynPS/2 Synaptics TouchPad' | cut -f2 | cut -d'=' -f2)
+#master_id=3
+
+do_disable() {
+	xinput float $slave_id
+	# left middle right wheel-up wheel-down wheel-left wheel-right none...
+	[[ -n $DISABLE_MOUSE ]] && xinput set-button-map $mouse_id 0 0 0 4 5 6 7 8 9 10 11 12
+}
+do_enable() {
+	xinput reattach $slave_id $master_id
+	[[ -n $DISABLE_MOUSE ]] && xinput set-button-map $mouse_id 1 2 3 4 5 6 7 8 9 10 11 12
+}
+
+trap "do_enable; exit 1" INT QUIT TERM
+while true;
+do
+	case $1 in
+		-- ) break ;;
+		-m|--mouse ) shift; DISABLE_MOUSE=t ;;
+		*) break ;;
+	esac
+done
+
+case $1 in
+	disable ) do_disable ;;
+	enable )  do_enable ;;
+	[0-9]* ) do_disable; sleep $1; do_enable ;;
+	wait ) do_disable; read; do_enable ;;
+	* ) echo "$0 disable/enable/wait/[0-9]*\n(Master_id: $master_id, slave_id: $slave_id)" ;;
+esac

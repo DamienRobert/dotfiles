@@ -1,0 +1,49 @@
+ruby
+----
+
+Write a LazyPipe class that connect two IOs (like in a pipe) lazily
+Ex: io1=IO.popen("ls"), io2=IO.popen("grep foo")
+    io=LazyPipe.new(io1,io2)
+    io.next
+    io.next ...
+In diff-fancy.rb I do
+    IO.popen(diff_highlight,'r+') do |f|
+      Thread.new do
+        args.each_line do |l|
+          f.write(l)
+        end
+        f.close_write
+      end
+      GitFancyDiff.new(f,**@opts).output
+but it would be nice to abstract this
+
+github
+------
+
+- repo expliquant comment gérer les passwords
+- simplecolor, gitstatus et checkmail
+- convert linkutils to ruby
+
+git
+---
+
+- push stash changes upstream
+git add --ignore-gitlinks: git add ignorant les sous-répertoires git
+- docu on gitignore ???
+- bug fix for push:track [done]. What about push:remoteref?
+- git pull --no-fetch
+- sequencers harmonisation (git cherry-pick --continue / git am --continue
+  don't work if the patch was already commited...)
+
+bup
+---
+
+implements bup add -A/-u like as git add
+
+systemd
+-------
+
+*ctl tool should work even if systemd is not running for configuring a
+container
+
+- update user preset so that it looks in $XDG_CONFIG_HOME/systemd/user-preset/*.preset

@@ -1,0 +1,18 @@
+Curl cheet sheet: http://daniel.haxx.se/blog/2015/09/16/a-curl-cheat-sheet/
+https://news.ycombinator.com/item?id=10235974
+
+See also https://github.com/jkbrzt/httpie
+for a curl like with a nicer cli
+For tests: http://httpbin.org/
+
+-L: follow redirects
+-k: insecure (don't check certificates)
+-s: silent (-sS: still show errors)
+-v: verbose
+
+curl -O ploum
+curl -o file ploum
+
+http example.org/file > file
+http --download example.org/file
+--follow

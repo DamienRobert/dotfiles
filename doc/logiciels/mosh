@@ -1,0 +1,6 @@
+ctrl-^ . to quit
+
+https://github.com/mobile-shell/mosh/issues/215
+ ctrl-^ escape not ideal #215 
+
+"in case it helps, C-~ and C-6 are equivalent to C-^."

@@ -1,0 +1,6 @@
+#!/bin/sh
+#Convert di.fm playlists to .pls
+PLAYDIR="$HOME/.mpd/playlists/di.fm"
+PLAYLIST="$HOME/.mpd/playlists/di.fm.pls"
+~/script/mpd/playlist_generate $PLAYDIR/* $PLAYLIST
+sed -i.bak  's/- DIGITALLY IMPORTED //g' $PLAYLIST

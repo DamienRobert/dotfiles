@@ -2,7 +2,7 @@
 #Generate playlist in .pls format from .m3u format
 #The advantage of the .pls format it than it can contain meta infos, like
 #the title of the stream
-sub help { 
+sub help {
   print STDERR <<EOHelp;
   playlist_generate.pl playlists.m3u playlist.pls génère une playlist.pls avec les infos.ply
   -a pour concaténer toutes les playlists.mp3

@@ -1,0 +1,12 @@
+Device=/dev/sdc
+UseLabel=0
+Text=sdc
+UpdatePeriod=1000
+Statistics=1
+XferRate=40
+CombineRWdata=1
+MonitorBarOrder=0
+ReadColor=#0000FF
+WriteColor=#FF0000
+ReadWriteColor=#00FF00
+

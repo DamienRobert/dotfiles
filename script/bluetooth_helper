@@ -1,0 +1,81 @@
+#!/bin/zsh
+
+init=
+start=
+while true;
+do
+  case "$1" in
+    -- ) break ;;
+    -b ) shift; start=t ;;
+    -i|--init ) shift; init=$1 ;;
+    *) break;;
+  esac
+done
+
+connect() {
+	dev=$1; shift
+	case $dev in
+		ueboom|uebooml)
+			dev="88:C6:26:06:F4:D1" #UE BOOM Left
+			;;
+		ueboomr)
+			dev="88:C6:26:07:18:A6" #UE BOOM Right
+			;;
+		android)
+			dev="88:82:54:00:13:1E" #samsung galaxy 3 mini
+			;;
+		soundbar)
+			dev="FC:F1:36:C6:BD:97"
+			#[NEW] Device FC:F1:36:B7:44:CC [TV]Samsung LED48
+			#[NEW] Device 38:01:95:9F:20:26 [Samsung] Soundbar
+			#[NEW] Device FC:F1:36:C6:BD:97 [Samsung] Soundbar J-Series
+			;;
+		*) #assume this is a fingerprint
+			;;
+	esac
+	[[ -z $dev ]] && return 1
+	echo "=> $dev"
+
+	if [[ -z $init ]]; then
+		expect <<EOS
+spawn bluetoothctl
+expect *bluetooth*#
+send "power on\n"
+expect "Changing power on succeeded"
+send "connect $dev\n"
+expect "Connection successful"
+exit
+EOS
+	else
+		expect <<EOS
+spawn bluetoothctl
+expect *bluetooth*#
+send "power on\n"
+expect "Changing power on succeeded"
+send "scan on"
+expect "Discovery started"
+send "pair $dev"
+expect "Pairing successful"
+send "trust $dev"
+expect "* Device $dev Trusted: yes"
+send "connect $dev\n"
+expect "Connection successful"
+exit
+EOS
+	fi
+}
+
+start_bluetooth() {
+	sudo modprobe btusb
+	#rfkill unblock bluetooth
+	sudo systemctl start "rfkill-unblock@bluetooth.service"
+	#sudo hciconfig hci0 up #this is done by 'power on' in bluetoothctl
+	#sudo systemctl start bluetooth.target #this is done automatically by systemd
+	sudo systemctl start bluetooth.service #this is done automatically by systemd
+}
+[[ $# == 0 ]] && exit 0 
+
+[[ -n $start ]] && start_bluetooth
+for dev in $@; do
+	connect $dev
+done

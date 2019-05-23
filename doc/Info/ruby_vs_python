@@ -1,0 +1,67 @@
+Legend: + -> Advantage ruby, - -> Advantage python, = -> equality
+
+= In ruby, everything (apart from keywords and variables) is a method call.
+This is great for unicity, but this mean that to call a lambda one has to
+use l.call(*args) or l[*args] or l.(*args); l(*args) will refer to the
+method call self.l(*args).
+By contrast python has methods (more precisely attributes that are functions) and functions
+
++ pry is better than ipython or bpython
++ rubygem is much much better than pip. + it is integrated directly on ruby
+  On python the state fo packaging is not clear cut yet, see
+  http://stackoverflow.com/questions/6344076/differences-between-distribute-distutils-setuptools-and-distutils2
++ python2 vs python3 is a horrible mess
+- it's easier to access docstrings in python (where they are automatically
+  transformed into attributes) than in ruby where we must use
+  Method#source_location (or the gem MethodSource that wraps
+  source_location)
+- for scientific programming, there is a lot more available in python
+  (sage, scipython...)
+
+- python has multiple inheritences, and the inheritence can be changed at
+  runtime. Ruby support multiple inheritence which is a bit less flexible
+  (one can only include module although now on 2.2 refinements can transform
+  class into modules) and we can only add to the inheritence at runtime (by
+  dynamic include statements), not remove them (there are C extensions to
+  manipulate the inheritence chain directly but it is not baked in the
+  langage)
++ ruby has singleton_class. And the singleton_class of a class has for
+ancestors the singleton_class of the ancestors of this class. This is
+inspired by smalltalk and is so elegant that it solves all metaclass
+problems, and allows to have metaclasses of metaclasses. The python
+equivalent of metaclass is just subclassing type (in ruby this would be
+subclassing Module) and class decorators; this is a lot less flexible
++ Likewise in ruby function decorator are simply instance methods of
+Module, there is no need for the special @ syntax of python
+- python has list/set/hash/generator comprehensions
++ ruby has blocks. Blocks are awesome!
++ ruby has continuations! And coroutines. Python has generators and
+coroutines, but not continuations. Also coroutines are easier to handle in
+ruby than in python (where we need decorators)
++ ruby has string interpolation directly in the string, there is no need to
+call % or format like in python. Also regexp are there by defaut, no need
+to load a module
++ reduce is there by default, no need to load a module either
+- In python3 most of the builtins handling list like objects return
+generators; while ruby2 has 'lazy' it has to be enabled by hand on an
+enumerator, by default it won't be lazy
+= both ruby and python easily support autovivication
+cf http://en.wikipedia.org/wiki/Autovivification
+http://stackoverflow.com/questions/651794/whats-the-best-way-to-initialize-a-dict-of-dicts-in-python
++ ruby can be used to replace some of perl's short oneliners; it uses the
+same magic variables convention as perl and the same -F,-p,-e,-n,-a command
+lines arguments
+
++ python has only lambda that wraps one expression. Also python don't have
+real closures (python functions are like Proc.new in ruby:
+~~~ python
+x=0
+def foo(y):
+  return x+y
+x=1
+foo(2) #=>3
+~~~
+~~~ ruby
+x=0; l=lambda {|y| x+y}; x=1; l.call(3) #=>3
+#to check, this now gives 4??
+~~~

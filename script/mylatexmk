@@ -1,36 +1,50 @@
 #!/bin/zsh
+use_latexmk=t
 renderer="pdflatex"
 synctex=
 bib8=
 once=
 aux=
 
+OPTS=()
 while true;
 do
-  case "$1" in
-    -- ) break ;;
-    -lua ) shift; renderer='lualatex' ;;
-    -xetex ) shift; renderer='xetex' ;;
-    -synctex ) shift; synctex='true' ;;
-    -bib8 ) shift; bib8='true' ;;
-  -aux ) shift; aux='true' ;; #for latex suite (but i have a patch in latex-suite that don't need this option)
-    -once ) shift;  once='true' ;;
-    -out ) shift; out='true' ;; #at imb latexmk is too old to understand $out_dir
-    *) break;;
-  esac
+	case "$1" in
+		-- ) break ;;
+		--plain ) shift; use_latexmk= ;;
+		--pdf ) shift; renderer='pdflatex' ;;
+		--lua ) shift; renderer='lualatex'; OPTS+=(-lualatex) ;;
+		--xetex ) shift; renderer='xetex'; OPTS+=(-xelatex) ;;
+		--synctex ) shift; synctex='true' ;;
+		--bib8 ) shift; bib8=t; OPTS+=($OPTS -bibtex="bibtex8 --wolfgang %O %S") ;;
+		--aux ) shift; aux=t ;; #for latex suite (but i have a patch in latex-suite that don't need this option)
+		--once ) shift;  once=t ;;
+		--out ) shift; out=t ;; #at imb latexmk is too old to understand $out_dir
+		*) break;;
+	esac
 done
 
-ARGS=()
-[[ -n $bib8 ]] && ARGS=($ARGS -bibtex="bibtex8 --wolfgang %O %S")
 
-latexcmd="$renderer -file-line-error"
-[[ -n $out ]] && latexcmd="$latexcmd -output-directory out/"
-[[ -n $synctex ]] && latexcmd="$latexcmd -synctex=1"
-latexcmd="$latexcmd %O %S; cp %D ."
-[[ -n $synctex ]] && latexcmd="$latexcmd; ln -snf %Z%R.synctex.gz ."
-[[ -n $aux ]] && latexcmd="$latexcmd; ln -s out/*.aux ."
-[[ -n $once ]] && latexcmd="$latexcmd; exit 1"
-ARGS=($ARGS "-pdflatex=$latexcmd")
+if [[ -n $use_latexmk ]]; then
+	echo "latexmk '$OPTS' $@"
+	exec latexmk $OPTS "$@"
+else
+	latexcmd="$renderer -file-line-error"
+	[[ -n $out ]] && latexcmd+=" -output-directory out/"
+	[[ -n $synctex ]] && latexcmd+=" -synctex=1"
+	[[ -n $use_latexmk ]] && latexcmd="$latexcmd %O %S; cp %D ."
+	[[ -n $synctex ]] && latexcmd+="; ln -snf %Z%R.synctex.gz ."
+	[[ -n $aux ]] && latexcmd+="; ln -s out/*.aux ."
+	[[ -n $once ]] && latexcmd+="; exit 1"
 
-echo "latexmk '$ARGS' $@"
-exec latexmk $ARGS "$@"
+	echo $latexcmd "$@"
+	mkdir -p out
+	if [[ -z $bibtex ]]; then
+		eval "$latexcmd $@" && cp out/*.pdf .
+	else
+		eval "$latexcmd $@"
+		#TODO: support bibtex8/biber!
+		[[ -n $bibtex ]] && bibtex out/${1%.tex}
+		eval "$latexcmd $@" && cp out/*.pdf .
+	fi
+fi

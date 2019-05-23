@@ -1,0 +1,33 @@
+#!/bin/bash3
+#(pour l'utf-16)
+
+RECHERCHE="$@"
+COMMAND1="grep -i '$RECHERCHE'"
+COMMAND2="grep -i -l '$RECHERCHE'"
+
+recur_dir() {
+  if [ -e "$1"/.cdrom ]
+  then
+    link=`ls -L "$1"/.cdrom`
+    if [ "x$link" = "xcdrom0" ]
+    then
+      #on est en haut d'un cd archive
+      echo "$1"
+      eval "$COMMAND1" "$1"/*INFO
+    fi
+  fi
+  for i in "$1"/.* "$1"/*; do
+    if [ "x$i" = "x$1/." -o "x$i" = "x$1/.." ]
+    then true
+    else
+      if [ -d "$i" ]
+      then
+        recur_dir "$i"
+      else
+        [ -e "$i".info ] && eval "$COMMAND2" "$i".info
+      fi
+    fi
+  done
+}
+
+recur_dir '.'

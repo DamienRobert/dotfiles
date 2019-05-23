@@ -1,0 +1,73 @@
+<%
+def get_desktop_path
+  (Array(@computer.file(:xdg_data_home))+Array(@computer.file(:xdg_data_dirs))).compact.uniq.map {|f| f+"applications"}
+end
+
+def find_desktop_file(desktop)
+  SH.find_file(desktop,get_desktop_path)
+end
+def find_desktop_files(pattern)
+  SH.find_files(pattern,get_desktop_path)
+end
+
+def get_mime_types(desktop)
+  desktop.read.match(/^MimeType=(.*)$/) do |m|
+    m[1].split(";")
+  end
+end
+
+def find_mime_types(desktop)
+  desktop=find_desktop_file(desktop) or return []
+  get_mime_types(desktop) || []
+end
+
+def add_application(h,app,mimes)
+  mimes.each do |type|
+    h[type]||=[]
+    h[type]<<app unless h[type].include?(app)
+  end
+end
+
+# add mime types not present in foo.desktop
+def add_mime_types
+	added={
+		"exo-mail-reader.desktop" => %w(x-scheme-handler/mailto),
+		"firefox.desktop" => %w(application/mathml application/rss+xml),
+	}
+	zathura_mtypes=find_desktop_files("org.pwmt.zathura-*.desktop").map {|file| get_mime_types(file)}.flatten.compact.uniq
+	added["org.pwmt.zathura.desktop"]=zathura_mtypes
+	return added
+end
+
+#configuration
+defaults={browser:%w(firefox.desktop chromium.desktop), video:%w(mpv.desktop mplayer.desktop vlc.desktop), 
+          editor:%w(gvim.desktop), viewer:%w(org.pwmt.zathura.desktop org.gnome.Evince.desktop),
+          image: %w(eog.desktop geeqie.desktop)}
+added=add_mime_types
+
+default_applications={} #hash for "Default Applications"
+added_applications={} #hash for Added Associations"
+
+defaults.each do |k,apps|
+  apps.each do |app|
+    omtypes=find_mime_types(app)
+    mtypes=omtypes+(added[app]||[])
+    add_application(default_applications,app,mtypes)
+  end
+end
+
+added.each do |app,types|
+  add_application(added_applications,app,types-find_mime_types(app))
+end
+%>
+<%= generated_from(true) %>
+[Default Applications]
+<% default_applications.each do |type,apps| %>
+<%= "#{type}=#{apps.join(";")}" %>
+<% end %>
+
+[Added Associations]
+
+<% added_applications.each do |type,apps| %>
+<%= "#{type}=#{apps.join(";")}" %>
+<% end %>

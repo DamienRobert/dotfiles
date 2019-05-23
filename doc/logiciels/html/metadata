@@ -1,0 +1,236 @@
+vim: foldmethod=marker
+
+# Formats: {{{1
+- microformat (obsolete)
+- microdata
+- rdfa
+RDF: Formalizes triples "Subject - Predicate - Object"
+RDFa: A formalisation of RDF to use in html/xhtml, similar to microformats
+      See: http://www.w3.org/2010/02/rdfa/sources/rdfa-lite/
+OWL: ontology (similar to what DTD are for XML)
+
+# Ontologies:
+http://www.w3.org/wiki/Good_Ontologies
+
+Dublin Core (describe links or authors) -> dc or dcterms
+  Dublin Core Metadata Element Set Version 1.1 (ns: http://purl.org/dc/elements/1.1/) -> Title Creator Subject Description Publisher Contributor Date Type Format Identifier Source Language Relation Coverage Rights
+  DCMI Metadata Terms (ns: http://purl.org/dc/terms)
+
+FOAF (persons): http://en.wikipedia.org/wiki/FOAF_%28ontology%29
+DOAC (cv)
+Others: RAD (Rules for Archival Description), DOAP (Description of a Project)
+
+# Docs:
+http://stackoverflow.com/questions/14307792/what-is-the-relationship-between-rdf-rdfa-microformats-and-microdata
+http://manu.sporny.org/2011/uber-comparison-rdfa-md-uf/
+http://html5doctor.com/microdata/
+schema.org: https://schema.org/docs/gs.html
+
+# Microformat {{{1
+
+## hcard
+
+ <ul class="vcard">
+   <li class="fn">Joe Doe</li>
+   <li class="org">The Example Company</li>
+   <li class="tel">604-555-1234</li>
+   <li><a class="url" href="http://example.com/">http://example.com/</a></li>
+ </ul>
+
+## geo
+
+   <span class="geo">
+     <span class="latitude">52.48</span>,
+     <span class="longitude">-1.89</span>
+   </span>
+
+# Microdata {{{1
+=> itemscope, itemtype, itemprop
+
+<section itemscope itemtype="http://schema.org/Person"> 
+  Hello, my name is 
+  <span itemprop="name">John Doe</span>, 
+  I am a 
+  <span itemprop="jobTitle">graduate research assistant</span> 
+  at the 
+  <span itemprop="affiliation">University of Dreams</span>. 
+  My friends call me 
+  <span itemprop="additionalName">Johnny</span>. 
+  You can visit my homepage at 
+  <a href="http://www.JohnnyD.com" itemprop="url">www.JohnnyD.com</a>. 
+  <section itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+    I live at 
+    <span itemprop="streetAddress">1234 Peach Drive</span>,
+    <span itemprop="addressLocality">Warner Robins</span>,
+    <span itemprop="addressRegion">Georgia</span>.
+  </section>
+</section>
+
+# RDFa {{{1
+http://www.w3.org/TR/rdfa-syntax/#s_syntax
+http://www.w3.org/1999/xhtml/vocab list the XHTML + RDFa syntax
+https://www.w3.org/TR/html-rdfa/ html5+rdfa
+  (cf rdfa:copy to copy a metadata pattern to other html elements)
+
+RDFA has some default prefixes:
+http://www.w3.org/2011/rdfa-context/rdfa-1.1
+Html+Rdfa adds to the default rdfa context this list (empty currently)
+http://www.w3.org/2011/rdfa-context/html-rdfa-1.1
+
+The essence of RDFa is to provide a set of attributes that can be used to carry metadata in an XML language (hence the 'a' in RDFa).
+These attributes are:
+- about – a URI or CURIE specifying the resource the metadata is about
+- rel and rev – specifying a relationship and reverse-relationship with another resource, respectively
+- src, href and resource – specifying the partner resource
+- property – specifying a property for the content of an element or the partner resource
+- content – optional attribute that overrides the content of the element when using the property attribute
+- datatype – optional attribute that specifies the datatype of text specified for use with the property attribute
+- resource
+- vocab / typeof / prefix (inlist)
+
+<p xmlns:dc="http://purl.org/dc/elements/1.1/"
+   about="http://www.example.com/books/wikinomics">
+  In his latest book
+  <cite property="dc:title">Wikinomics</cite>,
+  <span property="dc:creator">Don Tapscott</span>
+  explains deep changes in technology,
+  demographics and business.
+  The book is due to be published in
+  <span property="dc:date" content="2006-10-01">October 2006</span>.
+</p>
+
+Exemple: xhtml+rfda: {{{2
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+    "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    version="XHTML+RDFa 1.0" xml:lang="en">
+  <head>
+    <title>John's Home Page</title>
+    <base href="http://example.org/john-d/" />
+    <meta property="dc:creator" content="Jonathan Doe" />
+    <link rel="foaf:primaryTopic" href="http://example.org/john-d/#me" />
+  </head>
+  <body about="http://example.org/john-d/#me">
+    <h1>John's Home Page</h1>
+    <p>My name is <span property="foaf:nick">John D</span> and I like
+      <a href="http://www.neubauten.org/" rel="foaf:interest"
+        xml:lang="de">Einstürzende Neubauten</a>.
+    </p>
+    <p>
+      My <span rel="foaf:interest" resource="urn:ISBN:0752820907">favorite
+      book is the inspiring <span about="urn:ISBN:0752820907"><cite
+      property="dc:title">Weaving the Web</cite> by
+      <span property="dc:creator">Tim Berners-Lee</span></span></span>.
+    </p>
+  </body>
+</html>
+
+Converted to xml+rdf:
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <rdf:Description rdf:about="http://example.org/john-d/">
+    <dc:creator xml:lang="en">Jonathan Doe</dc:creator>
+    <foaf:primaryTopic>
+      <rdf:Description rdf:about="http://example.org/john-d/#me">
+        <foaf:nick xml:lang="en">John D</foaf:nick>
+        <foaf:interest rdf:resource="http://www.neubauten.org/"/>
+        <foaf:interest>
+          <rdf:Description rdf:about="urn:ISBN:0752820907">
+            <dc:creator xml:lang="en">Tim Berners-Lee</dc:creator>
+            <dc:title xml:lang="en">Weaving the Web</dc:title>
+          </rdf:Description>
+        </foaf:interest>
+      </rdf:Description>
+    </foaf:primaryTopic>
+  </rdf:Description>
+</rdf:RDF>
+
+Html5 examples (the rdf attributes can be used): {{{2
+
+<html lang="en">
+  <head>
+    <title>Example Document</title>
+  </head>
+  <body vocab="http://schema.org/">
+    <p typeof="Blog">
+      Welcome to my <a property="url" href="http://example.org/">blog</a>.
+    </p>
+  </body>
+</html>
+
+<html prefix="dc: http://purl.org/dc/elements/1.1/" lang="en">
+  <head>
+    <title>John's Home Page</title>
+    <link rel="profile" href="http://www.w3.org/1999/xhtml/vocab" />
+    <base href="http://example.org/john-d/" />
+    <meta property="dc:creator" content="Jonathan Doe" />
+    <link rel="foaf:primaryTopic" href="http://example.org/john-d/#me" />
+  </head>
+  <body about="http://example.org/john-d/#me">
+    <h1>John's Home Page</h1>
+    <p>My name is <span property="foaf:nick">John D</span> and I like
+      <a href="http://www.neubauten.org/" rel="foaf:interest"
+        lang="de">Einstürzende Neubauten</a>.
+    </p>
+    <p>
+      My <span rel="foaf:interest" resource="urn:ISBN:0752820907">favorite
+      book is the inspiring <span about="urn:ISBN:0752820907"><cite
+      property="dc:title">Weaving the Web</cite> by
+      <span property="dc:creator">Tim Berners-Lee</span></span></span>.
+    </p>
+  </body>
+</html>
+
+Note that the prefix foaf is not described here because it is in the
+default list (like dc)
+rel="profile" give a link to a metadata profile.
+
+Aria {{{1
+(Accessibility, not metadata)
+
+# Role:
+role="banner"
+- application: Identifies a region of a page that contains a web application as opposed to a web document
+- banner: Identifies the banner area of your page
+- complementary: Identifies page content that complements the main content but is meaningful on its own
+- contentinfo: Identifies where information about the content, such as copyright information and publication date, exists
+- form: Identifies the section of a page that contains a form, using both native HTML form elements as well as hyperlinks and scripted controls
+- main: Identifies where your page’s main content begins
+- navigation: Identifies navigational elements on your page
+- search: Identifies the search area of your page
+- article: Identifies a composition that forms an independent part of a document.
+- definition: Identifies a definition of a term or subject.
+- directory: Identifies a list of references to a group, like a table of con- tents. Used for static content.
+- document: Identifies the region as content, as opposed to a web application.
+- group: Identifies a collection of user-interface objects that assistive technology should not include in a page summary.
+- heading: Identifies a heading for a section of a page.
+- img: Identifies a section that contains elements of an image. This may be image elements as well as captions and descriptive text.
+- list: Identifies a group of non-interactive list items.
+- listitem: Identifies a single member of a group of non-interactive list items.
+- math: Identifies a mathematical expression.
+- note: Identifies content that is parenthetical or ancillary to the
+- main: content of the resource.
+- presentation: Identifies content that is for presentation and can be ignored by assistive technology.
+- row: Identifies a row of cells in a grid.
+- rowheader: Identifies a cell containing header information for a row in a grid.
+- toolbar: Identifies a toolbar in a web application
+
+# Live
+- aria-live="polite", "assertive"
+(whether to wait or not when the content is live updated before alerting to it)
+- aria-atomic=true,false (read the full updated content or only the changed parts)
+- ariad-hidden=true,false (hide the region)
+
+# table
+<th scope="col"/"row">table header for the col/row</th>
+
+<table aria-describedby="schedule_instructions">
+<caption>...</caption>
+...</table>...
+<section id="schedule_instructions">Description </section>

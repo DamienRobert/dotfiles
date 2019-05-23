@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+umask 002
+
+. ~/.initvars
+. $MYFILES/user/dist/.folders
+get_vcs
+
+for folder in $IMB_LOCAL
+	cd $folder
+	git push "$@"
+done

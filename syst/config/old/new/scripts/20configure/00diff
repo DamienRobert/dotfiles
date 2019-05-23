@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+$RUNDIR/helpers/copy_subfiles $RUNDIR/slash/ $TARGET_DIR/
+$RUNDIR/helpers/gitdiff /tmp/gitdiff $RUNDIR/slash/

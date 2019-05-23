@@ -1,0 +1,32 @@
+https://www.recurse.com/blog/5-learning-c-with-gdb
+  https://news.ycombinator.com/item?id=9560708
+
+# typedef
+https://stackoverflow.com/questions/20426716/how-do-i-use-typedef-and-typedef-enum-in-c
+
+~~~ c
+typedef char* my_string;
+typedef struct{
+  int member1;
+  int member2;
+}my_struct
+
+So now you can declare variables with these new data types
+
+my_string s;
+my_struct x;
+
+s = "welcome";
+x.member1 = 10;
+
+typedef enum Ranks {FIRST, SECOND} Order;
+int main()
+{
+   Order data = (Order)20;  // Must cast to defined type to prevent error
+
+   if (data == FIRST)
+   {
+      //do something
+   }
+}
+~~~

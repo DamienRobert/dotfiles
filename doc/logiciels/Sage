@@ -1,0 +1,29 @@
+- sage
+  command line
+- sage -> notebook() [deprecated]
+  sage web notebook, stored in ~/.sage/sage_notebook.sagenb/home/__store__
+- sage jupyter `sage -n`
+  => `jupyter-notebook`, select New->SageMath
+  format: ploum.ipynb
+
+Cloud:
+- https://cocalc.com [was sagemathcloud]
+
+Jupyter:
+- Notebooks: http://jupyter.org/
+- jupyterlab: https://blog.jupyter.org/jupyterlab-is-ready-for-users-5a6f039b8906
+  => two dimensional layout (like a wm inside the browser!)
+- jupyterhub: https://jupyterhub.readthedocs.io/en/latest/
+  JupyterHub, a multi-user Hub, spawns, manages, and proxies multiple instances
+  of the single-user Jupyter notebook server. JupyterHub can be used to serve
+  notebooks to a class of students, a corporate data science group, or a
+  scientific research group.
+- binder (www.mybinder.org):
+  https://github.com/jupyterhub/binderhub
+  https://blog.jupyter.org/binder-2-0-a-tech-guide-2017-fd40515a3a84
+  https://jvns.ca/blog/2017/11/12/binder--an-awesome-tool-for-hosting-jupyter-notebooks/
+  BinderHub allows you to BUILD and REGISTER a Docker image using a GitHub
+  repository, then CONNECT with JupyterHub, allowing you to create a public
+  IP address that allows users to interact with the code and environment
+  within a live JupyterHub instance. You can select a specific branch name,
+  commit, or tag to serve.

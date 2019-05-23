@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<title>FFmpeg - ArchWiki</title>
+<meta name="generator" content="MediaWiki 1.17.0" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="ArchWiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.archlinux.org/api.php?action=rsd" />
+<link title="Creative Commons" type="application/rdf+xml" href="/index.php?title=FFmpeg&amp;action=creativecommons" rel="meta" />
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html" />
+<link rel="alternate" type="application/atom+xml" title="ArchWiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared&amp;only=styles&amp;skin=archlinux&amp;*" />
+<link rel="stylesheet" href="/skins/archlinux/main.css?301" media="screen" />
+<!--[if lt IE 5.5000]><link rel="stylesheet" href="/skins/archlinux/IE50Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 5.5000]><link rel="stylesheet" href="/skins/archlinux/IE55Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 6]><link rel="stylesheet" href="/skins/archlinux/IE60Fixes.css?301" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/archlinux/IE70Fixes.css?301" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/skins/archlinux/archnavbar.css?301" media="screen" />
+<link rel="stylesheet" href="/skins/archlinux/arch.css?301" media="screen" /><meta name="ResourceLoaderDynamicStyles" content="" />
+</head>
+<body class="mediawiki ltr ns-0 ns-subject page-FFmpeg skin-archlinux">
+<div id="archnavbar"><!-- Arch Linux global navigation bar -->
+	<div id="archnavbarlogo">
+		<p><a id="logo" href="http://www.archlinux.org/"></a></p>
+	</div>
+	<div id="archnavbarmenu">
+		<ul id="archnavbarlist">
+			<li id="anb-home"><a href="http://www.archlinux.org/">Home</a></li><li id="anb-packages"><a href="http://www.archlinux.org/packages/">Packages</a></li><li id="anb-forums"><a href="https://bbs.archlinux.org/">Forums</a></li><li id="anb-wiki" class="anb-selected"><a href="https://wiki.archlinux.org/">Wiki</a></li><li id="anb-bugs"><a href="https://bugs.archlinux.org/">Bugs</a></li><li id="anb-aur"><a href="https://aur.archlinux.org/">AUR</a></li><li id="anb-download"><a href="http://www.archlinux.org/download/">Download</a></li>		</ul>
+	</div>
+</div><!-- #archnavbar -->
+<div id="globalWrapper">
+<div id="column-content"><div id="content" >
+	<a id="top"></a>
+
+	<h1 id="firstHeading" class="firstHeading">FFmpeg</h1>
+	<div id="bodyContent">
+		<div id="siteSub">From ArchWiki</div>
+		<div id="contentSub"></div>
+		<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+		<!-- start content -->
+<div class="toc noprint" style="text-align: center; margin-bottom: 1em">
+<p><b><a href="/index.php/Help:I18n" title="Help:I18n">i18n</a></b>
+</p>
+<hr />
+<p><a href="/index.php?title=FFmpeg_(Dansk)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Dansk) (page does not exist)">Dansk</a>&#160;&#8211;
+<strong class="selflink">English</strong>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Espa%C3%B1ol)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Español) (page does not exist)">Español</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Fran%C3%A7ais)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Français) (page does not exist)">Français</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Indonesia)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Indonesia) (page does not exist)">Indonesia</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Italiano)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Italiano) (page does not exist)">Italiano</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Lietuvi%C5%A1kai)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Lietuviškai) (page does not exist)">Lietuviškai</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Magyar)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Magyar) (page does not exist)">Magyar</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Nederlands)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Nederlands) (page does not exist)">Nederlands</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Portugu%C3%AAs)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Português) (page does not exist)">Português</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Rom%C3%A2n%C4%83)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Română) (page does not exist)">Română</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Slovensk%C3%BD)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Slovenský) (page does not exist)">Slovenský</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Suomi)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Suomi) (page does not exist)">Suomi</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(Svenska)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Svenska) (page does not exist)">Svenska</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(T%C3%BCrk%C3%A7e)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Türkçe) (page does not exist)">Türkçe</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%C4%8Cesky)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Česky) (page does not exist)">Česky</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%CE%95%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Ελληνικά) (page does not exist)">Ελληνικά</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%D0%91%D1%8A%D0%BB%D0%B3%D0%B0%D1%80%D1%81%D0%BA%D0%B8)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Български) (page does not exist)">Български</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Русский) (page does not exist)">Русский</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%D0%A1%D1%80%D0%BF%D1%81%D0%BA%D0%B8)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Српски) (page does not exist)">Српски</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B0)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (Українська) (page does not exist)">Українська</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%D7%A2%D7%91%D7%A8%D7%99%D7%AA)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (עברית) (page does not exist)">עברית</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%E0%B9%84%E0%B8%97%E0%B8%A2)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (ไทย) (page does not exist)">ไทย</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%E6%97%A5%E6%9C%AC%E8%AA%9E)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (日本語) (page does not exist)">日本語</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%E6%AD%A3%E9%AB%94%E4%B8%AD%E6%96%87)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (正體中文) (page does not exist)">正體中文</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (简体中文) (page does not exist)">简体中文</a>&#160;&#8211;
+<a href="/index.php?title=FFmpeg_(%ED%95%9C%EA%B5%AD%EC%96%B4)&amp;action=edit&amp;redlink=1" class="new" title="FFmpeg (한국어) (page does not exist)">한국어</a>
+</p>
+</div>
+<table style="margin-left: 5px; padding: 5px; border-spacing: 0px 4px; float: right; clear: right; width: 25%;" cellpadding="0">
+
+<tr style="text-align: center; border-bottom: 5px #08c solid;">
+<th style="background: #333; color: white; padding: 3px;"> <b>Summary</b>
+</th></tr>
+<tr>
+<td style="text-align: left; padding: 3px"> This article attempts to walk users through the installation, usage and configuration of FFmpeg.
+</td></tr></table>
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Package_installation"><span class="tocnumber">2</span> <span class="toctext">Package installation</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#Encoding_examples"><span class="tocnumber">3</span> <span class="toctext">Encoding examples</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="#VOB_to_any_container"><span class="tocnumber">3.1</span> <span class="toctext">VOB to any container</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Single-pass_x264_.28lossless.29"><span class="tocnumber">3.2</span> <span class="toctext">Single-pass x264 (lossless)</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#Single-pass_MPEG-2_.28near_lossless.29"><span class="tocnumber">3.3</span> <span class="toctext">Single-pass MPEG-2 (near lossless)</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#Single-pass_x264_.28very_high-quality.29"><span class="tocnumber">3.4</span> <span class="toctext">Single-pass x264 (very high-quality)</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="#Two-pass_x264_.28very_high-quality.29"><span class="tocnumber">3.5</span> <span class="toctext">Two-pass x264 (very high-quality)</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="#Two-pass_MPEG-4_.28very_high-quality.29"><span class="tocnumber">3.6</span> <span class="toctext">Two-pass MPEG-4 (very high-quality)</span></a>
+<ul>
+<li class="toclevel-3 tocsection-10"><a href="#Determining_bitrates_with_fixed_output_file_sizes"><span class="tocnumber">3.6.1</span> <span class="toctext">Determining bitrates with fixed output file sizes</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-11"><a href="#Preset_files"><span class="tocnumber">4</span> <span class="toctext">Preset files</span></a>
+<ul>
+<li class="toclevel-2 tocsection-12"><a href="#Creating_presets"><span class="tocnumber">4.1</span> <span class="toctext">Creating presets</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="#Using_preset_files"><span class="tocnumber">4.2</span> <span class="toctext">Using preset files</span></a>
+<ul>
+<li class="toclevel-3 tocsection-14"><a href="#libavcodec-vhq.ffpreset"><span class="tocnumber">4.2.1</span> <span class="toctext">libavcodec-vhq.ffpreset</span></a>
+<ul>
+<li class="toclevel-4 tocsection-15"><a href="#Two-pass_MPEG-4_.28very_high_quality.29"><span class="tocnumber">4.2.1.1</span> <span class="toctext">Two-pass MPEG-4 (very high quality)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-16"><a href="#Volume_gain"><span class="tocnumber">5</span> <span class="toctext">Volume gain</span></a></li>
+<li class="toclevel-1 tocsection-17"><a href="#Extracting_audio"><span class="tocnumber">6</span> <span class="toctext">Extracting audio</span></a>
+<ul>
+<li class="toclevel-2 tocsection-18"><a href="#Stripping_audio"><span class="tocnumber">6.1</span> <span class="toctext">Stripping audio</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-19"><a href="#Adding_subtitles"><span class="tocnumber">7</span> <span class="toctext">Adding subtitles</span></a></li>
+<li class="toclevel-1 tocsection-20"><a href="#Package_removal"><span class="tocnumber">8</span> <span class="toctext">Package removal</span></a></li>
+<li class="toclevel-1 tocsection-21"><a href="#Additional_resources"><span class="tocnumber">9</span> <span class="toctext">Additional resources</span></a></li>
+</ul>
+</td></tr></table>
+<h2> <span class="mw-headline" id="Introduction"> Introduction </span></h2>
+<p><a href="http://www.ffmpeg.org/" class="external text" rel="nofollow">FFmpeg</a> is command-line driven collection of tools which enables the decoding, encoding, conversion and playback of <a href="http://git.ffmpeg.org/general.html#SEC3" class="external text" rel="nofollow">most audio and video streams</a>.
+</p>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD"><strong> Note: </strong>Encoding to <a href="http://www.xvid.org/" class="external text" rel="nofollow">Xvid</a> is best accomplished by way of <a href="/index.php/MEncoder" title="MEncoder">MEncoder</a> as FFmpeg currently does not support all available Xvid-specific options (i.e. -xvidopts).</div>
+<h2> <span class="mw-headline" id="Package_installation"> Package installation </span></h2>
+<p><tt><a href="http://www.archlinux.org/packages/?q=FFmpeg" class="external text" rel="nofollow">FFmpeg</a></tt> is part of the <a href="/index.php/Official_repositories#.5Bextra.5D" title="Official repositories" class="mw-redirect">official Arch Linux [extra] repository</a>.
+</p>
+ <div style="padding: 0.5em; line-height: 1.1; background-color: #333; color: #eee; border: 1px solid #08c"><code style="background: transparent; white-space: pre-wrap; overflow-x: auto"># pacman -S ffmpeg</code></div>
+<h2> <span class="mw-headline" id="Encoding_examples"> Encoding examples </span></h2>
+<ul><li> Examples using syntax and recommended  options from <span style="font-family: monospace; color: #050; white-space: nowrap">extra/ffmpeg 20110622-1</span>
+</li></ul>
+<h3> <span class="mw-headline" id="VOB_to_any_container"> VOB to any container </span></h3>
+<ul><li> Concatenate the desired <a href="http://en.wikipedia.org/wiki/VOB" class="extiw" title="wikipedia:VOB">VOB</a> files into a single VOB file:
+</li></ul>
+<pre>$ cat VTS_01_1.VOB VTS_01_2.VOB VTS_01_3.VOB VTS_01_4.VOB &gt; Transformers.3.Dark.of.the.Moon.VOB
+</pre>
+<ul><li> Or concatenate and then pipe the output VOB to FFmpeg:
+</li></ul>
+<pre>$ cat VTS_01_1.VOB VTS_01_2.VOB VTS_01_3.VOB VTS_01_4.VOB &gt; Transformers.3.Dark.of.the.Moon.VOB | ffmpeg -i ...
+</pre>
+<h3> <span class="mw-headline" id="Single-pass_x264_.28lossless.29"> Single-pass x264 (lossless) </span></h3>
+<ul><li> <span style="font-family: monospace; color: #000055; white-space: nowrap">crf</span>=<span style="font-family: monospace; color: #000055; white-space: nowrap">0</span> is the recommended option for <a href="http://www.videolan.org/developers/x264.html" class="external text" rel="nofollow">x264</a> <a href="http://en.wikipedia.org/wiki/Lossless_data_compression" class="extiw" title="wikipedia:Lossless data compression">lossless</a> encoding.
+</li></ul>
+<dl><dd><ul><li> <span style="font-family: monospace; color: #000055; white-space: nowrap">crf</span>=<span style="font-family: monospace; color: #000055; white-space: nowrap">0</span> produces higher quality visuals versus <span style="font-family: monospace; color: #000055; white-space: nowrap">qp</span>=<span style="font-family: monospace; color: #000055; white-space: nowrap">0</span> at the same filesize:
+</li></ul>
+</dd></dl>
+<pre style="overflow:auto">
+ffmpeg -i 13.Assassins.VOB -acodec copy -vcodec libx264 -preset placebo -crf 0 -x264opts frameref=15 13.Assassins.mkv
+</pre>
+<dl><dd><ul><li> <span style="font-family: monospace; color: #000055; white-space: nowrap">qp</span>=<span style="font-family: monospace; color: #000055; white-space: nowrap">0</span> does not depend on lookahead and can result in a faster encoding times:
+</li></ul>
+</dd></dl>
+<pre style="overflow:auto">
+ffmpeg -i 13.Assassins.VOB -acodec copy -vcodec libx264 -preset placebo -x264opts qp=0:frameref=15 13.Assassins.mkv
+</pre>
+<ul><li> Drawbacks for both lossless methods include relatively slow encoding speed and no reasonable way to estimate output filesize.
+</li></ul>
+<h3> <span class="mw-headline" id="Single-pass_MPEG-2_.28near_lossless.29"> Single-pass MPEG-2 (near lossless) </span></h3>
+<ul><li> Allow FFmpeg to automatically set DVD standardized parameters:
+</li></ul>
+<dl><dd><ul><li> Encode to DVD <a href="http://en.wikipedia.org/wiki/MPEG-2" class="extiw" title="wikipedia:MPEG-2">MPEG-2</a> at a frame rate of 30 frames/second:
+</li></ul>
+</dd></dl>
+<pre>ffmpeg -i 13.Assassins.VOB -target ntsc-dvd -sameq 13.Assassins.mpg
+</pre>
+<dl><dd><ul><li> Encode to DVD MPEG-2 at a frame rate of 24 frames/second:
+</li></ul>
+</dd></dl>
+<pre>ffmpeg -i 13.Assassins.VOB -target film-dvd -sameq 13.Assassins.mpg
+</pre>
+<h3> <span class="mw-headline" id="Single-pass_x264_.28very_high-quality.29"> Single-pass x264 (very high-quality) </span></h3>
+<ul><li> <span style="font-family: monospace; color: #000055; white-space: nowrap">threads</span>=<span style="font-family: monospace; color: #000055; white-space: nowrap">0</span> <b>=</b> automatically detect and select the appropriate number of threads:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i Transformers.3.Dark.of.the.Moon.VOB -acodec libmp3lame -ab 256k -vcodec libx264 -preset veryslow -crf 15 -threads 0 -x264opts frameref=15:fast_pskip=0 Transformers.3.Dark.of.the.Moon.mkv
+</pre>
+<ul><li> <span style="font-family: monospace; color: #000055; white-space: nowrap">tune</span> option should be set to <a href="http://forum.doom9.org/showthread.php?t=149394" class="external text" rel="nofollow">match the type and content of the of media being encoded</a>:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i 13.Assassins.VOB -acodec libmp3lame -ab 256k -vcodec libx264 -preset veryslow -tune film -crf 15 -threads 0 -x264opts frameref=15:fast_pskip=0 13.Assassins.mkv
+</pre>
+<ul><li> <a href="http://lame.sourceforge.net/" class="external text" rel="nofollow">libmp3lame</a> is generally recommended over <a href="http://www.audiocoding.com/faac.html" class="external text" rel="nofollow">libfaac</a> encoding at all bitrates.
+</li></ul>
+<h3> <span class="mw-headline" id="Two-pass_x264_.28very_high-quality.29"> Two-pass x264 (very high-quality) </span></h3>
+<ul><li> Audio deactivated as only video statistics are recorded during the first of multiple pass runs:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i Transformers.3.Dark.of.the.Moon.VOB -an -vcodec libx264 -pass 1 -preset veryslow -threads 0 -b 3000k -x264opts frameref=15:fast_pskip=0 -f rawvideo -y /dev/null
+</pre>
+<ul><li> Container format is automatically detected and muxed into from the output file extenstion (<span style="font-family: monospace; color: #000055; white-space: nowrap">.mkv</span>):
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i Transformers.3.Dark.of.the.Moon.VOB -acodec libvo-aacenc -ab 256k -ar 96000 -vcodec libx264 -pass 2 -preset veryslow -threads 0 -b 3000k -x264opts frameref=15:fast_pskip=0 Transformers.3.Dark.of.the.Moon.mkv
+</pre>
+<h3> <span class="mw-headline" id="Two-pass_MPEG-4_.28very_high-quality.29"> Two-pass MPEG-4 (very high-quality) </span></h3>
+<ul><li> Audio deactivated as only video statistics are logged during the first of multiple pass runs:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i Transformers.3.Dark.of.the.Moon.VOB -an -vcodec mpeg4 -pass 1 -mbd 2 -trellis 2 -flags +cbp+mv0 -pre_dia_size 4 -dia_size 4 -precmp 4 -cmp 4 -subcmp 4 -preme 2 -qns 2 -b 3000k -f rawvideo -y /dev/null
+</pre>
+<ul><li> Container format is automatically detected and muxed into from the output file extenstion (<span style="font-family: monospace; color: #000055; white-space: nowrap">.avi</span>):
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i Transformers.3.Dark.of.the.Moon.VOB -acodec copy -vcodec mpeg4 -vtag DX50 -pass 2 -mbd 2 -trellis 2 -flags +cbp+mv0 -pre_dia_size 4 -dia_size 4 -precmp 4 -cmp 4 -subcmp 4 -preme 2 -qns 2 -b 3000k Transformers.3.Dark.of.the.Moon.avi
+</pre>
+<ul><li> Introducing <span style="font-family: monospace; color: #000055; white-space: nowrap">threads</span>=<span style="font-family: monospace; color: #000055; white-space: nowrap">n</span>&gt;<span style="font-family: monospace; color: #000055; white-space: nowrap">1</span> for <span style="font-family: monospace; color: #000055; white-space: nowrap">-vcodec mpeg4</span> may skew the effects of <a href="http://en.wikipedia.org/wiki/Motion_estimation" class="extiw" title="wikipedia:Motion estimation">motion estimation</a> and lead to <a href="http://ffmpeg.org/faq.html#SEC16" class="external text" rel="nofollow">reduced video quality</a> and compression efficiency.
+</li><li> The two-pass MPEG-4 example above also supports output to the <a href="http://en.wikipedia.org/wiki/MPEG-4_Part_14" class="extiw" title="wikipedia:MPEG-4 Part 14">MP4</a> container (replace <span style="font-family: monospace; color: #000055; white-space: nowrap">.avi</span> with <span style="font-family: monospace; color: #000055; white-space: nowrap">.mp4</span>).
+</li></ul>
+<h4> <span class="mw-headline" id="Determining_bitrates_with_fixed_output_file_sizes"> Determining bitrates with fixed output file sizes </span></h4>
+<ul><li> (Desired File Size in MB - Audio File Size in MB) <b>x</b> 8192 kb/MB <b>/</b> Length of Media in Seconds (s) <b>=</b> <a href="http://en.wikipedia.org/wiki/Bitrate" class="extiw" title="wikipedia:Bitrate">Bitrate</a> in kb/s
+</li></ul>
+<dl><dd><ul><li> (3900 MB - 275 MB) = 3625 MB <b>x</b> 8192 kb/MB <b>/</b> 8830 s = 3363 kb/s required to achieve an approximate total output file size of 3900 MB
+</li></ul>
+</dd></dl>
+<h2> <span class="mw-headline" id="Preset_files"> Preset files </span></h2>
+<h3> <span class="mw-headline" id="Creating_presets"> Creating presets </span></h3>
+<ul><li> Populate <span style="font-family: monospace; color: #050; white-space: nowrap">~/.ffmpeg</span> with the default <a href="http://ffmpeg.org/ffmpeg-doc.html#SEC13" class="external text" rel="nofollow">preset files</a>:
+</li></ul>
+<pre>$ cp -iR /usr/share/ffmpeg ~/.ffmpeg
+</pre>
+<ul><li> Create new and/or modify the default preset files:
+</li></ul>
+<div style="padding: 0.25em; margin: 0.50em 0 0 0; background-color: #E7FFE7; border: thin dashed #7F7F7F; border-bottom: thin solid #7F7F7F"><strong>File: <span style="font-family: monospace;">~/.ffmpeg/libavcodec-vhq.ffpreset</span></strong></div><pre style="white-space: pre-wrap; overflow-x: auto; padding: 0.25em; margin: 0 0 0.50em 0; background-color: #F7F7F7; border: thin dashed #7F7F7F; border-top: none">
+ vtag=DX50
+ mbd=2
+ trellis=2
+ flags=+cbp+mv0
+ pre_dia_size=4
+ dia_size=4
+ precmp=4
+ cmp=4
+ subcmp=4
+ preme=2
+ qns=2</pre>
+<h3> <span class="mw-headline" id="Using_preset_files"> Using preset files </span></h3>
+<ul><li> Enable the <span style="font-family: monospace; color: #000055; white-space: nowrap">-vpre</span> option after declaring the desired  <span style="font-family: monospace; color: #000055; white-space: nowrap">-vcodec</span>
+</li></ul>
+<h4> <span class="mw-headline" id="libavcodec-vhq.ffpreset"> <span style="font-family: monospace; color: #050; white-space: nowrap">libavcodec-vhq.ffpreset</span> </span></h4>
+<ul><li> <span style="font-family: monospace; color: #050; white-space: nowrap">libavcodec</span> <b>=</b> Name of the vcodec/acodec
+</li><li> <span style="font-family: monospace; color: #050; white-space: nowrap">vhq</span> <b>=</b> Name of specific preset to be called out
+</li><li> <span style="font-family: monospace; color: #050; white-space: nowrap">ffpreset</span> <b>=</b> FFmpeg preset filetype suffix
+</li></ul>
+<h5> <span class="mw-headline" id="Two-pass_MPEG-4_.28very_high_quality.29"> Two-pass MPEG-4 (very high quality) </span></h5>
+<ul><li> First pass of a multipass (bitrate) ratecontrol transcode:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i 13.Assassins.2010.mpg -an -vcodec mpeg4 -pass 1 -vpre vhq -f rawvideo -y /dev/null
+</pre>
+<ul><li> Ratecontrol based on the video statistics logged from the first pass:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i 13.Assassins.2010.mpg -acodec libvorbis -aq 8 -ar 48000 -vcodec mpeg4 -pass 2 -vpre vhq -b 3000k 13.Assassins.2010.mp4
+</pre>
+<ul><li> <b>libvorbis quality settings (VBR)</b>
+</li></ul>
+<dl><dd><ul><li> -aq 4 <b>=</b> 128 kb/s
+</li><li> -aq 5 <b>=</b> 160 kb/s
+</li><li> -aq 6 <b>=</b> 192 kb/s
+</li><li> -aq 7 <b>=</b> 224 kb/s
+</li><li> -aq 8 <b>=</b> 256 kb/s
+</li></ul>
+</dd></dl>
+<ul><li><a href="http://www.geocities.jp/aoyoume/aotuv/" class="external text" rel="nofollow">aoTuV</a> is generally preferred over <a href="http://vorbis.com/" class="external text" rel="nofollow">libvorbis</a> provided by <a href="http://www.xiph.org/" class="external text" rel="nofollow">Xiph.Org</a> and is provided by <a href="http://aur.archlinux.org/packages.php?ID=6155" class="external text" rel="nofollow">libvorbis-aotuv</a> in the <a href="/index.php/AUR" title="AUR" class="mw-redirect">AUR</a>.
+</li></ul>
+<h2> <span class="mw-headline" id="Volume_gain"> Volume gain </span></h2>
+<ul><li> Change the audio volume in multiples of 256 where <b>256 = 100%</b> (normal) volume. Additional values such as 400 are also valid options.
+</li></ul>
+<pre>-vol 256  = 100%
+-vol 512  = 200%
+-vol 768  = 300%
+-vol 1024 = 400%
+-vol 2048 = 800%
+</pre>
+<ul><li> To double the volume <b>(512 = 200%)</b> of an <a href="http://en.wikipedia.org/wiki/Mp3" class="extiw" title="wikipedia:Mp3">MP3</a> file:
+</li></ul>
+<pre>ffmpeg -i example.mp3 -vol 512 loud-example.mp3
+</pre>
+<ul><li> To quadruple the volume <b>(1024 = 400%)</b> of an <a href="http://en.wikipedia.org/wiki/Ogg" class="extiw" title="wikipedia:Ogg">Ogg</a> file:
+</li></ul>
+<pre>ffmpeg -i example.ogg -vol 1024 loud-example.ogg
+</pre>
+<ul><li> Note that gain metadata is only written to the output file.
+</li></ul>
+<h2> <span class="mw-headline" id="Extracting_audio"> Extracting audio </span></h2>
+<div style="padding: 0.5em; line-height: 1.1; background-color: #333; color: #eee; border: 1px solid #08c"><code style="background: transparent; white-space: pre-wrap; overflow-x: auto">$ ffmpeg -i The.Kings.Speech.mpg<br />
+Input #0, avi, from 'The.Kings.Speech.2010.mpg':<br />  Duration: 01:58:28.96, start: 0.000000, bitrate: 3000 kb/s<br />    Stream #0.0: Video: mpeg4, yuv420p, 720x480 [PAR 1:1 DAR 16:9], 29.97 tbr, 29.97 tbn, 29.97 tbc<br />    Stream #0.1: Audio: ac3, 48000 Hz, stereo, s16, 384 kb/s<br />    Stream #0.2: Audio: ac3, 48000 Hz, 5.1, s16, 448 kb/s<br />    Stream #0.3: Audio: dts, 48000 Hz, 5.1 768 kb/s</code></div>
+<ul><li> Extract the first (<span style="font-family: monospace; color: #000055; white-space: nowrap">-map 0:1</span>) <a href="http://en.wikipedia.org/wiki/Dolby_Digital" class="extiw" title="wikipedia:Dolby Digital">AC-3</a> encoded audio stream exactly as it was multiplexed into the file:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i The.Kings.Speech.mpg -map 0:1 -acodec copy -vn The.Kings.Speech.ac3
+</pre>
+<ul><li> Convert the third (<span style="font-family: monospace; color: #000055; white-space: nowrap">-map 0:3</span>) <a href="http://en.wikipedia.org/wiki/DTS_(sound_system)" class="extiw" title="wikipedia:DTS (sound system)">DTS</a> audio stream to an <a href="http://en.wikipedia.org/wiki/Advanced_Audio_Coding" class="extiw" title="wikipedia:Advanced Audio Coding">AAC</a> file with a bitrate of 192 kb/s and a <a href="http://en.wikipedia.org/wiki/Sampling_rate" class="extiw" title="wikipedia:Sampling rate">sampling rate</a> of 96000 Hz:
+</li></ul>
+<pre style="overflow:auto">
+ffmpeg -i The.Kings.Speech.mpg -map 0:3 -acodec libvo-aacenc -ab 192k -ar 96000 -vn The.Kings.Speech.aac
+</pre>
+<ul><li> <span style="font-family: monospace; color: #000055; white-space: nowrap">-vn</span> disables the processing of the video stream.
+</li></ul>
+<h3> <span class="mw-headline" id="Stripping_audio"> Stripping audio </span></h3>
+<ol><li> Copy the first video stream (<span style="font-family: monospace; color: #000055; white-space: nowrap">-map 0:0</span>) along with the second AC-3 audio stream (<span style="font-family: monospace; color: #000055; white-space: nowrap">-map 0:2</span>).
+</li><li> Convert the AC-3 audio stream to two-channel MP3 with a bitrate of 128 kb/s and a sampling rate of 48000 Hz.
+</li></ol>
+<pre style="overflow:auto">
+ffmpeg -i The.Kings.Speech.mpg -map 0:0 -map 0:2 -vcodec copy -acodec libmp3lame -ab 128k -ar 48000 -ac 2 The.Kings.Speech.mkv
+</pre>
+<div style="padding: 0.5em; line-height: 1.1; background-color: #333; color: #eee; border: 1px solid #08c"><code style="background: transparent; white-space: pre-wrap; overflow-x: auto">$ ffmpeg -i The.Kings.Speech.mkv<br />
+Input #0, avi, from 'The.Kings.Speech.2010.mpg':<br />  Duration: 01:58:28.96, start: 0.000000, bitrate: 3000 kb/s<br />    Stream #0.0: Video: mpeg4, yuv420p, 720x480 [PAR 1:1 DAR 16:9], 29.97 tbr, 29.97 tbn, 29.97 tbc<br />    Stream #0.1: Audio: mp3, 48000 Hz, stereo, s16, 128 kb/s</code></div>
+<div style="padding: 5px; margin: 0.50em 0; background-color: #DDDDFF; border: thin solid #BBBBDD"><strong> Note: </strong>Removing undesired audio streams allows for additional bits to be allocated towards improving video quality.</div>
+<h2> <span class="mw-headline" id="Adding_subtitles"> Adding subtitles </span></h2>
+<p>FFmpeg does not currently support muxing <a href="http://en.wikipedia.org/wiki/Category:Subtitle_file_formats" class="extiw" title="wikipedia:Category:Subtitle file formats">subtitle files</a> into existing streams. See <a href="/index.php/Mencoder#Adding_SubRip_subtitles_to_a_file" title="Mencoder" class="mw-redirect">MEncoder</a> for subtitle muxing support.
+</p>
+<h2> <span class="mw-headline" id="Package_removal"> Package removal </span></h2>
+<ul><li> <a href="/index.php/Pacman" title="Pacman">pacman</a> will not <a href="/index.php/Pacman#Removing_packages" title="Pacman">remove</a> configuration files outside of the defaults that were created during package installation. This includes user-created preset files.
+</li></ul>
+<h2> <span class="mw-headline" id="Additional_resources"> Additional resources </span></h2>
+<ul><li> <a href="http://mewiki.project357.com/wiki/X264_Settings" class="external text" rel="nofollow">x264 Settings</a> - MeWiki Documentation
+</li><li> <a href="http://ffmpeg.org/ffmpeg-doc.html" class="external text" rel="nofollow">FFmpeg Documentation</a> - Official Documentation
+</li><li> <a href="http://www.mplayerhq.hu/DOCS/HTML/en/menc-feat-x264.html" class="external text" rel="nofollow">Encoding with the x264 Codec</a> - MEncoder Documentation
+</li><li> <a href="http://avidemux.org/admWiki/doku.php?id=tutorial:h.264" class="external text" rel="nofollow">H.264 eEcoding Guide</a> - Avidemux Wiki
+</li><li> <a href="http://howto-pages.org/ffmpeg/" class="external text" rel="nofollow">Using FFmpeg</a> - Linux How To Pages
+</li></ul>
+
+<!--
+NewPP limit report
+Preprocessor node count: 743/1000000
+Post-expand include size: 9303/2097152 bytes
+Template argument size: 2849/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key archwiki:pcache:idhash:11908-0!*!0!!en!*!edit=0 and timestamp 20110831040349 -->
+<div class="printfooter">
+Retrieved from "<a href="https://wiki.archlinux.org/index.php/FFmpeg">https://wiki.archlinux.org/index.php/FFmpeg</a>"</div>
+		<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks"><a href="/index.php/Special:Categories" title="Special:Categories">Category</a>: <span dir='ltr'><a href="/index.php/Category:Audio/Video_(English)" title="Category:Audio/Video (English)">Audio/Video (English)</a></span></div></div>		<!-- end content -->
+				<div class="visualClear"></div>
+	</div>
+</div></div>
+<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<div class="pBody">
+			<ul>
+				 <li id="ca-nstab-main" class="selected"><a href="/index.php/FFmpeg" title="View the content page [c]" accesskey="c">Page</a></li>
+				 <li id="ca-talk"><a href="/index.php/Talk:FFmpeg" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				 <li id="ca-viewsource"><a href="/index.php?title=FFmpeg&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li>
+				 <li id="ca-history"><a href="/index.php?title=FFmpeg&amp;action=history" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=FFmpeg" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in / create account</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(/archwiki_logo.png);" href="/index.php/Main_Page" title="Visit the main page"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+	<div class='generated-sidebar portlet' id='p-navigation'>
+		<h5>Navigation</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage-description"><a href="/index.php/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+				<li id="n-portal"><a href="/index.php/Getting_Involved" title="Various ways Archers can contribute to the community">Getting Involved</a></li>
+				<li id="n-currentevents"><a href="/index.php/Wiki_News" title="The latest lowdown on the wiki">Wiki News</a></li>
+				<li id="n-recentchanges"><a href="/index.php/Special:RecentChanges" title="The list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+				<li id="n-randompage"><a href="/index.php/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+				<li id="n-help"><a href="/index.php/Help:Contents" title="Wiki navigation, reading, and editing help">Help</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/index.php" id="searchform">
+				<input type='hidden' name="title" value="Special:Search"/>
+				<input id="searchInput" title="Search ArchWiki" accesskey="f" type="search" name="search" />
+				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="Go" title="Go to a page with this exact name if exists" />&#160;
+				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Search" title="Search the pages for this text" />
+			</form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Toolbox</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/index.php/Special:WhatLinksHere/FFmpeg" title="List of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="/index.php/Special:RecentChangesLinked/FFmpeg" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/index.php/Special:SpecialPages" title="List of all special pages [q]" accesskey="q">Special pages</a></li>
+				<li id="t-print"><a href="/index.php?title=FFmpeg&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>				<li id="t-permalink"><a href="/index.php?title=FFmpeg&amp;oldid=150828" title="Permanent link to this revision of the page">Permanent link</a></li>			</ul>
+		</div>
+	</div>
+</div><!-- end of the left (by default at least) column -->
+<div class="visualClear"></div>
+<div id="footer">
+	<div id="f-copyrightico">
+		<a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.2" width="88" height="31" /></a>
+	</div>
+	<div id="f-poweredbyico">
+		<a href="http://www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+	</div>
+	<ul id="f-list">
+		<li id="lastmod"> This page was last modified on 7 August 2011, at 05:10.</li>
+		<li id="viewcount">This page has been accessed 1,258 times.</li>
+		<li id="copyright">Content is available under <a href="http://www.gnu.org/copyleft/fdl.html" class="external ">GNU Free Documentation License 1.2</a>.</li>
+		<li id="privacy"><a href="/index.php/ArchWiki:Privacy_policy" title="ArchWiki:Privacy policy">Privacy policy</a></li>
+		<li id="about"><a href="/index.php/ArchWiki:About" title="ArchWiki:About">About ArchWiki</a></li>
+		<li id="disclaimer"><a href="/index.php/ArchWiki:General_disclaimer" title="ArchWiki:General disclaimer">Disclaimers</a></li>
+	</ul>
+</div>
+</div>
+
+<script src="/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=archlinux&amp;*"></script>
+<script>if ( window.mediaWiki ) {
+	mediaWiki.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "FFmpeg", "wgTitle": "FFmpeg", "wgAction": "view", "wgArticleId": 11908, "wgIsArticle": true, "wgUserName": null, "wgUserGroups": ["*"], "wgCurRevisionId": 150828, "wgCategories": ["Audio/Video (English)"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script>
+<script>if ( window.mediaWiki ) {
+	mediaWiki.loader.load(["mediawiki.util", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+	mediaWiki.loader.go();
+}
+</script>
+
+<script>if ( window.mediaWiki ) {
+	mediaWiki.user.options.set({"ccmeonemails":0,"cols":80,"contextchars":50,"contextlines":5,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":1,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"archlinux","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,
+	"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mediaWiki.loader.state({"user.options":"ready"});
+}
+</script><!-- Served in 0.050 secs. --></body></html>

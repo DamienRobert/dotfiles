@@ -1,0 +1,31 @@
+git clone git://anongit.freedesktop.org/systemd/systemd
+
+sudo mkarchchroot /opt/archchroot base base-devel
+cd /opt
+sudo arch-nspwan archchroot pacman -S --needed 'acl' 'cryptsetup' 'docbook-xsl' 'gobject-introspection' 'gperf' 'gtk-doc' 'intltool' 'kmod' 'libcap' 'libgcrypt'  'libmicrohttpd' 'libxslt' 'util-linux' 'linux-api-headers' 'pam' 'python' 'python-lxml' 'quota-tools' 'shadow' 'xz'
+
+sudo rm -rf /opt/archchroot/root/systemd
+sudo cp -a . /opt/archchroot/root/systemd
+
+sudo systemd-nspawn -bD /opt/archchroot
+cd systemd
+./autogen.sh
+
+#Initialized build system. For a common configuration please run:
+#./configure CFLAGS='-g -O0 -ftrapv' --enable-compat-libs --enable-kdbus --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib --enable-gtk-doc
+
+./configure \
+  CFLAGS="-march=native -mtune=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4" \
+      --libexecdir=/usr/lib \
+      --localstatedir=/var \
+      --sysconfdir=/etc \
+      --enable-introspection \
+      --enable-gtk-doc \
+      --enable-compat-libs \
+      --disable-audit \
+      --disable-ima \
+      --disable-kdbus \
+      --with-sysvinit-path= \
+      --with-sysvrcnd-path= \
+      --with-firmware-path="/usr/lib/firmware/updates:/usr/lib/firmware"
+make && make install

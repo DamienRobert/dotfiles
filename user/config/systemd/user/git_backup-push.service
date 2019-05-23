@@ -1,0 +1,15 @@
+[Unit]
+Description=Git backup push
+ConditionPathIsDirectory=%h/var/backups/gitbackup
+
+[Service]
+Type=simple
+SyslogIdentifier=gitbackup_push
+ExecStartPre=/usr/bin/ping -c 1 -W 1 acces.math.u-bordeaux1.fr
+ExecStart=/bin/sh -c 'exec %h/mine/script/gitbackup mypush'
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=crontab.target

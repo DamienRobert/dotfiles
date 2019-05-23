@@ -1,0 +1,76 @@
+cf perso/gitolite-admin
+
+Install/Update: gitolite setup
+sudo -u gitolite -i
+git clone git://github.com/sitaramc/gitolite / cd ~/gitolite; git pull
+mkdir -p ~/bin && gitolite/install -ln
+bin/gitolite setup -pk DamienRobert.pub / bin/gitolite setup
+-> git clone gitolite@durin:gitolite-admin
+
+Update the .gitolite.rc file if needed:
+  gitolite query-rc -d #backup the old rc file
+  gitolite print-default-rc > .gitolite.rc
+
+ssh gitolite@durin help
+#disable push temporarly (for backups for instance)
+ssh gitolite@durin writable -h
+#set description of a wild repo
+ssh gitolite@durin desc -h
+#get info on permission
+ssh gitolite@durin info -lc -ld
+#set permission of created wild repos
+ssh gitolite@durin perms -h
+#Delete a wild repo (disabled by default, cf .gitolite.rc)
+ssh gitolite@durin D -h
+
+Examples
+========
+
+- ssh gitolite@durin info -lc -ld
+    '-lc'       lists creators as an additional field at the end.
+    '-ld'       lists description as an additional field at the end.
+
+     C  CREATOR/..*
+ R W    DamienRobert/test       DamienRobert    Testing repository
+ R W    avisogenies
+ R W    gitolite-admin          Gitolite admin repository
+ R W    testing
+
+- ssh gitolite@durin perms -h
+    Usage:  ssh git@host perms -l <repo>
+            ssh git@host perms <repo> - <rolename> <username>
+            ssh git@host perms <repo> + <rolename> <username>
+    List or set permissions for user-created ("wild") repo.  The first usage shown
+    will list the current contents of the permissions file.  The other two will
+    change permissions, adding or removing a user from a role.
+    Examples:
+        ssh git@host perms foo + READERS user1
+        ssh git@host perms foo + READERS user2
+        ssh git@host perms foo + READERS user3
+
+  ssh gitolite@durin perms -l DamienRobert/test
+  ssh git@git.math.cnrs.fr perms -l plm/drobert/lfant
+
+- git remote add durin ssh://gitolite@durin/$(basename $PWD)
+  git push --all durin
+  git remote add mathrice git@git.math.cnrs.fr:plm/drobert/$(basename $PWD)
+  git push --all mathrice
+
+Adding a new repo
+=================
+- edit ~/perso/gitolite-admin/conf/gitolite.conf
+  git remote add durin ssh://gitolite@durin/articles
+  git push --all durin
+  #git branch --set-upstream-to durin/master
+
+For a wild repo:
+git clone gitolite@durin:DamienRobert/FooBar
+
+Vesath
+------
+#à la main sur vesath:
+git remote add origin ssh://vesath/home/robert/git/$(basename $PWD)
+ssh vesath git init --bare git/$(basename $PWD)
+git push --all
+git fetch origin
+git branch --set-upstream-to origin/master

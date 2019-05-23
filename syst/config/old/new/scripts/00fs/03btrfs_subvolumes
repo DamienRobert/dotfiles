@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+[[ -n $ROOTLEAF ]] || return 0
+DSLASH=$(findfs LABEL=$ROOTLEAF)
+[[ -n $DSLASH ]] || return 0
+#we have found a rootleaf partition, assume this is btrfs
+eval $(blkid -t LABEL=$ROOTLEAF -o export) #get fs type
+[[ $TYPE == "btrfs" ]] || return 1
+DHOME=$(findfs PARTLABEL=$HOMEPARTLABEL)
+
+TMPTARGET=$TARGET_DIR
+mkdir -p $TMPTARGET &&
+mount $DSLASH $TMPTARGET &&
+#we want to create slash as a subvolume to facilitate snapshots
+btrfs subvolume create $TMPTARGET/$SLASHLABEL
+[[ -n $DHOME ]] || {
+	btrfs subvolume create $TMPTARGET/$HOMELABEL
+	btrfs subvolume create $TMPTARGET/data
+}
+umount $TMPTARGET

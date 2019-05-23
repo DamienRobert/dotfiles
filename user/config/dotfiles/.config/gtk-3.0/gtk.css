@@ -1,0 +1,8 @@
+/* From https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=796138 */
+GtkNotebook {
+  /* Remove pointless gap before the first tab (deprecated) */
+  /* -GtkNotebook-initial-gap: 0; */
+
+  /* Remove extra tab padding */
+  padding: 1px 0;
+}

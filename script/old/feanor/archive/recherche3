@@ -1,0 +1,6 @@
+#!/usr/bin/zsh
+
+for i in *
+do
+  grep -i "$@" "$i/00FILEINFO" && echo "$i";
+done

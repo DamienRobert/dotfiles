@@ -1,242 +1,263 @@
-#!/bin/zsh
+#!/usr/bin/zsh
 . $HOME/.initvars
+LIBSCRIPT=$MYFILES/script/lib/
 
-SYSTEMDDISP=${DISPLAY%.0}
-NETCTLWIFI=(netctl-auto@wlan0.service)
-NETCTLETH=(netctl-ifplugd@eth0.service)
-DISKS=(/dev/sd?)
-wlan=wlan0
-eth=eth0
+WSERVICES=(); WMODULES=()
+ESERVICES=(); EMODULES=()
+BTSERVICES=(); BTMODULES=()
+case $MYHOSTNAME in
+	Numenor) EMODULES+=(r8169) ;; #unload eth0 module (consume 600mW)
+esac
+. $LIBSCRIPT/find_dev.zsh
+. $LIBSCRIPT/powersave.zsh
 
 help() {
-  echo "$0: More powersave than what is called automatically in /usr/bin/powersave by /etc/udev/rules.d/50-powersave.rules"
-  echo "- extratrue: deactivate wifi inconditionnaly, stop net-auto*.service
-- true: deactivate wifi if not running, set brightness to 0, stop bluetooth, stop user services (internet+xsession services)
-- false: reverse of true+extratrue
+	echo "$0: More powersave than what is called automatically in /usr/bin/powersave by /etc/udev/rules.d/50-powersave.rules"
+	echo "- true: deactivate wifi if not running, set brightness to 0, stop bluetooth, stop user services (internet+xsession services)
+	[with -f force stop network devices]
+- false: reverse of true
+- start/stop bt/netdev/services: start/stop bluetooth/network device/services
 - usb on|auto|suspend: set the corresponding action in /sys/bus/usb/devices/*/power/
-- usbstatus: read /sys/bus/usb/devices/*/power/
-- status: full status"
-
-  exit 1
+- status [usb]: powersave status
+- state: on power or not"
+	exit 1
 }
 
-#Warning, on Numenor, after a suspend I have these messages, so I need to
-#run powersave true again for bluetooth and usb 4-2 powersave...
-##08:41:12 numenor dbus-daemon[663]: Activating service name='org.freedeskt
-##08:41:12 numenor dbus-daemon[663]: Successfully activated service 'org.fr
-##08:41:13 numenor kernel: toshiba_bluetooth: Re-enabling Toshiba Bluetooth
-##08:41:15 numenor kernel: usb 4-2: new full-speed USB device number 22 usi
-##08:41:16 numenor kernel: usb 4-2: USB disconnect, device number 22
-##08:41:16 numenor kernel: usbcore: registered new interface driver btusb
-##08:41:17 numenor kernel: usb 4-2: new full-speed USB device number 23 usi
-##08:41:17 numenor systemd[25885]: Starting Bluetooth.
-##08:41:17 numenor systemd[25885]: Reached target Bluetooth.
-##08:41:17 numenor systemd[416]: Starting Bluetooth.
-##08:41:17 numenor systemd[416]: Reached target Bluetooth.
-##08:41:17 numenor systemd[1]: Starting Bluetooth.
-##08:41:17 numenor systemd[1]: Reached target Bluetooth.
 
-end_wifi() {
-  echo "wlan0 txpower off"
-  sudo iwconfig wlan0 txpower off
-  #rem: global powersave: sudo iw dev wlan0 set power_save on
-  echo "stop $NETCTLWIFI"
-  sudo systemctl stop $NETCTLWIFI
-}
-start_wifi() {
-  echo "wlan0 txpower on"
-  sudo iwconfig wlan0 txpower on
-  echo "start $NETCTLWIFI"
-  sudo systemctl start $NETCTLWIFI
+start_stop_mods() {
+	[[ -n $services || -n $mods ]] && echo "-> [$mode] $object ($services; $mods)"
+	case $mode in
+		start)
+			[[ -n $mods ]] && sudo modprobe $mods
+			[[ -n $services ]] && sudo systemctl start $services
+			;;
+		stop)
+			[[ -n $services ]] && sudo systemctl stop $services
+			[[ -n $mods ]] && sudo modprobe -r $mods
+			;;
+	esac
 }
 
-end_eth() {
-  if [[ $MYHOSTNAME = "Numenor" ]]; then
-    #unload eth0 module (consume 600mW)
-    echo "unload eth0 module"
-    sudo modprobe -r r8169
-  fi
-  echo "stop $NETCTLETH"
-  sudo systemctl stop $NETCTLETH
-}
-start_eth() {
-  if [[ $MYHOSTNAME = "Numenor" ]]; then
-    echo "load eth0 module"
-    sudo modprobe r8169
-  fi
-  echo "start $NETCTLETH"
-  sudo systemctl start $NETCTLETH
+rfkill_service() {
+	local dev; dev=$1
+	case $mode in
+		start)
+			echo "-> systemctl start rfkill-unblock@$dev.service"
+			sudo systemctl start "rfkill-unblock@$dev.service"
+			;;
+		stop) 
+			echo "-> systemctl start rfkill-block@$dev.service"
+			sudo systemctl start "rfkill-block@$dev.service"
+			;;
+	esac
 }
 
-end_bt() {
-  echo "stopping bluetooth"
-  sudo systemctl stop bluetooth.target
-  sudo modprobe -r btusb
-}
-start_bt() {
-  echo "start bluetooth"
-  sudo modprobe  btusb
-  sudo systemctl start bluetooth.target 
-}
-
-end_internet_services() {
-  echo "stopping internet services"
-  systemctl --user stop internet.target
-}
-end_services() {
-  echo "stopping xsession services"
-  systemctl --user stop "xsession@$SYSTEMDDISP.target"
-}
-start_services() {
-  echo "start internet and xsession services"
-  systemctl --user start "xsession@$SYSTEMDDISP.target"
-  if systemctl --user is-active unlock.target; then
-  	#unlock gpg if it was relocked
-    eval $(gpg -q -d $CFGFILES/.keys.gpg)
-    systemctl --user start internet.target
-  else
-    echo "keychain not loaded; we don't activate internet services"
-  fi
-}
-  
-set_brightness() {
-  #This should already be done in the global powersave script, but
-  #sometime i want to put brightness back without having to plug the
-  #cord.
-  bright=$1
-  echo "set brightness to $bright"
-  if [[ $bright == 'max' ]]; then
-      MAX_BRIGHTNESS=9
-      [[ -r /sys/class/backlight/acpi_video0/max_brightness ]] && MAX_BRIGHTNESS=$(cat /sys/class/backlight/acpi_video0/max_brightness)
-      bright=$MAX_BRIGHTNESS
-  fi
-  for i in /sys/class/backlight/acpi_video*/brightness; do sudo sh -c "echo $bright > $i"; done
+bluetooth() {
+	local disconnected doit
+	mode=$1; shift
+	disconnected=t
+	doit=t
+	while true; do
+		case "$1" in
+			-- ) break ;;
+			-f ) shift; disconnected=;;
+			*) break;;
+		esac
+	done
+	[[ -n $disconnected ]] && test_bt_connection && doit=
+	if [[ -n $doit ]]; then
+		services=($BTSERVICES)
+		mods=($BTMODULES)
+		object="bluetooth"
+		echo "- [$mode] $object"
+		rfkill_service bluetooth
+		start_stop_mods
+	fi
 }
 
-test_connection() {
-  #older methods:
-  #- essid=$(iwconfig wlan0 | grep ESSID | awk {'print $4'})
-  #  if [[ $essid == "ESSID:off/any" ]] ; then
-  #- iwdev wlan0 link | grep 'Not connected'
-  #- ip addr show dev $1 | grep NO-CARRIER >/dev/null 2>&1
-  #- ip addr show dev $1 | grep "state DOWN" >/dev/null 2>&1
-  
-  #switch to test for a connection
-  ip addr show dev $1 | grep "state UP" >/dev/null 2>&1
+network_dev() {
+	local args device_type nc_dev disconnected
+	disconnected=t
+	mode=$1; shift
+	while true; do
+		case "$1" in
+			-- ) break ;;
+			-d|--disconnected ) shift; disconnected=t ;;
+			-f ) shift; disconnected=;;
+			*) break;;
+		esac
+	done
+	args=($@)
+	if [[ -z $args ]]; then
+		find_netdevs
+		args=($netdevs)
+	fi
+	if [[ -n $disconnected ]]; then
+		nc_dev=()
+		for dev in $args; do
+			if ! test_connection $dev; then
+				nc_dev+=($dev)
+			fi
+		done
+		args=($nc_dev)
+	fi
+
+	echo "- [$mode] network devices: $args"
+	for object in $args; do
+		services=;mods=;device_type=;
+		case $object in
+			w*) device_type="wlan" ;;
+			e*) device_type="eth" ;;
+		esac
+		case $device_type in
+			wlan)
+				rfkill_service wifi
+				services=($WSERVICES wpa_supplicant@$object.service)
+				mods=($WMODULES)
+				##done in /usr powersave
+				#echo "-> $object: powersave on"
+				#sudo iw dev $object set power_save on
+				##switch off: sudo iwconfig $object txpower off or sudo iw dev $object set txpower limit 0
+				;;
+			eth)
+				services=($ESERVICES)
+				mods=($EMODULES)
+				##done in /usr powersave
+				#case $mode in
+				#	start)
+				#		echo "-> $object: Enable wol"
+				#		sudo ethtool -s $object wol g;;
+				#	stop)
+				#		echo "-> $object: Disable wol"
+				#		sudo ethtool -s $object wol d ;;
+				#esac
+				;;
+		esac
+		start_stop_mods
+	done
 }
+
+services() {
+	mode=$1; shift
+	local force
+	while true; do
+		case "$1" in
+			-- ) break ;;
+			-f|--force ) shift; force=t ;;
+			*) break;;
+		esac
+	done
+	echo "- [$mode] user services"
+	case $mode in
+		start)
+			echo "-> [$mode] network.target"
+			systemctl --user start network.target
+			echo "-> [$mode] xsession.target"
+			[[ -n $DISPLAY ]] && systemctl --user start "xsession.target"
+			;;
+		stop)
+			[[ -z $force ]] && is_connected
+			[[ -z $connected ]] && {
+				echo "-> [$mode] internet.target"
+				systemctl --user stop internet.target
+			}
+			echo "-> [$mode] xsession.target"
+			systemctl --user stop "xsession.target"
+			if mpc | grep '\[playing\]' >/dev/null; then
+				echo "! Not stopping mpd [playing]"
+			else
+				echo "-> [$mode] mpd"
+				systemctl --user stop "mpd.service"
+			fi
+			;;
+	esac
+}
+
+set_dpms_brightness() {
+	local bright dpms
+	while true; do
+		case $1 in
+			-- ) break ;;
+			*dpms ) dpms=$1; shift ;;
+			*) break;;
+		esac
+	done
+	#This should already be done in the global powersave script, but
+	#sometime i want to put brightness back without having to plug the
+	#cord.
+	bright=$1; shift
+	find_backlights
+	SUDO_WRITE=t
+	set_brightness --auto $bright $backlights
+	if [[ -n $dpms ]]; then
+		xset dpms 0 0 120
+		xset $dpms
+	fi
+}
+
+start_stop() {
+	mode=$1; shift
+	arg=$1; shift
+	case $arg in
+		bt|bluetooth) bluetooth $mode $@ ;;
+		netdev|network_dev) network_dev $mode $@ ;;
+		services) services $mode $@ ;;
+		*) network_dev $mode $arg $@ ;;
+	esac
+}
+start() {
+	start_stop start $@
+}
+stop() {
+	start_stop stop $@
+}
+
 
 process() {
-  case $1 in 
-    extratrue ) #deactivate wifi card whatever else
-      set_brightness 0
-      end_eth
-      end_wifi
-      end_bt
-      end_internet_services
-      end_services
-      ;;
-      
-    true ) #desactivate wifi if not running
-      set_brightness 0
-      INTERNET=
-      if test_connection eth0; then 
-        INTERNET=1
-      else
-        end_eth 
-      fi
-      if test_connection wlan0; then 
-        INTERNET=1
-      else
-        end_wifi
-      fi
-      end_bt
-      [[ -z $INTERNET ]] && end_internet_services
-      end_services
-      #the rest, like usb autosuspend, is done by /usr/local/bin/powersave
-      ;;
-  
-    false )
-      set_brightness max
-      start_eth
-      start_wifi
-      start_bt
-      start_services
-      ;;
+	case $1 in
+		true|on )
+			shift
+			[[ -n $do_brightness ]] && set_dpms_brightness +dpms min
+			stop network_dev $opts
+			stop bluetooth
+			stop services $opts
+			;;
+		false|off )
+			shift
+			[[ -n $do_brightness ]] && set_dpms_brightness -dpms max
+			start network_dev
+			start bluetooth
+			start services
+			;;
 
-    #rem: power/control: on means no suspend, auto mean autosuspend,
-    #  suspend mean suspend now.
-    #  power/autosuspend: give the delay in second for device suspension
-    #    (-1 is the same as setting control to on)
-    usb )
-      echo "$2 > /syb/bus/usb/devices/*/power/control"
-      for i in /sys/bus/usb/devices/*/power/control; do 
-        sudo sh -c "echo $2 > $i"
-      done
-      #the /usr/local/powersave script does not restore on for the usb
-      #(because usually most of them are on auto even when on plug, but
-      #sometime usb detection can fail, so i provide this)
-      ;;
-
-    usbstatus )
-     for i in /sys/bus/usb/devices/*/power/; do
-       if [[ -e $i/control ]]; then
-        echo "$i: control=$(cat $i/control), autosuspend=$(cat $i/autosuspend)"
-       fi
-     done ;;
-
-    status )
-      print_status() { echo "$1: $(cat $1)" }
-      #[[ -e /etc/powersave.config ]] && . /etc/powersave.config
-      echo "*** DEVICES POWER CONTROL ***"
-      for i in /sys/bus/*/devices/*/power/control; do print_status $i; done # bus
-      echo "*** USB POWER AUTOSUSPEND ***"
-      for i in /sys/bus/usb/devices/*/power/autosuspend; do print_status $i; done # usb autosuspend
-      echo "*** MISC ***"
-      print_status /proc/sys/kernel/nmi_watchdog # nmi_watchdog
-      print_status /sys/module/pcie_aspm/parameters/policy # aspm
-      echo "*** SOUND ***"
-      # sound card powersave
-      for i in /sys/module/snd_*/parameters/power_save; do print_status $i; done
-      for i in /sys/module/snd_*/parameters/power_save_controller; do print_status $i; done
-      echo "*** KERNEL WRITE MODE ***"
-      # kernel write mode
-      print_status /proc/sys/vm/laptop_mode
-      print_status /proc/sys/vm/dirty_ratio
-      print_status /proc/sys/vm/dirty_background_ratio
-      print_status /proc/sys/vm/dirty_expire_centisecs
-      print_status /proc/sys/vm/dirty_writeback_centisecs
-      # disk powersave
-      echo "*** DISK POWERSAVE ***"
-      for disk in $DISKS; do 
-        sudo hdparm -B $disk; 
-      done
-      for i in /sys/class/scsi_host/host*/link_power_management_policy; do print_status $i; done
-      echo "*** MONITOR, CPU, WIRELESS ***"
-      # screen powersave
-      for i in /sys/class/backlight/acpi_video*/brightness; do print_status $i; done
-      cpupower frequency-info -g # cpu
-      # wlan0 powersave
-      echo "$wlan power save:"
-      iw dev $wlan get power_save
-      #xset $XSET_MODE; xset dpms $DPMS
-      ;;
-
-    * ) help ;;
-  esac
+		start ) shift; start $@ ;;
+		stop ) shift; stop $@ ;;
+		brightness ) shift; set_dpms_brightness $@ ;;
+		state) shift; get_sys_power_supply ;
+			state=$?; echo "state: $state"; exit $state ;;
+		status ) shift; powersave_status $@ ;;
+		usb ) write_files $2 /sys/bus/usb/devices/*/power/control ;;
+		syst) shift; /usr/local/lib/powersave/bin/powersave $@ ;;
+		* ) help ;;
+	esac
 }
 
+do_brightness=
+opts=()
 while true;
 do
-  case "$1" in
-    -- ) break ;;
-    -h|-help|--help ) shift ; help ;;
-    *) break;;
-  esac
+	case $1 in
+		-- ) break ;;
+		-h|-help|--help ) shift ; help ;;
+		-b) shift ; do_brightness=t ;;
+		-f) opts+=($1); shift ;;
+		*) break;;
+	esac
 done
 
 [[ $UID  -eq 0 ]] && { echo "Do not run as root!"; exit 1 }
-if [[ $# -eq 0 ]]; then 
-  process "true"
+if [[ $# -eq 0 ]]; then
+	process "true"
 else
-  process "$@"
+	process $@
 fi

@@ -1,0 +1,25 @@
+#find uncompressed_movies
+du -sh **/*.{MPG,AVI,MOV,MTS,mp4,MP4,3gp}(N.)
+
+#encfs
+encfs /home/dams/data/Photos/.crypt /home/dams/data/Photos/crypt
+
+#resize
+for i in *; do convert -resize 2000x1500 $i $i-small; done
+
+#cp photos via a range
+cp ~/media/9016-4EF8/DCIM/100_PANA/P{1000132..1000299}*(N) .
+
+#keep exif information
+exiftool *.MP4 > .exif
+
+### Link files from selection
+#see also ~/script/chronological.rb to add time information
+#!/usr/bin/env ruby
+require 'dr/sh'
+DR::Pathname.new(ARGV).find do |abs,rel,dir|
+	if abs.file?
+		name=DR::Pathname.new(rel.split_all.map(&:to_s).join("#"))
+		name.on_ln_s(dir+rel)
+	end
+end

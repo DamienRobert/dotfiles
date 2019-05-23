@@ -1,0 +1,3 @@
+fzedit() {
+	files=("$(preview -m --print0)") && $EDITOR ${(0@)files}
+}

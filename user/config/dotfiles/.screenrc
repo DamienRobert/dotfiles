@@ -1,0 +1,125 @@
+#activity "message" #'Activity in window %n'
+#bell_msg [message] #'Bell in window %n'
+#vbell_msg
+
+#vbellwait
+#msgminwait
+#msgwait
+#silencewait
+
+#password #si on veut mettre un password
+#wall #write all
+#exec si on veut lancer une commande
+#hstatus #pour changer le hardstatus (=titres dans les xterms)
+#idle [timeout [cmd args]] #pour lancer un truc après n sec
+#width/height
+
+#[def]autonuke on #pour que CLEAR efface le output not yet written
+#c1 off #process les carac 128 à 159 comme des fonctions (Esc+7-bit code)
+        #à décommenter si des polices utilisent ces caractères
+#defflow on|off|auto [interrupt]
+
+#
+# Réglage des défauts
+#
+autodetach on
+defscrollback 1024
+defflow off
+#defshell "$SHELL -c cd $HOME"
+#encoding enc [enc]
+escape ^Qq
+defobuflimit 1024
+#zombie kr
+#bindkey "^[[24;5~" command
+#bindkey "" stuff 
+#term screen.xterm-new
+
+hardcopydir $HOME/var/spool/screen
+blankerprg printf '%s\n%s\n%s\n' "Ceci est une session screen qui m'appartient" "Il est FORMELLEMENT interdit d'y toucher!!" "     -- Dam's"
+bufferfile $HOME/var/spool/screen/screen-exchange
+
+#caption always '%? [%h@%u] %?%Lw%=%c %u' #message par défaut: '%3n %t'
+caption always "%-Lw|%{= rW}%50>%n%f* %t%{-}|%+Lw%=%? [%h] %?%c%<"
+
+hardstatus off
+compacthist on #pour ne pas avoir les premières lignes blanches dans l'history
+startup_message off
+logtstamp on
+#logtstamp after [secs] d'inactivités dans le loggage / string [string]
+#chdir $HOME/.screen #là où sont les hardcopy et log files
+                    #et le dir des apply lancées dans le screen
+
+#j'utilise des uxterms, mais je suis par défaut en iso-latin-1
+#defencoding ISO8859-1
+#
+# Bindkeys
+#
+
+#mapdefault
+#mapnotnext
+#process
+#stuff
+
+
+bind Q xon
+bind S xoff
+
+bind s split
+bind ^S split
+#bind o only
+#bind ^O only
+bind O only
+
+bind T time
+bind L clear
+bind I login
+
+bind j focus down
+bind ^J focus down
+bind k focus up
+bind ^K focus up
+bind t focus top
+#bind ^T focus top
+bind b focus bottom
+#bind ^B focus bottom
+
+bind P paste
+bind C readreg
+
+bind a title
+bind ^A title
+bind A sessionname
+
+bind ; dinfo
+bind ! history
+bind ')' paste .
+
+#changement de l'encodage
+bind ^i encoding ISO8859-1
+#bind i hstatus latin
+bind ^u encoding UTF-8
+#bind  U encoding UTF-16
+
+
+#Shift Fleches chez moi
+bindkey "^[[1;2C" next
+bindkey "^[[1;2D" prev
+
+#Shift Fleches chez l'�cole
+bindkey "^[[2C" next
+bindkey "^[[2D" prev
+
+#Shift Fleche sous putty (pfffffff)
+#argh, c'est le code de Fleche sous un xterm. PAF!
+#bindkey "^[[C" next
+#bindkey "^[[D" prev
+
+
+#grmbl de flow control
+bindkey "^[[1;5H" flow off
+
+#termcapinfo
+
+#pour dire à screen d'utiliser le scrollback de xterm (smcup/rmcup)
+termcapinfo xterm*|rxvt ti@:te@
+#term 'screen-256color'

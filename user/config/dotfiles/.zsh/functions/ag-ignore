@@ -1,0 +1,4 @@
+#ag-ignore - ag with some ignore added
+ag-ignore() {
+	ag --ignore '/old/' $@
+}

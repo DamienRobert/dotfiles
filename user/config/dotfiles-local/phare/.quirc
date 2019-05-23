@@ -1,0 +1,225 @@
+# Fichier .quialias, version 2.2
+# fichier de configuration pour qui « next génération »
+# Les lignes commençant par un dièse sont ignorées.
+# Pour tous détails, se référer à: man qui .
+
+# Les options
+
+# On n'efface pas l'écran avant d'afficher la carte.
+set nocls
+# afficher le nom complet de l'utilisateur plutot que son login
+set real
+
+set defaultmap = "s"
+
+set idletime = 600
+#set longidletime = 86400
+#set downtime = 864000
+
+
+#-------------
+# groupes: def groupe login="surnom" *
+#                     %groupe
+# on peut enchainer les def
+#
+# realname login=Nom_Reel (ex pour rajouter les accents oublies par finger)
+# alias login=surnom
+# encoding UTF-8 (par defaut)
+
+#! include file=/usr/local/util/packages/qui/lib/quituteurs
+#include /usr/local/util/packages/qui-6.0/share/quituteurs
+def tuteurs madore tourniai couchoud george chantrel
+def tuteurs reutenau rineau glisse noirel lhabert plut aulanglo
+def tuteurs meles levieil robert delasall beal leurent tibouchi catoire
+def tuteurs zoghaib sam@quatramaran frmaillo garillot vernade
+def tuteurs oudomphe mezzarob mathys ramanana blazy bisson
+def tuteurs joel@greement
+
+def spi root beig lebihan
+
+def clubs cof bds dg clubs cacs listece bocal fanfare
+def clubs bocal annuaire plaquett pmort parages bassin
+def clubs bdtheque sftheque cineclub dessin photo cvideo animesco
+def clubs escalade foot voile skiclub interens
+def clubs boum lanuit oenolog soirees
+def clubs aumoneri talos pollens attac respubli tremplin
+def clubs toknow webmaster games conscrit tuteurs wtuteurs rezo
+
+def officiels deyts vienney vernade leurent winterst benayoun
+def officiels praden delle ientile lepretre
+
+def gourous beig leurent robert tourniai zoghaib oudomphe durrlema
+def gourous reutenau lhabert glisse plut frisch george fourquau
+def gourous horvai madore verzelen
+def gourous chantrel perona ferri grasland meles delasall tibouchi blazy
+
+
+
+
+#------------------
+# Pour définir un alias et s'ajouter au groupe important en même temps.
+def moi robert = "Dam's (robert)"
+
+def amis delasall = "Mika (delasall)"
+def amis breda = "Tom (breda)"
+def amis cvial = "Charles (cvial)"
+def amis vripoll = "Vivien (vripoll)"
+def amis primet = "Mael (primet)"
+def amis gast = "Nicolas (gast)"
+def amis tourniai = "Tourniaire (tourniai)"
+def amis dudas = "Olivier (dudas)"
+def amis zylberbe = "Yanos (zylberbe)"
+def amis faraud = "Gabriel (faraud)"
+def amis catoire = "Fabrice (catoire)"
+def amis regnier = "Guillaume (regnier)"
+def amis piaton = "Gabriele (piaton)"
+def amis cornou = "Jean-Louis (cornou)"
+def amis tibouchi = "Mehdi (tibouchi)"
+def amis demichel = "Olivier (demichel)"
+def amis chanal = "Cedric (chanal)"
+def amis mguillau = "Kermat (mguillau)"
+def amis leurent = "Gaetan (leurent)"
+def amis kauffman = "Bruno (kauffman)"
+def amis tourniai = "Mouton (tourniai)"
+def amis tristan = "JB (tristan)"
+def amis froissar = "Paul (froissar)"
+def amis gugger = "Benny (gugger)"
+def amis dauchy = "Vincent (dauchy)"
+def amis zoghaib = "Sam (zoghaib)"
+def amis molin = "Pascal (molin)"
+
+#cirque
+def connaissances jego = "Liguori (jego)"
+def connaissances nverzele = "Verzi (nverzele)"
+def connaissances loverdo = "Claude (loverdo)"
+
+#condisciples
+def connaissances marechal = "Lionel (marechal)"
+def connaissances mirebeau = "JM (mirebeau)"
+def connaissances lverrier = "lverrier"
+def connaissances brouard = "Pierre-Henri (brouard)"
+def connaissances lepage = "Emmanuel (lepage)"
+def connaissances kassel = "Fanny (kassel)"
+def connaissances tonnelie = "Benoit (tonnelie)"
+def connaissances feray = "Valentin (feray)"
+
+#onscrits 2004/2005 = ""
+def connaissances ramanana = "Tahina (ramanana)"
+def connaissances bisson = "Gaetan (bisson)"
+def connaissances mathys = "Audrey (mathys)"
+def connaissances miani = "Celine (miani)"
+def connaissances oudomphe = "Rémi (oudomphe)"
+def connaissances mezzarob = "@/2 (mezzarob)"
+def connaissances rose = "Christophe (rose)"
+def connaissances jeffroy = "Marie (jeffroy)"
+def connaissances garillot = "huitseeker (garillot)"
+
+#onscrits 2005/2006 = ""
+def connaissances poupon = "Anne-Laure (poupon)"
+def connaissances lherbett = "Florian (lherbett)"
+def connaissances balmes = "Irene (balmes)"
+def connaissances balibar = "Justine (balibar)"
+
+#connaissances  = ""
+def connaissances riche = "Simon (riche)"
+def connaissances garban = "Christophe (garban)"
+def connaissances fauvel = "Sebastien (fauvel)"
+def connaissances charton = "Herve (charton)"
+def connaissances vermorel = "Joannes (vermorel)"
+def connaissances ara = "Dimitri (ara)"
+def connaissances pouchin = "Guillaume (pouchin)"
+
+#J'en ai entendu parler
+def toknow patureau = "Clemence (patureau)"
+
+#toknow
+def connaissances pechaud = "Mickey (pechaud)"
+def toknow frejacqu = "Guillaume (frejacqu)"
+def toknow borgogoz = "Borg (borgogoz)"
+def connaissances nesme = "Vincent (nesme)"
+def toknow kipfer = "Pauline (kipfer)"
+def toknow levieil = "Eric (levieil)"
+def connaissances audry = "Manshoun (audry)"
+def toknow beal = "Frederic (beal)"
+def toknow lenestou = "Julien (lenestou)"
+def toknow aze = "Florence (aze)"
+def connaissances karwasz = "Piotr (karwasz)"
+def toknow chantrel = "Etienne (chantrel)"
+def toknow seitz = "Herve (seitz)"
+def connaissances ska = "Ska (ska)"
+def connaissances tauzin = "Gilles (tauzin)"
+def connaissances coudert = "FX (coudert)"
+def connaissances glafon = "Roupoil (glafon)"
+def connaissances plut = "Jérôme (plut)"
+def connaissances marot = "jean (marot)"
+def connaissances madore = "Gro-Tsen (madore)"
+def connaissances rineau = "Laurent (rineau)"
+def connaissances george = "Cigaes (george)"
+def connaissances conscrit = ""
+def connaissances charpiat = "Shaggy (charpiat)"
+def connaissances lebellac = "Mathieu (lebellac)"
+def toknow radenne = "Gilles (radenne)"
+def toknow masse = "Damien (masse)"
+def toknow blondeel = "sbi (blondeel)"
+def connaissances courtes = "TMOY (courtes)"
+def connaissances lhabert = "Luc Habert (lhabert)"
+def connaissances glisse = "Marc (glisse)"
+def toknow hugues = "(Prince Hugues)"
+def connaissances marcq = "EM [DH] (marcq)"
+def toknow pornin = "Thomas Pornin [bip] (pornin)"
+def connaissances grasland = "R1 [Erwan] (grasland)"
+def toknow poujade = "I.E. (poujade)"
+def connaissances espie = "Marc Espie (espie)"
+def connaissances reutenau = "R (reutenau)"
+def toknow mlnguyen = "Marie-Lan (mlnguyen)"
+def toknow rudolphe = "Pascal (rudolphe)"
+def connaissances caruso = "Caruso (caruso)"
+def connaissances jriou = "Joël (jriou)"
+def connaissances condamin = "Taz (condamin)"
+def connaissances ollivier = "ollivier (ollivier)"
+def connaissances fourquau = "Lionel (fourquau)"
+def connaissances pitte = "mathieu (pitte)"
+def connaissances vial = "Pierre (vial)"
+def toknow conduche = "Denis (conduche)"
+def toknow sims = "Elodie (sims)"
+def toknow buchlin = "Eric (buchlin)"
+def toknow smorel = "Sophie (smorel)"
+def connaissances couchoud = "Nicolas (couchoud)"
+def connaissances varoquau = "Gaël (varoquau)"
+def toknow ware = "Soft (ware)"
+def toknow monniaux = "David (monniaux)"
+def toknow ebrunet = "Eric (ebrunet)"
+def connaissances loyer = "Sarah (loyer)"
+
+# Et même des groupes de groupes.
+# important <tuteurs>
+
+def importantGrp %moi %amis %connaissances %toknow
+def monde %moi %amis %connaissances %toknow %spi %tuteurs %gourous %clubs
+def monde %officiels
+
+#-----------------------
+#black, red, green, yellow,  blue,  magenta,  cyan,  white
+#bold underline invisible
+
+#groupes speciaux: name, title, down
+color title brown - bold underline
+#color name lightblack
+color name cyan
+color down brown - bold
+#pour qui -i
+color important red - bold
+
+color moi magenta
+#! color tuteurs blue - bold underline
+color amis red
+color connaissances green
+color toknow yellow
+color clubs blue
+
+#attributs
+color importantGrp - - bold
+color spi - red
+color gourous - brown
+color officiels - magenta
+color tuteurs - - underline

@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# update duckdns ip address
+require 'yaml'
+require 'pathname'
+#require 'dr/computers'
+auth=Pathname.new(ENV['HOME'])+"mine"+"crypt"+".auth"+"duckdns"
+yaml=YAML.load_file(auth)
+
+# DOMAIN=dams
+# TOKEN=...
+# curl https://www.duckdns.org/update?domains=${DOMAIN}&token=${TOKEN}&verbose=true
+
+domains=yaml["subdomain"].join(",")
+token=yaml["token"]
+system("curl", "https://www.duckdns.org/update?domains=#{domains}&token=#{token}&verbose=true")

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. $HOME/.initvars
+DIR="$MYFILES/@infos/@comps/$MYHOSTNAME"
+mkdir -p $DIR
+
+echo "== list of packages"
+$MAINTFILES/packages.rb >$DIR/packages
+
+echo "== list of dependencies"
+ ~/script/pacman/pacman_optdep > $DIR/packages_opt
+echo "done"

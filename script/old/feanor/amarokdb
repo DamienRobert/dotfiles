@@ -1,0 +1,56 @@
+#!/bin/sh
+
+if [ -z "$@" ]
+then
+  while true; do
+  read input;
+  dcop amarok collection query "$input"
+  done
+else
+  echo ploum
+  dcop amarok collection query "$@"
+fi
+
+# Quantities
+#    * Artist count
+#SELECT COUNT(*) from artist
+#
+#    * Song count
+#SELECT COUNT(title) from tags
+#
+#    * Album count
+#SELECT COUNT(*) from album
+#
+#    * Played songs
+#SELECT count(playcounter) from statistics
+#
+# Statistics
+#    * Last song played on ...
+#SELECT DATE_FORMAT(FROM_UNIXTIME(MAX(accessdate)), '%d.%m.%Y') from statistics
+#
+#    * First song played on ...
+#SELECT DATE_FORMAT(FROM_UNIXTIME(MIN(accessdate)), '%d.%m.%Y') from statistics
+#
+#    * Average bitrate
+#SELECT ROUND(AVG(bitrate),0) from tags
+#
+#    * Average play count
+#SELECT ROUND(AVG(playcounter),1) from statistics
+#
+#    * Total play count
+#SELECT SUM(playcounter) from statistics
+#
+#    * Songs skipped after an average of X percent
+#SELECT ROUND(AVG(percentage),1) from statistics
+#
+#    * total time in minutes (s/60 = m)
+#SELECT ROUND(SUM(length)/60,2) from tags
+#
+#    * total time in hours (m / [60*60=3600] = h)
+#SELECT ROUND(SUM(length)/3600,2) from tags
+#
+#    * total time in days (h / [3600*24=86400] = d)
+#SELECT ROUND(SUM(length)/86400,2) from tags
+#
+#    * total time in years (d / [86400*365=31536000] = y)
+#SELECT ROUND(SUM(length)/31536000,2) from tags

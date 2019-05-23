@@ -1,0 +1,9 @@
+#WHEN !@computer[:xorg].empty?
+#<%= generated_from %>
+<% width, height=@computer.window_size(width_factor:0.5) %>
+
+set window-height <%= height %>
+set window-width <%= width %>
+set adjust-open width
+#set pages-per-row 2
+map BackSpace scroll up

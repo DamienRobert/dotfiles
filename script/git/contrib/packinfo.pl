@@ -18,10 +18,6 @@
 # * "tree path sizes" are path sizes grouped into delta trees.
 # * "depths" should be obvious.
 #
-# Summary: all sizes: la place prise dans le pack. path size: la place que
-# l'on aurait si on n'avait pas de delta. tree: on regroupe les delta en 1
-# objet pour les stats
-#
 # When run as:
 #
 # $ git verify-pack -v | packinfo.pl -tree

@@ -34,7 +34,7 @@
 ###################
 #
 # --- set location of scan (To absolute path of given folder) ---
-LOCATION=`readlink -f $1` 
+LOCATION=`readlink -f $1`
 if [ -z ${LOCATION} ]; then echo -e "ERROR: Missing argument\nUsage: $0 <directory to analyze>\nExample: $0 /data"; exit 1; fi;
 if [ ! -d ${LOCATION} ]; then echo -e "ERROR: directory doesn't exist\nUsage: $0 <directory to analyze>\nExample: $0 /data"; exit 1; fi;
 # D81=`date +s%s-d%D-t%T | tr /: -`

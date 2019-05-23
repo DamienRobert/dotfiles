@@ -1,0 +1,2 @@
+#auto suspend
+SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[012345]", RUN+="/usr/bin/systemctl suspend"

@@ -1,0 +1,11 @@
+[Unit]
+Description=Unison backup Timer
+PartOf=network.target
+Requisite=unlock.target
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1h
+
+[Install]
+WantedBy=unlock.target

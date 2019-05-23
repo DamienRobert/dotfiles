@@ -1,0 +1,56 @@
+#!/bin/zsh
+
+action=
+doclean=
+#d: decrypt, c: crypt, ca: crypt all folders, l: list packets
+#gpgfiles -c folder -r ploum; gpgcrypt -ca folder1 folder2 (use my master key)
+while true;
+do
+	case "$1" in
+		-- ) break ;;
+		--clean ) shift; clean=t ;;
+		-d ) shift; action=d ;;
+		-c ) shift; action=c ;;
+		-ca ) shift; action=ca ;;
+		-l ) shift; action=l ;;
+		-lv|-v ) shift; action=lv ;;
+		--keyring ) shift; action=keyring; keyring=$1; shift ;;
+		*) break;;
+	esac
+done
+
+cleanup() {
+	echo "!! Remove $1? (press a key)"
+	read a
+	rm -rf $1
+}
+
+case $action in
+	keyring)
+		gpg --options=/dev/null --keyring=$HOME/.gnupg/keyrings/$keyring --no-default-keyring --keyserver hkps://hkps.pool.sks-keyservers.net $@
+		;;
+	d)
+		gpg -d "$@" |tar xvJf -
+		;;
+	''|l)
+		for file in $@; do
+			echo $file
+			gpg --list-packets --list-only $file
+		done
+		;;
+	lv)
+		for file in $@; do
+			echo $file
+			gpg --list-packets -v $file
+		done
+		;;
+	c)
+		dir=$1; shift
+		tar cvfJ - $dir | gpg "$@" -e > $dir.tar.xz.gpg
+		[[ -n $doclean ]] && cleanup $dir
+		;;
+	ca)
+		tar cvfJ - "$@" | gpg -r public -e > $1.tar.xz.gpg
+		[[ -n $doclean ]] && cleanup $dir
+		;;
+esac

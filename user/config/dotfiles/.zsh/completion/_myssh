@@ -1,0 +1,50 @@
+#compdef ssh2 sshcommand mysshfs
+#todo ssh2 mysshfs fallback to _ssh _sshfs
+
+case $service in
+  ssh2 )
+    local curcontext=$curcontext state line ret=1
+    _arguments -C \
+      '-h[help]' \
+      '-V[verbose]' \
+      '-CM[enable control master (on by default)]' \
+      '-noCM[desactivate control master]' \
+      '-ssl[go through phare2]' \
+      '-proxy[specify proxy]:proxy name:' \
+      '-SAI[use ServerAliveInterval=30 (off by default)]' \
+      '-noSAI[desactivate ServerAliveInterval]' \
+      '-nohost[Use a dummy known hosts file]' \
+      '-forward[Goes to background, use for forwarding port]' \
+      '--batch[batch mode]' \
+      '-tmux[launches tmux on the host (on by default)]' \
+      '-notmux[does not launches tmux on the host]' \
+      '-killctl[kill all control master connections]' \
+      '*:: :->ssh' && ret=0
+      case $state in
+        ssh)
+        #_message "context: $curcontext, current: $CURRENT, words: $words, line: $line"
+        _hosts
+        ;;
+      esac
+      return ret
+    ;;
+
+  sshcommand)
+    _arguments \
+      '-t[transfert script]' \
+      '-c[run inside shell]' \
+      '-a[add argument to command]:argument:' \
+      '1:Command:_command_names -e' \
+      '*:hosts:_hosts'
+    ;;
+
+  mysshfs)
+    _arguments \
+      '-c[use 00COMPUTERS.rb]:Computer:_hosts' \
+      '-u[umount]:sshfs to unmount:' \
+      '-uall[umount all]' \
+      '1:hosts:_hosts' \
+      '2:mount point:_files -/' \
+    ;;
+
+esac

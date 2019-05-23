@@ -1,0 +1,10 @@
+#!/bin/sh
+
+[ -z "$_INITVARS" ] && . "$HOME/.initvars"
+mylog "session" ".fvwm/startup: $1"
+
+case "$1" in
+"init"|"initsession" )
+ exec $HOME/.fvwm/fenetre custom_2
+ ;;
+esac

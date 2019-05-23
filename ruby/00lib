@@ -1,0 +1,56 @@
+The rubylib is used by the following files:
+
+$ ack -l '(require|autoload).*dr/'
+
+mine
+====
+
+doc/ruby/ex/pager.rb
+doc/ruby/erb/include.erb
+doc/ruby/erb/include2.erb
+ruby/lib/dr/ruby_ext/pathname_ext.rb
+ruby/lib/dr/sh/sh.rb
+ruby/lib/dr/sh/utils.rb
+ruby/lib/dr/sh/shell.rb
+ruby/lib/dr/opts/process_helper.rb
+ruby/lib/dr/tools/git.rb
+ruby/lib/dr/packages/git_optdist.rb
+ruby/lib/dr/packages/graphs.rb
+ruby/lib/dr/packages/handler.rb
+ruby/lib/dr/packages/helper.rb
+ruby/lib/dr/config/computers.rb
+ruby/lib/dr/config/process_files.rb
+ruby/t/meta_ext.rb
+script/git/gitstatus.rb
+script/git/git-my
+script/checkmail
+script/pry_sh
+script/anniversaire.rb
+script/subtitle_format.rb
+script/unison.rb
+script/rubytray2
+syst/maint/packages.rb
+syst/maint/00update
+user/maint/packages.rb
+user/cfgfiles/dotfiles/.mutt/config.rb
+
+perso
+=====
+
+#-> dr/base/eruby
+website/perso/src/default.en.template
+website/perso/src/default.fr.template
+website/pro/src/default.fr.template
+website/pro/src/default.en.template
+
+pro
+===
+
+#-> dr/parse/timeparse
+lfant-seminar/talks.rb
+
+latex
+=====
+
+cv/cv.rb
+cv/parse.rb

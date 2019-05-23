@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require 'dr/base/utils' #pretty_print
+require 'optparse'
+require 'yaml'
+
+opts={pretty: true}
+optparse = OptionParser.new do |opt|
+	opt.on("--[no-]pretty","=[color]", "Pretty Print") do |v|
+		opts[:pretty]=v
+	end
+end
+optparse.parse!
+
+ARGV.each do |filename|
+	puts "-- #{filename} --"
+	File.open(filename) do |file|
+		streams=YAML.load_stream(file);
+		streams.map do |stream|
+			DR::Utils.pretty_print(stream,pretty: opts[:pretty])
+			puts "---"
+		end
+	end
+end
+

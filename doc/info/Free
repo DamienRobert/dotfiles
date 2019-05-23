@@ -1,4 +1,4 @@
 http://mafreebox.freebox.fr/login.php
-ftp: user freebox
+ftp: user freebox -> lftp freebox@hd1.freebox.fr
 smb://freebox/Disque%20Dur/
 http://mafreebox.freebox.fr/freeboxtv/playlist.m3u

@@ -1,0 +1,330 @@
+# vim: ft=sh
+# Usage:
+# 1) git folders
+# build_git  progname/url version [configure args]
+#   $url, [$version]
+#   $progname <- basename $url
+#   $url <- git_optdist $url
+#   $gitfolder <- $progname
+#   -> build_git $@
+#
+# 2) archives source
+# build / build url [configure args]
+#   $url
+#   $archive <- $url
+#   $prog [versioned] <- $archive
+#   $progname [basename] <- $prog
+#   -> do_build $progname $prog $archive $url $@
+#
+# github_archive / github_archive repository version
+#   $repository, $version
+#   $progname <-> $repository
+#   $prog, $archive, $url <- $progname, $version
+#   -> build $@
+#
+# 3) low level functions
+# do_build name nameversion archivename url
+#   get_src $archivename $url
+#   do_compile $nameversion $nameversion $@
+#   do_symlink $name $nameversion
+#
+# do_build_git name folder url version
+#   get_git_src $folder $url $version
+#   nameversion <- $CUSTOM_VERSION || git describe
+#   do_compile $folder $nameversion $@
+#   do_symlink $name $nameversion
+#
+#  get_git_src folder url [version] (if version is empty => version=LAST -> vcs last_tag)
+#  -> vcs clone_or_update --checkout "$version" "$url" "$folder"
+#
+#  do_compile: $CUSTOM_COMPILE || ./configure --prefix $prefix $@ && make && make install
+#
+# 4) Exemples:
+# - CUSTOM_COMPILE='./Configure && make" && build_git $(basename $0)
+# - build_git mpfrcx master
+# - version="3.2.2"; url="spesmilo/$(basename $0)"; build_git
+# - build_git 'gh:foo/bar' a_branch
+# - do_build $prog $progv $archive https://www.gnupg.org/ftp/gcrypt/$prog/$archive
+
+OPT=${OPT-"$HOME/opt/local"}
+OPTSRCNAME=${OPTSRCNAME-src}
+OPTPKGNAME=${OPTPKGNAME-packages}
+OPTPKG=$OPT/$OPTPKGNAME
+OPTSRC=$OPT/$OPTSRCNAME
+
+mkdir -p $OPTPKG $OPTSRC
+
+# from makepkg.conf
+CARCH=${CARCH-"x86_64"}
+CHOST=${CHOST-"x86_64-unknown-linux-gnu"}
+CPPFLAGS=${CPPFLAGS-"-D_FORTIFY_SOURCE=2"}
+CFLAGS=${CFLAGS-"-march=native -mtune=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4"}
+CXXFLAGS=${CXXFLAGS-$CFLAGS}
+LDFLAGS=${LDFLAGS-"-Wl,-O1,--sort-common,--as-needed,-z,relro"}
+
+# not used
+get_prefix() {
+	prefix="$OPTPKG/$1"
+}
+
+# get_src archivename url
+get_src() {
+	local archivename url
+	cd "$OPTSRC" || exit 1
+	archivename="$1"
+	url="$2"
+	if [ ! -e "$archivename" ]; then
+		curl -L -o "$archivename" "$url"
+		unarchive "$archivename"
+	fi
+	cd "$OLDPWD"
+}
+
+# get_git_src folder url [version] (if version is empty => version=LAST)
+get_git_src() {
+	local folder url version
+	folder="$1"
+	url="$2"
+	version="$3"
+	[ -z "$version" ] && version=LAST
+	vcs clone_or_update --checkout "$version" "$url" "$folder"
+}
+
+# not used
+copy_srcdir() {
+	cp -a $srcdir/$1 $prefix
+}
+
+# do_compile srcdir prefix (configure args)
+do_compile() {
+	local srcdir prefix
+	srcdir="$1"; shift
+	prefix="$1"; shift
+	cd "$srcdir" || exit 1
+	echo "! Compiling on '$srcdir' using prefix '$prefix'"
+	if [[ -n $CUSTOM_COMPILE ]]; then
+		echo $CUSTOM_COMPILE
+		eval $CUSTOM_COMPILE
+	else
+		if [ ! -e "configure" ]; then
+			if [ -x "autogen.sh" ]; then
+				echo "./autogen.sh"
+				./autogen.sh
+			elif [ -x "bootstrap" ]; then
+				./bootstrap
+			elif [ -e "configure.ac" ]; then
+				autoreconf --install --verbose
+			else
+				echo "# ./configure not found, assuming no compilation needed"
+				cd "$OLDPWD"
+				return 0
+			fi
+		fi
+		echo "./configure --prefix=$prefix $@ && make && make install"
+		./configure --prefix=$prefix "$@" && make && make install
+	fi
+	cd "$OLDPWD"
+}
+
+# do_symlinks basename versionedname
+do_symlinks() {
+	local name versioned
+	name="$1"
+	versioned="$2"
+	[ -n "$name" ] || exit 1
+
+	_OLDPWD="$PWD"
+	cd "$OPTPKG" || exit 1
+	[ -e "$versioned" ] || exit 1
+	ln -snf "$versioned" "$name"
+
+	if [[ -d "$OPT/bin" ]]; then
+		cd "$OPT/bin"
+		ln -snf "../$OPTPKGNAME/$name/bin"/* .
+	fi
+	if [[ -d "$OPT/lib" ]]; then
+		cd "$OPT/lib"
+		ln -snf "../$OPTPKGNAME/$name/lib"/* .
+	fi
+	if [[ -d "$OPT/include" ]]; then
+		cd "$OPT/include"
+		ln -snf "../$OPTPKGNAME/$name/include"/* .
+	fi
+	if [[ -d "$OPT/lib/pkgconfig" ]]; then
+		cd "$OPT/lib/pkgconfig"
+		ln -snf "../../$OPTPKGNAME/$name/lib/pkgconfig"/* .
+	fi
+
+	#ln -s "../../$OPTPKGNAME/$name/share/info"/*.info* .
+	#we use arrays so this is not sh compatible
+	infodir="$OPTPKG/$name/share/info"
+	if [[ -d $infodir ]]; then
+		cd $infodir
+		infopages=(*.info*)
+		cd "$OPT/info"
+		for info in $infopages; do
+			ln -snf "../../$OPTPKGNAME/$name/share/info"/$info .
+			install-info $info dir
+		done
+	fi
+
+	mandir="$OPTPKG/$name/share/man"
+	if [[ -d $mandir ]]; then
+		cd $mandir
+		manpages=(*/*)
+		cd "$OPT/man"
+		for man in $manpages; do
+			mkdir -p $(dirname $man)
+			ln -snf "../../$OPTPKGNAME/$name/share/man"/$man $man
+		done
+	fi
+	cd "$_OLDPWD"
+}
+
+# do_build basename versionedname archivename url (configure args)
+do_build() {
+	local name nameversion archivename url
+	name="$1"; nameversion="$2"; archivename="$3"; url="$4"
+	shift; shift; shift; shift
+	echo "Building '$name ($nameversion)' from '$archivename' downloaded on '$url'"
+	# Note: we assume that the extraction will make a folder $nameversion
+	get_src "$archivename" "$url" &&
+	#dir prefix options
+	do_compile "$OPTSRC/$nameversion" "$OPTPKG/$nameversion" "$@" &&
+	do_symlinks "$name" "$nameversion"
+}
+
+# do_build_git basename folder url [version]
+# Note: the versioned version is extracted automatically via 'git describe'
+do_build_git() {
+	local name version folder url
+	#if version is empty will use the last tag available
+	name="$1"; folder="$2"; url="$3"; version="$4"
+	shift; shift; shift; shift
+	get_git_src "$folder" "$url" "$version" &&
+	if [[ -n $CUSTOM_VERSION ]]; then
+		echo $CUSTOM_VERSION
+		eval $CUSTOM_VERSION
+	else
+		cur_version=$(git -C "$folder" describe --tags || git -C "$folder" describe --always)
+		nameversion="$name-$cur_version"
+	fi
+	do_compile "$folder" "$OPTPKG/$nameversion" "$@" &&
+	do_symlinks "$name" "$nameversion"
+}
+
+# url=urlname
+# archive=archivename
+# prog=versionedname
+# progname=basename
+# build (configure args)
+build() {
+	if [[ -n $1 && x$1 == x-l ]]; then
+		# local variables
+		shift
+		local url archive prog progname
+	fi
+	if [[ -z $url && -n $1 ]]; then
+		url=$1; shift
+	fi
+	if [[ -z $archive ]]; then
+		archive=$(basename $url)
+	fi
+	if [[ -z $prog ]]; then
+		#prog=${archive%%.*} #unfortunately foo-1.2.tar.gz will produce foo-1
+		prog=${archive%%.(tar|zip)*}
+	fi
+	if [[ -z $progname ]]; then
+		progname=${prog%-*}
+	fi
+	do_build "$progname" "$prog" "$archive" "$url" "$@"
+}
+
+#written like this we are not sh compatible
+#=> this simply constructs a url to a github archive
+#   ie this defines prog, archive and url.
+# repository=...
+# version=...
+# github (configure args)
+github_archive() {
+	if [[ -n $1 && x$1 == x-l ]]; then
+		# local variables
+		shift
+		local repository version urlversion progname ext pro archive url
+	fi
+	if [[ -z $repository && -n $1 ]]; then
+		repository=$1; shift
+	fi
+	if [[ -z $version && -n $1 ]]; then
+		version=$1; shift
+	fi
+	[[ -n $urlversion ]] || urlversion=$version
+	# [[ -n $repository ]] || repository=$progname/$progname
+	[[ -n $progname ]] || progname="$(basename $repository)"
+	[[ -n $ext ]] || ext="tar.gz"
+	[[ -n $prog ]] || prog="$progname-$version"
+	[[ -n $archive ]] || archive="$prog.$ext"
+	[[ -n $url ]] || url="https://github.com/$repository/archive/$urlversion.$ext"
+	build "$@"
+}
+
+# use git_optdist.rb
+# url=.... or progname=...
+# [version=tag version]
+build_git() {
+	if [[ -n $1 && x$1 == x-l ]]; then
+		# local variables
+		shift
+		local url progname version gitfolder
+	fi
+	if [[ -z $url && -n $1 ]]; then
+		url=$1; shift
+	fi
+	[[ -z $progname ]] && progname="$(basename $url)"
+	[[ -z $version && -n $1 ]] && { version=$1; shift }
+	# if url is not in the db of git_optdist.rb
+	# url=foo:dqf/dfq -> return self
+	# url=foo/bar -> return https://www.github.com/foo/bar
+	# url=foo -> return https://www.github.com/foo/foo
+	# + remember the gh:... git shortcut
+	url=$(~/mine/ruby/lib/dr/packages/handlers/git_optdist.rb --repo $url)
+	#Note: we could also pass the option '-d' to 'vcs clone_or_update' which does that too
+	if [[ -z $gitfolder ]]; then
+		gitfolder=~/opt/dist/$progname
+		if [[ -d $gitfolder ]]; then
+			local save_branch=t
+		else
+			gitfolder="$OPT/src/$progname"
+		fi
+	fi
+	# save the current branch
+	# cf git_helpers.rb#current_branch (aka `git my current`)
+	[[ -n $save_branch && -d $gitfolder ]] && local cur_branch=$(git -C "$gitfolder" symbolic-ref -q --short HEAD || git -C "$gitfolder" rev-parse --verify HEAD)
+	do_build_git "$progname" "$gitfolder" "$url" "$version" "$@"
+	# reset to current branch
+	[[ -n $cur_branch ]] && git -C "$gitfolder" checkout $cur_branch
+}
+
+build_helper() {
+	## [[ -z $url ]] && url=$(basename $0)
+	# $0 is the name of the function, to get the name of the script cf https://stackoverflow.com/questions/9901210/bash-source0-equivalent-in-zsh
+	## [[ -z $url ]] && url=$(basename ${BASH_SOURCE[0]:-${(%):-%x}})
+	# Nope, this give _install_helpers
+	# Let's try this: https://stackoverflow.com/questions/35677745/zsh-get-filename-of-the-script-that-called-a-function
+	# Unfortunately ZSH_ARGZERO is only in recent versions of zsh (5.6)
+	# meanwhile I need to specify url manually in the scripts
+	[[ -z $url ]] && url=$(basename ${ZSH_ARGZERO-$BASH_SOURCE[0]})
+	[[ -n $1 ]] && version=$1
+}
+
+clear_globals() {
+	progname=
+	prog=
+	version=
+	url=
+	gitfolder=
+	urlversion=
+	repository=
+	ext=
+	archive=
+}

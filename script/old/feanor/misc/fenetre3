@@ -1,0 +1,5 @@
+#!/bin/sh
+
+xterm -name alpha &
+xterm -name beta &
+xterm -name gamma &

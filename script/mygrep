@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+#Note: ack searches hidden files by default, for ag/rg add '--hidden'
+#To follow symlinks: --follow (short options: rg => -L, ag: -f)
+PROGS=(rg ag ack)
+OPTS=()
+for prog in $PROGS; do
+	command -v $prog >/dev/null && break
+done
+
+while true;
+do
+	case "$1" in
+		--all ) shift; all=t ;;
+		*) break;;
+	esac
+done
+if [[ -n $all ]]; then
+	case $prog in
+		'rg'|'ag') OPTS+=("--hidden")
+	esac
+fi
+
+echo "# $prog $OPTS \"$@\"" >&2
+$prog $OPTS "$@"

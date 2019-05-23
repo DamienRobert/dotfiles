@@ -11,8 +11,8 @@
 #This is taken from git-pull.sh
 
 #Note: from revision ad8261d, git rebase now has a --fork-point options that
-#enables this feature, and calling rebase with now options uses this
-#feature
+#enables this feature, and calling rebase with no options uses this feature
+#This renders this script obsolete
 
 show=
 while true;
@@ -28,7 +28,7 @@ done
 . ~/mine/script/git/git-topic-helper
 gth_topic "$@"
 
-#parse the reflog, until we find a previous value of $gth_remote that 
+#parse the reflog, until we find a previous value of $gth_remote that
 #was an ancestor of $gth_local
 oldremoteref=$(git rev-parse -q --verify $gth_remote) &&
 for reflog in $(git rev-list -g $gth_remote 2>/dev/null); do

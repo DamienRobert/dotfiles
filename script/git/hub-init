@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'dr/sh'
+require 'optionparser'
+
+@SH=SH::ShLog
+def exec(*args)
+  @SH.sh(*args, dryrun: @opts[:dryrun])
+end
+
+@opts={dryrun: true}
+optparse = OptionParser.new do |opt|
+	opt.banner = "Init git repo on github"
+	opt.on("-t", "--dry-run", "dry run") do |v|
+		@opts[:dryrun]=v
+	end
+	opt.on("-n", "--name", "name") do |v|
+		@opts[:name]=v
+	end
+	opt.on("-d", "--description", "description") do |v|
+		@opts[:description]=v
+	end
+end
+optparse.parse!
+
+gemfile = Pathname.new('gemspec.yml')
+gemspec = gemfile.exist? ? YAML.load_file('gemspec.yml') : {}
+name=@opts[:name] || gemspec['name'] || Pathname.pwd.dirname.basename.to_s
+summary=@opts[:summary] || gemspec['summary']
+exec "hub init -g"
+exec ("hub create #{name.shellescape}"+ (summary ? " -d #{summary.shellescape}" : ""))
+exec "git remote rename origin github"
+exec "git push --set-upstream github master"

@@ -1,0 +1,1 @@
+rm ~/.Xresources.local ~/.xprops ~/.*.old(N) ~/.viminf*(N) unison.log ~/.authinfo.gpg ~/.fs-*(N) ~/.pacman.conf ~/.makepkg.conf

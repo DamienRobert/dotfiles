@@ -1,9 +1,0 @@
-# v -- open file:line: in vim, defaulting to X selection
-# 28aug2013  +chris+
-v() {
-  case ${1:=$(xsel)} in
-    *:<->:) v ${1%:};;
-    *:<->) [[ -e ${1%:*} ]] && vim +${1##*:} ${1%:*};;
-    *) [[ -e $1 ]] && vim $1
-  esac
-}

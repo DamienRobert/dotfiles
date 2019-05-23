@@ -1,0 +1,121 @@
+Update 00COMPUTERS.rb
+
+#sans unison:
+~/config/generate --minimal -c ploum,ssh=plim,user/type=devel
+transfert ~/.cache/@comps/ploum/home plim:
+
+#avec unison:
+~/maint/user/misc/09_updateunison plafrim #si unison trop vieux
+unisonsync -t minimal plafrim
+ssh plafrim
+~/mine/script/install ruby #si ruby trop vieux
+ruby-install/bin/ruby-install --rubies-dir ~/opt/local/packages/ ruby #alternative
+
+MYHOSTTYPE
+==========
+
+Il y en a 4 actuellement:
+- perso correspond à mes ordis clients (:types=own et client)
+- ens/imb pour phare+4a et l'imb (car ça correspond à un 'type' de config
+  plus général que la séparation de perso en MYHOSTNAME différents)
+- none pour le reste (:session=true)
+
+Usage de MYHOST*
+================
+(all files requiring MYHOST* call .initvars in case it was not set up)
+
+Config:
+- dotfiles/.zsh/.zshrc (for PROMPT and other things)
+#Use MYHOSTTYPE (phare,imb,perso,devel,none), MYHOSTNAME (Feanor,Durin,Gondolin, plafrim)
+
+Backups:
+- gitbackup (to set the branch) -> $MYHOSTNAME
+- file/panels/save_xfce4_panel -> $MYHOSTNAME
+
+Usage de 00COMPUTERS.rb:
+========================
+
+Config:
+- dotfiles/.mutt/config.rb (sourced by muttrc.perso) -> computer[:hosttype] (perso, imb, phare, [sshfs])
+- home:
+  .initvars: @computer[:user][:hostname/:hosttype]
+  .initxvars: @computer[:xorg][:fonts,:terms,:strut]
+  .gvimrc -> @computer[:xorg][:fonts][:gvim|:vte]
+  .Xresources -> @computer[:xorg][:font,:colors,:Xft,:Xresources,:terms]
+  .gtkrc-2.0: @computer[:xorg][:xsettings]
+  gtk-3.0/settings.ini: @computer[:xorg][:xsettings]
+  .mpd/mpd.conf -> @computer[:xorg][:xaudio],[:user][:xdg_runtime_dir]
+  .ncmpcpp: @computer[:user][:xdg_runtime_dir]
+  .config/zathura/zathurarc -> width and height of zathura's window
+  .config/fontconfig/fonts.conf->@computer[:xorg][:Xft]
+  roxterm/xfce-terminal: :colors,:fonts,:terms
+  zathurarc: @computer[:xorg][:strut,:decor,:height,:width]
+- scripts:
+  conky.rb -> comp[:syst][:net_wlan,:net_eth,:batteries],[:xorg][:fonts,:strut,:height,:width]
+  ssh.rb -> :name (plafrim), :hosttype (perso, ens)
+  offlineimap.rb: list :SessionMail
+
+
+Scripts:
+- script/unison.rb -> computer[:unison]
+- script/mysshf -> computer[:name]
+
+Syst:
+- ~etc
+mkinitcpio.conf, default/grub, makepkg.conf, pacman.conf (cf comp[:syst])
+- syst/@infos/00savedata -> computer[:name] and computer[:syst][:disks]
+
+Maint:
+- ~maint/compte/{01new,A9updateunison,A1updateallcomptes,1unisonall}:
+  00COMPUTERS.rb -l --export and 00COMPUTERS.rb --export $comp
+
+Local informations
+==================
+
+:xdg_runtime_dir pour mpd, ncmpcpp in ~config/home
+:net*, :batteries pour conky
+:disks: pour ~syst/00save,
+
+Files with custom modifications:
+--------------------------------
+
+Modifs according to $MYHOST*:
+- dotfiles/.fvwm/settings (for Gondolin shortcuts)
+scripts:
+- unlock: because of NFS I need to mount crypt on /tmp @imb
+- audio: configured for Feanor and Durin
+- mytexdoc: on imb texdoc works but we need to set PDFVIEWER
+
+Modifs according to @computer.name:
+- dotfiles-local/{4a,ens,imb,phare}
+- slash-local//powersave: for Mithrim and FleurBleue
+- ~etc/{pacman.conf #for Gondolin and Numenor, don't update grub
+        fstab #for everyone
+        vconsole.conf,systemd/journald.conf #for Durin}
+  syst//bootloader.rb: for everyone
+
+Packages
+========
+cf syst.rb, user.rb, unison.rb
+
+@computer[:syst][:type]
+- init #init install
+- server #servers or virtual machines
+- console #real computer I login only through the console, like Durin
+- light=console+xlight # for non powerfull computers, like Gondolin (in practice Durin uses this too...)
+- standard
+- full # logiciels photos... (Feanor)
+
+@computer[:user][:type]
+- minimal: gems-minimal
+- light: gems-light, optdist-light
+- standard: gems-full, optdist-light
+- full: gems-full, optdist-full
+
+@computer[:unison][:type]
+- sh: sh
+- devel: devel, sh
+- minimal: minimal
+- light: common
+- standard: common, data
+- full: common, data, booklight

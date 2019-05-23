@@ -1,0 +1,1 @@
+ sudo route add -net 192.168.42.0 netmask 255.255.255.0 dev wlan0

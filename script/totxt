@@ -1,0 +1,240 @@
+#!/bin/zsh
+
+mode=auto
+mime=
+pdf_mode=unoconv
+unoconv= #do we start `unoconv --listen`?
+view=
+charset=
+quiet=
+mutt=
+extra_opts=()
+
+usage() { 
+echo "Usage: ${0##*/} [-mhpqv --mime=... --mutt --charset=...] files";
+cat <<'EOS'
+Output:
+-q/--quiet: quiet
+-v/--view: view with a pager (default mode or for markdown), or with w3m (for html) or zathura[more precisely xdg-open] (for pdf) [does not apply for --xdg-open]
+
+Modes:
+-m/--markdown: convert to markdown (using pandoc)
+-h/--html: convert to html (using pandoc)
+-p/--pdf: convert to pdf (using unoconv)
+  --pandoc-pdf: convert to pdf (using pandoc)
+-x/--xdg-open: open with xdg-open (or mime-open if mime type is specified via --mime; or mutt_bgopen if --mutt is specified)
+
+Mime type:
+--mime=mimetype: specify mime type (otherwise detect if from `xdg-mime query filetype`; use 'file' to only look at the extension type). Also with -x, then use 'mime-open --mime' rather than xdg-open. (In this case use --mime=auto to use mime-open with automatic mime detection). Note that since this affects xdg-open, this affects '--pdf --view'
+
+Mis options:
+-o/--opts: extra opts (passed to pandoc or unoconv)
+--mutt: mutt mode (uses mutt_html_reader rather than w3m)
+--charset=charset: specify charset (for pdftotext and mutt_html_reader)
+EOS
+}
+
+# convert to pdf: https://askubuntu.com/questions/60778/how-can-i-convert-an-odt-file-to-a-pdf
+# => unoconv -f pdf mydocument.odt
+# => libreoffice --headless --convert-to pdf *.odt # much slower
+
+#orig-mime: not used; this is for mutt/.mailcap with pdf conversion to
+#still get the mime type of the original document before conversion to pdf
+OPTS=$(getopt -o 'mvphqo:x' --long 'pandoc-pdf,pdf,markdown,html,view,mime:,help,charset:,quiet,mutt,opts:,xdg-open,orig-mime:,unoconv' -- "$@")
+eval set -- "$OPTS"
+while true; do
+	case $1 in
+		-- ) shift; break ;;
+		-h|--html ) shift; mode="html" ;;
+		-x|--xdg-open ) shift; mode="xdg-open" ;;
+		-m|--markdown ) shift; mode="markdown" ;;
+		-o|--opts ) shift; extra_opts=(${=1}); shift ;;
+		-p|--pdf ) shift; mode="pdf" ;;
+		--pandoc-pdf ) shift; mode="pdf"; pdf_mode="pandoc" ;;
+		--unoconv ) shift; unoconv=t ;;
+		-v|--view ) shift; view=t ;;
+		-q|--quiet ) shift; quiet=t ;;
+		--mime ) shift; mime=$1; shift ;;
+		--orig-mime ) shift; orig_mime=$1; shift ;; #not used
+		--mutt ) shift; mutt=t; quiet=t ;;
+		--charset ) shift; charset=$1; shift ;;
+		--help ) shift; usage; exit 1 ;;
+		*) printf "[$0] Error: unsupported option '%s'" $1; exit 1 ;;
+	esac
+done
+
+# this is annoying
+[[ -n $unoconv ]] && { unoconv --listen & } && sleep 2
+
+if [[ -n "$XDG_RUNTIME_DIR" ]]; then
+	tmpdir=$XDG_RUNTIME_DIR/tmp
+else
+	tmpdir=/tmp/$LOGNAME$$
+fi
+
+xdg_open() {
+	if [[ -n $mime ]]; then
+		mime-open --fallback --mime $(mime_from_file $1) $@
+	else
+		xdg-open $@
+	fi
+}
+
+convert_from_mime() {
+	local mime file
+	mime=$1; file=$2
+	case $mime in
+		text/plain) cat $i ;;
+		text/html)
+			if [[ -n $mutt ]]; then
+				mutt_html_reader $i $mime $charset
+			else 
+				w3m -T $mime $i
+			fi ;;
+		image/* ) img2txt $i ;;
+		application/x-pkcs7-signature)
+			openssl pkcs7 -in $file -inform der -noout -print_certs -text ;;
+		application/pgp-encrypted) gpg -d $file ;;
+		application/vnd.oasis.opendocument.text ) odt2txt $i ;;
+		application/msword)
+			if [[ -n $mutt ]]; then
+				antiword $i
+			else
+				catdoc $i
+			fi;; #antiword?
+		application/vnd.ms-powerpoint) catppt $i ;;
+		application/vnd.openxmlformats-officedocument.wordprocessingml.document) docx2txt $i - ;;
+		application/vnd.ms-excel|application/msexcel|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) xls2csv $i ;;
+		application/dvi|application/x-dvi ) dvi2tty -q $i ;;
+		application/ps ) pstotext $i ;;
+		application/pdf|application/x-pdf )
+			if [[ -n $charset ]]; then
+				pdftotext -enc $charset $i -
+			else
+				pdftotext $i -
+			fi
+		;;
+		*) printf "[$0] Error: unsupported type '%s'" $mime
+	esac
+}
+
+# auto: uses xdg-mime query filetype
+# file: only look at the file extension
+# * : use the mime type as is
+mime_from_file() {
+	mime-open --print-mime --mime "$mime" $1
+}
+
+convert() {
+	local file=$1
+	convert_from_mime $(mime_from_file $file) $file
+}
+
+convert_files() {
+	for i in $@; do
+		[[ -z $quiet ]] && printf "\n### $i ###\n\n"
+		convert $i
+	done
+}
+
+# open a temp file and then remove it
+tmp_open() {
+	local temp=$1
+	printf 'Opening %s\n' $temp >&2
+	xdg_open $temp && sleep 10 && rm $temp 2>/dev/null && rmdir --ignore-fail-on-non-empty $tmpdir 2>/dev/null
+}
+
+# for --pdf --view: temporarly convert a file to pdf and then view it via tmp_open
+pdf_view() {
+	# zathura =(unoconv -f pdf $@) #unoconv --show to see the list of formats
+	local opts file temp
+	opts=$@[1,-2]; file=$@[-1]
+	mkdir -p $tmpdir
+	temp=$tmpdir/${file:t:r}.pdf
+	# local temp
+	# temp=$(mktemp ${XDG_RUNTIME_DIR-/tmp}/unoconv.XXXXX.pdf)
+	{ $PDF_CONVERT -o $temp $opts $extra_opts $file && tmp_open $temp } &
+}
+
+mutt_mv_to_tmp() {
+	local file temp
+	file=$1
+	mkdir -p $tmpdir
+	temp=$tmpdir/${file:t}
+	mv -f $file $temp #cp?
+	# echo "$file -> $temp" >&2
+	printf '%s' $temp
+}
+
+mutt_bgopen() {
+	# xdg-open already forks, but we need the & at end to not wait for the sleep
+	local tmpfile=$(mutt_mv_to_tmp $@)
+	tmp_open $tmpfile &
+}
+
+# --mutt --pdf --view
+mutt_pdfopen() {
+	local opts file tmpfile
+	opts=$@[1,-2]; file=$@[-1]
+	tmpfile=$(mutt_mv_to_tmp $file)
+	pdf_view $opts $tmpfile
+}
+
+process() {
+	case $mode in
+		xdg-open )
+			for i in $@; do
+				if [[ -n $mutt ]]; then
+					mutt_bgopen $i
+				else
+					xdg_open $i
+				fi
+			done
+			;;
+		markdown ) #accept multiple files, output to STDOUT
+			if [[ -n $view ]]; then
+				pandoc -t markdown $extra_opts $@ | $PAGER
+			else
+				pandoc -t markdown $extra_opts $@
+			fi
+			;;
+		html ) #accept multiple files, output to STDOUT
+			if [[ -n $view ]]; then
+				pandoc $extra_opts $@ | w3m -T text/html
+			else
+				pandoc $extra_opts $@
+			fi
+			;;
+		pdf ) #accept multiple files, output to $files.pdf
+			case $pdf_mode in
+				pandoc) PDF_CONVERT=(pandoc) ;;
+				*) PDF_CONVERT=(unoconv -f pdf) ;;
+			esac
+			for i in $@; do
+				if [[ -n $view ]]; then
+					if [[ -n $mutt ]]; then
+						mutt_pdfopen $i
+					else
+						pdf_view $i #take only one file, output $PDF_CONVERT to ~/run/tmp
+					fi
+				else
+					$PDF_CONVERT -o ${i:t:r}.pdf $extra_opts $i
+				fi
+			done
+			;;
+		* ) #accept multiple files, output to STDOUT
+			if [[ -n $view ]]; then
+				convert_files $@ | $PAGER
+			else
+				convert_files $@
+			fi
+			;;
+	esac
+}
+
+process $@
+
+if [[ -n $unoconv ]]; then
+	sleep 2
+	kill %unoconv
+fi

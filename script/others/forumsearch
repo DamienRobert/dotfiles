@@ -1,0 +1,51 @@
+#! /bin/bash
+test -e $HOME/.pgpass && {
+  case "$1/$2/$3$#" in
+  (-h//1|--help//1)
+    echo /home/goujot/bin/forumsearch
+    echo Syntaxe: $0 'REGEXP [Posteur] [Nombremaxideresultats]'
+    echo Dans REGEXP, la casse est ignoree.
+    echo Nombremaxideresultats doit etre un nombre, 10 par defaut.
+    echo Si Nombremaxideresultats est negatif, le texte des posts est montre.
+    echo Les messages les plus recents '(quelques jours ?)' ne sont peut-être pas encore dans forumdb.
+    echo Posteur est une REGEXP aussi.
+    echo Utilisez /home/goujot/bin/forumsearch sans argument pour faire mieux
+    echo Utilisez 'PATH=/home/goujot/forumsearch_verbose:$PATH /home/goujot/bin/forumsearch REGEXP [Posteur] [Nombremaxideresultats]' pour afficher ce que vous pourriez mettre en entree standard de /home/goujot/bin/forumsearch sans argument. Puis vous pourrez, par exemple, y remplacer '~*' par '~' pour que la casse ne soit pas ignoree.
+    echo Bonnes recherches ! -- Daniel
+  ;;
+  (//0)
+    # forumsearch sans argument.
+    echo 'Tapez \q pour sortir.'
+    echo Utilisez /home/goujot/bin/forumsearch --help pour eviter de copier-coller
+    echo 'Avant \q, vous pouvez copiez-collez l instruction ci-dessous, en adaptant au moins "insert REGEXP here" et "goujot".'
+    echo 'SELECT grpname , num , posting_date , subject_header FROM articles , ingroup , groups WHERE body ~* '"'insert REGEXP here'"' AND sender ~* '"'goujot'"' AND ingroup.mid=articles.id AND groups.id=ingroup.gid ORDER BY posting_date DESC LIMIT '${2:-10}' ;'
+    psql forumdb guest
+  ;;
+  (*/*/-*3)
+    # forumsearch REGEXP auteur -Nombremaxideresultats
+    limit=${3#-}
+    { echo 'SELECT body , grpname , num , posting_date , subject_header FROM articles , ingroup , groups WHERE body ~* '"'$1'"' AND ingroup.mid=articles.id AND sender ~* '"'$2'"' AND groups.id=ingroup.gid ORDER BY posting_date DESC LIMIT '${limit}' ;' ; echo '\q' ; } | psql forumdb guest | sed 's:[	 |+]*$::'
+  ;;
+  (*/*/*3|*/*[^-0-9]*/2)
+    # forumsearch REGEXP auteur ${Nombremaxideresultats:-10}
+    { echo 'SELECT grpname , num , posting_date , subject_header FROM articles , ingroup , groups WHERE body ~* '"'$1'"' AND ingroup.mid=articles.id AND sender ~* '"'$2'"' AND groups.id=ingroup.gid ORDER BY posting_date DESC LIMIT '${3:-10}' ;' ; echo '\q' ; } | psql forumdb guest
+  ;;
+  (*/-*/2)
+    # forumsearch REGEXP -Nombremaxideresultats
+    limit=${2#-}
+    { echo 'SELECT body , grpname , num , posting_date , sender , subject_header FROM articles , ingroup , groups WHERE body ~* '"'$1'"' AND ingroup.mid=articles.id AND groups.id=ingroup.gid ORDER BY posting_date DESC LIMIT '${limit}' ;' ; echo '\q' ; } | psql forumdb guest | sed 's:[	 |+]*$::'
+  ;;
+  (*[12])
+    # forumsearch REGEXP Nombremaxideresultats
+    { echo 'SELECT grpname , num , posting_date , sender , subject_header FROM articles , ingroup , groups WHERE body ~* '"'$1'"' AND ingroup.mid=articles.id AND groups.id=ingroup.gid ORDER BY posting_date DESC LIMIT '${2:-10}' ;' ; echo '\q' ; } | psql forumdb guest
+  ;;
+  (*)
+    echo trois arguments au plus.
+  ;;
+  esac
+}
+test -e $HOME/.pgpass || {
+  echo Mince, "$0" n a pas trouve votre fichier $HOME/.pgpass ... veuillez lire le second paragraphe du message 269 et 301 du conti alt.forum.recherches.
+  echo Si vous voulez faire vite et relancer forumsearch tout de suite, copier-collez d abord ceci dans votre shell:
+  echo "umask 077 ; echo 'localhost:5432:"'*':guest:oujooC2eedoo1zoo"' > $HOME/.pgpass"
+}

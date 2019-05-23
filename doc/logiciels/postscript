@@ -1,0 +1,18 @@
+pstops
+=====
+
+pstops 4:-0L@1(1w,0h)+0L@1(1w,14.85cm),-1R@1(0w,14.85cm)+1R@1(0w,1h) Mumford83.ps Mumford83.ps2
+
+#remplacer @1 par @0.7 si le ps original est en A4 au lieu de A5
+# 0.7 = 1/sqrt(2)
+# marche pas, pbs de pagination
+
+psbook
+======
+
+DOC=ploum.ps
+SCALE="-s1"
+SCALE=
+psbook "$DOC" | psnup -2 -pA4  -d1 "$SCALE"| pstops -pA4 '2:0,1U(1w,1h)' >! "${DOC%.ps}.book.ps"
+
+psbook "$DOC" | psnup -2 -pA4  -d1 | pstops -pA4 '2:0,1U(1w,1h)' >! "${DOC%.ps}.book.ps"

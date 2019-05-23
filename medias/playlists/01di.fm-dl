@@ -1,0 +1,30 @@
+#/bin/zsh
+# load di.fm playlists (in .m3u format)
+# http://mpd.wikia.com/index.php?title=Hack:di.fm-playlists
+
+dir="$HOME/.mpd/playlists/di.fm/"
+mkdir -p $dir
+default_url="http://listen.di.fm/public3"
+
+# Process user arguments and default values
+: ${url:=${1:-${default_url}}}
+: ${prefix:=${2:-`echo "$url" | sed 's/.*\b\([^.]\+\.[^.]\+\)\/.*/\1/'`}}
+
+# Extract a value from json data given the keyword index
+json_val()
+{
+  local key=$1; shift
+  echo "$@" | sed -r -e 's|.*"'"${key}"'":"([^"]*)".*|\1|' -e 's:\\::g'
+}
+
+# Grab the json data and format it into newlines
+wget -q -O - "$url" | sed -e 's:},{:\n:g' -e 's:^\[{::' -e 's:}\]$::' | \
+while read line ; do
+  # Extract the human friendly name of the stream
+  name=$(json_val name "${line}")
+  # Extract the full URL to the .pls file
+  pls=$(json_val playlist "${line}")
+  # Grab the pls file and convert it to a m3u
+  file="${dir}/${prefix}_${name}.m3u"
+  wget -q -O - "${pls}" | sed -n 's/^File[0-9]*=//p' > "${file}"
+done

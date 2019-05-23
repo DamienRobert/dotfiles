@@ -1,0 +1,274 @@
+http://en.wikipedia.org/wiki/Electronic_circuit
+http://en.wikipedia.org/wiki/Hydraulic_analogy
+http://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws
+
+# Résistances: U=R*I
+où U est la tension aux bornes de l'appareil,
+I l'intensité traversant l'appareil.
+W=I*U=RI^2=U^2/R
+
+Branchement en série:
+I est constant le long du circuit
+U=U_1+U_2 (la tension du générateur est la somme des tensions des deux
+appareils)
+U_1=R_1 I; U_2=R_2 I
+Donc U=(R_1+R_2)I
+On peut donc remplacer les deux appareils en série par un appareil de
+résistance (R_1+R_2)
+-> Si un des deux appareils a une capacité de 0 (ie résistance infinie), la résistance globale est infinie: circuit ouvert
+
+Branchement en parallèle
+U est constante
+I=I_1+I_2
+I_1=U/R_1; I_2=U/R_2
+Donc I=U/R, avec 1/R=1/R_1+1/R_2
+On peut donc remplacer les deux appareils en parallèle par un appareil de
+résistance (R_1R_2/(R_1+R_2))
+-> Si un des deux appareils a une résistance de 0, la résistance globale
+est 0: court-circuit
+
+Avec un multimètre:
+- mesurer la tension en parallèle
+- mesurer l'intensité en série
+- mesure la résistance en coupant le générateur (le multimètre se
+  comportant alors comme un générateur)
+
+Note: on peut modéliser un générateur comme un générateur de tension
+parfait U + une résistance R en série, ou comme un générateur de courant
+parfait I=U/R + une résistance R en parallèle
+https://en.wikipedia.org/wiki/Network_analysis_(electrical_circuits)
+https://en.wikipedia.org/wiki/Norton%27s_theorem
+https://en.wikipedia.org/wiki/Th%C3%A9venin%27s_theorem
+
+# Ampere
+https://en.wikipedia.org/wiki/Ampere
+1A=1C/1s
+
+# Volt
+https://en.wikipedia.org/wiki/Volt
+1V=1W/1A
+V=potential energy/charge = N.m/C=kg m^2/A s^3
+
+# Charge
+https://en.wikipedia.org/wiki/Electric_charge
+I=-dQ/dt; Q=I*t
+
+Electron: e=-1.602×10−19 coulombs
+
+# Capacitance (Capacité) (opposition to a change of voltage)
+https://en.wikipedia.org/wiki/Capacitance
+A 1 farad capacitor, when charged with 1 coulomb of electrical charge, has a potential difference of 1 volt between its plates.
+
+C=Q/V (en Farad); Q=CV=I*t. (En unité: C=FV=As; F=As/V=s/Omega)
+I=C dV/dt
+
+E(J)=W*s=U(V)*A*s=U(V)*Q(C)=U^2(V^2)*C(F)
+
+# Inductence (opposition to a change of current)
+https://en.wikipedia.org/wiki/Inductance
+V=L dI/dt
+
+# Impedence (for an AC circuit)
+https://en.wikipedia.org/wiki/Electrical_impedance
+https://en.wikipedia.org/wiki/Electrical_reactance
+ reactance is the opposition of a circuit element to a change in current or voltage, due to that element's inductance or capacitance
+
+Z=V/I=R+jX; Z: impédence, R: résistance, X: reactance
+V=|V|e^{j(\omega t+\phi_V)}
+I=|I|e^{j(\omega t+\phi_I)}
+- Résistance: X=0, R>0
+- Capacitor: R=0, X<0
+  the impedance of capacitors decreases as frequency increases;
+      Z_C=1/jωC (comme on le voit via l'équa diff)
+- Inductor: R=0, X>0
+  the impedance of inductors increases as frequency increases;
+      Z_L = jωL
+
+# Calculs
+- Capacitance: I=C dV/dt
+  AC: V(t)=V_0 cos(ωt)
+      I(t)=- C V_0 ω sin(ωt)
+- Inductence: V=L dI/dt
+  AC: I(t)=I_0 sin(ωt)
+      V(t)=L I_0 ω cos(ωt)
+- RC circuit
+  DC: I(t)=I_0 e^{-t/RC}
+      V(t)=V_0-RI(t)=V_0(1-e^{-t/RC}) #Voltage au condensateur
+      => En régime permanent le courant ne circule pas
+  Il suffit de regarder l'équation:
+  V_0=V_{resistor(t)+V_{capacitor}(t)=I(t)R+1/C\int I
+  => RC dI/dt + I=0 => I=I_0 e^{-t/RC}
+- RL circuit http://www.electronics-tutorials.ws/inductor/lr-circuits.html
+  DC: I(t)=I_0 (1-e^{-R/L.t})
+      V(t)=V_0-RI(t)=V_0 e^{-R/L.t} #Voltage à l'inducteur
+      => en régime permanent le courant circule comme s'il n'y avait pas d'inducteur
+  Vient de l'équation: V_0=V_resistor+V_inductor=RI+LdI/dt
+- RLC (cf Maths/Analyse/Linear_Differential_Equations)
+  d^2/dt^2 I(t) + 2α d/dt I(t) + ω0^2 I(t)=0.
+  avec α=R/2L, ω0^2=1/LC
+
+# Complex Impedance
+https://en.wikipedia.org/wiki/Electrical_impedance#Complex_impedance
+
+Z(s)=L(V)/L(I) où L est la transformée de Laplace
+En appliquant la transformée de Laplace sur les équations plus haut on obtient
+[Avec V(t=0)=0]:
+Résistance: Z_R=R
+Condensateur Z_C=1/(sC)
+Inducteur Z_L = s L
+
+Circuit DC (régiment permanent): s=0
+Circuit AC: V=V_0 e^{j w t + j \phi}, s= jw
+  Note: dans ce cas on retrouve aussi Z=V/I=V_0/I_0 e^{j \delta_phase}
+  En effet L{V}=V_0 e^{i\phase_V} 1/(s-jw), L{I}=I_0 e^{i\phase_I} 1/(s-jw)
+  et le quotient donne le même résultat.
+
+Plus généralement:
+https://en.wikipedia.org/wiki/Laplace_transform#s-domain_equivalent_circuits_and_impedances
+Time domaine <=> s-domain
+Résistance R <=> Z_R=R
+Condensateur C <=> Z_C=1/sC + générateur de tension V_0/s en série
+               <=> Z_C=1/sC + générateur de courant -C V_0/s en parrallèle
+Inducteur L <=> Z_L=sL + générateur de tension -L V_0 en série
+            <=> Z_L=sL + générateur de courant I_0/s en parrallèle
+
+Ex: RL circuit
+    s domain: V(s)=R I(s) + (sL) I(s) -L V_0
+    V(s)=L(V_0)=V_0/s; I(s)=(V_0/s -LV_0)/(R+sL)
+    et L^-1(I(s)) redonne la formule pour I donnée plus haut pour un
+    circuit LR (module erreurs de calculs)
+
+# Dual circuit
+https://en.wikipedia.org/wiki/Dual_impedance
+
+Exemple de td sur la réponse et la fonction de transfert
+http://www.msc.univ-paris-diderot.fr/~daerr/teaching/signal/2017_partiel_Traitement_signal_M1_corrige.pdf
+
+Hydraulic analogy
+=================
+https://en.wikipedia.org/wiki/Hydraulic_analogy
+
+type          hydraulic       electric           thermal       mechanical
+quantity      volume V [m^3]  charge q [C]       heat Q [J]    momentum P [Ns]
+flux          [m^3/s]         current I [A=C/s]  Q' [W=J/s]    force F [N=kg m/s^2]
+flux density  v [m/s]         j [C/(m^2·s)=A/m²] q [W/m^2]     stress σ [N/m^2 = Pa]
+potential     pressure p      potential U        temperature T velocity v
+              [Pa=J/m3=N/m^2] [V=J/C=W/A]        [K=J/k_B]     [m/s]
+potential     [Ns/m^2]        Flux linkage       [Ks]          distance d
+momentum                      [Vs]                             [m]
+work          flux*pressure   U*I [AV]           flux*temp [W] F.v [Nm/s]
+energy [J]    volume*pressure Wt=RI^2=CU^2       heat*temp [J] [Nm]
+
+flux=quantity/time
+flux density=flux/area
+potential=potential momentum/time
+work [W=Nm/s=kg m^2/s^3]=flux*potential
+energy [J=Nm=kg m^2/s^2]=work*time=quantity*potential=flux * potential momentum
+
+# Analogie mécanique
+https://en.wikipedia.org/wiki/Mechanical-electrical_analogies
+https://en.wikipedia.org/wiki/Mobility_analogy
+https://en.wikipedia.org/wiki/Impedance_analogy
+
+Hamiltonian variables:
+I=dQ/dt, V=d Lambda/dt où Lambda=flux (magnétique dans le cas d'une inductance)
+En mécanique: F=dp/dt (p=moment), v=dx/dt
+Int power variable d(Hamiltonian variable)=Energie; ex
+\int F dx où \int v dp
+
+Impedence analogy:
+Effort variable Force 	Voltage
+Flow variable 	Velocity 	Current
+Effort Hamiltonian 	Momentum 	Flux linkage
+Flow Hamiltonian 	Displacement 	Charge
+Damping 	Resistance
+Mass 	Inductance
+Compliance 	Capacitance
+Mechanical impedance 	Electrical impedance
+
+Note: 
+- l'inverse de la compliance = stiffness, l'inverse de la capacitance=elastance
+- capacitor=ressort, inductor=masse, résistance=damping
+  On traduit un circuit électrique en série par des composants mécaniques en parrallèles.
+
+Mobility analogy (le dual de la précédente):
+Effort variable 	Force 	Current
+Flow variable 	Velocity 	Voltage
+Effort Hamiltonian 	Momentum 	Charge
+Flow Hamiltonian 	Displacement 	Flux linkage
+Responsiveness 	Resistance
+Mass 	Capacitance
+Compliance 	Inductance
+Mobility 	Electrical impedance
+
+Note:
+- capacitor=masse, inductor=ressort, résistance=damping
+- on traduit un circuit électrique en série par des composants mécaniques en série
+
+Other analogies:
+Energy domain 	Effort variable 	Flow variable
+Electrical 	Voltage 	Current
+Mechanical 	Force 	Velocity
+Fluid 	Pressure 	Volume flow rate
+Thermal 	Temperature difference 	Entropy flow rate
+Magnetic 	Magnetomotive force (mmf) 	Magnetic flux rate of change
+Chemical 	Chemical potential 	Molar flow rate
+
+Maxwell equations
+=================
+https://en.wikipedia.org/wiki/Maxwell's_equations
+Lorrentz force:  F = qE + qv × B
+
+- Gauss law: ∇ ⋅ E = ρ ε_0
+- Gauss law for magnetism: ∇ ⋅ B = 0
+- Maxwell faraday equation: ∇ × E = − ∂B/∂t
+- Ampere circuit law:  ∇ × B = μ_0 (J + ε_0 ∂E/∂t)
+E electric field in N/C=V/m
+B magnetic field
+ρ charge density (charge per unit volume)
+J current density (current per unit area)
+
+https://en.wikipedia.org/wiki/Vacuum_permittivity
+ε0 = 8.854 187 817... × 10−12 F·m−1
+   = 1/μ_0 c^2
+Coulomb law (force between two separated electric charges):
+  F_C = 1/4πε0 q1 q2/r^2
+
+https://en.wikipedia.org/wiki/Vacuum_permeability
+µ0 = 4π×10−7 N.A^-2
+
+Curl and divergence:
+https://en.wikipedia.org/wiki/Divergence
+https://en.wikipedia.org/wiki/Curl_(mathematics)
+
+In the vacuum:
+    1/c^2 ∂^2E/∂t^2 − ∇^2 E = 0
+    1/c^2 ∂^2B/∂t^2 − ∇^2 B = 0
+with c=1/\sqrt{ε0μ0}=2.99792458.10^8m/s
+
+https://en.wikipedia.org/wiki/Covariant_formulation_of_classical_electromagnetism
+https://en.wikipedia.org/wiki/Mathematical_descriptions_of_the_electromagnetic_field
+Maxwell's equations (STA formulation)
+∇ F = μ_0 c J.
+Maxwell's equations (current 3-form)
+d F = 0; d ⋆F = J
+
+Lorentz
+=======
+
+https://en.wikipedia.org/wiki/Lorentz_force
+https://en.wikipedia.org/wiki/Force_between_magnets
+http://www.physicsinsights.org/force_on_dipole_1.html
+
+    F = q E + q v × B
+
+Lagrangian: L = m/2 r˙⋅r˙ + qA⋅r˙ − q ϕ
+avec E=-∇ϕ-∂A/∂t
+     B=∇×A
+
+Relativistic Lagrangian:
+    L = −mc^2 \sqrt{1−(r˙/c)^2} + qA(r)⋅r˙ −qϕ(r)
+la force de Lorrentz relativiste est alors
+   dp/dt= q E + q v × B
+où p=mv/\sqrt{1−(v/c)^2} est le moment relativiste
+

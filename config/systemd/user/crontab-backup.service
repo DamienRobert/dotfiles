@@ -1,7 +1,0 @@
-[Unit]
-Description=Git backup
-ConditionPathIsDirectory=%h/backups/gitbackup
-
-[Service]
-Type=simple
-ExecStart=/bin/sh -c 'exec %h/mine/script/gitbackup -v save'

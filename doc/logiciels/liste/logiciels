@@ -1,0 +1,692 @@
+vim: ft=markdownlight fdm=expr
+
+[!] Installed [+] Interesting
+Liste de logiciels libres: http://enacit.epfl.ch/logiciel-libre/
+
+Parsing
+=======
+
+* Json:
++ http://stedolan.github.io/jq/
+  jq is a lightweight and flexible command-line JSON processor.
+  jq is like sed for JSON data
+- http://kmkeen.com/jshon/
+  A similar tool with a different syntax
+- https://github.com/therealklanni/jp (light jq)
+- Json formatters: https://github.com/antonmedv/fx, https://github.com/busyloop/vj
+
+* Yaml:
++ https://github.com/kislyuk/yq => yq, xq (=xml)
+  Command-line YAML and XML processor - jq wrapper for YAML/XML documents https://yq.readthedocs.io/
+! https://github.com/rubyworks/yaml_command
+  YAML Command is a command line tool for working with YAML files.
+- https://github.com/pandastrike/yaml-cli [coffeescript]
+  (In rubygems: yaml_command)
+
+Infos
+=====
+
+glxgears #pour tester la puissance du proc
+look #regarder des trucs dans le dico
+par #reformater les paragraphes
+tac, rev #miroirs
+xxd #hexdump
+
+* Système
+ldconfig, uname, modprobe, miitools
+proot http://proot.me/: userspace chroot, mount, and binfmt_misc based on ptrace
+
+* Time
+ntpd, openntpd, chrony (cf https://chrony.tuxfamily.org/index.html)
+
+* Disque dur
+badblocks, smartctl, hdparm
+lshw, dmidecode
+
+grep
+----
+
+ag: https://github.com/ggreer/the_silver_searcher
+  # a faster ack like
+pt: https://github.com/monochromegane/the_platinum_searcher
+  #written in go (but in practice not as fast as ag)
+
+rg: https://github.com/BurntSushi/ripgrep
+  #the best/fastest one
+
+Benchmark
+---------
+calcul entier: openssl speed
+calcul flottant: povray
+proc: bogomips
+mem: free
+disque: df
+carte graphique: glxgears
+
+ls*
+---
+lsdev lsmod lsattr lsof lspci lspgpot lsusb lsraid
+Ex: lsusb -t to see usb1/2/3 ports, cf
+  http://www.linuxnix.com/find-usb-device-details-in-linuxunix-using-lsusb-command/
+  http://superuser.com/questions/781398/how-can-i-be-sure-that-ive-plugged-a-device-into-a-usb-3-port
+Note: xhci=usb 3 (+usb2/1), ehci=usb 2, ehci/uhci=usb 1
+Graphic: usbview
+
+Updates
+-------
+mandb #pour updater le cache de man (aucune idée de ce que ça fait en fait)
+updatedb #pour updater le cache de locate
+
+Monitoring
+==========
+
+http://techthrob.com/2010/07/21/three-apps-for-monitoring-performance-in-linux/
+- nethogs, nmon, iftop et iptraf comme similaires à nettop
+  + nload, netwatch, iptraf-ng
+- iostat et latencytop comme similaires à iotop
+- collectl (avec colmux) et sar (avec sag et sadf) comme combinant ces
+deux-là avec top en plus.
+- pv - monitor the progress of data through a pipe
+- https://github.com/andreoli/fulltrace
+  A complete ftrace- and uprobes-based tracer (user, libraries, kernel) for GNU/Linux
+- https://github.com/Xfennec/progress (in arch)
+  Linux tool to show progress for cp, mv, dd, ... (formerly known as cv)
+- https://github.com/vesche/histstat
+  history for netstat => easily view connections on a system as they occur
+- https://github.com/traviscross/mtr (in arch: mtr, mtr-gtk)
+  mtr combines the functionality of the 'traceroute' and 'ping' programs in a single network diagnostic tool.
+
+* Log analyzer
++ https://github.com/allinurl/goaccess (in arch)
+  GoAccess is a real-time web log analyzer and interactive viewer that runs in a terminal in *nix systems or through your browser. https://goaccess.io
++ http://lnav.org/
+  https://github.com/tstack/lnav
+- https://github.com/dogoncouch/logdissect
+  CLI utility and Python module for analyzing log files and other data.
+
+On archlinux:
+- glances, htop, atop - top
+- nethogs, iftop
+- nmon, sysstat (iostat,isag,mpstat,pidstat,sadf,sar) - divers
+- iotop
+- pv/progress
+
+strace
+------
+
+strace/ltrace/...
+
+https://sysdig.com/blog/sysdig-vs-dtrace-vs-strace-a-technical-discussion/
+Strace is based on a facility called ptrace that is exported by Linux and other operating systems. Ptrace can do many complex things and is used, for example, by debuggers like gdb to look into a running process. Strace uses it to instrument a target process and “listen” to that process's system
+
+https://en.wikipedia.org/wiki/Ftrace
+- strace – a debugging utility for Linux and some other Unix-like systems, monitors system calls used by a program and all received signals
+- ltrace – a Linux debugging utility, displays the calls a userland application makes to shared libraries
+
+Perf
+----
+
+ftrace/dtrace: in kernel, more powerful than strace which only listen for
+syscalls (dtrace is on solaris)
+ftrace: allow to see what happen inside the kernel
+
+perf (the difference with ftrace is not clear; perf looks like it counts
+kernel event while ftrace trace them. Note: The ftrace function tracer is
+also available from within perf, as the ftrace:function tracepoint.):
+
+https://perf.wiki.kernel.org/index.php/Tutorial
+   This is the wiki page for the perf performance counters subsystem in
+   Linux. Performance counters are CPU hardware registers that count hardware
+   events such as instructions executed, cache-misses suffered, or branches
+   mispredicted. They form a basis for profiling applications to trace
+   dynamic control flow and identify hotspots.
+Cf aussi: perf-tools https://github.com/brendangregg/perf-tools, wrappers autour de perf et ftrace
+
+http://www.brendangregg.com/blog/2015-07-08/choosing-a-linux-tracer.html
+- Linux perf_events (aka "perf", after its command) is the official tracer/profiler for Linux users.
+
+BPF adds programmatic capabilities to the existing kernel tracing facilities (tracepoints, kprobes, uprobes) and should include both perf and ftrace capabilities and replace them
+
+Liste
+-----
+
+Grande liste de logiciels de monitoring:
+http://www.linux.com/news/enterprise/systems-management/785426-a-template-for-monitoring-linux-performance-tools-like-from-netflix-
+[Par l'auteur de perf-tools]
+More details:
+http://wiert.me/2014/03/19/reference-card-for-linux-performance-and-analysis-tools%EF%BB%BF-via-antony-peel-google/
+Updated: http://www.brendangregg.com/linuxperf.html
+
+Nice wiki: https://wiki.yoctoproject.org/wiki/Tracing_and_Profiling
+
+Julia Evans blog
+----------------
+
+- https://jvns.ca/blog/2016/07/03/debugging-tools-i-love/
+  strace, dstat, tcpdump + wireshark, perf, opensnoop
+- https://jvns.ca/blog/2016/06/30/why-do-we-use-the-linux-kernels-tcp-stack/
+- https://jvns.ca/blog/2017/06/28/notes-on-bpf---ebpf/
+Applications graphiques
+=======================
+
+* X
+startx -- :1
+xwd #dumpe la fenêtre
+xsetroot,xsetbg #pour définir le fond d'écran
+Xnest   #pour lancer X dans une fenêtre (sert à rien mais est rigolo)
+xrandr  #changer la resolution
+xev #pour voir les évènements x
+xdpyinfo #voir les modules chargés par x
+
+xcalc   #calculatrice graphique
+xman    #man graphique
+xmag    #loupe graphique
+
+zenity #dialog box from shell scripts
+
+setxkbmap fr #le layout clavier
+
+terminals
+---------
+lilyterm #lightweight vte emulator
+roxterm #same but with more features (now dead :-()
+terminix: https://github.com/gnunn1/terminix vte gtk3+ but no tab support :-(
+terminology #lots of bells and whistle
+            #no support yet for True Color: https://phab.enlightenment.org/T746
+kitty: https://github.com/kovidgoyal/kitty
+ A cross-platform, fast, feature full, GPU based terminal emulator
+ No support for bce, cf https://github.com/kovidgoyal/kitty/issues/160#issuecomment-346470545
+ http://invisible-island.net/ncurses/ncurses.faq.html#bce_mismatches
+
+
+WM
+--
+fvwm awesome i3 pekwm fluxbox
+
+Destkop:
+gnome, kde, xfce, lxde, lxqt
+mate (successor of gnome 2), cinnamon [linux mint desktop, forked from gnome 3, with layout inspired by gnome 2]
+unity, gnome shell: front end for gnome 3
+
+Medias
+======
+
+MediaCenter
+-----------
+omxplayer: décodeur vidéo hardware pour raspberry
+kodi [was xbmc]: interface graphique par dessus (xbox media center)
+
+- kodi (ex XBMC)
+- http://www.navixtreme.com/
+  media links via Navi-X a kodi plugin
+- mythtv: an app for tnt tuners
+- webmin: web-based interface for system administration for Unix
+- hellanzb/nzbget (usenet nzb downloader)
+- couchpotato (usenet and torrent downloader)
+- sickrage (Automatic Video Library Manager for TV Shows. It watches for new episodes of your favorite shows, and when they are posted it does its magic.)
+- télécommande: flirc / hdmi cec
+
+- upnp: serveurs => rygel, minidlna, pulseaudio-dlna (dlna+chromecast)
+        client => vlc (playlist->upnp
+         + chromecast: https://unix.stackexchange.com/questions/291975/how-do-i-stream-to-chromecast-using-vlc)
+        android => bubbleupnp (server+client + chromecast)
+
+Photos
+------
+eog       (affiche les miniatures et l'image en meme temps)
+xzgv      (logger)
+gqview    (affiche les images, mais pas de miniatures)
+gthumb    (pour travailler sur les images -- donnees exif,...)
+kuickshow (kde, bof)
+
+Tags
+----
+id3 #pour les afficher
+id3ed #pour les changer (interactivement ou non)
+id3ren #pour changer les filenames en fonction des tags
+id3tool #pour les changer en ligne de commande
+id3v2    #pour convertir en id3 version 2
+vorbiscomment #tags ogg
+
+Audio
+-----
+* Sip
+- linphone
+- ekiga (ne marche pas très bien avec freephonie.net)
+
+* Ripp
+grip #front-end graphique pour lecture/ripping de cd
+abcde (command line version of grip)
+whipper (python2 version, fork of morituri [wait for transition away from gstreamer])
+=> use musicbrainz database https://musicbrainz.org/doc/About
+
+Album cover fetcher:
+- https://github.com/sahib/glyr
+- On the web: https://coverartarchive.org/
+  Can be retrieved using Music brainz api: https://wiki.musicbrainz.org/Development/XML_Web_Service/Version_2
+
+bplay #player/recorder de wav
+-cdtool #audio player en texte (cdplay/...)
+mp3blaster #audio player en mode texte
+cccd #lecteur de cd minimaliste
+cdcd #lecteur de cd en ligne de commande
+cplay #lecteur en monde texte minimaliste (front end pour les ploum123)
+gnomp3 #clone de music match
+-gqmpeg #un clone de winamp (frontend x pour mpg123)
+xmms   #un autre clone de winamp
+mpg321   #lecteurs de musiques
+ogg123   #
+music123 #
+rhythmbox #clone de windows media (play radio too)
+mp3gain: mp3gain -r files
+
+cmus: https://cmus.github.io/#download (lightweight console music player)
+moc: https://news.ycombinator.com/item?id=10430512
+mpd+ncmpcpp
+mpd+cantata (graphical frontend to mpd)
+
+Video
+-----
+gaupol -> rectifier les sous-titres
+
+cdburning
+---------
+
+cdrtools: mkisofs, cdrecord [original]
+cdrkit: fork by debian -> genisoimage, cdrecord, wodim [deprecated]
+libisoburn: xorriso, cdrskin [recommanded]
+
+DVD
+---
+
+growisofs: pour graver
+vobcopy, dvdbackup: pour copier un dvd sur le disque
+acidrip, dvd::rip: frontend pour ripper des films
+mencoder, transcode: pour encoder des films
+lsdvd, isoinfo: info sur l'iso
+mplayer  -dvd-device /tmp/film-dvd/LOST_IN_TRANSLATION dvd://1
+
+Text
+----
+
+* Convert to Text
+img2txt (libcaca)
+doc: antiword, catdoc/xls2csv (antiword tries to preserve formatting)
+docx: docx2txt
+
+* Pdf
+- diff pdf:
+  - diffpdf (unmaintened)
+  - https://vslavik.github.io/diff-pdf/
+- gscan2pdf: scan to pdf + ocr
+- https://github.com/ifad/pdfbeads: convert scanned images to a single PDF file
+
+* ebook
+calibre -> transférer les epub
+cool-reader -> surtout pour la lecture
+
+Files
+=====
+Notify
+------
+Gamin [replace FAM]
+http://www.noah.org/wiki/FAM,_Gamin,_inotify
+
+inotify-tools -> inotifywait
+
+UI
+--
+nautilus (gnome)
+thunar (xfce)
+pcmanfm (lxde)
+spacefm
+
+udisk
+-----
+User disk mounter:
+udisks2 [replace udisks], udevil [lightweight], pmount [last release 2011-03]
+
+  There are two versions of udisks called udisks and udisks2. Development of udisks has ceased in favor of udisks2. [1]
+  udisksd (udisks2) and udisks-daemon (udisks) are started on-demand by D-Bus
+
+Automounter
+udiskie [use udisks], devmon [included in udevil]
+
+symlink farm manager
+--------------------
+stow: https://www.gnu.org/software/stow/ [in arch]
+  see stow plugin for mr: http://lists.gnu.org/archive/html/info-stow/2011-12/msg00000.html
+graft: http://peters.gormand.com.au/Home/tools/graft/graft-html
+dotfiles: https://pypi.python.org/pypi/dotfiles
+
+File manager
+------------
+
+cli: vifm, ranger, fman https://fman.io/ (non free, beurk)
+
+Recovery
+--------
+- fsarchiver/partclone/partimage: saving partitions to an image file
+- testdisk
+  TestDisk is powerful free data recovery software! It was primarily designed
+  to help recover lost partitions and/or make non-booting disks bootable
+  again when these symptoms are caused by faulty software, certain types of
+  viruses or human error (such as accidentally deleting a Partition Table).
+  Partition table recovery using TestDisk is really easy.
+- foremost
+  Foremost is a console program to recover files based on their headers,
+  footers, and internal data structures. This process is commonly referred
+  to as data carving.
+
+- ddrescue #projet gnu
+- dd_rescue #un autre similaire
+  -> comme dd mais permet de continuer en cas d'erreur
+- dd_rhelp: wrapper around dd_rescue
+  http://www.kalysto.org/utilities/dd_rhelp/index.en.html
+  -> ddrescue is better than dd_rescue+dd_rhelp
+  http://ubuntu-rescue-remix.org/node/51:
+  -> ddrescue est mieux (mais dd_rescue permet d'aller en arrière explicitement)
+
+Latex
+=====
+
+latex on the web: mathjax, katex, latex2img
+https://www.bersling.com/2016/05/10/displaying-math-on-the-web/
+- mathjax: https://www.mathjax.org/
+- katex: https://khan.github.io/KaTeX/
+
+- Editeurs généraux: kile
+- Editeurs TeX: texmaker
+- Ide: texworks
+- WYSIWYM: lyx
+- TeX-like: texmacs
+
+
+Chat
+====
+
+pidgin/empathy
+bitlbee (passerelle irc <-> msn/yahoo/...)
+
+IRC
+---
+weechat (client irc puissant en mode texte)
+irssi (idem, sur phare)
+
+web: https://client00.chat.mibbit.com/?url=ircs%3A%2F%2Fchat.freenode.net%2Farchlinux-aur
+
+Web 2.0: 
+- irc like: slack, gitter #https://www.quora.com/What-are-the-pros-and-cons-of-Gitter-vs-Slack => gitter is more open source friendly
+- teamspeak/skype like: discord
+- forums: discourse
+Open source: matrix
+=> https://matrix.org/docs/projects/try-matrix-now.html: riot, weechat
+
+Fonts
+=====
+
+* libotf: otfdump font.ttf, otflist dir, otfview font (show glyphs)
+* freetype2-demos: ftbench ftchkwd ftdiff ftdump ftgamma ftgrid ftlint ftmemchk ftmulti ftpatchk ftstring fttimer ftvalid ftview ttdebug
+- ftchkdwd consola.ttf: Consolas : KO! Tagged as fixed, but has 6 `proportional' glyphs
+- ftdiff consola.ttf: compare native hinter, auto-hinter, unhinted
+- ftdump consola.ttf: font infos (more like otfinfo than a full dump)
+- ftgamma: free type gamma matcher
+- ftgrid 16pt consola.ttf: show glyph on a grid and can toggle hint options
+- ftpatchk consola.ttf: consola.ttf doesn't use patented opcodes
+- ftstring 16pt consola.ttf: show a string and can toggle hint options
+- ftvalid consola.ttf: layout table validator
+- ftview 16pt consola.ttf: show glyphs/waterfall and can toggle hint options
+
+* List fonts:
+  - xorg-xfontsel: Point and click selection of X11 font names
+  - xlsfonts: List available X fonts
+  - otflist dir
+  - gnome-font-viewer
+* Collection: fontypython (unmaintained), fontmatrix
+              font-manager (in aur): show glyphs/waterfall
+* List glyphs:
+  - xfd (xfd -fa "DejaVu Sans Mono")
+  - otfview font.otf
+  - gucharmap = gnome-character-map (can then copy paste)
+  - gnome-characters (for smileys)
+  - Web: http://bluejamesbond.github.io/CharacterMap/
+* View sample text:
+  - ftview/ftstring
+  - fontview https://github.com/googlei18n/fontview (not very interesting)
+  - gnome-font-viewer consola.ttf
+* View font infos: cf https://stackoverflow.com/questions/4458696/finding-out-what-characters-a-font-supports https://superuser.com/questions/430033/how-to-check-all-available-characters-in-a-font-file
+  - fc-query consola.ttf
+  From texlive:
+  - otfinfo -i consola.ttf
+  - ttfdump consola.ttf (from libotf: otfdump font.ttf)
+  - luaotfload-tool --find="fira mono" -I
+* Vectoriel: inkscape, scribus
+* Converting fonts: 
+  - fontforge
+  - Latex: pour convertir des fontes vers le format latex:
+    https://ctan.org/tex-archive/fonts/utilities/fontools, which wrap the
+    texlive lcdf package: otfinfo, otftotfm (otftotfm: create font metrics)
+  - Python: https://github.com/fonttools/fonttools (ne pas confondre avec
+    celui de latex) => TTX tool, that can convert TrueType and OpenType
+    fonts to and from an XML text format
+
+Find fallback font used for a glyph:
+- https://repolinux.wordpress.com/2013/03/10/find-out-fallback-font-used-by-fontconfig-for-a-certain-character/
+  FC_DEBUG=4 pango-view  --font='mono' -q -t '{character}' 2>&1 | \
+    grep -o 'family: "[^"]\+' # | cut -c 10- | tail -n 1
+
+  firefox 'data:text/html,<meta charset="utf8"><p style="font-family: monospace;">¿</p>'
+
+Mail
+====
+
+metamail mimencode rot13
+notmuch/mu: search mails
+urlscan: https://github.com/firecat53/urlscan
+  Mutt and terminal url selector (similar to urlview)
+vdirsyncer: sync address and calendars
+khard: https://github.com/scheibler/khard (show addressbook of a cal server on a terminal)
+http://www.pldaniels.com/ripmime/: download mime attachements
+
+KDE
+===
+k3b -> graver
+kaudiocreator -> ripper
+
+Photos
+------
+kphotoalbum -> pour classer des albums photos, mettre des tags (méta données, ne déplasse pas l'album)
+kallery -> pour exporter des photos sur le web
+digikam -> pour importer des photos
+
+Images
+------
+kuickshow -> pour voir des images
+kview -> pour voir une image
+gwenview -> comme gqview
+
+IRC
+---
+logiciels de chat irc du - au + complexe
+konversation ->  last release July 2010
+ksirc -> July 2009
+kvirc -> Mars 2011
+[Pb: la notification ne marche pas avec fvwm]
+kopete pour l'équivalent gaim
+
+Divers
+======
+
+zsnes: émulateur de super nintendo
+rarcrack: cracker des rar protégés par mdp
+
+! https://github.com/tombenner/ru: Ruby in your shell
+
+- https://github.com/TimKaechele/WorkingClass
+An human readable plain text tasklist syntax.
+
+- http://moo.nac.uci.edu/~hjm/parsync/
+  parsyncfp - a parallel rsync wrapper for large data transfers
+
+Web
+===
+
+* Cli navigator:
+Simple: links, lynx
+More powerfull: elinks, w3m
+
+* Download:
+curl/httpie #pour le web
+wget, aria2
+
+* Testing:
+- https://github.com/gchaincl/httplab
+  The interactive web server.
+  HTTPLabs let you inspect HTTP requests and forge responses.
+
+Modern cli
+==========
+
+- https://lib.rs/command-line-utilities
+- https://darrenburns.net/posts/tools/
+- vim like utilities https://github.com/Badacadabra/Vimpressionist
+  (ie tools with vimlike bindings)
+  calcurse (=calendar), cmus (music player), feh, i3, mutt, newsbeuter (rss/atom), termite, tig, vifm, vim, w3m, weechat, zathura
+
++ bat fd ncdu exa/lsd(=ls) tokei prettyping
+  broot(=tree)
+
+- bfs https://github.com/tavianator/bfs, A breadth-first version of the UNIX find command
++ https://github.com/chmln/sd
+  sd Intuitive find & replace CLI (sed alternative)
+- https://github.com/TankerHQ/ruplacer
+  Find and replace text in source files (so like sd but handle a whole dir)
+- bench (benchmarking) https://github.com/Gabriel439/bench
++ hyperfine (like bench but in rust) https://github.com/sharkdp/hyperfine
+- ascii recording: asciinema & svg-term
+
+* Other cat alternative like bat:
+https://github.com/jingweno/ccat
+
+* Other ls alternative like exa
+  - https://github.com/athityakumar/colorls (ruby)
+  - https://github.com/Peltoche/lsd
+    lsdeluxe: inspired by lscolor but in rust
+  - https://github.com/trapd00r/ls--
+  - https://github.com/dborzov/lsp
+
+Awesome clis
+============
+- https://github.com/agarrharr/awesome-cli-apps
+- https://github.com/alebcay/awesome-shell
+
+Downloads and ssh
+-----------------
+- https://github.com/timvisee/ffsend
+  Easily and securely share files from the command line. A fully featured Firefox Send client
+- https://github.com/webtorrent/webtorrent-cli
+  WebTorrent, the streaming torrent client. For the command line. https://webtorrent.io
+- https://github.com/six-ddc/hss
+  An interactive parallel ssh client featuring autocomplete and asynchronous execution.
+- https://github.com/Russell91/sshrc
+  bring your .bashrc, .vimrc, etc. with you when you ssh
+
+Shell
+-----
+- https://github.com/kdabir/has
+  checks presence of various command line tools and their versions on the path
+- https://github.com/LuRsT/hr
+  A horizontal straight_ruler for your terminal
++ https://github.com/facebook/PathPicker [facebook]
+- https://github.com/nickolasburr/rng
+  Stream range of input to stdout.
+  rng 5,10:17,22 main.c #Get lines 5-10 and 17-22 in main.c.
+
+Medias
+------
+- https://github.com/mps-youtube/mps-youtube
+  Terminal based YouTube player and downloader
+  [In arch we already have: youtube-dl]
+- https://github.com/streamlink/streamlink
+  fork of livestreamer
+- https://github.com/iCHAIT/moviemon
+  Everything about your movies within the command line. https://ichait.github.io/moviemon/
+- https://github.com/mayankchd/movie
+  A CLI for getting information about movies and comparing two movies
+
+- https://github.com/alejandrogallo/papis
+  Powerful and highly extensible command-line based document and bibliography manager. http://papis.readthedocs.io/en/latest/
+
+Web data from cli
+-----------------
+
+- https://github.com/sindresorhus/is-up-cli
+  Check whether a website is up or down using the isitup.org API
+- https://github.com/miguelmota/cointop
+  The fastest and most interactive terminal based UI application for tracking cryptocurrencies https://cointop.sh
+- https://github.com/sgentle/caniuse-cmd
+  Caniuse command line tool. [In ruby: 'cani use']
+- https://github.com/bevacqua/hget
+  Render websites in plain text from your terminal https://ponyfoo.com
+
+* Google:
+  + https://github.com/jarun/googler
+  https://github.com/Astranno/googlr
+
+* Weathers:
+  + https://github.com/schachmat/wego
+    Utilisé par https://github.com/chubin/wttr.in
+    ⛅️ The right way to check the weather http://wttr.in
+  - https://github.com/riyadhalnur/weather-cli
+
+* Maps: https://github.com/rastapasta/mapscii
+
+Remote access to localhost
+--------------------------
+https://github.com/localtunnel/localtunnel
+https://ngrok.com/
+https://serveo.net/
+
+https://seashells.io/ Seashells lets you pipe output from command-line programs to the web in real-time
+
+Divers
+------
+- https://github.com/akavel/up
+  Ultimate Plumber is a tool for writing Linux pipes with instant live preview
+- https://github.com/jhspetersson/fselect
+  Find files with SQL-like queries
+- https://github.com/raine/ramda-cli
+  Like ru but via nodejs
+- https://github.com/jarun/pdd
+  Tiny date, time diff calculator with timers
+
+* Emojis: (cf aussi gnome-characters)
+  - https://github.com/sindresorhus/emoj
+  - https://github.com/dematerializer/emoji-finder
+
+  - https://github.com/mrowa44/emojify
+    Emoji on the command line scream, ie convert :raising_hand: into the emoji
+
+Markdown
+--------
+- https://github.com/visit1985/mdp
+  A command-line based markdown presentation tool.
+- https://github.com/axiros/terminal_markdown_viewer
+  Styled Terminal Markdown Viewer
+
+Help
+----
+! tldr - Simplified and community-driven man pages.
+! howdoi - Instant coding answers via the command line.
+- how2 - Finds the simplest way to do something on a unix bash command line (Nodejs implementation of howdoi).
+
+Easter Eggs
+===========
+
+http://www.networkworld.com/article/2926630/linux/11-pointless-but-awesome-linux-terminal-tricks.html#slide2
+- sudo: "Defaults insults" in /etc/sudoers
+- apt-get moo, aptitude -vvvvv moo
+- pacman: 'ILoveCandy' in /etc/pacman.conf
+- repo-elephant [from archlinux's repo-add]
+- nmap -oS - google.com
+- ddate (discordian date), cowsay (cowsay moo), lolcat (colorize output), sl (steam locomotive), cmatrix (matrix like effect)

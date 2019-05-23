@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+for file in /etc/ssh/*.pub; do
+	echo "#$(basename $file):"
+	ssh-keygen -lf $file
+done

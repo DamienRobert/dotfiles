@@ -1,0 +1,17 @@
+Options de less dans .initenv: LESS="-RMiqx2" 
+-q:bell visuelle
+-i: ignore case pour les search
+-M: long prompt
+-R: interpret ansi color code
+-x2: set tabstop to 2
+
+Si LESS n'est pas spécifié, dans git LESS est mis à FSRX.
+-F: quit less  if content can fit on one screen
+-X: Disables sending the termcap initialization and deinitialization strings  to  the  terminal (ie does not launch an alt screen but stays in the buffer).
+-S: chop long line
+
+Si SYSTEMD_LESS n'est pas spécifié, le défaut est FRSXMK
+-K: quit on ^C
+
+Autres options:
+-r: interpret all raw characters

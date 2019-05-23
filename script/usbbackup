@@ -1,54 +1,55 @@
 #!/bin/zsh
 
-MOUNT=
-SDDIR=/dev/sdb2
-RUNDIR=/run/media/dams/usbkey
-MYDIR="$HOME/media/usbkey"
+MOUNTMODE=udisk
+MODE=
+#UUID=20d96426-1f4d-4fec-8aa9-287e0142051f
+LABEL=usbinria
+MOUNTDISK=$(findfs "LABEL=$LABEL")
+MOUNTTARGET=/run/media/dams/$LABEL
+DIRHOME="$MOUNTTARGET/home/dams"
 
-#On Numenor, I have trouble automounting the usb key
-[[ $MYHOSTNAME == Numenor && ! -d ~/media/usbkey ]] && MOUNT="udisk"
-
-#options: MOUNT=sudo or MOUNT=udisk
+#options: MOUNTMODE=sudo or MOUNTMODE=udisk
 while true;
 do
 	case "$1" in
 		-- ) break ;;
-		-m ) shift; MOUNT=$1; shift ;;
+		-m|--mode ) shift; MODE=$1; shift ;;
+		-s|--sudo ) shift; MOUNTMODE=sudo;;
+		-u|--udisk ) shift; MOUNTMODE=udisk;;
+		--mount ) shift; MODE=mount;;
+		--umount|--unmount ) shift; MODE=umount;;
+		--sync ) shift; MODE=sync;;
 		*) break;;
 	esac
 done
 
-case $MOUNT in
-	sudo)
-		echo "Mounting $SDDIR (sudo)"
-		sudo mkdir -p $RUNDIR
-		sudo mount $SDDIR $RUNDIR
-		;;
-	udisk)
-		echo "Mounting $SDDIR (udisk)"
-		udisksctl mount -b $SDDIR -o 'noexec,nosuid,noatime'
-		;;
-esac
+MOUNTOPTS="compress=lzo"
 
-if [[ -d $MYDIR ]]; then
-	echo "git push $MYDIR/dams/backups/gitbackup :"
-	cd ~/backups/gitbackup
-	git push "$MYDIR/dams/backups/gitbackup" :
-	cd
-	echo "unison.rb usb"
-	unison.rb usb
-else
-	echo "$MYDIR is not available"
-fi
+do_sync() {
+	if [[ -d $DIRHOME ]]; then
+		USBGIT="$DIRHOME/var/backups/gitbackup"
+		mkdir -p $USBGIT
+		git init --bare $USBGIT
+		echo "$ git push --all $USBGIT"
+		cd ~/var/backups/gitbackup
+		git push --all $USBGIT
+		cd
+		echo "$ unison.rb $@ usb_backup"
+		unison.rb --push "$@" usb_backup
+		echo "$ sync"
+		sync
+	else
+		echo "# $DIRHOME is not available"
+	fi
+}
 
-case $MOUNT in
-	sudo)
-		echo "Unmounting $SDDIR"
-		sudo umount $RUNDIR
-		sudo rmdir $RUNDIR
-		;;
-	udisk)
-		echo "Unmounting $SDDIR"
-		umount $RUNDIR
+case $MODE in
+	mount) do_mount ;;
+	umount) do_umount ;;
+	sync) do_sync ;;
+	*)
+		do_mount
+		do_sync
+		[[ -n $DID_MOUNT ]] && do_umount
 		;;
 esac

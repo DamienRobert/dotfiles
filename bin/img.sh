@@ -1,0 +1,1 @@
+../script/others/img.sh

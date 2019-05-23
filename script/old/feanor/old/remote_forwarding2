@@ -1,0 +1,2 @@
+#!/bin/sh
+ssh -gf -R 44001:localhost:22 jonque.ens.fr /users/03/info/robert/script/enable_forwarding 44001

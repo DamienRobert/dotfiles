@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+echo "## -> checkup"
+[[ -e ~/.ssh/authorized_keys ]] || echo "!! ~/.ssh/authorized keys does not exist!"

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+OPTS=()
+USER=$2
+[[ -n $3 ]] && OPTS+=(-F $3)
+
+sudo -u $USER ssh $OPTS $1 exit || systemctl try-restart port_forward.service

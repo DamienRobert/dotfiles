@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+
+$out = shift;
+print "$out\n";
+open(OUT, "> $out");
+binmode(OUT);
+select(OUT);
+while(<>) {
+   printf("%x",$_);
+}
+close(OUT);
+exit;

@@ -1,0 +1,148 @@
+#!/usr/bin/zsh
+
+#./aur_bare [--makepkgopts -- --pacmanopts] pkgs
+# --get no/pkgbuild/tar/git/gitupdate
+# --no-build: don't build
+#Ex: ./aur_bare --asdeps cower; ./aur_bare pacaur
+# aur_bare --no-build --get pkgbuild apackage
+#
+# For advanced usage, use 'aur_wrapper'
+# To get an abs binary: wget "https://www.archlinux.org/packages/$pkg/download"
+# where $pkg is of the form 'extra/x86_64/unison': wget  https://www.archlinux.org/packages/extra/x86_64/unison/download/
+
+# called=$_
+
+ARCHDIR=${ARCHDIR-:{XDG_CACHE_HOME:-${HOME}/.cache}/aur}
+PKGBUILD=${PKGBUILD:-$ARCHDIR} #where pkgbuild are downloaded
+PKGDEST=${PKGDEST:-$ARCHDIR} #where built abs packages are downloaded
+[[ -r $HOME/.config/pacman/makepkg.conf ]] && . $HOME/.config/pacman/makepkg.conf
+pacmanbin="pacman"
+
+get() {
+	case $GET in
+		no*) ;;
+		*) getpkgbuild $@ ;;
+	esac
+}
+
+getbinary() {
+	#for getbinary $pkg should be of the form 'extra/i686/unison':
+	#https://www.archlinux.org/packages/extra/i686/unison/download/
+	cd $PKGDEST
+	wget "https://www.archlinux.org/packages/$pkg/download"
+}
+
+getpkgbuild() {
+	mkdir -p $PKGBUILD
+	for pkg in "$@"; do
+		#dir=$(cut -b 1,2 <<< $pkg)
+		case $GET in
+			pkgbuild)
+				mkdir -p "$PKGBUILD/$pkg"
+				curl -o "$PKGBUILD/$pkg/PKGBUILD" "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=$pkg"
+				;;
+			tar)
+				cd $PKGBUILD
+				curl "https://aur.archlinux.org/cgit/aur.git/snapshot/$pkg.tar.gz" | tar xzv
+				;;
+			git)
+				cd $PKGBUILD
+				git clone "https://aur.archlinux.org/$pkg.git"
+				;;
+			gitupdate)
+				cd $PKGBUILD
+				vcs clone_or_update -d "https://aur.archlinux.org/$pkg.git"
+				;;
+		esac
+	done
+}
+
+build() {
+	# Note: makepkg --packagelist can be used to find the resulting built package
+	# eg to check if the package was already built: makepkg --packagelist | xargs basename -a | xargs -I{} find "$PKGDEST" -maxdepth 1 -name '{}'
+
+	for pkg in "$@"; do
+		if cd "$PKGBUILD/$pkg"; then
+			echo makepkg $MAKEPKGOPT
+			makepkg $MAKEPKGOPT # use -i to install the built package
+			case $? in
+				0|13) continue ;; # a package has already been built
+				*) exit $? ;;
+			esac
+		else
+			exit $?
+		fi
+	done
+}
+
+## from pacaur CleanCache
+clean_cache() { # clean a package cache, only keep installed versions (more precisely: echo the versions to remove)
+	local i pkgname
+	for i in $(ls $PKGDEST | sed "s#\(.*\)-.*#\1#g" ); do #remove all .*.* ext
+		pkgname=$(sed "s#\(.*\)-.*-.*#\1#g" <<< $i)
+		[[ $i != $(expac -Q '%n-%v' "$pkgname") ]] && echo "$PKGDEST"/$i-*
+	done
+}
+
+aur_pkgs_base() { # take a list of packages, and extract the foreign packages base from them
+	foreignpkgsbase=($(expac -Q '%n %e' $($pacmanbin -Qmq) | awk '{if ($ 2 == "(null)") print $1; else print $2}'))
+	if [[ -n $@ ]]; then
+		pkgsbase=($(expac -Q %e $@))
+		aurpkgsbase=($(grep -xf <(printf '%s\n' "${pkgsbase[@]}") <(printf '%s\n' "${foreignpkgsbase[@]}")))
+	fi
+}
+
+clean_clones() { #echo the clones of packages that are not installed
+	local clone
+	aur_pkgs_base
+	for clone in $PKGBUILD/*(/N:t); do
+		[[ ! " ${foreignpkgsbase[@]} " =~ " $clone " ]] && echo "$PKGBUILD/$clone"
+	done
+}
+## end pacaur
+
+GET=gitupdate # GET="tar"
+BUILD=t
+BARE=
+MAKEPKGOPT=('-ics') # MAKEPKGOPT=()
+PACOPT=()
+CUROPT=makepkg
+
+PKGS=()
+while true;
+do
+	case $1 in
+		-- ) shift
+			if [[ $CUROPT == "makepkg" ]]; then
+				CUROPT="pacman"
+			else
+				break
+			fi ;;
+		--bare ) BARE=t; GET=tar; MAKEPKGOPT=() ;;
+		--get ) shift; GET=$1; shift ;;
+		--no-build ) shift; BUILD= ;;
+		# PKGDEST=/var/cache/pacman/pkg ./aur_wrapper --clean_cache | xargs rm
+		--clean_cache ) shift; clean_cache ;;
+		# Eg: vcs action 'git clean -ffdx' $(aur_wrapper --clean_clones)
+		--clean_clones ) shift; clean_clones ;;
+		# filter from the arguments the ones that are installed and foreign
+		--aur_base ) shift; aur_pkgs_base $@; echo $aurpkgsbase; exit 0 ;;
+		-u|--update ) shift; PKGS+=($(auracle sync | awk '{print $1}')) ;;
+		-* )
+			if [[ $CUROPT == "makepkg" ]]; then
+				MAKEPKGOPT+=($1)
+			else
+				PACOPT+=($1)
+			fi
+			shift;;
+		*) break;;
+	esac
+done
+
+PKGS+=($@)
+# auracle buildorder $PKGS
+get $PKGS
+if [[ -n $BUILD && -n $@ ]]; then
+	sudo -v
+	build "$@"
+fi

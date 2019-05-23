@@ -1,0 +1,8 @@
+cd $HOME
+for dir in opt var; do
+  if [[ -d $dir && ! -h $dir ]]; then
+    echo $dir;
+    mv $dir data/
+    ln -s data/$dir .
+  fi
+done

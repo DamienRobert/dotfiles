@@ -1,38 +1,63 @@
 #!/bin/zsh
-. $HOME/.initvars
 
 CONTROL_PATH="$HOME/sshfs/.control/%l_%r@%h:%p"
-SSH_OPT="-nNT -o ExitOnForwardFailure=yes -o ControlMaster=auto -o ControlPath=$CONTROL_PATH"
-#SSH_OPT="-nNT -o ExitOnForwardFailure=yes"
-#SSHFS_OPT="-o ControlMaster=auto -o ControlPath=$CONTROL_PATH -o transform_symlinks -o cache_stat_timeout=300 -o ServerAliveInterval=300"
+SSH_OPT="-nNT -o ExitOnForwardFailure=yes -o ControlMaster=auto -o ControlPath=$CONTROL_PATH" #not used
 SSHFS_OPT="-o transform_symlinks -o cache_stat_timeout=300 -o ServerAliveInterval=100"
-#300/3=100
 
-DIR="$HOME/sshfs"
+DIR="$HOME/mnt"
 
 while true;
 do
-  case "$1" in
-    -- ) break ;;
-    -c ) shift ; 
-      mkdir -p $DIR; cd $DIR
-      name="$1"; shift ;
-      eval $($MYFILES/00COMPUTERS.rb --export $name)
-      #info_computer $name
-      SSHFSDIR="${COMPUTER[hostname]}-root"
-      mkdir -p $SSHFSDIR
-      sshfs "$COMPUTER[sshu]:/" "$DIR/$SSHFSDIR"
-      ln -s "$SSHFSDIR/$COMPUTER[homepath]" "$COMPUTER[hostname]";;
-    -u ) shift; name="$1"; shift
-      fusermount -u "$DIR/$name" ;;
-    -uall )
-      for i in `cut /etc/mtab -d ' ' -f '2' | grep sshfs`; do
-        fusermount -u "$i"
-      done ;;
-    *) break;;
-  esac
+	case "$1" in
+		-- ) break ;;
+		-c ) shift ;
+			. $HOME/.initvars
+			mkdir -p $DIR; cd $DIR
+			name="$1"; shift ;
+			ruby <<-EOS
+				require 'dr/config/computers'
+				# SH.debug
+				comp=DR::Computer.new("$name", check: true)
+				sshfsdir=DR::Pathname.new("#{comp.name}-root")
+				mntdir=DR::Pathname.new("$DIR")
+				fullsshfsdir=mntdir+sshfsdir
+				if system("findmnt -t fuse.sshfs #{fullsshfsdir.shellescape} >/dev/null")
+					warn "#{fullsshfsdir} is already mounted"
+				else
+					fullsshfsdir.mkpath
+					ssh=comp.ssh(mode: :hash)
+					sshfs_opts=%w($SSHFS_OPT)
+					SH.sh("sshfs #{sshfs_opts.shelljoin} '#{ssh[:hostssh]}:/' #{fullsshfsdir.shellescape}")
+					(mntdir+comp.name).on_ln_s(sshfsdir+comp.file(:homepath).to_relative, rm: :symlink)
+				end
+			EOS
+			# eval $($MYCOMPUTERS --export $name)
+			# [[ -n $COMPUTER[name] ]] || exit 3
+			# SSHFSDIR="${COMPUTER[name]}-root"
+			# FULLSSHFSDIR="$DIR/$SSHFSDIR"
+			# if findmnt -t fuse.sshfs $FULLSSHFSDIR >/dev/null; then
+			# 	echo "$FULLSSHFSDIR already mounted"
+			# else
+			# 	mkdir -p $SSHFSDIR
+			# 	homepath=$(ssh $COMPUTER[sshu] 'echo $HOME')
+			# 	sshfs "$COMPUTER[sshu]:/" $FULLSSHFSDIR
+			# 	[[ -e $COMPUTER[name] ]] || ln -s "$SSHFSDIR/$homepath" "$COMPUTER[name]"
+			# fi
+			;;
+		-u ) shift; name="$1"; shift
+			fusermount -u "$DIR/$name" ;;
+		-uall ) shift;
+			for i in $(findmnt -t fuse.sshfs -n -o TARGET); do
+				echo "- fusermount -u $i"
+				fusermount -u "$i"
+			done ;;
+		-o) SSHFS_OPT+=($1 $2); shift; shift ;;
+		-*) SSHFS_OPT+=$1; shift ;;
+		*) break;;
+	esac
 done
 
 if [[ $# -gt 0 ]]; then
-  exec sshfs $SSHFS_OPT "$@"
+	echo sshfs $SSHFS_OPT "$@"
+	exec sshfs $SSHFS_OPT "$@"
 fi

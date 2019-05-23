@@ -1,0 +1,13 @@
+[Unit]
+Description=Offlineimap Query Timer
+ConditionFileIsExecutable=/usr/bin/offlineimap
+ConditionPathExists=%h/.offlineimaprc
+PartOf=network.target
+Requisite=unlock.target
+
+[Timer]
+OnBootSec=1m
+OnUnitInactiveSec=15m
+
+[Install]
+WantedBy=default.target

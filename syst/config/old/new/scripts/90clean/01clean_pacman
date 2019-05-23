@@ -1,0 +1,4 @@
+#!/bin/zsh
+#arch-chroot
+
+pacman -Scc --noconfirm

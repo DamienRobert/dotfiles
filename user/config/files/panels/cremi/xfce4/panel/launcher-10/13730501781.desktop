@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=GNOME Commander
+Comment=Un gestionnaire de fichiers à deux volets
+Exec=gnome-commander
+Icon=gnome-commander
+Path=
+Terminal=false
+StartupNotify=false

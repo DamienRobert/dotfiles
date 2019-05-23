@@ -1,0 +1,14 @@
+#!/bin/zsh
+. "$(dirname $0)/_install_helpers"
+
+url=ocaml
+version="4.06.1"
+build_helper $@
+
+CUSTOM_COMPILE='
+./configure --prefix $prefix &&
+make world &&
+make opt &&
+make install'
+
+build_git

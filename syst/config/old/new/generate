@@ -1,0 +1,95 @@
+#!/bin/zsh
+
+cd ~/mine/syst/new
+. ./generate-vars
+
+DEST="$HOME/.cache/@comps/$name"
+DESTINIT="$DEST/@init"
+echo "!! Generating in $DESTINIT"
+rm -rf $DESTINIT
+mkdir -p $DESTINIT
+
+echo "! script files"
+cp -a -L helpers $DESTINIT/helpers
+cp -a scripts AAinit 00install $DESTINIT
+
+#00fs/  10install/  20configure/  30backup/  40extra/  90clean/
+RUNDIRS=(00fs 10install 20configure 30backup 40extra)
+#CUSTOM
+case $name in
+	packer)
+		RUNDIRS+=(90clean)
+		;;
+	container)
+		RUNDIRS=(20configure)
+		;;
+	FleurBleue)
+		# shift RUNDIRS
+		;;
+esac
+
+echo "! vars"
+echo >$DESTINIT/vars
+for var in 'TARGET_DIR' 'TMPDIR' 'DISK' 'FS' 'MOUNTOPTS' \
+	'BOOTBACKUP' 'LOCALE_LANG' 'TIMEZONE' 'ROOTLEAF' \
+	'SLASHPARTLABEL' 'HOMEPARTLABEL' 'BOOTPARTLABEL' 'SWAPPARTLABEL' \
+	'SLASHLABEL' 'HOMELABEL' 'BOOTLABEL' 'SWAPLABEL'; do
+	echo "$var='${(P)var}'" >>$DESTINIT/vars
+done
+cat >>$DESTINIT/vars <<EOS
+MKFSOPTS=($MKFSOPTS)
+LANGS=($LANGS)
+USERS=($(echo \'${^USERS}\'))
+PKGS=($PKGS)
+PKGSINIT=($PKGSINIT)
+EOS
+eval "$getvars $name" >>$DESTINIT/vars
+
+echo "! slash"
+#~/mine/syst/generate/generate.rb --init --dest=$DESTINIT/slash $name
+~/mine/syst/config/generate.rb -c $name
+ln -s ../slash $DESTINIT/slash
+
+echo "! Users: $USERS"
+for user in $USERS; do
+	user=(${(s/:/)user})
+	user=$user[1]
+	mkdir -p $DESTINIT/users
+	[[ -d users/$user ]] && cp -a -L users/$user $DESTINIT/users/
+done
+
+echo "! Torun: $RUNDIRS"
+cd $DESTINIT
+mkdir torun
+for dirrun in $RUNDIRS; do
+	mkdir -p torun/$dirrun
+	cd torun/$dirrun
+	ln -s ../../scripts/$dirrun/*(.x) .
+	cd $DESTINIT
+done
+#CUSTOM
+case $name in
+	virtual)
+		cp scripts/00fs/ex/01partitions_boot_slash torun/00fs/01partitions_boot_slash
+		;;
+	packer)
+		cp scripts/00fs/ex/01partitions_slash torun/00fs/01partitions_slash
+		;;
+esac
+TORUN=(torun/**/*(^/N))
+cat >$DESTINIT/torun.sh <<EOS
+TORUN=($TORUN)
+EOS
+cp $DESTINIT/torun.sh $DESTINIT/torun.sh.bak
+
+#CUSTOM
+case $name in
+	packer)
+		TDEST=$HOME/opt/vagrant/packer-arch/
+		mkdir -p $TDEST
+		echo "! cp and tar in $TDEST"
+		cp -a "$DEST" "$TDEST/packer"
+		tar cvJf "$TDEST/packer.tar.xz" -C $TDEST packer
+		rm -rf "$TDEST/packer"
+		;;
+esac

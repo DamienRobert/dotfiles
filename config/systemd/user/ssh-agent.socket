@@ -1,8 +1,0 @@
-[Unit]
-Description=ssh-agent socket
-
-[Socket]
-ListenStream=/run/user/%U/ssh_auth_sock
-
-[Install]
-WantedBy=sockets.target

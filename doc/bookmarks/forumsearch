@@ -1,0 +1,11 @@
+alt.forum.recherches:280
+
+psql forumdb guest
+
+SELECT msgid , posting_date , subject_header FROM articles WHERE body
+   ~* 'frobni' ORDER BY posting_date DESC ;
+
+Pour avoir le groupe+num plutôt que le msgid:
+SELECT grpname , num , posting_date , subject_header FROM articles ,
+ingroup , groups WHERE body ~* 'frobni' AND ingroup.mid=articles.id
+AND groups.id=ingroup.gid ORDER BY posting_date DESC ;

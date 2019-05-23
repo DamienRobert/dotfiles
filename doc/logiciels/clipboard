@@ -1,0 +1,102 @@
+https://specifications.freedesktop.org/clipboards-spec/clipboards-latest.txt
+unix.stackexchange.com/questions/11889/pasting-x-selection-not-clipboard-contents-with-keyboard
+
+Why gtk paste Clipboard on Shift-Insert (Grr!)
+http://unix.stackexchange.com/questions/178070/why-does-shiftinsert-paste-from-clipboard-in-some-applications-and-primary-in-o
+
+Primary: select text, paste with middle mouse
+  Terminal: Paste with Shift+Insert
+
+Clipboard: cut/copy/paste [this also set Primary]
+  Firefox: Copy with Ctrl-C, Ctrl-Insert
+           Paste with Ctrl-V, Shift-Insert
+  Terminal: Copy with Ctrl-Shift-C, Ctrl-Insert
+            Paste with Ctrl-Shift-V, Ctrl-Shift-Insert
+
+vim
+===
+Register * is for PRIMARY, + is for CLIPBOARD
+
+clipboard options [default: autoselect]:
+       unnamed         When included, Vim will use the clipboard register '*'
+                        for all yank, delete, change and put operations which
+                        would normally go to the unnamed register.  When a
+                        register is explicitly specified, it will always be
+                        used regardless of whether "unnamed" is in 'clipboard'
+                        or not.  The clipboard register can always be
+                        explicitly accessed using the "* notation.  Also see
+                        gui-clipboard.
+
+        unnamedplus     A variant of the "unnamed" flag which uses the
+                        clipboard register '+' (quoteplus) instead of
+                        register '*' for all yank, delete, change and put
+                        operations which would normally go to the unnamed
+                        register.  When "unnamed" is also included to the
+                        option, yank operations (but not delete, change or
+                        put) will additionally copy the text into register
+                        '*'.
+
+        autoselect      Works like the 'a' flag in 'guioptions': If present,
+                        then whenever Visual mode is started, or the Visual
+                        area extended, Vim tries to become the owner of the
+                        windowing system's global selection or put the
+                        selected text on the clipboard used by the selection
+                        register "*.  See guioptions_a and quotestar for
+                        details.  When the GUI is active, the 'a' flag in
+                        'guioptions' is used, when the GUI is not active, this
+                        "autoselect" flag is used.
+                        Also applies to the modeless selection.
+                        [guioptions has 'a' by default]
+
+        autoselectplus  Like "autoselect" but using the + register instead of
+                        the * register.  Compare to the 'P' flag in
+                        'guioptions'.
+
+
+
+Bracketed Paste
+---------------
+https://cirw.in/blog/bracketed-paste
+Docs on bracketed paste mode control sequences: http://www.xfree86.org/4.7.0/ctlseqs.html [Xterm Control Sequences]
+
+Implemented in my .zshrc, from http://www.zsh.org/mla/users/2011/msg00367.html
+
+Implemented in my .vimrc, cf
+http://stackoverflow.com/questions/5585129/pasting-code-into-terminal-window-into-vim-on-mac-os-x
+and the corresponding plugin https://github.com/ConradIrwin/vim-bracketed-paste
+
+~~~
+if !has("nvim") && &term =~ "xterm"
+  let &t_ti = &t_ti . "\e[?2004h"
+  let &t_te = "\e[?2004l" . &t_te
+  function! XTermPasteBegin(ret)
+    set pastetoggle=<Esc>[201~
+    set paste
+    return a:ret
+  endfunction
+  map <expr> <Esc>[200~ XTermPasteBegin("i")
+  imap <expr> <Esc>[200~ XTermPasteBegin("")
+  vmap <expr> <Esc>[200~ XTermPasteBegin("c")
+  cmap <Esc>[200~ <nop>
+  cmap <Esc>[201~ <nop>
+endif
+~~~
+
+Note: the current code
+https://github.com/ConradIrwin/vim-bracketed-paste/blob/master/plugin/bracketed-paste.vim
+adds workaround for t_ti/t_te for tmux 1.x; and also maps F?? keys to
+prevent the delay from hitting Escape 
+[I don't use this since I already try to reduce my escape delays]
+
+Escape delays
+-------------
+https://www.johnhawthorn.com/2012/09/vi-escape-delays/
+http://unix.stackexchange.com/questions/23138/esc-key-causes-a-small-delay-in-terminal-due-to-its-alt-behavior
+http://superuser.com/questions/942677/consequences-of-escape-time-0-tmux-setting
+-> On vim by default this is 1000, I have
+set timeout timeoutlen=1000 ttimeoutlen=100
+ie 100 on escape sequances, 1000 for mappings
+-> On tmux I use
+set -sg escape-time 5 (default 500)
+-> On zsh I let the default of KEYTIMEOUT=40
+

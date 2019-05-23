@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-# aur
-$RUNDIR/aur cower --asdeps
-$RUNDIR/aur pacaur

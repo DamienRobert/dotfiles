@@ -35,6 +35,6 @@ while (<>) {
 }
 
 sub help {
-  print STDERR "$0 [-F delimiter_regexp] [-j join_delimiter] fieldnumber\n"; 
+  print STDERR "$0 [-F delimiter_regexp] [-j join_delimiter] fieldnumber\n";
   exit 1;
 }

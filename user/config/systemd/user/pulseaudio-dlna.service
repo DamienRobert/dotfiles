@@ -1,0 +1,12 @@
+[Unit]
+Description=Pulseaudio dlna helper
+Documentation=man:pulseaudio-dlna(1)
+ConditionFileIsExecutable=/usr/bin/pulseaudio-dlna
+After=pulseaudio.service
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/pulseaudio-dlna --codec mp3 --bit-rate 256
+
+[Install]
+WantedBy=graphical-session.target

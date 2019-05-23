@@ -1,0 +1,10 @@
+[Unit]
+Description=checkmail
+PartOf=graphical-session.target
+
+[Service]
+SyslogIdentifier=checkmail_daemon
+ExecStart=/bin/sh -c 'exec %h/mine/script/checkmail --daemon --notify --body'
+
+[Install]
+WantedBy=graphical-session.target

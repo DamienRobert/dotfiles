@@ -1,0 +1,31 @@
+Simple smtp client:
+msmtp, ssmtp, esmtp [msmtp seems to be the more recent]
+http://www.serverwatch.com/tutorials/article.php/3923871/Using-msmtp-as-a-Lightweight-SMTP-Client.htm
+
+Full mail:
+postfix, opensmtpd
+for opensmtpd config, cf: 
+https://calomel.org/opensmtpd.html
+http://www.reddit.com/r/linux/comments/20bq45/openbsd_switches_to_opensmtpd_as_the_default_mta/
+
+smtp:
+http://www.jetmore.org/john/code/swaks/
+ Swaks is a featureful, flexible, scriptable, transaction-oriented SMTP test tool written and maintained by John Jetmore.
+
+maildir:
+http://cr.yp.to/proto/maildir.html
+
+msg_unique_uuid:2,flags
+where flags are
+    Flag "P" (passed): the user has resent/forwarded/bounced this message to someone else.
+    Flag "R" (replied): the user has replied to this message.
+    Flag "S" (seen): the user has viewed this message, though perhaps he didn't read all the way through it.
+    Flag "T" (trashed): the user has moved this message to the trash; the trash will be emptied by a later user action.
+    Flag "D" (draft): the user considers this message a draft; toggled at user discretion.
+    Flag "F" (flagged): user-defined flag; toggled at user discretion. 
+
+and the unique_uuid is when using offlineimap:
+unixtimestamp_?.pid.hostname.U=msg_imap_uid.FMD5=foldermd5:2,flags
+
+For instance in mutt, messages in new/ are (N), and messages in cur/ but
+without the S flag are (O); et store les labels dans X-label:

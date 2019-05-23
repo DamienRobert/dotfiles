@@ -1,3 +1,92 @@
 transfert --include *.MOV --bwlimit 100
 transfert --filter '- *.JPG' --filter '+ *.MOV' --bwlimit 100 2011-08-Seattle dams@microsoft:Photos/
 transfert --include '*.MOV' --exclude '*.*' --bwlimit 300 2011-06-Corse microsoft:Photos/
+
+rsync -avR /foo/./bar/baz.c remote:/tmp/ #create /tmp/bar/baz.c on the remote  machine
+
+Usefull options:
+       -a, --archive
+              This  is equivalent to -rlptgoD
+       -r: recursive
+       -l: symlinks
+       -p: perms
+       -t, --times
+       -g: group
+       -o: owner
+       -D: --devices --specials
+
+       -H --hard-links
+       -A --acls
+       -X --xattrs
+       -S, --sparse    handle sparse files efficiently
+
+       -b, --backup
+              With  this  option, preexisting destination files are renamed as
+              each file is transferred or deleted.  You can control where  the
+              backup  file  goes  and what (if any) suffix gets appended using
+              the --backup-dir and --suffix options.
+       -C, --cvs-exclude
+              This  is a useful shorthand for excluding a broad range of files
+              that you often don’t want to transfer between systems. It uses a
+              similar  algorithm  to  CVS  to  determine  if  a file should be
+              ignored.
+       --chmod
+       --chown=USER:GROUP
+       --delete (-> --delete-during), --delete-before, --delete-during (--del), --delete-delay, --delete-after, --delete-excluded
+       -n, --dry-run
+       -z, --compress
+       --partial, --partial-dir=DIR
+       -P     The  -P  option is equivalent to --partial --progress.  Its pur‐
+              pose is to make it much easier to specify these two options  for
+              a long transfer that may be interrupted.
+
+       -R, --relative
+                rsync -av /foo/bar/baz.c remote:/tmp/
+                -> creates /tmp/baz.c
+                rsync -avR /foo/bar/baz.c remote:/tmp/
+                -> creates /tmp/foo/bar/baz.c
+                rsync -avR /foo/./bar/baz.c remote:/tmp/
+                -> creates /tmp/bar/baz.c
+       --no-implied-dirs
+              This  option  affects  the  default  behavior  of the --relative
+              option.  When it is specified, the  attributes  of  the  implied
+              directories from the source names are not included in the trans‐
+              fer.  This means that the corresponding  path  elements  on  the
+              destination  system  are  left  unchanged if they exist, and any
+              missing implied directories are created with default attributes.
+              This even allows these implied path elements to have big differ‐
+              ences, such as being a symlink to a directory on  the  receiving
+              side.
+              [aka this is like --keep-dirlinks but only for the implicit
+              dirs created by --relative]
+
+Others:
+-L,--copy-links, --copy-unsafe-links, --safe-links, --munge-links, -k,--copy-dirlinks -K,--keep-dirlinks, --hard-links (-H)
+
+      --keep-dirlinks: on dest: do not replace a symlink to a directory with the real directory 
+      --copy-dirlinks: the same usage on source; treat symlinks to dir as
+      real directories
+
+       -d, --dirs
+              Tell the sending  side  to  include  any  directories  that  are
+              encountered.  Unlike --recursive, a directory’s contents are not
+              copied unless the directory name specified is "." or ends with a
+              trailing  slash (e.g. ".", "dir/.", "dir/", etc.).  Without this
+              option or the --recursive option, rsync will skip  all  directo‐
+              ries it encounters (and output a message to that effect for each
+              one).  If you specify both --dirs and  --recursive,  --recursive
+              takes precedence.
+       --fake-super
+       --ignore-non-existing, --ignore-existing
+
+       --compare-dest=DIR, --copy-dest=DIR, --link-dest=DIR
+       -f, --filter=RULE
+       -s, --protect-args
+       --delay-updates
+       --stats, --progress, --human-readable
+       --list-only, --dry-run
+       --bwlimit=RATE
+
+Aliases:
+alias transfert2='rsync -vazPHAXS'
+alias transfert='rsync -vazP'

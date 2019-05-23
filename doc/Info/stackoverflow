@@ -1,0 +1,22 @@
+http://unix.stackexchange.com/questions/108100/why-are-tar-archive-formats-switching-to-xz-compression-to-replace-bzip2-and-wha
+
+http://stackoverflow.com/questions/1381725/how-to-make-no-ri-no-rdoc-the-default-for-gem-install
+
+http://unix.stackexchange.com/questions/213799/can-bash-write-to-its-own-input-stream/217390#217390
+
+Prepare a functional chroot:
+http://superuser.com/questions/111152/whats-the-proper-way-to-prepare-chroot-to-recover-a-broken-linux-installation
+
+How to switch up to a live tmpfs system:
+http://unix.stackexchange.com/questions/226872/how-to-shrink-root-filesystem-without-booting-a-livecd/227318#227318
+- takeover.sh: automatic script to do this
+  https://news.ycombinator.com/item?id=13622301, hacker's news discussion
+- https://github.com/drizzt/vps2arch
+  Similar ideas to install archlinux on top of a running vps
+
+http://stackoverflow.com/questions/9392365/how-would-git-handle-a-sha-1-collision-on-a-blob/34599081#34599081
+
+http://stackoverflow.com/questions/27159322/rgb-values-of-the-colors-in-the-ansi-extended-colors-index-17-255
+
+https://stackoverflow.com/questions/1050482/debug-core-file-with-no-symbols
+https://stackoverflow.com/questions/10616417/debugging-core-files-generated-on-a-customers-box/10629444#10629444

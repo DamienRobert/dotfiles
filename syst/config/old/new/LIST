@@ -1,0 +1,23 @@
+#vim: ft=zsh
+#generate usb live key
+cd ~syst/new
+./generate-perso Baggins
+cd ~mine/@comps/Baggins/@init/scripts
+#edit DIR, RUNDIR and TARGET_DIR
+. ZZvars
+. $DEST/scripts/ZZvars
+cat <<EOS >01partitions
+#!/bin/zsh
+sudo sgdisk -n 1:0:+1G -c '0:usb' -n 2:0:+150M -c '0:boot' -t '0:ef00' -u c12a7328-f81f-11d2-ba4b-00a0c93ec93b --attributes=1:set:2 \
+  -n 3:0:0 -c '0:slash' -t '0:8300' -u 4f68bce3-e8cd-4db1-96e7-fbcaf984b709 $DISK
+EOS
+
+cat <<EOS >02mkfs
+#!/bin/zsh
+sudo mkfs.vfat ${DISK}1 #standard usb partition
+sudo mkfs.vfat ${DISK}2 #boot
+sudo mkfs.$FS -L slash ${ROOT_PARTITION}
+EOS
+
+cp -f ~syst/new/extra/10mount_btrfs_subvolumes 10mount
+chmod 755 0*

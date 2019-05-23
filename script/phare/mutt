@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+EDITOR="$HOME/script/phare/mail-editor" exec /usr/bin/mutt "$@"

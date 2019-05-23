@@ -1,0 +1,84 @@
+* https://en.wikipedia.org/wiki/Smn_theorem
+
+In practical terms, the theorem says that for a given programming language and positive integers m and n, there exists a particular algorithm that accepts as input the source code of a program with m + n free variables, together with m values. This algorithm generates source code that effectively substitutes the values for the first m free variables, leaving the rest of the variables free. 
+
+
+* http://en.wikipedia.org/wiki/Turing_machine_equivalents
+
+Turing machine multitage = Turing machine one tape (avec une perte au plus
+quadratique en temps).
+En fait on a juste besoin d'une bande infinie dans une direction
+En fait Turing Machine peut être simulé par un automate à deux piles (la
+pile 'gauche' simule la bande à gauche du pointeur, et la pile 'droite' la
+bande à droite)
+http://cs.stackexchange.com/questions/2832/is-a-push-down-automaton-with-two-stacks-equivalent-to-a-turing-machine
+
+Wang W-Machine: { SHIFT-LEFT, SHIFT-RIGHT, MARK-SQUARE, ERASE-SQUARE, JUMP-IF-SQUARE-MARKED-to xxx } 
+Wang B-machine ("B" for "basic") with the instruction-set
+  { SHIFT-LEFT, SHIFT-RIGHT, MARK-SQUARE, JUMP-IF-SQUARE-MARKED-to xxx } 
+
+Récuctions: http://arxiv.org/abs/1304.0053
+- La version originelle de Turing utilise les cases paires pour des
+  annotations; on peut voir ça comme un cas particulier de machine de
+  Turing à 2 bandes
+- On a juste besoin d'une bande infinie dans une direction
+- La machine de Turing fait plusieurs instructions en même temps:
+  lire la case, écrire la cause, sauter à une instruction arbitraire
+- On peut simuler la machine de Turing par une machine de Turing non
+  effaçante, ie qui ne remplace jamais un '1' en '0' (en temps cubique)
+- On peut simuler la machine de Turing non effaçante via une Wang
+  B-machine, qui ne dispose que des opérations
+  Left, Right, Mark 1, Jump to x if current symbol is 1
+  [sinon la machine va à l'instruction suivante];
+  le tout en temps linéaire
+
+Language P''
+http://en.wikipedia.org/wiki/P%E2%80%B2%E2%80%B2
+
+Brainfuck is very similar:
+http://en.wikipedia.org/wiki/Brainfuck
+>       increment the data pointer (to point to the next cell to the right).
+<       decrement the data pointer (to point to the next cell to the left).
++       increment (increase by one) the byte at the data pointer.
+-       decrement (decrease by one) the byte at the data pointer.
+.       output the byte at the data pointer.
+,       accept one byte of input, storing its value in the byte at the data pointer.
+[       if the byte at the data pointer is zero, then instead of moving the instruction pointer forward to the next command, jump it forward to the command after the matching ] command.
+]       if the byte at the data pointer is nonzero, then instead of moving the instruction pointer forward to the next command, jump it back to the command after the matching [ command.
+
+http://en.wikipedia.org/wiki/BlooP_and_FlooP
+
+RAM Machine http://en.wikipedia.org/wiki/Random-access_machine
+- LOAD ( C, rd ) ; C → rd, C is any integer
+- ADD ( rs1, rs2, rd ) ; [rs1] + [rs2] → rd, the registers can be the same or different;
+- SUB ( rs1, rs2, rd ) ; [rs1] - [rs2] → rd, the registers can be the same or different:
+- COPY ( i, rp, d, rd ) ; [[rp] ] → rd, Indirectly copy the contents of the source-register pointed to by pointer-register rp into the destination register.
+- COPY ( d, rs, i, rp ) ; [rs] → [rp]. Copy the contents of source register rs into the destination-register pointed to by the pointer-register rp.
+- JNZ ( r, Iz ) ; Conditional jump if [r] is positive; i.e. IF [r] > 0 THEN jump to instruction z else continue in sequence (Cook and Reckhow call this: "TRAnsfer control to line m if Xj > 0")
+- READ ( rd ) ; copy "the input" into destination register rd
+- PRINT ( rs ) ; copy the contents of source register rs to "the output."
+
+RAM1 model: Schönhage demonstrates how his construction can be used to form the more common, usable form of "successor"-like RAM (using this article's mnemonics): [A: accumulator, N: register address]
+- LDA k ; k --> A , k is a constant, an explicit number such as "47"
+- LDA ( d, r ) ; [r] → A ; directly load A
+- LDA ( i, r ) ; [[r]] → A ; indirectly load A
+- STA ( d, r ) ; [A] → r ; directly store A
+- STA ( i, r ) ; [A] → [r] ; indirectly store A
+- JEA ( r, z ) ; IF [A] = [r] then Iz else continue
+- INCA ; [A] + 1 --> A
+
+RAM0 model: Schönhage's RAM0 machine has 6 instructions indicated by a single letter (the 6th "C xxx" seems to involve 'skip over next parameter'. Schönhage designated the accumulator with "z", "N" with "n", etc. Rather than Schönhage's mnemonics we will use the mnemonics developed above.
+- (Z), CLRA: 0 → A
+- (A), INCA: [A] +1 → A
+- (N), CPYAN: [A] → N
+- (A), LDAA: [[A]] → A ; contents of A points to register address; put register's contents into A
+- (S), STAN: [A] → [N] ; contents of N points to register address; put contents of A into register pointed to by N
+- (C), JAZ ( z ): [A] = 0 then go to Iz ; ambiguous in his treatment
+
+(2) Reduce a RAM to a Post-Turing machine:
+Posing as minimalists, we reduce all the registers excepting the accumulator A and indirection register N e.g. r = { r0, r1, r2, ... } to an unbounded string of (very-) bounded-capacity pigeon-holes. These will do nothing but hold (very-) bounded numbers e.g. a lone bit with value { 0, 1 }. Likewise we shrink the accumulator to a single bit. We restrict any arithmetic to the registers { A, N }, use indirect operations to pull the contents of registers into the accumulator and write 0 or 1 from the accumulator to a register:
+    { LDA (i, N), STA (i, N), CLR (A/N), INC (A/N), DEC(N), JZ (A/N, Iz), JZ (Iz), H }
+We push further and eliminate A altogether by the use of two "constant" registers called "ERASE" and "PRINT": [ERASE]=0, [PRINT]=1.
+    { CPY (d, ERASE, i, N), CPY (d, PRINT, i, N), CLR (N), INC (N), DEC (N), JZ (i, N, Iz), JZ (Iz), H }
+Rename the COPY instructions and call INC (N) = RIGHT, DEC (N) = LEFT and we have the same instructions as the Post-Turing machine, plus an extra CLRN :
+    { ERASE, PRINT, CLRN, RIGHT, LEFT, JZ (i, N, Iz), JZ (Iz), H } 

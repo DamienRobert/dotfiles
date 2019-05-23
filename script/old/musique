@@ -1,0 +1,8 @@
+#!/bin/sh
+
+MACHINE="$1"
+shift
+
+for f in "$@"; do
+    ssh "$MACHINE" '/usr/local/util/bin/sox -t ogg - -t sunau -w -s /dev/audio' < "$f"
+done

@@ -1,0 +1,31 @@
+#GENERATE WHEN @computer.name=~/Feanor|Mithrim|FleurBleue/
+<%
+#Originally this was an empty file with the comments:
+# This file masks persistent renaming rules for network devices. If you
+# delete this file, /usr/lib/udev/rules.d/80-net-name-slot.rules may
+# rename network devices according to ID_NET_NAME_{ONBOARD,SLOT,PATH}
+# properties of your network devices, with priority in that order. See
+# the output of 'udevadm test-builtin net_id /sys/class/net/$interface'
+# for details on what that new name might be.
+#
+# http://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames
+case @computer.name
+when "Feanor"
+  @eth_mac="08:60:6e:e6:08:c7"
+  @wlan_mac="dc:85:de:74:f5:f5"
+when "Mithrim"
+  @eth_mac="8c:dc:d4:d6:49:87" #enp0s25
+  @wlan_mac="80:19:34:0c:f6:48" #wlo1
+when "FleurBleue"
+  @eth_mac="c8:0a:a9:21:5b:91" #enp3s0
+  @wlan_mac="f0:7b:cb:16:0e:d6" #wlp2s0
+end
+%>
+ACTION=="remove", GOTO="net_name_slot_end"
+SUBSYSTEM!="net", GOTO="net_name_slot_end"
+NAME!="", GOTO="net_name_slot_end"
+
+ATTR{address}=="<%= @eth_mac %>", NAME="eth0"
+ATTR{address}=="<%= @wlan_mac %>", NAME="wlan0"
+
+LABEL="net_name_slot_end"

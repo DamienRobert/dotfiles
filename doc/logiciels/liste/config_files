@@ -1,0 +1,16 @@
+Formats:
+- ini
+- json / json5 (=json + comments)
+- yaml
+  Pitchfall: https://noyaml.com/
+- toml: https://github.com/toml-lang/toml
+
+Comparison: https://github.com/crdoconnor/strictyaml/blob/master/FAQ.rst
+
+Templates:
+- https://jsonnet.org/ (json + variables and functions)
++ https://dhall-lang.org/#
+  -> https://github.com/dhall-lang/dhall-lang/wiki/Safety-guarantees#effects
+
+Divers:
+http://www.jsonml.org/ (=xml in json)

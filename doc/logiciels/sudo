@@ -1,0 +1,4 @@
+Sample sudoer config:
+    Defaults passprompt=%p@%H:%u->%U: 
+    #Defaults !env_reset
+    #Defaults timestamp_timeout=15 (default: 5)

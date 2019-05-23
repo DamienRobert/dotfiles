@@ -1,0 +1,3 @@
+find empty files matching 'C*' and delete
+
+find . -empty -name 'C*' -exec rm {} \;

@@ -1,0 +1,119 @@
+#!/usr/bin/zsh
+
+## These two functions are stolen from devtools
+##
+#  usage : is_subvolume( $path )
+# return : whether $path is a the root of a btrfs subvolume (including
+#          the top-level subvolume).
+##
+is_subvolume() {
+	[[ -e "$1" && "$(stat -f -c %T "$1")" == btrfs && "$(stat -c %i "$1")" == 256 ]]
+}
+
+
+##
+#  usage : subvolume_delete_recursive( $path )
+#
+#    Find all btrfs subvolumes under and including $path and delete them.
+##
+subvolume_delete_recursive() {
+	local subvol
+
+	is_subvolume "$1" || return 0
+
+	while IFS= read -d $'\0' -r subvol; do
+		if ! subvolume_delete_recursive "$subvol"; then
+			return 1
+		fi
+	done < <(find "$1" -mindepth 1 -xdev -depth -inum 256 -print0)
+	if ! btrfs subvolume delete "$1" &>/dev/null; then
+		echo "Unable to delete subvolume '$1'"
+		return 1
+	fi
+
+	return 0
+}
+
+# Note: this is not recursive
+get_subvols() {
+	local subvols vol
+	btrfs_subvols=()
+	for vol in $@; do
+		btrfs_subvols+=$vol
+		subvols=("${(f)$(btrfs subvolume list -o $vol | cut -d ' ' -f 9)}")
+		[[ -z $subvols ]] || btrfs_subvols+=("$vol/${(@)^subvols}")
+	done;
+}
+
+# REM: subvol list is insane:
+# $ sudo btrfs subvol list -o /var/lib/machines
+# ID 757 gen 1428961 top level 654 path slash/var/lib/machines/arch_container
+# => note that slash/var/... is not the mountpoint!
+# $ sudo btrfs subvol list  /var/lib/machines
+# ID 257 gen 1560091 top level 5 path slash
+# ID 258 gen 1560091 top level 5 path home
+# ID 654 gen 1540645 top level 257 path slash/var/lib/machines
+# ID 757 gen 1428961 top level 654 path arch_container
+# => note that we can't distinguish easily between a top level subvol and arch_container which is inside /var/lib/machines...
+
+get_all_vols() {
+	btrfs_vols=("${(f)$(findmnt -n -l -o TARGET -t btrfs)}")
+}
+
+get_all_subvols() {
+	get_all_vols
+	get_subvols $btrfs_vols
+}
+
+defrag() {
+	echo "- Defragmenting: $@"
+	btrfs filesystem defragment -v $@
+	echo "-> files"
+	btrfs filesystem defragment -r -v $@
+}
+
+defrag_dir() {
+	echo "-> directory metadata"
+	find $@ -xdev -type d -print -exec btrfs filesystem defragment '{}' \;
+}
+
+if [[ -n $@ ]]; then
+	run=$1; shift
+else
+	run="list"
+fi
+
+# list / defrag -r, -d, -a / delete
+case $run in
+	defrag)
+		while true;
+		do
+			case $1 in
+				-- ) break ;;
+				-r ) shift; do_subvolumes=t ;;
+				-d ) shift; do_metadata=t ;;
+				-a ) shift; get_all_vols; vols=($btrfs_vols) ;;
+				*) break;;
+			esac
+		done
+		[[ -z $vols ]] && vols=($@)
+		if [[ -n $do_subvolumes ]]; then
+			get_subvols $vols
+			vols=($btrfs_subvols)
+		fi
+		#Defragment all btrfs volumes
+		for vol in $vols; do
+			defrag $vol
+			[[ -n $do_metadata ]] && defrag_dir $vol
+		done
+		;;
+	list)
+		if [[ -n $@ ]]; then
+			get_subvols $@
+		else
+			get_all_subvols
+		fi
+		echo $btrfs_subvols ;;
+	delete)
+		subvolume_delete_recursive $1 ;;
+esac

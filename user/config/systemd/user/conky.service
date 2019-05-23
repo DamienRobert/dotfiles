@@ -1,0 +1,14 @@
+[Unit]
+Description=conky
+Documentation=man:conky(1)
+ConditionPathExists=%h/.config/conky/conky.conf
+ConditionFileIsExecutable=/usr/bin/conky
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/conky
+Nice=10
+StandardOutput=null
+
+[Install]
+WantedBy=graphical-session.target

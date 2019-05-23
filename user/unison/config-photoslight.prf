@@ -1,0 +1,5 @@
+path=data/Photos/Photos_de_Blandine
+path=data/Photos/Photos_de_Damien
+
+# Digikam
+ignore = Name *.db

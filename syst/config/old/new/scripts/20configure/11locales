@@ -1,0 +1,4 @@
+#!/bin/zsh
+#arch-chroot
+
+locale-gen

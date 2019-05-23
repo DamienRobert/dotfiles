@@ -1,0 +1,252 @@
+http://www.rays-notebook.info/computing/apps-freedesktop.html
+
+Réglé par lightdm:
+$XDG_SESSION_DESKTOP=xfce: the session launched by the dm
+(lightdm also sets GDMSESSION=xfce)
+Réglé par /etc/xdg/xfce4/xinitrc:
+$XDG_CURRENT_DESKTOP=XFCE: for desktop files in OnlyShownIn/NotShownIn
+  colon separated list of currently active desktops
+$DESKTOP_SESSION=xfce
+
+Desktop Database
+================
+
+- desktop files are in /usr/share/applications ($XDG_DATA_DIRS/applications)
+  and locally in ~/.local/share/applications
+
+Specs
+=====
+desktop: http://standards.freedesktop.org/desktop-entry-spec/latest/
+-> http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s06.html
+
+OnlyShownIn, NotShownIn
+     A list of strings identifying the desktop environments that should
+     display/not display a given desktop entry. By default, a desktop file
+     should be shown, unless an OnlyShowIn key is present, in which case,
+     the default is for the file not to be shown. If $XDG_CURRENT_DESKTOP
+     is set then it contains a colon-separated list of strings. In order,
+     each string is considered. If a matching entry is found in OnlyShowIn
+     then the desktop file is shown. If an entry is found in NotShowIn then
+     the desktop file is not shown. If none of the strings match then the
+     default action is taken (as above). The same desktop name may not
+     appear in both OnlyShowIn and NotShowIn of a group.
+Hidden [like if the file was deleted]
+NoDisplay [Do not show in menus]
+Categories: Categories in which the entry should be shown in a menu
+StartupNotify: application that support notifying when they are started
+
+Menu: http://standards.freedesktop.org/menu-spec/latest/
+-> in ~/.config/menus/
+$XDG_CONFIG_DIRS/menus/${XDG_MENU_PREFIX}applications.menu is the main menu
+Icons for submenus are looked in ~/.local/share/desktop-directories/
+
+Icons: http://www.freedesktop.org/wiki/Specifications/icon-theme-spec
+Location: $XDG_DATA_DIRS/icons and in /usr/share/pixmaps
+[Hum it looks like it it /usr/share/icons actually...]
+The default theme is 'hicolor'
+
+Autostart
+=========
+
+http://standards.freedesktop.org/autostart-spec/latest/
+-> ~/.config/autostart, /etc/xdg/autostart
+Ex: to desactivate zeitgeist autostart:
+    $ cat zeitgeist-datahub.desktop
+    [Desktop Entry]
+    Hidden=true
+To activate clipman:
+    $ cat xfce4-clipman-plugin-autostart.desktop
+    [Desktop Entry]
+    Hidden=false
+
+X-XFCE-Autostart-Override=false [when set to true allow to autostart
+non xfce applications under xfce:
+    Show also non-XFCE applications in the autostart list but do no enable
+    them. If OnlyShowIn does not list XFCE, show it cursive in the list and
+    set X-XFCE-Autostart-Override=true when toggled. This way we don't
+    alter the Hidden and OnlyShowIn keys for other environments. If
+    X-XFCE-Autostart-Override is true, skip the OnlyShowIn check and try to
+    start it (unless Hidden is set etcetc).]
+
+Sessions
+========
+.local/share/{applications,xsessions}
+/usr/share/{applications,xsessions,desktop-base,desktop-directories}
+
+XDG
+===
+# XDG env: http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+- $XDG_DATA_HOME: $HOME/.local/share
+- $XDG_DATA_DIRS: /usr/local/share/:/usr/share/
+- $XDG_CONFIG_HOME: $HOME/.config
+- $XDG_CONFIG_DIRS: /etc/xdg
+- $XDG_CACHE_HOME: $HOME/.cache
+
+Others (env | grep XDG):
+- XDG_CURRENT_DESKTOP=XFCE
+- XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/dams
+- XDG_MENU_PREFIX=xfce-
+- XDG_RUNTIME_DIR=/run/user/1000
+- XDG_SEAT=seat0
+- XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+- XDG_SESSION_COOKIE=5296265de8b80576adf58f5355082bf3-1462266599.609930-218702108
+- XDG_SESSION_DESKTOP=xfce
+- XDG_SESSION_ID=c2
+- XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+- XDG_SESSION_TYPE=x11
+- XDG_VTNR=1
+
+~/.config/user-dirs.dirs
+========================
+- XDG_DESKTOP_DIR="$HOME/Desktop"
+- XDG_DOWNLOAD_DIR="$HOME/Downloads"
+- XDG_TEMPLATES_DIR="$HOME/Templates"
+- XDG_PUBLICSHARE_DIR="$HOME/Public"
+- XDG_DOCUMENTS_DIR="$HOME/Documents"
+- XDG_MUSIC_DIR="$HOME/Music"
+- XDG_PICTURES_DIR="$HOME/Pictures"
+- XDG_VIDEOS_DIR="$HOME/Videos"
+
+https://wiki.archlinux.org/index.php/Xdg_user_directories
+$ xdg-user-dirs-update
+Tip: To force the creation of English-named directories, LC_ALL=C xdg-user-dirs-update can be used.
+$ xdg-user-dir TEMPLATES #=> /home/dams/Documents/Templates
+
+Xdg-tools
+=========
+See also: https://wiki.archlinux.org/index.php/Xdg-menu
+          https://wiki.archlinux.org/index.php/Xdg-open 
+
+- xdg-open, xdg-mime [see also 'mime' for more details]
+  Inside a desktop environments like GNOME, KDE, or Xfce), xdg-open simply
+  passes the arguments to those desktop environment's file-opener
+  application (eg. gvfs-open, kde-open, or exo-open). which means that the
+  associations are left up to the desktop environment. Failback:
+  look at desktop files manually, run-mailcap, mimeopen)
+
+- xdg-desktop-icon - command line tool for (un)installing icons to the desktop
+  Ex: xdg-desktop-icon install /usr/share/applications/xfce4-terminal.desktop
+  will copy the desktop file to $(xdg-user-dir DESKTOP)
+
+- xdg-desktop-menu - command line tool for (un)installing desktop menu items
+  -> local submenus (*.directory) are copied in ~/.local/share/desktop-directories [this allows to give a name and an icon to the submenu]
+  -> local desktop files (*.desktop) are copied in ~/.local/share/applications
+     [Also make the current installed application the 'lazy' default for
+     the mimetypes it support cf make_lazy_default() in
+     ~/.local/share/applications/defaults.list [BUG: this is absurd it
+     should be mimeapps.list, defaults.list is  Unofficially deprecated; cf
+     https://lists.freedesktop.org/archives/xdg/2014-February/013183.html
+     and also https://github.com/IgnorantGuru/spacefm/issues/71]
+  -> merged local menus (*.menu) are copied in ~/.config/menus/applications-merged
+  xdg-desktop-menu forceupdate -> update-desktop-database [automatically called by xdg-desktop-menu install]
+  Ex: $ XDG_UTILS_DEBUG_LEVEL=3 xdg-desktop-menu install /usr/share/desktop-directories/xfce-system.directory /usr/share/applications/xfce4-terminal.desktop
+  # install 'xfce4-terminal' in the submenu 'xfce-system'; if the
+  # '.directory' is not specified, then xdg-desktop-menu looks at
+  # the 'Categories' keyword
+      update_submenu user-xfce-system.menu
+      Install locations for *.menu file:
+      xdg_user_dir: /home/dams/.config/menus/applications-merged
+      xdg_global_dir: /applications-merged
+      kde_user_dir: 
+      kde_global_dir: 
+      gnome_user_dir: 
+      gnome_global_dir: 
+      Updating /home/dams/.config/menus/applications-merged/user-xfce-system.menu (install)
+      Files to list in user-xfce-system.menu: xfce4-terminal.desktop
+      Install locations for *.directory files:
+      xdg_user_dir: /home/dams/.local/share/desktop-directories
+      xdg_global_dir: 
+      kde_user_dir: 
+      kde_global_dir: 
+      gnome_user_dir: 
+      gnome_global_dir: 
+      install /usr/share/desktop-directories/xfce-system.directory in /home/dams/.local/share/desktop-directories  
+      Install locations for *.desktop files:
+      xdg_user_dir: /home/dams/.local/share/applications
+      xdg_global_dir: 
+      kde_user_dir: 
+      kde_global_dir: 
+      gnome_user_dir: /home/dams/.gnome/apps
+      gnome_global_dir: 
+      install /usr/share/applications/xfce4-terminal.desktop in /home/dams/.local/share/applications  /home/dams/.gnome/apps
+      make_lazy_default /home/dams/.local/share/applications/xfce4-terminal.desktop
+      $ cat config/menus/applications-merged/user-xfce-system.menu
+      <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+          "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
+      <!-- Do not edit manually - generated and managed by xdg-desktop-menu -->
+      <Menu>
+          <Name>Applications</Name>
+      <Menu>
+          <Name>xfce-system</Name>
+          <Directory>xfce-system.directory</Directory>
+          <Include>
+              <Filename>xfce4-terminal.desktop</Filename>
+          </Include>
+      </Menu>
+      </Menu>
+
+- xdg-email - command line tool for sending mail using the user's preferred e-mail composer
+  -> url encode the mail; and then calls an email handling agent:
+  - If MAILER="mutt:thunderbird" is set uses the first that matches
+  - Detect the DE: on xfce just runs exo-open
+  - Generic fallback: client=$(desktop_file_to_binary$(xdg-mime query default "x-scheme-handler/mailto))
+    if client is thunderbird or icedove calls run_thunderbird()
+    else try xdg-open (strangely does not use $client anymore)
+    else go through $BROWSER
+  Example: MAILER="echo" xdg-email --to foo --cc bar --subject hello --body Yow
+           mailto:?to=foo&cc=bar&subject=hello&body=Yow
+           MAILER="echo" xdg-email foo@yo bar@com baz@cim #it recognizes --to argument if they contain an '@'
+           mailto:foo@yo?to=bar@com&to=baz@cim
+
+- xdg-icon-resource - command line tool for (un)installing icon resources
+  - xdg-icon-resource forceupdate simply touch a files in the icon theme
+    "$1" [~/.local/share/hicolor] to make it dirty and calls gtk-update-icon-cache -f -t "$1"
+
+- xdg-screensaver - command line tool for controlling the screensaver
+  -> activate/lock/reset/status
+  -> suspend/resume WindowId
+  Has support for:
+  - freedesktop screen savers (dbus-send --dest=org.freedesktop.ScreenSaver)
+  - xserver (xset s *)
+  - gnome-screensaver, xscreensaver [used when DE=xfce,xscreensaver,generic,''], xautolock
+  + suspend => `xset -dpms`, resume => `xset +dpms`; reset => `xset dpms force on`
+
+    Note: xset s waittime cycletime => activate the screensaver after waittime, and cycle after cycletime
+    xset s on => uses hardcoded default for timeout and cycle
+    xset s default => uses server default
+    xset s activate/reset
+
+    xdg-screensaver -> xscreensaver:
+      suspend => xset s off (+save timeout value, but not cycle)
+      resume => xset s $timeout
+      activate => xset s activate, reset => xset s reset
+      status => xset q
+      lock => 'unknown command'
+
+- xdg-settings - get various settings from the desktop environment
+    Known properties:
+    default-url-scheme-handler    Default handler for URL scheme
+    default-web-browser           Default web browser
+
+    $ xdg-settings get default-web-browser
+    $ xdg-settings check default-web-browser firefox.desktop
+    $ xdg-settings set default-web-browser google-chrome.desktop
+    $ xdg-settings set default-url-scheme-handler mailto evolution.desktop
+
+    get_browser_mime uses 'xdg-mime query default "$MIME"' (text/html par défaut)
+    get_url_scheme_handler_generic() => get_browser_mime "x-scheme-handler/$1"
+    set_browser_mime: 'xdg-mime default $1 ${2-"/text/html"}' [and calls
+      fix_local_desktop_file "$2" to be sure that the local desktop file does
+      have the correct MimeType]
+
+    get_browser_generic uses $BROWSER
+    check_browser_generic verifie que $1=get_browser_generic, mais aussi 'get_browser_mime' et 'get_url_scheme_handler_generic https'
+    check_url_scheme_handler_generic =>  vérifie que $BROWSER = 'get_url_scheme_handler_generic https'
+    set_browser_generic => set_browser_mime "$1" {/text/html,x-scheme-handler/{http,https,about,unknown}
+
+    get_browser_xfce: utilise ~/.config/xfce4/helpers.rc
+    check_browser_xfce: vérifie que $1 = get_browser_xfce
+    set_browser_xfce: update helpers.rc avec un .desktop dans ~/.local/share/xfce4/helpers fabriqué via le .desktop d'origine avec les modifications suivantes:
+           # "Type" must be "X-XFCE-Helper"
+           # "X-XFCE-Category" must be "WebBrowser" (for web browsers, anyway)
+           # "X-XFCE-Commands" and "X-XFCE-CommandsWithParameter" must be set

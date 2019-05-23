@@ -1,0 +1,4 @@
+fzrg() {
+	result=$(rg --line-number --no-heading ${@:-.} | fzf -0 -1 -d: --nth 3 --header="[rg:$*]" | cut -d: -f1,2)
+	[[ -n $result ]] && $EDITOR -- $result
+}

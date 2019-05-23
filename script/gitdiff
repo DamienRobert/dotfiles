@@ -1,41 +1,34 @@
 #!/bin/zsh
 
-HIGHLIGHT=1
+MODE=highlight
 CAT=
-WORDS=
-UNISON=
+DIFFARGS=(-B "--color=always")
+HIARGS=()
 while true;
 do
-  case "$1" in
-    -- ) break ;;
-    -H ) shift; HIGHLIGHT= ;;
-    -c ) shift; CAT=1 ;;
-    --unison ) shift; UNISON=1 ;;
-    -w ) shift; WORDS="--word-diff"; HIGHLIGHT= ;;
-    -cH ) shift; HIGHLIGHT= CAT=1 ;;
-    *) break;;
-  esac
+	case "$1" in
+		-- ) break ;;
+		--raw ) shift; MODE=raw ;;
+		--unison ) shift; MODE=unison ;;
+		-w ) shift; DIFFARGS+="--word-diff" ;;
+		-c ) shift; CAT=t ;;
+		*) break;;
+	esac
 done
 
-if [[ -n $UNISON ]]; then
-  #for unison we want to go right to left
-  #update: this is more convenient to go from left to right
-  exec git diff --no-index $1 $2
-fi
+HI="$HOME/script/git/diff-fancy.rb"
+[[ -f $HI ]] || MODE="raw"
+[[ -n $CAT ]] && HIARGS+="--no-pager"
 
-[[ -z $PAGER ]] && PAGER=less
-HI="$HOME/mine/script/git/contrib/diff-highlight"
+case $MODE in
+	raw )
+		DIFFARGS+=("--color=auto")
+		exec git diff --no-index $DIFFARGS $@ ;;
+	unison )
+		#for unison we want to go from left to right
+		HIARGS+="--raw"
+		DIFFARGS+=("--color=never")
+		exec git diff --no-index $DIFFARGS $1 $2 | $HI $HIARGS ;;
+	* ) exec git diff --no-index $DIFFARGS "$@" | $HI $HIARGS ;;
+esac
 
-if [[ -z $CAT ]]; then
-  if [[ -n $HIGHLIGHT ]]; then
-    GIT_PAGER="$HI|$PAGER" exec git -c "color.ui=always" diff --no-index "$@"
-  else
-     exec git --paginate diff $WORDS --no-index "$@"
-  fi
-else
-  if [[ -n $HIGHLIGHT ]]; then
-    GIT_PAGER="$HI" exec git diff --no-index "$@"
-  else
-     exec git --no-pager diff $WORDS --no-index "$@"
-  fi
-fi

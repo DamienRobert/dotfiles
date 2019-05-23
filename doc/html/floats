@@ -1,8 +1,0 @@
-Using overflow auto to clear floats:
-http://css-tricks.com/the-css-overflow-property/
-
-Other methods:
-http://css-tricks.com/all-about-floats/
-
-The method used in html5-boilerplate:
-http://nicolasgallagher.com/micro-clearfix-hack/

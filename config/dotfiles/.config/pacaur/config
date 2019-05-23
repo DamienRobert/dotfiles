@@ -1,2 +1,0 @@
-buildDir="/tmp/pacaurtmp-$USER" # build directory - default: /tmp/pacaurtmp-$USER
-#color=true

@@ -1,0 +1,12 @@
+#vim: set ft=conf
+#after an update of texlive
+sudo texhash /etc/texmf
+sudo fmtutil-sys --all
+sudo updmap-sys
+luaotfload-tool -u
+#note: it should not be necessary to update luaotf database, it should do
+#it automatically, but in the last update on Numenor, using lualatex
+#slides.tex il would not work: the database would be regenerated but not
+#written (permission problem?) so it would regenerate the database at each
+#font access...
+#texhash /etc/texmf: on Doriath I was missing updmap.cfg...

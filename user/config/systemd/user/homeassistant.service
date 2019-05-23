@@ -1,0 +1,10 @@
+[Unit]
+Description=Home Assistant
+PartOf=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c 'exec hass'
+
+[Install]
+WantedBy=network.target

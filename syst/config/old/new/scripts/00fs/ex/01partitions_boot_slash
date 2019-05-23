@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+#EFI mode
+sgdisk -n 1:0:+100M -c "0:$BOOTPARTLABEL" -t '0:ef00' --attributes=1:set:2 \
+  -n 2:0:0 -c "0:$SLASHPARTLABEL" -t '0:8300' $DISK

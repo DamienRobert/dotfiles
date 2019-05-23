@@ -1,0 +1,98 @@
+# vim: filetype=sh:
+if [ -z "$_INITVARS" ]; then
+	if [ -e "$HOME/.initvars" ]; then
+		. "$HOME/.initvars"
+	else
+		#fallback
+_INITVARS=t
+
+MYFILES="${MYFILES-$HOME/mine}"
+USERFILES="${USERFILES-{$MYFILES/user}}"
+CFGFILES="${CFGFILES-{$MYFILES/user/config}}"
+DOTFILES="${DOTFILES-{$MYFILES/user/config/dotfiles}}"
+SYSTFILES="${SYSTFILES-{$MYFILES/syst}}"
+MAINTFILES="${MAINTFILES-{$MYFILES/maint}}"
+MYCOMPUTERS="${MYCOMPUTERS-{$MYFILES/00COMPUTERS.rb}}"
+
+# MYHOSTNAME=
+# MYHOSTTYPE=
+
+mylog() {
+  file="${1%.log}"; shift;
+  echo "# $file: @`date --iso-8601=seconds` - $@"
+}
+	fi
+fi
+case "$_INIT" in
+*e*)
+	mylog "session" ".initenv ($0 $@) [already read]"
+	;;
+*)
+	_INIT="${_INIT}e"; export _INIT
+	mylog "session" ".initenv ($0 $@)"
+	MYFILES="${MYFILES-$HOME/mine}"
+
+######	Reglages locaux ######
+XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR-$HOME/tmp}"
+mkdir -p "$XDG_RUNTIME_DIR"
+MPD_HOST="${MPD_HOST-$XDG_RUNTIME_DIR/mpd_sock}"
+SSH_AUTH_SOCK="${SSH_AUTH_SOCK-$XDG_RUNTIME_DIR/ssh_auth_sock}"
+export XDG_RUNTIME_DIR SSH_AUTH_SOCK MPD_HOST
+
+################### PATHS ##################
+PKGMGR="${PKGMGR-$HOME/opt/pkgmgr}"
+for dir in $PKGMGR/*/bin; do
+	[ -d $dir ] && PATH="$dir:$PATH"
+done
+
+PATH="$HOME/bin:$MYFILES/bin:$MYFILES/ruby/bin:$HOME/opt/local/bin:$MYFILES/ruby/core_gems/bin:$PATH"
+export PATH
+
+RUBYLIB="${RUBYLIB-$MYFILES/ruby/lib:}"
+GEM_HOME="${GEM_HOME-$PKGMGR/gems}"
+GEM_PATH="${GEM_PATH-$GEM_HOME:$MYFILES/ruby/core_gems:}"
+PYTHONUSERBASE="${PYTHONUSERBASE-$PKGMGR/pip}" #python
+#NPMHOME=$PKGMGR/npm #nodejs, now set up in .npmrc
+PERL5LIB="${PERL5LIB-$PKGMGR/perl5/lib/perl5:$PERL5LIB}"
+GOPATH="${GOPATH-$PKGMGR/go}"
+CARGO_HOME="${CARGO_HOME-$PKGMGR/cargo}"
+export RUBYLIB GEM_HOME GEM_PATH
+export PYTHONUSERBASE PERL5LIB GOPATH CARGO_HOME #NPMHOME
+
+[ -e $HOME/Mail ] && MAILDIR="$HOME/Mail" && export MAILDIR
+
+###### i18n #####
+unset LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
+			LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION
+if [ -r "$HOME/.config/locale.conf" ]; then 
+	. "$HOME/.config/locale.conf"
+else
+	# fallback
+	LC_CTYPE=en_US.UTF-8
+	LANG=POSIX
+	LANGUAGE=en_US
+	export LANG LC_CTYPE LANGUAGE
+fi
+
+################ ENV VARS ###############
+SHELL="${SHELL-`command -v zsh || command -v bash || command -v sh`}"
+PAGER="${PAGER-`command -v less`}"; LESS="${LESS--RMiqx2}"
+if [ -x "$MYFILES/script/editor" ]; then
+	EDITOR="$MYFILES/script/editor"
+	VISUAL="$EDITOR"
+else
+	EDITOR="${EDITOR-`command -v vim`}"
+	VISUAL="${VISUAL-`command -v gvim`}"
+fi
+export SHELL PAGER LESS EDITOR VISUAL
+
+#enable mousewheel in gtk3 apps, cf https://bugs.archlinux.org/task/36427
+GDK_CORE_DEVICE_EVENTS=1
+export GDK_CORE_DEVICE_EVENTS
+
+[ -f "$CFGFILES"/etc/hosts ] && HOSTALIASES="$CFGFILES"/etc/hosts && export HOSTALIASES
+
+# for temp settings
+[ -r "$HOME/.initenv.local" ] && . "$HOME/.initenv.local"
+	;;
+esac

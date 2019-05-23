@@ -1,114 +1,133 @@
 #!/usr/bin/zsh
 
-while true;
-do
-  case "$1" in
-    -- ) shift; break ;;
-    --phone ) shift; PHONE=1 ;;
-    --xavier ) shift; XAVIER=1 ;;
-    *) break;;
-  esac
-done
-
-PHOTODIR=$1
-[[ -z $PHOTODIR ]] && PHOTODIR=$(pwd)
-[[ -d $PHOTODIR ]] || mkdir -p $PHOTODIR || exit 1
-
 msg() {
-  echo "# Photos: $NEXT to $LAST"
-  echo "# Videos: $NEXTVID to $LASTVID"
-  echo "# Dir: $PHOTODIR (press a key to continue)"
-  read a
+	[[ -n $TOTRANSFERT ]] && echo -n "=> "; echo ${TOTRANSFERT:t}
+	[[ -n $CURRENT || -n $LAST ]] && echo "# Photos: '$CURRENT' -> '$LAST'"
+	[[ -n $CURVID || -n $LASTVID ]] && echo "# Videos: '$CURVID' -> '$LASTVID'"
+	[[ -n $CURDATE ]] && echo "Last backup: $CURDATE"
+	[[ -n $TOTRANSFERT ]] && echo "# Total: $#TOTRANSFERT"
+	echo "# Dir: $PHOTODIR (press a key to continue)"
+	read a
 }
+
 updatecur() {
-  echo "#$PHOTODIR ($(date --iso-8601=seconds))" >> $CURFILE
-  echo "CURRENT=$LAST\nCURVID=$LASTVID" >> $CURFILE
+	echo "#$PHOTODIR ($(date --iso-8601=seconds))" >> $CURFILE
+	[[ -n $LAST ]] && echo "CURRENT=$LAST" >> $CURFILE
+	[[ -n $LASTVID ]] && echo "CURVID=$LASTVID" >> $CURFILE
+	[[ -n $CURDATE ]] && echo "CURDATE=$(date +%s)" >> $CURFILE #seconds since Epoch
 }
+
 transfert() {
-  rsync -vazP "$@"
+	rsync -vazP "$@"
 }
+
+do_transfert() {
+	msg
+	[[ -n $TOTRANSFERT ]] && transfert $TOTRANSFERT $PHOTODIR
+	updatecur
+}
+
+alphabetic_mode() {
+	# echo "** alphabetic mode"
+	PHOTOS=($CAMERAPHOTOS/${(@)^~PHOTOSGLOB})
+	[[ -n $PHOTOS ]] && LAST=${PHOTOS[-1]:t:r} #not used
+	if [[ -n $CAMERAVIDEOS ]]; then
+		VIDEOS=($CAMERAVIDEOS/${(@)^~VIDEOSGLOB})
+		[[ -n $VIDEOS ]] && LASTVID=${VIDEOS[-1]:t:r} #not used
+	fi
+	# echo "all photos: $PHOTOS"
+	# echo "all videos: $VIDEOS"
+	TOTRANSFERT=()
+	for photo in $PHOTOS; do
+		if [[ -n $CURDATE ]]; then #use stat
+			filedate=$(stat --printf=%Y $photo) #time of last modif, seconds since Epoch
+			[[ $filedate > $CURDATE ]] && TOTRANSFERT+=$photo
+		else
+			[[ ${photo:t:r} > $CURRENT ]] && TOTRANSFERT+=$photo
+		fi
+	done
+	for video in $VIDEOS; do
+		if [[ -n $CURDATE ]]; then
+			filedate=$(stat --printf=%Y $video)
+			[[ $filedate > $CURDATE ]] && TOTRANSFERT+=$video
+		else
+			[[ ${video:t:r} > $CURVID ]] && TOTRANSFERT+=$video
+		fi
+	done
+	do_transfert
+}
+
 missing() {
 	[[ -z $LAST ]] && LAST=$CURRENT
 	[[ -z $LASTVID ]] && LASTVID=$CURVID
 }
 
-if [[ -n $PHONE ]]; then #get photos from phone
-  #CAMERAPHOTO="$HOME/Downloads/Camera Roll"
-  #CAMERAVIDEOS="$HOME/Downloads/camera-multi"
-  #CAMERAPHOTO="$HOME/.gvfs/mtp:host=%5Busb%3A005%2C006%5D/Card/DCIM/Camera"
-  #Copy using pcmanfm the DCIM folder to /tmp
-  CAMERAPHOTO="/tmp/DCIM/Camera"
-  CAMERAVIDEOS=$CAMERAPHOTO
-  CURFILE="$HOME/Photos/Photos_de_Damien/SamsungGalaxyS3Mini/00current"
-  . $CURFILE
-
-  NEXT=$CURRENT
-  NEXTVID=$CURVID
-  LAST=$(basename "$(ls $CAMERAPHOTO/*.jpg | tail -n 1)")
-  LASTVID=$(basename "$(ls $CAMERAVIDEOS/*.mp4 | tail -n 1)")
-  missing
-  msg
-
-  TOTRANSFERT=()
-  for photo in $CAMERAPHOTO/*.jpg(N); do
-    if [[ "$(basename "$photo")" > $NEXT ]]; then
-      TOTRANSFERT+=$photo
-    fi
-  done
-  if [[ -d $CAMERAVIDEOS ]]; then #sometimes I erase the videos
-  	for video in $CAMERAVIDEOS/*.mp4(N); do
-  	  if [[ "$(basename "$video")" > $NEXTVID ]]; then
-  	    TOTRANSFERT+=$video
-  	  fi
-  	done
-  fi
-
-  transfert $TOTRANSFERT $PHOTODIR
-  updatecur
-  exit 0
-fi
-
-function photonum() {
-  local name
-  name=$1
-  name=${name#P}
-  name=${name%.JPG}
-  name=${name%.RW2} #in case it was an RW2
-  echo $name
+numeric_mode() { #obsolete
+	NEXT=$(($CURRENT+1))
+	NEXTVID=$(printf %05d $(($CURVID+1)))
+	LAST=($CAMERAPHOTOS/*_PANA/*); [[ -n $LAST ]] && LAST=${LAST[-1]:t:r}
+	LASTVID=$($CAMERAVIDEOS/STREAM/*); [[ -n $LASTVID ]] && LASTVID=${LASTVID[-1]:t:r}
+	missing
+	TOTRANSFERT=($CAMERAPHOTOS/*_PANA/P{$NEXT..$LAST}.{JPG,RW2}(N) $CAMERAVIDEOS/STREAM/{$NEXTVID..$LASTVID}.MTS(N) $CAMERAVIDEOS/CLIPINF/{$NEXTVID..$LASTVID}.CPI(N))
+	do_transfert
 }
 
-CAMERADIR=$HOME/media/9016-4EF8
-#[[ -n $XAVIER ]] && CAMERADIR=/mnt/ploum
-[[ -n $XAVIER ]] && CAMERADIR=$HOME/media/F84E-1690
+find_curfile() {
+	local dir=$1
+	if [[ -f $dir/00current ]]; then
+		CURFILE="$dir/00current"
+	else
+		if [[ $dir == "/" ]]; then
+			"Warning: 00current not found"
+			return 1
+		else
+			dir=${dir:h}
+			find_curfile $dir
+		fi
+	fi
+}
 
-CAMERAPHOTO=$CAMERADIR/DCIM
-CAMERAVIDEOS=$CAMERADIR/PRIVATE/AVCHD/BDMV
+while true; do
+	case $1 in
+		-- ) break ;;
+		-c|--camera ) shift; CAMERADIR=$1; shift ;;
+		*) break;;
+	esac
+done
 
-CURFILE=$HOME/Photos/LF1/00current
-[[ -n $XAVIER ]] && CURFILE=$HOME/Photos/Photos_de_Blandine/00current
+PHOTODIR=$1
+[[ -z $PHOTODIR ]] && PHOTODIR=$PWD
+[[ -d $PHOTODIR ]] || mkdir -p $PHOTODIR || exit 1
+[[ -z $CURFILE ]] && find_curfile $(realpath -- $PHOTODIR)
+[[ -n $CURFILE ]] && . $CURFILE
 
-. $CURFILE
+. ~/script/lib/mount_dir
+MOUNTMODE="udisk"
+find_mount && do_mount
+[[ -z $CAMERADIR ]] && CAMERADIR=$MOUNTTARGET
+[[ -d $CAMERADIR ]] || exit 1
+[[ -z $CAMERAPHOTOS ]] && CAMERAPHOTOS=$CAMERADIR/$CAMERAPHOTOSNAME
+[[ -z $CAMERAVIDEOS && -n $CAMERAVIDEOSNAME ]] && CAMERAVIDEOS=$CAMERADIR/$CAMERAVIDEOSNAME
+[[ -z $PHOTOSGLOB ]] && PHOTOSGLOB="**/*(.N)"
+[[ -z $VIDEOSGLOB ]] && VIDEOSGLOB="**/*(.N)"
 
-NEXT=$(($CURRENT+1))
-NEXTVID=$(($CURVID+1))
-NEXTVID=$(printf %05d $NEXTVID)
-LAST=$(ls $CAMERAPHOTO/*_PANA | tail -n 1)
-LAST=$(basename $LAST)
-LAST=$(photonum $LAST)
-LASTVID=$(ls $CAMERAVIDEOS/STREAM | tail -n 1)
-LASTVID=$(basename $LASTVID)
-LASTVID=${LASTVID%.MTS}
-missing
-msg
+case $mode in
+	'stat') alphabetic_mode ;;
+	'alphabetic') alphabetic_mode ;;
+	'numeric') numeric_mode ;;
+	* ) alphabetic_mode ;;
+esac
 
-if [[ $NEXT -le $LAST ]]; then
-  echo "# Copying photos"
-  transfert $CAMERAPHOTO/*_PANA/P{$NEXT..$LAST}.{JPG,RW2}(N) $PHOTODIR
-fi
-if [[ $NEXTVID -le $LASTVID ]]; then
-  echo "# Copying videos"
-  transfert $CAMERAVIDEOS/STREAM/{$NEXTVID..$LASTVID}.MTS(N) $PHOTODIR
-  transfert $CAMERAVIDEOS/CLIPINF/{$NEXTVID..$LASTVID}.CPI(N) $PHOTODIR
-fi
-updatecur
-echo "# umount $CAMERADIR"
+# For phones:
+# - Copy using pcmanfm the DCIM folder to /tmp
+# - Use ssh helper:
+#   md /tmp/DCIM/Camera; cd /tmp/DCIM/Camera
+#   ssh samsung ls /storage/extSdCard/DCIM/Camera/
+#   transfert samsung:/storage/extSdCard/DCIM/Camera/20150{7,8}\* .
+#   CAMERAPHOTOS="/tmp/DCIM/Camera"
+# - Use gvfs:
+#   gvfs-mount -li
+#   gvfs-mount 'mtp://[usb:001,030]/'
+#   CAMERAPHOTOS="$HOME/.gvfs/mtp:host=%5Busb%3A001%2C056%5D/Card/DCIM/Camera"
+
+[[ -n $DID_MOUNT ]] && do_umount

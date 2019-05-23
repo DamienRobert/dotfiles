@@ -1,0 +1,103 @@
+#pour sauver automatiquement là où on a envie
+#Par défault quand on ne met rien c'est
+#              ~f truc (et pas de moi) ou ~t truc and ~f moi
+
+############################################################################
+
+#Liste des hooks:
+#charset-hook alias charset -> pour mettre un alias pour un charset
+#iconv-hook charset local_charset -> pareil pour iconv
+#folder-hook [!]regexp command  -> quand on ouvre un folder
+#mbox-hook pattern mailbox      -> pour déplacer automatiquement les
+#                                  messages lus dans patter vers mailbox
+#save-hook [!]pattern filename  -> pour dire où on veut sauver
+#fcc-hook [!]pattern mailbox    -> pour dire où on veut sauver les messages
+#                                  qu'on envoit, (c'est dans $record par défaut)
+#fcc-save-hook                  -> pour combiner les deux
+#reply-hook [!]pattern command  -> pour faire une commande quand on reply
+#send-hook                         (resp envoit ou reply) à quelqu'un
+#send2-hook                        (send2-hook est regardé à chaque fois
+#                                  qu'on change le message, alors que send-hook
+#                                  n'est regardé que la première fois)
+#message-hook [!]pattern command-> Quand on s'apprète à regarder un message
+#crypt-hook pattern keyid       -> crypto...
+
+#############################################################################
+
+#####
+#
+#
+# Traitement en fonction des folders
+#
+#
+#####
+
+set record="$MAIL"
+#folder-hook . set record="$HOME/Mail/sent.bz2"
+folder-hook . set record="$MAIL"
+folder-hook "$HOME/Mail/MAILINGLISTS/Inbox" set record="$HOME/Mail/MAILINGLISTS/Sent.bz2"
+folder-hook "$HOME/Mail/TUTEURS/Inbox" set record="$HOME/Mail/TUTEURS/Sent.bz2"
+folder-hook "$HOME/Mail/WINTUTEURS/Inbox" set record="$HOME/Mail/WINTUTEURS/Sent.bz2"
+folder-hook "$HOME/Mail/GAMES/Inbox" set record="$HOME/Mail/GAMES/Sent.bz2"
+folder-hook "$HOME/Mail/GOUROUS/Inbox" set record="$HOME/Mail/GOUROUS/Sent.bz2"
+folder-hook "$HOME/Mail/MODERATEURS/.*" set record="$HOME/Mail/MODERATEURS/Sent.bz2"
+
+#folder-hook . set strict_threads
+#folder-hook '!' unset strict_threads
+#pour avoir les threads non casses quand je reponds
+
+#la moderation
+#je ne modère plus
+#folder-hook "$HOME/Mail/MODERATEURS/Inbox" macro index M "|~/bin/auto-moderate "
+#folder-hook "$HOME/Mail/MODERATEURS/Inbox" macro pager M "|~/bin/auto-moderate "
+
+#folder-hook "!$HOME/Mail/MODERATEURS/Inbox" bind index M middle-page
+#folder-hook "!$HOME/Mail/MODERATEURS/Inbox" bind pager M
+
+########
+#
+#   traitements suivant les destinataires
+#
+########
+
+#traitement spécial pour les mails de tuteurs
+#ATTENTION: c'est la première règle qui est prise en compte
+#Bon apparemment c'est la derniere?? J'y comprends plus rien!
+#donc mettre wtuteurs ***avant*** tuteurs (non, ***après***!)
+#DRILING DRILING!! ATTENTION WARNING! WARNING! ALERTE ROUGE!!
+
+send-hook ~A unmy_hdr "Reply-To:"
+send-hook ~A unmy_hdr "From:"
+send-hook tuteurs@clipper\.ens\.fr my_hdr "Reply-To: tuteurs@clipper.ens.fr"
+send-hook wtuteurs@clipper\.ens\.fr my_hdr "Reply-To: wtuteurs@clipper.ens.fr"
+send-hook games@clipper\.ens\.fr my_hdr "Reply-To: games@clipper.ens.fr"
+send-hook gourous@clipper\.ens\.fr my_hdr "Reply-To: gourous@clipper.ens.fr"
+send-hook moderateurs@clipper\.ens\.fr my_hdr "Reply-To: moderateurs@clipper.ens.fr"
+
+send-hook lesoiseauxgazouillentdanslepre@googlegroups\.com my_hdr "From: Damien Robert <ploum.plam@gmail.com>"
+
+
+#############
+#
+# open et close hook
+#
+#############
+
+# c'est passé dans le muttrc global
+
+# On peut gérer de façon transparente des mailboxes compressées par gzip.
+# Pour compresser une mailbox, il suffit de faire: gzip ~/Mail/box
+# C'est bien sûr réversible: gunzip ~/Mail/box.gz
+#open-hook \\.gz$ "gzip -cd %f > %t"
+#close-hook \\.gz$ "gzip -c %t > %f"
+#append-hook \\.gz$ "gzip -c %t >> %f"
+
+#bzip, c'est mieux :p
+#open-hook \\.bz2$ "bzip2 -cd %f > %t"
+#close-hook \\.bz2$ "bzip2 -c %t > %f"
+#append-hook \\.bz2$ "bzip2 -c %t >> %f"
+
+############################################################################
+
+#mes contacts, en mode parano, donc sourcé
+source ~/.mutt/savehooks

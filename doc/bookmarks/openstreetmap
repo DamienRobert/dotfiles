@@ -1,0 +1,22 @@
+# Layers:
+- Standard
+- Cycle: vélo -> http://www.opencyclemap.org/
+- Transport: transports en communs (train, bus, tram, métro)
+- MapQuest: le layer de map quest, comme standard en moins chargé
+    (pas de commerces...)
+    permet de plus facilement voir les axes de transport
+  -> http://open.mapquest.com/
+- Humanitarian: actions humanitaires
+    En pratique pour la France comme Standard mais avec un peu moins
+    d'information (commerces affichés sans leur nom)
+
+See http://wiki.openstreetmap.org/wiki/Featured_tiles
+-> http://tile.openstreetmap.fr/
+And http://www.thunderforest.com/ for the cycle and transport maps
+
+Map editor: http://umap.openstreetmap.fr
+
+Wikimedia Maps Beta: https://news.ycombinator.com/item?id=10236057
+(OSM layer used by wikipedia)
+
+wikimapia.org: OSM + labels

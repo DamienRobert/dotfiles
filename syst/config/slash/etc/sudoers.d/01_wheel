@@ -1,0 +1,2 @@
+#WHEN @computer.attribute?(:syst_types, :wheel)
+%wheel ALL=(ALL) ALL

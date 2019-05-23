@@ -1,0 +1,182 @@
+Complexes
+=========
+
+https://en.wikipedia.org/wiki/Simplex
+
+https://en.wikipedia.org/wiki/Simplicial_complex
+  Un espace topologique triangulable, l'homologie singulière est égale à l'homologie de son complexe simplicial.
+
+https://en.wikipedia.org/wiki/Abstract_simplicial_complex
+  Une version abstraite d'un complexe simplicial; a toujours une réalisation
+géométrique triangulable. (Et inversement si X est triangulable, X est
+isomorphe à la réalisation géométrique de son complexe simplicial vu
+abstraitement). Cf aussi:
+https://mathoverflow.net/questions/23713/simplicial-complexes-vs-geometric-realization-of-abstract-simplicial-complexes
+
+https://en.wikipedia.org/wiki/CW_complex
+  Une version "homotopique" d'un complexe simplicial, où on recolle des boules.
+  L'homologie singulière est égale à l'homologie cellulaire de ce complexe.
+
+https://en.wikipedia.org/wiki/Simplicial_set
+ Formally, a simplicial set may be defined as a contravariant functor from the simplex category to the category of sets = category of non-empty finite ordinals and order preserving maps.
+
+ Simplicial sets can be viewed as a higher-dimensional generalization of
+ directed multigraphs. Simplicial sets should not be confused with abstract
+ simplicial complexes, which generalize simple undirected graphs rather
+ than directed multigraphs. 
+
+  Note: le standard n-simplexe est vu comme
+  \Delta_n=Yoneda([n]:={0,1,...,n}). Si X est simplicial, on a donc les
+  n-faces: X_n :=  X([n]) = Hom(\Delta_n, X).
+
+  Réalisation géométrique (in the category of compactly-generated Hausdorff
+  topological spaces), qui a pour adjoint 
+  the singular set of a topological space Y: the simplicial set SY defined by
+      (SY)([n]) = homTop(|Δn|, Y) for each object [n] ∈ Δ, où |.| est la réalisation géométrique
+
+  Capture l'homotopie et pas juste l'homologie:
+  The category of simplicial sets carries a natural model structure, and the
+  corresponding homotopy category is equivalent to the familiar homotopy
+  category of topological spaces
+
+Homologie
+=========
+
+https://en.wikipedia.org/wiki/Homotopy_group
+https://en.wikipedia.org/wiki/Homology_(mathematics)
+
+https://en.wikipedia.org/wiki/Simplicial_homology
+  Le complexe est formé du groupe ab libre des simplexes de dimension n, et la
+  dérivée envoie un simplexe sigma de dim n sur \sum (-1)^i \sigma_i où \sigma_i
+  est de dim n-1 (et on a choisit une orientation).
+
+https://en.wikipedia.org/wiki/Cellular_homology
+  On fait la même chose mais on utilise le degré des applications de
+  recollement.
+
+https://en.wikipedia.org/wiki/Singular_homology
+  Le complexe est ici formé du groupe ab libre des applications continues de
+\Delta_n (le simplexe standard de dim n) vers X (=singular n-simplex).
+Note: H_n(X,R) => on remplace Z par R, ie on considère le module libre sur R
+      H_n(X; A) homologie relative = homologie du complexe C(X)/C(A), on a donc
+une suite exacte 0->C(A)->C(X)->C(X)/C(A)->0 de complexes, donc une suite
+exacte longue d'homologie.
+
+  La cohomologie est obtenue en regardant la cohomologie du complexe Hom(-,R) où - parcourt le complex singulier C(X)
+"The cohomology groups have a richer, or at least more familiar, algebraic
+structure than the homology groups. Firstly, they form a differential graded
+algebra as follows: the graded set of groups form a graded R-module; this can
+be given the structure of a graded R-algebra using the cup product; the
+Bockstein homomorphism β gives a differential."
+
+Calculs:
+-------
+https://en.wikipedia.org/wiki/Excision_theorem
+ if X, A, and U are as above, we say that U can be excised if the inclusion
+ map of the pair (X \ U,A \ U ) into (X, A) induces an isomorphism on the
+ relative homologies Hq(X \ U,A \ U ) to Hq(X,A) . The theorem states that
+ if the closure of U is contained in the interior of A, then U can be
+ excised. Often, subspaces which do not satisfy this containment criterion
+ still can be excised—it suffices to be able to find a deformation retract
+ of the subspaces onto subspaces that do satisfy it. 
+
+https://en.wikipedia.org/wiki/Seifert%E2%80%93van_Kampen_theorem
+  Let X be a topological space which is the union of two open and path
+  connected subspaces U1, U2. Suppose U1 ∩ U2 is path connected and
+  nonempty.
+  The fundamental group of X is the free product of the fundamental groups
+  of U1 and U2 with amalgamation of π 1 ( U 1 ∩ U 2 , x 0 ).
+
+https://en.wikipedia.org/wiki/Mayer%E2%80%93Vietoris_sequence
+  Let X be a topological space and A, B be two subspaces whose interiors cover X => suite exacte longue H_{n+1}(X) -> H_n(A \cap B) -> H_n(A) \oplus H_n(B) -> H_n(X)
+
+https://en.wikipedia.org/wiki/Fibration
+https://en.wikipedia.org/wiki/Classifying_space
+
+https://en.wikipedia.org/wiki/Hurewicz_theorem
+For any space X and positive integer k there exists a group homomorphism
+  h∗: π k ( X ) → H k ( X ) 
+called the Hurewicz homomorphism from the k-th homotopy group to the
+k-th homology group (with integer coefficients), which for k = 1 and X
+path-connected is equivalent to the canonical abelianization map
+  h∗: π 1 ( X ) → π 1 ( X ) / [ π 1 ( X ) , π 1 ( X ) ] .
+
+The Hurewicz theorem states that if X is (n − 1)-connected, the
+Hurewicz map is an isomorphism for all k ≤ n when n ≥ 2 and
+abelianization for k = 1. In particular, this theorem says that the
+abelianization of the first homotopy group (the fundamental group)
+is isomorphic to the first homology group:
+  H 1 ( X ) ≅ π 1 ( X ) / [ π 1 ( X ) , π 1 ( X ) ] .
+The first homology group therefore vanishes if X is
+path-connected and π1(X) is a perfect group.
+
+In addition, the Hurewicz homomorphism is an epimorphism from
+  π n + 1 ( X ) → H n + 1 ( X )
+whenever X is (n − 1)-connected, for n ≥ 2.
+
+Invariants:
+----------
+https://en.wikipedia.org/wiki/Betti_number
+  Le rang de H_i(X)
+
+https://en.wikipedia.org/wiki/Euler_characteristic
+  Polyhedra:   χ = V − E + F = 2
+  Car Euler characteristic of the sphere χ = 2
+  The Euler characteristic of any plane connected graph G is 2
+  Def: χ = b_0 − b_1 + b_2 − b_3 + ⋯ (betti numbers)
+         = k_0 − k_1 + k_2 − k_3 + ⋯ (k_i: #cellules de dim i pour un CW-complexe ou un complexe simplicial)
+  Any contractible space (that is, one homotopy equivalent to a point) has
+trivial homology, meaning that the 0th Betti number is 1 and the others 0.
+Therefore, its Euler characteristic is 1.
+  χ(M∪N)=χ(M)+χ(N)−χ(M∩N).
+  The Euler characteristic of a closed orientable surface can be calculated
+from its genus g (the number of tori in a connected sum decomposition of
+the surface; intuitively, the number of "handles") as
+    χ = 2 − 2 g.
+
+Cohomologie
+===========
+
+https://en.wikipedia.org/wiki/Cohomology (singular cohomologie)
+
+https://en.wikipedia.org/wiki/%C4%8Cech_cohomology
+  If X is homotopy equivalent to a CW complex, then the Čech cohomology is
+naturally isomorphic to the singular cohomology. If X is a differentiable
+manifold, then it is also naturally isomorphic to the de Rham cohomology.
+  There is always a map Hˇ^n(X,F)→H^n(X,F) 
+from Čech cohomology to sheaf cohomology. It is always an isomorphism in
+degrees n = 0 and 1, but may fail to be so in general. For the Zariski topology
+on a Noetherian separated scheme, Čech and sheaf cohomology agree for any
+quasi-coherent sheaf. For the étale topology, the two cohomologies agree for
+any sheaf, provided that any finite set of points in the base scheme X are
+contained in some open affine subscheme. This is satisfied, for example, if X
+is quasi-projective over an affine scheme.
+
+https://en.wikipedia.org/wiki/De_Rham_cohomology
+Stokes' theorem is an expression of duality between de Rham cohomology and
+the homology of chains. It says that the pairing of differential forms and
+chains, via integration, gives a homomorphism from de Rham cohomology H_dR^k(M)
+to singular cohomology groups H_k(M;R). De Rham's theorem, proved by Georges de
+Rham in 1931, states that for a smooth manifold M, this map is in fact an
+isomorphism. 
+
+Sheaf-theoretic de Rham isomorphism: H_dR^k(M) ≅ Hˇ^k(M,R) (au sens de la
+cohomologie des faisceaux)
+
+Note: la cohomologie de De Rham algébrique vient de l'hypercohomologie
+associée au complexe de De Rham Omega^i_X/k, cf
+https://mathoverflow.net/questions/298838/why-use-hypercohomology-when-defining-the-de-rham-cohomology-of-a-smooth-scheme
+https://en.wikipedia.org/wiki/Hyperhomology
+
+https://pdfs.semanticscholar.org/b9c8/dc1a691ed7f26920e2ba13ebb4678e05fe20.pdf
+Basics of Algebraic de Rham Cohomology
+In order to compute R ∗ F ( A), one chooses an injective resolution A → I • , and computes H ∗ ( F ( I •)).  Viewing A as A • ∈ K ( C), this is the same as choosing a quasi-isomorphism A • → I • with the I • injectives in C , and setting R ∗ F ( A) = H ∗ ( F ( I •)). In the exact same way, given an arbitrary complex B • in K ( C), we may choose a quasi-isomorphism B • → I • with the I • injective, and define R ∗ F ( B •) = H ∗ ( F ( I •)), the right hyperderived functors of F.
+The holomorphic version of Poincar ́e’s lemma shows that C → Ω • X an is a resolution, and therefore that C • → Ω • X an is a quasi-isomorphism. From this we conclude the traditional (analytic) de Rham theorem, namely that H ∗ ( X an , C) = H ∗ dR ( X an)
+
+Derived category
+================
+
+https://en.wikipedia.org/wiki/Spectral_sequence
+https://en.wikipedia.org/wiki/Hyperhomology
+https://en.wikipedia.org/wiki/Derived_category
+https://mathoverflow.net/questions/91785/derived-functors-versus-spectral-sequences

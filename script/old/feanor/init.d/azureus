@@ -1,0 +1,43 @@
+#! /bin/sh
+
+
+#PATH=/bin:/usr/bin:/usr/local/bin/:/sbin/:/usr/sbin/
+
+
+start ()
+{
+    echo -n "Starting azureus"
+    exec azureus &
+    echo "."
+}
+
+stop ()
+{
+    echo -n "Stopping azureus"
+    pkill -u "$USER" azureus
+    echo "."
+}
+
+
+case "$1" in
+  start)
+	start
+    ;;
+  stop)
+	stop
+    ;;
+  reload)
+	  stop
+	  start
+    ;;
+  force-reload|restart)
+	stop
+	start
+	;;
+  *)
+    echo "Usage: /etc/init.d/$0 {start|stop|restart|force-reload|reload}"
+    exit 1
+    ;;
+esac
+
+exit 0

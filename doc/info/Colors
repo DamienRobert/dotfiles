@@ -1,0 +1,33 @@
+* Color spaces
+
+- https://en.wikipedia.org/wiki/SRGB
+  = absolute color space
+    https://en.wikipedia.org/wiki/Color_space#Absolute_color_space
+
+RGB=uses additive color mixing, depend on the monitor
+=> https://en.wikipedia.org/wiki/Gamma_correction
+
+- https://en.wikipedia.org/wiki/CMYK_color_model
+  = Cyan [=^Red], Magenta [=^Green], Yellow [=^Blue] and Black 
+
+- https://en.wikipedia.org/wiki/HSL_and_HSV
+  HSL (hue, saturation, lightness) and HSV (hue, saturation, value)
+  = rgb coordinates via cylinder coordinates
+
+http://www.babelcolor.com/index_htm_files/A%20review%20of%20RGB%20color%20spaces.pdf
+
+=> Looking if colors are close:
+https://en.wikipedia.org/wiki/Color_difference#CIEDE2000
+use the https://en.wikipedia.org/wiki/CIELAB_color_space
+L* for the lightness from black (0) to white (100), a* from green (-) to red (+), and b* from blue (-) to yellow (+)
+
+* Ruby gems
+- https://github.com/halostatue/color
+RGB, CMYK, HSL
+A technique for generating monochromatic contrasting palettes is also included.
+
+- https://rubygems.org/gems/color-rgb/versions/0.0.2
+  https://github.com/apartmenttherapy/color-rgb
+RGB color utilities for converting RGB color into different colorspace
+(CIE*Lab or XYZ), a different format, or comparing similarity of two colors
+

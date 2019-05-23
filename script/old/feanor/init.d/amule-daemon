@@ -1,0 +1,47 @@
+#! /bin/sh
+
+
+#PATH=/bin:/usr/bin:/usr/local/bin/:/sbin/:/usr/sbin/
+DAEMON=/usr/bin/amuled
+WEBDAEMON=/usr/bin/amuleweb
+AMULED_USER="$USER"
+
+
+start ()
+{
+    echo -n "Starting aMule : amuled"
+    start-stop-daemon --user $AMULED_USER --start --exec $DAEMON --background
+    echo "."
+}
+
+stop ()
+{
+    echo -n "Stopping aMuleWeb : amuleweb"
+    start-stop-daemon --stop --retry 5 --quiet --user $AMULED_USER --exec $DAEMON
+    start-stop-daemon --stop --retry 5 --quiet --user $AMULED_USER --exec $WEBDAEMON
+    echo "."
+}
+
+
+case "$1" in
+  start)
+	start
+    ;;
+  stop)
+	stop
+    ;;
+  reload)
+	  stop
+	  start
+    ;;
+  force-reload|restart)
+	stop
+	start
+	;;
+  *)
+    echo "Usage: /etc/init.d/$0 {start|stop|restart|force-reload|reload}"
+    exit 1
+    ;;
+esac
+
+exit 0

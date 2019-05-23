@@ -1,0 +1,86 @@
+#!/bin/zsh
+
+. $HOME/.initvars
+getvars="$MYCOMPUTERS --export=COMPUTER:/,syst,bootloader:syst/bootloader,services:syst/services"
+eval "$(eval "$getvars $1")"
+#eval "$($MYCOMPUTERS --export=COMPUTER:/,syst,bootloader:syst/bootloader,services:syst/services $1)"
+name=$COMPUTER[name]
+[[ -z $name ]] && exit 1
+#eval $($MYCOMPUTERS --list --export)
+
+TMPDIR="/var/tmp/@init"
+DISK="/dev/sda"
+FS="ext4"
+TARGET_DIR="/mnt"
+MOUNTOPTS="defaults"
+MKFSOPTS=()
+BOOTBACKUP=t
+USERS=()
+LOCALE_LANG="en_US.UTF-8"
+LANGS=($LOCALE_LANG)
+TIMEZONE="UTC"
+
+SLASHPARTLABEL="slash"
+HOMEPARTLABEL="home"
+BOOTPARTLABEL="boot"
+SWAPPARTLABEL="swap"
+SLASHLABEL="slash"
+HOMELABEL="home"
+BOOTLABEL="boot"
+SWAPLABEL="swap"
+ROOTLEAF=
+
+#CUSTOM
+case $name in
+	Doriath|FleurBleue) #all arch clients
+		USERS=(
+		'root:$6$DaueAhJn$SdSZqI/kcdTV9tDWOtzE1uobjH548VS0ZLs8hZNt5VYRDTyhdHOxfXJyPy.WZdthBFSsUNCJSxFcLixoFm6p91'
+		'dams:$6$b1v37XaB$OmuydX0KX8E7GXshkpGhcuo73g68uFHyo9Q1WkomsoVhoa5HxbnQFejDboGTkUbyvc7OKP2rM2uVwRHSzyqka1'
+		'dina:$6$qVbNIhe2$TQuFIf0WLp0lXmxeIYOnhXKZXgjlQV.2dcAa8R97hSkpdYVLY2a40sIkDMls14B3u4SRCLVdqJDjElwxRgNni/'
+		'toto:$6$.XyEDrqK$m/8kVCgeTPi/MXtzkpcDBBaXbMcMyiSph6uNKnQuXfEkmQDJnW.YdzArGwJ2PwvNQqaB4WQndOY.6KRibA5e/.'
+		)
+		#'provision:$6$8zgdykm4$I6losNhGKlG7sHY1rzMUNWVmiwFxFbuqpDVVFqIeCDGT04ix2S/efwBn.VVtDN60RcO.U/2b7JNJSmzeE7WSs0'
+		FS="btrfs"
+		ROOTLEAF="rootleaf"
+		;;
+esac
+case $name in
+	FleurBleue)
+		FS="ext4"
+		ROOTLEAF=
+		;;
+	packer|virtual)
+		USERS=(root provision:provision)
+		MOUNTOPTS="noatime,errors=remount-ro"
+		MKFSOPTS=(-F -m 0 -q)
+		BOOTBACKUP=
+		;;
+	container)
+		USERS=(root provision:provision)
+		TARGET_DIR="/opt/arch"
+		;;
+	Baggins32)
+		SLASHLABEL="slash32"
+		TARGET_DIR="/mnt/usb"
+		ROOTLEAF="usbkey"
+		#use: setarch i686 sudo ./00install
+		;;
+esac
+
+if [[ $SYST[lang] == "fr" ]]; then
+	LANGS+=fr_FR.UTF-8
+	TIMEZONE=Europe/Paris
+fi
+#PKGSINIT and PKGS
+eval $(ruby <<EOS
+require 'dr/packages/syst'
+comp=(DR::Computer.new("$name"))
+pkgs=DR::Packages::Syst.new(comp)
+puts SH.export_variable("pkgs", pkgs.pkgs_list[:arch_abs])
+pkgs_init=DR::Packages::Syst.new(comp,init:true)
+puts SH.export_variable("pkgsinit", pkgs.pkgs_list[:arch_abs]) if pkgs!=pkgs_init
+EOS
+)
+if [[ -n $BOOTBACKUP && $FS == "btrfs" ]]; then
+	MOUNTOPTS="$MOUNTOPTS,space_cache,compress=lzo"
+fi

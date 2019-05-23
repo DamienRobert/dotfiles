@@ -1,0 +1,11 @@
+[Unit]
+Description=ssh proxy socks
+Documentation=man:ssh(1)
+
+[Service]
+ExecStart=/usr/bin/ssh -CNT dynamic
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=network.target

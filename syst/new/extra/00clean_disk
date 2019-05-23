@@ -1,8 +1,0 @@
-#!/bin/zsh
-
-#clearing partition table
-/usr/bin/sgdisk --zap ${DISK}
-
-#destroying magic strings and signatures
-/usr/bin/dd if=/dev/zero of=${DISK} bs=512 count=2048
-/usr/bin/wipefs --all ${DISK}

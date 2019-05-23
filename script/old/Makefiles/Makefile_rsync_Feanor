@@ -1,0 +1,77 @@
+RSYNC=rsync
+RSYNC_OPT=-ravzbH --exclude '*~' --rsync-path=/usr/bin/rsync
+#-r: pour copier les directory
+#(-R: pour les copier de manière relative)
+#-a: archive (garde les perms,...)
+#-v: verbose
+#-u: update (ne copie que les fichiers plus jeunes)
+#-z: compresse le transfert
+#-b: backups
+#-H: préserve les hard links
+
+#eventuellement
+#-ptl au lieu de -a (pour pas avoir le -og)
+#--partial
+#-bwlimit= #bandwith
+#-c #checksum
+
+#pour des fichiers que je veux avoir sur les deux comptes au même endroit
+COMMAND=$(RSYNC) $(RSYNC_OPT) --update --backup-dir=".rsync_backup/"
+
+#pour des backups/transferts d'un compte à l'autre
+COMMAND2=$(RSYNC) $(RSYNC_OPT)
+
+#pour des répertoires que je veux avoir en commun, permet de propager
+#l'effacement d'un fichier. A utiliser ponctuellement.
+COMMAND_DESTROY=$(RSYNC) $(RSYNC_OPT) --delete-after --backup-dir=".rsync_backup_destroy/"
+
+OUT=dams@feanor
+
+sync: get put
+
+get:
+	echo "*************** GET ******************"
+	$(COMMAND) $(OUT):latex ~
+	$(COMMAND) $(OUT):www ~
+	$(COMMAND) $(OUT):forum ~
+	$(COMMAND) $(OUT):yaf ~
+	$(COMMAND) $(OUT):news ~
+	$(COMMAND) $(OUT):ViePratique ~
+
+	#on peut pas faire rsync feanor:ploum feanor:plam ... ~/
+	$(COMMAND2) $(OUT):.fvwm ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):.screenrc ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):.vimrc ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):.zshrc ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):.emacs ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):bin ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):script ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):perl ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):c ~/RSYNC_feanor/
+	$(COMMAND2) $(OUT):.Xresource ~/RSYNC_feanor/
+put:
+	echo "*************** PUT ******************"
+	$(COMMAND) ~/www $(OUT):
+	$(COMMAND) ~/latex $(OUT):
+	$(COMMAND) ~/ViePratique $(OUT):
+
+	$(COMMAND2) ~/.fvwm ~/.screenrc ~/.vimrc ~/.zshrc ~/.zprofile \
+	~/.Xresources ~/.xsession ~/.xinitrc 00RemoteForwarding \
+	~/bin  ~/script ~/caml ~/scilab ~/perl \
+	~/Makefile_rsync_Feanor ~/Makefile_rsync_clipper \
+	$(OUT):RSYNC_Gondolin/
+
+backup:
+	$(COMMAND2) ~/Maths ~/Doc ~/Images ~/Info ~/Jokes ~/Kholles ~/Physique \
+	~/Poesie ~/Pratique ~/archive ~/catacombes ~/dicos ~/doc ~/maths \
+	~/misc ~/mp3 ~/pixmaps ~/prive ~/transfert \
+	/home/data \
+	$(OUT):data/RSYNC_Gondolin/
+
+get_destroy:
+	$(COMMAND_DESTROY) $(OUT):www ~
+	$(COMMAND_DESTROY) $(OUT):forum ~
+
+put_destroy:
+	$(COMMAND_DESTROY) ~/www $(OUT):
+	$(COMMAND_DESTROY) ~/forum $(OUT):

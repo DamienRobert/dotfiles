@@ -1,0 +1,234 @@
+3. Patterns: Searching, Limiting and Tagging
+3.1. Pattern Modifier
+
+Many of NeoMutt's commands allow you to specify a pattern to match ( limit, tag-pattern, delete-pattern, etc.). Table 4.4, “Pattern modifiers”shows several ways to select messages.
+
+Table 4.4. Pattern modifiers
+Pattern modifier	Description
+~A	all messages
+~b EXPR	messages which contain EXPR in the message body
+=b STRING	messages which contain STRING in the message body. If IMAP is enabled, searches for STRING on the server, rather than downloading each message and searching it locally.
+~B EXPR	messages which contain EXPR in the whole message
+=B STRING	messages which contain STRING in the whole message. If IMAP is enabled, searches for STRING on the server, rather than downloading each message and searching it locally.
+~c EXPR	messages carbon-copied to EXPR
+%c GROUP	messages carbon-copied to any member of GROUP
+~C EXPR	messages either to: or cc: EXPR
+%C GROUP	messages either to: or cc: to any member of GROUP
+~d [ MIN]-[ MAX]	messages with “date-sent” in a Date range
+~D	deleted messages
+~e EXPR	messages which contains EXPR in the “Sender” field
+%e GROUP	messages which contain a member of GROUP in the “Sender” field
+~E	expired messages
+~F	flagged messages
+~f EXPR	messages originating from EXPR
+%f GROUP	messages originating from any member of GROUP
+~g	cryptographically signed messages
+~G	cryptographically encrypted messages
+~h EXPR	messages which contain EXPR in the message header
+=h STRING	messages which contain STRING in the message header. If IMAP is enabled, searches for STRING on the server, rather than downloading each message and searching it locally; STRING must be of the form “header: substring”(see below).
+~H EXPR	messages with a spam attribute matching EXPR
+~i EXPR	messages which match EXPR in the “Message-ID” field
+~k	messages which contain PGP key material
+~L EXPR	messages either originated or received by EXPR
+%L GROUP	message either originated or received by any member of GROUP
+~l	messages addressed to a known mailing list
+~m [ MIN]-[ MAX]	messages with numbers in the range MIN to MAX***)
+~m <[ MAX]	messages with numbers less than MAX***)
+~m >[ MIN]	messages with numbers greater than MIN***)
+~m [ M]	just message number M***)
+~m [ MIN],[ MAX]	messages with offsets (from selected message) in the range MIN to MAX***)
+~n [ MIN]-[ MAX]	messages with a score in the range MIN to MAX*)
+~N	new messages
+~O	old messages
+~p	messages addressed to you (consults alternates)
+~P	messages from you (consults alternates)
+~Q	messages which have been replied to
+~r [ MIN]-[ MAX]	messages with “date-received” in a Date range
+~R	read messages
+~s EXPR	messages having EXPR in the “Subject” field.
+~S	superseded messages
+~t EXPR	messages addressed to EXPR
+~T	tagged messages
+~u	messages addressed to a subscribed mailing list
+~U	unread messages
+~v	messages part of a collapsed thread.
+~V	cryptographically verified messages
+~x EXPR	messages which contain EXPR in the “References” or “In-Reply-To” field
+~X [ MIN]-[ MAX]	messages with MIN to MAX attachments *)
+~y EXPR	messages which contain EXPR in their keywords
+~z [ MIN]-[ MAX]	messages with a size in the range MIN to MAX*) **)
+=/ STRING	IMAP custom server-side search for STRING. Currently only defined for Gmail. See: GMail Patterns
+~=	duplicated messages (see $duplicate_threads)
+~#	broken threads (see $strict_threads)
+~$	unreferenced messages (requires threaded view)
+~( PATTERN)	messages in threads containing messages matching PATTERN, e.g. all threads containing messages from you: ~(~P)
+~<( PATTERN)	messages whose immediate parent matches PATTERN, e.g. replies to your messages: ~<(~P)
+~>( PATTERN)	messages having an immediate child matching PATTERN, e.g. messages you replied to: ~>(~P)
+
+Where EXPR is a regular expression, and GROUP is an address group.
+
+*) The forms “<[ MAX]”, “>[ MIN]”, “[ MIN]-”and “-[ MAX]”are allowed, too.
+
+**) The suffixes “K” and “M” are allowed to specify kilobyte and megabyte respectively.
+
+***) The message number ranges (introduced by ~m) are even more general and powerful than the other types of ranges. Read on and see Section 3.1.1, “Message Ranges”below.
+
+Special attention has to be paid when using regular expressions inside of patterns. Specifically, NeoMutt's parser for these patterns will strip one level of backslash ( “\”), which is normally used for quoting. If it is your intention to use a backslash in the regular expression, you will need to use two backslashes instead ( “\\”). You can force NeoMutt to treat EXPR as a simple substring instead of a regular expression by using = instead of ~ in the pattern name. For example, =b *.*will find all messages that contain the literal string “*.*”. Simple string matches are less powerful than regular expressions but can be considerably faster. This is especially true for IMAP folders, because string matches can be performed on the server instead of by fetching every message. IMAP treats =h specially: it must be of the form “header: substring” and will not partially match header names. The substring part may be omitted if you simply wish to find messages containing a particular header without regard to its value.
+
+Patterns matching lists of addresses (notably c, C, p, P and t) match if there is at least one match in the whole list. If you want to make sure that all elements of that list match, you need to prefix your pattern with “^”. This example matches all mails which only has recipients from Germany.
+
+Example 4.1. Matching all addresses in address lists
+
+^~C \.de$
+
+
+You can restrict address pattern matching to aliases that you have defined with the "@" modifier. This example matches messages whose recipients are all from Germany, and who are known to your alias list.
+
+Example 4.2. Matching restricted to aliases
+
+^@~C \.de$
+
+
+To match any defined alias, use a regular expression that matches any string. This example matches messages whose senders are known aliases.
+
+Example 4.3. Matching any defined alias
+
+@~f .
+
+
+3.1.1. Message Ranges
+
+If a message number range (from now on: MNR) contains a comma ( ,), it is a relative MNR. That means the numbers denote offsets from the highlighted message. For example:
+
+Table 4.5. Relative Message Number Ranges
+Pattern	Explanation
+~m -2,2 	Previous 2, highlighted and next 2 emails
+~m 0,1 	Highlighted and next email
+
+In addition to numbers, either side of the range can also contain one of the special characters (shortcuts) .^$. The meaning is:
+
+Table 4.6. Message Number Shortcuts
+Shortcut	Explanation	Example	Meaning
+. 	Current / Highlighted	~m -3,. 	Previous 3 emails plus the highlighted one
+$ 	Last	~m .,$ 	Highlighted email and all the later ones
+^ 	First	~m ^,1 	Highlighted, next and all preceding ones
+
+Lastly, you can also leave either side of the range blank, to make it extend as far as possible. For example, ~m ,1 has the same meaning as the last example in Table 4.6, “Message Number Shortcuts”.
+
+Otherwise, if a MNR doesn't contain a comma, the meaning is similar to other ranges, except that the shortcuts are still available. Examples:
+
+Table 4.7. Absolute Message Number Ranges
+Pattern	Explanation
+~m 3-10 	Emails 3 to 10
+~m -10 	Emails 1 to 10
+~m 10- 	Emails 10 to last
+~m <3 	First and second email
+~m ^-2 	First and second email
+~m >1 	Everything but first email
+~m 2-$ 	Everything but first email
+~m 2 	Just the second email
+
+3.2. Simple Searches
+
+NeoMutt supports two versions of so called “simple searches”. These are issued if the query entered for searching, limiting and similar operations does not seem to contain a valid pattern modifier (i.e. it does not contain one of these characters: “~”, “=”or “%”). If the query is supposed to contain one of these special characters, they must be escaped by prepending a backslash ( “\”).
+
+The first type is by checking whether the query string equals a keyword case-insensitively from Table 4.8, “Simple search keywords”: If that is the case, NeoMutt will use the shown pattern modifier instead. If a keyword would conflict with your search keyword, you need to turn it into a regular expression to avoid matching the keyword table. For example, if you want to find all messages matching “flag”(using $simple_search) but don't want to match flagged messages, simply search for “ [f]lag ”.
+
+Table 4.8. Simple search keywords
+Keyword	Pattern modifier
+all	~A
+.	~A
+^	~A
+del	~D
+flag	~F
+new	~N
+old	~O
+repl	~Q
+read	~R
+tag	~T
+unread	~U
+
+The second type of simple search is to build a complex search pattern using $simple_search as a template. NeoMutt will insert your query properly quoted and search for the composed complex query.
+3.3. Nesting and Boolean Operators
+
+Logical AND is performed by specifying more than one criterion. For example:
+
+~t work ~f elkins
+
+would select messages which contain the word “work” in the list of recipients and that have the word “elkins” in the “From” header field.
+
+NeoMutt also recognizes the following operators to create more complex search patterns:
+
+    ! — logical NOT operator
+
+    | — logical OR operator
+
+    () — logical grouping operator
+
+Here is an example illustrating a complex search pattern. This pattern will select all messages which do not contain “work” in the “To” or “Cc” field and which are from “elkins”.
+
+Example 4.4. Using boolean operators in patterns
+
+!(~t work|~c work) ~f elkins
+
+
+Here is an example using white space in the regular expression (note the “'”and “"”delimiters). For this to match, the mail's subject must match the “^Junk +From +Me$”and it must be from either “Jim +Somebody” or “Ed +SomeoneElse”:
+
+'~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
+
+Note
+
+If a regular expression contains parenthesis, or a vertical bar ("|"), you must enclose the expression in double or single quotes since those characters are also used to separate different parts of NeoMutt's pattern language. For example: ~f "user@(home\.org|work\.com)"Without the quotes, the parenthesis wouldn't end. This would be separated to two OR'd patterns: ~f user@(home\.org and work\.com). They are never what you want.
+3.4. Searching by Date
+
+NeoMutt supports two types of dates, absolute and relative.
+3.4.1. Absolute Dates
+
+Dates must be in DD/MM/YY format (month and year are optional, defaulting to the current month and year). An example of a valid range of dates is:
+
+Limit to messages matching: ~d 20/1/95-31/10
+
+If you omit the minimum (first) date, and just specify “-DD/MM/YY”, all messages before the given date will be selected. If you omit the maximum (second) date, and specify “DD/MM/YY-”, all messages after the given date will be selected. If you specify a single date with no dash ( “-”), only messages sent on the given date will be selected.
+
+You can add error margins to absolute dates. An error margin is a sign (+ or -), followed by a digit, followed by one of the units in Table 4.9, “Date units”. As a special case, you can replace the sign by a “*”character, which is equivalent to giving identical plus and minus error margins.
+
+Table 4.9. Date units
+Unit	Description
+y	Years
+m	Months
+w	Weeks
+d	Days
+
+Example: To select any messages two weeks around January 15, 2001, you'd use the following pattern:
+
+Limit to messages matching: ~d 15/1/2001*2w
+
+3.4.2. Relative Dates
+
+This type of date is relative to the current date, and may be specified as:
+
+    > offset for messages older than offset units
+
+    < offset for messages newer than offset units
+
+    = offset for messages exactly offset units old
+
+offset is specified as a positive number with one of the units from Table 4.9, “Date units”.
+
+Example: to select messages less than 1 month old, you would use
+
+Limit to messages matching: ~d <1m
+
+Note
+
+All dates used when searching are relative to the local time zone, so unless you change the setting of your $index_format to include a %[...]format, these are not the dates shown in the main index.
+3.5. GMail Patterns
+
+=/ "search terms" invokes server-side search, passing along the search terms provided. Search results are constrained by IMAP to be within the current folder. At present this only supports Gmail's search API IMAP extension. The search language is entirely up to the mail provider and changes at their discretion. Using ~/ will silently fail.
+
+For up-to-date information about searching, see: GMail's Support Page. You will need to (once) use a web-browser to visit Settings/Labels and enable "Show in IMAP" for "All Mail". When searching, visit that folder in NeoMutt to most closely match Gmail search semantics.
+
+Table 4.10. GMail Example Patterns
+Pattern	Matches
+=/ "list:foo.example.org has:attachment is:important" 	the foo.example.org mailing-list per Gmail's definitions, and has an attachment, and has been marked as important
+=/ "{has:purple-star has:yellow-star} older_than:2m" 	is older than two months and has either a purple-star or a yellow-star

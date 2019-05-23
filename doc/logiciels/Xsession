@@ -1,39 +1,169 @@
-- .gnomerc: executé par gdm suelement en version <2.4
-- .dmrc: utilisé par certains dm pour se souvenir de la dernière session
-  (gdm3 ne le lit pas)
+[x] means the file does not exist in default arch
 
 Avec un *dm: les sessions sont lues dans /usr/share/xsessions. Avec gnome3
 (ou 2 récent) il faut en plus que le wm spécifié par gsettings soit visible
 dans .local/share/applications.
 
+Divers:
+- .gnomerc: executé par gdm seulement en version <2.4
+- .dmrc: utilisé par certains dm pour se souvenir de la dernière session
+  (gdm3 ne le lit pas)
+
 Sur ArchLinux:
+- /etc/pam.d: autolaunch things like gnome-keyring (pam_gnome_keyring.so)
+  -> pam_env.so: Load environment from /etc/environment and ~/.pam_environment
+     cf `man pam_env, man pam_env.conf`
+  -> pam_systemd.so starts user session
+
 - /etc/lightdm/Xsession:
-  - lit .profile et .xprofile
-  - merge .Xresources
-  - loade .Xkbmap
+  - lit .profile et .xprofile + /etc/profile, /etc/xprofile [x]
+  - merge /etc/X11/Xresources and .Xresources
+  - loade .Xkbmap and /etc/X11/Xkbmap
   - lance les scripts dans /etc/X11/xinit/xinitrc.d/*
+  - source .xsession
+  - exec "$@"
+
+- /etc/profile
+  - Ajoute /usr/*/bin au PATH
+  - source /etc/profile.d/*
+    [=> locale.sh, vte.sh et différentes variables d'environnement]
+  - lit le /etc/bash.bashrc si le shell est bash
+    [=> si le shell est intéractif, active chekwinsize, 
+    configure PS1, PROMPT_COMMAND et bash_completion]
+  - unset TERMCAP et MANPATH
+
+- /etc/X11/xinit/xinitrc.d/*
+  - 40-libcanberra-gtk-module.sh: ajoute canberra-gtk-module à GTK_MODULES pour une session non gnome
+  - 50-systemd-user.sh: 
+         runs systemctl --user import-environment DISPLAY XAUTHORITY
+         dbus-update-activation-environment DISPLAY XAUTHORITY
+  - /usr/bin/xdg-user-dirs-update (but I don't install xdg-user-dirs anymore)
+
+- startxfce4:
+  - setup XDG_CONFIG_{HOME,DIRS},XDG_DATA_DIRS vars
+  - mets les options dans $CLIENTRC et $SERVERRC (via une séparation par --)
+  - SERVERRC="vt$XDG_VTNR $SERVERRC"
+  -  if [ -f "$HOME/.xserverrc" ]; then
+       SERVERRC="$HOME/.xserverrc $SERVERRC"
+     elif [ -f /etc/X11/xinit/xserverrc ]; then
+       SERVERRC="/etc/X11/xinit/xserverrc $SERVERRC"
+     fi
+  - lance xinit $HOME/.config/xfce4/xinitrc||/etc/xdg/xfce4/xinitrc $CLIENTRC -- $SERVERRC
+
+- xinit client options -- server display options
+  Run the specified server [default: .xserverrc with fallback on `X :0`]
+  and launch the specified client [default .xinitrc with fallback on xterm]
+
+[Note on startx: wrapper autour de xinit
+  -> startx client_opts -- display server_opts
+  - si display n'est pas réglé utilise le premier display libre
+  - si il n'y a pas de client [ni d'arguments clients], utilise ~/.xinitrc|/etc/X11/xinit/xinitrc [si il y a des arguments clients, le client par défaut est xterm]
+  - si il n'y a pas de serveur [ni d'arguments serveurs], utilise ~/.xserverrc|/etc/X11/xinit/xserverrc [si il y a des arguments serveurs le serveur par défaut est X]
+  - Dans les options du serveur rajoute comme option "vt$tty_num" [$tty_num est ici obtenu en parsant le résultat de la commande tty plutôt qu'en utilise $XDG_VTNR]
+  - Configure xauth (via le cookie donné par mcookie) dans /tmp/serverauth.XXXXXX et dans ~/.Xauthority
+  -> xinit  client opts -- server display opts
+
+  - /etc/X11/xinit/xinitrc
+    - /etc/X11/xinit/.Xresources [x], .Xresources
+    - /etc/X11/xinit/.Xmodmap [x], .Xmodmap
+    - /etc/X11/xinit/xinitrc.d/?*.sh
+    - twm, xclock, 3 xterms
+  - /etc/X11/xinit/xserverrc: exec /usr/bin/X -nolisten tcp "$@"
+]
+
 - /etc/xdg/xfce4/xinitrc:
-  - mets en place des trucs xdg
-  - lit .Xdefaults, .config/xfce4/Xft.xrdb, .config/xfce4/Xcursor.xrdb et
-    .Xresources
+  - mets en place les variables xdg (XDG_CURRENT_DESKTOP, XDG_CONFIG_HOME, XDG_CACHE_HOME) et DESKTOP_SESSION
+  - lance xdg-user-dirs-update
+  - modifie GLADE_* env variables
+  - lit /etc/xdg/xfce4/Xft.xrdb, .Xdefaults, .config/xfce4/Xft.xrdb, .config/xfce4/Xcursor.xrdb et .Xresources
+    Note: /etc/xdg/xfce4/Xft.xrdb: 
+      Xft.hinting: 1
+      Xft.hintstyle: hintmedium
+  - xmodmap ~/.Xmodmap
+  - source /etc/X11/xinit/xinitrc.d/*.sh
   - lance xfce4-session (ou alors l'émule si xfce4-session n'existe pas)
+    L'émulation de xfce4-session fait:
+    - dbus-launch
+    - xsetroot -solid black -cursor_name watch
+    - xfsettingsd &
+    - xfwm4 --daemon
+    - Lance ${XDG_CONFIG_HOME}/autostart/*.desktop (sauf si Hidden=true,
+      NotShownIn=xfce ou OnlyShowIn != xfce)
+    - xfdesktop
+    - orage [xfce4 calendar]
+    - xfce4-panel
+    - xsetroot -bg white -fg red  -solid black -cursor_name watch
+  Note: une fois xfce4-session complétement lancé, on a:
+  xfce4-session => xfsettingsd, xfce4-panel, Thunar, xfdesktop (cf [xfce])
+    + via Autostart: xfsettingsd, xfce4-power-manager
+      lxpolkit/xfce-polkit-gnome-authentication-agent-1
+    + via dbus (cf /usr/share/dbus-1/services): xfconfd, gvfs, xfce4-notifyd
+    [Note: according to the system xfce4-session.xml, xfsettingsd should be
+    launched by xfce4-session but it appears to be launched via autostart?]
 
 - .xsession:
-  - DESKTOP_SESSION="xsession"
+  - .initvars, .initenv
+  - DESKTOP_SESSION="xsession" [if not set]
   - lance .xinitrc "$@"
+
 - .xinitrc:
-  - a un mode failsafe
-  - check s'il est lancé depuis la console et dans ce cas source
+  - .initvars
+  - a un mode failsafe ($MYXFAILSAFE=t ou $1=failsafe)
+  - check s'il est lancé depuis la console ('-z $DESKTOP_SESSION')
+    et dans ce cas source
     /etx/X11/xinit/.Xresources, /etc/xprofile et
     lance les scripts dans /etc/X11/xinit/xinitrc.d/*
   - source .xprofile (qui sette $DM)
   - détermine ce qu'il faut lancer (s'il n'y a pas d'arguments utiliser $DM)
 
-- .xprofile
-  - set DM (soit $DESKTOP_SESSION, ou alors le premier argument, ou alors
-    $DEFAULTDM specifié dans ~/.xprops [c'est le cas aussi si DM=xsession])
-  - lit .Xresources, .Xresources.local, .Xkbmap
+- .xprofile:
+  - .initenv, .initxvars
+  - set DM (soit $XDG_SESSION_DESKTOP, soit $DESKTOP_SESSION, ou alors le
+    premier argument, ou alors $DEFAULTDM specifié dans ~/.initxvars [c'est le
+    cas aussi si DM=xsession])
+  - lit .Xresources, .Xkbmap, .xinputrc
   - execute systemctl --user
-  - lance d'autres programmes en fonction de DM
+  - lance d'autres programmes en fonction de $DM
 
-Rem: le lancement standard lightdm -> xfce4 -> .xprofile va lire .Xresources 3 fois...
+- xdg autostart from /etc/xdg/autostart/ and ~/.config/autostart/
+  /etc/xdg/autostart OnlyShowIn=XFCE: (! means Hidden=true, * means
+    NotShownIn all the other desktops rather than OnlyShowIn=XFCE):
+    xfce-polkit-gnome-authentication-agent-1, !xfce4-clipman-plugin-autostart
+    !xfce4-notes-autostart, *xfce4-power-manager, xfsettingsd, xscreensaver
+  Others: baloo_file, light-locker, nm-applet, print-applet, pulseaudio, tracker-store
+  ~/.config/autostart: !clipit-startupt, !light-locker, !nm-applet, +xfce4-clipman-plugin-autostart (!print-applet eventually)
+
+
+Rem: le lancement standard lightdm -> xfce4 -> .xprofile va lire .Xresources 3 fois et lancer xinitrc.d/* deux fois (via /etc/lightdm/Xsession et /etc/xdg/xfce4/xinitrc)
+
+Sous Ubuntu (imb):
+- lightdm lance /etc/X11/Xsession qui lit /etc/X11/Xsession.d:
+  - Si la session est 'x-session-manager' regarde /etc/alternatives/x-session-manager
+  - process the arguments (default, failsafe, 'progname')
+  - merge the xresources (.Xresources)
+  - xhost +si:localuser:$(id -un)
+  - source .xsessionrc
+  - Use .xsession if no startup program was found
+  - read .gnomerc if launching a gnome session
+  - numlock settings
+  - set xdg env variables and call xdg-user-dirs-update
+  - launch an im (ibus by default, looks in .xinputrc)
+    [more precisely 70im-config_launch sources
+    /usr/share/im-config/xinputrc.common which sources
+    /etc/default/im-config; then it sources /etc/X11/xinit/xinputrc if
+    ~/.xinputrc does not exists, which launches 'run_im default', which
+    launches 'run_im $IM_CONFIG_DEFAULT_MODE' (cf
+    /usr/share/im-config/data/00_default*) where IM_CONFIG_DEFAULT_MODE is
+    defined in /etc/default/im-config to be 'auto', so it reads
+    /usr/share/im-config/data/01_auto* which launches $automatic_im()
+    defined in /usr/share/im-config/xinputrc.common, which then launches the
+    first available script in /usr/share/im-config/data/[1234567]* aka
+    20_ibus*. Why so complicated!!??
+    -> To prevent the auto launch, create an empty .xinputrc]
+  - launch dbus
+  - add overlay-scrollbar to GTK_MODULES
+  - launch console-kit (ck-launch-session)
+  - launch gpg-agent if 'use-agent' is found in ~/.gnupg/gpg.conf
+  - launch ssh-agent (if has_option use-ssh-agent, cf /etc/X11/Xsession.options)
+    [not launched because gnome-keyring-daemon is launched by PAM]
+  - launch upstart (upstart --user)

@@ -1,0 +1,7 @@
+#compdef cani
+
+if [[ -f $HOME/.config/cani/completions/_cani.zsh ]]; then
+	source $HOME/.config/cani/completions/_cani.zsh
+else
+	_cani() {}
+fi

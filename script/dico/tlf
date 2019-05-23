@@ -1,0 +1,352 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use utf8;
+use locale;
+use I18N::Langinfo "langinfo", "CODESET";
+use LWP::UserAgent;
+use HTTP::Request::Common;
+use Encode;
+use Getopt::Long ":config", "gnu_getopt";
+
+my $ua = new LWP::UserAgent;
+$ua->agent("cigtlf/2.0");
+
+my $encoding = langinfo CODESET;
+binmode STDOUT, ":encoding($encoding)" or die "binmode: $!\n" if $encoding;
+
+my $base = "http://atilf.atilf.fr/dendien/scripts/tlfiv5";
+
+my $bold_on = "";
+my $bold_off = "";
+my $italic_on = "";
+my $italic_off = "";
+my $author_on = "";
+my $author_off = "";
+
+my $term_width = 76;
+
+sub simple_get($$@) {
+  my ($url, $msg, @opt) = @_;
+  #my $urlt = $url;
+  #$urlt =~ y{/}{_};
+  #$urlt = "/tmp/tlf/$urlt";
+  my $res;
+  #if(-f $urlt) {
+  #  print "Cached: $url\n";
+  #  open my $f, "<", $urlt or die $!;
+  #  local $/;
+  #  $res = <$f>;
+  #} else {
+  #  print "Get: $url\n";
+    if(@opt) {
+      $res = $ua->request(POST "$base/$url", \@opt);
+    } else {
+      $res = $ua->request(GET "$base/$url");
+    }
+    die $msg, " : ", $res->status_line, "\n"
+      unless $res->is_success;
+    $res = $res->content;
+  #  open my $f, ">", $urlt or die "$urlt: $!";
+  #  print $f $res;
+  #}
+  return decode "windows-1252", $res;
+}
+
+#sub readfile($) {
+#  my ($n) = @_;
+#  open my $f, $n or die $!;
+#  local $/;
+#  my $c = <$f>;
+#  return decode "windows-1252", $c;
+#}
+
+sub get_session_id() {
+  my $res = simple_get "showps.exe?p=combi.htm;java=no;",
+    "Impossible d'obtenir la session";
+  die "Impossible de trouver la session.\n"
+    unless $res =~ /;s=(\d+);/;
+  return $1;
+}
+
+sub get_words;
+sub get_word;
+
+sub print_close_matches($) {
+  my ($url) = @_;
+  print "J'ai bien peur de n'avoir pas trouvé votre mot.\n";
+  my $res = simple_get shift, "Impossible d'obtenir les suggestions";
+  my @words = $res =~ m{^<tr>.*">([^<]*)(?:</a>)?</td>.*</a></td>.*</td>}mg;
+  if(@words) {
+    print "Vous pouvez essayer :\n";
+    for my $word (@words) {
+      print "\t", $word, "\n";
+    }
+    exit 0;
+  }
+  exit 1;
+}
+
+
+sub get_frameset($) {
+  my ($t) = @_;
+  my @r = $t =~ /src=\S+\/(\S+)/g;
+  if(@r == 2) {
+    print_close_matches $r[1];
+  }
+  die "Frameset incompréhensible.\n" unless @r == 3;
+  shift @r;
+  return @r;
+}
+
+sub get_word_or_words($$) {
+  my ($session, $word) = @_;
+  my $eword = encode "windows-1252", $word;
+  my $res = simple_get "advanced.exe?8;s=$session;",
+    "Impossible d'obtenir le mot",
+    mot => $eword, rav => "n";
+  my @res = get_frameset $res;
+  return get_words $session, $word, @res;
+}
+
+sub get_words {
+  my ($session, $word, $f1, $f2) = @_;
+  my $res = simple_get $f2, "Impossible d'obtenir la liste des mots";
+  return get_word $session, $f1, $f2, $res if $res =~ /<div/;
+  my @res = split "</tr><tr>", $res;
+  die "Aucun mot trouvé, bizarre.\n" unless @res;
+  $res[0] =~ s/.*<tr>//s;
+  $res[-1] =~ s/<\/tr>.*//s;
+  my @words;
+  for my $w (@res) {
+    if($w !~ /href=(\S+).*<b>(.*)<\/b>/s) {
+      warn "Mot étrange...\n";
+      next;
+    }
+    my ($u, $d) = ($1, $2);
+    $u =~ s/.*\///;
+    $d =~ s/<sup>.*<\/sup>//g;
+    push @words, [$u, $d];
+  }
+  die "Aucun mot trouvé, étrange.\n" unless @words;
+  $word = uc $word;
+  my @todo;
+  for my $w (@words) {
+    my $ws = $w->[1];
+    $ws =~ s/\([^()]*\)//g;
+    $ws =~ s/,.*//;
+    next unless $word eq $ws;
+    push @todo, $w->[0];
+  }
+  if(@todo == 0) {
+    for(my $i = 1; $i <= @words; $i++) {
+      printf "%4d\t%s\n", $i, $words[$i - 1][1];
+    }
+    if(-t STDIN) {
+      local $| = 1;
+      print "Le(s) quel(s) ? ";
+      my $ask = <STDIN>;
+      for my $i ($ask =~ /\d+/g) {
+	if($i >= 1 && $i <= @words) {
+	  push @todo, $words[$i - 1][0];
+	} else {
+	  warn "$i : je ne peux pas.\n";
+	}
+      }
+    }
+  }
+  for my $url (@todo) {
+    my $res = simple_get $url, "Impossible d'obtenir le mot";
+    my @res = get_frameset $res;
+    get_word $session, @res;
+  }
+}
+
+sub output;
+
+sub get_word {
+  my ($session, $f1, $f2, $firstres) = @_;
+  my @ress;
+  my $url = $f2;
+  my $side = $f1;
+  print "\n";
+  while(1) {
+    my $res;
+    if(defined $firstres) {
+      $res = $firstres;
+      undef $firstres;
+    } else {
+      $res = simple_get $url, "Impossible d'obtenir la définition";
+    }
+    $res =~ s/(.*)<div[^<>]*>//s;
+    my $before = $1;
+    $res =~ s/<\/div>(.*)//s;
+    my $after = $1;
+    $res =~ s/\n/ /g;
+    $res =~ s/\s*<br>\s*/\n/g;
+    $res =~ s/(\s+)(<\/\w+>)/$2$1/g;
+    $res =~ s/<img[^<>]*debart[^<>]*>//g;
+    $res =~ s/<img[^<>]*tiret[^<>]*>/-/g;
+    $res =~ s/<img[^<>]*puce[^<>]*>/* /g;
+    $res =~ s/<img[^<>]*displayi[^<>]*>/+/g;
+    $res =~ s/<font size=-2>([^<>]*)<\/font>/<author>$1<\/author>/g;
+    $res =~ s/<\/font><\/sup>/<\/sup>/g;
+    $res =~ s/<sup>(\d+)<\/sup>/($1)/g;
+    $res =~ s/<sup>([^<>]+)<\/sup>/$1/g;
+    $res =~ s/<p[^<>]*>/\n<cite>/g;
+    $res =~ s/<\/p>/<\/cite>\n/g;
+    $res =~ s/\s*\n\s*/\n/g;
+    $res =~ s/,,/« /g;
+    $res =~ s/``/ »/g;
+    $res =~ s/^((?:<cite>)?)/$1<p>/gm;
+    $res =~ s/((?:<\/cite>)?)$/<\/p>$1/gm;
+    $res =~ s/<\/?font[^<>]*>//g;
+    $res =~ s/<(\w+)\s+[^<>]*>/<$1>/g;
+    $res =~ s/\s+/ /g;
+    push @ress, $res;
+    output $res;
+    last unless $after =~ /suite/;
+    my $sres = simple_get $side, "Impossible d'obtenir la suite";
+    if($sres !~ /<a href=\S+\/(\S+)[^<>]*>\s*<img[^<>]*downg[^<>]*>/) {
+      warn "Il devrait y avoir une suite.\n";
+      last;
+    }
+    my $next = $1;
+    my @next = get_frameset simple_get $next, "Impossible d'obtenir la suite";
+    ($side, $url) = @next;
+  }
+  print "\n";
+}
+
+sub output($) {
+  my ($t) = @_;
+  local $SIG{__WARN__} = sub { warn @_ unless $_[0] =~ /does not map to/ };
+  my @stack = ();
+  my $margin = 0;
+  my $x = 0;
+  my $width = $term_width;
+  my @aword;
+  my $alength = 0;
+  my $flush = sub {
+    if($x > 0 && $x + $alength + 1 > $width - $margin) {
+      print "\n";
+      $x = 0;
+    }
+    if($x == 0) {
+      print " " x $margin;
+    } else {
+      print " ";
+      $x++;
+    }
+    print @aword;
+    $x += $alength;
+    @aword = ();
+    $alength = 0;
+  };
+  while(1) {
+    if($t =~ /\G<(\w+)>/gc) {
+      my $t = $1;
+      push @stack, $t;
+      if($t eq "b") {
+	push @aword, $bold_on;
+      } elsif($t eq "i") {
+	push @aword, $italic_on;
+      } elsif($t eq "author") {
+	push @aword, $author_on;
+      } elsif($t eq "cite") {
+	$margin += 4;
+      } elsif($t eq "p") {
+	@aword = ();
+	$alength = 0;
+	$x = 0;
+      }
+    } elsif($t =~ /\G([^<> \n]+)/gc) {
+      my $w = $1;
+      push @aword, $w;
+      $alength += length $w;
+    } elsif($t =~ /\G<\/(\w+)>/gc) {
+      my $t0 = $1;
+      while(@stack) {
+	my $t = pop @stack;
+	if($t eq "b") {
+	  push @aword, $bold_off;
+	} elsif($t eq "i") {
+	  push @aword, $italic_off;
+	} elsif($t eq "author") {
+	  push @aword, $author_off;
+	} elsif($t eq "cite") {
+	  $margin -= 4;
+	} elsif($t eq "p") {
+	  $flush->();
+	  print "\n\n";
+	  $x = 0;
+	}
+	last if $t eq $t0;
+      }
+    } elsif($t =~ /\G[ \n]+/gc) {
+      $flush->();
+    } elsif($t =~ /\G\Z/gc) {
+      last;
+    } else {
+      $t =~ /\G(.*)/gc;
+      die "Invalid markup $1.\n";
+    }
+  }
+  local $| = 1;
+}
+
+{
+  my $markup_mode = -t STDOUT ? 1 : 0;
+  my $dumb = 0;
+  my $color = 0;
+  my $markup = 0;
+  my $bold_color = 1;
+  my $italic_color = 34;
+  my $author_color = 32;
+  my $usage = <<EOF ;
+Usage: tlf [-c|-m|-d] mot
+	-c couleurs
+	-m balises
+	-d noir et blanc
+	--largeur=largeur [76]
+	--bold=couleur [1]
+	--italic=couleur [34]
+	--author=couleur [32]
+EOF
+  GetOptions
+    "dumb|d" => \$dumb,
+    "color|c" => \$color,
+    "markup|m" => \$markup,
+    "bold=i" => \$bold_color,
+    "italic=i" => \$italic_color,
+    "author=i" => \$author_color,
+    "largeur|width=i" => \$term_width,
+    "help|h" => sub { print $usage; exit 0 }
+  or die $usage;
+  die "Terminal trop étroit.\n" unless $term_width >= 16;
+  $markup_mode = 0 if $dumb;
+  $markup_mode = 1 if $color;
+  $markup_mode = 2 if $markup;
+  if($markup_mode == 1) {
+    $bold_on = "\e[${bold_color}m";
+    $bold_off = "\e[m";
+    $italic_on = "\e[${italic_color}m";
+    $italic_off = "\e[m";
+    $author_on = "\e[${author_color}m";
+    $author_off = "\e[m";
+  } elsif($markup_mode == 2) {
+    $bold_on = "<bold>";
+    $bold_off = "</bold>";
+    $italic_on = "<italic>";
+    $italic_off = "</italic>";
+    $author_on = "<author>";
+    $author_off = "</author>";
+  }
+  die $usage unless @ARGV;
+}
+
+my $session = get_session_id;
+for my $w (@ARGV) {
+  get_word_or_words $session, decode $encoding, $w;
+}

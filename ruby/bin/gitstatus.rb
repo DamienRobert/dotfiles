@@ -1,0 +1,1 @@
+../gems/git_helpers/bin/gitstatus.rb

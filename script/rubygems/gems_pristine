@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+#when updating ruby, we need to rebuild gems that have extensions (using
+#gem pristine for instance)
+#this is done by this script
+#we could use gem pristine --all but this would rebuild gems that don't need it
+require 'pathname'
+require 'shellwords'
+bin=ARGV.delete("--bin") #check bin files for #! referencing older ruby versions
+
+arch=`uname -m`.chomp
+ext= arch=="i686" ? "x86" : "x86_64"
+old=ARGV[0] || "ALL" # ALL => all gems dir in ext direcotry
+new=ARGV[1] || "#{RUBY_VERSION[0...-1]}0"
+	# Note: in the ext dir the folders are of the form major.minor.0 so we alter the version to replace the last number by a 0
+	#`ruby -v`.match(/^ruby (\d+\.\d+\.\d+)/) {|m| m[1]}
+ext=ARGV[2] || ext
+
+gemdir=Pathname.new("#{ENV['GEM_HOME']}") #Pathname.new("#{ENV['HOME']}")+"opt/pkgmgr/gems"
+gemext=gemdir+"extensions/#{ext}-linux"
+
+def get_gems(dir)
+	dir.entries.map do |gemdir|
+		m=gemdir.to_s.match(/^(.*)-(.*)$/)
+		m[1] if m
+	end.compact.uniq
+end
+
+def get_gemsbin(dir,version)
+	dir.children.map do |bin|
+		bin.basename.to_s unless bin.readlines.first =~ /#{version}/
+	end.compact.uniq
+end
+
+oldfolders=if old=="ALL"
+	gemext.children.select {|dir| dir.directory?}
+else
+	[gemext+old]
+end
+oldgems=oldfolders.flat_map{|f| get_gems(f)}.uniq
+newgems=(newdir = gemext.glob("#{new}*").first) ? get_gems(newdir) : []
+puts "# Upgrading gems from #{oldfolders} to #{new} (#{newdir})"
+gems=oldgems-newgems
+
+if bin
+	correct_bin="ruby-#{new}" #new gems should use /bin/env ruby so this should not matter
+	puts "# Checking bin for #{correct_bin}"
+	gemsbin=get_gemsbin(Pathname.new("#{ENV['HOME']}")+"opt/pkgmgr/gems/bin",correct_bin)
+	gems|=gemsbin
+end
+puts "Old to upgrade: #{oldgems}"
+puts "New gems already done: #{newgems}"
+puts "=> Gems pristine on #{gems} (proceed?)"
+gets
+system("gem pristine #{gems.shelljoin}")

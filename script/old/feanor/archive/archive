@@ -1,0 +1,123 @@
+#!/bin/bash3
+#(pour l'utf16)
+
+help() {
+  echo "Il faut specifier un repertoire (non existant!)"
+  echo "Aide: $0 [-x] [-l] repertoire"
+  echo "-l: archive light"
+  echo "-x: pour ejecter le cd a la fin"
+  echo "repertoire: repertoire ou mettre les fichiers de l'archive"
+  exit 1
+}
+
+EJECT=""
+LIGHT=""
+#UTF8=""
+
+while true;
+do
+  case "$1" in
+    --) break ;;
+    -x) EJECT=true; shift ;;
+    -l) LIGHT=true; shift ;;
+#    -u) UTF8=true; shift ;;
+    -h) help ;;
+    *) break;;
+  esac
+done
+
+if [ -z "$1" ]
+then
+  help
+fi
+
+LOCATION="$1"
+
+if [ -e "$LOCATION" ]
+then
+  echo "Le repertoire existe"
+  exit 1
+else
+  mkdir -p "`dirname \"$LOCATION\"`"
+  #je crée basename $LOCATION plus tard, donc j'emploie
+  #ça pour éviter un warning de mkdir
+fi
+
+CDROM="/cdrom"
+#if [ -z UTF8 ]
+#then
+  mount "$CDROM"
+#else
+#  umount "$CDROM"
+#  sudo mount /dev/hdc /cdrom -t auto -o utf8
+#fi
+
+makelien() {
+  FICHIER="${1#$CDROM}"
+  ln -s "$1" "$LOCATION/$FICHIER"
+}
+
+makeinfo() {
+  FICHIER="${1#$CDROM}"
+  {
+  case "$1" in
+    *.mp3 )
+      mp3info -r a -p "File:      %f\nTitle:     %t\nArtist:    %a\nAlbum:     %l\nTrack:     %n\nTime:      %m:%02s\nGenre:     %g\nYear:      %y\nComment:   %c\nSampling:  %Q\nRate:      %.0r\nStereo:    %o\nFrames:    %u - %b\nLayer:     %L (%.2v)\nOriginal:  %O\nCopyright: %C\nCRC:       %E\nEmphasis:  %e\n\n" "$1"
+   # plus rapide
+   #mp3info -r a -p "File:      %f\nTitle:     %t\nArtist: %a\nAlbum:     %l\nTrack:     %n\nTime:      %m:%02s\nGenre: %g\nYear:      %y\nComment:   %c\n\n" "$1"
+    ;;
+    *.ogg ) ogginfo "$1"
+    ;;
+    *     ) ls -lhd "$1"; file "$1"
+    ;;
+  esac
+  } > "$LOCATION"/"`dirname \"$FICHIER\"`"/."`basename \"$FICHIER\"`".info
+  #bouh! tout ça pour rajouter un '.'!
+}
+
+makeinfodir() {
+  DIR="${1#$CDROM}"
+  mkdir "$LOCATION/$DIR"
+  ln -s "$1" "$LOCATION/$DIR/.cdrom"
+
+  if [ x$LIGHT != xtrue ]
+  then
+    mp3info -p "%f\t%t\t%a\t%l\n"  "$1"/*.mp3 > "$LOCATION/$DIR/00MP3INFO"
+    ls   "$1"/*.ogg                           > "$LOCATION/$DIR/00OGGINFO"
+  fi
+  tree -a "$1"                                > "$LOCATION/$DIR/00FILEINFO"
+}
+
+recur() {
+  makeinfodir "$1"
+  #cree le dossier, et les infos sur le fichier
+  #ainsi qu'un lien symbolique vers le dossier sur le cd
+
+  #on ne reference pas les fichiers caches
+  for i in "$1"/.* "$1"/*
+  do
+    echo "$i"
+    if [ "x$i" = "x$1/." -o "x$i" = "x$1/.." ]
+    then true
+    else
+    echo "$i";
+    if [ -d "$i" ]
+    then
+      recur "$i"
+    else
+      makelien "$i"
+      if [ x$LIGHT != xtrue ]
+      then
+        makeinfo "$i"
+      fi
+    fi
+    fi
+  done
+}
+
+recur "$CDROM"
+
+if [ x$EJECT = xtrue ]
+then
+  eject
+fi

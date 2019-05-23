@@ -1,0 +1,15 @@
+[Desktop Entry]
+X-AppInstall-Package=thunar
+X-AppInstall-Popcon=6169
+X-AppInstall-Section=universe
+Name=Thunar File Manager
+Comment=Browse the filesystem with the file manager
+GenericName=File Manager
+Exec=Thunar %F
+Icon=Thunar
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=System;Utility;Core;GTK;FileTools;FileManager;
+X-Ubuntu-Gettext-Domain=app-install-data
+X-XFCE-Source=file:///usr/local/share/applications/Thunar.desktop

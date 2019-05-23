@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+netns=${netns-ns1}
+
+if [[ -n $@ ]]; then
+	sudo ip netns exec $netns sudo -u $USER $@
+else
+	sudo ip netns exec $netns su $USER
+fi

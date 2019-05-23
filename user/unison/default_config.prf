@@ -1,0 +1,17 @@
+# vim: filetype=conf:
+
+# Log actions to unison.log (true by default)
+# log = true
+
+preferpartial = Regex .*/\.git/index$ -> newer
+watch = false
+
+#Global ignore
+ignore = Regex .*(\.|/)nobackup$
+#ignore = Name .nfs*
+#gitk
+ignore = Name *.cache
+#Compiled code
+ignore = Name *.o
+ignore = Name *.pyc
+ignore = Regex .*/magma/.*\.sig$

@@ -1,0 +1,19 @@
+#!/bin/zsh
+#nspawn-b
+
+#*ctl
+#####
+
+if [[ $SYST[lang] == "fr" ]]; then
+	#/etc/X11/xorg.conf.d/00-keyboard.conf
+	localectl set-x11-keymap --no-convert fr oss
+	#/etc/vconsole.conf
+	localectl set-keymap --no-convert fr-latin1
+fi
+#/etc/adjtime:
+# timedatectl set-local-rtc true
+#hostname
+hostnamectl set-hostname "$COMPUTER[name]"
+#shortcut for
+#hostnamectl set-hostname --static "$HOSTNAME" #/etc/hostname
+#hostnamectl set-hostname --pretty "$HOSTNAME" #/etc/machine-info

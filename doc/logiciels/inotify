@@ -1,7 +1,7 @@
 Examples of using inotifywait for mail notification:
   https://bbs.archlinux.org/viewtopic.php?id=122789
   https://github.com/erikw/dotfiles/blob/personal/bin/maildir_watch.sh
-  
+
   #!/bin/sh
   while true; do
     mb=`inotifywait -e create -e moved_to ~/Mail/*/*/new 2> /dev/null  | cut -f 1 -d " " | cut -d "/" -f 5-6`

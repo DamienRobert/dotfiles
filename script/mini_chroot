@@ -1,0 +1,6 @@
+#!/usr/bin/zsh
+
+root=$1
+TERMINFO="$root/usr/share/terminfo/"
+PATH="$root/usr/bin:$PATH"
+LIBRARY_PATH="$root/usr/lib:$LIBRARY_PATH"

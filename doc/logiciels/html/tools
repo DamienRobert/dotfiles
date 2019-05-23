@@ -1,0 +1,312 @@
+vim: foldmethod=marker
+
+HTML Frameworks {{{1
+
+# Zurb foundation
+
+CLI is now on npm: npm install -g foundation-cli
+But this is just a trivial wrapper
+
+- foundation new ploum
+  - clone one the these repositories:
+    [cf http://foundation.zurb.com/sites/docs/starter-projects.html
+    for basic (sass) vs zurb (sass+js+handlebar) template]
+    var repositories = {
+      sites: {
+        basic: 'https://github.com/zurb/foundation-sites-template.git',
+        zurb: 'https://github.com/zurb/foundation-zurb-template.git'
+      },
+      apps: 'https://github.com/zurb/foundation-apps-template.git',
+      emails: 'https://github.com/zurb/foundation-emails-template.git'
+    }
+  - remove the .git
+  - npm install
+  - bower install
+- foundation update -> bower update
+- foundation build /foundation watch -> npm start build / npm start watch
+
+# Html5 boilerplate
+
+Le contenu à utiliser est dans dist/ (déjà compilé par gulp depuis src/)
+cf dist/doc pour la doc
+
+CSS Templates {{{1
+Css history: https://medium.com/actualize-network/modern-css-explained-for-dinosaurs-5226febe3525, HN: https://news.ycombinator.com/item?id=16306371
+
+#Frameworks
++ zurb-foundation
+- twitter-bootstrap
+- http://primercss.io/ #github's css template
+- http://titon.io/en/toolkit (built on react)
+
+#Minimal frameworks
++ https://github.com/jgthms/bulma (less lightweight than spectre, uses sass)
+  https://news.ycombinator.com/item?id=17740622
+-  https://github.com/uikit/uikit
+- https://picturepan2.github.io/spectre/ [flexbox sass/css light framework, see also the comments on https://news.ycombinator.com/item?id=11758034, less active than bulma]
+- http://purecss.io/ (from yahoo, old style no flexbox)
+- https://github.com/milligram/milligram (more lightweight than spectre, use sass, not really maintened)
+- https://github.com/sitetent/tentcss (another lightweight sass implem, uses the BEM naming convention, http://getbem.com/naming/)
+- http://tachyons.io/
+  For functional css, cf https://adamwathan.me/css-utility-classes-and-separation-of-concerns/ and https://www.smashingmagazine.com/2013/10/challenging-css-best-practices-atomic-approach/
+- http://materializecss.com/ A modern responsive front-end framework based on Material Design
+
+#Css Grid systems via floats:
+http://www.sitepoint.com/understanding-css-grid-systems/
+- http://getskeleton.com/ #minimal grid css framework (not maintained anymore)
+  https://github.com/dhg/Skeleton
+  https://github.com/whatsnewsaes/Skeleton-Sass
+#Floats grid system via sass:
+- http://susy.oddbird.net/ #build your own grid framework (float/flexbox)
+  http://www.sitepoint.com/sass-grids-neat-susy/
+- http://www.sitepoint.com/creative-grid-system-sass-calc/ #by hand
+
+#Grid system via flexbox
+- http://philipwalton.github.io/solved-by-flexbox/demos/grids/
+  (https://github.com/philipwalton/solved-by-flexbox)
+- http://www.smashingmagazine.com/2015/12/website-layout-tools-compared-flexbox-vs-susy/ [Flexbox vs Susy]
+- https://github.com/matthewsimo/scss-flex-grid -> http://matthewsimo.github.io/scss-flex-grid/
+  [-> merged with https://github.com/kristoferjoseph/flexboxgrid -> http://flexboxgrid.com/ in ~website/minimal, this just adds start/center/end/between/around/between/top/middle/bottom-ns classes]
+
+# Html5 templates
+- http://html5up.net/ #html5 templates
+  https://html5up.net/highlights
+  https://html5up.net/photon
+  https://html5up.net/strongly-typed
+
+#Css defaults:
+- html5-bootstrap, include
+  - normalize.css (css normalisation)
+  - modernizr (feature detection) http://modernizr.com/ #js library detecting html5 and css3 features
+
+- reset #reset every css property
+- normalize #more recent than reset, let some browser specificity
+- sanitize: https://github.com/jonathantneal/sanitize.css
+  normalize: https://github.com/jonathantneal/normalize.css
+  normalize.css and sanitize.css correct browser bugs while carefully testing
+  and documenting changes. normalize.css styles adhere to css specifications.
+  sanitize.css styles adhere to common developer expectations and
+  preferences (ie more opiniated). reset.css unstyles all elements. Both sanitize.css and
+  normalize.css are maintained in sync.
+
+# Css libraries
+Adding prefixes automatically: https://github.com/postcss/autoprefixer
+https://github.com/jonathantneal/postcss-normalize: PostCSS Normalize lets you use the parts of normalize.css you need, based on your project’s browserlist.
+(cf https://www.npmjs.com/package/browserslist, http://browserl.ist/, https://github.com/ai/browserslist)
+
+# Css generators
++ sass http://sass-lang.com/
+- less
+
+# Icons:
+http://fortawesome.github.io/Font-Awesome/
+http://themes-pixeden.com/font-demos/7-stroke/index.html
+
+# Debugging:
+Chrome: https://css-tricks.com/starting-a-refactor-with-css-dig/
+Firefox: firebug
+
+# Typography
++ Tufte inspired css for articles: http://www.daveliepmann.com/tufte-css/
+https://news.ycombinator.com/item?id=10012360 => practicaltypography.com
+
+Javascript {{{1
+[See also doc/Info/Javascript]
+
+# Package manager
+See http://stackoverflow.com/questions/35062852/npm-vs-bower-vs-browserify-vs-gulp-vs-grunt-vs-webpack
+- npm/yarn (facebook) [modules manager]
+- bower (deprecated, general purpose package manager)
+- grunt (deprecated) / gulp [makefile like]
+  But can use npm: https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/
+- browserify/webpack/jspm (systemjs) [assets manager]
+- scaffolder: yeoman
+
+Modules: AMD (RequireJS) or CommonJS (nodejs). On ES6: Harmony (esm)
+         https://addyosmani.com/writing-modular-js/
+         esm: http://2ality.com/2014/09/es6-modules-final.html
+
+nodejs support for esm: -> foo.mjs is assumed to be an esm module
+- https://medium.com/webpack/the-state-of-javascript-modules-4636d1774358
+- https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e
+- http://2ality.com/2018/12/nodejs-esm-phases.html
+
+## Webpack: bundle js
+See also [~/Documents/Web/webpack/00notes]
+  Ex: https://www.smashingmagazine.com/2017/02/a-detailed-introduction-to-webpack/
+  Note: webpack2 has native support for ES6 modules
+  When transpiling with babel, needs to esm keep modules for treeshaking
+  => { presets: [ ["es2015", { "modules": false }] ] }
+  https://webpack.js.org/guides/tree-shaking/
+  https://medium.com/modus-create-front-end-development/webpack-2-tree-shaking-configuration-9f1de90f3233
+  https://medium.freecodecamp.com/tree-shaking-es6-modules-in-webpack-2-1add6672f31b#.29hke12ah
+
+## Systemjs:
+Universal dynamic module loader - loads ES6 modules, AMD, CommonJS and global scripts in the browser and NodeJS.
+  jspm is a package manager for the SystemJS universal module loader, built on top of the dynamic ES6 module loader
+  Exemple of loading an es6 module (uses babel to transpile to es5): https://www.spiria.com/en/blog/web-applications/systemjs-universal-loader-lets-you-use-es6-modules
+  jspm2 will have native support for es6 modules (like webpack2)
+
+Babel: convert es2015+ to es5. Can be configured using preset; the one containing all the features is here:
+https://github.com/babel/babel/tree/master/packages/babel-preset-env
+Webpack plugin: babel-loader => npm install babel-loader@8.0.0-beta.0 @babel/core @babel/preset-env webpack
+More infos for babel plugins in ~/script/tools.d/00notes
+
+## npm package.json
+  $ npm init
+  $ npm install -D babel-loader@8.0.0-beta.0 @babel/core @babel/preset-env webpack
+  $ npm install lodash
+{
+  "name": "my-program-test",
+  "version": "0.0.1",
+  "author": "Damien Robert",
+  "description": "Test de npm",
+  "license": "ISC"
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.34",
+    "@babel/preset-env": "^7.0.0-beta.34",
+    "babel-loader": "^8.0.0-beta.0",
+    "webpack": "^3.10.0"
+  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+}
+
+  $ npm run test (note start, restart, stop, test scripts do not need the run keyword)
+
+  + package-lock.json (like bundler's Gemfile.lock) => npm install; npm update
+
+# JS libraries
+- nodejs
+- jquery
+https://jquery.com/
+  http://ponyfoo.com/articles/getting-over-jquery
+  Without jquery: http://vanilla-js.com/
+    https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
+  https://www.smashingmagazine.com/2018/02/jquery-vue-javascript/
+- jquery-ui https://jqueryui.com/
+- ember/angular/react/vue (cf https://vuejs.org/v2/guide/comparison.html)
+  next: framework on top of react https://zeit.co/blog/next
+  mithril: light weight react like; https://mithril.js.org/framework-comparison.html
+
+# Html5
+- Modernizr: html5 feature detection (can be set up to load polyfills if the feature is not implemented in the browser)
+- Polyfills: https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills
+- Html5/css3 supports: http://html5please.com/
+                       http://caniuse.com/
+  es support: http://kangax.github.io/compat-table/es6/
+- IE support: https://github.com/afarkas/html5shiv (This script is the defacto way to enable use of HTML5 sectioning elements in legacy Internet Explorer.)
+  Css3: http://css3pie.com/
+  IE9.js: http://code.google.com/p/ie7-js/
+  IE8: http://voceplatforms.com/2014/07/5-tools-that-make-ie8-development-suck-less/
+    <!--[if lt IE 9]>
+    <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <![endif]-->
+- ECMA 5 and 6 polyfill: https://github.com/zloirock/core-js
+
+# CDN
+- https://developers.google.com/speed/libraries/?csw=1
+- http://www.asp.net/ajax/cdn
+- https://cdnjs.com/
+
+# Librairies
+- http://www.videojs.com/ (html5 video player)
+
+# JS Frameworks:
+JS frameworks history: https://medium.com/the-node-js-collection/modern-javascript-explained-for-dinosaurs-f695e9747b70
+- angularjs (mvw framework)
+http://www.smashingmagazine.com/2015/01/22/angularjs-internals-in-depth/
+- reactjs (facebook render library)
+  http://developer.telerik.com/featured/introduction-to-the-react-javascript-framework/
+  http://hackflow.com/blog/2015/03/08/boiling-react-down-to-few-lines-in-jquery/
+  http://facebook.github.io/react-native/
+
+## Comparison:
+- https://www.codementor.io/reactjs/tutorial/react-vs-angularjs
+- http://www.quora.com/I-am-confused-whether-to-use-angular-js-underscore-js-react-js-ember-js-or-backbone-js-for-my-next-project-Can-someone-help-me-with-material-which-states-which-type-of-web-apps-each-library-rocks-at
+- https://www.airpair.com/js/javascript-framework-comparison
+
+# Divers
+- https://github.com/moklick/frontend-stuff
+A continuously expanded list of framework/libraries and tools I used/want to use when building things on the web. Mostly Javascript stuff.
+
+- http://updates.html5rocks.com/2015/03/introduction-to-fetch
+  fetch() allows you to make network requests similar to XMLHttpRequest (XHR). The main difference is that the Fetch API uses Promises, which enables a simpler and cleaner API, avoiding callback hell and having to remember the complex API of XMLHttpRequest.
+
+Override the Same Origin Policy:
+  From the server:
+- https://en.wikipedia.org/wiki/JSONP
+- https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+  From the navigator:
+- http://stackoverflow.com/questions/17088609/disable-firefox-same-origin-policy
+- http://stackoverflow.com/questions/3102819/disable-same-origin-policy-in-chrome
+  Via ajax et Yahoo YQL
+- http://jsfiddle.net/hxzyC/
+- http://stackoverflow.com/questions/15882895/is-it-possible-to-load-a-cross-domain-web-page-through-ajax
+- http://james.padolsey.com/snippets/cross-domain-requests-with-jquery/
+
+Text templates {{{1
+
+# Text like template
++ asciidoctor (ruby gem for the ascii doc format)
++ kramdown (the best markdown like template)
+
+# Lightweight template (from more to less powerfull)
+- liquid #I don't like the syntax, its like handlebars/mustache but with its own programming language
+- handlebars [=mustache + more features]
+  ruby implem: https://github.com/jamesotron/FlavourSaver
+- mustache
+
+# erb like
++ erubis (in ruby), eruby (in C), erb (in ruby, included in stdlib), ember (eruby parser in only 360 lines), erubi (modern erubis)
+- mote #lightweight eruby like
+
+# condensed html
+- haml: http://haml.info/
+%section.container
+  %h1= post.title
+
++ slim:
+doctype html
+html
+  head
+    title Slim Examples
+
+- markaby
+mab.html do
+  head { title "Boats.com" }
+  body do
+
+- builder: for xml
+builder = Builder::XmlMarkup.new
+xml = builder.person { |b| b.name("Jim"); b.phone("555-1234") }
+xml #=> <person><name>Jim</name><phone>555-1234</phone></person>
+
+- Erector is a Builder-like view framework for Ruby, inspired by Markaby.
+
+# Meta templates
+- https://github.com/judofyr/temple
+  Meta template generator
+- https://github.com/rtomayko/tilt
+  Generic interface to multiple Ruby template engines
+- pandoc: http://johnmacfarlane.net/pandoc/
+  Convert between templating formats
+
+# Others
+- https://github.com/vstakhov/libucl #Universal configuration library parser
+heroku: for deployment
+(or a vps: ramnode, lunanode, ovh: https://www.ovh.com/world/vps/vps-ssd.xml)
+
+Web tools {{{1
+web ide: see http://www.reddit.com/r/webdev/comments/1zq006/nitrousio_vs_koding_vs_cloud9_thoughts/
+cloud 9 https://c9.io/
+nitrous: https://www.nitrous.io/
+codebox: https://github.com/FriendCode/codebox
+
+color palette: http://www.palettable.io/B84E1A

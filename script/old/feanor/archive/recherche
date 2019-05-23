@@ -1,0 +1,6 @@
+#!/usr/bin/zsh
+
+for i in **/.*.info
+do
+  grep -i -l "$@" "$i"
+done

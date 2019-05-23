@@ -1,2 +1,0 @@
-Defaults passprompt=%p@%H:%u->%U: 
-%wheel ALL=(ALL) ALL

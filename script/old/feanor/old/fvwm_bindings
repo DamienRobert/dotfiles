@@ -1,0 +1,10 @@
+#!/bin/sh
+
+export FVWM_Bindings;
+
+if [ x$FVWM_Bindings = xno ];
+then FVWM_Bindings=yes;  FvwmCommand SetBindings;
+else FVWM_Bindings=no; FvwmCommand UnsetBindings;
+fi
+
+export FVWM_Bindings

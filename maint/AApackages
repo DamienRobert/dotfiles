@@ -1,0 +1,287 @@
+vim: foldmethod=marker
+
+# packages {{{1
+# ========
+
+Summary:
+  ./packages.rb [-t user, syst]
+     [show] list list-all pristine get-all get rm rm-extra rm-unused fix_unused top_pkgs all_pkgs pkg_search
+     show_infos update check_update update_or_check clean bootstrap install uninstall change_mode clean_cache search show_top show_all show_graph clean_cache
+  [Note: type is automatically determined if not specified]
+  -> install: ./packages.rb --shell=exec get
+  -> update: ./packages.rb --shell=exec update_or_check
+  -> clean: ./packages.rb --shell=exec clean
+
+=> maintenance:
+./packages.rb --shell=exec fix_unused
+./packages.rb --shell=exec rm-unused
+./packages.rb --shell=exec clean
+
+~maint/{user,syst}/packages.rb can handle the actions '[show] list...'
+~rubylib/packages/handler.rb can handle the actions '[show_infos] install uninstall update check_update update_or_check clean...'
+~maint/packages.rb either calls "user.rb and syst.rb" or "handler.rb" according to the action
+
+Options:
+  -t ruby_gem to specify the type of package
+         syst_types=[:arch_abs,:arch_aur]
+         user_types=[:ruby_gem, :python_pip2, :python_pip3, :nodejs, :perl_cpan, :git_optdist, :yarn]
+  -c comp to specify the computer
+  --shell=[puts]/eval/exec
+  -v: => [show] also show extra_ok and missing_ok
+
+*resolver.rb [used by user.rb and syst.rb]:
+  show: state of our packages installed (use @pkgsdep)
+  list: list of packages we want (@pkgs)
+  list-all: - @packages (static configuration hash of packages)
+            - @pkgs_mode (static configuration hash of packages mode for the computer)
+            - @pkgs (packages we want, derived from @packages and @pkgs_mode)
+            - @ourpkgs -> {all:, top:, unused:, groups:} (packages we have; from graphs.rb#infos)
+            - @pkgsdep -> :missing_pkgs, :missing_groups, :missing, :extra, :unused, :allextra (missing=missing_pkgs+missing_groups,allextra=extra+unused)
+  pristine/get-all/get/rm/rm-extra/rm-unused
+
+*graphs.rb: show graphs of installed packages [default type is 'gem']
+  infos: return {all: list_packages, top: list_top, unused: list_unused, groups: list_groups(groups)}
+
+*handler.rb:
+  install/uninstall/update/clean/bootstrap
+  show-infos: prints graphs.rb#infos
+  check_update: check if there is an update
+  update_or_check: calls update or check_update depending on the package type
+  clean: clean cache
+
+Examples:
+~maint/packages.rb -t ruby_gem get-all #install all wanted pkgs
+~maint/packages.rb get #install missing pkgs
+~maint/packages.rb rm #remove extra pkgs
+~maint/packages.rb pristine #both of the above
+~maint/packages.rb bootstrap
+~rubydr/packages/handler -t arch_abs change_mode go
+~rubydr/packages/handlers.rb -t arch_abs change_mode go => ~rubydr/packages/handlers/arch_abs.rb change_mode go
+
+In ruby:
+require 'dr/packages'
+pkgs=DR::Packages::Syst.new(DR::Computer.new)
+pkgs.pkgs #{:arch_abs=>{:archive=> {atool,cpio,...}}
+pkgs.pkgs_list #@pkgs_list packages we want installed (flattened version of @pkgs); {:arch_abs => {atool, cpio,...}}
+pkgs.pkgs_list.values.inject(&:|) #union of the packages
+pkgs.get_pkgs #populate @ourpkgs using the result of graphs.rb#infos
+pkgs.ourpkgs #@ourpkgs, packages installed
+pkgs.all_installed_pkgs #the all: field from ourpkgs
+pkgs.get_deps #(also call get_pkgs); populate @pksdep
+pkgs.pkgsdep #@pkgsdeps
+
+require 'dr/packages'
+graph_handler=DR::Packages::PkgGraph.new(:ruby_gem)
+graph=graph_handler.graph
+graph["activesupport"].children
+graph["activesupport"].parents
+graph["activesupport"].ancestors
+graph["activesupport"].descendants
+
+# pacman {{{1
+# ======
+
+pacman -Qdt
+pacman_feed -Qi pacman -Qqdt
+
+eval $(./packages.rb rm-unused)
+eval $(./packages.rb rm-extra)
+eval $(./packages.rb rm) #both of the above
+eval $(./packages.rb get) #install missing pkgs
+eval $(./packages.rb pristine) #both of the above
+
+# rubygems {{{1
+# ========
+
+# Install
+gem install pkgs
+
+# Update
+gem update
+
+gem list: list gems
+gem stale: list gems along with access times
+gem outdated: display all gems that need updates
+gem clean: remove old gems
+gem uninstall [--force --all]: uninstall gems
+gem pristine --all: reinstall (and rebuild extensions) all installed gems
+gem pristine --all --only-executables: rebuild only gems that have executables
+
+Fuzzy install: gem install rails -v "~>4.0.0" #latest 4.0.x version
+rails _4.0.0_ ... #select explicit version
+
+#regenerate the docs:
+- gem rdoc --all --rdoc
+- yard gems
+-> yard server -g to launch local yard server
+
+#my scripts: 
+- rubygems/gem-pristine
+- rubygems/gem_update_shebang.rb
+
+# Notes:
+If 'readline' is not found (like if libreadline-dev is not installed prior to using rbenv to compile ruby), then install 'rb-readline', cf https://github.com/deivid-rodriguez/byebug/issues/118
+
+# Gemfile (gems installed into ~/var/spool/bundle)
+bundle install/update/clean
+To use: bundle_activate (from .zsh/functions)
+
+#ruby upgrade
+~/script/rubygems/gems_pristine --bin
+
+# python (pip) {{{1
+# ===========
+
+#Bootstrap:
+curl -L https://bootstrap.pypa.io/get-pip.py | python2 - --user
+curl -L https://bootstrap.pypa.io/get-pip.py | python3 - --user
+#Update: pip install --user pip -U
+
+#install:
+pip install --user #or pip2, pip3 for python2, python3
+Ex: pip install --user ~/opt/src/mcomix-1.00.tar.bz2 
+
+#update:
+pip install --user foo bar -U
+
+- pip uninstall
+- pip list #list global /usr packages too
+  pip list --user
+
+#dependencies:
+pip show foo
+
+# perl (cpan) {{{1
+# ===========
+
+#Boostrap:
+curl -L http://cpanmin.us | perl - App::cpanminus
+
+#install/update a module: cpanm Module
+cpanm module
+
+- cpanm --self-upgrade #shortcut for cpanm App:cpanminus
+- cpanm --uninstall
+
+List of installed perl modules: https://stackoverflow.com/questions/115425/how-do-i-get-a-list-of-installed-cpan-modules
+cf perldoc -q installed
+=> cpan -l # all perl modules (including system ones)
+=> using ExtUtils:
+cat <<'EOS' | perl
+  #!/usr/bin/perl -w
+  use ExtUtils::Installed;
+  my $inst = ExtUtils::Installed->new();
+  my @modules = $inst->modules();
+  foreach $module (@modules){
+    print $module . "\n";
+  }
+EOS
+
+# nodejs (npm) {{{1
+# ===========
+
+#sudo pacman -S nodejs yarn
+npm install -g packages #add is an alias to npm install
+npm update -g/npm update -g packages
+npm outdated -g
+npm update -g
+npm uninstall -g
+npm install npm@latest -g #upgrade npm
+npm cache verify #gc the cache
+
+npm cache ls / npm cache clean
+npm view coffee #info on the coffee package
+npm view coffee dependencies #get the dependencies
+npm ls -g
+npm dedupe #flatten the tree
+
+yarn (like bundler for nodejs):
+yarn install, yarn add pkg, yarn upgrade #yarn install: install all packages in package.json
+yarn updgrade --latest #upgrade beyond carret range
+yarn install --flat
+yarn global ...: yarn global add #by default install to ~/.config/yarn/global but symlink the binary in ~pkgmgr/npm/bin; cf yarn global bin to see the bin directory
+yarn cache clean
+
+Note: From 'package.json', `yarn install` => 'yarn.lock', while `npm install` => 'package-lock.json'
+
+# git {{{1
+# ===
+
+gitfolders -l mine list #gitstatus is the action by default
+gitfolders -l all
+#lists: mine, perso, pro, latex, magma, var, local
+#prodist, opt, usr, usrdist, dist; all
+#durin, mathrice, github, prosvn, imb_local
+
+gitfolders -l opt update -a #update [called by package_git_optdist]
+gitfolders -l prodist update -a
+gitfolders -l usrdist update -a
+
+gitfolders --mirror durin #mirror all repos with durin as upstream to durin
+gitfolders --mirror #by default mirror to mathrice and durin
+
+gitfolders -l all action 'git gc --aggressive'
+vcs action 'git gc --aggressive' ~/mine ~/pro/Work ~/perso ~/ViePratique
+
+git_optdist.rb: infos (list_packages), show_repos, 
+                install, uninstall, update 
+                [wrapper used by handler.rb to install/remove git folders]
+Ex: git_optdist.rb --optdir=/tmp install systemd
+    rubylib/packages/git_optdist.rb show_repos git systemd
+
+# Haskell {{{1
+# #######
+
+cabal
+-> pacman -S cabal-install
+
+Ex:
+$ cabal update
+$ cabal install git-annex --bindir=$HOME/bin
+
+stack #different cli tool but use cabal's libraries
+https://docs.haskellstack.org/en/stable/README/
+https://www.fpcomplete.com/blog/2015/06/why-is-stack-not-cabal
+
+curl -sSL https://get.haskellstack.org/ | sh
+#on arch the 'stack' package is available
+
+# Ocaml {{{1
+# #####
+
+opam #available on aur
+# https://opam.ocaml.org/doc/1.1/Basic_Usage.html
+opam list -a            # List all available packages
+opam search QUERY       # List packages with QUERY in their name or description
+opam info PACKAGE       # Display information about PACKAGE
+opam update             # Update the packages database
+opam install PACKAGE    # Download, build and install the latest version of PACKAGE
+opam upgrade            # Re-install packages that were updated since last upgrade
+
+# Rust {{{1
+# ####
+
+cargo search foo
+cargo install foo #install in ${CARGO_HOME-~/.cargo} (building: cargo build)
+cargo install --list
+cargo uninstall foo
+
+Update: cargo install-update -a #run `cargo install foobar` to recreate registry
+
+# Go {{{1
+# ####
+
+go get pkg #install in $GOPATH
+go list all # list all packages (including system ones)
+go clean -i pkg/... # This removes the archive files and executable binaries which reside under $GOPATH/pkg and $GOPATH/bin, but leave the src code in $GOPATH/src
+
+Update: go get -u all
+
+See `go help packages`, four builtin: main/all/std/cmd; and '...' is a wildcard, so pkg/... match packages in pkg/ and its subdirectories
+
+https://golang.org/cmd/go/#hdr-Download_and_install_packages_and_dependencies
+- go get: Get downloads the packages named by the import paths, along with their dependencies. It then installs the named packages, like 'go install'. 
+  The -d flag instructs get to stop after downloading the packages; that is, it instructs get not to install the packages. 
+- go build: Compile packages and dependencies 
+- go install: Compile and install packages and dependencies
+  The -i flag installs the dependencies of the named packages as well. 

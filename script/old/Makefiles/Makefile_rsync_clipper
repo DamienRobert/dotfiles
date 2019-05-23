@@ -1,0 +1,71 @@
+RSYNC=rsync
+RSYNC_OPT=-ravzbH --exclude '*~' --rsync-path=/usr/local/util/bin/rsync
+#-r: pour copier les directory
+#(-R: pour les copier de manière relative)
+#-a: archive (garde les perms,...)
+#-v: verbose
+#-u: update (ne copie que les fichiers plus jeunes)
+#-z: compresse le transfert
+#-b: backups
+#-H: préserve les hard links
+
+#eventuellement
+#-ptl au lieu de -a (pour pas avoir le -og)
+#--partial
+#-bwlimit= #bandwith
+#-c #checksum
+
+#pour des fichiers que je veux avoir sur les deux comptes au même endroit
+COMMAND=$(RSYNC) $(RSYNC_OPT) --update --backup-dir=".rsync_backup/"
+
+#pour des backups/transferts d'un compte à l'autre
+COMMAND2=$(RSYNC) $(RSYNC_OPT)
+
+#pour des répertoires que je veux avoir en commun, permet de propager
+#l'effacement d'un fichier. A utiliser ponctuellement.
+COMMAND_DESTROY=$(RSYNC) $(RSYNC_OPT) --delete-after --backup-dir=".rsync_backup_destroy/"
+
+OUT=robert@clipper.ens.fr
+
+sync: get put
+
+get:
+	echo "*************** GET ******************"
+	$(COMMAND) $(OUT):latex ~
+	$(COMMAND) $(OUT):www ~/data/BACKUP_Clipper
+	$(COMMAND) $(OUT):forum ~/data/BACKUP_Clipper
+	$(COMMAND) $(OUT):yaf ~/data/BACKUP_Clipper
+	$(COMMAND) $(OUT):news  ~/data/BACKUP_Clipper
+	$(COMMAND) $(OUT):ViePratique ~
+
+	#on peut pas faire rsync clipper:ploum clipper:plam ... ~/
+	$(COMMAND2) $(OUT):.fvwm ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):.screenrc ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):.vimrc ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):.zshrc ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):.emacs ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):bin ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):script ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):Scripts ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):perl ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):c ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):cours ~/RSYNC_clipper/
+	$(COMMAND2) $(OUT):.Xresource ~/RSYNC_clipper/
+put:
+	echo "*************** PUT ******************"
+	#$(COMMAND) ~/www $(OUT):
+	$(COMMAND) ~/latex $(OUT):
+	$(COMMAND) ~/ViePratique $(OUT):
+
+	$(COMMAND2) ~/.fvwm ~/.screenrc ~/.vimrc ~/.zshrc ~/.Xresources ~/.vim \
+                   ~/bin ~/Poesie ~/script \
+                   $(OUT):RSYNC_Feanor/
+
+#        ~/Maths est devenu trop gros
+
+#get_destroy:
+#	$(COMMAND_DESTROY) $(OUT):www ~
+#	$(COMMAND_DESTROY) $(OUT):forum ~
+
+put_destroy:
+	$(COMMAND_DESTROY) ~/latex $(OUT):

@@ -1,0 +1,5 @@
+#!/bin/sh
+. $HOME/.initenv
+
+#run systemctl --user import-environment and also updates the dbus instance env
+dbus-update-activation-environment --systemd --all || systemctl --user import-environment

@@ -1,0 +1,42 @@
+# Fichier .quialias, dérivé de la version 2.2 dans la config conscrit
+# fichier de configuration pour qui « next génération »
+# Les lignes commençant par un dièse sont ignorées.
+# Pour tous détails, se référer à: man qui .
+
+# Les options
+
+# On n'efface pas l'écran avant d'afficher la carte.
+! option -nocls
+
+# Le titre en rouge-gras-souligné.
+! color title red - bold underline
+
+# Les gens du groupe « important » sont affichés dans une autre couleur.
+! color important magenta
+
+# Les autres (les normaliens d'en bas).
+! color name blue - bold
+
+# On peut inclure des fichiers; ce fichier contient la liste des membres
+# du compte tuteurs.
+# -> n'existe plus sur phare, commenté en attendant un équivalent
+# include file=/usr/local/util/packages/qui/lib/quituteurs
+
+# Les tuteurs sont soulignés.
+! color tuteurs blue - bold underline
+
+
+# Les alias. On peut remplacer un nom par un autre.
+# alias radenne Gilles
+# alias plut    Jérôme
+# alias george  Cigaes
+
+# Pour définir un groupe. Attention! ne pas mettre d'espace après les
+# virgules (sinon ça ressemble à un alias).
+# important ruget,beig
+
+# Pour définir un alias et s'ajouter au groupe important en même temps.
+# important moi Vous êtes ici
+
+# Et même des groupes de groupes.
+# important <tuteurs>

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+NAME=$1
+xsize=$2
+ysize=$3
+
+echo $NAME
+echo $xsize
+echo $ysize
+
+for i in `seq 0 2`
+do
+  for j in `seq 0 1`
+  do
+    xoff=`expr "$i" '*' "$xsize"`
+    yoff=`expr "$j" '*' "$ysize"`
+    echo "($i,$j)"
+    convert "$NAME" -crop "$xsize"x"$ysize"+"$xoff"+"$yoff" "$NAME"_"$i"_"$j"
+  done
+done

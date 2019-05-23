@@ -2,7 +2,7 @@
 help() {
   echo "git-mydeploy upstream: deploying script"
   echo "  OPTIONS:
-  -l|--local: local git dir (default to current dir) 
+  -l|--local: local git dir (default to current dir)
   -u|--upstream: upstream git dir (if not specified take \$1)
   -b|--branch: the local branch to push (default to master)
   -rb|--remote-branch: where to push it (default to damien/\$branch)
@@ -29,7 +29,7 @@ help() {
   1) Commit branch in local, commit upsterambranch in remote.
   2) Pull upstreambranch into branch.
   3) Push branch into remotebranch.
-  4) Merge (--ff-only) upstreambranch with remotebranch. 
+  4) Merge (--ff-only) upstreambranch with remotebranch.
   This allow to push into a non bare repository where upstreambranch should
   give the deployed data.
 
@@ -84,7 +84,7 @@ done
 quietdiff() {
   git diff --quiet
   if [[ $? -ne 0 ]]; then
-    git diff 
+    git diff
   fi
 }
 
@@ -127,7 +127,7 @@ preparecommit() {
 
 pullaction() {
   case $pullaction in
-    script ) 
+    script )
       pullopt=
       [[ -n "$rebase" ]] && pullopt=(--rebase)
       pullopt=($pullopt $REMOTE $upstreambranch)
@@ -139,7 +139,7 @@ pullaction() {
 
 pushaction() {
   case $pushaction in
-    script ) 
+    script )
       pushopt=($pushopt $REMOTE "$branch:$remotebranch")
       ;;
   esac
@@ -167,13 +167,13 @@ if [[ -z $onlypush ]]; then
   #commiting my repo
   echo "### Commiting $branch on local $LOCAL"
   preparecommit 'local'
-  
+
   #commiting deployed repo
   echo "### Commiting $upstreambranch on remote $REMOTE"
   preparecommit 'remote'
-  
+
   if [[ $pullaction != "no" ]]; then
-    # merge remote into local 
+    # merge remote into local
     cd $LOCAL &&
     git checkout $branch &&
     pullaction

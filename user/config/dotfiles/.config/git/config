@@ -1,0 +1,297 @@
+[user]
+	name = Damien Robert
+	email = damien.olivier.robert+git@gmail.com
+	signingkey = Damien.Olivier.Robert+gnupg@gmail.com
+[github]
+	user = DamienRobert
+[ghi]
+	token = ! cat ~/mine/crypt/.auth/github_tokens/ghi
+[core]
+	excludesfile = ~/.config/git/ignore
+	attributesfile = ~/.config/git/attributes
+	autocrlf = input
+	safecrlf = warn
+	tabwidth=2
+	untrackedCache = true
+[advice]
+	pushNonFastForward=false
+	commitBeforeMerge=false
+	resolveConflict=false
+	detachedHead=false
+[branch]
+	autosetupmerge=always
+[column]
+	ui=auto
+[color "diff"]
+	#colors: normal black red green yellow blue magenta cyan white, bold dim ul blink reverse
+	#context, meta, frag, func, old, new, commit, whitespace
+	func=magenta
+	whitespace=reverse bold magenta
+	oldMoved = reverse italic magenta
+	newMoved = reverse italic blue
+	oldMovedDimmed = reverse magenta
+	newMovedDimmed = reverse blue
+	oldMovedAlternative = reverse dim italic magenta
+	newMovedAlternative = reverse dim italic blue
+	oldMovedAlternativeDimmed = reverse dim magenta
+	newMovedAlternativeDimmed = reverse dim blue
+[diff]
+	indentHeuristic = true
+	mnemonicprefix = true
+	renames = copy #detect renames and copy
+	tool = meld
+	submodule = log
+	colorMoved = dimmed-zebra
+	colorMovedWS = allow-indentation-change
+[format]
+	signoff = true
+	numbered = true
+	coverLetter= auto
+	#useAutoBase = true
+	#signature = ""
+[instaweb]
+	httpd = webrick
+[log]
+	follow=true
+	decorate=auto
+[merge]
+	tool = gvimdiff
+	defaultToUpstream = true
+[mergetool]
+	prompt = false
+[notes]
+	rewriteRef=refs/notes/* #copier les notes en cas de amend/rebase
+	displayRef=notes/*
+[pretty]
+	summary = "format:%C(auto)%h%d %s %C(auto,green)(%cd) %C(auto,bold blue)<%aN>%C(auto)"
+	sumdate = "format:%C(auto)%h%d %C(auto,green)%cd %C(auto,bold blue)<%aN>%C(auto) %s"
+[pull]
+	ff=only
+[push]
+	default = current
+	followTags = true
+[rebase]
+	autosquash = true
+	#autostash = true
+[rerere]
+	enabled = true
+	autoupdate= true
+[sendemail]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = damien.olivier.robert@gmail.com
+	smtpserverport = 587
+	aliasesfile=~/.mutt/muttalias
+	aliasfiletype=mutt
+	confirm = auto
+	annotate = true
+	#set up repo by repo
+	#cccmd=git-cc
+[status]
+	submodulesummary = true
+[submodule]
+	recurse=true
+[tar]
+	umask = user
+[tig]
+	line-graphics="utf-8"
+	blame-options = -C -C -C
+	author-width = 15
+
+[url "https://aur.archlinux.org/"]
+	insteadOf = aur:
+[url "ssh://aur.archlinux.org/"]
+	pushInsteadOf = "aur:"
+[url "https://github.com/"]
+	insteadOf = "gh:"
+[url "git@github.com:"]
+	pushInsteadOf = "gh:"
+[url "git@github.com:DamienRobert/"]
+	insteadOf = dr:
+
+[alias]
+	# short alias
+	cat = cat-file
+	co = checkout
+	# ch = cherry
+	ci = commit
+	cl = clone
+	mg = merge
+	mt = mergetool
+	st = status --branch
+	s = status --short --branch
+	sl = shortlog
+	br = branch -vv
+	sb = show-branch
+	ls = ls-files
+	rb = rebase
+	rs = reset
+	ci-a = commit --amend
+	mg-a = merge --abort
+	mg-c = merge --continue
+	rb-i = rebase --interactive
+	rb-a = rebase --abort
+	rb-c = rebase --continue
+	rb-q = rebase --quit
+	rb-s = rebase --skip
+	rb-show = rb --show-current-patch
+	rb-todo = rb --edit-todo
+	chp = cherry-pick
+	pi = cherry-pick
+	pi-a = cherry-pick --abort
+	pi-c = cherry-pick --continue
+	pi-q = cherry-pick --quit
+	rv = revert
+	rv-a = revert --abort
+	rv-c = revert --continue
+	rv-q = revert --quit
+	am-a = am --abort
+	am-c = am --continue
+	am-q = am --quit
+	am-s = am --skip
+	am-show = am --show-current-patch
+	rs-s = reset --soft
+	rs-m = reset --merge
+	rs-k = reset --keep
+	count = count-objects
+
+	# long alias
+	noteslog = !sh -c 'git log $(git notes get-ref) "$@"' --
+	whatis = show --no-patch --pretty=summary --date=human
+
+	# clean-up
+	prune-now = "! git reflog expire --expire=${1-now} --all && git prune --expire=${1-now}"
+	repacker = repack -a -d -f -l --depth=50 --window=4000 --window-memory=1g
+	prune-all-remote = !git remote | xargs -n 1 git remote prune # Prune all stale remote branches
+	#cf 'git my gc --now --aggressive' which combine 'pruneall' with 'repacker'
+	lost="!f(){ git fsck $@ | awk '/dangling commit/ {print $3}'; }; f"
+	lostshow="! f() { git lost $@ | git show --pretty=summary -s --date=human --stdin; }; f"
+	lostshowdiff="! f() { git lost $@ | git show --pretty=summary --date=human --stdin; }; f"
+
+	# fixup and undo
+	undo = reset --soft HEAD^
+	fixup = "!f() { TARGET=$(git rev-parse \"$1\"); git commit --fixup=\"$TARGET\" ${@:2} && EDITOR=true git rebase -i --autostash --autosquash \"$TARGET^\"; }; f" # See https://blog.filippo.io/git-fixup-amending-an-older-commit/ Commit a fixup and use rebase -i --autosquash to incorporate it.
+
+	# grep
+	ack = -c color.grep.filename='bold green' -c color.grep.match='black yellow' grep --break --heading -n
+	grep-all = "!f(){ git rev-list --all | xargs git grep \"$@\"; }; f" #Find text in any commit ever.
+
+	#tags
+	tags = tag -n1 --list # tags and their commits
+	lasttag = describe --tags --abbrev=0 # Last tag in the current branch
+	lasttagged = !git describe --tags `git rev-list --tags --max-count=1` # Latest annotated tag in all branches
+
+	# stash
+	stash-all = stash save --include-untracked
+	stashes = stash list
+	#snapshot = "!f(){ git stash push -m \"snapshot@$(date --iso-8601=seconds)\" $@ && git stash apply \"stash@{0}\"; }; f"
+	#snapshot = "!f(){ git my stash dosave --message \"snapshot@$(date --iso-8601=seconds)\" $@; }; f" #quick stash snapshot (but keep our working tree)
+	#=> git my stash -s
+
+	# files aliases
+	ls-ignored = ls-files --exclude-standard --ignored --others -s
+	rmdeleted = ! git ls-files -z --deleted | xargs -0 git rm
+	ignore-untracked = "!git status | grep -P \"^\\t\" | grep -vF .gitignore | sed \"s/^\\t//\" >> .gitignore" # Ignore all untracked files by appending them to .gitignore:
+	skip = update-index --skip-worktree
+	unskip = update-index --no-skip-worktree
+	skipped = "!git ls-files -v | grep ^S | cut -c 3-"
+	assume = update-index --assume-unchanged
+	unassume = update-index --no-assume-unchanged
+	assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+
+	# merge/diff tools
+	meld = difftool -y -t meld
+	vimdiff = difftool -y -t gvimdiff
+	mergemeld = mergetool -y -t meld #gitmerge
+	mergevim = mergetool -y -t gvimdiff
+
+	# gitk / graphic
+	gitk-conflict = !gitk --left-right HEAD...MERGE_HEAD # show conflicting merge in gitk
+	gitk-history-all = !gitk --all $( git fsck --no-reflogs | awk '/dangling commit/ {print $3}' ) # show full history in gitk (including "deleted" branches and stashes)
+
+	# log aliases
+	l  = log
+	lcurrent = "!git --no-pager log --decorate --oneline --no-walk"
+	la = log --all
+	l1 = log --no-walk --stat --dirstat
+	ll = log --name-status
+	lla = log --name-status --all
+	lls = log --stat
+	llf = log --name-status --pretty=fuller
+
+	lg	 = log --oneline --graph --date-order
+	lt	 = log --oneline --graph --topo-order
+	lgm  = log --pretty=summary --graph --date-order --date=relative #rel date
+	ltm  = log --pretty=summary --graph --topo-order --date=relative
+	lgma = log --pretty=summary --graph --date-order --date=relative --all # rel date and all branches
+	ltma = log --pretty=summary --graph --topo-order --date=relative --all
+	lgh  = log --pretty=summary --graph --date-order --date=human #rel then full date
+	lth  = log --pretty=summary --graph --topo-order --date=human
+	lgha = log --pretty=summary --graph --date-order --date=human --all
+	ltha = log --pretty=summary --graph --topo-order --date=human --all
+	lga  = lgha
+	lta  = ltha
+	lgd  = log --pretty=sumdate --graph --date-order --date=iso #show full date
+	ltd  = log --pretty=sumdate --graph --topo-order --date=iso
+	lgda = log --pretty=sumdate --graph --date-order --date=iso --all
+	ltda = log --pretty=sumdate --graph --topo-order --date=iso --all
+
+	# cherry like
+	llr = log --left-right --topo-order --oneline
+	ch = "! git --no-pager llr ${1-HEAD}...${1-HEAD}@{u}"
+
+	lsquel	= log --pretty=sumdate --graph --topo-order --date=relative --all --simplify-by-decoration
+	news = log -p HEAD@{1}..HEAD@{0} #HEAD@{1}.. tout court marcherait aussi...
+
+	# list branches
+	lb = for-each-ref refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) %(color:red)%(objectname:short)%(color:reset) %(contents:subject) %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)<%(authorname)>%(color:reset)' # 'list branches'
+	lbd = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) %(color:red)%(objectname:short)%(color:reset) %(contents:subject) %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)<%(authorname)>%(color:reset)' # sort by commit date
+	lba = for-each-ref --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) %(color:red)%(objectname:short)%(color:reset) %(contents:subject) %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)<%(authorname)>%(color:reset)' # show all refs
+	lbda = for-each-ref --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) %(color:red)%(objectname:short)%(color:reset) %(contents:subject) %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)<%(authorname)>%(color:reset)' #sort by commit date and show all refs
+	 # "format:%C(auto)%h%d %s %C(auto,green)(%cd) %C(auto,bold blue)<%aN>%C(auto)"
+
+	#branch infos
+	branch-name = "current-branch -a --name" #`git rev-parse --abbrev-ref` but fallback to `git describe --all --always`
+	branch-info = "!f(){ branch=$(git branch-name $@); printf '%s: @{u}=%s, @{push}=%s\n' \"$branch\" \"$(git branch-name $branch@{u})\" \"$(git branch-name $branch@{push})\"; }; f" #better to use 'g my topic infos'
+
+	# submodules
+	sub = submodule
+	subci="!f() { git mysubfor 'git commit \"$@\"';}; f"
+	subdi="!f() { git mysubfor 'git di --color \"$@\"';}; f"
+	subs="!f() { git mysubfor 'git s \"$@\"';}; f"
+	subst="!f() { git submodule status --recursive \"$@\"; echo; git --no-pager submodule summary \"$@\" ;}; f"
+	subfor="submodule foreach --recursive"
+	mysubfor="my submodule foreach --recursive --shquiet"
+	subsm="! git --no-pager submodule summary"
+	subupdate="submodule update --recursive --remote --merge"
+	subadd="submodule foreach --recursive --quiet git add"
+	recs="!f() {git s \"$@\"; git subs \"$@\";}; f"
+	recadd="! f() {git add \"$@\"; git subadd \"$@\";}; f"
+	#recdi="! ( git di --color \"$@\" && git subdi \"$@\"\" ) | less || :"
+	recdi="di --submodule=diff"
+	recdc="di --cached --submodule=diff"
+	#ciAll: alias are case insensitive => ciaall
+	recci="!f() { git subci \"$@\"; git ci \"$@\";}; f"
+	recciA="!f() {git subadd -A; git subci \"$@\"; git add -A; git ci \"$@\";}; f"
+	recpush="push --recurse-submodules=on-demand"
+
+	# diff
+	highlight = "!f() { [ \"$GIT_PREFIX\" != \"\" ] && cd \"$GIT_PREFIX\"; GIT_PAGER=\"diff-fancy.rb\" git $@; }; f"
+	di = "!f() { [ \"$GIT_PREFIX\" != \"\" ] && cd \"$GIT_PREFIX\"; GIT_PAGER=\"diff-fancy.rb\" git diff $@; }; f"
+	dc = "!f() { [ \"$GIT_PREFIX\" != \"\" ] && cd \"$GIT_PREFIX\"; GIT_PAGER=\"diff-fancy.rb\" git diff --staged $@; }; f"
+	dw = "!f() { [ \"$GIT_PREFIX\" != \"\" ] && cd \"$GIT_PREFIX\"; GIT_PAGER=\"diff-fancy.rb --no-highlight\" git diff --color-words $@; }; f"
+	dcw = "!f() { [ \"$GIT_PREFIX\" != \"\" ] && cd \"$GIT_PREFIX\"; GIT_PAGER=\"diff-fancy.rb --no-highlight\" git diff --staged --color-words $@; }; f"
+	# di = diff
+	# dc = diff --staged
+	# dw = diff --color-words
+	# dcw = diff --staged --color-words
+	ds = diff --stat --ignore-space-change
+	din = diff --name-only
+	dcn = diff --staged --name-only
+
+	# whitespace fix (only fix new lines)
+	# To fix all files cf 'git my extra whitespace'
+	# see also https://stackoverflow.com/questions/591923/make-git-automatically-remove-trailing-whitespace-before-committing
+	# 'wsadd' add a file to the index, cleaning up whitespace both in index and worktree.
+	# It only works for files already in the index. Strangely, using 'git add -N' for a new file to mark it as intent to add makes the git apply part fails with 'error: plam: already exists in index', even through 'wsadding' a file already modified in the index seems to work fine.
+	wsadd = "!sh -c 'git diff -- \"$@\" | git apply --cached --whitespace=fix && git checkout -- ${1-.} \"$@\"' --"

@@ -1,0 +1,3 @@
+DIR="$HOME/usr/dist/xcompose"
+vcs update $DIR
+cp $DIR/*ompose .

@@ -10,6 +10,7 @@ is rather slow but allows you to resurrect other people's topic
 branches."
 
 OPTIONS_KEEPDASHDASH=
+OPTIONS_STUCKLONG=
 OPTIONS_SPEC="\
 git resurrect $USAGE
 --
@@ -22,16 +23,16 @@ m,merges             scan for merges into other branches (slow)
 t,merge-targets      scan for merges of other branches into <name>
 n,dry-run            don't recreate the branch"
 
-. "$(git --exec-path)/git-sh-setup"
+. git-sh-setup
 
 search_reflog () {
-        sed -ne 's~^\([^ ]*\) .*\tcheckout: moving from '"$1"' .*~\1~p' \
+	sed -ne 's~^\([^ ]*\) .*	checkout: moving from '"$1"' .*~\1~p' \
                 < "$GIT_DIR"/logs/HEAD
 }
 
 search_reflog_merges () {
 	git rev-parse $(
-		sed -ne 's~^[^ ]* \([^ ]*\) .*\tmerge '"$1"':.*~\1^2~p' \
+		sed -ne 's~^[^ ]* \([^ ]*\) .*	merge '"$1"':.*~\1^2~p' \
 			< "$GIT_DIR"/logs/HEAD
 	)
 }

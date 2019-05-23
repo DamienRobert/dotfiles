@@ -45,6 +45,9 @@ do
 	-t|--theirs)
 		theirs=t
 		;;
+	--merge-base) shift;
+		mergebase="$1"; shift
+		;;
 	-h|--help)
 		cat >&2 << EOF
 Usage: $0 [options] [<upstream>]
@@ -54,6 +57,7 @@ Options:
 -s|--show	show which commits would be cherry-picked
 -g|--graph	like --show, but with the commit graph
 -c|--cherry	like show, but try to leave out commits that were applied upstream
+--merge-base base	explicit mergebase
 EOF
 		exit 1
 		;;
@@ -86,8 +90,10 @@ fi
 # in this case we want to rebase only the commits from
 # $mergebase..$gth_local
 
-. ~/mine/script/git/.squashmergebase
-findmergebase $gth_local $TO
+if [[ -z $mergebase ]]; then
+	. ~/mine/script/git/.squashmergebase
+	findmergebase $gth_local $TO
+fi
 
 RANGE=${REBASING_BASE-$TO}..$gth_local
 if [[ -n $dryrun ]]

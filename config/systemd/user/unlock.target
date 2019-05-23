@@ -1,3 +1,0 @@
-[Unit]
-Description=Services needing authentification
-AllowIsolate=yes

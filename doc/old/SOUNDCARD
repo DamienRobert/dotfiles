@@ -1,0 +1,8 @@
+VIA Envy24PT
+
+lspci:
+05:06.0 Multimedia audio controller: VIA Technologies Inc. VT1720/24
+[Envy24PT/HT] PCI Multi-Channel Audio Controller (rev 01)
+
+alsamixer:
+VIA1617A

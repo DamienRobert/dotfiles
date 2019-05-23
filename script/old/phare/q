@@ -1,0 +1,1 @@
+qui s t infi jourdan montrouge rezo bio 46 -too all clipper -nomap | perl -pe 's/[a-z0-9-]*:\s*$//' | perl -pe 's/,\s*\n/, /;s/[a-z0-9]*:\s*$//;' | perl -e '$/=undef; $_=<>; s/\n([^:]*?\(B]?)/$1\n/g; print' | grep -v '(down)'

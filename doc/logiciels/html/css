@@ -1,0 +1,227 @@
+vim: foldmethod=marker
+
+CSS {{{1
+CSS3: http://www.w3schools.com/css/css3_intro.asp
+Docs:
+- http://www.css3.info/
+- http://css3clickchart.com/
+- reference: http://cssreference.io/
+- w3c validator: http://www.css-validator.org/
+
+# @rules
+- https://css-tricks.com/the-at-rules-of-css/
+
+## Misc {{{2
+Reset: '* { all: initial }' cf https://developer.mozilla.org/en-US/docs/Web/CSS/all
+
+'box-sizing: border-box;' so that box sizes include padding and border,
+like old ie versions, cf https://en.wikipedia.org/wiki/Internet_Explorer_box_model_bug
+
+# Cascading order: {{{2
+http://www.w3.org/TR/2011/REC-CSS2-20110607/cascade.html#cascade
+- Find all declarations that apply to the element and property in question, for the target media type. Declarations apply if the associated selector matches the element in question and the target medium matches the media list on all @media rules containing the declaration and on all links on the path through which the style sheet was reached.
+- Sort according to importance (normal or important) and origin (author, user, or user agent). In ascending order of precedence: user agent declarations, user normal declarations ,author normal declarations, author important declarations, user important declarations
+- Sort rules with the same importance and origin by specificity of selector: more specific selectors will override more general ones. Pseudo-elements and pseudo-classes are counted as normal elements and classes, respectively.
+- Finally, sort by order specified: if two declarations have the same weight, origin and specificity, the latter specified wins. Declarations in imported style sheets are considered to be before any declarations in the style sheet itself. 
+
+# Position: {{{2
+- https://developer.mozilla.org/en-US/docs/Web/CSS/position
+  static (default); relative; absolute; fixed; sticky;
+  absolute: fixed position relative to the closest positioned ancestor
+  (A positioned element is an element whose computed position property is relative, absolute, fixed or sticky.)
+  fixed: fixed position relative to the viewport
+
+# Block formatting context {{{2
+https://www.smashingmagazine.com/2017/12/understanding-css-layout-block-formatting-context/
+
+The children floats or clear of a block context are positioned with respect
+to the context. Since overflow: hidden creates a new block formatting
+context it will contain all the floats inside.
+- https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
+  A block formatting context is created by one of the following:
+  - the root element or something that contains it
+  - floats (elements where float is not none)
+  - absolutely positioned elements (elements where position is absolute or fixed)
+  - inline-blocks (elements with display: inline-block)
+  - table cells (elements with display: table-cell, which is the default for HTML table cells)
+  - table captions (elements with display: table-caption, which is the default for HTML table captions)
+  - elements where overflow has a value other than visible
+  - flex boxes (elements with display: flex or inline-flex)
+
+# Display: {{{2
+- https://www.chenhuijing.com/blog/how-well-do-you-know-display/
+- https://developer.mozilla.org/en-US/docs/Web/CSS/display
+  display: none; inline; block; contents; list-item; inline-block; inline-table; table; table-cell; table-column; table-column-group; table-footer-group; table-header-group; table-row; table-row-group; flex; inline-flex; grid; inline-grid; ruby; ruby-base; ruby-text; ruby-base-container; ruby-text-container ; run-in; inherit; initial; unset;
+
+New display: flow-root to make a new block formatting context
+
+# Stacking context: {{{2
+- https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Understanding_z_index
+- https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context
+  A stacking context is formed, anywhere in the document, by any element which is either
+  - the root element (HTML),
+  - positioned (absolutely or relatively) with a z-index value other than "auto",
+  - a flex item with a z-index value other than "auto",
+  - elements with an opacity value less than 1. (See the specification for opacity),
+  - elements with a transform value other than "none",
+  - elements with a mix-blend-mode value other than "normal",
+  - elements with a filter value other than "none",
+  - elements with isolation set to "isolate",
+  - on mobile WebKit and Chrome 22+, position: fixed always creates a new stacking context, even when z-index is "auto" (See this post)
+  - specifing any attribute above in will-change even you don't write themselves directly (See this post)
+  - elements with -webkit-overflow-scrolling set to "touch"
+  Within a stacking context, child elements are stacked according to the
+  same rules previously explained. Importantly, the z-index values of its
+  child stacking contexts only have meaning in this parent. Stacking
+  contexts are treated atomically as a single unit in the parent stacking
+  context.
+- http://philipwalton.com/articles/what-no-one-told-you-about-z-index/
+
+# Margin collapsing: {{{2
+- https://developer.mozilla.org/en-US/docs/Web/CSS/margin_collapsing
+  Margin collapsing occurs in three basic cases:
+  - Adjacent siblings: The margins of adjacent siblings are collapsed (except when the later sibling needs to be cleared past floats).
+  - Parent and first/last child: If there is no border, padding, inline content, or clearance to separate the margin-top of a block with the margin-top of its first child block, or no border, padding, inline content, height, min-height, or max-height to separate the margin-bottom of a block with the margin-bottom of its last child, then those margins collapse. The collapsed margin ends up outside the parent.
+  - Empty blocks: If there is no border, padding, inline content, height, or min-height to separate a block's margin-top from its margin-bottom, then its top and bottom margins collapse.
+  - Margins of floating and absolutely positioned elements never collapse.
+
+# Modules {{{2
+Gradients: http://lea.verou.me/css3patterns/
+
+Font-Face: http://blog.fontspring.com/2011/02/the-new-bulletproof-font-face-syntax/ (with legacy ie syntax fix)
+
+Flexbox:
+- https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties
+  [the best guide to flexbox]
+- https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+  [another good guide]
+- http://jonibologna.com/flexbox-cheatsheet/
+- https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes
+- http://the-echoplex.net/flexyboxes/ [flexbox playground and code generator]
+- http://www.smashingmagazine.com/2015/11/flexbox-interfaces-tracks-case-study/
+  [Examples of flexbox uses]
+- https://www.smashingmagazine.com/2016/02/the-flexbox-reading-list/
+- http://www.flexboxpatterns.com/home
+
+Css Grid Layout module:
+- https://css-tricks.com/snippets/css/complete-guide-grid/
+- http://gridbyexample.com/
+- https://medium.com/@patrickbrosset/css-grid-layout-6c9cba6e8a5a
+- http://www.slideshare.net/rachelandrew/introduction-to-css-grid-layout?next_slideshow=1
+- https://github.com/FremyCompany/css-grid-polyfill
+- http://www.sitepoint.com/introducing-the-css-grid-layout/
+- https://www.smashingmagazine.com/2016/11/css-grids-flexbox-and-box-alignment-our-new-system-for-web-layout/
+- https://www.chenhuijing.com/blog/css-grid-flexbox-combo/
+  Lots of references to css grids
+- https://codepen.io/stacy/pen/NpbBKG
+  CSS Grid Layout using @supports with Flexbox fallback
+- https://tutorialzine.com/2017/03/css-grid-vs-flexbox
+- https://www.smashingmagazine.com/2018/05/guide-css-layout/
+
+Floats {{{1
+Clearing floats:
+- clear: both
+- overflow: auto
+  while clear:both needs to be put on the next container, overflow:auto
+  can be put on the current container
+  (Since any value beside overflow: visible creates a new block formatting
+  context: https://developer.mozilla.org/en-US/docs/Web/CSS/overflow)
+  Cf: - http://www.quirksmode.org/css/clearing.html
+      - http://css-tricks.com/the-css-overflow-property/
+
+Summaries of clearing methods
+- http://css-tricks.com/all-about-floats/
+- http://www.sitepoint.com/clearing-floats-overview-different-clearfix-methods/
+=> The future: contain-floats
+   Update: this is now called display: flow-root
+
+## The method used in html5-boilerplate:
+   http://nicolasgallagher.com/micro-clearfix-hack/
+   Explanations: http://fuseinteractive.ca/blog/understanding-humble-clearfix#.VUOoNPZMeHt (the use of display table is to create a new block formating context in the :before pseudo class to contain the top margins of the wrapped elements)
+
+/* In most cases, just this micro snippet would work: */ 
+
+.clearfix:after {
+    clear: both;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+Fonts {{{1
+http://www.fontsquirrel.com/ #Free Font Utopia
+http://www.google.com/fonts
+
+Font format for use with @font-face: EOT, SVG, TTF, OTF, WOFF, WOFF2
+http://www.w3schools.com/css/css3_fonts.asp
+
+Font stacks: http://www.cssfontstack.com/
+http://www.smashingmagazine.com/2009/09/22/complete-guide-to-css-font-stacks/
+
+# Viewports: {{{1
+<meta name="viewport" content="width=device-width, initial-scale=1">
+https://developer.mozilla.org/en/docs/Mozilla/Mobile/Viewport_meta_tag
+http://www.quirksmode.org/mobile/viewports2.html
+http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html
+
+Viewport: virtual window equal or larger than the screen (for mobile)
+
+Css pixels:
+Viewport dimension: document.documentElement.clientWidth/Height
+Visual viewport dimension: window.innerWidth/Height
+(on desktop differs from the viewport in that it does not include sidebars,
+on mobile it can be much smaler: 380px for iphone vs 980px for the viewport)
+Visual viewport offset: window.pageX/YOffset
+Html size: document.documentElement.offsetWidth/Height
+
+Device pixels: 
+Screen dimension: screen.width/height
+
+Media Queries: width/height uses the layout viewport as its reference and is measured in CSS pixels, device-width/height uses the device screen and is measured in device pixels. In other words, width/height mirrors the values of document.documentElement.offsetWidth/Height, while device-width/height mirrors the values of screen.width/height.
+
+Event: pageX/Y is relative to the page in CSS pixels, clientX/Y is relative to the visual viewport in CSS pixels, screenX/Y is relative to the screen in device pixels
+
+In meta viewport:
+<meta name="viewport" content="width=device-width, initial-scale=1">
+the device-width was originally the screen width, but now due to higher
+dpis in mobile phone it can report a lower value (call device independent
+pixel)
+
+For pages that set an initial or maximum scale, the width property actually translates into a minimum viewport width. For example, if your layout needs at least 500 pixels of width then you can use the following markup. When the screen is more than 500 pixels wide, the browser will expand the viewport (rather than zoom in) to fit the screen:
+<meta name="viewport" content="width=500, initial-scale=1">
+(without the initial-scale, the browser would zoom the page to match the
+viewport width)
+
+For more details:
+http://www.quirksmode.org/mobile/metaviewport/
+http://www.quirksmode.org/mobile/metaviewport/notes.html
+Setting he initial-scale directive actually does two things:
+- It sets the initial zoom factor of the page to the defined value, calculated relative to the ideal viewport. Thus it generates a visual viewport width.
+- It sets the layout viewport width to the visual viewport width it just calculated.
+Conflicting directives:
+  <meta name="viewport" content="initial-scale=1,width=400">
+The viewport uses the max determined width
+
+width=device-width is redondant with initial-scale=1 but is useful for
+legacy browsers:
+http://stackoverflow.com/questions/21266901/is-width-device-width-redundant-alongside-initial-scale-1
+

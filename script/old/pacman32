@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sudo pacman --arch i686 --root /opt/arch32 --cachedir /opt/arch32/var/cache/pacman/pkg --config /opt/arch32/pacman.conf "$@"

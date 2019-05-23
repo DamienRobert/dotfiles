@@ -1,0 +1,1 @@
+../gems/aur.rb/bin/aur.rb

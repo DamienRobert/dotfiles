@@ -1,0 +1,37 @@
+#!/bin/bash3
+#pour l'utf-16
+
+MP3INFO_PARAM="%.2n#%t.mp3"
+
+while true;
+do
+  case "$1" in
+    --) break ;;
+    -l) MP3INFO_PARAM="%.2n#%a#%l#%t.mp3"; shift ;;
+    -f) shift; MP3INFO_PARAM="$1"; shift ;;
+    -h) help ;;
+    *) break;;
+  esac
+done
+
+DIR_SOURCE=$1
+DIR_CIBLE=$2
+CUR_DIR=`pwd`
+
+[ -e "$DIR_CIBLE" ] && {
+  echo "Le dossier $DIR_CIBLE existe deja"
+  exit 1
+}
+
+mkdir -p "$DIR_CIBLE"
+
+for i in "$DIR_SOURCE"/*
+do
+  case "$i" in
+    *.mp3 )
+      NEWFILENAME=`mp3info -p "$MP3INFO_PARAM" "$i" | tr ' ' '_'` ;;
+    * )
+      NEWFILENAME="$i"
+  esac
+  ln -s "$CUR_DIR/$i" "$DIR_CIBLE/$NEWFILENAME"
+done

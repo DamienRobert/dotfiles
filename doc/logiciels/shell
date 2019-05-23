@@ -1,0 +1,60 @@
+set
+===
+
+set: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html#The-Set-Builtin
+
+set -e /set -o errexit
+=> exit as soon as a command or a function returns != 0
+See: http://mywiki.wooledge.org/BashFAQ/105
+Note: in foo1 | foo2, only the last command count
+
+set +e to desactivate
+
+set -u: Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error when performing parameter expansion.
+
+set -o pipefail: If set, the return value of a pipeline is the value of the last (rightmost) command to exit with a non-zero status, or zero if all commands in the pipeline exit successfully. This option is disabled by default.
+
+trap
+====
+
+http://stackoverflow.com/questions/22793713/how-to-set-a-shell-exit-trap-from-within-a-function-in-zsh-and-bash
+
+trap "code_to_execute/function" EXIT ERR INT QUIT TERM...
+Ex: trap 'echo "signal received: $?"' INT QUIT TERM
+
+SIGINT: (^C, signal received: 130)
+SIGQUIT: (^\, signal received: 131)
+
+ERR: called on each command/subfunction yielding an exit code !=0 (like set -e)
+     called also on SIGINT/SIGQUIT
+
+Notes: 
+- if exit with 'set -e' because of an error, zsh handle 'ERR' only in a
+subfunction, handle 'ERR' then 'EXIT' in the main script, while bash only
+handles 'EXIT'
+- in zsh, trap EXIT inside a function only set the trap for this function
+  see http://zsh.sourceforge.net/Doc/Release/Functions.html, TRAPEXIT
+  To get bash like behaviour, use zshexit:
+  zshexit
+    Executed at the point where the main shell is about to exit normally.
+    This is not called by exiting subshells, nor when the exec precommand
+    modifier is used before an external command. Also, unlike TRAPEXIT, it
+    is not called when functions exit.
+
+emulate a tty
+=============
+
+test if we are a tty: -t 1
+test if we are not a tty: -t 0
+
+http://stackoverflow.com/questions/32910661/pretend-to-be-a-tty-in-bash-for-any-command
+
+1) 
+  faketty () {
+      script -qfce "$(printf "%q " "$@")"
+  }
+  faketty ls --color=auto | cat
+2) unbuffer -p ls --color=auto | cat
+
+
+

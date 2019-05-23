@@ -1,0 +1,65 @@
+sciences.informatique:2623
+
+Quelles inclusions existe-t-il entre :
+* la classe D des langages reconnus par un automate à pile
+  déterministe quelconque,
+* la classe LR(k) des langages reconnus par un parseur ascendant avec
+  k symboles de lookahead,
+* la réunion LR des classes LR(k) pour tout naturel k,
+* la classe LL(k) des langages reconnus par un parseur descendant avec
+  k tokens de lookahead, et
+* la réunion LL des classes LL(k) pour tout naturel k ?
+Il me semble comprendre que D=LR et que LL est strictement plus
+petit.  Si c'est correct, je voudrais bien une preuve que D est inclus
+dans LR, un exemple d'un langage dans LR qui n'est pas dans
+LL (et si possible, qui est dans LR(k) avec k minimal et qui n'est
+pas dans LL).
+
+Pour la complétude de forum : à peu près tout ce qu'on peut vouloir
+savoir sur LR(k) et LL(k) est expliqué, avec références, dans <URL:
+http://cs.stackexchange.com/questions/43/language-theoretic-comparison-of-ll-and
+-lr-grammars/48#48
+ >.
+
+Et sinon, pour ce qui est des exemples à retenir :
+* la réunion de {a^i·b^i·c^j} et {a^i·b^j·c^j} est un exemple de
+  langage intrinsèquement ambigu ;
+* la réunion de {a^i·b^i} et {a^i·b^(2i)} est un exemple de langage
+  non intrinsèquement ambigu mais non déterministe (il ne peut pas
+  être reconnue par un automate à pile déterministe) ; variante : la
+  réunion de {a^i·b^i} et {a^i·b^(2i)·c} a les mêmes propriétés, mais
+  ce qui est rigolo c'est que si on prend le miroir de ces mots, le
+  langage _est_ déterministe ;
+* {a^i·b^j : i>=j} est un exemple de langage déterministe mais non LL.
+
+=======================================================================
+Context Free Grammar: http://en.wikipedia.org/wiki/Context-free_grammar
+http://en.wikipedia.org/wiki/Ambiguous_grammar
+http://en.wikipedia.org/wiki/Deterministic_context-free_language
+
+    LR(k) grammars (also known as deterministic context-free grammars) allow parsing (string recognition) with deterministic pushdown automata (PDA), but they can only describe deterministic context-free languages.
+
+D=Langages reconnus par une grammaire contexte free déterministe
+ =Langages reconnus par un automate à pile
+ =LR(1)
+
+http://en.wikipedia.org/wiki/LL_parser
+http://en.wikipedia.org/wiki/Simple_LR_parser
+http://en.wikipedia.org/wiki/LALR_parser
+http://en.wikipedia.org/wiki/LR_parser
+
+http://stackoverflow.com/questions/5975741/what-is-the-difference-between-ll-and-lr-parsing
+http://blog.reverberate.org/2013/07/ll-and-lr-parsing-demystified.html
+http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/
+
+Stronger automatas:
+http://en.wikipedia.org/wiki/Context-sensitive_grammar
+Stack automaton
+As a generalization of pushdown automata, Ginsburg, Greibach, and Harrison (1967) investigated stack automata, which may additionally step left or right in the input string (surrounded by special endmarker symbols to prevent slipping out), and step up or down in the stack in read-only mode.[3][4] A stack automaton is called nonerasing if it never pops from the stack. The class of languages accepted by nondeterministic, nonerasing stack automata is NSPACE(n2), which is a superset of the context-sensitive languages.[1] The class of languages accepted by deterministic, nonerasing stack automata is DSPACE(n⋅log(n)).[1]
+
+http://en.wikipedia.org/wiki/Nested_stack_automaton
+When automata are allowed to re-read their input ("two-way automata"), nested stacks do not result in additional language recognition capabilities, compared to plain stacks.[5]
+
+http://en.wikipedia.org/wiki/Two-way_deterministic_finite_automaton
+- 2DFAs can be shown to have equivalent power to DFAs
+- A pushdown automaton that is allowed to move either way on its input tape is called two-way pushdown automaton (2PDA);[3] it has been studied by Hartmanis, Lewis, and Stearns (1965). [4] Aho, Hopcroft, Ullman (1968) [5] and Cook (1971) [6] characterized the class of languages recognizable by deterministic (2DPDA) and non-deterministic (2NPDA) two-way pushdown automata; Gray, Harrison, and Ibarra (1967) investigated the closure properties of these languages. [7]

@@ -1,0 +1,5 @@
+ssh -R 22222:jonque.ens.fr:22 jonque.ens.fr
+
+puis si on veut pas le mettre en local, sur jonque
+ssh -g -L 22222:localhost:22222 jonque.ens.fr|localhost
+                   ^^^pas de jonque ici ça marche pas

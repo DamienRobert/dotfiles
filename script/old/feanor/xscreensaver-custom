@@ -1,0 +1,35 @@
+
+#!/bin/sh
+#!/usr/bin/perl
+cd "$HOME"
+
+mv .xscreensaver .xscreensaver.sed
+sed 's/cycle:.*:..:../cycle: 0:00:00/' .xscreensaver.sed > .xscreensaver
+xscreensaver-command "$@"
+#sleep 5
+mv .xscreensaver.sed .xscreensaver
+
+
+#my $blanked = 0;
+#
+#system "mv", ".xscreensaver", ".xscreensaver.sed";
+#system "sed 's/cycle:.*:..:../cycle: 0:00:00/' .xscreensaver.sed > .xscreensaver";
+##system "head", ".xscreensaver";
+#
+#print "Launching xscreensaver-command @ARGV\n";
+#
+#open (IN, "xscreensaver-command -watch |");
+#system "xscreensaver-command @ARGV";
+#while (<IN>) {
+#    if (m/^(BLANK|LOCK)/) {
+#        if (!$blanked) {
+#            $blanked = 1;
+#        }
+#    } elsif (m/^UNBLANK/) {
+#print "unblank\n";
+#system "mv", ".xscreensaver.sed", ".xscreensaver";
+#        $blanked = 0;
+#        last;
+#    }
+#}
+#

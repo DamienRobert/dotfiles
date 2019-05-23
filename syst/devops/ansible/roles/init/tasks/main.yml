@@ -1,0 +1,5 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: install python2
+  raw: "[ -x /usr/bin/python2 ] || sudo /usr/bin/pacman -Syu --noconfirm python2"

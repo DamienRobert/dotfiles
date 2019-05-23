@@ -1,0 +1,45 @@
+ru wraps @stdin into array (of class Ru::Array)
+and then launch
+output = array.instance_eval(@code) || @stdin
+where @code is
+      if code.kind_of?(String)
+        if code.start_with?('[')
+          #for things like ru '[1..-2]' myfile
+          code = 'to_self' + code
+        elsif code.start_with?('! ')
+          code = code[2..-1]
+        end
+      end
+      code
+=> The code is run as if there was '$stdin.each_line.map(&:chomp).' prepended to it
+
+Ru::Array has these extra functions:
+each_line, files, format, grep, map, to_a, to_s
+everything else is delegated to Array (via to_a, which holds the array in
+@data), and if the result is an Enumerable wrapped into Ru::Array again
+
+    def each_line
+      Ru::Iterator.new(self)
+      #In the iterator, each method is sent to the wrapped array via map!
+    end
+
+    def files
+      @data.map! do |line|
+        Ru::File.new(line)
+      end
+      self
+    end
+
+Ru::File has the methods basename/ctime/extname/format/ftype/group/gid/mode/mtime/omode/owner/size/uid/world_readable?
+
+Ex: echo "/tmp" | ru "files.map(&:gid)" #=> 0
+echo "2\n3" | ru "map(:to_i).sum" #=> 5
+echo "2\n3" | ru "each_line.to_i.to_a.sum"
+ru 'each_line.strip.center(80)' myfile
+ru 'files.format' file1 file2
+ru 'each_line.center(80)' version.rb
+
+Commands:
+ru save sum 'map(:to_i).sum'
+ru list
+ru run sum

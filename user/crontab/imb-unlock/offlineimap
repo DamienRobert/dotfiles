@@ -1,0 +1,2 @@
+#!/bin/sh
+nice -n 19 ionice -n 7 offlineimap -u Basic 2>&1 >$HOME/var/log/offlineimap.log

@@ -1,0 +1,5 @@
+#GENERATE
+<% @computer[:syst][:services]&.each do |service|
+  next if service=~/@/ %>
+enable <%= service %>
+<% end %>

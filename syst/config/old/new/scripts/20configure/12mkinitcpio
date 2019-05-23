@@ -1,0 +1,9 @@
+#!/bin/zsh
+#arch-chroot
+
+# Regenerate the initrd
+if [[ -n $SYST[boot] ]]; then
+	mkinitcpio -p linux
+else
+	return 0
+fi

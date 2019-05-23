@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+INDIR=$1
+OUTDIR=$2
+
+echo "# Copy $INDIR into $OUTDIR"
+echo "# Are you sure? Press a key to continue"
+read
+
+$(dirname $0)/copydir -s $INDIR $OUTDIR

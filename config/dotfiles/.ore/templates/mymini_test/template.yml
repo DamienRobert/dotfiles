@@ -1,4 +1,0 @@
-disable:
-  - test_unit
-  - rspec
-  - minitest

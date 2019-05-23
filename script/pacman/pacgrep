@@ -1,5 +1,6 @@
 #!/usr/bin/zsh
 
+# From chneukirchen.org/dotfiles/.zshrc
 # pacgrep -- search arch package contents
 # 21nov2011  +chris+
 # 08dec2011  +chris+

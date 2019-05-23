@@ -1,0 +1,260 @@
+ip
+==
+http://www.cyberciti.biz/faq/linux-ip-command-examples-usage-syntax/
+https://tty1.net/blog/2010/ifconfig-ip-comparison_en.html<Paste>
+
+ip l / ip link
+ip a / ip addr
+ip r / ip route
+
+ip link set eth0 up/down
+ip address show [dev] eth0: Shows the addresses assigned to network interface eth0
+ip addr add 2001:0db8:85a3::0370:7334/64 dev eth1: Adds an IPv6 address to network interface eth1
+ip addr add 192.168.1.2/24 dev eth0
+#Nowadays the broadcast is set up correctly from the netmask, no need to specify it directly
+#ip addr add 192.168.1.2/24 broadcast 192.168.1.255 dev eth0
+ip a add 192.168.1.200/255.255.255.0 dev eth0
+ip addr del 192.168.0.77/24 dev eth0
+ip addr flush dev eth4: Removes all addresses from device eth4
+#Add alias interface: ip addr add 10.0.0.1/8 dev eth0 label eth0:1
+
+#Arp
+ip neigh add 192.168.0.1 lladdr 00:11:22:33:44:55 nud permanent dev eth0
+ip link set dev eth0 arp off #switch off arp
+
+ip route add default [via] 192.168.1.1
+ip route add 192.168.1.0/24 via 192.168.1.254
+ip route add 192.168.1.0/24 dev eth0 #route via eth0
+
+[ifconfig: ifconfig eth0 "$1" broadcast "$2" netmask "$3"
+           route add default gw "$2"
+           echo "nameserver $3" > /etc/resolv.conf]
+
+$ ip link show wlan0
+    3: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DORMANT group default qlen 1000
+        link/ether 80:19:34:0c:f6:48 brd ff:ff:ff:ff:ff:ff
+$ ip a s wlan0 / ip addr show wlan0
+    3: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+        link/ether 80:19:34:0c:f6:48 brd ff:ff:ff:ff:ff:ff
+        inet 172.17.2.186/24 brd 172.17.2.255 scope global dynamic wlan0
+           valid_lft 2705sec preferred_lft 2705sec
+        inet6 fe80::8219:34ff:fe0c:f648/64 scope link 
+           valid_lft forever preferred_lft forever
+
+Rename interface: ip link set old_name name new_name
+
+iw
+==
+
+iw dev wlan0 link #Getting link status.
+iw dev wlan0 scan #Scanning for available access points.
+iw dev wlan0 set type ibss #Setting the operation mode to ad-hoc.
+iw dev wlan0 connect your_essid #Connecting to open network.
+iw dev wlan0 connect your_essid 2432 #Connecting to open network specifying channel.
+iw dev wlan0 connect your_essid key 0:your_key #Connecting to WEP encrypted network
+iw dev wlan0 set power_save on #Enabling power save.
+
+wpa_supplicant
+==============
+
+wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf
+wpa_supplicant -B -i interface -c <(wpa_passphrase essid passphrase)
+
+$ wpa_passphrase essid passphrase
+network={
+    ssid="essid"
+    #psk="passphrase"
+    psk=f5d1c49e15e679bebe385c37648d4141bc5c9297796a8a185d7bc5ac62f954e3
+}
+
+Spoof mac address
+=================
+
+sudo ip link set dev wlan0 down
+sudo ip link set dev wlan0 address 00:08:a1:b0:a6:a2
+sudo ip link set dev wlan0 up
+sudo iw dev wlan0 set type managed
+sudo iwpriv wlan0 set AuthMode=WPAPSK
+sudo iwpriv wlan0 set EncrypType=AES
+sudo iwpriv wlan0 set SSID="SSID"
+sudo iwpriv wlan0 set WPAPSK="PASSWD"
+sudo dhclient/dhcpcd wlan0
+
+http://unix.stackexchange.com/questions/21841/make-some-virtual-mac-address
+ip link add link eth0 name eth0.1 address 00:11:11:11:11:11 type macvlan
+ip link set eth0.1 up
+dhclient -v eth0.1
+# ip link set dev eth0.1 address 00:08:a1:b0:a6:a2
+sudo ip link delete eth0.1
+
+wowlan
+======
+
+sudo iw phy phy0 wowlan enable magic-packet
+# iw help wowlan
+
+Modules
+=======
+
+sudo modprobe -r rt73usb rt73
+sudo modprobe rt73
+
+Forwarding
+==========
+see https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+
+sysctl net.ipv4.ip_forward=1
+Sysctl rules:
+  conf/default/*: Change the interface-specific default settings.
+  conf/all/*: Change all the interface-specific settings.
+  net.ipv4.ip_forward = 1 #resets all configuration parameters to their default state
+  net.ipv4.conf.all.forwarding = 1 #set all specific interfaces (including default); this seems to be equivalent to net.ipv4.ip_forward
+  net.ipv4.conf.default.forwarding = 1
+  net.ipv4.conf.eth0.forwarding = 1 #enable ip forwarding on this interface
+  net.ipv4.conf.eth0.mc_forwarding = 0 #enable multicast routing
+  net.ipv6.conf.all.forwarding = 0
+  net.ipv6.conf.eth0.forwarding = 0
+
+More details:https://utcc.utoronto.ca/~cks/space/blog/linux/IpForwardingSettings
+- all/forwarding: setting this is the same as setting the global sysctl.
+- default/forwarding: controls the default state of forwarding; this state gets used by interfaces that have not set a specific value. Setting the global sysctl counts as giving all existing interfaces a specific value.
+
+Masquerading:
+iptables -t nat -A POSTROUTING -o output_interface -j MASQUERADE
+
+If we have a firewall open it for the NAT:
+- Accepts all already established connection
+iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+- Accept input packets from our NAT:
+iptables -A FORWARD -i input_interface -o output_interface -j ACCEPT
+
+Network namespaces
+==================
+
+https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/
+
+ # Create namespace
+sudo ip netns add ns1
+
+ # Create veth link.
+sudo ip link add v-eth1 type veth peer name v-peer1
+
+ # Add peer-1 to NS.
+sudo ip link set v-peer1 netns ns1
+
+ # Setup IP address of v-eth1.
+sudo ip addr add 10.200.1.1/24 dev v-eth1
+sudo ip link set v-eth1 up
+
+ # Setup IP address of v-peer1.
+sudo ip netns exec ns1 ip addr add 10.200.1.2/24 dev v-peer1
+sudo ip netns exec ns1 ip link set v-peer1 up
+sudo ip netns exec ns1 ip link set lo up
+
+ # Routing
+sudo ip netns exec ns1 ip route add default via 10.200.1.1
+
+ ## Share internet access between host and NS.
+
+ # Enable IP-forwarding.
+ # echo 1 > /proc/sys/net/ipv4/ip_forward
+sudo sysctl net.ipv4.ip_forward=1
+
+ # Flush forward rules, policy DROP by default.
+sudo iptables -P FORWARD DROP
+sudo iptables -F FORWARD
+
+ # Flush nat rules.
+sudo iptables -t nat -F
+
+ # Enable masquerading of 10.200.1.0.
+ dev=wlp2s0 #the device connected to the internet
+sudo iptables -t nat -A POSTROUTING -s 10.200.1.0/255.255.255.0 -o $dev -j MASQUERADE
+
+ # Allow forwarding between $dev and v-eth1.
+sudo iptables -A FORWARD -i $dev -o v-eth1 -j ACCEPT
+sudo iptables -A FORWARD -o $dev -i v-eth1 -j ACCEPT
+
+sudo ip netns exec ns1 bash
+sudo ip netns exec ns1 sudo -u dams zsh
+sudo ip netns exec ns1 su dams
+
+ # https://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
+curl ifconfig.me
+
+Virtual networking
+==================
+
+https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking/
+https://unix.stackexchange.com/questions/400190/how-to-make-reachable-macvlan-aliases-in-a-different-namespaces
+http://hicu.be/bridge-vs-macvlan
+https://events.static.linuxfound.org/sites/events/files/slides/2016%20-%20Linux%20Networking%20explained_0.pdf
+https://news.ycombinator.com/item?id=8930702 LXC container networking deep dive (flockport.com)
+
+* Tun/tap interfaces are a feature offered by Linux (and probably by other
+UNIX-like operating systems) that can do userspace networking, that is,
+allow userspace programs to see raw network traffic (at the ethernet or IP
+level) and do whatever they like with it.
+
+* Bridge = virtual switch
+Exemple: connect eth0 with two taps and one veth device
+# ip link add br0 type bridge
+# ip link set eth0 master br0
+# ip link set tap1 master br0
+# ip link set tap2 master br0
+# ip link set veth1 master br0
+
+* Bonded / Team: unify two physical interfaces
+
+* VLan: VLAN, aka virtual LAN, separates broadcast domains by adding tags to network packets => needs router support to handle the vlan tags
+# ip link add link eth0 name eth0.2 type vlan id 2
+# ip link add link eth0 name eth0.3 type vlan id 3
+
+VXLAN (Virtual eXtensible Local Area Network) is a tunneling protocol
+designed to solve the problem of limited VLAN IDs (4,096).
+
+* Macvlan
+With VLAN, you can create multiple interfaces on top of a single one and filter packages based on a VLAN tag. With MACVLAN, you can create multiple interfaces with different Layer 2 (that is, Ethernet MAC) addresses on top of a single one.
+
+Before MACVLAN, if you wanted to connect to physical network from a VM or
+namespace, you would have needed to create TAP/VETH devices and attach one
+side to a bridge and attach a physical interface to the bridge on the host
+at the same time, as shown below.
+
+Now, with MACVLAN, you can bind a physical interface that is associated with a MACVLAN directly to namespaces, without the need for a bridge.
+
+There are five MACVLAN types:
+1. Private: doesn’t allow communication between MACVLAN instances on the same physical interface, even if the external switch supports hairpin mode.
+2. VEPA: data from one MACVLAN instance to the other on the same physical interface is transmitted over the physical interface. Either the attached switch needs to support hairpin mode or there must be a TCP/IP router forwarding the packets in order to allow communication.
+3. Bridge: all endpoints are directly connected to each other with a simple bridge via the physical interface.
+4. Passthru: allows a single VM to be connected directly to the physical interface.
+5. Source: the source mode is used to filter traffic based on a list of allowed source MAC addresses to create MAC-based VLAN associations
+
+# ip link add macvlan1 link eth0 type macvlan mode bridge
+# ip link add macvlan2 link eth0 type macvlan mode bridge
+# ip netns add net1
+# ip netns add net2
+# ip link set macvlan1 netns net1
+# ip link set macvlan2 netns net2
+
+* IPVLAN
+
+IPVLAN is similar to MACVLAN with the difference being that the endpoints have the same MAC address.
+- IPVLAN L2 mode acts like a MACVLAN in bridge mode. The parent interface looks like a bridge or switch.
+- In IPVLAN L3 mode, the parent interface acts like a router and packets are routed between endpoints, which gives better scalability.
+
+* MACVTAP/IPVTAP
+MACVTAP/IPVTAP is a new device driver meant to simplify virtualized bridged networking. When a MACVTAP/IPVTAP instance is created on top of a physical interface, the kernel also creates a character device/dev/tapX to be used just like a TUN/TAP device, which can be directly used by KVM/QEMU.
+
+With MACVTAP/IPVTAP, you can replace the combination of TUN/TAP and bridge drivers with a single module:
+
+* MACsec
+MACsec (Media Access Control Security) is an IEEE standard for security in wired Ethernet LANs
+
+* VETH
+The VETH (virtual Ethernet) device is a local Ethernet tunnel. Devices are created in pairs, as shown in the diagram below.
+
+Use a VETH configuration when namespaces need to communicate to the main host namespace or between each other.
+# ip netns add net1
+# ip netns add net2
+# ip link add veth1 netns net1 type veth peer name veth2 netns net2

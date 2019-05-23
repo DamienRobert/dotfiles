@@ -1,0 +1,17 @@
+forum.divers.telecoms:2826
+Nicolas Thiery dit que appear.in et hubl.in fonctionnent bien, avec
+moins que 5-6 utilisateurs. Un autre conseille les outils de
+vidéoconférence de SageMathCloud.
+
+Depuis Egika sous linux, la plateforme renater fonctionne mieux avec h323
+qu'avec SIP, et mieux avec le serveur codian que scopia, selon deux autres
+membres de la liste DEVLOG.
+
+
+Autres:
+- Ekiga
+- Hello de Mozilla Firefox
+Firefox Hello, voir https://wiki.mozilla.org/Loop
+Cf https://webrtchacks.com/hello-decode/
+- Rendez vous (Renater)
+  https://rendez-vous.renater.fr/

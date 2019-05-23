@@ -1,4 +1,0 @@
-#GENERATE
-<% @computer[:syst][:services].each do |service| %>
-enable <%= service %>
-<% end %>

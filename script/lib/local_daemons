@@ -1,0 +1,61 @@
+set_ssh_auth_sock() {
+	if [[ -z $SSH_AUTH_SOCK ]]; then
+		export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh_auth_sock"
+	fi
+}
+
+set_gpg_agent_info() {
+	if [[ -z $GPG_AGENT_INFO ]]; then
+		local GPGFILE="$XDG_RUNTIME_DIR/gpg-agent-info"
+		[[ -e $GPGFILE ]] && . $GPGFILE
+		[[ -n $GPG_AGENT_INFO ]] && export GPG_AGENT_INFO
+	fi
+}
+
+clear_local_env() {
+	SSH_AUTH_SOCK=
+	GPG_AGENT_INFO=
+}
+
+set_infos() {
+	set_ssh_auth_sock
+	set_gpg_agent_info
+}
+
+set_local_infos() {
+	clear_local_env
+	set_infos
+}
+
+launch_ssh_agent() {
+	[[ -n $SSH_AUTH_SOCK ]] || set_ssh_auth_sock
+	ssh-add -l >/dev/null
+	[[ $? -eq 2 ]] && ssh-agent -a $SSH_AUTH_SOCK
+}
+
+launch_local_ssh_agent() {
+	SSH_AUTH_SOCK=
+	launch_ssh_agent
+}
+
+launch_gpg_agent() {
+	[ -d "$XDG_RUNTIME_DIR/gnupg" ] || mkdir -p "$XDG_RUNTIME_DIR/gnupg"
+	if gpg --version | grep "gpg (GnuPG) \(1\|2.0\)" >/dev/null; then
+		#gnome-keyring tries to hijack my gpg
+		case $GPG_AGENT_INFO in
+			*keyring* ) unset GPG_AGENT_INFO ;;
+		esac
+		set_gpg_agent_info
+		local GPGFILE="$MY_RUNTIME_DIR/gpg-agent-info"
+		gpg-agent -q || { eval $(gpg-agent --daemon --no-use-standard-socket --write-env-file $GPGFILE) && echo "## Launched new gpg-agent: $GPG_AGENT_INFO" && export GPG_AGENT_INFO}
+	fi
+}
+
+launch_daemons() {
+	launch_ssh_agent
+	launch_gpg_agent
+}
+launch_local_daemons() {
+	clear_local_env
+	launch_daemons
+}

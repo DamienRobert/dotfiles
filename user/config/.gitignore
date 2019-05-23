@@ -1,0 +1,7 @@
+/dotfiles/.vim/.netrwhist
+/dotfiles/.fonts
+
+#zsh compiled scripts
+*.bak
+*.zwc
+*.zwc.old

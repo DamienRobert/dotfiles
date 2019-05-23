@@ -1,0 +1,4 @@
+#<minute> <hour> <day_of_month> <month> <day_of_week> <command>
+#0 * * * * $HOME/bin/myunison -b sync
+#%hourly 0
+#@lavgand,lavg(1,2.0,0),until(30) 2h $HOME/bin/myunison -b sync 2>&1 >>$HOME/services/cron_log

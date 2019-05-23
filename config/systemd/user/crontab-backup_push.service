@@ -1,8 +1,0 @@
-[Unit]
-Description=Git backup push
-ConditionPathIsDirectory=%h/backups/gitbackup
-
-[Service]
-Type=simple
-ExecStartPre=/usr/bin/ping -c 1 -W 1 acces.math.u-bordeaux1.fr
-ExecStart=/bin/sh -c 'exec %h/mine/script/gitbackup mypush'

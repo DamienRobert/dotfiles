@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#blah="-username \"Dam's -  \" -info \"Non, vilain gourou, tu ne me
+#délogueras pas!\" -validate \"login en cours...\" -invalid \"Tsss Dam's,
+#tu sais même pas entrer ton mot de passe...\"";
+
+
+xlock #$blah -mode nose -message \"Ploum Ploum!\";

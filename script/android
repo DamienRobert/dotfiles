@@ -1,4 +1,0 @@
-#!/bin/sh
-
-. "$HOME/.config/locale.conf"
-exec "$SHELL"

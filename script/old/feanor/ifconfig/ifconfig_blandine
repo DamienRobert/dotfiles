@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#ifconfig eth0 10.10.156.114 broadcast 10.10.159.255 netmask 255.255.252.0
+#le routage a été augmenté
+
+ifconfig eth0 192.168.0.2 broadcast 192.168.0.255 netmask 255.255.255.0
+route add default gw 192.168.0.1
+echo "nameserver 192.168.0.1" > /etc/resolv.conf

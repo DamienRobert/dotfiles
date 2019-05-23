@@ -1,6 +1,0 @@
-@comps
-/generate/local/
-/new/local/
-**/lightdm/*.jpg
-**/lightdm/*.png
-**/lightdm/*.svg

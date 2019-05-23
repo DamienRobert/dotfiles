@@ -1,0 +1,46 @@
+* tools
+- unicodeprop.pl
+$ unicodeprop.pl €
+0x20AC € EURO SIGN (Sc)
+$ unicodeprop.pl é
+0x00E9 é LATIN SMALL LETTER E WITH ACUTE (Ll) 0x0065+0x0301
+
+$ ~/script/others/unicode.py
+é
+U+00e9 é LATIN SMALL LETTER E WITH ACUTE [Ll]
+           U+0065 LATIN SMALL LETTER E
+           U+0301 COMBINING ACUTE ACCENT
+
+$ ~/script/others/unicode.py
+U+00E9 LATIN SMALL LETTER E WITH ACUTE
+
+- gucharmap -> caractères unicodes
+  unicode package sous debian
+
+* iconv/uconv
+
+http://unix.stackexchange.com/questions/261484/replace-composed-unicode-characters/261489
+http://unicode.org/faq/normalization.html
+http://unicode.org/reports/tr15/
+
+NFC: combine tout
+NFD: décompose les accents, combine les ligatures
+NFKC: décombine les ligatures
+NFKD: décombine tout
+
+uconv -x nfkc ploum
+
+* Unicode Data:
+cd ~/usr/share/uni
+wget ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt
+xz -9 UnicodeData.txt
+
+* Punycode: Punycode is a special encoding used to convert Unicode characters to ASCII, which is a smaller, restricted character set. Punycode is used to encode internationalized domain names (IDN).
+
+IRI: https://en.wikipedia.org/wiki/Internationalized_Resource_Identifier
+IRIs are mapped to URIs to retain backwards-compatibility with systems that do not support the new format.[2]
+For applications and protocols that do not allow direct consumption of IRIs, the IRI should first be converted to Unicode using canonical composition normalization (NFC), if not already in Unicode format.
+All non-ASCII code points in the IRI should next be encoded as UTF-8, and the resulting bytes percent-encoded, to produce a valid URI.[example needed]
+ASCII code points that are invalid URI characters may be encoded the same way, depending on implementation.[2]
+This conversion is easily reversible; by definition, converting an IRI to an URI and back again will yield an IRI that is semantically equivalent to the original IRI, even though it may differ in exact representation.[3]
+Some protocols may impose further transformations; e.g. Punycode for DNS labels.

@@ -1,0 +1,11 @@
+[Unit]
+Description=Git backup push Timer
+PartOf=network.target
+Requisite=unlock.target
+
+[Timer]
+OnBootSec=30min
+OnUnitActiveSec=3h
+
+[Install]
+WantedBy=unlock.target

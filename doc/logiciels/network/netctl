@@ -1,0 +1,75 @@
+netctl-auto@wlan0.service:
+=========================
+
+  Process: 387 ExecStart=/usr/bin/netctl-auto start %I (code=exited, status=0/SUCCESS)
+   CGroup: /system.slice/system-netctl\x2dauto.slice/netctl-auto@wlan0.service
+           ├─500 wpa_supplicant -B -P /run/wpa_supplicant_wlan0.pid -i wlan0 -D nl80211,wext -c/run/network/wpa_supplicant_wlan0.conf -W
+           ├─502 wpa_actiond -p /run/wpa_supplicant -i wlan0 -P /run/network/wpa_actiond_wlan0.pid -a /usr/lib/network/auto.action
+           └─639 dhcpcd -4 -q -t 30 -K -L wlan0
+
+Avec par example /run/network/wpa_supplicant_wlan0.conf:
+========================================================
+
+ctrl_interface=/run/wpa_supplicant
+ctrl_interface_group=wheel
+network={
+key_mgmt=NONE
+ssid="Hyundai Hotel"
+id_str="wlan0-Hyundai Hotel"
+}
+network={
+proto=RSN WPA
+psk="espaceclery17"
+ssid="Clery03"
+id_str="wlan0-Clery03"
+}
+network={
+key_mgmt=NONE
+wep_tx_keyidx=0
+wep_key0=""
+ssid="freeboxgaby"
+id_str="wlan0-freeboxgaby"
+}
+network={
+proto=RSN WPA
+psk=5da8522df6d5e11fbbba8ac460370e5c8fbd028c9a8e505acc6ab43a0d991578
+ssid="LapinouBlanc"
+id_str="wlan0-LapinouBlanc"
+}
+network={
+ssid="eduroam"
+key_mgmt=WPA-EAP
+eap=TTLS
+group=TKIP
+pairwise=TKIP CCMP
+anonymous_identity="anonymous@inria.fr"
+identity="roberdam"
+password="******"
+priority=1
+phase2="auth=PAP"
+id_str="wlan0-Eduroam"
+}
+
+--------------------------------------------------------------------
+Via wifi-menu:
+$ sd status netctl@wlan0\\x2dClery03.service
+● netctl@wlan0\x2dClery03.service - Networking for netctl profile wlan0-Clery03
+   Loaded: loaded (/usr/lib/systemd/system/netctl@.service; static)
+   Active: active (exited) since Fri 2014-09-26 09:09:15 CEST; 38s ago
+     Docs: man:netctl.profile(5)
+  Process: 3877 ExecStart=/usr/lib/network/network start %I (code=exited, status=0/SUCCESS)
+
+│ ├─system-netctl.slice
+│ │ └─netctl@wlan0\x2dClery03.service
+│ │   ├─3888 wpa_supplicant -B -P /run/wpa_supplicant_wlan0.pid -i wlan0 -D nl80
+│ │   └─4008 dhcpcd -4 -q -t 30 -L wlan0
+
+
+$ /run/network/wpa_supplicant_wlan0.conf:
+ctrl_interface=/run/wpa_supplicant
+ctrl_interface_group=wheel
+network={
+proto=RSN WPA
+psk="espaceclery17"
+ssid="Clery03"
+}

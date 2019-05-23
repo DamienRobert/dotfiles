@@ -1,0 +1,70 @@
+Forces fondamentales: https://en.wikipedia.org/wiki/Fundamental_interaction
+
+- Gravity => Acts on Mass/Energie, Particule? Graviton
+  
+- Weak => Acts on flavors (Leptons, Gauge bosons), Particules: W+, W− and Z0
+  
+- Electromagnetic, acts on electric charge, Particule: photon
+  (Electro=Magnetic up to a Lorrentz referentiel base change)
+
+- Strong, acts on color charge (quarks, gluons), Particules: gluons
+  Residual strong force: acts on Atomic nuclei (hadrons), Particules: π, ρ
+  and ω mesons
+
+Weak force
+==========
+
+ e^- + W^+ -> ν_e         electron -> neutrino (+ spin change)
+ d -> u + W^-             down quarks -> up quarks (+ spin change)
+ d + W^+ -> u             down quarks -> up quarks (+ spin change)
+ W^- -> e^- + \bar{ν}_e   decay
+ W^+ -> e^+ + ν_e         decay
+ e^- -> e^- + Z^0         only spin change
+ Z^0 -> d + \bar{d}       decay
+
+Radioactivity
+============
+https://en.wikipedia.org/wiki/Radioactive_decay
+
+- alpha decay: a balance between the electromagnetic force and nuclear force.
+Alpha particles consist of two protons and two neutrons bound together into a particle identical to a helium-4 nucleus: He^{2+}
+
+- beta particle: is a high-energy, high-speed electron or positron,
+  mediated by weak force
+
+  An unstable atomic nucleus with an excess of neutrons may undergo β− decay,
+  where a neutron is converted into a proton, an electron, and an electron
+  antineutrino (the antiparticle of the neutrino):
+    n → p + e^− + ν_e
+
+  This process is mediated by the weak interaction. The neutron turns into
+  a proton through the emission of a virtual W− boson. At the quark level,
+  W− emission turns a down quark into an up quark
+
+- Gamma rays (also called gamma radiation) are penetrating electromagnetic
+  radiation (photon)
+
+  Ionizing radiation (ionising radiation) is radiation that carries enough energy to liberate electrons from atoms or molecules, thereby ionizing them. Ionizing radiation is made up of energetic subatomic particles, ions or atoms moving at high speeds (usually greater than 1% of the speed of light), and electromagnetic waves on the high-energy end of the electromagnetic spectrum.
+  Gamma rays, X-rays, and the higher ultraviolet part of the
+  electromagnetic spectrum are ionizing
+
+Standard model
+==============
+
+https://en.wikipedia.org/wiki/Standard_Model
+(Charge, Spin). Gluon and photon have no mass
+
+Quarks:
+- (2/3, 1/2): Up u, Charm c, Top t
+- (-1/3, 1/2): Down d, Strange s, Bottom b
+
+Leptons:
+- (-1, 1/2): Electron e, Muon μ, Tau τ
+- (0, 1/2): Electron neutrino ν_e, Muon neutrino ν_μ, Tau neutrino ν_τ
+
+Bosons:
+- Gauge bosons: Gluon g (0,1), Photon γ (0,1), Z boson (0,1), W boson (\pm 1, 1)
+- Scalar bosons: Higgs H (0,0)
+
+Fermions = Quarks + Leptons
+    Two fermions go in → interaction by boson exchange → Two changed fermions go out. 

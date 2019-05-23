@@ -1,0 +1,21 @@
+#!/bin/sh
+
+DEPOT=~/.deezerdump
+mkdir -p -- "$DEPOT"/u
+rm -rf -- "$DEPOT"/v
+mkdir -p -- "$DEPOT"/v
+
+i=0
+deezerparseamf < "$1" | while read -r L; do
+    if test "$i" -lt 10; then
+        OUT=00$i;
+    else
+        if test "$i" -lt 100; then
+            OUT=0$i;
+        else
+            OUT=$i
+        fi
+    fi
+    printf '%s\n' "$L" > "$DEPOT/v/$OUT"
+    i=`expr "$i" + 1`
+done

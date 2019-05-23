@@ -1,0 +1,10 @@
+div.fun {
+  padding: 10px;
+  background-color: #99cc00;
+}
+
+/* Test autoprefixer */
+:fullscreen .big {
+  display: flex;
+}
+

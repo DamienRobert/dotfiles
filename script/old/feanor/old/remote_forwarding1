@@ -1,0 +1,4 @@
+#!/bin/sh
+PORT=44001
+MACHINE=jonque.ens.fr
+ssh -gf -R "$PORT:localhost:22" $MACHINE  exec ssh -gN -L "$PORT:localhost:$PORT" $MACHINE

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. "$HOME/mine/config/dotfiles/.initvars"
+export DOTFILES
+
+if [ -x "$CFGFILES/generate" ]; then
+	mylog "update" "~config/10update (type=full; $0 $@)"
+	"$CFGFILES"/generate "$@"
+else
+	mylog "update" "~config/10update (type=light; $0 $@)"
+	"$CFGFILES"/10update-light "$@"
+fi

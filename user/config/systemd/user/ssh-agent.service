@@ -1,0 +1,11 @@
+[Unit]
+Description=ssh-agent
+ConditionFileIsExecutable=/usr/bin/ssh-agent
+Documentation=man:ssh-agent(1)
+
+[Service]
+ExecStart=/usr/bin/ssh-agent -d -a %t/ssh_auth_sock
+StandardOutput=null
+
+[Install]
+WantedBy=core.target

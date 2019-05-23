@@ -1,0 +1,99 @@
+#!/bin/sh
+
+cd "$HOME/.kde/share/config/"
+
+process_arg() {
+  cible=$1;
+  if [ "$cible" = "fvwm" ]; then cible=00fvwm; fi;
+  if [ "$cible" = "beryl" ]; then cible=00beryl;  fi;
+  if [ "$cible" != "00fvwm"  -a  "$cible" != "00beryl"  ]
+    then echo "Mauvaise cible: $cible"
+         exit 1
+    fi
+}
+
+compare() {
+  echo "Comparer avec: $1"
+  for i in "$1"/*
+  do
+    cmp "$i" `basename "$i"`
+  done
+}
+difference() {
+  echo "Difference avec: $1"
+  for i in "$1"/*
+  do
+    diff "$i" `basename "$i"`
+  done
+}
+kdifference() {
+  echo "kdiff3 avec les fichiers de: $1"
+  for i in "$1"/*
+  do
+    cmp "$i" `basename "$i"` || kdiff3 "$i" `basename "$i"`
+  done
+}
+copier() {
+  echo "Copier de: $1"
+  for i in "$1"/*
+  do
+    cp "$i" `basename "$i"`
+  done
+}
+backup() {
+  echo "Backup dans: $1"
+  for i in "$1"/*
+  do
+    cp  `basename "$i"` "$i"
+  done
+}
+
+help() {
+  echo "$0 -b|c|d|f|h|kd|s argument";
+  echo "Pas d'arguments    -> comparaison avec cible";
+  echo "DIFF            -d -> diff"
+  echo "KDIFF3          -kd -> kdiff3"
+  echo "COPIE           -c -> copier depuis cible"
+  echo "COPIED          -cd -> copier depuis cible (vérification avec diff)"
+  echo "COPIE FORCEE    -f -> copier depuis cible sans demander confirmation"
+  echo "BACKUP          -b -> backup vers cible"
+  echo "BACKUPD         -bd -> backup vers cible (vérification avec diff)"
+  echo "SWITCH          -s -> backup vers cible1, puis copie de cible2"
+  echo "SWITCHD         -sd -> backup vers cible1, puis copie de cible2 (vérification avec diff)"
+  echo "HELP            -h -> aide"
+}
+#while true;
+#do
+  case "$1" in
+    -- ) break ;;
+    -s) shift; process_arg "$@"; from=$cible;
+        shift; process_arg "$@"; to=$cible;
+        "$0" -b "$from"; "$0" -c "$to" ;;
+    -sd) shift; process_arg "$@"; from=$cible;
+        shift; process_arg "$@"; to=$cible;
+        "$0" -bd "$from"
+        "$0" "-cd" "$to" ;;
+    -b) shift; process_arg "$@"; compare "$cible";
+       echo "Voulez vous backuper les fichiers dans $cible?";
+       read dummy;
+       backup "$cible" ;;
+    -bd) shift; process_arg "$@"; difference "$cible";
+       echo "Voulez vous backuper les fichiers dans $cible?";
+       read dummy;
+       backup "$cible" ;;
+    -c) shift; process_arg "$@"; compare "$cible";
+       echo "Voulez vous installez les fichiers de $cible?";
+       read dummy;
+       copier "$cible" ;;
+    -cd) shift; process_arg "$@"; difference "$cible";
+       echo "Voulez vous installez les fichiers de $cible?";
+       read dummy;
+       copier "$cible" ;;
+    -f) shift; process_arg "$@"; compare "$cible";
+       copier "$cible" ;;
+    -d) shift; process_arg "$@"; difference "$cible" ;;
+    -kd) shift; process_arg "$@"; kdifference "$cible" ;;
+    -h) help ;;
+    *) process_arg "$@"; compare "$cible" ;;
+  esac
+#done

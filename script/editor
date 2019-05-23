@@ -1,0 +1,14 @@
+#!/bin/sh
+
+check_prog() {
+	command -v "$1" >/dev/null 2>&1
+}
+
+# run a command line editor if inside a terminal, otherwise a graphical one
+if [ -n "$TERM" ]; then
+	check_prog vi && exec vi "$@"
+	check_prog vim && exec vim "$@"
+else
+	check_prog gvi && exec gvi -f "$@"
+	check_prog gvim && exec gvim -f "$@"
+fi

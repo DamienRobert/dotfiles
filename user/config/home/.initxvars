@@ -1,0 +1,29 @@
+# WHEN !@computer[:xorg].empty?
+#vim: ft=sh
+#<%= generated_from %>
+_INITXVARS=t
+
+<%=
+  <<EOS
+DEFAULTDM="#{@computer.dig(:xorg,:dm)}"
+
+FONT="#{@computer.font(:vt, type: :xft)}"
+SFONT="#{@computer.font(:small_vt, type: :xft)}"
+GFONT="#{@computer.font(:vte, type: :gtk)}"
+FVWMFONT="#{@computer.font(:fvwm, type: :xft)}"
+FVWMTITLEFONT="#{@computer.font(:fvwmtitle, type: :xft)}"
+XTERMG="#{@computer.terminal_geometry(:vt)}"
+SXTERMG="#{@computer.terminal_geometry(:small_vt)}"
+GTERMG="#{@computer.terminal_geometry(:vte)}"
+
+GEO_DR="#{@computer.terminal_geometry(:none, position: :dr)}"
+GEO_DL="#{@computer.terminal_geometry(:none, position: :dl)}"
+GEO_UR="#{@computer.terminal_geometry(:none, position: :ur)}"
+GEO_UL="#{@computer.terminal_geometry(:none, position: :ul)}"
+
+STRUT_LEFT="#{@computer.dig(:xorg,:strut,:left, default: 0)}"
+STRUT_RIGHT="#{@computer.dig(:xorg,:strut,:right, default: 0)}"
+STRUT_BOTTOM="#{@computer.dig(:xorg,:strut,:bottom, default: 0)}"
+STRUT_TOP="#{@computer.dig(:xorg,:strut,:top, default: 0)}"
+EOS
+=%>

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# on passe un programme et ce qu'on veut ecrire sur son pid
+
+file="$@";
+#dir=`dirname "$file"`
+#mkdir -p "/tmp/ocaml.more/$dir"
+#cat > /tmp/ocaml.more/"$file"
+locaml -init /tmp/ocaml.more/"$file"

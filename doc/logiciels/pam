@@ -1,0 +1,59 @@
+# pam.d:
+http://tldp.org/HOWTO/User-Authentication-HOWTO/x263.html
+All of the files in /etc/pam.d/ contain the configuration for a particular
+service. The notable exception to this rule is the /etc/pam.d/other file.
+This file contains the configuration for any services which do not have
+their own configuration file.
+
+#modules:
+http://www.tuxradar.com/content/how-pam-works
+http://www.ibm.com/developerworks/library/l-pam/
+http://www.linux-pam.org/Linux-PAM-html/sag-configuration-file.html
+
+PAM modules are classified into module type. Any given module should implement at least one of the four module type functions:
+- The authentication module is used to authenticate users or set/destroy credentials.
+- The account management modules perform actions related to access, account and credential expiration, password restrictions/rules, etc.
+- The session management module is used for initializing and terminating sessions.
+- The password management module performs actions related to password change/updates.
+
+https://www.freebsd.org/doc/en_US.ISO8859-1/articles/pam/pam-essentials.html
+- auth: Authentication. This facility concerns itself with authenticating the applicant and establishing the account credentials. It provides two primitives:
+        pam_authenticate(3) authenticates the applicant, usually by requesting an authentication token and comparing it with a value stored in a database or obtained from an authentication server.
+        pam_setcred(3) establishes account credentials such as user ID, group membership and resource limits.
+- account: Account management. This facility handles non-authentication-related issues of account availability, such as access restrictions based on the time of day or the server's work load. It provides a single primitive:
+        pam_acct_mgmt(3) verifies that the requested account is available.
+- session: Session management. This facility handles tasks associated with session set-up and tear-down, such as login accounting. It provides two primitives:
+        pam_open_session(3) performs tasks associated with session set-up: add an entry in the utmp and wtmp databases, start an SSH agent, etc.
+        pam_close_session(3) performs tasks associated with session tear-down: add an entry in the utmp and wtmp databases, stop the SSH agent, etc.
+- password: Password management. This facility is used to change the authentication token associated with an account, either because it has expired or because the user wishes to change it. It provides a single primitive:
+        pam_chauthtok(3) changes the authentication token, optionally verifying that it is sufficiently hard to guess, has not been used previously, etc.
+
+Module mode:
+- requisite: If this module fails, PAM immediately returns a failure result to the application; no further modules in the stack are called.
+- required: If this module fails, PAM returns a failure result to the application but it will continue to call the next module in the stack. (If you find you have trouble remembering the distinction between requisite and required, then join the club! So do we...)
+- sufficient: If this module succeeds, PAM returns a 'pass' result to the application and no further modules in the stack are called. (This assumes, of course, that a required module hasn't failed higher up the stack.
+- optional: The pass/fail result of this module is ignored, which generally means that the module is being called to perform some operation, rather than participating in the pass/fail decision for the stack. For example, the pam_keyinit module is used as an 'optional' module by sshd to create a new 'session keyring' for the new login.
+
+#Exemples:
+/etc/pam.d/login:
+auth       required     pam_securetty.so
+auth       requisite    pam_nologin.so
+auth       include      system-local-login
+
+system-auth:
+auth      required  pam_unix.so     try_first_pass nullok
+password  required  pam_unix.so     try_first_pass nullok sha512 shadow
+
+pam_securetty is a PAM module that allows root logins only if the user is logging in on a "secure" tty, as defined by the listing in /etc/securetty.
+
+pam_unix:
+       nullok
+           The default action of this module is to not permit the user access
+           to a service if their official password is blank. The nullok
+           argument overrides this default.
+       nullok_secure [not available on archlinux?]
+           The default action of this module is to not permit the user access
+           to a service if their official password is blank. The nullok_secure
+           argument overrides this default and allows any user with a blank
+           password to access the service as long as the value of PAM_TTY is
+           set to one of the values found in /etc/securetty.

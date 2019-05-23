@@ -1,5 +1,6 @@
 #!/usr/bin/perl -w
 #http://thread.gmane.org/gmane.comp.version-control.git/110369/focus=110383
+#https://github.com/dmnd/git-diff-blame (5bf930d334ea6d7d0f767f023a1e2ca3b4177120, 2016-04)
 #needs to be run on git-root
 
 sub parse_hunk_header {
@@ -43,5 +44,7 @@ while (<$diff>) {
     print get_blame_prefix(scalar <$pre>), "\t", $_;
   } elsif (m{^\+}) {
     print get_blame_prefix(scalar <$post>), "\t", $_;
-  } 
+  }
 }
+
+

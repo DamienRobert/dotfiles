@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+. "$(dirname $0)/_install_helpers"
+
+build_git -l mpfrcx master
+build_git -l cme
+# build_git -l fplll # plus besoin de fplll, cmh peut utiliser pari directement
+build_git -l cmh master
+
+version=master
+build_helper $@
+built_git

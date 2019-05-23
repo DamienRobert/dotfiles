@@ -1,0 +1,87 @@
+#!/usr/bin/perl
+use utf8;
+use strict;
+use HTTP::Request::Common;
+use LWP::UserAgent;
+use Text::Wrap qw/$columns wrap/;
+use vars qw/$site $ua $session $mot $regexp @l $dumb/;
+use Encode;
+
+use I18N::Langinfo "langinfo", "CODESET";
+my $encoding = langinfo CODESET;
+binmode STDOUT, ":encoding($encoding)" or die $!;
+binmode STDERR, ":encoding($encoding)" or die $!;
+
+$site = 'http://atilf.atilf.fr';
+$ua = new LWP::UserAgent;
+
+sub erreur {
+   die "Erreur : le site $site est en rade...\n";
+}
+
+sub usage {
+   print <<"EOF";
+Usage: $0 [-r] [-d] [-e encoding] mot
+
+	  -d ne pas utiliser de couleurs
+	  -r considérer le mot comme une expression régulière
+	  -e spécifie l'encodage du mot donné en argument si ce
+		n'est pas celui donné par la locale...
+
+Script de Nicolas George <Nicolas.George\@ens.fr>, réécrit par Jérôme Plût
+<Jerome.Plut\@ens.fr>, modifié pour gérer Unicode par
+Joël Riou <joel.riou\@normalesup.org>
+EOF
+   exit(0);
+}
+
+$dumb = 0; $regexp = 0; $mot = '';
+
+my $encoding_mot=$encoding;
+
+while($_ = shift @ARGV) {
+   if(/^-h$/) { usage ; }
+   if(/^-d$/) { $dumb = 1; next }
+   if(/^-r$/) { $regexp = 1; next }
+   if(/^-e$/) { usage unless $encoding_mot = shift @ARGV;next;}
+   if($mot) { usage; }
+   $mot = $_;
+}
+
+usage if(!$mot);
+$mot="^$mot\$" unless($regexp);
+my $mot_char=decode $encoding_mot,$mot;
+$mot=encode "cp1252",$mot_char;
+
+# Il faut récupérer un numéro de session.
+$_ = $ua->request(GET "$site/Dendien/scripts/generic/showps.exe?p=main.txt;java=no;host=interface_academie8.txt")->content();
+/;s=(\d+)/ || erreur; $session = $1;
+
+
+$_ = $ua->request(GET "$site/Dendien/scripts/generic/cherche.exe?15;s=$session",
+      Content => "var0=&var2=$mot\&var3=*!!*\&var5=*!!*" )->content();
+
+die "Aucun mot trouvé.\n" if /Aucun document/;
+erreur unless /frame name=fen2 src=([^ ]*)/;
+
+my $ctl_csi="\033[";
+my $ctl_gras=$ctl_csi."1m";
+my $ctl_bleu=$ctl_csi."34m";
+my $ctl_normal=$ctl_csi."m";
+
+$_ = decode("cp1252",$ua->request(GET "$site/$1")->content());
+
+s/^.*\<table[^>]*\>//s;
+s/\<script[^>]*\>.*$//s;
+
+if($dumb) { s/\<\/?[ib]\>//gi; }
+else { s/\<i\>/$ctl_bleu/gi;
+       s/\<b\>/$ctl_gras/gi;
+       s/\<\/[bi]\>/$ctl_normal/gi; }
+
+s/\<br\>/\n/gi;
+s/\<font color=blue\>//gi;
+s/\<[^>]*>//gs;
+@l = split /\n/s;
+
+foreach (@l) { print wrap('', '', "$_\n"); }

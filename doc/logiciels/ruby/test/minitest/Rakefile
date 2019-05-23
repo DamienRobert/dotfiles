@@ -1,0 +1,9 @@
+# encoding: utf-8
+require 'rake/testtask'
+
+Rake::TestTask.new do |t|
+  t.test_files = FileList['*.rb']
+  t.verbose = true
+end
+
+#test a single file: ruby -I "lib:test" test/test_foo.rb

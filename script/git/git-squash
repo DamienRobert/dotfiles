@@ -32,6 +32,7 @@ help() {
 	|-[-no]-pull/-[-no]-push|: don't/do (0) resp (3)
 	|--ff|: do (0) and a 'trivial fast forward' if possible
 	|--ff-rebase|: do (0) and a 'trivial merge rebase'
+	|--merge-base|: the merging-base to use for the rebase (usually autodected)
 	|--prepare|: do (1)
 	|--finish|: do (2)
 	|--after|: program to execute after merge --squash, before commit (can be zsh for interactive verifications)
@@ -60,9 +61,9 @@ do
 				[[ -n $SVN ]] && PULL=t PUSH= ;;
 		--finish ) shift; STEP="finish"
 				[[ -n $SVN ]] && PULL= PUSH=t ;;
-		--ff) shift; STEP="ff";;
+		-ff|--ff) shift; STEP="ff";;
 		--ff-rebase) shift; STEP="ff-rebase";;
-		--merge|-m ) shift; SQUASHMODE="merge" 
+		--merge|-m ) shift; SQUASHMODE="merge"
 				SQUASHOPT=("--ff-only" "--squash");;
 		--rebase|-rb ) shift; SQUASHMODE="rebase"
 				SQUASHOPT=();;
@@ -70,6 +71,7 @@ do
 		PULL=t; PUSH=t;;
 		--after )  shift; AFTEREXEC="$1"; shift;;
 		-g|--go ) shift; GO=1 ;;
+		--merge-base ) shift; mergebase="$1"; shift ;;
 		--opt ) shift; SQUASHOPT+=$1; shift ;;
 		-h|--help) shift; help ;;
 		*) break;;
@@ -77,6 +79,11 @@ do
 done
 
 . ~/mine/script/git/.squashmergebase
+
+sucess() {
+	checkout $CURRENT
+	exit 0
+}
 
 checkout() {
 	git checkout "$@" >/dev/null || fail
@@ -92,16 +99,20 @@ failmsg() {
 }
 
 failrb() {
+	extra_msg=""
+	[[ -n $SVN ]] && extra_msg="--svn --no-pull"
 	echo "!! Error in rebase!
 Solve conflicts, and when finished rebasing [g rb-c] do
 	git checkout $UP && git merge --ff-only HEAD@{1}
-	git my squash -- --finish $DOWN $UP && git checkout $CURRENT"
+	git my squash -- $extra_msg --finish $DOWN $UP && git checkout $CURRENT"
 failnow
 }
 failmg() {
+	extra_msg=""
+	[[ -n $SVN ]] && extra_msg="--svn --no-pull"
 	echo "!! Error in merge!
 Solve conflicts, and when finished merging [g co] do
-	git my squash -- --finish $DOWN $UP && git checkout $CURRENT"
+	git my squash -- $extra_msg --finish $DOWN $UP && git checkout $CURRENT"
 failnow
 }
 
@@ -122,7 +133,7 @@ dosquash() {
 			checkout $UP
 			git merge --squash $SQUASHOPT $DOWN
 			STATUS=$?
-			findmergebase $DOWN $UP
+			[[ -z $mergebase ]] && findmergebase $DOWN $UP
 			echo "Merge base: $mergebase"
 			echo -e "Squashing '$DOWN' on top of '$UP'\n"  >.git/SQUASH_MSG
 			if [[ -n $mergebase ]]; then
@@ -135,7 +146,7 @@ dosquash() {
 			git commit $COMMITOPTS -F .git/SQUASH_MSG || fail
 			;;
 		rebase)
-			findmergebase $DOWN $UP
+			[[ -z $mergebase ]] && findmergebase $DOWN $UP
 			echo "Rebase starting point: $mergebase"
 			if [[ -n $mergebase ]]; then
 				git rebase $SQUASHOPT --onto $UP $mergebase "$DOWN^{commit}" || failrb
@@ -184,7 +195,7 @@ if [[ -n $PULL ]]; then
 	echo "0) Pulling '$UP'"
 	checkout $UP
 	if [[ -n $SVN ]]; then
-		echo "	Using git svn rebase"
+		echo "  Using git svn rebase"
 		git svn rebase || fail
 	else
 		git pull --ff-only || fail
@@ -192,18 +203,22 @@ if [[ -n $PULL ]]; then
 fi
 
 if [[ $STEP == "ff" ]]; then
-		findmergebase $DOWN $UP
+		[[ -z $mergebase ]] && findmergebase $DOWN $UP
 		if [[ $(git rev-parse $DOWN) != $mergebase ]]; then
 			failmsg "Cannot 'fast-forward' from $DOWN to $UP, merbe-base is at $mergebase"
 		else
 			mergeff
 		fi
-	exit 0
+	sucess
 fi
 if [[ $STEP == "ff-rebase" ]]; then
 	checkout $DOWN
-	git my merging-rebase -- --theirs $UP
-	exit 0
+	if [[ -z $mergebase ]]; then
+		git my merging-rebase -- --theirs $UP
+	else
+		git my merging-rebase -- --merge-base $mergebase --theirs $UP
+	fi
+	sucess
 fi
 
 # squashing the merge
@@ -215,7 +230,7 @@ dosquash
 if [[ -n $SVN ]]; then
 	echo "2) We need to push with svn dcommit first before merging the squash"
 else
-	[[ $STEP != "prepare" ]] && 
+	[[ $STEP != "prepare" ]] &&
 	echo "2) Merging the squash" &&
 	mergesquash
 fi
@@ -225,13 +240,13 @@ if [[ -n $PUSH ]]; then
 	if [[ -n $SVN ]]; then
 		echo "	Using git svn dcommit"
 		checkout $UP && git svn dcommit || fail
-	else 
+	else
 		checkout $UP && git push || fail
 	fi
 fi
 
 if [[ -n $SVN && -n $PUSH ]]; then
-	[[ $STEP != "prepare" ]] && 
+	[[ $STEP != "prepare" ]] &&
 	echo "2bis) Merging the squash" &&
 	mergesquash
 fi

@@ -1,0 +1,194 @@
+#Exemple
+
+#alias ami1 Jean-Louis Cornou <cornou@clipper.ens.fr>
+#alias PLOUM Ami1 Grand <ami1@clipper.ens.fr>, Ami2 Petit <ami2@clipper.ens.fr>
+#alias AMI1 Ami1 Grand <ami1@c.ens.fr>
+#alias AMI2 Ami2 Petit <ami2@c.ens.fr>
+
+#alias AMIS Ami1, Ami2
+
+#alias TOUS_MES_AMIS PLOUM, AMIS
+############################################################################
+
+##########
+#
+# Alias
+#
+##########
+#Me
+alias DamienLoria Damien Robert <Damien.Robert@loria.fr>
+alias DamienLoria2 Damien Robert <roberdam@loria.fr>
+alias DamienNsup Damien Robert <Damien.Robert@normalesup.org>
+
+#Dina
+alias Dina Blandine Belin <blandine.belin@gmail.com>
+alias Dina2 Blandine Belin <blandine.belin@laposte.net>
+
+#Famille
+alias Olivia  Olivia Robert <olivia.robert10@voila.fr>
+alias Benoit Benoit Robert <thebigfanofben@hotmail.com>
+alias Dad Yves Robert <Yves.Robert@ens-lyon.fr>
+
+alias Yves Dad
+
+#Amis
+alias Pierre Pierre Perdiguier <grillade@caramail.com>
+alias David   David Armand <abaddon2345@wanadoo.fr>
+alias Fanfoue3 Francois Bonnet <ptitbonnet@caramail.com>
+alias Lperrin Lionel Perrin <Megalionel@aol.com>
+alias Ludo Ludovic Jacquin <jacquinl@ensisun.imag.fr>
+alias Marielle Marielle Bouvier <oxymalou@yahoo.fr>
+alias Mika Mikael De La Salle <delasall@clipper.ens.fr>
+alias Pierrot Pierre Perdiguier <pierre.perdiguier@ensmp.fr>
+alias Reno-old Renaud Heitz <03heitz@ensmp.fr>
+alias Romain  Romain Bailly <vaintarom1@hotmail.com>
+alias Sandrine Sandrine Rosamont <sandrinerosamont@hotmail.com>
+alias Simon Simon Dolle <dolles6@cti.ecp.fr>
+alias Thomass Thomas Scohy <thomasscohy@yahoo.fr>
+alias Tom  Thomas Breda <Thomas.Breda@ens.fr>
+alias Bruno Bruno Alix <alixb6@cti.ecp.fr>
+
+alias Bene Benedicte Moulin <bmoulin@enst.fr>
+alias Flavien Flavien Billard <flabi@wanadoo.fr>
+alias Florian Florian Dupas <flo.dupas@wanadoo.fr>
+alias LionelW Lionel Wilner  lionelwilner@minitel.fr
+alias Samuel  Samuel Hugueny <nakano_83@hotmail.com>
+alias Seb Sebastien  Leroux <lerouxs@eleves.enpc.fr>
+
+alias Lio Lionel Perrin <lperrin@messel.emse.fr>
+alias Mika_2 Mikael De La Salle <mikael.de.la.salle@ens.fr>
+alias Mika_3 Mikael De La Salle <Moimika@aol.com>
+
+alias Mika_4 Mikael De La Salle <thefrenchguy@cs.mcgill.ca>
+#AmisEns
+alias Charles Charles Vial <cvial@clipper.ens.fr>
+alias Mehdi Mehdi Tibouchi <tibouchi@clipper.ens.fr>
+alias Vincent Vincent Pilaud <Vincent.Pilaud@ens.fr>
+alias Vivien Vivien Ripoll <vripoll@clipper.ens.fr>
+alias Olivier Olivier Dudas <dudas@clipper.ens.fr>
+alias Yanos Yanos Zylberberg <zylberbe@clipper.ens.fr>,
+alias Gabriele Gabriele Piaton <piaton@clipper.ens.fr>,
+alias Nicolas Nicolas Gast <gast@clipper.ens.fr>,
+alias Guillaume Guillaume Regnier <regnier@clipper.ens.fr>,
+alias Chanal Cedric Chanal <chanal@clipper.ens.fr>,
+alias Demichel Olivier Demichel <demichel@clipper.ens.fr>,
+alias Gabriel Gabriel Faraud <faraud@clipper.ens.fr>,
+alias Fabrice Fabrice Catoire <catoire@clipper.ens.fr>,
+alias Mael Mael Primet <primet@clipper.ens.fr>,
+alias JL Jean-Louis Cornou <cornou@clipper.ens.fr>
+alias Dauchy Vincent Dauchy <vincent.dauchy@ens.fr>
+alias Antonin Antonin Pottier <apottier@clipper.ens.fr>
+alias Kermat Mathieu Guillaumin <mguillau@clipper.ens.fr>
+alias Elise Elise Lelievre <lelievre@clipper.ens.fr>
+
+alias Boris boris@yakobowski.org
+
+
+#AmisLycée
+
+
+#Connaissances
+alias Tosel   Emmanuelle & Nicolas Tosel <nicolas.tosel@wanadoo.fr>
+alias Deschamps Claude Deschamps <cl.deschamps@wanadoo.fr>
+
+##############
+#
+#Groupes
+#
+##############
+
+
+#GT
+alias GT vincent.pilaud@ens.fr, sylvain.rairat@ens.fr, pascal.molin@ens.fr, mathieu.cossutta@ens.fr, benjamin.schraen@ens.fr, simon.riche@ens.fr, chevenie@dma.ens.fr, mehdi
+
+#Groupes
+alias Amis David, Fanfoue, Lio, Ludo, Marielle, Mika, Reno, Sandrine, Simon, Thomass, Tom, Bruno
+alias AmisParis David, Marielle, Mika, Reno, Simon, Bruno
+alias AmisEns Charles, Vivien, Olivier, Yanos, Gabriele,  Guillaume, Chanal, Demichel, Gabriel, Fabrice, Mael, JL, Tom, Mika, Kermat
+alias B6 Charles, Vivien,  Yanos, Gabriele,  Guillaume, Chanal, Demichel, Gabriel, Mael, JL, Tom, Mika, Kermat, Antonin
+alias B6last "The last five of the B6" Vivien, Mika, Marielle, Elise, Chanal
+alias Famille Dad Benoit Olivia
+
+##############################################################################
+
+#Rajoutés via mutt
+alias Ska Laurent Bercot <ska@skarnet.org>
+alias DAM David Madore <david.madore@ens.fr>
+alias Rezo Service Rezo Des Eleves <rezo@clipper.ens.fr>
+alias Luc Luc Habert <Luc.Habert@ens.fr>
+alias Erwan Erwan Grasland-Mongrain <grasland@clipper.ens.fr>
+alias Tuteurs Gentils Tuteurs <tuteurs@clipper.ens.fr>
+alias Cigaes Nicolas George <nicolas.george@ens.fr>
+alias Gaetan Gaetan Leurent <leurent@clipper.ens.fr>
+alias Mouton Émeric Tourniaire <tourniai@clipper.ens.fr>
+alias Claude Claude Loverdo <loverdo@clipper.ens.fr>
+alias Xenia Ksenija Vucurovic <vksenija@yahoo.com>
+
+alias Blandine Dina
+alias fanffoue2 Francois Bonnet <francois.bonnet@etudiant.univ-rennes1.fr>
+alias gaga Gaetan Chenevier <chenevie@dma.ens.fr>
+alias Ludo1 Ludovic Jacquin <jacquinl@ensisun.imag.fr>
+alias Marie Marie Antczak <marieantczak@hotmail.com>
+alias mum Sylvie Robert <sylvie-yves.robert@laposte.net>
+alias romu Romain Ollierou <romu.ollierou@gmail.com>
+alias Broue Michel Broué <michel.broue@noos.fr>
+alias Lionel lionel perrin <lionel.perrin@gmail.com>
+alias Dad-gmail Yves Robert <yvesbob.robert@gmail.com>
+alias cacao Cacao <cacao@loria.fr>
+alias Sylvie Sylvie Robert <sylvie-yves.robert@laposte.net>
+alias Nadine Nadine Belin <nadine.belin@ac-grenoble.fr>
+alias Olivia Olivia Robert <olirobert10@hotmail.com>
+alias Fanfoue François Bonnet <Francois.Bonnet@irisa.fr>
+alias Fanffoue François Bonnet <Francois.Bonnet@irisa.fr>
+alias Adrian Adrian Daerr <daerr@pmmh.espci.fr>
+alias reno Renaud Heitz <renaud.heitz@gmail.com>
+alias xavio Xavier BELIN <xavier.belin@gmail.com>
+alias mariage-mms mariage-mms@googlegroups.com
+alias Stephanie stephanie.mathieu@lyxor.com
+
+alias Caml Loutfi.Soufi@depinfo.uhp-nancy.fr, monique grandbastien <monique.grandbastien@loria.fr>,frederic.suter@loria.fr, nassar@loria.fr
+
+alias Emmanuelle emmanuelle deschamps <emmanuelle.deschamps@loria.fr>
+alias laurent Laurent Fousse <laurent@komite.net>
+alias Aurelie.Mertz MERTZ Aurelie - DRE Lorraine/AMT <Aurelie.Mertz@equipement.gouv.fr>
+
+
+alias Soucis "Atelier Projet, Groupe Soucis: " ROBERT Damien <Damien.robert@loria.fr>, ABADPOUR Anahita  <anahita.abadpour@ensem.inpl-nancy.fr>, ARCHAMBAULT Fabien  <fabien.archambault@gmail.com>, LOUVIOT Elise <elise.louviot@libertysurf.fr>,LEHMANN Pierre-Etienne <lehmannpe@free.fr>, DEPREDURAND  Valerie  <Valerie.depredurand@ensem.inpl-nancy.fr>, KATRIB  Juliano <juliano_katrib_83@hotmail.com>,   CANON   Louis-Claude  <louis-claude.canon@loria.fr>
+alias Cecile Cecile Cathalot <cecile.cathalot@lsce.ipsl.fr>
+
+alias BlandineCETE BELIN Blandine - CETE Est/D21 <Blandine.Belin@developpement-durable.gouv.fr>
+alias Gabi Gabriel Chevalier <gabriel.chevalier@free.fr>
+
+#------------------------------------------------------------------------#
+alias Oliver.Arnould ARNOULD Olivier - DRE Lorraine/AMT <Olivier.Arnould@developpement-durable.gouv.fr>
+alias Anne.Brune BRUNE Anne -DIREN Lorraine/SHPC <Anne.BRUNE@developpement-durable.gouv.fr>
+alias Celine.Galandie Céline Galandie <galandie.celine@gmail.com>
+alias David.Dubois DUBOIS David (D22) - CETE Est/D22 <David.Dubois@developpement-durable.gouv.fr>
+alias Delphine.Kontz Delphine Kontz <sillypoppy@yahoo.com>,
+alias Aurelie.Mertz MERTZ Aurelie - DRE  Lorraine/AMT <Aurelie.Mertz@developpement-durable.gouv.fr>,
+alias Julie.Pelata PELATA Julie - CETE Est/ADD/TD <julie.pelata@developpement-durable.gouv.fr>
+alias Samantha.Philippe PHILIPPE Samantha - DRE Lorraine/AMT <Samantha.Philippe@developpement-durable.gouv.fr>
+alias Marc.Schwager SCHWAGER Marc - CETE Est/D21 <marc.schwager@developpement-durable.gouv.fr>
+
+alias Hanrot Guillaume Hanrot <ghanrot@free.fr>
+alias Hanrot2 Guillaume Hanrot <Guillaume.Hanrot@loria.fr>
+alias Pierrick.Gaudry Pierrick Gaudry <pierrick.gaudry@gmail.com>
+alias Emmanuel.Thome Emmanuel Thomé <Emmanuel.Thome@normalesup.org>
+alias Manu Emmanuel Thomé <Emmanuel.Thome@normalesup.org>
+alias JLB Jean-Luc Beuchat <beuchat@risk.tsukuba.ac.jp>
+alias David.Lubicz David Lubicz <david.Lubicz@univ-rennes1.fr>
+alias these Hanrot,pierrick.gaudry,emmanuel.thome
+
+alias Romain.Cosset romain cosset <romain.cosset@loria.fr>
+alias Gaetan.Bisson Gaetan Bisson <gaetan.bisson@loria.fr>
+alias Jeremie.Detrey Jérémie Detrey <Jeremie.Detrey@loria.fr>
+alias Alexander.Kruppa Alexander Kruppa <kruppaal@loria.fr>
+
+alias David  David Armand <abaddon2345@wanadoo.fr>
+alias Fanfoue Francois Bonnet <Francois.Bonnet@irisa.fr>
+alias Lionel Lionel Perrin <lionel.perrin@gmail.com>
+alias Marielle Marielle Bouvier <oxymalou@yahoo.fr>
+alias Mika Mikael De La Salle <delasall@phare.normalesup.org>
+alias Sandrine Sandrine Rosamont <sandrine.rosamont@googlemail.com>
+alias Simon Simon Dolle <simon.dolle@gmail.com>
+alias Tom  Thomas Breda <Thomas.Breda@ens.fr>

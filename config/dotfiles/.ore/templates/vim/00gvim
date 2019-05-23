@@ -1,1 +1,0 @@
-gvim -p lib/**/*.rb test/**/*.rb

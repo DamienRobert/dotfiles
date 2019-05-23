@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+for dev in "$@"; do
+	SCHEME=$(sudo partx --noheadings --show --output SCHEME $dev | head -n 1)
+	echo "-> $dev: $SCHEME"
+	disk=$(basename $dev)
+	case $SCHEME in
+		dos) sudo dd if=$dev of=$disk-mbr.bin bs=512 count=1;;
+		#mbrgap: sudo dd if=$dev of=$disk-mbrgap.bin skip=1 bs=512 count=62
+		gpt) sudo sgdisk --backup=$disk-gpt.bin $dev;;
+	esac
+done

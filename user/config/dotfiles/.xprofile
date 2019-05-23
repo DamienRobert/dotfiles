@@ -1,0 +1,102 @@
+#!/bin/sh
+
+[ -z "$_INITVARS" -a -e "$HOME/.initvars" ] && . "$HOME/.initvars"
+
+case "$_INIT" in
+	*"x($DISPLAY)"*)
+	mylog session ".xprofile ($0 $@ DISPLAY=$DISPLAY) [already read]"
+	;;
+*)
+	mylog session ".xprofile ($0 $@ DISPLAY=$DISPLAY)"
+	_INIT="${_INIT}x($DISPLAY)"
+	export _INIT
+
+case "$_INIT" in
+	*e*) ;;
+	*) [ -f "$HOME/.initenv" ] && . "$HOME/.initenv";;
+esac
+
+[ -z "$_INITXVARS" -a -f "$HOME/.initxvars" ] && . "$HOME/.initxvars"
+
+XPID=$$
+export XPID
+
+# Correct dpi (*sigh*)
+# https://bugs.freedesktop.org/show_bug.cgi?id=23705
+
+## Find the real dimension of the primary display and set it
+## mylog "session" $(xrandr)
+# # We first try to get the size of a primary display
+# size="$(xrandr | sed -n '/ connected primary / {s/.* \([0-9]\+\)mm x \([0-9]\+\)mm/\1x\2/p;q}')"
+# # Fallback to any display
+# [ -z "$size" ] && size="$(xrandr | sed -n '/ connected / {s/.* \([0-9]\+\)mm x \([0-9]\+\)mm/\1x\2/p;q}')"
+# [ -n "$size" ] && mylog "session" ".xprofile => xrandr --fbmm $size" && xrandr --fbmm $size
+##TODO this is overrided by xfsettingsd which put the dpi back to 96
+
+#Set up $DM
+#==========
+
+if [ -n "$XDG_SESSION_DESKTOP" ]; then
+	DM="$XDG_SESSION_DESKTOP"
+	mylog "session" ".xprofile -> Using XDG_SESSION_DESKTOP: DM=$DM"
+elif [ -n "$DESKTOP_SESSION" ]; then
+	DM="$DESKTOP_SESSION"
+	mylog "session" ".xprofile -> Using DESKTOP_SESSION: DM=$DM"
+elif [ -n "$1" ]; then
+	DM="$1"
+	mylog "session" ".xprofile: Using argument: DM=$DM"
+fi
+if [ -z "$DM" -o "x$DM" = "xxsession" ]; then
+	DM="$DEFAULTDM"
+	mylog "session" ".xprofile: Using default: DM=$DM"
+fi
+export DM
+
+# Resources
+# =========
+
+[ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
+[ -f "$HOME/.Xkbmap" ] && setxkbmap $(cat $HOME/.Xkbmap)
+[ -r $HOME/.xinputrc ] && . "$HOME/.xinputrc"
+
+# Launch programs
+# ===============
+
+# if pidof systemd >/dev/null; then
+if systemctl --user is-active -- "-.slice"; then
+	#done by xinitrc.d/50-systemd-user.sh but it is called after .xprofile
+	dbus-update-activation-environment --systemd DISPLAY XAUTHORITY || systemctl --user import-environment DISPLAY XAUTHORITY
+	systemctl --no-block --user  start "xsession.target"
+fi
+
+# eventually (so that root/me can launch X apps without a XAUTHORITY env
+# variable):
+# xhost si:localuser:$(id -un)
+
+# Customizations
+# ==============
+
+case "$DM" in
+	fvwm) #I still want a notification daemon
+		for notificationd in "/usr/lib/notification-daemon-1.0/notification-daemon" "/usr/lib/xfce4/notifyd/xfce4-notifyd"; do
+			if [ -x "$notificationd" ]; then
+				exec "$notificationd" &
+				break
+			fi
+		done
+		;;
+	fvwm-xfce)
+		#launch some of the components of a standard xfce session
+		exec xfce4-panel &
+		exec xfsettingsd &
+		#exec xfdesktop &
+		#exec xfce4-power-manager &
+		#exec system-config-printer-applet &
+		#exec start-pulseaudio-x11 &
+		exec feh --bg-scale "$HOME/mine/wallpaper/desktop.png" &
+		;;
+	xfce )
+		rm -f "$HOME/.cache/sessions/xfce4-session-$HOSTNAME${DISPLAY%.?}"
+		;;
+esac
+esac

@@ -1,1 +1,1 @@
-../script/git/gitstatus.rb
+../ruby/bin/gitstatus.rb

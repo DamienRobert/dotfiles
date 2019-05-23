@@ -1,0 +1,63 @@
+#!/bin/zsh
+
+help() { echo "Usage: ${0##*/} [-v/-V/-a/-r/-d -p port -c certdir -f certfile] host"; 
+	echo "By default, show the certificate (or the chains of certificate with '-a'. With '-c certdir' or '-f certfile', the verification is done via the provided certfiles. With '-v' only show the verification output, with '-V' show everything. In dl mode (-d), the -c/-f options specify *where* to dl the cert file (default to ./\$host.pem). Finally, -r 'certfile.pem' show the content of the cert file."
+	exit 1
+}
+
+MODE=show
+CERTS=
+CERTFILE=
+REMOTE_PORT=443
+OUTFILE="/dev/stdout"
+ALL=
+
+while getopts 'c:f:p:hvVard' flag; do
+	case $flag in
+		c) CERTS=$OPTARG ;; #cert directory OR directory where we dl the certs
+		d) MODE=dl ;; # dl mode
+		f) CERTFILE=$OPTARG ;; #cert file OR file where we download the cert (has precedence)
+		p) REMOTE_PORT=$OPTARG ;;
+		v) MODE="verify" ;; # verify, dont dl
+		V) MODE="verify_verbose" ;; # verify and show all openssl output, not just the verifications
+		a) ALL=t ;; # get all the chain of certificates
+		r) MODE="read" ;;
+		h) help ;;
+	esac
+done
+shift $(( OPTIND - 1 ))
+
+REMOTE_HOST=$1
+shift
+
+OPTS=($@)
+[[ -n $ALL ]] && OPTS+=("-showcerts")
+OPTS+=(-connect ${REMOTE_HOST}:${REMOTE_PORT})
+case $MODE in
+	dl) 
+		OUTFILE=${REMOTE_HOST}.pem
+		[[ -n $CERTS ]] && OUTFILE=$CERTS/${REMOTE_HOST}.pem
+		[[ -n $CERTFILE ]] && OUTFILE=$CERTFILE
+		;;
+	*)
+		[[ -n $CERTFILE ]] && OPTS+=("-CAfile" $CERTFILE)
+		[[ -n $CERTS ]] && OPTS+=("-CApath" $CERTS/)
+		;;
+esac
+echo "# Using openssl options: $OPTS" >/dev/stderr
+
+case $MODE in
+dl|show)
+	# openssl s_client $OPTS  <<<'' | openssl x509 -out $OUTFILE
+	# We need to use sed instead in case we get several certificates
+	openssl s_client $OPTS  <<<'' | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > $OUTFILE
+	# symlink the fingerprint of the key to the file
+	[[ -n $CERTS && $MODE=="dl" ]] && ln -sv $OUTFILE $CERTS/"$(openssl x509 -noout -hash -in $OUTFILE).0"
+	;;
+verify*)
+	[[ $MODE != "verify_verbose" ]] && exec > >(grep -i verify)
+	openssl s_client $OPTS <<<''
+	;;
+read)
+	openssl x509 -in $REMOTE_HOST -text -noout
+esac

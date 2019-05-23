@@ -1,7 +1,0 @@
-#grub
-sudo modprobe dm-mod
-sudo grub-install --directory=/usr/lib/grub/i386-pc --target=i386-pc --boot-directory=/boot --recheck  /dev/sda
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-#corriger un bug
-sudo cp /boot/grub/locale/en@quot.mo /boot/grub/locale/en_US.mo
-sudo mkinitcpio -p linux

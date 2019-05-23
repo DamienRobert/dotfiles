@@ -1,0 +1,31 @@
+#remove the folder pro/.crypt from backup
+#sudo pacman -S jre8-openjdk-headless
+#sudo pacman -S jre8-openjdk #<- if we need graphics
+cd ~
+LIST=(pro/.crypt/**)
+cd ~/var/backups/gitbackup
+#check LIST with g ls IG pro/.crypt
+g rm -r --cached $LIST
+g ci
+java -jar ~/var/dist/git-extra/bfg-1.11.6.jar --delete-folders .crypt
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+gitbackup mypush
+
+cd ~
+LIST=(perso/Phone/Audiko/ringtones/**)
+cd ~/var/backups/gitbackup
+g rm -r --cached $LIST
+g ci
+java -jar ~/var/dist/git-extra/bfg-1.11.6.jar --delete-folders ringtones
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+gitbackup mypush
+
+cd ~/var/backups/gitbackup
+g rm  'mine/user/config/dotfiles/.bundle/*'
+gitbackup ci
+java -jar ~/usr/dist/@git/bfg-1.11.6.jar --delete-folders .bundle/cache
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+gitbackup mypush

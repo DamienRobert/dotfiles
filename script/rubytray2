@@ -2,7 +2,7 @@
 # encoding: UTF-8
 
 require 'gtk2'
-require 'dr/gtk'
+require 'dr/tools/gtk'
 
 ###**************************###
 ## Displayed Icon

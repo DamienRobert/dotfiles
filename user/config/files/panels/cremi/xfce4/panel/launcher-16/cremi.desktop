@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Applications CREMI
+Encoding=UTF-8
+Exec=xdg-open http://www.emi.u-bordeaux.fr/
+Icon=/opt/local/share/icons/CREMI.png
+Name=CREMI
+Type=Application

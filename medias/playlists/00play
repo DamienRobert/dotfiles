@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+#Concatenate playlists and play them
+RADIOS=(somafm.pls di.fm.pls france_radio.pls pulsradio.pls internet-radio.org-*.pls divers.m3u)
+( cd ~/.mpd/playlists
+~/script/mpd/mpc_playlist $RADIOS
+)

@@ -1,0 +1,1 @@
+../../progs/powersave/lib/find_dev.zsh

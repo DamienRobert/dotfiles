@@ -1,0 +1,16 @@
+#!/usr/bin/zsh
+
+if command -v gpg2 >/dev/null; then
+  gpgbin="gpg2"
+else
+  gpgbin="/usr/bin/gpg"
+fi
+
+case $1 in
+	--version)
+		exec $gpgbin $@ ;;
+esac
+
+. $HOME/script/lib/local_daemons
+launch_gpg_agent
+exec $gpgbin "$@"

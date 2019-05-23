@@ -1,0 +1,16 @@
+MAILDIR=$HOME/Mail/
+INBOX=$MAILDIR/Inbox/
+MLDIR=$MAILDIR/ML/
+MLBOX=$MLDIR
+
+LOGFILE=$MAILDIR/.procmail.log
+LOGABSTRACT=yes
+VERBOSE=no
+#######################################################
+
+:0:
+*  ^Subject: fcron
+$MAILDIR/cron
+
+:0:
+$MAILDIR/local
