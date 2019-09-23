@@ -1,6 +1,11 @@
+# GENERATE
 [Match]
 Name=en* eth* usb* wl*
 
 [Network]
 DHCP=ipv4
-DNS=1.1.1.1
+MulticastDNS=true
+<% if @computer.name=~/Doriath/ %>
+# [DHCP]
+# UseDNS=false
+<% end %>

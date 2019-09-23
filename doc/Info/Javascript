@@ -908,6 +908,12 @@ Let’s take a closer look at line (A) and (B):
 # ES 10 / ES 2019
 https://medium.com/@selvaganesh93/javascript-whats-new-in-ecmascript-2019-es2019-es10-35210c6e7f4b
 
+https://news.ycombinator.com/item?id=20563293
+What’s New in ES2019 (tildeloop.com)
+ => Now if we could just get pattern matching[1] and optional chaining[2], that would really elevate things.
+  [1] https://github.com/tc39/proposal-pattern-matching
+  [2] https://github.com/tc39/proposal-optional-chaining 
+
 # Libraries
 
 - Notes: full coroutine are implemented in node via fibers, see

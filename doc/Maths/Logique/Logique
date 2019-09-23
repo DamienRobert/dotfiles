@@ -1,7 +1,12 @@
 vim: ft=markdownlight fdm=expr
 
+Réfs:
+- https://arxiv.org/pdf/1212.6543.pdf Rethinking set theory, Tom Leinster (on ECTS)
+
 Absoluteness
 ============
+
+* https://en.wikipedia.org/wiki/Absoluteness
 
 1) Certain properties are absolute to all transitive models of set theory, including the following (see Jech (2003 sec. I.12) and Kunen (1980 sec. IV.3)).
 
@@ -26,6 +31,63 @@ Rem: une version moins forte de ce th montre que V_{w_2} est Sigma_0-absolu
 3) Aller beaucoup plus loin :-)
 http://mathoverflow.net/questions/108197/sets-of-reals-and-absoluteness
     Theorem. Assume there are a proper class of cardinals that are simultaneously measurable and Woodin. If ϕ is a Σ^2_1 statement (with real parameters from the ground model), then: ϕ is true in some set forcing extension of the universe iff ϕ is true in every set forcing extension that satisﬁes 𝖢𝖧.
+
+Inner models
+============
+
+* https://en.wikipedia.org/wiki/Inner_model_theory
+= transitive subsets or subclasses of the von Neumann universe V
+= transitive models
+
+- The first non-trivial example of an inner model was the constructible universe L developed by Kurt Gödel. Every model M of ZF has an inner model ^LM satisfying the axiom of constructibility, and this will be the smallest inner model of M containing all the ordinals of M. Regardless of the properties of the original model, LM will satisfy the generalized continuum hypothesis and combinatorial axioms such as the diamond principle ◊.
+- The sets that are hereditarily ordinal definable form an inner model
+- The sets that are hereditarily definable over a countable sequence of ordinals form an inner model, used in Solovay's theorem.
+
+=> Réfs on L: https://projecteuclid.org/download/pdf_1/euclid.pl/1235419480
+
+* Existence
+https://math.stackexchange.com/questions/2126493/existence-of-transitive-standard-models-of-zfc-independent-of-existence-of-model
+
+Standard transitive model ==> there exist an \omega-model ==> there exist a
+model (where ==> means that <= is false)
+
+More details (=>):
+https://math.stackexchange.com/questions/33688/zfc-exists-standard-model-rightarrow-conzfc-exists-omega-model
+
+- ZFC+∃Vα model of ZFC⊢Con(ZFC+∃ transitive standard model of ZFC)
+
+  Proof: we can always find a countable extentional M⊂Vα elementary equivalent to Vα. Let M′ be the mostowski collapse of M. M′≈M so M′ is model of ZFC. And because M′ is countable and transitive then M′∈Vα (since Hω1⊂Vω1 and α is surely far larger than ω1). 
+
+- ZFC+∃ transitive standard model of ZFC⊢Con(ZFC+∃ω−model of ZFC)
+
+  Proof: There is an ω-model of ZFC" is Σ11: Note that if there is an ω-model, there is a countable one (take a countable elementary substructure), and now we can express this by saying that "there is a real x coding a model of ZFC, and there is a real y coding an order isomorphism of ω onto the natural numbers of the model coded by x".
+  Mostowski's absoluteness theorem gives us that any transitive model of ZFC is correct about Σ11 statements (see Section 13 of Kanamori's book, for example). In particular, your transitive model is a model of the statement that there is an ω-model..
+
+https://math.stackexchange.com/questions/265379/absoluteness-of-textcon-mathsfzfc-for-transitive-models-of-mathsf?rq=1 (</=)
+
+- Con(ZFC) is absolute for transitive models
+
+  Proof: Con(ZFC) is an arithmetic statement (Π01 in particular, because it says a computer program that looks for an inconsistency will never halt) so it is absolute to transitive models (and even \omega-models).
+
+=> By Godel: ZFC+Con(ZFC)⊬⟨There exists a transitive model of ZFC⟩ (or an \omega-model).
+  Furthermore: the existence of an ω-model of ZFC does not prove the existence of a transitive model of ZFC, because the existence of an ω-model of ZFC is a Σ11 statement, and Σ11 statements are absolute to transitive models.
+
+* Countable transitive models:
+By Skolem: if ZF has a model it has a countable model (but which may not be
+transitive). Mostowski=transitive version of Skolem:
+
+https://en.wikipedia.org/wiki/Mostowski_collapse_lemma
+R binary relation that is (i) set like, (ii) well-founded, (iii)
+extensional => there exists a unique transitive class (possibly proper) whose structure under the membership relation is isomorphic to (X, R), and the isomorphism is unique. The isomorphism maps each element x of X to the set of images of elements y of X such that y R x.
+
+=> Every set model of ZF is set-like and extensional. If the model is well-founded, then by the Mostowski collapse lemma it is isomorphic to a transitive model of ZF and such a transitive model is unique. 
+
+=> If there is a transitive model, there is a countable one:
+https://mathoverflow.net/questions/57225/kunens-use-of-countable-transitive-models
+
+Generalisations:
+- https://math.stackexchange.com/questions/810771/existence-of-countable-transitive-models
+- https://mathoverflow.net/questions/294526/consistency-strength-of-the-existence-of-a-transitive-model-of-mathsfzfc
 
 Preuves et vérité
 =================

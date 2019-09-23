@@ -1,0 +1,3 @@
+#!/bin/sh
+
+PATH=$HOME/.cache/homeassistant/bin:$PATH PYTHONPATH=$HOME/.cache/homeassistant/lib/python3.7/site-packages $HOME/.cache/homeassistant/bin/hass-cli

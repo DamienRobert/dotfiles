@@ -1,0 +1,16 @@
+[Unit]
+Description=Windscribe VPN CLI Service
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/windscribe start
+ExecStop=/usr/bin/windscribe stop
+Restart=on-failure
+KillMode=control-group
+SuccessExitStatus=SIGKILL
+PIDFile=/etc/windscribe/windscribe.pid
+NetworkNamespacePath=/var/run/netns/ns_ws
+
+[Install]
+WantedBy=multi-user.target

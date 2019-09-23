@@ -151,6 +151,5 @@ let g:ale_sign_warning='⚠'
 let g:ale_sign_style_error='⚡'
 let g:ale_sign_style_warning='☂'
 
-
 """ interface/ranger.vim {{{1
 let g:ranger_map_keys = 0

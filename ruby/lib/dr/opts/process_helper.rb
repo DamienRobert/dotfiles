@@ -33,6 +33,7 @@ module DR
 		end
 
 		#define an OptionParser handling computers
+		#Foo.standard_option_parse(*args)
 		def standard_option_parse(*args, default_computer: nil, convert_computers: false, **opts)
 			#opts[:pretty]=opts.fetch(:pretty, true)
 			optparse=OptionParser.new do |opt|
@@ -62,6 +63,8 @@ module DR
 
 		#use the above OptionParser with process_actions
 		#Foo.process_args("-c local foo bar")
+		# => Foo.process_actions("foo", "bar", computers: "local")
+		# => Foo.new("local").process("foo", "bar")
 		def process_args(*args,**opts,&b)
 			args,opts=standard_option_parse(*args,**opts,&b)
 			actions=opts[:action]

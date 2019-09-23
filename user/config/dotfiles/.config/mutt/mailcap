@@ -1,4 +1,4 @@
-text/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+text/*; totxt --fallback --mutt --mime=%t --charset=%{charset} %s; copiousoutput
 application/pgp-encrypted; totxt --mutt --mime=%t --charset=%{charset} %s; needsterminal; copiousoutput
 application/x-pkcs7-signature; totxt --mutt --mime=%t --charset=%{charset} %s; needsterminal; copiousoutput
 
@@ -22,7 +22,7 @@ multipart/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldis
 text/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
 video/*; totxt -x --mutt --mime=%t --charset=%{charset} %s; test=haslocaldisplay
 
-application/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
+application/*; totxt --fallback --mutt --mime=%t --charset=%{charset} %s; copiousoutput
 audio/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
 chemical/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput
 image/*; totxt --mutt --mime=%t --charset=%{charset} %s; copiousoutput

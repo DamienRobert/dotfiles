@@ -17,6 +17,8 @@ Special fs
 ramfs, tmpfs (ramfs with more features), rootfs (for initrd extraction into
 ram): https://www.kernel.org/doc/Documentation/filesystems/ramfs-rootfs-initramfs.txt
 
+zram: zram, formerly called compcache, is a Linux kernel module for creating a compressed block device in RAM, i.e. a RAM disk, but with on-the-fly "disk" compression. The block device created with zram can then be used for swap or as general-purpose RAM disk.
+
 squashfs: SquashFS is a compressed read-only file system for Linux.
 It is often combined with a union mount filesystem, such as UnionFS or aufs
 http://en.wikipedia.org/wiki/SquashFS
@@ -24,3 +26,11 @@ http://en.wikipedia.org/wiki/SquashFS
 aufs (short for advanced multi layered unification filesystem) implements a union mount for Linux file systems.
 unionfs: an older union mount project
 overlayfs: a successor of aufs merged in the kernel
+
+Fusefs
+======
+
+- https://github.com/rpodgorny/unionfs-fuse
+  union filesystem using fuse [in arch]
+- https://github.com/containers/fuse-overlayfs
+  An implementation of overlay+shiftfs in FUSE for rootless containers.

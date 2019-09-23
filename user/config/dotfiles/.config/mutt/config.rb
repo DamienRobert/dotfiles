@@ -446,5 +446,5 @@ end
   set up patched_config, gpg, accounts
   mailboxes type
   and extra config based on type
-  (sourced by muttrc.perso, use MYHOSTTYPE for type by default)
+  (sourced by muttrc.perso, use :user/:hosttype for type by default)
 =end

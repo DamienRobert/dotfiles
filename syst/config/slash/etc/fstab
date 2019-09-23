@@ -18,6 +18,8 @@ UUID=9D37-7B22 /old_boot vfat fmask=133,x-systemd.automount,x-systemd.idle-timeo
 UUID=32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e /old_home btrfs subvol=home,noatime,compress=zstd,nofail
 UUID=32b8e4a2-db1d-49ae-b2fd-40ff1c94a95e /old_data btrfs subvol=data,noatime,compress=zstd,nofail
 UUID="ba8d1474-88ec-4342-a63d-e4d4732511af" /old_slash btrfs noatime,compress=zstd,nofail
+
+LABEL="small_backup" /mnt/small_backup btrfs noatime,compress=zstd,noauto
 <% when "old_Feanor" %>
 
 # UUID=9D37-7B22 /dev/sdc1

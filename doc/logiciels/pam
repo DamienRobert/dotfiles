@@ -31,7 +31,7 @@ https://www.freebsd.org/doc/en_US.ISO8859-1/articles/pam/pam-essentials.html
 Module mode:
 - requisite: If this module fails, PAM immediately returns a failure result to the application; no further modules in the stack are called.
 - required: If this module fails, PAM returns a failure result to the application but it will continue to call the next module in the stack. (If you find you have trouble remembering the distinction between requisite and required, then join the club! So do we...)
-- sufficient: If this module succeeds, PAM returns a 'pass' result to the application and no further modules in the stack are called. (This assumes, of course, that a required module hasn't failed higher up the stack.
+- sufficient: If this module succeeds, PAM returns a 'pass' result to the application and no further modules in the stack are called. (This assumes, of course, that a required module hasn't failed higher up the stack.)
 - optional: The pass/fail result of this module is ignored, which generally means that the module is being called to perform some operation, rather than participating in the pass/fail decision for the stack. For example, the pam_keyinit module is used as an 'optional' module by sshd to create a new 'session keyring' for the new login.
 
 #Exemples:

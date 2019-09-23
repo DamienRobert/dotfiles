@@ -1,1 +1,3 @@
+udiskctl status
+
 /usr/bin/udisksctl mount -b /dev/sdb1 -o 'noexec,nosuid,noatime'

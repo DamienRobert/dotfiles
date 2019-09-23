@@ -71,19 +71,9 @@ module DR
 		end
 
 		def add(file, reverse: false)
-			file = Pathname.new(file)
-			return nil? unless file.exist?
 			begin
-				if Helper.gpg_file?(file)
-					auth = `gpg --no-tty -d #{file}`
-					if auth.empty?
-						warn "Error in gpg: the output is empty"
-					else
-						merge!(YAML.load(auth), reverse: reverse)
-					end
-				else
-					merge!(YAML.load_file(file), reverse: reverse)
-				end
+				content = DR::Computer.load_file(file, yaml: true)
+				merge!(content, reverse: reverse) if content
 			rescue StandardError => e
 				warn "Error in parsing authinfo #{file}: #{e} #{e.backtrace.first}"
 			end
@@ -127,10 +117,6 @@ module DR
 				s = s.compact.join(join).dump[1..-2] # this escapes '\' and '"'
 				s.gsub!("'", "\\\\'") if singlequote
 				s
-			end
-
-			def gpg_file?(file)
-				[".gpg", ".asc"].include?(file.extname)
 			end
 		end
 		extend Helper

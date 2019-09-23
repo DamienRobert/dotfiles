@@ -1309,7 +1309,7 @@ The codensity monad 𝕋^G is a generalization of this monad to functors G:ℬ�
 * https://golem.ph.utexas.edu/category/2012/09/where_do_monads_come_from.html
 A functor G:B→A may or may not have a codensity monad. If it does, it’s a monad on A, and I’ll call it T^G. In the event that G has a left adjoint, F, the codensity monad does exist, and it’s simply GF.
 
-1. The slickest definition: the codensity monad of G is the right Kan extension of GG along itself. (This may or may not exist.) The monad structure comes from the universal property of Kan extensions.
+1. The slickest definition: the codensity monad of G is the right Kan extension of G along itself. (This may or may not exist.) The monad structure comes from the universal property of Kan extensions.
 2. Slightly more explicitly, the codensity monad T^G can be defined as an end: for A∈A: T^G(A)=∫_B [A(A,GB),GB].
 Here [A(A,GB),GB] is a power in A: that is, it’s the product of lots of copies of the object GB, one for each element of the set A(A,GB). The end might or might not exist.
 3. If you’re not comfortable with ends, maybe you’ll prefer the same formula expressed as a limit. Let A∈A. Let A/G be the comma category whose objects are maps f:A→GB (or more exactly, pairs (B,f) where B∈B and f∈A(A,GB)). There’s a functor A/G→A sending this object to GB, and T^G(A) is defined to be its limit (if it exists).
@@ -3128,17 +3128,28 @@ type IO a  =  RealWorld -> (a, RealWorld)
 Exemples: la monade Maybe, la monade List, la monade Continuation
 Continuation = "monade universelle"
 - https://www.schoolofhaskell.com/school/to-infinity-and-beyond/pick-of-the-week/the-mother-of-all-monads
+  => http://blog.sigfpe.com/2008/12/mother-of-all-monads.html
+  [or is it the condensity monad? cf comment by Edward Kmett]
+  "As I mentioned, given any language with a syntax for continuations you have the possibility of reusing that notation for monads. For example Python has linear continuations (via generators) so you can use this as a syntax for any of the 'linear' monads (like Identity, Maybe and Writer I think)."
 - https://ncatlab.org/nlab/show/continuation+monad
   C'est aussi la monade du Non-Non:
   Cf les liens dans nlab:
   http://hal.inria.fr/docs/00/33/91/56/PDF/linear-control.pdf
   https://ncatlab.org/nlab/files/MelliesContinuation.pdf
+- http://blog.sigfpe.com/2010/03/partial-ordering-of-some-category.html
+- https://www.mail-archive.com/haskell-cafe@haskell.org/msg57738.html
+   Re: [Haskell-cafe] Monads from Functors 
+- https://mail.haskell.org/pipermail/haskell-cafe/2010-June/079472.html
+  [Haskell-cafe] The mother of all functors/monads/categories
 
 Operads
 -------
 
 * https://ncatlab.org/nlab/show/operad
   https://en.wikipedia.org/wiki/Operad
+
+Réf: http://www.numdam.org/item/SB_1994-1995__37__47_0/
+ La renaissance des opérades Loday, Jean-Louis, Séminaire Bourbaki
 
 * https://ncatlab.org/nlab/show/algebrad
 https://arxiv.org/pdf/1105.3114.pdf

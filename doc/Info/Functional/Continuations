@@ -1,10 +1,15 @@
-# vim: foldmethod=marker ft=markdownlight
- ikipedia: http://en.wikipedia.org/wiki/Call-with-current-continuation
+vim: foldmethod=expr ft=markdownlight
 
+* Wikipedia: http://en.wikipedia.org/wiki/Call-with-current-continuation
 call/cc f prend la continuation cont et applique f(cont) avec pour
 continuation cont.
 
-# continuations
+* Links
+https://wingolog.org/archives/2016/02/08/a-lambda-is-not-necessarily-a-closure
+=> lambda: contified
+
+# Continuations
+
 (par convention une continuation, en plus de changer le flot d'execution,
 retourne la valeur passée:)
 callcc {|cont|  cont.call }           #=> nil
@@ -21,7 +26,7 @@ EOS
 #=> loops endlessly, printing increasing values of x.
 ~~~
 
-#yin/yang: http://everything2.com/title/call%252Fcc+yin-yang+puzzle
+## yin/yang: http://everything2.com/title/call%252Fcc+yin-yang+puzzle
 ~~~ ruby
 #The yin yang puzzle in ruby: http://blog.gonzih.me/blog/2013/11/26/yin-yang-callcc-puzzle-in-ruby/
 require "continuation"
@@ -29,23 +34,25 @@ lambda do |yin, yang|
   yin.call(yang)
 end.call(lambda { |cc| print "@"; cc }.call(callcc { |c| c }),
          lambda { |cc| print "*"; cc }.call(callcc { |c| c }))
-#=> @*@**@***@****@*****@******@...
+ #=> @*@**@***@****@*****@******@...
 
-#Warning, doing it this way
+ #Warning, doing it this way
 require "continuation"
 yin  = ->(cc) { print "@"; cc }.call(callcc { |c| c })
 yang = ->(cc) { print "*"; cc }.call(callcc { |c| c })
 yin.call(yang)
-#gives => @*@******************...
+ #gives => @*@******************...
 
-# "Debug" version
+ # "Debug" version
 lambda do |yin, yang|
   yin.call yang
 end.call(lambda {|cc| print "@ - #{cc}\n"; sleep 0.1; cc }.call(callcc {|c| c}),
          lambda {|cc| print "* - #{cc}\n"; sleep 0.1; cc }.call(callcc {|c| c}))
 ~~~
 
-# Continuation passing style (k est "le reste du programme", ie la continuation):
+## Continuation passing style 
+(k est "le reste du programme", ie la continuation):
+
 f=->(x,y){(x+1)*y} devient
 add=->(x,y,k) {k.(x+y)}
 time=->(x,y,k) {k.(x*y)}
@@ -71,9 +78,17 @@ factorial.(3,->k {k})
 callcc est définit via
 callcc=->(f,k) { k f.(k) }
 
+## CPS et defonctionalisaton
+
+- http://gallium.inria.fr/blog/generators-iterators-control-and-continuations/
+- https://news.ycombinator.com/item?id=20444143
+  Defunctionalize the Continuation (pathsensitive.com)
+
 Monades et Continuations passing style
 ======================================
-http://en.wikibooks.org/wiki/Haskell/Continuation_passing_style
+[voir aussi Monades]
+
+* http://en.wikibooks.org/wiki/Haskell/Continuation_passing_style
 
 add_cps :: Int -> Int -> (Int -> r) -> r
 add_cps x y k = k (add x y)
@@ -133,21 +148,18 @@ square :: Int -> Cont r Int
 square n = callCC $ \k -> k (n ^ 2)
 
 ## Continuations are the mothers of all monads
-  http://blog.paralleluniverse.co/2015/08/07/scoped-continuations/
-  Discussion on HN: https://news.ycombinator.com/item?id=9852073
-  http://blog.sigfpe.com/2008/12/mother-of-all-monads.html
-  Reddit discussion: https://www.reddit.com/r/haskell/comments/1cyajx/the_mother_of_all_monads_school_of_haskell/
-  Counter exemple for a monad using lazy evaluation: https://blog.melding-monads.com/2009/12/20/are-continuations-really-the-mother-of-all-monads/
 
-## Delimited vs undelemited continuations
+http://blog.paralleluniverse.co/2015/08/07/scoped-continuations/
+Discussion on HN: https://news.ycombinator.com/item?id=9852073
+http://blog.sigfpe.com/2008/12/mother-of-all-monads.html
+Reddit discussion: https://www.reddit.com/r/haskell/comments/1cyajx/the_mother_of_all_monads_school_of_haskell/
+Counter exemple for a monad using lazy evaluation: https://blog.melding-monads.com/2009/12/20/are-continuations-really-the-mother-of-all-monads/
+
+# Delimited vs undelemited continuations
+
 https://en.wikipedia.org/wiki/Delimited_continuation
 http://okmij.org/ftp/continuations/against-callcc.html
 http://okmij.org/ftp/continuations/undelimited.html#delim-vs-undelim
 
-Links
-=====
-
-https://wingolog.org/archives/2016/02/08/a-lambda-is-not-necessarily-a-closure
-=> lambda: contified
-
-http://okmij.org/ftp/continuations/undelimited.html#delim-vs-undelim
+Delimited continuations:
+- shift/reset vs delimcc https://stackoverflow.com/questions/14431257/how-to-translate-shift-reset-into-delimcc

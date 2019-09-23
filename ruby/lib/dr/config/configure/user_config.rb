@@ -14,7 +14,8 @@ module DR
 						#TODO: add the relative homepath to @computer.root?
 						@computer.file(:homepath) #Pathname.home
 					else
-						Pathname.new(".") #we will use ssh, so "" is the relative home
+						Pathname.new("") #we will use ssh, so "" is the relative home
+						# I changed to '.' but I don't remember why!
 					end
 				super
 			end

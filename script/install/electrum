@@ -2,9 +2,10 @@
 . "$(dirname $0)/_install_helpers"
 
 url="gh:spesmilo/$(basename $0)"
-version="3.2.2"
+# version="3.2.2"
 
-CUSTOM_COMPILE="copy_srcdir $progname-$version"
+export LAST_TAG="git tag | egrep '^([[:digit:]]+.?)*$' | sort --version-sort | tail -n1"
+CUSTOM_COMPILE="copy_srcdir $nameversion"
 
 build_helper $@
 build_git

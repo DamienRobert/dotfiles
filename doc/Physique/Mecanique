@@ -1,3 +1,6 @@
+vim: ft=markdownlight fdm=expr
+
+# Newton
 Newton's law: https://en.wikipedia.org/wiki/Newton's_laws_of_motion
   1) ∑F=0 ⇔ dv/dt = 0.
   2) F=dp/dt = d(mv)/dt=m dv/dt=ma.
@@ -9,7 +12,7 @@ Moment linéaire: p=mv
 Moment angulaire: r x p (cross product)
 Energie: E=mv^2+E_p
 
-# Moment angulaire
+## Moment angulaire
 https://en.wikipedia.org/wiki/Angular_momentum
 
 L=Iw où I moment d'inertie (I=r^2 m), w vitesse angulaire (w=r x v/|r|^2)
@@ -37,6 +40,10 @@ Equations
 
 https://en.wikipedia.org/wiki/Continuity_equation
 
+https://en.wikipedia.org/wiki/Poisson%27s_equation
+Gravity: ∇⋅g = −4πGρ.g=−∇ϕ => ∇^2ϕ=4πGρ, ie ϕ(r)=−Gm/r.
+Electrostatics: ∇^2ϕ=-ρ/ε
+
 Lagrangian/Hamiltonian
 ======================
 
@@ -62,11 +69,12 @@ Combining the last two equations gives the momentum space Euler–Lagrange equat
 https://en.wikipedia.org/wiki/Legendre_transformation
   (f*)'=(f')^{-1}. Déf: f∗(x∗) = sup x ∈ I ( x∗ x − f(x))
 
-## Hamiltonian: dp/dt = − ∂H/∂q , dq/dt = +∂H/∂p
+## Hamiltonian: 
+dp/dt = − ∂H/∂q , dq/dt = +∂H/∂p
  où H=L*=\sum q'_i p_i -L = q'.p - L=T+V (car T=p^2/2m=q'.p/2)
 On a alors dp/dt=-∂H/∂q, dq/dt=∂H/∂p.
 
-https://en.wikipedia.org/wiki/Hamiltonian_vector_field
+* https://en.wikipedia.org/wiki/Hamiltonian_vector_field
 Si w est symplectique, il est non dégénéré donc induit un iso
 T*M -> TM. On a donc un champ de vecteur X_H lié à H, comme l'image de dH
 par cet iso: dH(Y)=w(X_H,Y).
@@ -76,7 +84,7 @@ Localement, w est canonique: w=\sum dq^i ^ dp_i, et alors X_H=J dH=(∂H/∂p, -
    - The symplectic form ω is preserved by the Hamiltonian flow. Equivalently, the Lie derivative L_X_H ω = 0.
 Poisson bracket: { f , g } = ω ( X_g , X_f ) =dg(X_f)=L_X_f(g). On a: X_{f,g}= [X_f,X_g]
 
-https://en.wikipedia.org/wiki/Symplectomorphism
+* https://en.wikipedia.org/wiki/Symplectomorphism
 The infinitesimal version of symplectomorphisms gives the symplectic vector fields. A vector field X ∈ Γ^∞(TM) is called symplectic if L_X ω = 0.
 Also, X is symplectic iff the flow ϕ_t : M → M. These vector fields build a Lie subalgebra of Γ^∞(TM).
 Examples of symplectomorphisms include the canonical transformations of classical mechanics and theoretical physics, the flow associated to any Hamiltonian function, the map on cotangent bundles induced by any diffeomorphism of manifolds, and the coadjoint action of an element of a Lie Group on a coadjoint orbit.
@@ -88,7 +96,8 @@ https://physics.stackexchange.com/questions/197496/for-an-infinitesimal-transfor
 https://physics.stackexchange.com/questions/48605/canonical-transformation-and-hamiltons-equations
 https://physics.stackexchange.com/questions/391216/can-any-symplectomorphism-1-definition-of-canonical-transformation-be-represen)
 
-## https://en.wikipedia.org/wiki/Hamilton%E2%80%93Jacobi_equation
+## Jacobi equation
+* https://en.wikipedia.org/wiki/Hamilton%E2%80%93Jacobi_equation
 
 To derive the HJE, we choose a generating function G2(q, P, t) in such a way that, it will make the new Hamiltonian K = 0. Hence, all its derivatives are also zero, and the transformed Hamilton's equations become trivial
     P˙ = Q˙ = 0
@@ -97,10 +106,15 @@ On peut faire ça en utilisant l'action
  S(q,t):=∫^{(q,t)} L dt
 On a alors p=∂S/∂q et Hamilton donne: ∂S/∂t=-H.
 
+* Comparison with other formulations of mechanics
+The HJE is a single, first-order partial differential equation for the function S of the N generalized coordinates q1...qN and the time t. The generalized momenta do not appear, except as derivatives of S. Remarkably, the function S is equal to the classical action.
+
+For comparison, in the equivalent Euler–Lagrange equations of motion of Lagrangian mechanics, the conjugate momenta also do not appear; however, those equations are a system of N, generally second-order equations for the time evolution of the generalized coordinates. Similarly, Hamilton's equations of motion are another system of 2N first-order equations for the time evolution of the generalized coordinates and their conjugate momenta p1...pN. 
+
 Simon Malham, An introduction to Lagrangian and Hamiltonian mechanics
 =====================================================================
 
-# Euler-Lagrange
+## Euler-Lagrange
 
 Trouver la courbe y(x) qui optimise l'intégrale
 J(y)=\int_a^b F(x,y,y_x) dx, où y_x=dy/dx
@@ -124,7 +138,7 @@ Cas particulier:
   Exemple: équation de Laplace, J(ψ)=\int |∇ψ|^2 dx
     => ∇^2 ψ=0, ie ψ est harmonique.
 
-## Lagrange multipliers
+### Lagrange multipliers
 
 Optimiser f(x) en respectant les contraintes g(x)=0, x \in R^N, g(x) \in \R^m
 => L(x,λ):=f(x)+\sum λ_i g_i(x) the Lagrangian function (N+m variables)
@@ -145,7 +159,7 @@ Optimiser J(y)=\int F(x,y,y_x) où la courbe y(x) vérifie G(x,y)=0, y(x) \in R^
    1/2 \int_0^2\pi (xy'-yx') sous la contrainte \int_0^2\pi \sqrt{x'^2+y'^2}=l
    et la solution donne un cercle
 
-# Lagrange
+## Lagrange
 
 On a un système physique à N composants r_i(t) soumis à m contraintes
 holonomes g_j(r_i(t))=0. On a donc n=3N-m coordonnées indépendantes
@@ -181,7 +195,7 @@ Remarques:
   où \sum_i λ_i(t) ∂G_i(x,y)/∂q_j s'interprètent comme des forces de
   contraintes généralisées.
 
-# Hamilton
+## Hamilton
 
 Moment généralisé: p_j=∂L/∂q'_j
 Comme Q_j=-∂V/∂q_j est une force généralisée, on peut interpréter
@@ -204,7 +218,7 @@ Remarques:
 - p'_i=-∂H/∂q_i=∂L/∂q_i, donc si q_i n'apparaît pas dans L, il n'apparaît
   pas dans H et p_i est constante.
 
-# Algèbre de Lie
+## Algèbre de Lie
 
 "Poisson bracket": [u,v]=\sum (∂u/∂qi ∂v/∂pi-∂u/∂pi ∂v/∂qi)
 p_i et q_i sont symplectiques pour []:
@@ -227,7 +241,7 @@ Rappel Jacobi: [u,[v,w]]+[v,[w,u]]+[w,[u,v]]=0
 Donc si [H,u]=[H,v]=0, [H,[u,v]]=0, ie [u,v] est une constante du
 mouvement (ce résultat s'étend même si u=u(q,p,t) dépend explicitement de t)
 
-# Géodésiques:
+## Géodésiques:
 
 Sur une variété Riemannienne M, si q est une courbe lisse, on a la longueur
 l(q)=\int_a^b ||q'(t)|| dt et l'énergie: E(q)=1/2 \int_a^b ||q'(t)||^2 dt.

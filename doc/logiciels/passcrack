@@ -1,0 +1,54 @@
+John the ripper
+===============
+https://www.openwall.com/john/doc/CONFIG.shtml
+
+=> config dir: .john
+
+Config file: john-local.conf (to not overwrite the global conf file)
+    [Incremental:Hex]
+    File = $JOHN/hex.chr
+    MinLen = 8
+    MaxLen = 8
+    CharCount = 16
+
+Create hexa chr:
+=> make a John.pot with
+   :a
+   :b
+   ...
+   :9
+  and run `john --make-charset=hex`.
+  And then copy it to /usr: sudo cp hex.chr /usr/share/john 
+  (I don't know why it does not look in ~/.john)
+  Update: using `File = ~/.john/hex.chr` works
+
+* Usage:
+john /tmp/passwd
+where passwd is user:hash
+or user:hash:other passwd info: like shell
+which can be used to filter the passwds we want to crack.
+
+john -show /tmp/passwwd
+john --pot=hashcat.potfile --show foo.htpasswd
+
+Hashmask
+========
+
+hashcat --force -m 1500 --username -a 3 -1 '?a'  /tmp/passwd '?1?1?1?1?1?1?1?1'
+  -m 1500: des mode
+  --username user:pass
+  -a3: bruteforce
+  -1 '?a' the '?1' corresponds to a-zA-Z0-9+spéciaux
+Misc options: --incremental
+
+Ex: openssl passwd -crypt -salt ab foobar
+    abVbJXzHUY99s
+
+
+=> srun -p long_sirocco --time=2-00:00:00 --pty zsh -i
+   hashcat/hashcat -m1500 -a 3 -1 '?l?d?s' foo/passwd_one '?1?1?1?1?1?1?1?1'
+   hashcat/hashcat --session foo -a3 -m1500 --username foo/passwd '?h?h?h?h?h?h?h?h'
+   hashcat --restore
+   hashcat/hashcat --benchmark > benchmark
+   hashcat/hashcat -m1500 -a 3 foo/passwd1 '?a?a?a?a?a?a?a?a' foo/passwd_hashcat
+   hashcat/hashcat --force -m 1500 --username -a 3 foo/passwd2 masks

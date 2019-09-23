@@ -12,8 +12,8 @@ not be very prudent]:
                -D ~/containers/firefox \
                firefox
 
-machinectl start arch-container
--> systemd-nspawn --quiet --keep-unit --boot --link-journal=try-guest --network-veth --machine=arch-container
+machinectl start arch-container -> systemctl start systemd-nspwan@arch-container.service
+-> systemd-nspawn --quiet --keep-unit --boot --link-journal=try-guest --network-veth -U --settings=override --machine=arch-container
 
 To imitate: systemd-nspawn -qbjnM machine
 (--keep-unit is only relevant when called systemd-nspawn is called from a systemd unit file)
@@ -23,6 +23,8 @@ sudo systemd-nspawn -x --bind=/var/lib/machines -bnM arch-container
 
 Machinectl
 ==========
+/var/lib/machines
+
 Note that a special image ".host" always implicitly exists and
 refers to the image the host itself is booted from.
 
@@ -56,8 +58,16 @@ this gives a 'host0' interface which connects to the host (and
 systemd-networkd by default configure this interface via dhcp). Moreover
 with nss-mymachines we get name resolution!
 
+Can also create macvlan, ipvlan with --network-{mac,ip}vlan
+--network-veth-extra, --network-bridge, --network-zone (to join several containers in a bridge)
+
 Options
 =======
+
+Note: cf systemd.nspawn(5) - Container settings
+A file /var/lib/machines/machine.nspawn (or in /run or /etc) can contain
+options for machine.
+
 -D, --directory=
     Directory to use as file system root for the container.
     If neither --directory=, nor --image= is specified the directory is determined as /var/lib/machines/ suffixed by the machine name as specified with --machine=. If neither --directory=, --image=, nor --machine= are specified, the current directory will be used. May not be specified together with --image=.
@@ -92,5 +102,20 @@ Options
 --network-bridge=
     Adds the host side of the Ethernet link created with --network-veth to the specified bridge. Note that --network-bridge= implies --network-veth. If this option is used, the host side of the Ethernet link will use the "vb-" prefix instead of "ve-".
 
--j
-  Equivalent to --link-journal=try-guest.
+-j Equivalent to --link-journal=try-guest.
+
+--private-users= Controls user namespacing. If enabled, the container will run with
+-U: --private-users=pick --private-users-chown
+
+--settings=true,override,false => controls how the .nspawn files are found and used
+
+portablectl
+===========
+
+https://www.freedesktop.org/software/systemd/man/portablectl.html
+portablectl — Attach, detach or inspect portable service images
+/var/lib/portables
+
+cf https://systemd.io/PORTABLE_SERVICES.html
+=> essentially attach images and copy the services with a
+RootImage=/path/to/foobar.raw

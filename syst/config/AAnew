@@ -1,21 +1,53 @@
 #vim: ft=ruby ts=2
 require "dr/config/configure/syst_init"
 
+=begin
+Recall the do_all function:
+def do_all(**opts, &b)
+  begin
+    do_prepare(**opts, &b) #the block is passed to `partitions`
+    # => do_partitions, do_fs, create_subvolumes, do_mount
+    do_install(**opts)
+    # => generate, full_generate, do_install_packages, diff, commit, full_diff, full_commit, full_configure, init_configure [scripts/bootloader.rb]
+  ensure
+    do_clean
+  end
+end
+=end
+
 ## Configure users on current computer
-process=DR::Process::SystInit.new
-c=process.computer
-u=c.set_key(:sysinit,:users,"dina", c.dig(:syst,:users,"dina"))
-u[:groups] << 'sshc'
-process.bootstrap #for the added groups
+process=DR::Process::SystInit.new do |p|
+  c=p.computer
+  u=c.set_key(:sysinit,:users,"dina", c.dig(:syst,:users,"dina"))
+  u[:groups] << 'sshc'
+end # Note that 'process.bootstrap' is called after the yield for the added groups
 process.process_script(process.dir[:configure]+"users.rb")
 
 ## Set up all options manually
 computer=DR::Computer.new(...)
 process=DR::Process::SystInit.new(computer)
+process.do_all / process.do_all(pause: false)
+# Ex: to install more packages
+process.do { process.pacstrap('ruby') }
+
+## Install on a directory
+process=DR::Process::SystInit.create_process("mytest", root: "/tmp/arch") do |p|
+  p.computer[:sysinit][:newusers]=["dams"]
+end
+process.do_all
+## Note: if the directory does not already exist, then use SH.make_dir_or_subvolume => Container (in a subvolume)
+process=DR::Process::SystInit.create_process("arch_container", root: "/var/lib/machines/arch_container") do |p|
+  #process.computer[:syst][:type]=:systemd #only systemd; the default :bare takes 450MB-875MB vs 320MB for systemd # for a lightweight container
+  # for container with the features of virtual images:
+  p.computer.add_to_key(:attributes, :syst_types, %i(pacman ssh shell)) # this is by default for client and servers but but not for containers and images
+  p.computer[:sysinit][:newusers]=["dams", "provision"]
+end
+process.do_all(pause: false)
 
 ## Virtual raw image
-process=DR::Process::SystInit.create_process("arch_virtual", disk: "/tmp/arch-img.raw:size=2G")
-process.computer[:sysinit][:newusers]=["dams", "provision"]
+process=DR::Process::SystInit.create_process("arch_virtual", disk: "/tmp/arch-img.raw:size=2G") do |p|
+  p.computer[:sysinit][:newusers]=["dams", "provision"]
+end
 process.do_all(pause: false)
 # $ ./init.rb --disk="/tmp/arch_img.raw:size=2G" --create="arch_virtual" --build
 # $ sudo systemd-nspawn -bni /tmp/arch-img.raw
@@ -25,63 +57,55 @@ process.do_all(pause: false)
 # it again
 
 ## Virtual raw image with btrfs
-process=DR::Process::SystInit.create_process("arch_virtual", fstype: :btrfs, disk: "/tmp/arch-img.raw:size=2G")
-process.computer[:sysinit][:backup]=true
-process.computer[:sysinit][:newusers]=["dams", "provision"]
-process.computer[:sysinit][:partitions][:boot][:partlength]="+150M"
+process=DR::Process::SystInit.create_process("arch_virtual", fstype: :btrfs, disk: "/tmp/arch-img.raw:size=2G") do |p|
+  p.computer[:sysinit][:backup]=true
+  p.computer[:sysinit][:newusers]=["dams", "provision"]
+  p.computer[:sysinit][:partitions][:boot][:partlength]="+150M"
+end
 process.do_all
 # $ ~/script/qemu-launch --efi /tmp/arch-img.raw
 # Or to specify the boot options directly:
 # $ ~/script/qemu-launch --linuxoptions "root=PARTLABEL=rootleaf rootflags=subvol=slash,rw" --linux /tmp/arch-img.raw
 
 ## Filesystem container image
-# (a .img rather than .raw means we will be an archcontainer rather than a archvirtual)
+# (a .img rather than .raw means we will be an archcontainer rather than a archvirtual). Note that if the name is "arch_virtual" then we are still marked with the 'virtual' attribute. This simply adds :boot and :wheel
 process=DR::Process::SystInit.create_process("arch_img", fstype: :ext4, disk: "/tmp/arch-img.img:size=2G")
 process.do_all
-# Ex: to install more packages
-# process.do_prepare; process.pacstrap('ruby'); process.do_clean
 
 ## Filesystem container image without gpt partition
 process=DR::Process::SystInit.create_process("arch_img", fstype: :ext4, disk: "/tmp/arch-img.img:size=2G")
 process.do_all do |partitions, **opts| #partitions callback
-  partitions[:slash].delete(:parttype) #<= don't create a gpt partition, this could be done before the callback, or we could set process.prepare directly
+  partitions[:slash].delete(:parttype) #<= don't create a gpt partition, this could be done before the callback, or we could set process.prepare directly (by removing :do_partitions). Indeed SH.make_partitions looks for at least a key like partnum partstart partlength partlabel partattributes parttype
   partitions[:slash][:devname]=opts[:disk] #<= set the device name to use; this has to be done in the callback, because before we do not know :disk=/dev/loop?
   partitions
 end
 # Note: here to mount the image, `mount -o loop image /mnt/image` works directly
 
-## Container (in a subvolume)
-process=DR::Process::SystInit.create_process("arch_container", root: "/var/lib/machines/arch_container")
-#process.computer[:syst][:type]=:systemd #only systemd; the default :bare takes 450MB-875MB vs 320MB for systemd # for a lightweight container
-  # for container with the features of virtual images:
-  process.computer.add_to_key(:attributes, :syst_types, %i(pacman ssh shell)) # this is by default for virtual images
-  process.computer[:sysinit][:newusers]=["dams", "provision"]
-process.do_all(pause: false)
-
 ## New Feanor
 c=DR::Computer.new("local")
-process=DR::Process::SystInit.create_process(c, fstype: :btrfs, disk: "/dev/sde")
-# delete the local groups and users, they need to be recreated
-process.computer[:local_infos][:syst].delete(:users)
-process.computer[:local_infos][:syst].delete(:groups)
-# First minimal install for snapshot
-process.computer[:syst][:packages]="init"
-process.computer[:sysinit][:backup]=true
-# partitions
-partitions=process.computer[:sysinit][:partitions]
-partitions[:boot][:partlength]="+250M"
-partitions[:swap] = {parttype: :swap, partlength: "+4G", fstype: "swap"}
-rootleaf=partitions.delete(:rootleaf); partitions[:rootleaf]=rootleaf #we need this at the end
-process.computer[:sysinit][:partitions]=partitions
+process=DR::Process::SystInit.create_process(c, fstype: :btrfs, disk: "/dev/sde") do |p|
+  # delete the local groups and users, they need to be recreated
+  p.computer[:local_infos][:syst].delete(:users)
+  p.computer[:local_infos][:syst].delete(:groups)
+  # First minimal install for snapshot
+  p.computer[:syst][:packages]="init"
+  p.computer[:sysinit][:backup]=true
+  # partitions
+  partitions=p.computer[:sysinit][:partitions]
+  partitions[:boot][:partlength]="+250M"
+  partitions[:swap] = {parttype: :swap, partlength: "+4G", fstype: "swap"}
+  rootleaf=partitions.delete(:rootleaf); partitions[:rootleaf]=rootleaf #we need this at the end
+  p.computer[:sysinit][:partitions]=partitions
+end
 # build
 process.do_all
 # redo the configuration with all packages now
 process.computer[:syst].delete(:packages)
 process.computer[:sysinit][:backup]=false
 process.do_mount
-# remove vim(vim-minimal) which was installed previously, it conflicts with gvim
-process.chroot("pacman -R vim")
+process.chroot("pacman -R vim") # remove vim(vim-minimal) which was installed previously, it conflicts with gvim
 process.do_install
 process.do_clean
+# Alternative: process.do {|p| p.computer[:syst].delete(:packages); ... p.chroot("pacman -R vim"); p.do_install}
 # $ sudo systemd-nspawn -bnD /mnt/image
 # Configure 'dams' user (cf ~/config/AAnew)

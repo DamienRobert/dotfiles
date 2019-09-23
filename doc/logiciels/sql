@@ -1,0 +1,13 @@
+Redis
+=====
+
+https://medium.com/@frederic.rodrigo/pbf2redis-eae7fcada735
+https://static.simonwillison.net/static/2010/redis-tutorial/
+http://oldblog.antirez.com/post/take-advantage-of-redis-adding-it-to-your-stack.html
+
+Nosql
+=====
+
+- https://www.mongodb.com/nosql-inline
+- https://rethinkdb.com/faq/
+  RethinkDB is the first open-source, scalable database designed specifically to push data to applications in realtime. It dramatically reduces the time and effort necessary to build scalable realtime apps.

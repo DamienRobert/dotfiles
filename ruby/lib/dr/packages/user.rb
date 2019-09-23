@@ -9,7 +9,7 @@ module DR
 	module Packages
 		class User < Resolver
 			def self.all_types
-				[:ruby_gems, :python_pip2, :python_pip3, :nodejs, :perl_cpan, :git_optdist, :yarn, :go, :rust_cargo]
+				[:ruby_gems, :python_pip3, :nodejs, :perl_cpan, :git_optdist, :yarn, :go, :rust_cargo]
 			end
 		GEMS={ #{{{
 			#gems that were previously bundled with ruby
@@ -78,12 +78,12 @@ module DR
 }
 		#}}}
 
-		PIP2=%w(hungarian gallery-get)
+		PIP2=%w() #hungarian
 		PIP3={
 			python: %w(flake8 pytest), #flake8: linter
-			medias: %w(praw hachoir urwid), #praw: for ~usr/dist/export-saved-reddit, urwid is for hachoir-urwid
+			medias: %w(gallery-get praw hachoir urwid), #praw: for ~usr/dist/export-saved-reddit, urwid is for hachoir-urwid
 			extra: %w(howdoi), # percol (replaced by fzf)
-			automation: %w(homeassistant home-assistant-frontend samsungctl),
+			automation: %w(homeassistant home-assistantcli home-assistant-frontend samsungctl),
 			# samsungctl: https://github.com/Ape/samsungctl
 			# Remote control Samsung televisions via a TCP/IP connection
 			html: %w(html5validator urlscan)}
@@ -92,25 +92,28 @@ module DR
 		NPM={ doc: %w(tldr)}
 
 		# cf scripts/tools.d for more details
-		NPM_EXTRA={ dev: %w(webpack), #yarn is available on arch's
-					devextra: %w(browserslist), #this is a dependency of a lot of the packages below
-					es6: %w(@babel/cli @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import core-js babel-minify),
-					#@babel/polyfill: Provides polyfills necessary for a full ES2015+ environment. Replaced by core-js and regenerator runtime
-					#@babel/plugin-syntax-dynamic-import: allow parsing of import
-					#babel-minify: cli for its dependency 'babel-preset-minify'
-					#  babel-preset-minify: for .babelrc: presets: ['minify']
-					## babel-loader: for webpack
-					lint: %w(eslint eslint-config-airbnb-base eslint-plugin-import
-						stylelint stylelint-config-standard stylelint-scss stylelint-order stylelint-no-unsupported-browser-features),
-						## htmllint-cli html5-lint
-						#eslint-plugin-import: to lint es2015+ import syntax
-						#stylelint-scss: to parse .scss
-						#stylelint-order stylelint-no-unsupported-browser-features: stylelint plugins; stylelint-no-unsupportedd-browser-features depends on doiuse
-						#  doiuse: lint commandline/postcss plugin against caniuse
-					css: %w(postcss-cli autoprefixer cssnano colorguard postcss-normalize postcss-preset-env),
-						#cssnano: css minifier
-					html: %w(html-minifier),
-				}
+		NPM_LINT={
+			devextra: %w(browserslist), #this is a dependency of a lot of the packages below
+			es6: %w(@babel/cli @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import core-js babel-minify),
+			#@babel/polyfill: Provides polyfills necessary for a full ES2015+ environment. Replaced by core-js and regenerator runtime
+			#@babel/plugin-syntax-dynamic-import: allow parsing of import
+			#babel-minify: cli for its dependency 'babel-preset-minify'
+			#  babel-preset-minify: for .babelrc: presets: ['minify']
+			## babel-loader: for webpack
+			lint: %w(eslint eslint-config-airbnb-base eslint-plugin-import
+				stylelint stylelint-config-standard stylelint-scss stylelint-order stylelint-no-unsupported-browser-features),
+				## htmllint-cli html5-lint
+				#eslint-plugin-import: to lint es2015+ import syntax
+				#stylelint-scss: to parse .scss
+				#stylelint-order stylelint-no-unsupported-browser-features: stylelint plugins; stylelint-no-unsupportedd-browser-features depends on doiuse
+				#  doiuse: lint commandline/postcss plugin against caniuse
+			css: %w(postcss-cli autoprefixer cssnano colorguard postcss-normalize postcss-preset-env),
+				#cssnano: css minifier
+			html: %w(html-minifier),
+		}
+		NPM_EXTRA=NPM_LINT.merge({
+			dev: %w(webpack),
+		})
 
 		CPAN={core: %w(App::cpanminus),
 					media: %w(MusicBrainz::DiscID WebService::MusicBrainz) #for abcde
@@ -126,6 +129,50 @@ module DR
 		CARGO={ruby: %w(rbspy),
 			cli: %w(hyperfine exa lsd)}
 		#, cargo: %w(cargo-update)} # cargo-update is added automatically if the pkg list is non empty
+
+		# for my pkgbuilds
+		CARGO_TOOLS={
+			cargo: %w(cargo-cache cargo-tree cargo-install-update),
+			core: %w(bingrep cw runiq),
+			doc: %w(tealdeer),
+			files: %w(broot lolcate rm-improved tree-rs xcompress xcp),
+			disk: %w(diskus sn dupe-krill dua-cli dirstat-rs du-dust amber dutree),
+			utils: %w(genact ttdl hors), #howto-cli (does not compile)
+			monitoring: %w(battop hyperfine mprober procs strace-analyzer process_viewer),
+			text: %w(fastmod gig ruplacer sd tabwriter-bin xv ripgrep_all diffr mdcat),
+			data: %w(jql xsv fst-bin),
+			fs: %w(hunter),
+			git: %w(git-find git-global),
+			ssh: %w(slink),
+			shell: %w(starship),
+			system: %(topgrade),
+		}
+
+		CARGO_TOOLS_BIN={
+			cargo: CARGO_TOOLS[:cargo]+%w(cargo-install-update-config),
+			cli: CARGO_TOOLS.reject {|k,_v| k==:cargo}.values.flatten.map do |pkg|
+				case pkg
+				when "hunter"
+					[pkg, "preview-gen"]
+				when "amber"
+					%w(ambr ambs)
+				when "ripgrep_all"
+					%w(rga rga-preproc)
+				when "dirstat-rs"
+					"ds"
+				when "dua-cli"
+					"dua"
+				when "du-dust"
+					"dust"
+				when "rm-improved"
+					"rip"
+				when "tealdeer"
+					"tldr"
+				else
+					pkg[/(.*)-bin/,1] || pkg
+				end
+			end.flatten.compact.sort
+		}
 
 		#packages that are awailable on arch (or my aur repo)
 		ARCHLINUX={
@@ -203,7 +250,7 @@ module DR
 						end
 					end
 				end
-				if !@pkgs[:rust_cargo].nil? && !@pkgs[:rust_cargo].empty?
+				if !@pkgs[:rust_cargo].nil? && !@pkgs[:rust_cargo].empty? && !(@pkgs[:rust_cargo].is_a?(Hash) && @pkgs[:rust_cargo].values.flatten.empty?)
 					add_packages(:rust_cargo, :cargo, ["cargo-update"])
 				end
 			end

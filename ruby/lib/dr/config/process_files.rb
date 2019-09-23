@@ -1,3 +1,27 @@
+#!/usr/bin/env ruby
+
+=begin
+Note that snapshot (for diff) and commit use rsync:
+In snapshot:
+	if @dir[:commit].to_s.empty?
+		f=filerel.to_s 
+	else
+		f=@dir[:commit].to_s+"/./"+filerel.to_s 
+	end
+	@computer.sshfile(f, present: present?)
+
+In commit:
+	commitdir=@dir[:commit].to_s.empty? ? "" : "#{@dir[:commit]}/"
+	SH.rsync("#{@dir[:out]}/", @computer.sshfile(commitdir, present: present?), keep_dirlinks: true, backup: backup_dir, sshcommand: @computer.ssh(mode: :hash)[:ssh_command_options], **opts)
+so that we can handle natively remote computers
+
+In config/generate.rb:
+				@dir[:target]||=if @computer.present?
+						@computer.file(:homepath) #Pathname.home
+					else
+						Pathname.new("") #we will use ssh, so "" is the relative home
+					end
+=end
 
 require 'dr/sh'
 require 'dr/base/eruby'
@@ -30,6 +54,13 @@ module DR
 					end
 					files
 				end
+				## since we are configuring @computer, we may not have the files
+				## yet, so use @local_computer to get files
+				## in configure/ script we want to use @computer.file however
+				## Update: in practice this is a case by case basis
+				#def file(*args)
+				#	@local_computer.file(*args)
+				#end
 				def mkdir(dir)
 					dir=Pathname.new(dir)
 					logger.info "- [#{dir}]"
@@ -135,16 +166,19 @@ module DR
 				#like dirname, but for :out
 				destdirname=@dir[:destname]||dirname
 
-				#the squel folder 
+				#the squel folder (for generate)
+				#this folder is going to be absolute in config/generate.rb or
+				#syst/config/generate.rb
 				@dir[:gen]||=Pathname.new(@dir.fetch(:gen,"."))
+				#script to run [before file generation]
+				@dir[:prescripts]||=@dir[:gen]+"prescripts"
 				#folders to copy
 				@dir[:copy]||=[@dir[:gen]+"squel", @dir[:gen]+"#{dirname}-local"+@computer.name]
-				#the absolute dir folder of files to generate [after copy]
+				#the dir folder of files to generate [after copy]
 				@dir[:in]||=@dir[:gen]+dirname
 				#script to run [after file generation]
 				@dir[:scripts]||=@dir[:gen]+"scripts"
-				#script to run [before file generation]
-				@dir[:prescripts]||=@dir[:gen]+"prescripts"
+
 				#folder of files accessible to scripts via read_file/copy_file
 				@dir[:files]||=@dir[:gen]+"files"
 				#configure script (called after commit)
@@ -165,11 +199,13 @@ module DR
 
 				#the target of the files we want to change
 				#used for configuration when specifying a non local computer
-				#ex: systemctl --root=@dir[:root] enable sshd.socket
+				#ex: systemctl --root=@dir[:target] enable sshd.socket
 				@dir[:target]||=@dir[:out] 
 				#where commit will put the files (this may differ from target if
 				#configure scripts modify files different from the ones we commit)
 				@dir[:commit]||=@dir[:target] 
+
+				# helpers functions (the folders are added to the load_path)
 				@dir[:helpers]||=@dir[:gen]+"helpers"
 			end
 
@@ -515,11 +551,13 @@ module DR
 					send(action)
 				end
 			end
+			# this is called by syst/init.rb
 			def process_action(action,**opts)
 				opts=opts.merge(@opts)
 				pause=opts.key?(:pause) ? opts[:pause] : true
 				msg=opts[:msg] || action.to_s
 				args=opts[:args]
+				msg += " [#{args.join(', ')}]" if args
 				if pause and action != :generate #never pause for generate
 					check_user("# #{msg}?")
 				else
@@ -602,7 +640,7 @@ module DR
 
 			extend ProcessActions
 			class <<self
-				def process_actions(*args, default_computer: "local", **opts)
+				def process_actions(*args, default_computer: "local", method: :dispatch, **opts)
 					super
 				end
 
@@ -618,6 +656,7 @@ module DR
 						opt.separator("\nSquel dir actions")
 						opt.on("--dir=dir_config", "Directory configuration") do |v|
 							opts[:dir]=SimpleParser.parse_options(v)
+							#--dir=target:foo,commit:bar
 						end
 						opt.on("--target=target", "Configure target") do |v|
 							opts[:dir]||={}

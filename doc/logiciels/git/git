@@ -1,5 +1,7 @@
 vim: foldmethod=expr ft=markdownlight
 
+git-my: cf git-applications
+
 Docs and bookmarks:
 ===================
 
@@ -83,284 +85,6 @@ Everyday
 ## Gui
   git citool (=git gui citool), git gui
   gitk
-
-git-my
-======
-
-$ git my help
-    archive        - Archive current directory [=git-archive]
-    bfg            - Delete files from repo [=dist/bfg]
-    changelog      - Output changelog from git log [=git-changelog.rb]
-  > contrib        - Contrib helpers: contacts/hash/jump/mailmap/packs/rerere-train/resurrect/subtree
-    current        - Show current branch = [GitHelpers.current_branch]
-    deploy         - Deploy repository [=git-deploy]
-  > extra          - Extra helpers: aliases/cherry/fork/hg/obliterate/runcmd/set_pr/uncommit/update-worktree/whitespace
-    gc             - Run gc with more aggressive settings [=direct code]
-                     [increase window size+run prune=now and reflog expire=now]
-    grb            - Manipulates published branches [=dist/grb]
-  > help           - Shows a list of commands or help for one command
-    imerge         - Merge interactive [=dist/mhagger/imerge]
-    latexdiff      - git wrapper around latexdiff [=dist/git-latexdiff]
-  > ls             - Ls helpers: *blame/files/removed
-    merging-rebase - Rebase, preserving fastforwardabiliy [=script/git-merging-rebase]
-    notes-remote   - Wrapper around 'git notes' to make it easier to share notes to and from remote repositories. [=dist/aspiers/git-rnotes]
-    patch          - Manage patches [=git-patches]
-    rebuild        - Rebuild patches and integration branches [=git-rebuild]
-    reintegrate    - Merge topic branches on base into integration branch [=dist/felipc/git-reintegrate]
-    related        - People interested by a patch (ruby version of git contacts) [=dist/felipec/git-related]
-    setrebase      - Configure branch to be rebased [=git-setrebase]
-    squash         - Update and squash branch [=git-squash]
-    stash          - Custom stash command [=git-mystash]
-  > stats          - Statistics: authors/diff/files/html/infos/lines/size/*summary
-    store          - Store commits in a ref [=git-reflog-store]
-    subadd         - Add a git folder as a submodule [=git-subadd]
-    test           - Create a git test dir [=direct code]
-  > topic          - Topic helpers: cherry/log/logs/*infos/...
-    trivial        - Create empty commits and trivial merges [=git-trivial]
-    update         - Update repo [=direct code]
-
-$ git my contrib help
-    contacts     - Find who contributed on a patched line
-    hash         - Shows hash prefixes
-    jump         - Quick jump for editor
-    mailmap      - Find mailmap candidates
-    packs        - Give informations on packs
-    rerere-train - Prime rerere database from existing merge commits
-    resurrect    - Try to resurrect a deleted branch
-    subtree      - Merge subtrees together and split repository into subtrees
-
-$ git my extra help
-    aliases         - Show all aliases [=GitHelpers.aliases]
-    cherry          - Wrapper around git cherry [=dist/aspiers/git-icing]
-    cherry-menu     - Interactive menu around git my cherry [=dist/aspiers/git-cherry-menu]
-    fork            - Set up a github fork as a three way repo
-                      [hub fork && ... git config remote.pushDefault DamienRobert]
-    hg              - Remote hg helper [=dist/felipc/hg]
-    obliterate      - Use filter-branch to remove a file [=direct code]
-    runcmd          - run command on git revisions [=direct code]
-    set_pr          - Set up 'pr' and 'pr-clean' local git aliases for github pull requests [=direct code]
-    uncommit        - Remove changes from your previous commit [=git-uncommit]
-    update-worktree - Update the worktree [=git-update-worktree]
-    whitespace      - Removes whitespace errors [=scripts/git-nows]
-
-$ git my ls help
-   *blame   - Like 'git blame', but for a directory (default) [=dist/aspiers/git-ls-dir]
-    files   - Number of commits modifying each files [=GitHelpers.output_commit_by_files]
-    removed - Show removed files [=GitHelpers.output_removed_files]
-
-$ git my stats help
-    authors - Shows list of authors (ranking by number of commits) [=direct code]
-    diff    - Count lines of diffs by authors [=GitHelpers.output_stats_diff]
-    files   - Statistics by files changed by authors [=GitHelpers.output_stats_authors]
-
-    html    - Statistics (html) [=dist/gitstats]
-    infos   - General informations [=GitHelpers.infos]
-    lines   - Number of currently written lines by authors [=GitHelpers.output_stats_lines]
-    size    - Compute various size metrics for a Git repository, flagging those that might cause problems [=dist/git-sizer]
-   *summary - Summary (default) [=GitHelpers.summary]
-
-$ git my topic help
-   *infos      - Info on topic branches
-    cherry     - Shows log between current branch and its remote, in left-right format [=direct code]
-                 [= git log --left-right --topo-order --oneline local..remote
-                  = condensed 'my topic log' = nicer 'git cherry']
-    diff       - topic diff [=dist/tbdiff]
-                 [shows the differences between two versions of a patch series]
-    log [--diff] - Shows log between current branch and its remote (default) [=direct code]
-                 [=> -Incoming:... -Outgoing:...]
-    logs       - Shows log between branches and their upstreams [=direct code]
-                 [=> call 'my topic log' for each branch]
-
-    start      - Start new topic
-    push       - Push topic branches
-    sync       - Sync topics
-    rename     - Rename topic [or tag]
-    delete     - Delete topics [or tags]
-
-    children   - Show direct children of a commit [=GitHelpers.output_commit_children]
-    diverged   - Find when two branches first diverged [=git-topic-diverged]
-    neck       - Show commits until first branching point [=GitHelpers.neck]
-    trails     - Show all branching points [=GitHelpers.output_trails]
-    whenmerged - Find when a commit was merged into one or more branches. [=dist/mhagger/git-when-merged]
-
-## Exemples
-
-### Topic
-$ g my topic log #compare @ and @{u}
-  g my topic log other_upstream #compare @ and other_upstream
-  g my topic log local upstream #compare local and upstream
-- Incoming:
-- Outgoing:
-- Stats:
-
-$ g my topic log -d #replace 'Stats:' by 'Diff:'
-
-$ g my topic merged
-* refs/heads/master: 3 years, 6 months ago <Damien Robert> TODO++
-* refs/heads/refactorisation: 4 days ago <Damien Robert> Split IsogenieG2 into IsogenieG2 and IsogenieG2Theta
-* refs/remotes/durin/master: 3 years, 6 months ago <Damien Robert> TODO++
-* refs/remotes/gforge/refactorisation: 4 days ago <Damien Robert> Split IsogenieG2 into IsogenieG2 and IsogenieG2Theta
-* refs/remotes/mathrice/master: 4 years, 7 months ago <Damien Robert> index.html: Cosmetic change
-* refs/heads/old/master: 5 years ago <Damien Robert> my squash changed its parameters
-
-$ g my topic status -- plimo master noconflict conflict -r
-  # without the -r the integration/feature branches are not shown
-  # except for plimo which do not have a remote branch
-  # The legend is as follow: for local/remote branches
-  # -> [x] in sync; [] not in sync
-  # For integration feature branches
-  # -> (), {}, []: branch exist locally, on a remote, both
-  # -> x, ~, ' ': branch is merged locally and remotely, only locally, not
-
-* Local branch: plimo
-
-Integration branches:
-[ ] NOT merged into master (1 commit ahead)
-    - ploum [2ce1d30]
-
-* Local branch: master
-[ ] NOT in sync with remote (you should push after rebase / merge)
-    - Merge branch 'noconflict' [0b9ec7b]
-    - plimo [0e6b1ec]
-    - Adding c, new line to a [77721c3]
-Remote branch: origin/master (/tmp/foo/first)
-[ ] NOT in sync with local (you should rebase / merge)
-    - add a new commit [b4c18fe]
-
-WARNING: local and remote branches have diverged. A merge will occur unless you rebase.
-
-Feature branches:
-[ ] conflict is NOT merged in (1 commit ahead)
-    - Changing line on b [7392e6a]
-[~] noconflict merged in (only locally)
-( ) plimo (local-only) is NOT merged in (1 commit ahead)
-    - ploum [2ce1d30]
-{ } origin/plouf is NOT merged in (3 commits ahead)
-    - ploufhop [e7b1338]
-    - plom [937205b]
-    - Changing line on b [7392e6a]
-
-* Local branch: noconflict
-[ ] NOT in sync with remote (you should push)
-    - plimo [0e6b1ec]
-Remote branch: origin/noconflict (/tmp/foo/first)
-[x] in sync with local
-
-Integration branches:
-[x] merged into master
-
-* Local branch: conflict
-[x] in sync with remote
-Remote branch: origin/conflict (/tmp/foo/first)
-[ ] NOT in sync with local (you should merge)
-    - plom [937205b]
-
-Integration branches:
-[ ] NOT merged into master (1 commit ahead)
-    - Changing line on b [7392e6a]
-
-$ g my topic trail
-2019-04-05: 2049709 – autostash~1, master
-2019-04-05: a2baf29 – conflict~1, noconflict~1
-2019-04-05: 20d9538 – bar~5, foo~3, stash~6
-
-$ g my topic neck
-2049709 (HEAD -> master) plimo (Fri Apr 5 16:44:19 2019 +0200) <Damien Robert>
-b75fb95 plimo (Fri Apr 5 16:44:18 2019 +0200) <Damien Robert>
-c1bfba9 Adding d, new line to b (Fri Apr 5 16:44:04 2019 +0200) <Damien Robert>
-
-$ g my topic children master~4
-master~4: a2baf29, 208e3a6
-
-### ls
-$ g my ls blame
-2049709d 2019-04-05 16:44:19 +0200 Damien Robert a  [plimo]
-c1bfba9a 2019-04-05 16:44:04 +0200 Damien Robert b  [Adding d, new line to b]
-c1bfba9a 2019-04-05 16:44:04 +0200 Damien Robert d  [Adding d, new line to b]
-
-$ g my ls files
-- 02.test: 1 (active: 1 days)
-- doc/Arithmetic: 3 (active: 1 days)
-- doc/precomp: 7 (active: 3 days)
-- examples/curve-db-plot.m: 3 (active: 1 days)
-
-$ g my ls removed
-2014-06-11 5bef557^:paper/00gvim
-2014-06-11 5bef557^:paper/Makefile
-
-### Stats
-$ g my stats = g my stats summary
- project  : code-avisogenies
- repo age : 5 years 
- active   : 22 days
- commits  : 36
- files    : 38
- authors  : Damien Robert, Gaetan Bisson, Alina Dudeanu (Total: 36)
- - Damien Robert: 25 (69.4%)
- - Gaetan Bisson: 6 (16.7%)
- - Alina Dudeanu: 5 (13.9%)
-
-$ g my stats authors
-    25  Damien Robert
-     6  Gaetan Bisson
-     5  Alina Dudeanu
-Total: 36
-
-$ g my stats diff
-Damien Robert <damien.olivier.robert+git@gmail.com>: 30889 lines of diff (+20717/-10172)
-Alina Dudeanu <dudeanu@Sysadmins-MacBook-Pro-5.local>: 939 lines of diff (+939/-0)
-Alina Dudeanu <dudeanu@lacalpc24.epfl.ch>: 116 lines of diff (+70/-46)
-Alina Dudeanu <dudeanu@tsf-428-wpa-1-082.epfl.ch>: 59 lines of diff (+31/-28)
-Gaetan Bisson <bisson@archlinux.org>: 33 lines of diff (+19/-14)
-Alina Dudeanu <dudeanu@tsf-428-wpa-5-049.epfl.ch>: 4 lines of diff (+2/-2)
-
-$ g my stats infos
- ## Remote URLs:
- 
- durin	ssh://gitolite@durin/avisogenies (fetch)
- durin	ssh://gitolite@durin/avisogenies (push)
- gforge	git+ssh://robertdamien@scm.gforge.inria.fr//gitroot/avisogenies/avisogenies.git (fetch)
- gforge	git+ssh://robertdamien@scm.gforge.inria.fr//gitroot/avisogenies/avisogenies.git (push)
- mathrice	git@plmlab.math.cnrs.fr:drobert/avisogenies.git (fetch)
- mathrice	git@plmlab.math.cnrs.fr:drobert/avisogenies.git (push)
- 
- ## Remote Branches:
- 
-   durin/master             gforge/refactorisation   mathrice/old/master
-   durin/old/master         git-svn
-   gforge/master            mathrice/master
- 
- ## Local Branches:
- 
-   master            old/master      * refactorisation
- 
- ## Most Recent Commit:
- 
- commit 61ec0b1abe6016c6c220a1b87fde30d715b5a849 (HEAD -> refactorisation, gforge/refactorisation)
- Author: Damien Robert <damien.olivier.robert+git@gmail.com>
- 
-     Split IsogenieG2 into IsogenieG2 and IsogenieG2Theta
-
-$ g my stats lines
-- Damien Robert: 11458 (99.3%)
-- Alina Dudeanu: 55 (0.5%)
-- Not Committed Yet: 19 (0.2%)
-- Gaetan Bisson: 1 (0.0%)
-Total lines: 11533
-
-$ g my stats size
-Processing blobs: 927                        
-Processing trees: 843                        
-Processing commits: 539                        
-Matching commits to trees: 539                        
-Processing annotated tags: 12                        
-Processing references: 26                        
-| Name                         | Value     | Level of concern               |
-| ---------------------------- | --------- | ------------------------------ |
-| History structure            |           |                                |
-| * Maximum tag depth      [1] |     1     | *                              |
-
-[1]  e628f39d3b5e4d1a9c341a443bbdddbe664c0403 (refs/tags/v0.1)
 
 Workflows
 ==========
@@ -1051,15 +775,15 @@ Packs:
            Find redundant pack files.
 
 ## New commands and updates:
+Cf for instance: https://github.com/blog/2360-git-2-13-has-been-released
+
 git interpret-trailers
 git worktree
 git update-index --untracked-cache [=> set to true in .gitconfig]
 git range-diff
 
 Updates:
-- git 2.3: 
-  receive.denyCurrentBranch=updateInstead
-    to update a *clean* working tree in case of a push to a non bare directory
+- git 2.3: receive.denyCurrentBranch=updateInstead to update a *clean* working tree in case of a push to a non bare directory
 - git 2.4: 
      git status -v => run 'git diff --cached
      git status -vv => also run 'git diff'
@@ -1070,15 +794,12 @@ Updates:
   further be used to teach git-prompt (in contrib/) to make fewer
   calls to git.
   => git status --porcelain=v2 (default to v1)
-- git 2.13: https://github.com/blog/2360-git-2-13-has-been-released
-  --decorate=auto is now the default for git log
-- git 2.17:
-  'git fetch --prune-tags' may be used as a handy short-hand for getting rid of stale tags that are locally held.
-- git 2.18:
-  git rebase" learned "--rebase-merges" to transplant the whole topology of commit graph elsewhere.
+- git 2.13: --decorate=auto is now the default for git log
+- git 2.17: 'git fetch --prune-tags' may be used as a handy short-hand for getting rid of stale tags that are locally held.
+- git 2.18: git rebase" learned "--rebase-merges" to transplant the whole topology of commit graph elsewhere.
 - git 2.19: git range-diff
-- git 2.21:
-  new date format "--date=human"; "--date=auto:human"
+- git 2.21: new date format "--date=human"; "--date=auto:human"
+- git 2.22: git branch --show-current
 
 Detailed git commands
 =====================
@@ -2074,12 +1795,29 @@ http://git-scm.com/book/en/v2/Git-Tools-Submodules
 man git-submodule(1)
 man gitsubmodules(7) gitmodules(5)
 
-Relationship between .git/config and .gitmodules
+How it works: for each gitlink, git looks at the .gitmodules paths to
+associate it to a gitmodules. Here .git/config is not used. All the other
+values in .git/config have precedence over .gitmodules. The .gitmodules
+settings looked are only submodule.name.{update,branch,fetchRecurseSubmodules,ignore,shallow}.
+
+Active submodules:
+- git only looks at .git/config, not .gitmodules to check if a submodule is active
+- a submodule is unregistered if .git/config does not exist for it. Of course a non registered submodule is not active
+- `git sub update` only works on active submodule (likewise for all others --recurseSubmodules commands like git grep).
+- A non active submodule is still shown in `git status`, `git diff` (use diff.ignoreSubmodules/submodule.name.ignore) to configure that)
+- git sub foreach: iterates to each gitlink which has a .git (real or gitfile), this don't check active status or .git/config.
+
+Relationship between .git/config and .gitmodules:
 - .gitmodules is read in the worktree, but if it does not exists git try to
   read it in the index.
-- submodule mapping is determined from .gitmodules (only); 
+- submodule mapping 'path=...' is determined from .gitmodules (only);
   a path must exist to associate a gitlink (referred by the path) to a
   submodule. The path is not derived from the name.
+- a submodule is considered registered if it is in .git/config
+  `git sub init` will add in .git/config the submodule name (+ the update and url values and set active=true)
+  Note that we can remove the url in .git/config, so it fallsback to the
+  value in .gitmodules. The url is only used for the first `git sub update`
+  to clone it in .git/modules.
 - with absorbgitdir, the .git of the submodule is in
   .git/modules/submodulename
 - moving a submodule will
@@ -2089,6 +1827,8 @@ Relationship between .git/config and .gitmodules
   - but not change the .git/modules/submodulename/ repository to the new path
     since the name did not change
 
+### Commands
+
 * absorbgitdirs
     If a git directory of a submodule is inside the submodule, move the
     git directory of the submodule into its superprojects
@@ -2097,33 +1837,32 @@ Relationship between .git/config and .gitmodules
     file pointing to the git directory embedded in the superprojects
     git directory.
 
+  Eg: $ cat .git => gitdir: ../../../.git/modules/NrrwRgn
+      $ cat modules/NrrwRgn/config => worktree = ../../../commands/start/NrrwRgn
+
 * Add a submodule:
 git submodule add url path
+This adds both to .gitmodules and .git/config
 
 Eg for a relative submodule: g sub add ./repo/bar2 repo/bar2
 Note that `g sub add ./repo/bar2` will clone `repo/bar2` into `./bar2`
 
-* Init back submodules (after a checkout or a clone)
-git submodule init #copy .gitmodules info into .git/config
-git submodule update subname #checkout the submodule on the commit registered by the superproject
-At once: git submodule update --init
+* Init submodules 
 
-* deinit
-    Unregister the given submodules, i.e. remove the whole submodule.$name
-    section from .git/config together with their work tree
+- git submodule init #after a checkout or a clone
+  => copy .gitmodules info into .git/config
 
-  This mean that the gitlink and .gitmodules entries are kept, but the
-  worktree and .git/config are removed.
-  Can be reverted via `git submodule update --init`
+  [note: without a path activates all submodule.active (or all submodules
+  if not set). This does not change already existing .git/config entries
+  (use git sync for that). This copy the submodule update and url config,
+  and set active=true].
 
-  Note that git rm <submodule path> does delete the gitlink and .gitmodules
-  entry. The submodule .git is kept into .git/modules/<name> and needs to
-  be removed manually.
+- git submodule update subname
+  => checkout the submodule on the commit registered by the superproject
+  At once: git submodule update --init
 
-  Note: calls to git submodule update, git submodule foreach and git submodule
-  sync will skip any unregistered submodules until they are initialized again
+- sync (like init but only for already initialized submodules; used for changes in .gitmodules)
 
-* sync (like init but only for already initialized submodules; used for changes in .gitmodules)
     Synchronizes submodules' remote URL configuration setting to the value
     specified in .gitmodules. It will only affect those submodules which
     already have a URL entry in .git/config (that is the case when they are
@@ -2134,26 +1873,75 @@ At once: git submodule update --init
     "git submodule sync" synchronizes all submodules while "git submodule
     sync -- A" synchronizes submodule "A" only.
 
+* Remove submodule
+
+- deinit
+  Unregister the given submodules, i.e. remove the whole submodule.$name
+  section from .git/config together with their work tree.
+  Refuse to work if the .git is in the submodule.
+
+  This mean that the gitlink and .gitmodules entries are kept, but the
+  worktree and .git/config are removed.
+  Can be reverted via `git submodule update --init`
+
+  Note: calls to git submodule update, git submodule foreach and git submodule
+  sync will skip any unregistered submodules until they are initialized again
+  [note that if I simply remove the .git/config section but leave the
+  worktree, then `git submodule status` show the submodule as unregistered,
+  but `git submodule foreach` does go into this submodule. It only if I
+  remove the worktree that it does not got there anymore.]
+
+- git rm <submodule path>
+  Delete the gitlink (+worktree) and .gitmodules entry. But leaves the .git/config entry.
+  The submodule's .git is kept into .git/modules/<name> and needs to be
+  removed manually. If the .git was in the submodule, automatically calls
+  absorbgitdis.
+
+  git rm --cached: only remove the gitlink entry
+
+  Note: for an external submodule 'plim' added with git submodule add
+  (rather than a git folder already present inside our main folder), the
+  objects are available in .git/modules/plim/ of the main git project, so
+  one can erase the submodule and recreate it if needed
+
+  For an internal submodule, git submodule deinit will refuse to work
+  (because git then use the internal submodule .git folder to store the
+  objects of the submodule rather than the superproject .git/modules
+  folder, so git can't remove the internal submodule) => use git sub
+  absorbgitdirs. Doing a `git rm internal_sub` does a absorbgitdirs for
+  this submodule.
+
 * Status:
 git submodule status
 git submodule summary #show the log diff
-
-git diff #show the commit hash diff
-git diff --submodule #(default to --submodule=log): show the log diff of the submodules
-
-Config: 
-- diff.submodule=short(default)/diff/log => git diff --submodule. So 'log' show the same output as git diff --submodule
-- diff.ignoreSubmodules=none/untracked/dirty/all => Sets the default value of --ignore-submodules.
-  [Setting it to all disables the submodule summary normally shown by git commit and git status when status.submoduleSummary is set]
-- status.submodulesummary=1 => shortlog of the submodules new commits in git status and git commit
 
 Exemples:
 $ git sub status
  d6e5c928821501ad2ebdf2f988558e9690973778 drain (v0.3.0-2-gd6e5c92)
 
+  Each SHA-1 will possibly be prefixed with - if the submodule is not initialized [or not active], + if the currently checked out submodule commit does not match the SHA-1 found in the index of the containing repository and U if the submodule has merge conflicts.
+
 $ git sub summary (=git diff --submodule)
 * drain d6e5c92...234bab4 (1):
   < graph: to_s and inspect
+
+git diff #show the commit hash diff
+git diff --submodule #(default to --submodule=log): show the log diff of the submodules
+
+Examples of submodules diff (git sub summary):
+  Submodule plam 0000000...c43a6e4 (new submodule)
+  Submodule script/others/republique 0000000...f4c0876 (not checked out)
+   #We added a submodule to the index, but we removed it (without adding this to the index)
+  Submodule script/others/republique f4c0876...0000000 (submodule deleted)
+  Submodule plam c43a6e4...9215cb5 (commits not present)
+   #the commit c43a6e4 is not present in the current submodule
+  Submodule plam 9215cb5..4b41ae0 (rewind):
+    < Adding d, new line to b
+   #the submodule is lacking some commits
+  Submodule plam de44db5...d6ed7c1:
+    > Uhihih
+    < Ohoho
+   #we both have new commits [Uhihih] and lacking commits [Ohoho] in the submodule
 
 * Update:
 - git submodule update --checkout/--rebase/--merge
@@ -2168,7 +1956,7 @@ $ git sub summary (=git diff --submodule)
       current branch in the submodule.
 Rem: On the config file submodule.<name>.update can also be a custom command or 'none'
 
-Options: --recursive, --init
+Options: --recursive, --init [automatically calls git sub init if needed]
 
 - git submodule update --remote [--no-fech]
 Instead of using the superproject’s recorded SHA-1 to update the submodule, use the status of the submodule’s remote-tracking branch.
@@ -2176,7 +1964,7 @@ Instead of using the superproject’s recorded SHA-1 to update the submodule, us
 the branch 'branch.name.merge' from the submodule's config, while git
 `submodule update --remote` uses the branch 'submodule.<name>.branch' (default to master) from the superproject config
 
-The difference with git submodule update is that '--remote' will fetch the configured remote of the submodule while the other one just update the submodule with the configured SHA-1 recorded by the superproject. So git submodule update will reset the submodules to their recorded state in superproject.
+The difference with `git submodule update` is that '--remote' will fetch the configured remote of the submodule while the other one just update the submodule with the configured SHA-1 recorded by the superproject. So git submodule update will reset the submodules to their recorded state in superproject.
 
 To specify the branch the --remote should get, use:
 $ git config -f .gitmodules submodule.<name>.branch branch_name
@@ -2200,38 +1988,54 @@ only: only push the submodules, not the superproject
 * Iterating: 'submodule foreach'
 $ git submodule foreach 'git stash'
 
-* Submodule config
-cf gitmodules(5) aussi: on peut spécifier les config submodule.<name>.* dans .gitmodules (mais .git/config a précédence)
-=> submodules config can be either on .git/config (local) or on .gitmodules
-(commited, so global). git submodule init synchronise the two config files
+git my sub foreach: only iterate on modified submodules
 
+### Submodule config
+
+cf gitmodules(5): submodules config can be either on .git/config (local) or
+on .gitmodules (commited, so global). git submodule init/sync synchronise the two config files
+=> on peut spécifier les config submodule.<name>.* dans .gitmodules (mais .git/config a précédence)
+
+* Individual submodule config:
 submodule.<name>.update=checkout, rebase, merge or none -> git submodule update
+submodule.<name>.branch The remote branch name for a submodule, used by git submodule update --remote.
 submodule.<name>.fetchRecurseSubmodules=true/false -> recursive fetching of the submodule
 submodule.<name>.ignore=all/dirty/untracked/none -> ignore setting for `git status/diff`
 submodule.<name>.active=true/false -> the submodule we recurse into via
 --recurse-submodules. If not specified (nor submodule.active), consider the
 submodule active if it has an url. It has precedence over submodule.active.
 
+* Global config:
 submodule.active=pathspec
 submodule.recurse=true/false -> pass --recurse-submodules for all the git command that support it: git fetch/push/checkout/read-tree/ls-files?/grep (of course for git clone this still needs to be specified manually) [update: git ls-files does not seem to read this setting]
 
 fetch.recurseSubmodules: default to 'on-demand' -> value of --recurse-submodules
 push.recurseSubmodules: default to 'no' -> value of --recurse-submodules (which default to on-demand when specified on the command line)
-[=> so submodule.recurse=true does not change `git fetch` and pass 'ondemand' for `git push]
+[=> so submodule.recurse=true does not change `git fetch` since it already default to 'on-demand' and pass 'ondemand' for `git push]
 
 Note that `git foo --recurse-submodules` only recurse into active submodules
+`git sub update` also only look at active submodules.
+
+* Diff/status config: 
+- diff.submodule=short(default)/diff/log => git diff --submodule.
+  [Recall that by default `git diff` use `--submodule=short` and `git diff
+  --submodule` use `--submodule=log` ie = git sub summary.
+- diff.ignoreSubmodules=none/untracked/dirty/all => Sets the default value of --ignore-submodules.
+  Also used by `git checkout` and `git switch`
+  [Setting it to all disables the submodule summary normally shown by git commit and git status when status.submoduleSummary is set]
+- status.submodulesummary=1 => shortlog of the submodules new commits in git status and git commit
+
+* My config:
+diff.submodule=log
+status.submodulesummary=true
+submodule.recurse=true
 
 * Usefull aliases:
 $ git config alias.subdiff '!'"git diff && git submodule foreach 'git diff'"
 $ git config alias.subpush 'push --recurse-submodules=on-demand'
 $ git config alias.subupdate 'submodule update --remote --merge'
 
-
-* Note: for an external submodule 'plim' added with git submodule add (rather
-than a git folder already present inside our main folder), the objects are
-available in .git/modules/plim/ of the main git project, so one can erase
-the submodule and recreate it if needed
-For an internal submodule, git submodule deinit will refuse to work (because git then use the internal submodule .git folder to store the objects of the submodule rather than the superproject .git/modules folder, so git can't remove the internal submodule).
+### Misc
 
 - To get a list of internal submodules:
   find . -name .git
@@ -2244,21 +2048,6 @@ For an internal submodule, git submodule deinit will refuse to work (because git
   Then git submodule init
 [Note: if we do git submodule add ./ploum/plim,
 it adds the submodule ./ploum/plim in ./plim; that's why we have to specify the relative path]
-
-* Examples of submodules diff:
-Submodule plam 0000000...c43a6e4 (new submodule)
- #We added a submodule to the index, but we removed it (without adding this to the index)
-Submodule script/others/republique 0000000...f4c0876 (not checked out)
-Submodule script/others/republique f4c0876...0000000 (submodule deleted)
- #the commit c43a6e4 is not present in the current submodule
-Submodule plam c43a6e4...9215cb5 (commits not present)
- #the submodule is lacking some commits
-Submodule plam 9215cb5..4b41ae0 (rewind):
-  < Adding d, new line to b
- #we both have new commits [Uhihih] and lacking commits [Ohoho] in the submodule
-Submodule plam de44db5...d6ed7c1:
-  > Uhihih
-  < Ohoho
 
 * Check .git/modules currently used:
 cat **/.git(.) | sed 's/^.*modules\///' | sort > /tmp/used
@@ -3191,15 +2980,57 @@ git push -u, --set-upstream
 * Push all:
 git push --all #push all branches under refs/heads/
 git push --mirror #push really *all* branches
-git push --tags #add tags to be pushed
+git push --tags #add tags to be pushed (ie refs/tags)
 
-Push to all remotes:
+- Push to all remotes:
 https://stackoverflow.com/questions/5785549/able-to-push-to-all-git-remotes-with-the-one-command
-git remote | xargs -L1 git push --all
+$ git remote | xargs -L1 git push --all
 
-Ou configurer un 'all' repo:
+I have these tow aliases:
+  pushall="!f() { git remote | xargs -P0 -L1 -I R -- git push R $@; }; f"
+  pushask="!f() { git remote | xargs -P0 -p -L1 -I R -- git push R $@; }; f"
+
+- Ou configurer un 'all' repo:
 git remote add all origin-host:path/proj.git
 git remote set-url --add --push all duostack-host:path/proj.git
+(Note: one needs to do `git fetch --all` if the duostack-host repo is also
+tracked)
+
+Exemple:
+  $ git remote add origin https://exampleuser@example.com/path/to/repo1
+  $ git remote set-url --push --add origin https://exampleuser@example.com/path/to/repo1
+  $ git remote set-url --push --add origin https://exampleuser@example.com/path/to/repo2
+  $ git remote set-url --push --add origin https://exampleuser@example.com/path/to/repo3
+
+  [remote "origin"]
+    url = https://exampleuser@example.com/path/to/repo1
+    pushurl = https://exampleuser@example.com/path/to/repo1
+    pushurl = https://exampleuser@example.com/path/to/repo2
+    pushurl = https://exampleuser@example.com/path/to/repo3
+    fetch = +refs/heads/*:refs/remotes/origin/*
+
+- If you only want to pull from repo1 but push to repo1 and repo2 for a specific branch specialBranch:
+
+  [remote "origin"]
+      url = ssh://git@aaa.xxx.com:7999/yyy/repo1.git
+      fetch = +refs/heads/*:refs/remotes/origin/*
+      ...
+  [remote "specialRemote"]
+      url = ssh://git@aaa.xxx.com:7999/yyy/repo1.git
+      pushurl = ssh://git@aaa.xxx.com:7999/yyy/repo1.git
+      pushurl = ssh://git@aaa.xxx.com:7999/yyy/repo2.git
+      fetch = +refs/heads/*:refs/remotes/origin/*
+      ...
+  [branch "specialBranch"]
+      remote = origin
+      pushRemote = specialRemote
+
+- I also have the following scripts:
+  $ vcs pushall [-o orig] [folders...]
+  	git push --prune --all $orig
+  	git push --prune --tags $orig
+  $ gitfolders --mirror durin mathrice
+  => vcs pushall -o $name $topush
 
 ## git-config for branch/push/pull/remotes
 * branch
@@ -4443,6 +4274,12 @@ From: https://github.com/ConradIrwin/git-aliae
     END { print "$sizes{$_} $_" for (keys %sizes) }
   ' |
 ~~~
+
+Git gone https://github.com/eed3si9n/git-gone/blob/master/git-gone
+Remove "gone" branches:
+
+    gone="$BRANCH/.*: gone]"
+    git branch -vv | grep "$gone" | awk '{print $1}' | xargs git branch -d
 
 ## git ls-files
 

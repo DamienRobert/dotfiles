@@ -16,6 +16,16 @@ ZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
   ent=C3=B4t qui te d=C3=A9gradent, car si leur musique est vulgaire ils te f=
   abriquent pour te la vendre une =C3=A2me vulgaire.
 
+  => perl:
+  alias qpd='perl -MMIME::QuotedPrint -pe '\''$_=MIME::QuotedPrint::decode($_);'\'''
+  alias qpe='perl -MMIME::QuotedPrint -pe '\''$_=MIME::QuotedPrint::encode($_);'\'''
+
+  => python:
+  $ echo "Jeg liker å sykle" | python -m quopri
+  Jeg liker =C3=A5 sykle
+  $ echo "Jeg liker =C3=A5 sykle" | python -m quopri -d
+  Jeg liker å sykle
+
 * Percent encoding: https://en.wikipedia.org/wiki/Percent-encoding
 application/x-www-form-urlencoded: old form of url percent encoding
 Ex: http://%C3%A9%C3%A0%E2%82%AC@m%C3%A9lias%E2%82%AC.com

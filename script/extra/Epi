@@ -1,8 +1,12 @@
 MOVIESEP=x
-SUBSEP=x
-GO=1 #don't ask confirmation
-FORMATSUB=1 #format subtitles
-#SUBEPI=NONE #No subtitle
+SUBSEP=x #fallback to MOVIESEP
+# GO=1 #don't ask confirmation (default: false)
+# FORMATSUB=1 #format subtitles (default: false)
+# SUBEPI=NONE #No subtitle
 
 SEASON=01
+# SUBSEASON=1 #fallback to SEASON
 EPI=01
+# SUBEPI=1 #fallback to EPI
+
+SUBFOLDER="subs/" #default to sub/

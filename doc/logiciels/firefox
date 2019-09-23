@@ -1,3 +1,16 @@
+vim: ft=markdownlight fdm=expr
+
+Privacy
+=======
+
+Réglages dans about:config
+https://wiki.archlinux.org/index.php/Firefox/Privacy
+https://restoreprivacy.com/firefox-privacy/
+
+Urls:
+- https://www.privacytools.io/
+- duckduckgo
+
 Pdf
 ===
 
@@ -51,3 +64,9 @@ Cookies
 =======
 
 Page info (le (i) dans l'adresse) => Security / View Cookies
+
+DNS
+===
+
+DNS-over-HTTPS (DOH):
+https://wiki.mozilla.org/Trusted_Recursive_Resolver

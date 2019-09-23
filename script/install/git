@@ -1,6 +1,11 @@
 #!/bin/zsh
 . "$(dirname $0)/_install_helpers"
 
+export LAST_TAG="git tag | grep '^v' | grep -v -- '-rc*' | sort --version-sort | tail -n1"
+url=git-manpages
+url=$(~/mine/ruby/lib/dr/packages/handlers/git_optdist.rb --repo $url)
+vcs clone_or_update --checkout LAST $url $OPTSRC/
+
 url="gh:git/git"
 #export NO_CURL=true
 CUSTOM_COMPILE='make prefix=$prefix install quick-install-man'

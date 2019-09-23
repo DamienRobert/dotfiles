@@ -23,6 +23,11 @@ http://askubuntu.com/questions/9939/what-does-the-last-two-fields-in-fstab-mean
     to be checked.
 Dump is essentially unused. Omitting the values mean '0'
 
+atime
+-----
+
+relatime, lazytime: https://lwn.net/Articles/621046/
+
 Systemd
 -------
 See also systemd/boot

@@ -2,8 +2,9 @@
 #A lot of this is stolen from wifi-menu in netctl
 
 help() {
-	echo "wpa_helper [-i interface] scan/commit"
-	echo "	menu/add/save/pass ssid pass"
+	echo "wpa_helper [-i interface] scan/menu"
+	echo "	add/save/pass ssid pass"
+	echo "	cli/list/commit"
 	exit 1
 }
 

@@ -2,12 +2,12 @@
 . "$(dirname $0)/_install_helpers"
 
 typeset -A versions
-versions[libgpg-error]="1.31"
-versions[libgcrypt]="1.8.3"
+versions[libgpg-error]="1.36"
+versions[libgcrypt]="1.8.4"
 versions[libksba]="1.3.5"
-versions[libassuan]="2.5.1"
-versions[npth]="1.5"
-versions[gnupg]="2.2.8"
+versions[libassuan]="2.5.3"
+versions[npth]="1.6"
+versions[gnupg]="2.2.17"
 
 for prog in ${(@k)versions}; do
   progv="$prog-$versions[$prog]"

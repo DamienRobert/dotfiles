@@ -25,6 +25,7 @@ Geometric algebra
 
 References
 ----------
+https://math.stackexchange.com/questions/1852691/why-use-geometric-algebra-and-not-differential-forms
 
 * Geometric algebra:
 - https://en.wikipedia.org/wiki/Geometric_algebra
@@ -51,6 +52,7 @@ An Introduction to Geometric Algebra and Calculus, Alan Bromborsky
 New url: https://www.scribd.com/document/354134564/An-Introduction-to-Geometric-Algebra-and-Calculus-Bromborsky-A-pdf
 
 - Haskell: https://crypto.stanford.edu/~blynn/haskell/ga.html
+           http://www-cs-students.stanford.edu/~blynn/haskell/cga.html
 => ! http://www.faculty.luther.edu/~macdonal/GA&GC.pdf
      A Survey of Geometric Algebra and Geometric Calculus, Alan MacDonald
 
@@ -69,6 +71,10 @@ Plucker coordinates
 - Lien avec GA: http://www.geometricalgebra.net/plucker_coordinates.html
 - https://www.cs.cmu.edu/afs/cs/academic/class/15462-s09/www/lec/12/lec12.pdf
   algèbre de Clifford de la quartique de Klein
+- http://robotics.stanford.edu/~birch/projective/projective.pdf
+  An Introduction to Projective Geometry (for computer vision)
+- Klein quartic et plucker et Clifford: https://arxiv.org/pdf/1311.0131.pdf
+  A Clifford algebraic Approach to Line Geometry
 
 * Formules: http://web.cs.iastate.edu/~cs577/handouts/plucker-coordinates.pdf
 

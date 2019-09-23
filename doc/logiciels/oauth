@@ -185,11 +185,15 @@ Home assistant: homeassistant-200510
   + Actions: (for https://www.home-assistant.io/components/google_assistant/)
     https://console.actions.google.com/u/0/project/homeassistant-200510/overview
 
-
 Offlineimap: offlineimap-191709
   => Enabled apis: Gmail API 
   => Credentials:
 offlineimap-dor 	Jan 10, 2018 	Other 	320037077327-75dh55lh2npmsitah8s8i8836a3oho8d.apps.googleusercontent.com
+
+Rclone: =lustrous-bay-242413
+  => Enabled apis: Drive
+  => Credentials:
+  rclone: 346086527953-i0muoghf6mcj6qfienq6a8agcuf46876.apps.googleusercontent.com
 
 Let's encrypt
 =============

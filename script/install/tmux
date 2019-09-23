@@ -1,9 +1,12 @@
 #!/bin/zsh
 . "$(dirname $0)/_install_helpers"
 
-build_git -l "libevent" "release-2.1.8-stable"
+export LAST_TAG="git tag | grep 'stable' | sort --version-sort | tail -n1"
+# build_git -l "libevent" "release-2.1.11-stable"
+build_git -l "libevent" "release-2.1.11-stable"
 
+export LAST_TAG=
 url=tmux
-version="2.7"
+# version="2.9"
 build_helper $@
 build_git

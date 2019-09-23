@@ -346,6 +346,9 @@ EOS
 			def self.ssh
 				SSH
 			end
+			def self.unison
+				UnisonGeneric
+			end
 
 			def initialize(**opts)
 				default_opts=self.class.default_opts
@@ -410,7 +413,7 @@ EOS
 			def process(*args)
 				if @server.is_current?
 					Computers.computers(*args).each do |a|
-						Unison.new(a,**@opts).process
+						self.class.unison.new(a,**@opts).process
 					end
 				else
 					if @opts[:mode]

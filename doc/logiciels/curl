@@ -1,3 +1,4 @@
+* curl
 Curl cheet sheet: http://daniel.haxx.se/blog/2015/09/16/a-curl-cheat-sheet/
 https://news.ycombinator.com/item?id=10235974
 
@@ -9,10 +10,17 @@ For tests: http://httpbin.org/
 -k: insecure (don't check certificates)
 -s: silent (-sS: still show errors)
 -v: verbose
+-f, --fail (HTTP)  Fail  silently (no output at all) on server errors.
 
 curl -O ploum
 curl -o file ploum
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s --
 
+* httpie
 http example.org/file > file
 http --download example.org/file
 --follow
+
+* httpstat
+https://github.com/davecheney/httpstat
+It's like curl -v, with colours.

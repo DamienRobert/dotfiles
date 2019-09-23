@@ -1,0 +1,7 @@
+Tools in scheme:
+- https://en.wikipedia.org/wiki/SXML SXML=XML as s-expr
+- https://www.gnu.org/software/mcron/
+- https://github.com/scheme/scsh (scheme + sh)
+- https://docs.racket-lang.org/scribble/index.html
+  http://www.nongnu.org/skribilo/index.html#features
+- guix: https://www.gnu.org/software/guix/

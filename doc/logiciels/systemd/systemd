@@ -1,3 +1,13 @@
+vim: ft=markdownlight fdm=expr
+
+doc
+===
+
+- https://systemd.io
+  - https://systemd.io/BOOT_LOADER_SPECIFICATION
+- https://www.freedesktop.org/wiki/Software/systemd/ [older doc]
+  - https://www.freedesktop.org/wiki/Software/systemd/ContainerInterface/
+
 systemd*
 ========
 
@@ -11,6 +21,12 @@ systemd-analyze systemd-ask-password systemd-cat systemd-cgls systemd-cgtop syst
   [this kills all processes in the scope of the session, so since 'screen'
   is another scope, it is not affected. See also 'lingering' in logind and
   systemd-run]
+  --scope: If a command is run as transient scope unit, it will be executed by
+           systemd-run itself as parent process and will thus inherit the
+           execution environment of the caller.
+  --property=, -p
+           Sets a property on the scope or service unit that is created. This option takes an assignment in the same format as systemctl(1)'s set-property command.
+    Ex: systemd-run -p NetworkNamespacePath=/var/run/netns/ns1 ip a
 - systemd-cgls, systemd-cgtop: cgroups
 - systemd-analyse
   systemd-analyse blame
@@ -156,10 +172,6 @@ https://wiki.archlinux.org/index.php/Systemd/User#Environment_variables
 - You can also write an environment generator script which can produce environment variables that vary from user to user, this is probably the best way if you need per-user environments (this is the case for XDG_RUNTIME_DIR, DBUS_SESSION_BUS_ADDRESS, etc). See systemd.environment-generator(7).
 [ cf aussi .pam_environment, cf Xsession]
 
-Divers
-======
-Find private mounts: sudo grep systemd-private /proc/*/mountinfo
-
 Path orders
 ===========
 
@@ -200,5 +212,13 @@ Divers
 ======
 
 - https://github.com/systemd/mkosi
- Build Legacy-Free OS Images
+  Build Legacy-Free OS Images
+- https://github.com/systemd/casync
+  Content-Addressable Data Synchronization Tool
 - http://0pointer.net/blog/index.html
+
+Find private mounts: sudo grep systemd-private /proc/*/mountinfo
+
+* Network namespace
+- https://cloudnull.io/2019/04/running-services-in-network-name-spaces-with-systemd/
+- https://github.com/systemd/systemd/issues/2741

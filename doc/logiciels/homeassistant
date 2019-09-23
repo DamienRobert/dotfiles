@@ -1,4 +1,8 @@
-Configure devices:
+* Install
+PYTHONUSERBASE=$HOME/.cache/homeassistant pip install --user homeassistant
+PATH=$HOME/.cache/homeassistant/bin:$PATH PYTHONPATH=$HOME/.cache/homeassistant/lib/python3.7/site-packages $HOME/.cache/homeassistant/bin/hass
+
+* Configure devices:
 => By type:
   sensor:
     - platform: mqtt

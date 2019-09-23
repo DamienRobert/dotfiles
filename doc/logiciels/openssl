@@ -104,3 +104,21 @@ Voir aussi https://spin.atomicobject.com/2014/05/12/openssl-commands/
 
 # Curve25519
 openssl genpkey -algorithm EC -out smime_x25519.key -pkeyopt ec_paramgen_curve:X25519 -pkeyopt ec_param_enc:named_curve
+
+# RSA
+https://rietta.com/blog/openssl-generating-rsa-key-from-command/
+
+Geneate a key an crypt it with des3 (use -aes128 for better encryption)
+$ openssl genrsa -des3 -out private.pem 2048
+
+Modern form: https://en.wikibooks.org/wiki/Cryptography/Generate_a_keypair_using_OpenSSL
+$ openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+
+Viewing the key elements
+$ openssl rsa -text -in private_key.pem
+
+Export the RSA Public Key to a File
+$ openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+
+Export the private key:
+$ openssl rsa -in private.pem -out private_unencrypted.pem -outform PEM

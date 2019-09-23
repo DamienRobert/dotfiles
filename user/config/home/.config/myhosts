@@ -1,0 +1,7 @@
+# GENERATE
+# For HOSTALIASES
+
+<% if @computer.network %>
+<%= @computer.network.global_dns(reachable: :all).output_user_hosts %>
+<%= @computer.network.global_dns(reachable: :best, fqdn_mode: :short).output_user_hosts %>
+<% end %>

@@ -11,6 +11,25 @@ Méthode de Newton
 https://en.wikipedia.org/wiki/Householder%27s_method
      x_{n+1} = x_n + d (1/f)^(d−1)(x_n)/(1/f)^(d)(x_n)
 
+En p-adique: si f'(x_0)=u p^e, f''(x_0)/2=v
+f(x_0)=0 mod p, ie = a p.
+
+1) f(x0+x1p)=f(x0)+f'(x0)x1p +f''(x0)/2 x1^2 p^2 + O(p^3)
+            =ap + p^{e+1}u x1 + vp^2 x_1^2
+    Donc pas de solutions si e>0, sauf si a=0 mod p, dans ce cas on a une
+    équation de type (a1+vx_1^2=0) où (a1+ux1+vx_1^2=0) à résoudre.
+
+2) Si X_n est défini mod p^{n+1}, f(X_n)=0 mod p^{2n}
+   f(X_n+ x_{n+1}p^{n+1})=f(X_n)+p^{e+n+1} u x_{n+1} + p^{2n+2} v x_{n+1}^2 +O(...)
+   si e>=n+1, il faut que f(X_n)=0 mod p^{2n+1}, et on a une équation de
+   degré 2 à résoudre
+
+3) Si n >=e, X_n est déf mod p^{n+1} et f(X_n)=0 mod p^{n+e+1}=a_n p^{e+n+1}
+   alors on pose x_{n+1}=-a_n / u.
+   Plus généralement, on peut regarder f(X_n+Y_n p^{n+1})
+   et déterminer Y_n mod p^{n+1-e} tel que f(...)=0 mod p^{2n+2}
+   et déterminer X_{2n+1-e} mod p^{2n-e+2} directement tel que f(X_{2n-e})=0 mod p^{2n+2}
+
 Base de Groebner
 ================
 

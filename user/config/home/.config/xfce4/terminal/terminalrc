@@ -26,7 +26,7 @@ MiscTabCloseButtons=TRUE
 MiscTabCloseMiddleClick=TRUE
 MiscTabPosition=GTK_POS_TOP
 MiscUseShiftArrowsToScroll=FALSE
-
+MiscShowUnsafePasteDialog=FALSE
 ScrollingOnOutput=FALSE
 TabActivityTimeout=30
 <% if colors %>

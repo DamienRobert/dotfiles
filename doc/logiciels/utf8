@@ -35,6 +35,12 @@ cd ~/usr/share/uni
 wget ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt
 xz -9 UnicodeData.txt
 
+Ex:
+'ZERO WIDTH NON-JOINER' (U+200C)
+'ZERO WIDTH JOINER' (U+200D)
+'ZERO WIDTH NO-BREAK SPACE' (U+FEFF)
+=> https://330k.github.io/misc_tools/unicode_steganography.html
+
 * Punycode: Punycode is a special encoding used to convert Unicode characters to ASCII, which is a smaller, restricted character set. Punycode is used to encode internationalized domain names (IDN).
 
 IRI: https://en.wikipedia.org/wiki/Internationalized_Resource_Identifier

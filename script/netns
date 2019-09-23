@@ -1,9 +1,118 @@
 #!/bin/zsh
 
+create_netns() {
+	[[ -e /var/run/netns/$netns ]] || ip netns add $netns
+}
+
+setup_ipvlan() {
+	dev=$1
+	netns=${netns-"ns1"}
+	vpeer=${vpeer-"ipvl0"}
+	peer_ip=${peer_ip-"192.168.0.57"}
+	mask=${mask-"24"}
+	gateway=${gateway-$(getent hosts _gateway | cut -d " " -f1)} #192.168.0.1
+
+	if [[ -z $dev ]]; then
+		. $HOME/.initvars
+		LIBSCRIPT=$MYFILES/script/lib/
+		. $LIBSCRIPT/find_dev.zsh
+
+		find_netdevs
+		dev=$netdevs_wlan[1]
+	fi
+
+	create_netns
+	ip link add link $dev $vpeer type ipvlan mode l2
+	ip link set $vpeer netns $netns
+	ip -n $netns addr add $peer_ip/$mask dev $vpeer
+	ip -n $netns link set $vpeer up
+	ip -n $netns route add default via $gateway
+}
+
+setup_veth() {
+	dev=$1
+	netns=${netns-"ns1"}
+	veth=${veth-"v-eth1"}
+	vpeer=${vpeer-"v-peer1"}
+	host_ip=${host_ip-"10.200.1.1"}
+	peer_ip=${peer_ip-"10.200.1.2"}
+	mask=${mask-"24"}
+
+	if [[ -z $dev ]]; then
+		. $HOME/.initvars
+		LIBSCRIPT=$MYFILES/script/lib/
+		. $LIBSCRIPT/find_dev.zsh
+
+		find_netdevs
+		dev=$netdevs_wlan[1]
+	fi
+
+	create_netns
+
+	## Set up veth
+	# Create veth link.
+	ip link add $veth type veth peer name $vpeer
+
+	# Add peer-1 to NS.
+	ip link set $vpeer netns $netns
+
+	# Setup IP address of v-eth1.
+	ip addr add $host_ip/$mask dev $veth
+	ip link set $veth up
+
+	# Setup IP address of v-peer1.
+	ip netns exec $netns ip addr add $peer_ip/$mask dev $vpeer
+	ip netns exec $netns ip link set $vpeer up
+	ip netns exec $netns ip link set lo up
+
+	# Routing
+	ip netns exec $netns ip route add default via $host_ip
+
+	## Share internet access between host and NS.
+
+	# Enable IP-forwarding.
+	sysctl net.ipv4.ip_forward=1
+
+	# Nat
+	nft add table ip nat
+	nft add chain ip nat prerouting \{ type nat hook prerouting priority 0 \; \}
+	nft add chain ip nat postrouting \{ type nat hook postrouting priority 100 \; \}
+	nft add rule ip nat postrouting oifname $dev ip saddr $peer_ip/$mask counter masquerade
+
+	# Forwarding
+	nft add table inet filter
+	nft add chain inet filter forward \{ type filter hook forward priority 0 \; policy drop \; \}
+	nft add rule inet filter forward iifname $dev oifname $veth ct state related,established counter accept
+	nft add rule inet filter forward iifname $veth oifname $dev counter accept
+}
+
+teardown() {
+	netns=${netns-"ns1"}
+	# apparently this delete every interface linked to ns1, including v-eth1
+	# in the default namespace
+	ip netns delete $netns
+}
+
+if (( $EUID != 0 )); then
+	echo "# Needs to run as root, launching sudo"
+	exec sudo -E $0 $@
+fi
+
+while true; do
+	case $1 in
+		-- ) shift; break ;;
+		--netns ) shift; netns=$1; shift ;;
+		--setup|--setup-veth ) shift; setup_veth $@; exit $? ;;
+		--setup-ipvlan ) shift; setup_ipvlan $@; exit $? ;;
+		--teardown ) shift; teardown $@; exit $? ;;
+		*) break ;;
+	esac
+done
+
 netns=${netns-ns1}
 
 if [[ -n $@ ]]; then
-	sudo ip netns exec $netns sudo -u $USER $@
+	ip netns exec $netns sudo -E -u ${SUDO_USER-$USER} $@
 else
-	sudo ip netns exec $netns su $USER
+	ip netns exec $netns su ${SUDO_USER-$USER}
 fi

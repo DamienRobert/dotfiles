@@ -3,7 +3,7 @@
 
 version="LAST"
 
-vcs clone_or_update --checkout $version "https://github.com/OfflineIMAP/offlineimap" "$OPT/packages/offlineimap"
+vcs clone_or_update --checkout $version "https://github.com/OfflineIMAP/offlineimap" "$OPTPKG/"
 
 cd $OPT/bin
-ln -s ../packages/offlineimap/offlineimap.py offlineimap
+ln -snf ../packages/offlineimap/offlineimap.py offlineimap

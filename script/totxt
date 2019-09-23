@@ -31,6 +31,7 @@ Mis options:
 -o/--opts: extra opts (passed to pandoc or unoconv)
 --mutt: mutt mode (uses mutt_html_reader rather than w3m)
 --charset=charset: specify charset (for pdftotext and mutt_html_reader)
+--fallback: fallback to using `cat` for unknown mime types
 EOS
 }
 
@@ -40,7 +41,7 @@ EOS
 
 #orig-mime: not used; this is for mutt/.mailcap with pdf conversion to
 #still get the mime type of the original document before conversion to pdf
-OPTS=$(getopt -o 'mvphqo:x' --long 'pandoc-pdf,pdf,markdown,html,view,mime:,help,charset:,quiet,mutt,opts:,xdg-open,orig-mime:,unoconv' -- "$@")
+OPTS=$(getopt -o 'mvphqo:x' --long 'pandoc-pdf,pdf,markdown,html,view,mime:,help,charset:,quiet,mutt,opts:,xdg-open,orig-mime:,unoconv,fallback' -- "$@")
 eval set -- "$OPTS"
 while true; do
 	case $1 in
@@ -58,6 +59,7 @@ while true; do
 		--orig-mime ) shift; orig_mime=$1; shift ;; #not used
 		--mutt ) shift; mutt=t; quiet=t ;;
 		--charset ) shift; charset=$1; shift ;;
+		--fallback ) shift; opt_fallback=t ;;
 		--help ) shift; usage; exit 1 ;;
 		*) printf "[$0] Error: unsupported option '%s'" $1; exit 1 ;;
 	esac
@@ -95,7 +97,8 @@ convert_from_mime() {
 		application/x-pkcs7-signature)
 			openssl pkcs7 -in $file -inform der -noout -print_certs -text ;;
 		application/pgp-encrypted) gpg -d $file ;;
-		application/vnd.oasis.opendocument.text ) odt2txt $i ;;
+		application/vnd.oasis.opendocument.text ) odt2txt $i ;; #.odt
+		application/vnd.oasis.opendocument.spreadsheet ) odt2txt $i ;; #.odt
 		application/msword)
 			if [[ -n $mutt ]]; then
 				antiword $i
@@ -114,7 +117,11 @@ convert_from_mime() {
 				pdftotext $i -
 			fi
 		;;
-		*) printf "[$0] Error: unsupported type '%s'" $mime
+		*) if [[ -n $opt_fallback ]]; then
+			cat $i
+		else
+			printf "[$0] Error: unsupported type '%s'" $mime
+		fi
 	esac
 }
 

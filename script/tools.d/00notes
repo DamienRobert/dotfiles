@@ -5,6 +5,10 @@ Syntax check:
 - bash/zsh -n
 - node -c
 
+Install yarn packages:
+yarn add $(ruby -e "require 'dr/packages/user'; puts DR::Packages::User::NPM_LINT.values.flatten.join(' ')")
+Update: yarn upgrade -L
+
 # Config and modules resolution
 
 When doing foo-cli /tmp/test/file, foo can either look at .foorc

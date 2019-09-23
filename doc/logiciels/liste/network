@@ -10,7 +10,13 @@ host www.google.com #list all the adresses
 getent hosts www.google.com #the adress used by the dns from nsswitch.conf
 getent ahosts www.google.com #return all adresses
 
-VPN: wireguard
+* apenwarr
+- https://github.com/apenwarr/blip
+  A tool for seeing your Internet latency. Try it at http://gfblip.appspot.com/
+- https://github.com/apenwarr/netselect
+  A parallelizing combination of ping/traceroute
+
+VPN: wireguard [cf to_exterieur]
 
 Man pages
 =========

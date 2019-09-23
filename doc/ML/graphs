@@ -1,0 +1,18 @@
+* https://tl.net/forum/starcraft-2/548382-sc2-esports-history-elo-and-prize-money-visualized?page=2#26
+https://flourish.studio/ racing line graph & racing bar graph, excel for data preparation and the events pics, hitfilm for cutting and editing the video
+
+=> bar chart race
+   https://towardsdatascience.com/step-by-step-tutorial-create-a-bar-chart-race-animation-da7d5fcd7079
+   https://distlib.blogs.com/distlib/2019/03/thoughts-on-building-my-first-bar-chart-race-with-flourish.html
+
+* https://lisacharlotterost.github.io/datavistools-revisited
+  Datawrapper, cf: https://blog.kolabtree.com/11-best-open-source-data-visualization-tools/
+  https://www.softwareadvice.com/resources/free-open-source-data-visualization-tools/
+    => tableau public
+    => muze https://muzejs.org/ (js)
+    => https://github.com/apache/incubator-superset
+    => https://www.paraview.org/
+
+* https://www.reddit.com/r/france/comments/buqubf/calcul_de_corr%C3%A9lation_entre_la_pr%C3%A9sidentielle_de/
+  Graphique de Plût, fait avec Sankeymatic.
+

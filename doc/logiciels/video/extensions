@@ -57,6 +57,7 @@ webp: WebP is an image format employing both lossy[6] and lossless compression.
 Images: webp basé sur vp8
         bpg basé sur hevc (ie h265)
         flif: lossless but more efficient than png
+        avif: basé sur av1
 
 Futur codec: https://en.wikipedia.org/wiki/AOMedia_Video_1 (av1)
   Basé sur vp10+daala+thor

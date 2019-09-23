@@ -1,5 +1,42 @@
 #!/usr/bin/env ruby
 # vim: fdm=marker
+
+=begin
+  * initialisation
+	def initialize(name=nil, check: false, local: nil, retrieve_local: true, infos: {})
+	- name=nil => name="current" [note: if name="local" and the :local opt is nil, then it is set to true]
+	- check: check if the name is in List[:all]
+	- local=true => compute local infos (cf handle_local)
+	- local=false && retrieve_local=true => fetch local infos from the db (cf retrieve_local_infos)
+	- infos: initial infos
+
+	Remark: process_files helpers use name="local" by default
+
+	* retrieving infos
+	Note that we don't merge local_infos to infos anymore. To retrieve infos, use dig:
+			def dig(*args,default:nil, merge:false)
+			  - merge=false => dig infos then dig infos[:local]
+			  - merge=true => infos[...].deep_merge(infos[:local][...])
+	
+	* Specifying computers from the command line
+	- In opts/process_helpers, the option "-c/--computers=" accept a list (so split on ',')
+	- This list is passed to DR::Computers.computers
+	  Note that if we pass _ToUnison, then since :ToUnison is in
+	  DR::Computers.list we get the list of all 'ToUnison' computers
+	- Specific options can be passed via '!opt=value': (cf get_name_options)
+		DR::Computer.new("foobar!my/option=2") => this set infos[:my][:option]="2"
+	- Then the name itself is parsed by handle_ssh_uri
+		=> DR::Computer.new("dams@foobar:plim") set the name to foobar, the :root to plim, and :ssh/:user + :user/:username to dams
+		Note that handle_ssh_uri also accept urls, it auto detect them if they are of the form foo://ploum. In this form we can pass ssh options too
+		=> DR::Computer.new("ssh://dams@foobar:30/plim?myopt=value&a/b=value2") set the name to foobar, the :ssh/:user+:user/:username to dams, the :ssh/:port to 30, the :root to plim and set :ssh/:options/:myopt to "value" and :ssh/:options/:a/:b to "value2"
+	- One can also set ssh options like this
+	  DR::Computer.new("foobar!ssh=ploum@plam:foo") => :ssh=>{:user=>"ploum", :host=>"plam", :path=>"foo"}. Here the name is not set to plam, and :user/:username not set to ploum, and the root not set to :foo
+	  DR::Computer.new("foobar!ssh=ssh://ploum@plam:20?a=b") => :ssh=>
+    {:user=>"ploum", :host=>"plam", :port=>20, :path=>"", :options=>{:a=>"b"}},
+
+		Note that DR::Computer#ssh does not use the :root as a default for the :ssh/:path. So the first two forms above does not set the :ssh/:path, only the :root. To set the :ssh path, specify it as an option 'ssh://foo?path=plim' or 'ploum!ssh=ploum:plim' or 'ploum!ssh/path=plim'
+=end
+
 require 'forwardable'
 
 begin
@@ -31,6 +68,21 @@ module DR
 			mycomputers:myfiles+"00COMPUTERS.rb",
 			initenv: myfiles+"initenv",
 		}
+		REL_FILES={
+			rel_xdg_config_home: ".config",
+			rel_xdg_data_home: ".local/share",
+			rel_xdg_cache_home: ".cache",
+			rel_xdg_runtime_dir: "tmp",
+		}
+		REL_FILES.each do |k,v|
+			REL_FILES[k]=Pathname.new(v)
+		end
+		MYFILES.each do |symb,value|
+			key=("rel_"+symb.to_s+"files").to_sym
+			key=:rel_mycomputers if symb==:mycomputers
+			key=:rel_initenv if symb==:initenv
+			REL_FILES[key]||=value
+		end
 		DUMPFILE=Pathname.home+MYFILES[:infos]+"computers.dump"
 
 		def get_dumpfile
@@ -224,7 +276,7 @@ module DR
 	end #}}}
 
 	class Computer #{{{
-		MYFILES=Computers::MYFILES
+		attr_accessor :rel_files
 		ROOTLEAF="rootleaf"
 
 		def self.computer(*args)
@@ -234,6 +286,51 @@ module DR
 			Computers.computers(*args)
 		end
 		include PPHelper
+
+		module LoadFileHelper #{{{
+			def self.gpg_file?(file)
+				[".gpg", ".asc"].include?(file.extname)
+			end
+
+			def load_file(file, yaml: false)
+				file = Pathname.new(file)
+				return nil unless file.exist?
+				begin
+					if LoadFileHelper.gpg_file?(file)
+						decode = `gpg --no-tty -d #{file}`
+						if decode.empty?
+							warn "Error in gpg: the output is empty"
+						else
+							if yaml
+								require 'yaml'
+								YAML.load(decode)
+							else
+								decode
+							end
+						end
+					else
+						if yaml
+							require 'yaml'
+							YAML.load_file(file)
+						else
+							file.read
+						end
+					end
+				rescue StandardError => e
+					warn "Error in parsing file #{file}: #{e} #{e.backtrace.first}"
+				end
+			end
+
+			def write_file(file, content, yaml: false)
+				if yaml
+					require 'yaml'
+					content=content.to_yaml
+				end
+				Pathname.new(file).write(content)
+			end
+		end
+		extend LoadFileHelper
+		#}}}
 
 		module InfosHelpers #{{{
 			extend Forwardable
@@ -321,6 +418,9 @@ module DR
 		module NameHelpers #{{{
 			def name
 				dig(:name, default: dig(:names, :name))
+			end
+			def sym_name
+				name.downcase.to_sym
 			end
 			def name=(n)
 				n=n.name if Computer === n
@@ -415,12 +515,19 @@ module DR
 		end
 		include AttributesHelpers #}}}
 
-		module FilesHelpers
+		module FilesHelpers #{{{
 			Fileskey=:files
 			def files
 				dig(Fileskey, merge: true)
 			end
-			def file(name, fallback: true, check: false)
+
+			# file(:myfiles) => if :myfiles does not exist and
+			# - fallback is true => :rel_myfiles
+			# - fallback=:home is true => Pathname.home + :rel_myfiles
+			# If check is true => return nil if the file does not exist
+			# Special case for :homepath => special fallback to '~', '', '.'
+			# The :tilde fallback is used in Computer#home
+			def file(name, fallback: true, check: false, check_fallback: false, relative_from: :home)
 				files=self.files||{}
 				f=files.dig(name.to_sym)
 				#xdg_{config,data}_dirs are Arrays
@@ -436,45 +543,55 @@ module DR
 						return Pathname.new('.')
 					end
 				end
+				#fallback to relative file
+				f=nil if check and !f&.exist?
 				g=files.dig("rel_#{name}".to_sym)
 				g &&= Pathname.new(g)
-				case fallback
-				when true
-					if check
-						f=g if g&.exist? unless f&.exist?
-					else
-						f||=g
+				if f.nil? and g
+					case fallback
+					when true
+						f=g
+					when :home
+						f=Pathname.home+g
+					when :homepath,:tilde,:empty,:none,:dot,:current
+						f=fallback
+						h=file(:homepath, fallback: f, check: check)
+						f = h+g if h
 					end
-				when :home
-					if check
-						if g and !f&.exist?
-							gg=Pathname.home+g
-							f=gg if gg.exist?
+					f=nil unless f.exist? if check_fallback
+				end
+				#fallback to absolute file if we requested a relative one which
+				#don't exist
+				if f.nil? and (m=name.to_s.match(/^rel_(.*)/))
+					abs=m[1]
+					g=files.dig(abs.to_sym)
+					g &&= Pathname.new(g)
+					h=if relative_from==:home
+							home
+						else
+							Pathname.new(h)
 						end
-					else
-						f ||= Pathname.home+g if g
-					end
-				else
-					f=nil unless f.exist? if check
+					f=h.rel_path_to(g, inside: true) if h and g
 				end
 				f
 			end
 		end
-		include FilesHelpers
+		include FilesHelpers #}}}
 
-		module SshHelpers
-			def ssh(*args, mode: :hash, **opts)
+		module SshHelpers #{{{
+			def ssh(*args, mode: :hash, **opts, &b)
 				host=dig(:ssh, :host) || name.downcase
 				host=dig(:ssh, :hostu) || host if opts[:universal]
-				opts=dig(:ssh, default: {}).merge(opts)
+				opts=dig(:ssh, :options, default: {}).merge(dig(:ssh, default: {})).merge(opts)
 				ssh_opts={}
 				SH.method(:ssh).parameters.each do |param|
-					ssh_opts[param[1]]=opts[param[1]] if param[0]==:key and opts.key?(param[1])
+					ssh_opts[param[1]]=opts[param[1]] if param[0]==:key or param[1]==:keyrest and opts.key?(param[1])
+					#keyrest is :opts
 				end
 				host=:local if mode==:sshkit and current?
-				# mode: :hash => :ssh_command, :ssh_options, :ssh_command_options,
-				# :user, :host, :hostssh, :command)
-				SH.ssh(host, *args, mode: mode, **ssh_opts)
+				# mode: :hash => {:ssh_command, :ssh_options, :ssh_command_options,
+				# :user, :host, :path, :hostssh, :command}
+				SH.ssh(host, *args, mode: mode, **ssh_opts, &b)
 			end
 
 			def sshfile(file, present: nil, escape: false, **opts)
@@ -492,7 +609,7 @@ module DR
 			r=self.ssh(mode: :hash, **opts)
 			r[:hostssh]
 		end
-		include SshHelpers
+		include SshHelpers #}}}
 
 		module LocalInfosHelpers #{{{
 			# compute local infos
@@ -542,14 +659,68 @@ module DR
 		module AuthInfoHelpers #{{{
 			def get_authinfo(authfile: file(:cfgfiles, fallback: :home, check: true)+".authinfo", **opts)
 				require "dr/config/authinfo"
-				@authinfo=AuthInfo.get_authinfo(authfile: authfile, **opts)
+				AuthInfo.get_authinfo(authfile: authfile, **opts)
 			end
 			def authinfo
 				@authinfo||=get_authinfo
 			end
 			alias :auth :authinfo
+
+			def get_secrets_auth
+				self.class.load_file(file(:cryptfiles,fallback: :home, check: true)+"secrets", yaml: true)
+			end
+			def write_secrets_auth(content=secrets_auth)
+				self.class.write_file(file(:cryptfiles,fallback: :home, check: true)+"secrets", content, yaml: true)
+			end
+			def secrets_auth
+				@secrets_auth ||=get_secrets_auth
+			end
+			def get_network_auth
+				self.class.load_file(file(:cryptfiles,fallback: :home, check: true)+"network", yaml: true)
+			end
+			def network_auth(key)
+				secrets_auth&.dig(key, :network)
+			end
+			def local_network_auth
+				network_auth(name) || network_auth(sym_name)
+			end
 		end
 		include AuthInfoHelpers #}}}
+
+		module NetworkHelpers #{{{
+			require 'dr/config/network'
+			extend Forwardable
+			attr_accessor :global_network, :local_network
+			def_delegators :@local_network, :network, :network_zones, :others_network, :connect_to
+			def init_network
+				@global_network=if attribute?(:types, :own)
+					DR::Config::Network.global_network
+				else
+					DR::Config::Network::GlobalNetwork.new
+				end
+				@local_network= @global_network[self.name] || @global_network[self.sym_name]
+			end
+
+			# vpn keys
+			def network_keys(name=self.name, type: nil)
+				case type
+				when :wg
+					priv=network_auth(name)&.dig(:wg, :private)
+					pub=network_auth(name)&.dig(:wg, :public)
+					if priv && !pub and SH.find_executable("wg")
+						pub=%x/echo '#{priv}' | wg pubkey/.chomp
+					end
+				when :tinc
+					pub=Pathname.new(file(:cryptfiles)+"tinc/#{name}_rsa_key.pub").read!
+					priv=Pathname.new(file(:cryptfiles)+"tinc/#{name}_rsa_key.priv").read!
+				when :zt, :zerotier
+					pub=Pathname.new(file(:cryptfiles)+"zerotier/#{name}_identity.public").read!
+					priv=Pathname.new(file(:cryptfiles)+"zerotier/#{name}_identity.secret").read!
+				end
+				return priv, pub
+			end
+		end
+		include NetworkHelpers #}}}
 
 		module UserHelpers #{{{
 			def user_log(file,msg)
@@ -873,7 +1044,7 @@ module DR
 			end
 
 			def xresources(more_settings={})
-				xres={}; xorg=infos[:xorg]
+				xres={}
 				xres['*.foreground']=dig(:xorg, :colors,:foreground, default: "Black")
 				xres['*.background']=dig(:xorg, :colors, :background, default: "#FFFFFFFFDDDD")
 				xres['*.cursorColor']=dig(:xorg, :colors,:cursor, default: "Firebrick3")
@@ -1024,7 +1195,9 @@ module DR
 		include XorgHelpers #}}}
 
 		# pass nil to get the default
+		# pass 'local' to recompute local_infos
 		def initialize(name=nil, check: false, local: nil, retrieve_local: true, infos: {})
+			self.rel_files=DR::Computers::REL_FILES
 			self.infos={}.deep_merge!(infos) #deep copy the infos parameter to encapsulate
 			add_infos({options: {check: check, local: local, retrieve_local: retrieve_local}})
 			if Computer===name
@@ -1054,7 +1227,7 @@ module DR
 			# but :local is used to know if we are local. This allows to have
 			# local_infos for a 'non local' computer and conversely.
 			if self.infos[:options][:local]
-				handle_local # this set :local = true
+				handle_local # this computes local infos and set :local = true
 			elsif self.infos[:options][:retrieve_local]
 				retrieve_local_infos
 			end
@@ -1089,6 +1262,13 @@ module DR
 			list.any? do |i|
 				self.===(i)
 			end
+		end
+
+		def attributes
+			dig(:attributes, merge: true)
+		end
+		def list
+			dig(:list, merge: true)
 		end
 		# }}}
 
@@ -1231,9 +1411,11 @@ module DR
 		#-> start with the :infos parameter given to Computer.new
 		#-> parse name to get eventual extra infos (cf get_name_options and handle_ssh_uri)
 		#-> overwrite infos[:local_infos] with Computer.local_infos if local (cf handle_local) or from the database if retrieve_local (cf retrieve_local_infos)
-		#
+		#-> set_infos
+		#   set_infos:
 		#-> add init infos
-		#-> overwrite infos with infos[:local_infos]
+		# [-> overwrite infos with infos[:local_infos]]
+		#-> configure infos[:list] and infos[:attributes]
 		#-> add static informations
 		#-> add/overwrite with custom infos (like font and terminal size)
 		#-> add complete infos (like setting sshu to ssh)
@@ -1243,6 +1425,7 @@ module DR
 			# infos.deep_merge!(infos[:local_infos]) #merge (eventual) local infos
 			configure_list
 			configure_attributes #set up extra attributes
+			init_network
 			add_infos(get_static_infos)
 			set_custom_infos
 			complete_infos
@@ -1308,6 +1491,7 @@ module DR
 				add_attribute(:syst_types, :pacman) #we don't install from pacstrap
 				add_attribute(:syst_types, :ssh) #we want ssh
 				add_attribute(:syst_types, :shell) #we want minimal packages like zsh/vim
+				add_attribute(:syst_types, :dns) #we want an unbound conf
 			end
 		end
 
@@ -1436,6 +1620,17 @@ module DR
 				services +=%w(power-save.service power-performance.service) if laptop? #attribute?(:hardware,:laptop)
 				#run cups even if infos[:user][:printer] is false since this is just a socket
 				services+=%w(avahi-daemon.socket org.cups.cupsd.socket)
+				services+=%w(unbound.service) if attribute?(:syst_types, :archclient)
+
+				if (net=local_network)
+					if (tinc=net.get_services(:tinc))
+						services += tinc.each_key.map {|k| "tinc@#{k}.service"}
+					end
+					if (_zt=net.get_services(:zerotier))
+						services << "zerotier-one.service"
+					end
+				end
+
 				add_to_key(:syst,:services,services)
 
 				if attribute?(:syst_types, :boot)
@@ -1467,11 +1662,8 @@ module DR
 			end
 
 			#filepaths
-			MYFILES.each do |symb,value|
-				key=("rel_"+symb.to_s+"files").to_sym
-				key=:rel_mycomputers if symb==:mycomputers
-				key=:rel_initenv if symb==:initenv
-				infos[Fileskey][key]||=value
+			rel_files.each do |symb,value|
+				infos[Fileskey][symb]||=value
 			end
 
 			return infos
@@ -1711,6 +1903,10 @@ if __FILE__ == $0 #{{{
 			opts[:local]=v if v #force local to be true
 			opts[:save]=v
 		end
+		opt.on("--[no-]show-save[=files/user]","Show saved infos", "Show what would be saved with --save", "If mode is not specified do full save") do |v|
+			opts[:local]=v if v #force local to be true
+			opts[:show_save]=v
+		end
 		opt.on("--[no-]show-dump-file","Show", "Show stored local infos") do |v|
 			opts[:show_dump_file]=v
 		end
@@ -1743,7 +1939,10 @@ if __FILE__ == $0 #{{{
 	else
 		computers=DR::Computers.computers(*ARGV, default: 'local', :local => opts[:local], :check => opts[:check])
 		computers.each do |comp|
-			if (mode=opts[:save])
+			if (mode=opts[:show_save])
+				infos=comp.get_local_infos(local: mode.is_a?(String) ? mode.to_sym: mode)
+				DR::Utils.pretty_print(infos, pretty: opts[:pretty])
+			elsif (mode=opts[:save])
 				if mode.is_a?(String)
 					#:files, :user
 					comp.save_local_infos(mode.to_sym)
@@ -1751,12 +1950,14 @@ if __FILE__ == $0 #{{{
 					comp.save_local_infos
 				end
 			end
-			infos=comp.infos
-			if opts[:export]
-				infos.deep_merge!(infos[:local_infos]) # we cannot rely on 'dig' here
-				puts SH::Export.export_parse(infos,opts[:export])
-			else
-				DR::Utils.pretty_print(infos,pretty: opts[:pretty])
+			if !opts[:show_save]
+				infos=comp.infos
+				if opts[:export]
+					infos.deep_merge!(infos[:local_infos]) # we cannot rely on 'dig' here
+					puts SH::Export.export_parse(infos,opts[:export])
+				else
+					DR::Utils.pretty_print(infos,pretty: opts[:pretty])
+				end
 			end
 		end
 	end

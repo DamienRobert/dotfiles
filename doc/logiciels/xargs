@@ -1,0 +1,23 @@
+xargs reads items from the standard input, delimited by blanks (which  can
+be  protected with  double or single quotes or a backslash) or newlines,
+and executes the command (default is /bin/echo) one or more times with any
+initial- arguments  followed  by items read from standard input.
+
+Options:
+       -L max-lines
+              Use at most max-lines nonblank input  lines  per  command  line.
+              Trailing blanks cause an input line to be logically continued on
+              the next input line.  Implies -x.
+       -l: equivalent to -L1
+       -x, --exit
+              Exit if the size (see the -s option) is exceeded.
+       -I replace-str
+              Replace occurrences of replace-str in the initial-arguments with
+              names read from standard input.  Also, unquoted  blanks  do  not
+              terminate  input  items;  instead  the  separator is the newline
+              character.  Implies -x and -L 1.
+       -p: ask for confirmation
+
+Exemples:
+$ git remote | xargs -L1 git push --all
+$ git remote | xargs -L1 -I R git push R master

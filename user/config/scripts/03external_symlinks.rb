@@ -11,7 +11,7 @@
 	mkdir(".cache/cpan/build"); mkdir(".cpan"); write_symlink(".cpan/build", "../.cache/cpan/build")
 	symlink("Downloads/dwhelper", clobber: false)
 
-	if runtime=@computer.file(:xdg_runtime_dir)
+	if (runtime=@computer.file(:xdg_runtime_dir))
 		symlink(runtime+"gvfs", ".gvfs", clobber: false)
 		symlink(runtime, "run", clobber: false)
 	end

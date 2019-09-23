@@ -6,10 +6,18 @@ module DR
 	module Process
 		module Squel::ContextHelper
 			def has_package?(pkg, bin: pkg)
-				@computer[:packages].include?(pkg) or @processor.present? && Pathname.new(@computer.root+"usr/bin/#{bin}").exist? 
+				@computer[:packages].include?(pkg) or has_file?("usr/bin/#{bin}")
 			end
 			def has_base_package?(pkg, bin: pkg)
 				@computer[:packages].include?("base") or has_package?(pkg, bin: bin)
+			end
+
+			def has_file?(file)
+				@processor.present? && Pathname.new(@computer.root+file).exist? 
+			end
+
+			def has_dns_server?
+				has_package?("unbound")
 			end
 
 			def sudo(*args, sudo: "sudo -E", **opts)

@@ -1,14 +1,15 @@
 #!/bin/zsh
 
+. ~/script/lib/mount_dir
 MOUNTMODE=udisk
-MODE=
 #UUID=20d96426-1f4d-4fec-8aa9-287e0142051f
-LABEL=usbinria
-MOUNTDISK=$(findfs "LABEL=$LABEL")
-MOUNTTARGET=/run/media/dams/$LABEL
+MOUNTLABEL=usbinria
+MOUNTTARGET=/run/media/dams/$MOUNTLABEL
+find_mount
+
 DIRHOME="$MOUNTTARGET/home/dams"
 
-#options: MOUNTMODE=sudo or MOUNTMODE=udisk
+MODE=
 while true;
 do
 	case "$1" in

@@ -1,7 +1,7 @@
 # vim: ft=sh
 # Usage:
 # 1) git folders
-# build_git  progname/url version [configure args]
+# build_git  [-l] progname/url version [configure args]
 #   $url, [$version]
 #   $progname <- basename $url
 #   $url <- git_optdist $url
@@ -52,6 +52,13 @@ OPTPKGNAME=${OPTPKGNAME-packages}
 OPTPKG=$OPT/$OPTPKGNAME
 OPTSRC=$OPT/$OPTSRCNAME
 
+# export the relevant environnement variable (in case we use a /tmp OPT)
+export PATH="$OPT/bin:$PATH"
+export CPATH="$OPT/include:$CPATH"
+export LIBRARY_PATH="$OPT/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
+export LD_LIBRARY_PATH="$LIBRARY_PATH"
+export PKG_CONFIG_PATH="$OPT/lib/pkgconfig:$PKG_CONFIG_PATH"
+
 mkdir -p $OPTPKG $OPTSRC
 
 # from makepkg.conf
@@ -100,19 +107,25 @@ do_compile() {
 	local srcdir prefix
 	srcdir="$1"; shift
 	prefix="$1"; shift
+	if [[ -n $PRE_COMPILE ]]; then
+		echo "# Pre Compile: $PRE_COMPILE"
+		eval $PRE_COMPILE
+	fi
 	cd "$srcdir" || exit 1
 	echo "! Compiling on '$srcdir' using prefix '$prefix'"
 	if [[ -n $CUSTOM_COMPILE ]]; then
-		echo $CUSTOM_COMPILE
+		echo "$ $CUSTOM_COMPILE"
 		eval $CUSTOM_COMPILE
 	else
 		if [ ! -e "configure" ]; then
 			if [ -x "autogen.sh" ]; then
-				echo "./autogen.sh"
+				echo "$ ./autogen.sh"
 				./autogen.sh
 			elif [ -x "bootstrap" ]; then
+				echo "$ ./bootstrap"
 				./bootstrap
 			elif [ -e "configure.ac" ]; then
+				echo "$ autoreconf --install --verbose"
 				autoreconf --install --verbose
 			else
 				echo "# ./configure not found, assuming no compilation needed"
@@ -120,7 +133,7 @@ do_compile() {
 				return 0
 			fi
 		fi
-		echo "./configure --prefix=$prefix $@ && make && make install"
+		echo "$ ./configure --prefix=$prefix $@ && make && make install"
 		./configure --prefix=$prefix "$@" && make && make install
 	fi
 	cd "$OLDPWD"
@@ -138,19 +151,23 @@ do_symlinks() {
 	[ -e "$versioned" ] || exit 1
 	ln -snf "$versioned" "$name"
 
-	if [[ -d "$OPT/bin" ]]; then
+	if [[ -d "$OPTPKG/$name/bin" ]]; then
+		mkdir -p "$OPT/bin"
 		cd "$OPT/bin"
 		ln -snf "../$OPTPKGNAME/$name/bin"/* .
 	fi
-	if [[ -d "$OPT/lib" ]]; then
+	if [[ -d "$OPTPKG/$name/lib" ]]; then
+		mkdir -p "$OPT/lib"
 		cd "$OPT/lib"
 		ln -snf "../$OPTPKGNAME/$name/lib"/* .
 	fi
-	if [[ -d "$OPT/include" ]]; then
+	if [[ -d "$OPTPKG/$name/include" ]]; then
+		mkdir -p "$OPT/include"
 		cd "$OPT/include"
 		ln -snf "../$OPTPKGNAME/$name/include"/* .
 	fi
-	if [[ -d "$OPT/lib/pkgconfig" ]]; then
+	if [[ -d "$OPTPKG/$name/lib/pkgconfig" ]]; then
+		mkdir -p "$OPT/lib/pkgconfig"
 		cd "$OPT/lib/pkgconfig"
 		ln -snf "../../$OPTPKGNAME/$name/lib/pkgconfig"/* .
 	fi
@@ -161,6 +178,7 @@ do_symlinks() {
 	if [[ -d $infodir ]]; then
 		cd $infodir
 		infopages=(*.info*)
+		mkdir -p "$OPT/info"
 		cd "$OPT/info"
 		for info in $infopages; do
 			ln -snf "../../$OPTPKGNAME/$name/share/info"/$info .
@@ -172,6 +190,7 @@ do_symlinks() {
 	if [[ -d $mandir ]]; then
 		cd $mandir
 		manpages=(*/*)
+		mkdir -p "$OPT/man"
 		cd "$OPT/man"
 		for man in $manpages; do
 			mkdir -p $(dirname $man)
@@ -186,7 +205,7 @@ do_build() {
 	local name nameversion archivename url
 	name="$1"; nameversion="$2"; archivename="$3"; url="$4"
 	shift; shift; shift; shift
-	echo "Building '$name ($nameversion)' from '$archivename' downloaded on '$url'"
+	echo "=> Building '$name ($nameversion)' from '$archivename' downloaded on '$url'"
 	# Note: we assume that the extraction will make a folder $nameversion
 	get_src "$archivename" "$url" &&
 	#dir prefix options
@@ -203,7 +222,7 @@ do_build_git() {
 	shift; shift; shift; shift
 	get_git_src "$folder" "$url" "$version" &&
 	if [[ -n $CUSTOM_VERSION ]]; then
-		echo $CUSTOM_VERSION
+		echo "# Version: $CUSTOM_VERSION"
 		eval $CUSTOM_VERSION
 	else
 		cur_version=$(git -C "$folder" describe --tags || git -C "$folder" describe --always)
@@ -277,11 +296,12 @@ build_git() {
 		shift
 		local url progname version gitfolder
 	fi
-	if [[ -z $url && -n $1 ]]; then
+	if [[ -z $url && -n $1 && x$1 != x-- ]]; then
 		url=$1; shift
 	fi
 	[[ -z $progname ]] && progname="$(basename $url)"
-	[[ -z $version && -n $1 ]] && { version=$1; shift }
+	[[ -z $version && -n $1 && x$1 != x-- ]] && { version=$1; shift }
+	[[ -n $1 && x$1 == x-- ]] && shift
 	# if url is not in the db of git_optdist.rb
 	# url=foo:dqf/dfq -> return self
 	# url=foo/bar -> return https://www.github.com/foo/bar

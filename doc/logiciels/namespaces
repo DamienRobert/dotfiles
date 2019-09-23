@@ -35,3 +35,12 @@ If there is no another reference or any running process within the namespace the
   sudo ip netns add ns1 #=> bind mounted from /run/netns/ns1
   sudo ip netns exec ns1 ...
   ip netns identify
+
+- Tools: https://github.com/charles-dyfis-net/ns-exec-tools
+Lightweight, execline-style tools to build restricted Linux namespaces
+
+- User namespace cf user_namespaces(7)
+  tool: newuidmap, newgidmap
+
+  The newuidmap sets /proc/[pid]/uid_map based on its command line arguments and the uids allowed in /etc/subuid.
+  Eg newuidmap process uid loweruid count

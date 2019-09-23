@@ -1,26 +1,28 @@
+vim: ft=markdownlight fdm=expr
+
 Encoding
---------
+========
 [see also the script tox265 and ~/script/extra/ffmpeg]
 
-Standard:
+* Standard:
 ffmpeg -i foo -avoid_negative_ts 0 -c:v libx265 -preset:v veryslow -crf 28 -c:a libopus -b:a 96000 [-vf hqdn3d] foo.mkv
 
-Encode dvd like + vorbis: [yadif: means "yet another deinterlacing filter]
+* Encode dvd like + vorbis: [yadif: means "yet another deinterlacing filter]
 ffmpeg -i orig.mpg -c:v libx264 -preset veryslow -crf 20 -vf yadif,scale=512:384,hqdn3d -c:a libvorbis -q:a 3  out.mkv
 
-Blue ray like (audio: aac):
+* Blue ray like (audio: aac):
 ffmpeg -i foo -c:v libx264 -preset:v veryslow -tune:v film -crf 25 -c:a aac -strict -2 -q:a 4 -vf hqdn3d foo.mp4
   #-strict -2 because aac is 'experimental'
 
-Mp3:
+* Mp3:
 ffmpeg -i foo -c:v libx265 -preset:v veryslow -x265-params crf=28 -c:a libmp3lame -q:a 6 -vf hqdn3d foo.avi
 
-Two Pass:
+* Two Pass:
   ffmpeg -i input -pass 1 -c:v libx264 -preset fast -b 512k \
     -f mp4 -an -y /dev/null && ffmpeg -i input -pass 2 -c:v libx264 \
     -preset fast -b 512k 0 -c:a libfaac -b:a 128k -ac 2 output.mp4
 
-Options:
+* Options:
 -vcodec alias for -codec:v (shortcut -c:v); same for -acodec = -c:a
 -vf video filter
 -b:a audio bitrate
@@ -28,22 +30,12 @@ Options:
 -y: overwrite output file without asking
 -f format (usually autodetected from the extension)
 -avoid_negative_ts is on by default but this can be harmful, desactivate.
+-vf: alias for -format:v
 
 Specific Codec options: '-x264opts frameref=15:fast_pskip=0' (from archwiki)
 
 Seeking: -ss 00:23:00, -t/-to 00:24:00
 Eg to copy a certain part: ffmpeg -i foo -to 1:00:00 foo_shortcut
-
-Repeat stream: https://video.stackexchange.com/questions/12905/repeat-loop-input-video-with-ffmpeg
-ffmpeg -stream_loop -1 -i input.mp4 -c copy -fflags +genpts output.mp4
-  -1: repeat infinity
-  genpts: Generate missing PTS if DTS is present. 
-
-AV1
----
-
-https://www.singhkays.com/blog/its-time-replace-gifs-with-av1-video/
-ffmpeg.exe -i input.mp4 -pix_fmt yuv420p -movflags faststart -c:v libaom-av1 -b:v 200k -filter:v scale=720:-1 -strict experimental -cpu-used 1 -tile-columns 2 -row-mt 1 -threads 8 -pass 2 output.mp4
 
 Stream selection
 -----------------
@@ -128,6 +120,15 @@ Audio codecs: https://trac.ffmpeg.org/wiki/Encode/HighQualityAudio
   libfdk_aac > libmp3lame > libfaac
   So mp3 (libmp3lame) is better than aac unless ffmpeg has libfdk_aac
 
+AV1
+---
+
+https://www.singhkays.com/blog/its-time-replace-gifs-with-av1-video/
+ffmpeg.exe -i input.mp4 -pix_fmt yuv420p -movflags faststart -c:v libaom-av1 -b:v 200k -filter:v scale=720:-1 -strict experimental -cpu-used 1 -tile-columns 2 -row-mt 1 -threads 8 -pass 2 output.mp4
+
+Note: yuv420p is a pixel format which is the most compatible for encoding
+cf https://trac.ffmpeg.org/wiki/Encode/H.264
+
 Audio
 -----
 
@@ -208,6 +209,9 @@ reset = after how many frames the detection process will start over
 Exemples
 ========
 
+Dvd
+---
+
 * Cigaes, yaf/osmic:9449 (encoder un dvd)
 LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/x264-10bit \
   nice ffmpeg \
@@ -254,5 +258,13 @@ ffmpeg -i dvd.mpeg \
 
 mkvmerge hommage_jerome_robbins.mkv --chapters dvd/dvd.chapters -o hommage_jerome_robbins-chapters.mkv
 
+Video from images
+-----------------
+
 * concatenate images to make a video:
 ffmpeg -f image2 -pattern_type glob -framerate 3 -i '*.JPG' gopro3.mkv
+
+* Repeat stream: https://video.stackexchange.com/questions/12905/repeat-loop-input-video-with-ffmpeg
+ffmpeg -stream_loop -1 -i input.mp4 -c copy -fflags +genpts output.mp4
+  -1: repeat infinity
+  genpts: Generate missing PTS if DTS is present. 

@@ -174,8 +174,7 @@ alias mv="nocorrect mv -i"
 alias cp="nocorrect cp -i --reflink=auto"
 
 alias df="df -h"
-
-alias dua='du -sch'
+alias duh='du -sch'
 
 alias 'cd..'='cd ..'
 alias -g ...='../..'
@@ -198,6 +197,8 @@ alias recode_utf8='recode ISO8859-1..UTF-8'
 alias transfert2='rsync -vazPHAXS'
 alias transfert='rsync -vazP'
 
+alias aspire='wget -rkpENnp'
+
 alias fg1='fg %1'
 alias fg2='fg %2'
 alias fg3='fg %3'
@@ -212,6 +213,7 @@ alias lualatexmk="mylatexmk --lua"
 alias xelatexmk="mylatexmk --xetex"
 alias screenssh="screen -S ssh -RR"
 alias tmuxssh="tmux new -As ssh"
+alias tmuxssh2="tmux new -As ssh2"
 alias tmuxcrontab="tmux new -As crontab"
 
 alias g=git
@@ -235,6 +237,8 @@ alias ri="ri --format=ansi" # enable colors for ri
 export BAT_THEME="GitHub"
 alias ncdu="ncdu --color dark"
 alias prettyping="~/usr/dist/prettyping/prettyping --nolegend"
+
+alias glances="glances --theme-white"
 
 # ~directories {{{2
 #cd ~util -> /usr/local/util
@@ -311,6 +315,7 @@ alias -g IX='| xargs'
 alias -g IW="| w3m -T text/html"
 alias -g IWC="| wc"
 alias -g IPE='| path-extractor'
+alias -g IPZ='| path-extractor | fzv'
 alias VP="PAGER=vimpager"
 
 # helper functions {{{2
@@ -1399,12 +1404,17 @@ if [[ -x /bin/systemctl ]]; then
 #}}}
 
 ### plugins {{{1
-[[ -e $HOME/.config/broot/launcher/bash/br ]] && source $HOME/.config/broot/launcher/bash/br
+# broot
+[[ -e ~/.config/broot/launcher/bash/br ]] && source ~/.config/broot/launcher/bash/br
+# cani
+[[ -f ~/.config/cani/completions/_cani.zsh ]] && source ~/.config/cani/completions/_cani.zsh
+# zplug
+[[ -d ~/.zplug ]] && source ~/.zplug/init.zsh
 
 if [[ -n $ZSHPLUGINS ]]; then
-	[[ -f /home/dams/.config/cani/completions/_cani.zsh ]] && source /home/dams/.config/cani/completions/_cani.zsh
-
 	plugindir=~/usr/dist/@zsh_plugins
+
+	# fzf
 	plugin=$plugindir/fzf
 	if [[ -d $plugin ]]; then
 		## Custom functions to complete with '**'
@@ -1442,6 +1452,7 @@ if [[ -n $ZSHPLUGINS ]]; then
 		# => cd/pushd/rmdir dir**; ls files**; ssh **; unset/unalias/export **
 	fi
 
+	# history-substring
 	plugin=$plugindir/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
 	if [[ -e $plugin ]]; then
 	source $plugin
@@ -1451,6 +1462,7 @@ if [[ -n $ZSHPLUGINS ]]; then
 	bindkeyboth '^On' history-substring-search-down
 	fi
 
+	# zaw
 	plugin=$plugindir/zaw/zaw.plugin.zsh
 	if [[ -e $plugin ]]; then
 		source $plugin
@@ -1461,6 +1473,7 @@ if [[ -n $ZSHPLUGINS ]]; then
 		zstyle ':filter-select' case-insensitive no
 	fi
 
+	# zsh-syntax-highlighting
 	plugin=$plugindir/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 	if [[ -e $plugin ]]; then
 	source $plugin 2>/dev/null
@@ -1576,7 +1589,7 @@ alias visual="fzv --tmux --visual -- -1"
 alias edit="fzv --tmux --edit -- -1"
 alias open="fzv --tmux --open -- -1"
 alias cdup="fzv --tmux --cdup --"
-alias fzcd="fzv --tmux -d --cd --"
+alias fzcd="fzv --tmux -d --cd -- -q"
 # todo: fzf git; fzf exec
 
 ## Paths
@@ -1605,7 +1618,7 @@ export MANPATH="$MANPATH:"
 export INFOPATH="$INFOPATH:"
 export CPATH="$OPT/include:$PKGMGR/arch/usr/include:$CPATH"
 # we don't want a trailing colon, which would mean the empty path, ie '.'
-export LIBRARY_PATH="$OPT/lib:$PKGMGR/arch/usr/lib:${LIBRARY_PATH:+:$LIBRARY_PATH}"
+export LIBRARY_PATH="$OPT/lib:$PKGMGR/arch/usr/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
 export LD_LIBRARY_PATH="$LIBRARY_PATH"
 export PKG_CONFIG_PATH="$OPT/lib/pkgconfig:$PKGMGR/arch/usr/share/pkgconfig:$PKGMGR/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
 

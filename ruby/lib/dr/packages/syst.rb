@@ -17,31 +17,37 @@ module DR
 			minimal: %w(base base-devel gptfdisk lz4 openssh zsh),
 			base: %w(git ruby tmux vim-minimal btrfs-progs rsync ldns),
 			core: %w(encfs mlocate moreutils tree expect inotify-tools),
+			coreextra: %w(progress pv convmv),
 			doc: %w(tldr),
 
 			ip: %w(bridge-utils sshfs socat whois),
 			iw: %w(iw wpa_supplicant wireless_tools),
-			ipextra: %w(ethtool net-tools wireless_tools wol ifplugd bind-tools bluez bluez-utils corkscrew nmap dante ufw nftables iperf3 aircrack-ng),
+			ipextra: %w(ethtool net-tools wireless_tools wol ifplugd bind-tools bluez bluez-utils corkscrew nmap dante ufw nftables iperf3 aircrack-ng macchanger),
+			dns: %w(bind-tools unbound),
+			vpn: %w(wireguard-arch wireguard-tools tinc),
 			#net-tools est obsolete, mais contient ifconfig, route et netstat
 			#wireless_tool contient iwconfig
 			#bind-tools est remplacé par ldns, mais contient `host`
 			#Add bluez-firmware? I don't seem to need it for my bluetooth objects yet
 			net: %w(unison lftp w3m wget),
-			netextra: %w(offlineimap ntp aria2 gnu-netcat lynx links elinks mosh cclive youtube-dl sshuttle openvpn openconnect httpie electrum lastpass-cli), #openconnect: for inria vpn
+			netextra: %w(offlineimap ntp aria2 gnu-netcat lynx links elinks mosh cclive youtube-dl sshuttle openvpn openconnect httpie electrum lastpass-cli rclone), #openconnect: for inria vpn
 
 			archive: %w(atool lrzip lz4 lzop p7zip cpio unrar zip unzip sharutils),
 			#sharutils contains uuencode
 			files: %w(ack ranger vifm par2cmdline rsnapshot bup wipe
-				ripgrep the_silver_searcher ddrescue perl-file-mimeinfo fzf
-				testdisk foremost bat fd ncdu exa lsd tokei),
+				ripgrep the_silver_searcher ddrescue perl-file-mimeinfo fzf skim
+				testdisk foremost bat fd ncdu exa lsd tokei trash-cli),
 				#schroot; scalpel-git (in aur): fork of foremost
-				#`fzy`, `percol`: other fzf finders
+				#`fzy`, `percol`: other fzf finders; skim is a fzfinder written in rust
 			fs: %w(samba gvfs-smb dosfstools ntfs-3g efibootmgr),
 			#efibootmgr is not really a fs but it modifies /sys/firmware/efi/efi* so I put it there anyway
 			fsextra: %w(rmlint exfat-utils gvfs-mtp gmtp android-file-transfer unionfs-fuse), #mtpfs
-			hardware: %w(powertop htop nmon iotop sysstat atop nethogs iftop smartmontools hddtemp hdparm lm_sensors acpi linux-tools fbset hwinfo upower memtest86+
-			dmidecode tlp glances mtr mtr-gtk
-			),
+			hardware: %w(smartmontools hddtemp hdparm lm_sensors acpi linux-tools fbset hwinfo upower memtest86+ dmidecode tlp fwupd
+			), #sysdig (requires sysdig-probe module)
+			monitoring: %w(powertop htop nmon iotop sysstat dstat atop nethogs iftop
+				glances mtr mtr-gtk procinfo-ng
+				iptraf-ng lshw),
+			# Sysdig is a simple tool for deep system visibility, with native support for containers. +gui: csysdig
 			devops: %w(), # In CUSTOM: chef-workstation
 			iso: %w(archiso),
 			mail: %w(abook neomutt mutt urlscan),
@@ -61,6 +67,7 @@ module DR
 			aspell-en aspell-fr hunspell-fr hunspell-en hunspell-en_US mythes-fr
 			dictd jshon highlight tidy unrtf
 			graphviz gnuplot gaupol tidy pandoc qpdf
+			asciidoc asciidoctor
 			arch-wiki-docs arch-wiki-lite
 			cowsay ponysay pdftk-bin dos2unix units
 			unicode-character-database
@@ -75,6 +82,7 @@ module DR
 			develextra: %w(subversion gdb cmake ruby-docs bzr linux-headers mercurial
 			bpython ipython clojure coffeescript scala ocaml nodejs npm yarn yasm
 			patchelf pax-utils libfaketime hub android-tools signify
+			hexyl
 			bower gulp uglify-js grunt-cli
 			clang llvm lldb scons meson go rust
 			rbspy python-pip python2-pip), #cython, cython2?
@@ -84,15 +92,16 @@ module DR
 			#`jruby` ruby+jvm
 			devellint: %w(eslint babel-cli flake8 python-pytest), #flake8: python linter
 			libextra: %w( perl-authen-sasl perl-mime-tools perl-net-smtp-ssl perl-libwww perl-term-readkey
-			python2-numpy python-psutil
 			python-service-identity python2-service-identity
 			python-urwid python-wxpython python-praw
 			),
 			#perl-* are for git (authen-sasl+net-smtp-ssl+mime-tools->git send-email, libwww+term-readkey->git svn), cf pacman -Qi git
-			#python2-numpy: for hungarian, used in git-tbdiff
 			#python2-service-identity for deluge which uses pyOpenSSL, cf https://pypi.python.org/pypi/service_identity
+			#python-urwid,python-wxpython for hachoir3; python-praw for ~usr/dist/export-saved-reddit
+
+			## Not needed anymore: python2-numpy python-psutil
+			#python2-numpy: was for hungarian, used in git-tbdiff. Now there is the core 'range-diff' command
 			#python-psutil for vim-automatic_latex_plugin and nvim-completion-manager
-			#python-urwid,python-wxpython for hachoir3, python-praw for ~usr/dist/export-saved-reddit
 
 			science: %w(pari),
 			sciencesage: %w(sagemath-jupyter sagemath-doc), #sage+some optional dependencies. Note that `sage-notebook` is deprecated in favor of `sagemath-jupyter`. Use `sage-notebook-exporter` to convert
@@ -109,7 +118,7 @@ module DR
 			xss-lock i3lock
 			x2goclient xpra
 			), #accountsservice is optional for lightdm
-			#if needed: lxde, lxqt?
+			#if needed: lxde, lxqt? Terminals: kitty, alacritty
 			#xorg-fonts-misc (I think its dependences xorg-fonts-{encodings,alias} is needed for X programs to use X fonts; otherwise I get:
 			#    $ xmessage "ploum"
 			#    Warning: Unable to load any usable ISO8859 font
@@ -139,7 +148,7 @@ module DR
 			xtextbase: %w(meld pygtksourceview2 mupdf zathura-djvu zathura-pdf-mupdf zathura-ps),
 			xtext: %w(djview gv kdiff3 tig tk goldendict pdf2djvu),
 			# atom, code (=vscode)
-			xtextextra: %w(libreoffice-fresh jre8-openjdk code pdfpc qpdfview),
+			xtextextra: %w(libreoffice-fresh jre8-openjdk code pdfpc qpdfview xournalpp),
 			xtypography: %w(fontforge),
 			xweb: %w(flashplugin wireshark-qt),
 			gnome: %w(baobab cheese ekiga eog eog-plugins evince
@@ -168,39 +177,41 @@ module DR
 
 			# static list of 'dams' local repo
 			AUR_LOCAL_PKGS={
-				aurhelpers: %w(auracle-git aurman aurutils-git cower repoctl pacaur package-query yay pkgbuild-introspection powerpill),
+				aurhelpers: %w(auracle-git aurman aurutils-git repoctl pacaur package-query yay pkgbuild-introspection powerpill),
 				devops: %w(chef-workstation),
 				files: %w(dropbox scalpel-git),
 				hardware: %w(modtree heimdall), #heimdall: flash Samsung phone firmware
-				coreextra: %w(broot path-extractor fpp-git),
-				develextra: %w(universal-ctags-git hyperfine rbspy),
+				coreextra: %w(rust-cli-utils path-extractor fpp-git),
+				develextra: %w(universal-ctags-git rust-cargo-utils rbspy),
 				fsextra: %w(jmtpfs bcache-tools simple-mtpfs),
 				mailextra: %w(archivemail),
 				mediaextra: %w(google-musicmanager gtkpod ponymix-git mp3gain mpdas mpdscribble pulseaudio-dlna),
-				netextra: %w(windscribe-cli tor-browser-en weboob),
+				netextra: %w(windscribe-cli tor-browser weboob),
 				textextra: %w(fast-p pdftk-bin),
 
 				xcom: %w(purple-battlenet-hg purple-hangouts-hg),
 				xfonttools: %w(font-manager),
 				xgames: %w(arenatracker-bin),
 				xmedia: %w(penguin-subtitle-player-git popcorntime),
-				xtext: %w(neovim-gtk),
+				xtext: %w(neovim-gtk), # neovim-qt is in aur now
 				xextra: %w(winswitch yad),
 				xtextextra: %w(impressive masterpdfeditor),
 			}
 
 			#packages that I may have (depending on which computer I am), aka
-			#extra_ok
+			#extra_ok. They don't need to be in PACKAGES (but I find it clearer
+			#when they are)
 			CUSTOM={
 				aurhelpers: AUR_LOCAL_PKGS[:aurhelpers],
 				develextra: %w(universal-ctags-git unetbootin),
+				crack: %w(hashcat hashcat-utils john pdfcrack intel-compute-runtime),
 				hardware: %w(heimdall),
 				fonts: %w(awesome-terminal-fonts ttf-gentium ttf-hack ttf-junicode),
-				devops: %w(chef-workstation),
+				devops: %w(chef-workstation buildah podman), #sysdig
 				fsextra: %w(mtpfs git-annex-bin),
 				files: %w(dropbox scalpel-git),
 				xextra: %w(xorg-xfd xorg-xlsfonts xorg-xfontsel),
-				xtextextra: %w(pdfpc),
+				xtextextra: %w(pdfpc neovim-qt),
 				xmedia: %w(gtkpod linphone popcorntime),
 				xweb: %w(tor-browser-en chromium pepper-flash),
 			}

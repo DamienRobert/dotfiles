@@ -3,6 +3,26 @@ vim: ft=markdownlight fdm=expr
 [!] Installed [+] Interesting
 Liste de logiciels libres: http://enacit.epfl.ch/logiciel-libre/
 
+Backups
+=======
+
++ bup
++ borg https://borgbackup.readthedocs.io/en/stable/
+  a deduplicating backup program. Optionally, it supports compression and authenticated encryption.
++ https://github.com/restic/restic
+  Fast, secure, efficient backup program https://restic.net
+- https://burp.grke.org/burp2/00contents.html
+  Improved Open Source Backup:
+  Incorporating inline deduplication and sparse indexing solutions
+- https://github.com/restic/others
+  Rust: preserve, rdedup, zVault
+    https://github.com/dswd/zvault
+    Rust, but unmaintened
+
+Commercial: crashplan and backblaze https://lifehacker.com/online-backup-faceoff-crashplan-vs-backblaze-1768101631
+
+- rclone: like rsync but to sync with cloud storage (support google drive)
+
 Parsing
 =======
 
@@ -10,8 +30,10 @@ Parsing
 + http://stedolan.github.io/jq/
   jq is a lightweight and flexible command-line JSON processor.
   jq is like sed for JSON data
+  $ jq '.foo' {"foo": 42, "bar": "less interesting data"}
 - http://kmkeen.com/jshon/
   A similar tool with a different syntax
+  jshon -e b -a -t -> bool bool null string
 - https://github.com/therealklanni/jp (light jq)
 - Json formatters: https://github.com/antonmedv/fx, https://github.com/busyloop/vj
 
@@ -26,6 +48,7 @@ Parsing
 Infos
 =====
 
+* Divers:
 glxgears #pour tester la puissance du proc
 look #regarder des trucs dans le dico
 par #reformater les paragraphes
@@ -39,9 +62,24 @@ proot http://proot.me/: userspace chroot, mount, and binfmt_misc based on ptrace
 * Time
 ntpd, openntpd, chrony (cf https://chrony.tuxfamily.org/index.html)
 
-* Disque dur
+* Disques durs
 badblocks, smartctl, hdparm
-lshw, dmidecode
+lshw, dmidecode (hardware information)
+
+* Firmware:
++ https://github.com/fwupd/fwupd (arch: fwupd)
+
+  # fwupdmgr get-devices
+This will display all devices detected by fwupd.
+
+  # fwupdmgr refresh
+This will download the latest metadata from LVFS.
+
+  # fwupdmgr get-updates
+If updates are available for any devices on the system, they'll be displayed.
+
+  # fwupdmgr update
+This will download and apply all updates for your system.
 
 grep
 ----
@@ -65,7 +103,7 @@ carte graphique: glxgears
 
 ls*
 ---
-lsdev lsmod lsattr lsof lspci lspgpot lsusb lsraid
+lsattr lsmod lsof lsdev lspci lspgpot lsusb lsraid lshw
 Ex: lsusb -t to see usb1/2/3 ports, cf
   http://www.linuxnix.com/find-usb-device-details-in-linuxunix-using-lsusb-command/
   http://superuser.com/questions/781398/how-can-i-be-sure-that-ive-plugged-a-device-into-a-usb-3-port
@@ -80,21 +118,51 @@ updatedb #pour updater le cache de locate
 Monitoring
 ==========
 
-http://techthrob.com/2010/07/21/three-apps-for-monitoring-performance-in-linux/
-- nethogs, nmon, iftop et iptraf comme similaires à nettop
-  + nload, netwatch, iptraf-ng
-- iostat et latencytop comme similaires à iotop
-- collectl (avec colmux) et sar (avec sag et sadf) comme combinant ces
-deux-là avec top en plus.
-- pv - monitor the progress of data through a pipe
-- https://github.com/andreoli/fulltrace
+On archlinux:
+* Full diagnostic: glances, conky
+
+* Top: htop, atop, top; iotop
+
+* Net:
+  + ss: the new netstat
+  + nethogs [show programs using connections]
+  + iftop [show ip src <-> dst, like ss]
+  + iptraf-ng [a curse like wireshark]
+  + nload [displays the current network usage]
+  - jnettop [like iftop]
+  - netwatch [ethernet protocol monitor, ver old]
+  - mtr
+    https://github.com/traviscross/mtr (in arch: mtr, mtr-gtk)
+    mtr combines the functionality of the 'traceroute' and 'ping' programs in a single network diagnostic tool.
+
+* Stats:
+  + dstat: Dstat is a versatile replacement for vmstat, iostat and ifstat
+  - nmon [curse]
+  - sysstat (iostat, mpstat = processors, pidstat, sadf = read sar output, sar = output system activity) - divers indicateurs
+  - sysdig: the definitive system and process troubleshooting tool (native support for containers)
+
+* Progress: pv/progress
+  + pv - monitor the progress of data through a pipe
+    $ cat /dev/urandom | pv | cat >/dev/null
+  + https://github.com/Xfennec/progress (in arch)
+    Linux tool to show progress for cp, mv, dd, ... (formerly known as cv)
+
+* Rust cli
+- ps: procs, process-viewer
+- divers: strace-analyzer, battop
+- stats: mprober
+
+* Not in archlinux:
+- Conky like: https://wtfutil.com/
+- Net:
+  - iptraf, nettop
+  - https://github.com/vesche/histstat
+    history for netstat => easily view connections on a system as they occur
+- latencytop comme similaires à iotop
+- collectl (avec colmux) et sar (avec sag et sadf) comme combinant iotop et
+  nettop avec top en plus.
+- https://github.com/andreoli/fulltrace [dead]
   A complete ftrace- and uprobes-based tracer (user, libraries, kernel) for GNU/Linux
-- https://github.com/Xfennec/progress (in arch)
-  Linux tool to show progress for cp, mv, dd, ... (formerly known as cv)
-- https://github.com/vesche/histstat
-  history for netstat => easily view connections on a system as they occur
-- https://github.com/traviscross/mtr (in arch: mtr, mtr-gtk)
-  mtr combines the functionality of the 'traceroute' and 'ping' programs in a single network diagnostic tool.
 
 * Log analyzer
 + https://github.com/allinurl/goaccess (in arch)
@@ -104,35 +172,29 @@ deux-là avec top en plus.
 - https://github.com/dogoncouch/logdissect
   CLI utility and Python module for analyzing log files and other data.
 
-On archlinux:
-- glances, htop, atop - top
-- nethogs, iftop
-- nmon, sysstat (iostat,isag,mpstat,pidstat,sadf,sar) - divers
-- iotop
-- pv/progress
-
 strace
 ------
 
 strace/ltrace/...
 
-https://sysdig.com/blog/sysdig-vs-dtrace-vs-strace-a-technical-discussion/
+* https://sysdig.com/blog/sysdig-vs-dtrace-vs-strace-a-technical-discussion/
 Strace is based on a facility called ptrace that is exported by Linux and other operating systems. Ptrace can do many complex things and is used, for example, by debuggers like gdb to look into a running process. Strace uses it to instrument a target process and “listen” to that process's system
 
-https://en.wikipedia.org/wiki/Ftrace
+* https://en.wikipedia.org/wiki/Ftrace
 - strace – a debugging utility for Linux and some other Unix-like systems, monitors system calls used by a program and all received signals
 - ltrace – a Linux debugging utility, displays the calls a userland application makes to shared libraries
 
 Perf
 ----
 
-ftrace/dtrace: in kernel, more powerful than strace which only listen for
-syscalls (dtrace is on solaris)
-ftrace: allow to see what happen inside the kernel
+* ftrace: allow to see what happens inside the kernel
+[ftrace/dtrace: in kernel, more powerful than strace which only listen for syscalls (dtrace is on solaris)]
 
-perf (the difference with ftrace is not clear; perf looks like it counts
+* perf (the difference with ftrace is not clear; perf looks like it counts
 kernel event while ftrace trace them. Note: The ftrace function tracer is
-also available from within perf, as the ftrace:function tracepoint.):
+also available from within perf, as the ftrace:function tracepoint.)
+
+Exemple: `sudo perf top / stat`
 
 https://perf.wiki.kernel.org/index.php/Tutorial
    This is the wiki page for the perf performance counters subsystem in
@@ -140,36 +202,86 @@ https://perf.wiki.kernel.org/index.php/Tutorial
    events such as instructions executed, cache-misses suffered, or branches
    mispredicted. They form a basis for profiling applications to trace
    dynamic control flow and identify hotspots.
-Cf aussi: perf-tools https://github.com/brendangregg/perf-tools, wrappers autour de perf et ftrace
 
-http://www.brendangregg.com/blog/2015-07-08/choosing-a-linux-tracer.html
-- Linux perf_events (aka "perf", after its command) is the official tracer/profiler for Linux users.
+* Brendan Gregg
++ perf-tools: https://github.com/brendangregg/perf-tools, wrappers autour de perf et ftrace
++ http://www.brendangregg.com/blog/2015-07-08/choosing-a-linux-tracer.html
+  => ftrace, perf_events, eBPF, SystemTap, sysdig
+  - Linux perf_events (aka "perf", after its command) is the official tracer/profiler for Linux users.
++ The famous diagrams: http://www.brendangregg.com/linuxperf.html
+  - observability + static + perf-tools/bcc: http://www.brendangregg.com/Perf/linux_perf_tools_full.png
+  - observability: http://www.brendangregg.com/Perf/linux_observability_tools.png
+    Cf the story at https://www.linux.com/news/netflix-architect-offers-template-monitoring-linux-performance-tools/
+    And an older version: https://wiert.me/2014/03/19/reference-card-for-linux-performance-and-analysis-tools%EF%BB%BF-via-antony-peel-google/
+  - static: http://www.brendangregg.com/Perf/linux_static_tools.png
+  - benchmarking: http://www.brendangregg.com/Perf/linux_benchmarking_tools.png
+  - tuning: http://www.brendangregg.com/Perf/linux_tuning_tools.png
+  - sar: http://www.brendangregg.com/Perf/linux_observability_sar.png
+  - perf-tools: http://www.brendangregg.com/Perf/perf-tools_2016.png
+  - bcc tracing tools: http://www.brendangregg.com/Perf/bcc_tracing_tools.png
 
-BPF adds programmatic capabilities to the existing kernel tracing facilities (tracepoints, kprobes, uprobes) and should include both perf and ftrace capabilities and replace them
+* BPF adds programmatic capabilities to the existing kernel tracing facilities (tracepoints, kprobes, uprobes) and should include both perf and ftrace capabilities and replace them
+=> https://github.com/iovisor/bcc BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more
+More modern version of the perf-tools, using ebpf [opensnoop, ...]
+
+- http://www.brendangregg.com/blog/2018-10-08/dtrace-for-linux-2018.html
+  bpftrace, ply
+  https://github.com/iovisor/bpftrace
 
 Liste
 -----
 
-Grande liste de logiciels de monitoring:
-http://www.linux.com/news/enterprise/systems-management/785426-a-template-for-monitoring-linux-performance-tools-like-from-netflix-
-[Par l'auteur de perf-tools]
-More details:
-http://wiert.me/2014/03/19/reference-card-for-linux-performance-and-analysis-tools%EF%BB%BF-via-antony-peel-google/
-Updated: http://www.brendangregg.com/linuxperf.html
+- http://techthrob.com/2010/07/21/three-apps-for-monitoring-performance-in-linux/
+- Nice wiki: https://wiki.yoctoproject.org/wiki/Tracing_and_Profiling
 
-Nice wiki: https://wiki.yoctoproject.org/wiki/Tracing_and_Profiling
-
-Julia Evans blog
-----------------
-
+* Julia Evans blog
 - https://jvns.ca/blog/2016/07/03/debugging-tools-i-love/
   strace, dstat, tcpdump + wireshark, perf, opensnoop
 - https://jvns.ca/blog/2016/06/30/why-do-we-use-the-linux-kernels-tcp-stack/
 - https://jvns.ca/blog/2017/06/28/notes-on-bpf---ebpf/
+
+Parallel
+========
+
+gnu parallel
+=> https://www.gnu.org/software/parallel/sem.html
+  sem -j 2 'sleep 1;echo 1 finished';   echo sem 1 exited
+  sem -j 2 'sleep 2;echo 2 finished';   echo sem 2 exited
+  sem -j 2 'sleep 3;echo 3 finished';   echo sem 3 exited
+  sem -j 2 'sleep 4;echo 4 finished';   echo sem 4 exited
+  sem --wait; echo sem --wait done
+
+  for i in *.log ; do
+    echo $i
+    sem -j+0 gzip $i ";" echo done
+  done
+  sem --wait
+
+=> https://www.reddit.com/r/rust/comments/c66dtz/async_parallelize_your_shell_commands/
+Reimplementation of `sem -j+0` in rust
+    This looks very similar to akramer's lateral command.
+    https://github.com/akramer/lateral that I've also ported to rust and can be
+    installed via cargo install lateral.
+
+    I haven't looked at your implementation, but the syntax for starting
+    commands is a little different. lateral supports arbitrary file descriptor
+    passing, and adjusting the number of inflight commands allowed while
+    running. Not sure if async supports those or not. Here's a brief example,
+    more can be found on the README.md.
+
+=> http://adapton.org/
+   Programming Language Abstractions for Incremental Computation
+
 Applications graphiques
 =======================
 
+* Console
+https://www.freedesktop.org/wiki/Software/kmscon/
+Modern (userland) linux console
+
 * X
+Liste de (vieux) utilitaires X: https://cyber.dabamos.de/unix/x11/
+
 startx -- :1
 xwd #dumpe la fenêtre
 xsetroot,xsetbg #pour définir le fond d'écran
@@ -194,10 +306,12 @@ terminix: https://github.com/gnunn1/terminix vte gtk3+ but no tab support :-(
 terminology #lots of bells and whistle
             #no support yet for True Color: https://phab.enlightenment.org/T746
 kitty: https://github.com/kovidgoyal/kitty
- A cross-platform, fast, feature full, GPU based terminal emulator
- No support for bce, cf https://github.com/kovidgoyal/kitty/issues/160#issuecomment-346470545
- http://invisible-island.net/ncurses/ncurses.faq.html#bce_mismatches
-
+  A cross-platform, fast, feature full, GPU based terminal emulator
+  No support for bce, cf https://github.com/kovidgoyal/kitty/issues/160#issuecomment-346470545
+  http://invisible-island.net/ncurses/ncurses.faq.html#bce_mismatches
+alacritty: https://github.com/jwilm/alacritty
+  Like kitty, in rust, lightweight
+terminus: in electron... https://news.ycombinator.com/item?id=19988557
 
 WM
 --
@@ -231,6 +345,8 @@ kodi [was xbmc]: interface graphique par dessus (xbox media center)
          + chromecast: https://unix.stackexchange.com/questions/291975/how-do-i-stream-to-chromecast-using-vlc)
         android => bubbleupnp (server+client + chromecast)
 
+- serveurs de media: plex, emby, jellyfish (open source)
+
 Photos
 ------
 eog       (affiche les miniatures et l'image en meme temps)
@@ -257,7 +373,7 @@ Audio
 * Ripp
 grip #front-end graphique pour lecture/ripping de cd
 abcde (command line version of grip)
-whipper (python2 version, fork of morituri [wait for transition away from gstreamer])
+TODO: whipper (python2 version, fork of morituri)
 => use musicbrainz database https://musicbrainz.org/doc/About
 
 Album cover fetcher:
@@ -284,6 +400,10 @@ cmus: https://cmus.github.io/#download (lightweight console music player)
 moc: https://news.ycombinator.com/item?id=10430512
 mpd+ncmpcpp
 mpd+cantata (graphical frontend to mpd)
+
+Tagging:
+- https://wiki.gnome.org/Apps/EasyTAG (last release: 2016)
+- https://kid3.sourceforge.io (qt)
 
 Video
 -----
@@ -386,6 +506,13 @@ Recovery
   -> ddrescue is better than dd_rescue+dd_rhelp
   http://ubuntu-rescue-remix.org/node/51:
   -> ddrescue est mieux (mais dd_rescue permet d'aller en arrière explicitement)
+
+Trash
+-----
+
++ https://github.com/andreafrancia/trash-cli (arch: trash-cli)
+Command line interface to the freedesktop.org trashcan.
+
 
 Latex
 =====
@@ -535,6 +662,10 @@ Web
 Simple: links, lynx
 More powerfull: elinks, w3m
 
+- https://github.com/atsepkov/Graphene
+  A text-based web browser that's a joy to use.
+  Uses puppeteer, an headless chromium
+
 * Download:
 curl/httpie #pour le web
 wget, aria2
@@ -544,25 +675,41 @@ wget, aria2
   The interactive web server.
   HTTPLabs let you inspect HTTP requests and forge responses.
 
+Network
+=======
+
+https://tmate.io/ Instant terminal sharing (using tmux)
+
+Emoji
+=====
+
+- https://github.com/b4b4r07/emoji-cli
+  Emoji completion on the command line
+- https://github.com/mrowa44/emojify
+  emojify substitutes emoji aliases that many services (like GitHub) use for emoji raw characters.
+  $ emojify "Hey, I just :raising_hand: you, and this is :scream: , but here's my :calling: , so :telephone_receiver: me, maybe?"
+
 Modern cli
 ==========
 
 - https://lib.rs/command-line-utilities
 - https://darrenburns.net/posts/tools/
-- vim like utilities https://github.com/Badacadabra/Vimpressionist
+- https://www.linuxjournal.com/content/without-gui-how-live-entirely-terminal
+    Lynx ELinks w3m
+    Mutt Email Client;Notmuch—Just an email system; Alpine
+    Finch (pidgin text version)
+    WordGrinder; sc, Spreadsheet Calculator; tpp, Text Presentation Program
+    Midnight Commander
+    cmus
+    GNU Screen, tmux, Byobu [configuration wrapper for screen/tmux]
++ vim like utilities https://github.com/Badacadabra/Vimpressionist
   (ie tools with vimlike bindings)
   calcurse (=calendar), cmus (music player), feh, i3, mutt, newsbeuter (rss/atom), termite, tig, vifm, vim, w3m, weechat, zathura
 
-+ bat fd ncdu exa/lsd(=ls) tokei prettyping
-  broot(=tree)
++ In arch: rg bat fd ncdu exa/lsd(=ls) tokei prettyping
 
+Other:
 - bfs https://github.com/tavianator/bfs, A breadth-first version of the UNIX find command
-+ https://github.com/chmln/sd
-  sd Intuitive find & replace CLI (sed alternative)
-- https://github.com/TankerHQ/ruplacer
-  Find and replace text in source files (so like sd but handle a whole dir)
-- bench (benchmarking) https://github.com/Gabriel439/bench
-+ hyperfine (like bench but in rust) https://github.com/sharkdp/hyperfine
 - ascii recording: asciinema & svg-term
 
 * Other cat alternative like bat:
@@ -570,10 +717,244 @@ https://github.com/jingweno/ccat
 
 * Other ls alternative like exa
   - https://github.com/athityakumar/colorls (ruby)
-  - https://github.com/Peltoche/lsd
+  + https://github.com/Peltoche/lsd
     lsdeluxe: inspired by lscolor but in rust
   - https://github.com/trapd00r/ls--
   - https://github.com/dborzov/lsp
+
+* Blog and utils from the author of rg:
+- https://blog.burntsushi.net/ripgrep/
+- https://blog.burntsushi.net/transducers/
+  => https://github.com/BurntSushi/fst
+- https://github.com/BurntSushi/tabwriter
+  Elastic tabstops for Rust.
+- https://github.com/BurntSushi/xsv
+  A fast CSV command line toolkit written in Rust.
+
+Rust cli
+========
+ripgrep, fd-find, bat, tokei, hyperfine, exa, lsd, skim [=fzf in rust]
+  [TODO: exa, lsd, skim, bat.
+  Note: skim has interactive commands, eg `sk --ansi -i -c 'rg --color=always --line-number "{}"'`.
+  See also the aliases in https://github.com/mitsuhiko/dotfiles/blob/3c4b18c2190d94655ea64df7bc1d3d45b6abba6e/sh/myprofile#L127-L133
+  ]
++ uutils: a rewrite of coreutils in rust https://github.com/uutils/coreutils
+
+Legend: [+ installed in rust-cli-utils; ! to install or to configure]
+
+* Informations
++ hyperfine (like bench but in rust) https://github.com/sharkdp/hyperfine
+  [- bench (benchmarking) https://github.com/Gabriel439/bench]
+  => hyperfine -w3 'fd . ~/mine'
++ https://lib.rs/crates/bingrep Cross-platform binary parser and colorizer 
+  => bingrep /bin/ls
+! https://lib.rs/crates/procs A modern replacement for ps
++ https://lib.rs/crates/strace-analyzer analyze strace output
+  => strace -s 0 -ff -o cmd.strace /bin/cat haskell-register.log
+     strace-analyzer  cmd.strace.23974
+    read 20.7K with 2 ops (128.0K / op) haskell-register.log
++ https://lib.rs/crates/mprober This program aims to collect Linux system information including hostname, kernel version, uptime, RTC time, load average, CPU, memory, network interfaces and block devices. It can be used not only as a normal CLI tool, but also a web application with a front-end webpage and useful HTTP APIs. 
+  => mprober cpu / memory / ...
+     mprober web
++ battop: battery top https://github.com/svartalf/rust-battop
+          (give info on the battery, not on the software consumption)
+- https://crates.io/crates/gptman
+  A CLI tool for Linux that allows you to copy a partition from one disk to another and more.
++ https://github.com/GuillaumeGomez/process-viewer
+  A process viewer GUI in rust
+
+* Disk
+x https://lib.rs/crates/tin-summer Command-line tool to find build artifacts and thing occupying space on your computer. Shatters records not glass. 
+  (Note: default depth is 2; Use file length)
+  => sn fat/f #biggest directories
+  => sn directories/dir/d/all / sn files/l # show dirs / dirs+files [sn files/l = sn d -f]
+  => sn parallel/p # like all but in parallel
+  => sn sort/o #sort biggest dirs
+  => sn artifacts/ar/r / sn clean/c # show artifacts / clean them
+x https://lib.rs/crates/diskus A minimal, fast alternative to ‘du -sh’ 
+  Use file length.
+  $ hyperfine 'sn d -d0' 'diskus' 'du -sh .'
+    'diskus' ran
+    1.23 ± 0.19 times faster than 'sn d -d0'
+    1.52 ± 0.23 times faster than 'du -sh .'
+  Note: 'sn p -d0' ran 1.30 ± 0.18 times faster than 'diskus'
++ dua-cli https://github.com/Byron/dua-cli
+  => dua. [warning: I had a dua alias, so call with \dua or =dua. Now renamed to the alias to duh]
+     Default to 'aggregate' subcmd. Sort.
+     Also has an interactive mode: `dua i`
+     Show file length
+     Follow symlinks :-(. No --depth
+     Faster than sn p
+      'dua Music' ran
+          1.24 ± 0.05 times faster than 'ds Music/'
+          1.36 ± 0.09 times faster than 'sn p Music'
+     Promising (compared to sn) if ui is improved
++ dirstat-rs https://crates.io/crates/dirstat-rs
+  => ds. Tree like
+     Default depth 1. Show size+%
+     Use file length. Can use block length with `-a`
+     -d: depth (default 1), -m: min percent (default 0.1)
+     └── 100.00% [98.33 MB] ── mine
+        ├── 31.77% [31.24 MB] ── .git
+        ├── 17.58% [17.28 MB] ── doc
++ https://github.com/bootandy/dust
+  tree like view of `du -hd1  | sort -h`
+  => dust
+     No default depth (`-d ...`) but limit to `-n 20` lines by default. But cannot combine both, and don't have min_percent.
+     Show block length. Can use file length with `-s`.
+     Slow: 'ds' ran 5.93 ± 0.05 times faster than 'dust'
+     But usefull to quickly know which subfiles/dirs contribute to the top dirs
+     139M ─┬ .
+      48M  ├─┬ .git
+      35M  │ ├─┬ objects
+      16M  │ │ └─┬ pack
+      14M  │ │   └── pack-3ae252b9ebbdde88ed2b63ed25bb136654aba8c0.pack
+      11M  │ └─┬ subtree-cache
+      11M  │   └─┬ 31949
+     8.6M  │     └── notree
+      19M  ├─┬ ruby
+
+  Comparison: file size of ~/mine/.git
+  sn p -d0, diskus: 29MB [Note: dua -f MiB => 29.79MiB]
+  dua, ds: 31.24MB
+  dust -s: 30M
+
+* Files
++ https://lib.rs/crates/xcp xcp is a (partial) clone of the Unix cp command with some more user-friendly feedback and some optimisations 
+  => xcp foo bar
++ https://lib.rs/crates/rm-improved rip: a safe and ergonomic alternative to rm 
+  => rip file/dir
+     rip -s #see graveyed files
+! broot(=tree)
+! https://lib.rs/crates/lolcate-rs A comically fast way of indexing and querying your filesystem. Replaces locate / mlocate / updatedb. 
+  Bug: skip symlinks does not work
++ https://lib.rs/crates/tree-rs tree-rs is a cross platform reimplementation of the linux tree command. It supports colored output and specifying the number of directory levels it should search 
+  $ hyperfine -w3 'tree' 'tree-rs'
+    'tree-rs' ran
+    1.35 ± 0.05 times faster than 'tree'
++ https://lib.rs/crates/dupe-krill A fast file deduplicator. Replaces duplicate files with identical content with hardlinks. 
+  => dupe-krill -d . #dry-run
++ https://lib.rs/crates/xcompress XCompress is a free file archiver utility on Linux, providing multi-format archiving to and extracting from ZIP, Z, GZIP, BZIP2, LZ, XZ, LZMA, 7ZIP, TAR, RAR and ZSTD 
+  => xcompress a foo.wav /root/bar.txt
+     xcompress a -o /tmp/out.7z foo.wav
+     xcompress x foo.tar.gz /tmp/out_folder
++ https://lib.rs/crates/hunter Fast, lag-free terminal file browser 
+
+* Text:
++ https://github.com/chmln/sd
+  sd Intuitive find & replace CLI (sed alternative)
++ https://github.com/TankerHQ/ruplacer
+  Find and replace text in source files (so like sd but handle a whole dir)
+  => ruplacer foo bar
+  See https://github.com/TankerHQ/ruplacer/issues/19 for the comparison with ruplacer
++ https://lib.rs/crates/fastmod Fast partial replacement for codemod (find/replace tool for programmers) 
+  Like ruplacer, but ask interactively
+  => fastmod foo bar
++ https://github.com/dalance/amber
+  => ambs: like rg
+  => ambr: like fastmod
+  Cf https://github.com/dalance/amber/issues/8
+  ambr split a large file into several threads, so is faster than rg or fastmod in this case.
++ tabwriter
+  => echo 'foo\tbar\nploum\tplam' | tabwriter
++ xv: https://chrisvest.github.io/xv/
+      terminal hex viewer with a text user interface
+
+* Data:
++ https://lib.rs/crates/cw Count Words, a fast wc clone 
+  $ hyperfine 'cw /tmp/mine.tar.xz' 'wc /tmp/mine.tar.xz'
+  'cw /tmp/mine.tar.xz' ran 8.08 ± 0.08 times faster than 'wc /tmp/mine.tar.xz'
++ https://lib.rs/crates/runiq An efficient way to filter duplicate lines from input, à la uniq
+  Cf https://whitfin.io/filtering-unique-logs-using-rust/
+  => runiq -f digest/bloom/naive/sorted
++ https://lib.rs/crates/jql A JSON query language CLI tool
+  => jql '"some"."property"' example.json
++ xsv a suite of CSV command line utilities.
++ fst
+  Construct:
+  => fst set /usr/share/dict/french myfst
+     fst union myfst1 myfst2 myfst
+     fst map input output
+  Introspect:
+     fst dupes myfst
+     fst node myfst nodenumber
+     fst csv edges/nodes myfst
+     fst dot your-transducer.fst | dot -Tpng > your-transducer.png
+     fst rust
+   Query:
+     fst grep myfst m...on
+     fst fuzzy -d2 myfst maison
+     fst range -s maison -e matin myfst
+
+* git: git-find, git-global: cf [git-applications]
+
+* Misc:
++ https://lib.rs/crates/genact A nonsense activity generator 
+  => genact / genact -m module1 module2
+  Modules: bootlog botnet cargo cc composer cryptomining simcity download memdump mkinitcpio kernel_compile weblog
+! https://lib.rs/crates/ttdl TTDL - Terminal ToDo List manager (use the http://todotxt.org/ format)
+  x (A) 2011-03-02 2011-03-01 Review Tim's pull request +TodoTxtTouch @github due:2016-02
+  Done Priority Completed Created 'Subject +project @context keyword:value'
+  => ttdl add/list/done/undone/remove/clean/edit/append/prepend/start/stop/stats/postpone
+  Special keywords: 
+     due:2019-04-10 rec:1y t:2018-05-01 [=threshold date: ie future todos]
+     spent:78 tmr:off [for start/stop]
+  Eg:
+   (A) A high priority todo due:2019-11-01
+   Faire du sport spent:78 tmr:off
+  TODO: config file https://github.com/VladimirMarkelov/ttdl/blob/master/ttdl.toml
++ https://lib.rs/crates/gig A command line tool to rapidly scaffold projects using the power of YAML
+   => gig [-g] <SCAFFOLD_YAML_FILE> <PROJECT>
+   SCAFFOLD:
+    folder:
+      file.ext: "The contents of the file"
++ https://lib.rs/crates/slink Simple remote dev environments over SSH
+    - slink current / use foo
+    - slink go: SSH to the machine, switching to the mirror of PWD (if it exists).
+    - slink run <command>: runs a command on the machine. Automatically allocates a PTY for you to allow interactive commands to work corrrectly.
+    - slink forward <ports...>: forward ports from your local machine to the same ports on the remote machine.
+    - slink sync up: sync the current directory to the remote machine via rsync, maintaining relative path from $HOME if in $HOME, or from root otherwise.
+    - slink sync down: inverse of sync up.
+    - slink upload <file>: uploads a file to the remote, in the same relative location from $HOME if in $HOME, or from root otherwise. Also has an optional --to <file> flag, to upload the local file to an arbitrary path on the remote.
+    - slink download <file>: inverse of upload. Has an optional --from flag, to download the file from an arbitrary path on the remote.
+- https://lib.rs/crates/howto-cli instant coding answers via the command line
+  [does not compile]
+x https://gitlab.com/DarrienG/terminal-typeracer
+  An open source terminal based version of Typeracer written in rust.
+  [Not on cargo, cf
+  https://www.reddit.com/r/rust/comments/bsuyx8/release_100_terminal_typeracing_game/ so to install: 
+  cargo install [--force] --git https://gitlab.com/DarrienG/terminal-typeracer.git]
+  => typeracer
+  :-( core dumped
++ https://github.com/dbrgn/tealdeer
+  A very fast implementation of tldr in Rust. https://github.com/tldr-pages/tldr
+  With a better colorescheme
+  => tldr
+
+* New
++ https://ownyourbits.com/2018/03/25/analyze-disk-usage-with-dutree/
++ https://github.com/mookid/diffr
+  An improved diff-highlight script
++ https://github.com/starship/starship
+  The cross-shell prompt for astronauts. https://starship.rs
++ https://github.com/lunaryorn/mdcat
+  cat for markdown
++ https://github.com/r-darwish/topgrade
+  Upgrade everything
++ https://github.com/WindSoilder/hors
+  howdoi in rust
+- https://github.com/artichoke/artichoke
+  ruby in rust
+- https://github.com/iqlusioninc/sear
+  Signed/Encrypted ARchive: always-encrypted tar-like archive tool with optional signature support
+- https://github.com/casey/just
+  makefile like in rust
++ https://github.com/kpcyrd/sniffglue [arch: sniffglue]
+  Secure multithreaded packet sniffer
+- https://gitlab.com/Dzejkop1/spruce
+  yet another du
+- https://github.com/jhspetersson/fselect
+  Find files with SQL-like queries
 
 Awesome clis
 ============
@@ -614,7 +995,7 @@ Medias
 - https://github.com/mayankchd/movie
   A CLI for getting information about movies and comparing two movies
 
-- https://github.com/alejandrogallo/papis
++ https://github.com/papis/papis
   Powerful and highly extensible command-line based document and bibliography manager. http://papis.readthedocs.io/en/latest/
 
 Web data from cli
@@ -643,6 +1024,9 @@ Web data from cli
 
 Remote access to localhost
 --------------------------
+
+Open a tunnel to a public endpoint:
+https://blog.cloudflare.com/a-free-argo-tunnel-for-your-next-project/
 https://github.com/localtunnel/localtunnel
 https://ngrok.com/
 https://serveo.net/
@@ -690,3 +1074,91 @@ http://www.networkworld.com/article/2926630/linux/11-pointless-but-awesome-linux
 - repo-elephant [from archlinux's repo-add]
 - nmap -oS - google.com
 - ddate (discordian date), cowsay (cowsay moo), lolcat (colorize output), sl (steam locomotive), cmatrix (matrix like effect)
+
+Package manager
+===============
+
+A list of what topgrade updates: https://github.com/r-darwish/topgrade
+- yay / pacman
+- etc-update
+- pearl
+- zplug (zsh), tpm (for tmux)
+- rust (rustup+ cargo), ocaml (opam), ruby (rubygem), python (pipx), node (yarn/npm), vim packages, emacs (paradox), atom packages
+- nix, flatpak, snap
+- fwupd https://github.com/fwupd/fwupd = firmware upgrade
+  rpi-update to update Raspberry Pi Firmware
+  pihole update
+- needrestart: https://github.com/liske/needrestart Restart daemons after library updates. 
+
+## Pearl
+
++ https://github.com/pearl-core/pearl
+Pearl is a lightweight package manager for automating reproducible environments between different systems (Linux and OSX). It can be used for dotfiles, plugins, programs and any form of code accessible via git.
+
+$ wget https://raw.githubusercontent.com/pearl-core/installer/master/install.sh
+$ bash install.sh
+=> * Downloading Pearl to /home/dams/.local/share/pearl
+
+~~~ install.sh
+export PEARL_HOME="$XDG_CONFIG_HOME/pearl" #where the packages are installed
+export PEARL_ROOT="$XDG_DATA_HOME/pearl" #the pearl source code
+
+$ git clone --quiet $branch --depth 1  --recurse-submodules \
+	'https://github.com/pearl-core/pearl.git' "$PEARL_ROOT"
+
+"$PEARL_ROOT/bin/pearl" init
+~~~
+
+~~~ pearl_init
+    mkdir -p $PEARL_HOME/bin
+    mkdir -p $PEARL_HOME/packages
+    mkdir -p $PEARL_HOME/repos
+    mkdir -p $PEARL_HOME/tmp
+    mkdir -p $PEARL_HOME/var
+
+    [[ -e "$PEARL_HOME/bin/pearl" ]] && rm -f "$PEARL_HOME/bin/pearl"
+    ln -s "$PEARL_ROOT/bin/pearl" "$PEARL_HOME/bin"
+
+    [[ -e "$PEARL_HOME/pearl.conf" ]] || cp "$PEARL_ROOT/etc/pearl.conf.template" "$PEARL_HOME/pearl.conf"
+
+    apply "source ${PEARL_ROOT}/boot/sh/pearl.sh" ${HOME}/.bashrc #apply change some escape characters and whitespace, grr!
+    apply "export PEARL_ROOT=${PEARL_ROOT}" ${HOME}/.bashrc
+    bold_cyan; echo -n "* "; normal; echo "Activated Pearl for Bash"
+~~~
+=> Annoyingly this rewrite (badly) my config files
+So the best to use it is to simply clone it, create the dirs, symlink the
+bin and the conf file, rathern than call `pearl init`
+
+* Files changed:
+- vimrc: source /home/dams/.local/share/pearl/boot/vim/pearl.vim
+- bashrc: export PEARL_ROOT=/home/dams/.local/share/pearl; source /home/dams/.local/share/pearl/boot/sh/pearl.sh
+- zshrc: export PEARL_ROOT=/home/dams/.local/share/pearl; source /home/dams/.local/share/pearl/boot/sh/pearl.sh
+- emacs: (load-file "/home/dams/.local/share/pearl/boot/emacs/pearl.el")
+- config.fish: set -x PEARL_ROOT /home/dams/.local/share/pearl; source /home/dams/.local/share/pearl/boot/fish/pearl.fish
+
+~~~ boot/sh/pearl.sh
+  export PEARL_HOME=${HOME}/.config/pearl
+  if [[ $PATH != *"${PEARL_HOME}/bin"* ]]
+  then
+      PATH=$PATH:${PEARL_HOME}/bin
+  fi
+  if [[ $MANPATH != *"${PEARL_ROOT}/man"* ]]
+  then
+      MANPATH=$MANPATH:${PEARL_ROOT}/man
+  fi
++ for each package in $PEARL_HOME/packages/reponame/pkgname it source pearl-config/config.{sh,bash,zsh} (Note: pearl.vim source pearl-config/config.vim)
+~~~
+
+During the source, the following variables are available:
+            PEARL_PKGDIR=${PEARL_HOME}/packages/${reponame}/${pkgname}
+            PEARL_PKGVARDIR=${PEARL_HOME}/var/${reponame}/${pkgname}
+            PEARL_PKGNAME=${pkgname}
+            PEARL_PKGREPONAME=${reponame}
+
+* Commands
+PEARL_ROOT="$HOME/.local/share/pearl" $PEARL_ROOT/bin/pearl list
+$ pearl list
+$ pearl search vim
+$ pearl update [pkg]
+$ pearl remove [pkg]
+$ pearl emerge [pkg] # Emerge is an idempotent command for either installing or updating a package

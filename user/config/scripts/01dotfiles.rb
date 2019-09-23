@@ -6,9 +6,13 @@ def handle_dotfiles(dotfiles)
 	conf={"/" => 1} # default to 1 level
 	%w(.cpan .config .electrum .flrn .gem .gnome2 .mpd .mplayer .mpv .ncmpcpp .ssh).each { |squel| conf["/"+squel]=1 }
 	%w(.cups .local .subversion bin).each { |squel| conf["/"+squel]=-1 }
+
   # .config/... dirs
 	%w(pacman git mcomix).each {|confsquel| conf["/.config/#{confsquel}"]=1}
 	%w(calibre fontconfig gtk-3.0 xfce4).each {|confsquel| conf["/.config/#{confsquel}"]=-1}
+
+	conf["/.local/share/lolcate"]=-1
+
 	unless dotfiles.directory?
 		warn "#{dotfiles} is not a directory" 
 		return nil
@@ -32,9 +36,11 @@ def handle_dotfiles(dotfiles)
 	process.(Pathname.new(''))
 end
 
-dotfiles=@computer.file(:dotfiles, fallback: :checkhome)
+dotfiles=@local_computer.file(:dotfiles, check: true, fallback: :home)
 
-handle_dotfiles(dotfiles)
-handle_dotfiles(dotfiles.append_name("-local")+@computer.name)
-hosttype=@computer.dig(:user,:hosttype)
-handle_dotfiles(dotfiles.append_name("-local")+hosttype) if hosttype && hosttype != @computer.name
+if dotfiles
+	handle_dotfiles(dotfiles)
+	handle_dotfiles(dotfiles.append_name("-local")+@computer.name)
+	hosttype=@computer.dig(:user,:hosttype)
+	handle_dotfiles(dotfiles.append_name("-local")+hosttype) if hosttype && hosttype != @computer.name
+end

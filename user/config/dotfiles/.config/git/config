@@ -111,7 +111,7 @@
 
 [alias]
 	# short alias
-	cat = cat-file
+	cat = cat-file -p
 	co = checkout
 	# ch = cherry
 	ci = commit
@@ -256,15 +256,17 @@
 
 	# submodules
 	sub = submodule
-	subci="!f() { git mysubfor 'git commit \"$@\"';}; f"
-	subdi="!f() { git mysubfor 'git di --color \"$@\"';}; f"
-	subs="!f() { git mysubfor 'git s \"$@\"';}; f"
-	subst="!f() { git submodule status --recursive \"$@\"; echo; git --no-pager submodule summary \"$@\" ;}; f"
 	subfor="submodule foreach --recursive"
 	mysubfor="my submodule foreach --recursive --shquiet"
+	subs="!f() { git mysubfor git s \"$@\";}; f"
+	subst="!f() { git submodule status --recursive \"$@\"; echo; git --no-pager submodule summary \"$@\" ;}; f"
 	subsm="! git --no-pager submodule summary"
-	subupdate="submodule update --recursive --remote --merge"
 	subadd="submodule foreach --recursive --quiet git add"
+	subci="!f() { git mysubfor git commit \"$@\";}; f"
+	subaddci="!f() { git subadd \"$@\"; git subci;}; f"
+	subdi="!f() { git mysubfor git di --color \"$@\";}; f"
+	subdc="!f() { git mysubfor git dc --color \"$@\";}; f"
+	subupdate="submodule update --recursive --remote --merge"
 	recs="!f() {git s \"$@\"; git subs \"$@\";}; f"
 	recadd="! f() {git add \"$@\"; git subadd \"$@\";}; f"
 	#recdi="! ( git di --color \"$@\" && git subdi \"$@\"\" ) | less || :"
@@ -295,3 +297,7 @@
 	# 'wsadd' add a file to the index, cleaning up whitespace both in index and worktree.
 	# It only works for files already in the index. Strangely, using 'git add -N' for a new file to mark it as intent to add makes the git apply part fails with 'error: plam: already exists in index', even through 'wsadding' a file already modified in the index seems to work fine.
 	wsadd = "!sh -c 'git diff -- \"$@\" | git apply --cached --whitespace=fix && git checkout -- ${1-.} \"$@\"' --"
+
+	# push
+	pushall="!f() { git remote | xargs -P0 -L1 -I R -- git push R $@; }; f"
+	pushask="!f() { git remote | xargs -P0 -p -L1 -I R -- git push R $@; }; f"

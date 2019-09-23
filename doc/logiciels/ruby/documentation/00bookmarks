@@ -233,3 +233,46 @@ https://github.com/pmq20/ruby-packer
 - https://www.reddit.com/r/ruby/comments/bl8oq3/the_construct_a_modern_rails_template/
 
 - https://www.cookieshq.co.uk/posts/a-useful-tool-for-building-serverless-ruby-apps-with-aws-lambda
+
+- https://ideamotive.co/ruby-on-rails-development-guide/
+  CHOOSING RUBY ON RAILS FOR YOUR NEXT WEB DEVELOPMENT PROJECT
+
+- https://www.reddit.com/r/ruby/comments/bujv1z/game_development_tutorial/
+
+- https://www.honeybadger.io/blog/how-to-try-again-when-exceptions-happen-in-ruby/
+  => retry, and callcc
+
+- ruby and wasm:
+  https://www.reddit.com/r/ruby/comments/ajenwr/runrb_run_ruby_in_the_browser_using_webassembly/ => https://runrb.io/
+  https://www.reddit.com/r/ruby/comments/bjgg03/wasmer_a_ruby_extension_to_run_webassembly/
+  https://news.ycombinator.com/item?id=16951200 Ruby on WebAssembly (blacktm.com)
+  https://hyperstack.org/
+
+- mruby: http://confreaks.tv/videos/rubyconf2017-make-mruby-more-portable-why-and-how
+
+- https://www.reddit.com/r/ruby/comments/c2h6ep/a_second_part_of_the_graphql_on_rails_guide_which/
+  => https://evilmartians.com/chronicles/graphql-on-rails-1-from-zero-to-the-first-query
+
+- http://katafrakt.me/2018/06/06/hidden-jewels-ruby-stdlib/
+  Parsing command-line options
+  Simple persistent key-value store
+  Persisting whole objects hierarchy with PStore
+  Observer pattern
+  DRb
+  Other: tsort, abbrev, math, zlib
+
+- https://www.codeotaku.com/journal/2018-06/improving-ruby-concurrency/index
+  https://www.codeotaku.com/journal/2018-06/asynchronous-ruby/index
+  https://www.codeotaku.com/journal/2018-11/fibers-are-the-right-solution/index
+  https://github.com/socketry/async/issues/23 Use Fiber.transfer instead of Fiber.yield #23 
+  https://github.com/ruby/ruby/pull/2002 Enumerator fiber yield #2002
+  => https://github.com/socketry (async, nio4r, falcon, rubydns...)
+
+- https://medium.com/@jaeger.rob/exploring-rails-mass-assignment-vulnerability-b8b3d19e20b6
+
+- https://dev.to/evilmartians/lefthook-crystalball-and-git-magic-for-smooth-development-experience-33mc
+
+- https://medium.com/inside-aircall/goodbye-activerecord-e61ce894ed48
+  On using ROM instead
+
+- https://www.reddit.com/r/ruby/comments/cck08e/dragonruby_game_toolkit_released/

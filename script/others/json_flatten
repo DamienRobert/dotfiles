@@ -1,0 +1,18 @@
+#!/usr/bin/jq -rf
+# From https://news.ycombinator.com/item?id=20245913
+# similar output to catj: https://github.com/soheilpro/catj
+# see also https://github.com/tomnomnom/gron which outputs valid js code
+
+# Reverse:
+# ./json_flatten foo.json | ( jq "$(sed 's/$/ |/;$a.')" <<< '{}' )
+
+tostream
+| select(length > 1)
+| (
+  .[0] | map(
+    if type == "number"
+    then "[" + tostring + "]"
+    else "." + .
+    end
+  ) | join("")
+) + " = " + (.[1] | @json)

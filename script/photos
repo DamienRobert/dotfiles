@@ -129,5 +129,7 @@ esac
 #   gvfs-mount -li
 #   gvfs-mount 'mtp://[usb:001,030]/'
 #   CAMERAPHOTOS="$HOME/.gvfs/mtp:host=%5Busb%3A001%2C056%5D/Card/DCIM/Camera"
+# - udisk:
+#   udisk status; 
 
 [[ -n $DID_MOUNT ]] && do_umount

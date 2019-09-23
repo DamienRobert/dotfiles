@@ -3,10 +3,8 @@ fzv() {
 	local fd_bin="fd" fd_type='f' fd_args=("--color=always")
 	local fzf_bin=fzf
 	local fzfp_orientation=down fzfp_height='50%' fzfp_post=(wrap)
-	#local fzf_opts=("-0" "--ansi" "--preview" "'[ -d {} ] && ls -lF --color=always {} || bat --plain --color always {}'")
-	local fzf_preview_file="bat --plain --color always {}"
-	# local fzf_preview_file="unbuffer -p vimcat {}"
-	local fzf_preview_dir="ls -lF --color=always {}"
+	local fzf_preview_file="bat"
+	local fzf_preview_dir="ls"
 	local fzf_opts=("-0" "--ansi")
 	local fzf_preview_launch
 	local OPTS=$(getopt -o 'l:bdfevoa' --long 'bookmarks,locate:,dir,files,edit,visual,open,cd,cdup,complete,hidden,tmux,height:,pre:,all,bare,post:,preview:,filepreview:,dirpreview:,bat,cat,vimcat' -- "$@") || return 1
@@ -33,9 +31,11 @@ fzv() {
 			--preview ) shift; fzf_preview_launch=$1; shift ;;
 			--filepreview ) shift; fzf_preview_file=$1; shift ;;
 			--dirpreview ) shift; fzf_preview_dir=$1; shift ;;
-			--bat ) shift; fzf_preview_file=bat ;;
+			--bat ) shift; fzf_preview_file=bat ;; #default
 			--cat ) shift; fzf_preview_file=cat ;;
-			--vimcat ) shift; fzf_preview_file=vimcat ;; #default
+			--exa ) shift; fzf_preview_dir=exa ;;
+			--ls ) shift; fzf_preview_dir=ls ;;
+			--vimcat ) shift; fzf_preview_file=vimcat ;; #old default
 			# Action after fzf selection
 			-e|--edit ) shift; action=edit ;;
 			-v|--visual ) shift; action=visual ;;
@@ -64,7 +64,20 @@ fzv() {
 		vimcat) fzf_preview_file="unbuffer -p vimcat {}" ;;
 		cat) fzf_preview_file="cat {}" ;;
 	esac
-	[[ -z $fzf_preview_launch ]] && fzf_preview_launch="'if [[ -d {} ]]; then $fzf_preview_dir; elif [[ -f {} ]]; then $fzf_preview_file; fi'"
+	case $fzf_preview_dir in
+		exa) fzf_preview_dir="exa -l --color always {}" ;;
+		ls) fzf_preview_dir="ls -lF --color=always {}" ;;
+	esac
+	# [[ -z $fzf_preview_launch ]] && fzf_preview_launch="'if [[ -d {} ]]; then $fzf_preview_dir; elif [[ -f {} ]]; then $fzf_preview_file; fi'"
+	[[ -z $fzf_preview_launch ]] && fzf_preview_launch="'
+		if [[ -f {} ]]; then
+			file --mime {} | grep -q \"text\/.*;\" && $fzf_preview_file || (tput setaf 1; file --mime {})
+		elif [[ -d {} ]]; then
+			$fzf_preview_dir
+			exa -l --color always {}
+		else;
+			tput setaf 1; echo \<DEVICE\>
+		fi'"
 	fzf_opts+=("--preview" $fzf_preview_launch)
 	[[ -n $action ]] && fzf_opts+=("--expect" "alt-c" "--print0")
 	if [[ -z $fzf_post ]]; then

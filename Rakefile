@@ -22,38 +22,39 @@ def unison_type
 	(t=lookup('Types')) ?  t.split(',') : []
 end
 
-desc "Configure current computer user"
+desc "Configure current computer user
+Shortcut for ~config/generate --all"
 task :config do
 	require 'dr/config/configure/user_config'
-	#~config/generate --all
 	DR::Process::User.new.dispatch(actions: :all)
 end
 
-desc "Configure current computer user (without asking for confirmation)"
+desc "Configure current computer user (without asking for confirmation)
+Shortcut for ~config/generate --all --process_now"
 task "config:now" do
 	require 'dr/config/configure/user_config'
-	#~config/generate --process_now
 	DR::Process::User.new.dispatch(actions: :all, pause: false)
 end
 
-desc "Configure current computer system"
+desc "Configure current computer system
+Shortcut for ~syst/config/generate --all"
 task :syst do
 	require 'dr/config/configure/syst_config'
-	#~syst/config/generate --all
 	DR::Process::Syst.new.dispatch(actions: :all)
 end
 
 namespace :remote do
 	desc "Unison to #{DR::Computers::List[:ToUnison]} via #{DR::Computers::UnisonServer}
+	Shortcut for unisonsync _ToUnison
 	ENV: List=:ToUnison, Type=nil"
 	task "unison" do
 		require 'dr/config/unison'
-		# unisonsync _ToUnison
 		DR::Unison::Sync.new(syncmode: true, type: unison_type).process(*unison_list)
 	end
 
 	desc "Update config on remotes
-	'args': splitted and passed as arguments"
+	Shortcut for ~config/run.rb -c _ToUnison :config --all
+	'args=--all': splitted and passed as arguments"
 	task :config, :args do |_t, a|
 		a.with_defaults(:args => "--all")
 		args=a.args.shellsplit
@@ -66,13 +67,18 @@ namespace :remote do
 	end
 
 	desc "Cat config on remotes
+	Shortcut for ~config/run.rb -c _AllUnison 'cat ~/.initvars | grep MYHOST'
 	ENV: List=:AllUnison"
 	task :cat do
 		require 'dr/config/configure/run'
-		# ~config/run.rb -c _ToUnison 'cat ~/.initvars | grep MYHOST'
 		DR::Run.run_command(unison_list(DR::Computers::List[:AllUnison]), 'cat ~/.initvars | grep MYHOST')
 	end
 
+=begin
+Procedure: if the glibc archlinux version is too recent; compile unison on imb (eventually compile ocaml first): ~/script/install/{ocaml,unison}
+Put the unison binary in ~/opt/unison
+Then $ transfert aimb:opt/unison ~/tmp/
+=end
 	desc "Update unison binary to latest version
 	If 'version' is not passed autodetect it from the unison binary.
 	ENV: List=:AllUnison"
@@ -105,6 +111,8 @@ namespace :remote do
 		findbin = lambda do |ubin|
 			if (b=SH::Pathname.home+"opt/unison/#{ubin}").exist?
 				b
+			elsif (b=SH::Pathname.home+"tmp/unison/#{ubin}").exist?
+				b
 			else
 				ubin.to_s.match(/^unison-(.*)-(text|gtk2)-(.*)$/) do |m|
 					version=m[1]
@@ -129,6 +137,7 @@ namespace :remote do
 			DR::Computer.computers(*unison_list(DR::Computers::List[:AllUnison])).each do |c|
 				if c === DR::Computers::UnisonServer
 					arch=comparch.call(curcomp)
+					puts "-- #{c} [#{c.ssh_name}]: opt/unison/ => #{arch} --"
 					[ "#{ubin}-gtk2-#{arch}", "#{ubin}-text-#{arch}"].each do |target|
 						if (obin=findbin.call(target))
 							SH.rsync("#{obin}", c.sshfile("opt/unison/#{target}", escape: true, universal: true))
@@ -144,7 +153,7 @@ namespace :remote do
 				end
 				puts "-- #{c} [#{c.ssh_name}]: #{bin} --"
 				if (obin=findbin.call(bin))
-					DR::Run.new(c).run_command("mkdir -p #{bin.shellescape}", universal: true)
+					DR::Run.new(c).run_command("mkdir -p bin", universal: true)
 					suc, _=SH.rsync(curcomp.sshfile(obin, escape: true, universal: true), c.sshfile("bin/#{bin}", escape: true, universal: true))
 					DR::Run.new(c).run_command("ln -snf #{bin.shellescape} bin/unison", universal: true) if suc
 				end

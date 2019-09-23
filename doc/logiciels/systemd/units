@@ -24,6 +24,14 @@ ConditionPathExists=!foo => foo does not exist
   a unit, then the unit will be executed if at least one of the triggering
   conditions apply and all of the non-triggering conditions.
 
+* Security:
+ReadWritePaths=, ReadOnlyPaths=, InaccessiblePaths=, TemporaryFileSystem=
+RootDirectory, Bind[ReadOnly]Paths=, MountAPIVFS
+ProtectSystem=true [/usr,/boot], full [+/etc], strict [/]
+ProtectHome=true [/home, /root, /run/user], read-only, tmpfs
+DynamicUser= [this implies several other security features]
+PrivateTmp, PrivateDevices, PrivateNetwork, PrivateUsers, PrivateHostname ...
+
 ExecStart
 ---------
 

@@ -1,4 +1,4 @@
-vim: ft=markdownlight
+vim: ft=markdownlight fdm=expr
 
 Net::SSH
 ========
@@ -108,7 +108,10 @@ If user parameter is nil it defaults to USER from ssh_config, or local username
 SSHKit
 ======
 
-https://github.com/capistrano/sshkit
+* https://github.com/capistrano/sshkit
+
+## Syntax
+
 on(in: :parallel) { ... }
 on(in: :sequence, wait: 5) { ... }
 on(in: :groups, limit: 2, wait: 5) { ... }
@@ -130,17 +133,13 @@ on ["foo", "bar"], in: :sequence, wait: 5 do
 end
 ~~~
 
-Without DSL:
-SSHKit::Coordinator.new(hosts).each(options) do block end
-host=SSHKit::Host.new("host"); client=SSHKit::Backend::Netssh.new(host) do block end; client.run
-
-- Environment:
+* Environment:
 as(user: 'un', group: 'grp') { execute('cmd') } # Executes sudo -u un -- sh -c 'sg grp cmd'
 within('/somedir') { execute('cmd') }           # Executes cd /somedir && cmd
 with(env_var: 'value') { execute('cmd') }       # Executes ENV_VAR=value cmd
 SSHKit.config.umask = '077'                     # All commands are executed with umask 077 && cmd
 
-- Execution:
+* Execution:
   execute(*args), test(*args), capture(*args)
 
 Note: In SSHKit, the first parameter of the execute / test / capture
@@ -153,13 +152,33 @@ the first parameter (which is converted by
 the command is run directly (without the arguments); but this has nothing
 to do with being a symbol]
 
-- transferring files:
+* transferring files:
   on '1.example.com' do
     upload! 'some_local_file.txt', '/home/some_user/somewhere'
     download! '/home/some_user/some_remote_file.txt', 'somewhere_local', :log_percent 25
   end
 
-- the DSL is as follow:
+## DSL
+
+* Without DSL:
+SSHKit::Coordinator.new(hosts).each(options) do
+  within / as / execute ...
+end
+
+Or for a single host:
+
+host=SSHKit::Host.new("host"); client=SSHKit::Backend::Netssh.new(host) do block end; client.run
+
+Exemple:
+host=SSHKit::Host.new("phare")
+client=SSHKit::Backend::Netssh.new(host) do
+  execute :hostname
+  execute :uptime
+end
+client.run
+
+* The DSL is as follow:
+  ~~~ ruby
   module SSHKit::DSL
     def on(hosts, options={}, &block)
       Coordinator.new(hosts).each(options, &block)
@@ -168,20 +187,45 @@ to do with being a symbol]
       Backend::Local.new(&block).run
     end
   end
+  ~~~
 
-  Note: Coordinator#each(options,&block) essentially calls
+The Coordinator calls the Runner on hosts which calls the Backend on host
+which then run.
+
+* Coordinator
+  ~~~ ruby
+    def initialize
+        @hosts = @raw_hosts.any? ? resolve_hosts : []
+    end
+    def resolve_hosts
+      @raw_hosts.collect { |rh| rh.is_a?(Host) ? rh : Host.new(rh) }.uniq
+    end
+
+    def each
+    ...
+    end
+  ~~~
+
+  Note: Coordinator#each(options,&block) essentially calls 
   `options[:in].new(hosts,options,&block).execute`
-  which then iterate through hosts and call `backend(host,&block).run`
-  where backend is
+  where the Runner#execute then iterate through hosts and calls 
+  `backend(host,&block).run`
+  where backend is [cf runners/abstract.rb]:
   `host.local? ? SSHKit::Backend::Local.new(&block) : SSHKit.config.backend.new(host, &block)`
 
-- runners:
-  group (Group < Sequential): run in parallel by slices of (@options[:limit]||2)
-  null => SSHKit::Backend::Skipper.new(&block).run
-  parallel: launch parallel threads
-  sequential: launch in sequential and wait (@options[:wait]||2)
+  So for instance: on ["foo", "bar"], in: :parallel) { ... }
+  calls Coordinator.new(["foo", "bar"]).each({in: :parrallel}, &b)
+  which calls Runner::Parallel.new(hosts, options, &b).execute
+  which calls SSHKit.config.backend=SSHKit::Backend::Netssh(host,&b).run
 
-- backends:
+* Runners (ie options[:in]:)
+  sequential: launch in sequential and wait (@options[:wait]||2)
+  group (Group < Sequential): run in parallel by slices of (@options[:limit]||2)
+  parallel: launch parallel threads
+
+  Special case: if 'hosts' is nil, use Runner::Null whose execute block is: SSHKit::Backend::Skipper.new(&block).run
+
+* Backends:
   Skipper:
       def execute_command(cmd)
         warn "[SKIPPING] No Matching Host for #{cmd}"
@@ -193,24 +237,32 @@ to do with being a symbol]
   Local
   Netssh
 
-- Configuration
-  SSHKit.configure do |config| end
-  - use_format(format): Backend::Abstract.output => Configuration.output => Formatter.new(format)
-  - default_env, default_runner (:parallel), default_runner_config,
-    backend (used by Coordinator), command_map
-  Remark: - Coordinator#each(options) => options=default_runner_config options are.merge(options)
+* Host:
+  Host.new(:local / "host to parse" / hash)
+  Accessors: password, hostname, port, username=user, keys, ssh_options
+
+  Host.new("string") => string is parsed to get (if applicable) the username, hostname and port. 
+  Use :local to specify the localhost.
+
+## Configuration
+
+* Configuration
+
+- SSHKit.configure do |config| end
+  - use_format(formatter, *args): Used by Backend::Abstract.output which calls Configuration.output which calls formatter.new($stdout, *args)
+  - default_env, default_runner[=:parallel], default_runner_config[={in:
+    default_runner}], backend[=SSHKit::Backend::Netssh] (used by Runner::Abstract.backend), command_map
+
+  Remark: - Coordinator#each(options) => options=SSHKit.config.default_runner_config.merge(options)
           - Command#environment_hash => default_env.merge(options[:env])
 
-  SSHKit::Backend::Netssh.configure do |config| end
+- SSHKit::Backend::Netssh.configure do |config| end
   => ssh_options, connection_timeout (for the connection cache pool, set to 0 to disable the cache), pty (request a pty in `execute_command`)
-  #with_ssh: host.ssh_options = self.class.config.ssh_options.merge(host.ssh_options || {})
 
-- Host:
-  password, hostname, port, username=user, keys, ssh_options
-  Host.new("string") => string is parsed to get (if applicable) the
-  username, hostname and port. Use :local to specify the localhost.
+  Used by #_with_ssh: `host.ssh_options = self.class.config.ssh_options.merge(host.ssh_options || {})`. Note that with_ssh is used by upload!, download!, execute_command...
 
-  ~~~ ruby
+More details on the implementation:
+  ~~~ ruby host.rb
     def netssh_options
       {}.tap do |sho|
         sho[:keys]          = keys     if keys.any?
@@ -222,7 +274,7 @@ to do with being a symbol]
       .merge(ssh_options || {})
     end
 
-    # Used by Backend::Netssh:
+    # Used by Backend::Netssh: (backends/netssh.rb)
       def with_ssh(&block)
         host.ssh_options = self.class.config.ssh_options.merge(host.ssh_options || {})
         self.class.pool.with(
@@ -239,8 +291,26 @@ to do with being a symbol]
   $PWD/.ssh/config
   + it implements its own known_host to enable caching, cf https://github.com/capistrano/sshkit/pull/330
 
-- Running commands:
-  ~~~ ruby Command
+## Running commands
+
+* command_map.rb:
+  puts SSHKit.config.command_map[:ruby]
+  # => /usr/bin/env ruby
+
+  SSHKit.config.command_map[:rake] = "/usr/local/rbenv/shims/rake"
+  puts SSHKit.config.command_map[:rake]
+  # => /usr/local/rbenv/shims/rake
+
+  SSHKit.config.command_map.prefix[:rake].push("bundle exec")
+  puts SSHKit.config.command_map[:rake]
+  # => bundle exec rake
+  # (The prefix is called before the command. Also both the prefix and
+  # commands can be Proc; #call will be called on them to get their values)
+
+* More details on the backend implementation:
+
+  A Command wrap all of a command settings
+  ~~~ ruby Command (cf command.rb)
     def initialize(*args)
       @options = default_options.merge(args.extract_options!)
     end
@@ -250,9 +320,34 @@ to do with being a symbol]
         run_in_background:      false
       }
     end
+
+    def to_s
+      if should_map?
+        [SSHKit.config.command_map[command.to_sym], *Array(args)].join(' ')
+      else
+        command.to_s
+      end
+    end
+
+    def exit_status #...
   ~~~
 
+  Essentially Backend::Abstract create a command with the correct options
+  and execute it. The concrete backend will execute it.
+
   ~~~ ruby Backend::Abstract
+      def with(environment, &_block)
+        env_old = (@env ||= {})
+        @env = env_old.merge environment
+        yield
+      ensure
+        @env = env_old
+      end
+      
+      def as
+        ...
+      end
+
       def test(*args)
         options = args.extract_options!.merge(raise_on_non_zero_exit: false, verbosity: Logger::DEBUG)
         create_command_and_execute(args, options).success?
@@ -282,6 +377,7 @@ to do with being a symbol]
       def create_command_and_execute(args, options)
         command(args, options).tap { |cmd| execute_command(cmd) }
       end
+      def execute_command(_cmd) raise MethodUnavailableError end #left to backend
 
       def command(args, options)
         # Note: @pwd, @env, @user, @group are determined by within, with and as respectively.
@@ -289,7 +385,9 @@ to do with being a symbol]
       end
   ~~~
 
-- Prettier output:
+## Output
+
+* Prettier output:
 require "airbrussh"
 SSHKit.config.output = Airbrussh::Formatter.new($stdout, options)
 
@@ -300,6 +398,8 @@ command_output 	true 	Set to :stdout, :stderr, or true to display the SSH output
 log_file 	log/capistrano.log 	Capistrano's verbose output is saved to this file to facilitate debugging. Set to nil to disable completely.
 truncate 	:auto 	Set to a number (e.g. 80) to truncate the width of the output to that many characters, or false to disable truncation. If :auto, output is automatically truncated to the width of the terminal window, if it can be determined.
 task_prefix 	nil 	A string to prefix to task output. Handy for output collapsing like buildkite's --- prefix [done by monkeypatching rake]
+
+* Exemple:
 
 ~~~ ruby
 require 'sshkit'
@@ -320,8 +420,9 @@ SSHKit.config.output = Airbrussh::Formatter.new($stdout, command_output: true)
 client.run
 ~~~
 
-* Misc:
-- redact()
+## Interaction Handler
+
+* redact()
   If necessary, redact() can be used on a section of your execute arguments
   to hide it from both STDOUT and the capistrano.log. It supports the
   majority of data types.
@@ -331,7 +432,24 @@ client.run
   `output.log_command_start(cmd.with_redaction)` which replaces these
   arguments with '[Redacted]')
 
-- SSHKit::MappingInteractionHandler
+  Implemented as follow:
+  ~~~ ruby
+  # in backends/abstract.rb
+  
+      def redact(arg) # Used in execute_command to hide redact() args a user passes in
+        arg.to_s.extend(Redaction) # to_s due to our inability to extend Integer, etc
+      end
+
+  # in command.rb
+   def with_redaction
+      new_args = args.map{|arg| arg.is_a?(Redaction) ? '[REDACTED]' : arg }
+      redacted_cmd = dup
+      redacted_cmd.instance_variable_set(:@args, new_args)
+      redacted_cmd
+    end
+  ~~~
+
+* SSHKit::MappingInteractionHandler
   ~~~ ruby
   class PasswdInteractionHandler
     def on_data(command, stream_name, data, channel)
@@ -369,21 +487,22 @@ client.run
   # One can also call it directly to enable logging:
   execute(:unfamiliar_command, interaction_handler: MappingInteractionHandler.new( {"Please type your input:\r\n" => "Some input\n"}, :info))
 
-# Full case
-require 'sshkit'
-# host=SSHKit::Host.new(:local)
-# client=SSHKit::Backend::Local.new(host) do
-client=SSHKit::Backend::Local.new do
-  execute(:passwd, interaction_handler: lambda { |server_data|
-    case server_data
-    when '(current) UNIX password: '
-      "old_pw\n"
-    when /(Enter|Retype) new UNIX password: /
-      "new_pw\n"
-    end
-  })
-end
-client.run
+  # Full case
+  require 'sshkit'
+  # host=SSHKit::Host.new(:local)
+
+  # client=SSHKit::Backend::Local.new(host) do
+  client=SSHKit::Backend::Local.new do
+    execute(:passwd, interaction_handler: lambda { |server_data|
+      case server_data
+      when '(current) UNIX password: '
+        "old_pw\n"
+      when /(Enter|Retype) new UNIX password: /
+        "new_pw\n"
+      end
+    })
+  end
+  client.run
   ~~~
 
 Note: Command#on_stdout:
@@ -401,16 +520,3 @@ Note: Command#on_stdout:
     end
 ~~~
 
-- command_map.rb:
-  puts SSHKit.config.command_map[:ruby]
-  # => /usr/bin/env ruby
-
-  SSHKit.config.command_map[:rake] = "/usr/local/rbenv/shims/rake"
-  puts SSHKit.config.command_map[:rake]
-  # => /usr/local/rbenv/shims/rake
-
-  SSHKit.config.command_map.prefix[:rake].push("bundle exec")
-  puts SSHKit.config.command_map[:rake]
-  # => bundle exec rake
-  # (The prefix is called before the command. Also both the prefix and
-  # commands can be Proc; #call will be called on them to get their values)

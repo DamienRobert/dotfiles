@@ -1,5 +1,9 @@
 # vim: ft=zsh
 
+# MOUNTDISK: the device to mount
+# MOUNTUUID / MOUNTLABEL: the uuid / label of the disk
+# MOUNTTARGET: the mount point
+
 find_mount() {
 	if [[ -n $MOUNTDISK ]]; then
 		# do nothing

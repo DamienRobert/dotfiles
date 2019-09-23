@@ -1,4 +1,6 @@
 #!/bin/sh
+# cf aussi: https://github.com/websafe/ffbx/blob/master/ffbx.sh
+# Firefox bookmarks extractor - extract bookmarks from user profiles.
 
 FILE="$@"
 [ -z $FILE ] && FILE=$(ls -t $HOME/.mozilla/firefox/*default/places.sqlite | sed q)

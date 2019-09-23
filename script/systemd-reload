@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+# Exemple sudo -e /run/systemd/network/30-file.network, and then reload everything
+sudo systemctl daemon-reload && sudo systemctl restart systemd-networkd
+systemd-resolved systemd-timesyncd
+# keep systemd-logind systemd-journald systemd-udevd running

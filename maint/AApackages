@@ -144,12 +144,52 @@ Ex: pip install --user ~/opt/src/mcomix-1.00.tar.bz2
 #update:
 pip install --user foo bar -U
 
+    https://stackoverflow.com/questions/4536103/how-can-i-upgrade-specific-packages-using-pip-and-a-requirements-file
+    Note: if the package you are upgrading has any requirements this command will additionally upgrade all the requirements to the latest versions available. In recent versions of pip, you can prevent this behavior by specifying --upgrade-strategy only-if-needed. With that flag, dependencies will not be upgraded unless the installed versions of the dependent packages no longer satisfy the requirements of the upgraded package.
+
+[Note: if 'foo' is already installed, `pip install foo` will not install the latest version, but -U will do]
+
 - pip uninstall
 - pip list #list global /usr packages too
   pip list --user
 
 #dependencies:
 pip show foo
+
+# python paths
+python -m site
+
+https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH
+https://docs.python.org/3/install/index.html#inst-alt-install-user
+  PYTHONPATH="/www/python:/opt/ploum"
+
+https://docs.python.org/3/using/cmdline.html#envvar-PYTHONUSERBASE
+  PYTHONUSERBASE Defines the user base directory, which is used to compute the path of the user site-packages
+
+$ python setup.py install --user
+modules userbase/lib/pythonX.Y/site-packages
+scripts userbase/bin
+data userbase
+C headers userbase/include/pythonX.Yabiflags/distname
+
+$ python setup.py install --home=<dir> #~ expand to $HOME
+modules home/lib/python
+scripts home/bin
+data home
+C headers home/include/python/distname
+
+$ /usr/bin/python setup.py install --prefix=/usr/local
+Python modules prefix/lib/pythonX.Y/site-packages
+extension modules exec-prefix/lib/pythonX.Y/site-packages
+scripts prefix/bin
+data prefix
+C headers prefix/include/pythonX.Yabiflags/distname
+
+# venv
+
+https://pymotw.com/3/venv/
+$ python3 -m venv /tmp/demoenv
+$ /tmp/demoenv/bin/pip install Sphinx==1.3.6
 
 # perl (cpan) {{{1
 # ===========
@@ -261,12 +301,103 @@ opam upgrade            # Re-install packages that were updated since last upgra
 # Rust {{{1
 # ####
 
+$CARGO_HOME
 cargo search foo
 cargo install foo #install in ${CARGO_HOME-~/.cargo} (building: cargo build)
 cargo install --list
 cargo uninstall foo
 
-Update: cargo install-update -a #run `cargo install foobar` to recreate registry
+Update: cargo install-update -a #run `cargo install ploumplam` to recreate registry
+                                #or 'foobar' which is an empty package
+
+rustup {{{2
+------
+
+https://github.com/rust-lang/rustup.rs
+
+$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain nightly
+=> Install:
+cargo*         cargo-fmt*   clippy-driver*  rust-gdb*   rustc*    rustfmt*
+cargo-clippy*  cargo-miri*  rls*            rust-lldb*  rustdoc*  rustup*
+
+[rls: rust language server; clippy: rust linter, miri: experimental interpreter for Rust's mid-level intermediate representation (MIR).
+Note: cargo-clippy, cargo-fmt, cargo-miri, clippy-driver, rls, rustfmt are just stub; to install them:
+  error: 'rustfmt' is not installed for the toolchain 'stable-x86_64-unknown-linux-gnu'
+  To install, run `rustup component add rustfmt --toolchain stable-x86_64-unknown-linux-gnu`
+]
+
+$RUSTUP_HOME (default: ~/.rustup or %USERPROFILE%/.rustup) Sets the root rustup folder, used for storing installed toolchains and configuration options.
+$RUSTUP_TOOLCHAIN (default: none) If set, will override the toolchain used for all rust tool invocations. A toolchain with this name should be installed, or invocations will fail.
+
+$ rustup update
+Only check for self [=rustup] update:
+$ rustup self update
+
+* Roolchains: rustup toolchain list/install/uninstall/link
+$ rustup toolchain install nightly [available: stable, beta, nightly]
+$ rustup run nightly rustc --version
+Shortcut for cargo:
+$ cargo +nightly test
+$ rustup default nightly
+Add the system toolchain:
+$ rustup toolchain link system /usr
+$ rustup show #show installed toolchains
+
+Components:
+$ rust component list
+  [default: cargo, rust-docs, rust-std, rustc]
+$ rust component add
+
+Extra cargo commands
+--------------------
+
+- https://github.com/nabijaczleweli/cargo-update
+  cargo install-update -a - check for newer versions and update all installed packages.
+  cargo install-update crate1 crate2 ... - check for newer versions and update selected packages, will not install new packages.
+- https://github.com/matthiaskrgr/cargo-cache
+  manage cargo cache (${CARGO_HOME}, ~/.cargo/), print sizes of dirs and remove dirs selectively
+- https://github.com/sfackler/cargo-tree
+  cargo tree is a Cargo subcommand that visualizes a crate's dependency graph in a tree-like format.
+
+Registry
+--------
+
+registry/ => cache/  index/  src/
+See https://docs.rs/cargo/0.12.0/cargo/sources/registry/index.html
+  # A folder under which all registry metadata is hosted (similar to $HOME/.cargo/git)
+  $HOME/.cargo/registry/
+    # For each registry that cargo knows about (keyed by hostname + hash)
+    # there is a folder which is the checked out version of the index for
+    # the registry in this location. Note that this is done so cargo can
+    # support multiple registries simultaneously
+    # Note: crates.io is github.com-1ecc6299db9ec823 = https://github.com/rust-lang/crates.io-index => git log remotes/origin/master
+    # Note: the crates.io index was squashed, cf https://internals.rust-lang.org/t/cargos-crate-index-upcoming-squash-into-one-commit/8440
+    # => get info on crate 'punycode': git show origin/master:pu/ny/punycode
+    index/
+        registry1-<hash>/
+        registry2-<hash>/
+    # This folder is a cache for all downloaded tarballs from a registry.
+    # Once downloaded and verified, a tarball never changes.
+    cache/
+        registry1-<hash>/<pkg>-<version>.crate
+    # Location in which all tarballs are unpacked. Each tarball is known to
+    # be frozen after downloading, so transitively this folder is also
+    # frozen once its unpacked (it's never unpacked again)
+    src/
+        registry1-<hash>/<pkg>-<version>/...
+
+API:
+- https://crates.io/api/v1/crates => list
+  Query Parameters:
+    q: The search query string.
+    per_page: Number of results, default 10, max 100.
+  => max_version"0.8.5"
+- https://crates.io/api/v1/crates/procs/downloads #downloads/day of 'procs'
+- https://crates.io/api/v1/crates/procs/versions #all 'procs' versions
+  => links
+      dependencies"/api/v1/crates/procs/0.8.5/dependencies"
+      version_downloads"/api/v1/crates/procs/0.8.5/downloads"
+      authors"/api/v1/crates/procs/0.8.5/authors"
 
 # Go {{{1
 # ####

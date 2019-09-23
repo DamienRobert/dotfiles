@@ -216,26 +216,60 @@ https://crypto.stackexchange.com/questions/386/what-are-the-differences-between-
 Software
 --------
 
-- gpg
+* gpg alternative
+- https://latacora.micro.blog/2019/07/16/the-pgp-problem.html
+- https://blog.gtank.cc/modern-alternatives-to-pgp/
+  File transfert (using pake): https://magic-wormhole.readthedocs.io/en/latest/welcome.html
+  Signature: signify / minisign
+  Encryption: age https://docs.google.com/document/d/11yHom20CrsuX8KQJXBBw04s80Unjv8zCg_A7sPAX_9Y/view, https://news.ycombinator.com/item?id=19951405
+
+* gpg
+- gpg: 
+    gpg4win [=gpg + kleopatra]
+    chrome/firefox plugin: Flowcrypt, Mailvelope
+    Web Key Directory: https://wiki.gnupg.org/WKD [=authoritative version
+    of keyservers]
 - keybase.io: gpg wrapper with a nice web 2.0 interface
-    use the saltpack crypto messaging format for chat
-    https://saltpack.org
-- openkeychain: free software, manage pgp keys on android, integrates with k9mail
-- signal protocol (was Axolotl): Double Ratchet Algorithm, prekeys, and a triple Diffie–Hellman (3-DH) handshake,[4] and uses Curve25519, AES-256 and HMAC-SHA256 as primitives https://en.wikipedia.org/wiki/Signal_Protocol
-=> signal (was text secure), whatsapp, facebook messenger, google allo
-- telegram (closed source)
-- xmpp: OTR (off the record), OMEMO (multi client end-to-end encryption
-  using double ratchet algorithm)
-- https://letsencrypt.org/ #free ssl certificates
-- mail: https://protonmail.com/
+  Allows to verify keys and associate keys with social accounts
+  => use the saltpack crypto messaging format for chat
+     https://saltpack.org
+  => https://keybase.io/docs/kbfs
+     Public, signed directories for everyone in the world
 - pep - pretty easy privacy: https://prettyeasyprivacy.com/
+  For mail in android/ios/outlook; uses gnupg
   Il y a eu un exposé là-dessus au GNU Hackers' Meeting 2016; les vidéos
   sont disponibles ici: 
     http://videos.rennes.inria.fr/Workshop-GNUHackersMeetings2016/expose-GNUVolkerBirk18aout2016.mp4
     http://videos.rennes.inria.fr/Workshop-GNUHackersMeetings2016/expose2-GNUVolkerBirk19aout2016.mp4
+  => intégré dans enigmail
+- openkeychain: free software, manage pgp keys on android, integrates with k9mail
 
-Curve 25519: https://ianix.com/pub/curve25519-deployment.html
-https://en.wikipedia.org/wiki/Comparison_of_cryptography_libraries
+* Chat
+- signal protocol (was Axolotl): Double Ratchet Algorithm, prekeys, and a triple Diffie–Hellman (3-DH) handshake,[4] and uses Curve25519, AES-256 and HMAC-SHA256 as primitives https://en.wikipedia.org/wiki/Signal_Protocol
+  => signal (was text secure), whatsapp, facebook messenger, google allo
+- telegram, threema, wire (closed source)
+- matrix: https://matrix.org/blog/2019/06/11/introducing-matrix-1-0-and-the-matrix-org-foundation
+  Client: Riot.im
+- xmpp: OTR (off the record), OMEMO (multi client end-to-end encryption
+  using double ratchet algorithm)
+
+* Web:
+- https://letsencrypt.org/ #free ssl certificates
+  => https://github.com/Neilpang/acme.sh
+     https://github.com/lukas2511/dehydrated
+- mail: https://protonmail.com/
+
+* Curve 25519: https://ianix.com/pub/curve25519-deployment.html
+  https://en.wikipedia.org/wiki/Comparison_of_cryptography_libraries
+
+* Cloudflare: https://blog.cloudflare.com/tag/crypto
+- https://blog.cloudflare.com/a-free-argo-tunnel-for-your-next-project/
+  [alternative to ngrok: https://ngrok.com/]
+- https://blog.cloudflare.com/cloudflare-ethereum-gateway/
+- https://blog.cloudflare.com/secure-time/
+  => time.cloudflare.com
+- https://blog.cloudflare.com/announcing-1111/ (dns)
+- https://blog.cloudflare.com/1111-warp-better-vpn/ [1111+wireguard wrapper]
 
 Modèles de sécurités
 ====================

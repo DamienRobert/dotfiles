@@ -13,7 +13,7 @@ Utilisation des groupes: https://wiki.archlinux.org/index.php/Users_and_groups
   - $ sudo usermod -a -G network,power dams #-a: append
   - avec systemd je n'ai besoin d'être dans aucun groupe
     à part sshc (cf sshd), et anciennement network and power (cf polkit,
-    mais /etc/polkit-1/rules.d/50-default.rules ajout le groupe 'wheel'
+    mais /etc/polkit-1/rules.d/50-default.rules ajoute le groupe 'wheel'
     dans les administrateurs, donc en étant dans 'wheel' j'ai déjà toutes
     les autorisations polkit. Le journal est aussi lisible par 'wheel' et
     'adm', pas besoin de se rajouter à 'systemd-journal'.

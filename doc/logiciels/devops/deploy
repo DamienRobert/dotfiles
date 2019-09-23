@@ -1,3 +1,5 @@
+vim: ft=markdownlight fdm=expr
+
 mina
 ====
 [Easy to set up and fast]
@@ -27,6 +29,8 @@ mina ssh                       # Open an ssh session to the server and cd to dep
 capistrano
 ==========
 [More complete, can handle multiple servers and filtering]
+
+Capistrano extends the Rake DSL with methods specific to running commands on() servers.
 
 cap install
 cap production deploy
@@ -79,6 +83,7 @@ end
 ~~~
 
 Example:
+~~~ ruby
 role :demo, %w{example.com example.org example.net}
 task :uptime do
   on roles(:demo), in: :parallel do |host|
@@ -86,12 +91,33 @@ task :uptime do
     puts "#{host.hostname} reports: #{uptime}"
   end
 end
+~~~
 
 Configuration
 -------------
-http://capistranorb.com/documentation/advanced-features/properties/
 
+The configuration is in config/deploy.rb (or the specific stage).
+
+* variables
+~~~ ruby
+set :application, 'MyLittleApplication'
+fetch :application
+~~~
+
+* servers:
+
+server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
+
+role :app, %w{deploy@example.com}, my_property: :my_value #shortcut to add several server with `roles: app`
+
+Note that if the server already exist (classified by its hostname and port), this updates its properties. One can get/set the server property via server.fetch, server.fetch.
+
+* http://capistranorb.com/documentation/advanced-features/properties/
+
+One can specify properties for the server via:
 server 'name', property: value
+role *servers, property: value
+
 Common properties:
     :user - the name of the SSH user for the server
     :password - for the SSH user
@@ -100,35 +126,8 @@ Common properties:
     :ssh_options - a hash of SSH parameters (see below)
     :primary - a boolean that indicates whether the server should be considered primary or not.
 
-One can set a role + properties for several servers:
+- One can set a role + properties for several servers:
 role :redis, %w{ r1.example.com r2.example.com r3.example.com }, redis: { port: 6379, master: false },
-
-Filter
-------
-See https://github.com/capistrano/capistrano/commit/5bae7fb40ca59d60a859400ec52c709c7686c387
-
-ROLES=app,web cap production deploy
-cap --roles=app,web production deploy
-set :filter, :roles => %w{app web}
-
-HOSTS=server1,server2 cap production deploy
-cap --hosts=server1,server2 production deploy
-set :filter, :hosts => %w{server1 server2}
-
-Property filtering: http://capistranorb.com/documentation/advanced-features/property-filtering/
-
-One can match roles via
-- roles(:foo)
-- release_roles(...) #filter roles maked as release: false
-- primary(:foo) #output the primary server for role foo (if none is specified then the first in the list)
-These methods return a list of servers
-- local roles filters: roles(:all, filter: :active)...
-
-Note:
-The external filters (ROLES, --roles, set :filter, :roles =>...)
-only apply to commands issued: ie. they restrict the hosts that an `on()`
-method will use, the will not affect the `roles()` method. On the other
-hand internal filters 'roles(..., filter:...) will always apply.
 
 Remote commands
 ---------------
@@ -163,6 +162,73 @@ on(in: :sequence, wait: 5) { ... }
 on(in: :groups, limit: 2, wait: 5) { ... }
 cf [doc/ruby/applications/ssh]
 
+Filter
+------
+
+* Property filtering: http://capistranorb.com/documentation/advanced-features/property-filtering/
+
+One can match roles via
+- roles(:foo)
+- release_roles(...) #filter out roles marked as release: false
+- primary(:foo) #output the primary server for role foo (if none is specified then the first in the list)
+  These methods return a list of servers
+
+- local roles filters: roles(:all, filter: :active)...
+  - :filter, or :select: The value is either a property keyname or a lambda which is called with the server as parameter. The value must return true for the server to be included.
+  - :exclude: As above but the value must return false for the server to be included.
+  - Any other symbol is taken as a server property name whose value must equal the given value. A lambda will not be called if one is supplied!
+
+~~~ ruby
+server 'example1.com', roles: %w{web}, active: true
+server 'example2.com', roles: %w{web}
+server 'example3.com', roles: %w{app web}, active: true
+server 'example4.com', roles: %w{app}, primary: true
+server 'example5.com', roles: %w{db}, no_release: true, active: true
+
+task :demo do
+  puts "All active release roles: 1,3"
+  release_roles(:all, filter: :active).each do |r|
+    puts "#{r.hostname}"
+  end
+  puts "All active roles: 1,3,5"
+  roles(:all, active: true).each do |r|
+    puts "#{r.hostname}"
+  end
+  puts "All web and db roles with selected names: 2,3"
+  roles(:web, :db, select: ->(s){ s.hostname =~ /[234]/}).each do |r|
+    puts "#{r.hostname}"
+  end
+  puts "All with no active property: 2,4"
+  roles(:all, active: nil).each do |r|
+    puts "#{r.hostname}"
+  end
+  puts "All except active: 2,4"
+  roles(:all, exclude: :active).each do |r|
+    puts "#{r.hostname}"
+  end
+  puts "All primary: 4"
+  roles(:all, select: :primary).each do |r|
+    puts "#{r.hostname}"
+  end
+end
+~~~
+
+* https://capistranorb.com/documentation/advanced-features/host-filtering/
+HOSTS=server1,server2 cap production deploy
+cap --hosts=server1,server2 production deploy
+set :filter, :hosts => %w{server1 server2}
+
+* https://capistranorb.com/documentation/advanced-features/role-filtering/
+ROLES=app,web cap production deploy
+cap --roles=app,web production deploy
+set :filter, :roles => %w{app web}
+
+See https://github.com/capistrano/capistrano/commit/5bae7fb40ca59d60a859400ec52c709c7686c387
+
+The external filters (ROLES, --roles, set :filter, :roles =>...)
+only apply to commands issued: ie. they restrict the hosts that an `on()`
+method will use, the will not affect the `roles()` method. On the other
+hand internal filters 'roles(..., filter:...), set :filter, hosts: , roles: ' will always apply.
 
 Structure
 ----------
@@ -176,14 +242,29 @@ Structure
 │   └── capistrano
 │       └── tasks
 
+Capfile: global settings
+  lib/capistrano/tasks: custom tasks
+deploy.rb: settings for all stages
+production.rb: setting for the production stage
+
+Exemple deploy.rb:
+  set :application, "my_app_name"
+  set :repo_url, "git@example.com:me/my_repo.git"
+Exemple deploy/production.rb
+  server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
+  role :app, %w{deploy@example.com}, my_property: :my_value #shortcut to add several server with `roles: app`
 
 - Capfile:
+  require "capistrano/setup"
+  require "capistrano/deploy"
+  require "capistrano/scm/git"
+  install_plugin Capistrano::SCM::Git
   # Load custom tasks from `lib/capistrano/tasks` if you have any defined
   Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
 - 'cap' calls Capitrano::Application < Rake::Application
-- setup.rb: required by Capfile
+- capistrano/setup.rb: required by Capfile
   Set up a task 'load:defaults' which loads "capistrano/defaults.rb"
-  And setup a task 'stage' for each stage in stages which
+  And setup a task 'stage' for each stage in `stages` which
   - set(:stage, stage.to_sym)
   - invoke 'load:defaults'
   - load config/deploy.rb
@@ -191,13 +272,16 @@ Structure
   - configure_scm
   - I18n.locale = fetch(:locale, :en)
   - configure_backend (sshkit)
-  => 'cap production' is a task that setup the necessary variables for future tasks, like 'cap deploy'
+  => 'cap production' is a task that setup the necessary variables for future tasks, like 'cap production deploy'
   Load ~/.capfile if it exists
 
-Note: one of the top_level_tasks invoked is ':ensure_stage' which test that
+Note: 
+- one of the top_level_tasks invoked is ':ensure_stage' which test that
 the stage variable is set otherwise abort. This force to call 'cap stage
 other_tasks'. This task is called if it is not in 
-`tasks_without_stage_dependency=stages + default_tasks=%w{install}`
+`tasks_without_stage_dependency=stages + default_tasks[=%w{install}`]
 (cf application.rb#top_level_tasks)
-`stages` is discovered by looking at the config/deploy/ dir
+
+- `stages` is discovered by looking at the config/deploy/ dir
 One can override this by setting 'set(:stage, "none")' in the Capfile
+so that a (dummy) stage is always defined

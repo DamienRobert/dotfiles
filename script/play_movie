@@ -19,12 +19,13 @@ OPTIONS:
 
 SUBSEP=
 MOVIESEP=
-GLOBSEP=
+GLOBSEP= # Use $SEASON$MOVIESEP*$EPI instead of $SEASON$MOVIESEP$EPI
 REPLAY=
-GO=
+GO= #don't wait for confirmation
 FORMATSUB=
 SUBFOLDER="sub/"
 #Sourced: EPI, SUBEPI (use SUBEPI=NONE when the sub is already in the mkv)
+# SUBEPI: fallback to EPI; SUBSEP to MOVIESEP
 
 rename=
 while true;

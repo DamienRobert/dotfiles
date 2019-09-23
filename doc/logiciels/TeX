@@ -1,5 +1,13 @@
 vim: ft=markdownlight fdm=expr
 
+Macro
+=====
+
+https://tug.org/TUGboat/tb22-4/tb72perlS.pdf
+ A complement to \smash, \llap, and \rlap => \clap, \math?lap
+ \def\llap#1{\hbox to 0pt{\hss#1}}
+ \def\rlap#1{\hbox to 0pt{#1\hss}}
+
 TeX
 ===
 
@@ -171,25 +179,29 @@ Fonts
 \addfontfeatures % change the features for the current font
 Sizes: http://tex.stackexchange.com/questions/46087/how-do-i-change-the-font-size-in-lualatex
 
-Maths:
+* Maths:
 http://tex.stackexchange.com/questions/145522/what-is-the-best-math-font-for-use-with-minion-pro-font
 http://tex.stackexchange.com/questions/37561/getting-started-with-minion-pro-xelatex-and-mathspec
 -> Minion Math: http://www.typoma.com/en/fonts.html
 http://tex.stackexchange.com/questions/219392/state-of-unicode-math-typesetting-fonts
 
-Small Caps with lmodern by using the CM-Super substitute:
+* Small Caps with lmodern by using the CM-Super substitute:
 - http://tex.stackexchange.com/questions/22240/choosing-font-for-bold-small-caps-or-any-other-particular-familyseriesshape-c
 - http://tex.stackexchange.com/questions/79086/how-to-use-all-variants-of-latin-modern-roman-with-fontspec
   # with fontspec
 
-Cursive fonts:
+* Cursive fonts:
 http://tex.stackexchange.com/questions/48002/hand-written-fonts-in-latex-xetex-luatex
 -> http://www.tug.dk/FontCatalogue/calligraphicalfonts.html
 -> http://www.fontsquirrel.com/fonts/list/style/Handdrawn
 -> http://www.fontsquirrel.com/fonts/list/style/Calligraphic
 
-Zapfino: http://tex.stackexchange.com/questions/29123/can-i-get-lualatex-to-do-font-variations-on-the-zapfino-font-just-as-xelatex-doe
+* Zapfino: http://tex.stackexchange.com/questions/29123/can-i-get-lualatex-to-do-font-variations-on-the-zapfino-font-just-as-xelatex-doe
 -> Zapfino Extra LT Pro is newer font, it combines the older four Linotype Zapfino fonts with extensive OpenType features (http://www.twardoch.com/download/typotechnica2005_zapfino.pdf)
+
+* Embed the full fonts
+- In pdftex: https://tex.stackexchange.com/questions/24002/turning-off-font-subsetting-in-pdftex
+- In luatex: https://tex.stackexchange.com/questions/485774/how-can-i-verify-that-the-fonts-are-all-embedded-in-my-lualatex-document
 
 Font Packages
 =============
@@ -297,5 +309,9 @@ latexrun: modern latexmk, but not developed anymore...
 - Dicy: another one. See the comparison in
   https://yitzchak.github.io/dicy/comparison-of-builders.html
 
-Convert images to LaTeX
+Convert images to LaTeX:
 https://mathpix.com/
+
+Latex online:
+- https://www.overleaf.com/
+  (there was sharelatex too, but it has been merged to overleaf)

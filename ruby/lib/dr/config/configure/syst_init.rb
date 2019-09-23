@@ -1,20 +1,47 @@
 #!/usr/bin/env ruby
 require 'dr/config/configure/syst_config'
 
-# Notes: in generate.rb#initialize, the computer root is set to opts[:root]:
+# Computer root and disk:
+# 1) in syst/generate.rb#initialize, the computer root is set to opts[:root]:
 #   @computer=Computer.new(computer, infos: {root: opts[:root]}) if opts[:root]
-# And in generate.rb#set_dir
-#   @dir[:target]||=@computer.root
-# In bootstrap:
-#   @computer[:sysinit][:mountpoint]||=@dir[:target]
-#   @computer[:sysinit][:disk]||=@opts[:disk]
-# In partitions:
-#   opts[:disk]||=@computer.dig(:sysinit, :disk)
-#   opts[:mountpoint]||=@computer.dig(:sysinit, :mountpoint)
-# In self.create:
+# => so syst/generate.rb --root=foo will set the root to foo
+# Of course we could the standard computer option parsing: syst/generate.rb -c foobar!root=foo
+
+# 1bis) This is also set in self.create:
 #   infos[:root]=opts.fetch(:root, "/mnt/image")
 #   disk=opts.fetch(:disk, infos[:root])
-#   infos[:sysinit][:disk]=disk
+#   infos[:sysinit][:disk]=disk #can be set via syst/init.rb --disk=...
+#   c=Computer.new(compname, infos: infos)
+# => so syst/generate.rb --create=foo will create foo and set foo's root
+# => syst/generate.rb --root bar --create=foo will create foo and set foo's root to bar
+
+# 2) The target dir is set to the root in generate.rb#set_dir
+#   @dir[:target]||=@computer.root
+
+# 3) This target is used in `bootstrap` to set the mountpoint and disk:
+#   @computer[:sysinit][:mountpoint]||=@dir[:target]
+#   @computer[:sysinit][:disk]||=@opts[:disk]
+
+# 4) And these are used in partitions:
+# In partitions(**opts):
+#   opts[:disk]||=@computer.dig(:sysinit, :disk)
+#   opts[:mountpoint]||=@computer.dig(:sysinit, :mountpoint)
+
+# Note that the mountpoint is where the image is mounted. This is not used
+# if we don't have a device. The @dir[:target] is were we commit files in
+# ./generate.rb and where we configure things:
+# syst/generate.rb#chroot/archchroot use @dir[:target].
+# Finally @computer.root is used for local_informations, so we could
+# imagine it being distinct from @dir[:target] if we want our current local
+# informations for a new computer.
+# It is a good idea that all three directory coincide, but not required.
+
+=begin
+$ ./init.rb --disk="/tmp/arch_img.raw:size=2G" --create="arch_virtual" --build
+This creates a arch_virtual computer, whose root is in/mnt/image
+
+Then ProcessActions.process_actions is called, which call Process::Squel#dispatch (and not process, because we changed the default in process_files.rb), which calls Process::Squel#process_actions, which sends each defined action.
+=end
 
 module DR
 	module Process
@@ -32,6 +59,7 @@ module DR
 				@prepare=nil
 				@prepare_done=[]
 				bootstrap_infos
+				yield self if block_given?
 				bootstrap
 			end
 
@@ -108,6 +136,11 @@ module DR
 
 			# we call the helpers each time we call partitions, so that if
 			# @partitions is updated we still get the correct result
+			# note that once the disk and mountpoint have been specified, they
+			# are not overwritten (except if update_disk==true; I did not need
+			# an update_mountpoint option). So the default :disk and :mountpoint
+			# options in :sysinit are harmless once we specified things like in
+			# do_prepare
 			def partitions(**opts)
 				opts[:disk]||=@computer.dig(:sysinit, :disk)
 				opts[:mountpoint]||=@computer.dig(:sysinit, :mountpoint)
@@ -116,6 +149,8 @@ module DR
 				@partitions
 			end
 
+			# allow to set the disk once we have it
+			# set the mountpoints from the rel_mountpoint once we have the root mountpoint
 			private def partitions_helper(partitions, disk: nil, mountpoint: nil, update_disk: false)
 				partitions={} if partitions.nil?
 				partitions.each do |k,v|
@@ -134,23 +169,35 @@ module DR
 				partitions
 			end
 
+			# Note that we only need to create subvolume like partition (ie
+			# subvolumes we will mount to specific folders). Normal subvolumes in
+			# normal position can be created via
+			# SH.make_dir_or_subvolume(subvol_position) in the pre_install hook
+			# @exemple
+			# {rootleaf: {label: "slash", parttype: :"x86-64_root", fstype: "btrfs", subvol: "/", rel_mountpoint: DR::Computer::ROOTLEAF, subvolumes: {slash: {subvol: "slash", rel_mountpoint: '.', default_subvolume: true}, home: {subvol: "slash/home"}, data: {subvol: "slash/data"}}}}
 			def create_subvolumes(partitions=self.partitions, tmpmount: "/tmp/.mount", update_partitions: true, dryrun: false, check: true)
 				# partitions=partitions.values if partitions.is_a?(Hash)
 				tmpmount=Pathname.new(tmpmount)
 				subvols={}
 				partitions.each do |name, partition|
 					if partition[:subvolumes]
+						# 1) mount the / subvolume
 						# Here we may have already set a default subvolume, so we need
 						# to be carefull to mount the / subvolume
 						!dryrun and SH.mount([partition.merge(mountoptions: 'subvol=/', mountpoint: tmpmount)]) do
 							#subvolumes is a hash, so sorting the keys is annonying
 							#subvolumes=partition[:subvolumes].sort { |p1, p2| Pathname.new(p1[:path]) <=> Pathname.new(p2[:path]) }
+							#we assume that the user specified the subvolumes in a correct order
+							# 2) create the subvolumes
 							partition[:subvolumes].each do |_subname, subvol|
 								dir=tmpmount+subvol[:subvol]
 								SH.make_btrfs_subvolume(dir, check: check)
 								SH.sh("btrfs subvolume set-default #{dir.shellescape}", sudo: true) if subvol[:default_subvolume]
 							end
 						end
+						# 3) update @partitions with a new device for each subvolume created
+						# This is used to mount the correct subvolume during do_mount,
+						# since SH.mount look at the :subvol option
 						partition[:subvolumes].each do |subname, subvol|
 							subvols[:"#{name}_#{subname}"]=subvol.dup
 							# copy the relevant values from the parent to the subvolume
@@ -213,6 +260,7 @@ module DR
 				return Pathname.new(disk), disktype, options
 			end
 
+			# return the @device, or nil if we are working on a dir or subvol
 			def get_device(disk)
 				disk, disktype, options = self.class.device_info(disk)
 				case disktype
@@ -223,7 +271,7 @@ module DR
 					@close||=[]
 					@close << lambda { remove_instance_variable(:@device) }
 					@close << close_device
-				when :subvol
+				when :subvol #:directory => the dir is already there
 					SH.make_dir_or_subvolume(disk)
 					# no device
 				end
@@ -233,7 +281,7 @@ module DR
 			attr_reader :device
 			def do_prepare(disk=@computer[:sysinit][:disk], force: false, **opts, &b)
 				logger.info "# Prepare"
-				bootstrap
+				bootstrap #TODO: do we still need to call it?
 				opts=@opts.merge(opts)
 				disk=@dir[:target] if disk.nil?
 				unless defined?(@device)
@@ -251,6 +299,7 @@ module DR
 				end
 			end
 
+			# do_partitions, do_fs, create_subvolumes, do_mount
 			def prepare_default_actions
 				r=[]
 				r << :do_partitions if partitions.any? do |_k,v|
@@ -283,14 +332,24 @@ module DR
 				full.process_action(:configure, msg: "full configure", **opts)
 			end
 
+			# install hooks
+			def pre_install(**opts)
+			end
+			def post_install_packages(**opts)
+			end
+			def post_install(**opts)
+			end
+
 			def do_install(**opts)
 				logger.info "# Install"
-				bootstrap
+				bootstrap #TODO: do we still need to call it?
 				opts=opts.merge(@opts)
 				opts[:diff]=opts[:pause] != false unless opts.key?(:diff)
 				generate #we generate first to have pacman.conf
 				full_generate(**opts)
+				pre_install(**opts)
 				process_action(:do_install_packages,**opts)
+				post_install_packages(**opts)
 				process_action(:diff, msg: "init diff", **opts) if opts[:diff]
 				process_action(:commit, msg: "init commit", **opts)
 				full_diff(**opts) if opts[:diff]
@@ -300,13 +359,13 @@ module DR
 				process_action(:configure, msg: "init configure", **opts)
 				if present? and @computer.dig(:syst, :boot)
 					# we relaunch this script for the autodetection of the kernels + snapshots
-					# Update machine-id
-					@computer.refresh_local(local: :files)
+					@computer.refresh_local(local: :files) # Update machine-id
 					@computer[:syst][:machine_id]=@computer.dig(:local_infos, :syst, :machine_id)
 					process_script(@dir[:scripts]+"bootloader.rb", **opts)
 					process_action(:diff, msg: "New init diff", **opts) if opts[:diff]
 					process_action(:commit, msg: "New init commit", **opts)
 				end
+				post_install(**opts)
 			end
 
 			def do_clean
@@ -321,6 +380,15 @@ module DR
 					do_install(**opts)
 				ensure
 					do_clean
+				end
+			end
+
+			def do(prepare: true, prepare_block: nil, **opts)
+				begin
+					do_prepare(**opts, &prepare_block) if prepare
+					yield self if block_given?
+				ensure
+					do_clean if block_given?
 				end
 			end
 
@@ -365,7 +433,7 @@ module DR
 					when :device, :image
 						partitions=self.partitions_from_image(disk)
 						p partitions
-						unless partitions
+						unless partitions #the partitions don't yet exist
 							fstype=opts.fetch(:fstype, :ext4)
 							if c.attribute?(:syst_types, :boot)
 								case fstype
@@ -392,8 +460,14 @@ module DR
 					c
 				end
 
-				def create_process(*args)
-					self.new(self.create(*args))
+				# @exemple
+				# process=DR::Process::SystInit.create_process("arch_virtual", disk: "/tmp/arch-img.raw:size=2G") do |p|
+				#   p.computer[:sysinit][:newusers]=["dams", "provision"]
+				# end
+				# process.do_all(pause: false)
+				def create_process(*args,init_opts: {},**opts,&b)
+					c=self.create(*args,**opts)
+					self.new(c, **init_opts, &b)
 				end
 
 				def partitions_from_image(img)

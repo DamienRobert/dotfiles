@@ -1,7 +1,9 @@
+vim: ft=markdownlight fdm=expr
+
 systemd user services and timers
 ================================
 
-- ~/mine/script/gitbackup -v save
+- ~/mine/script/gitbackup -v save # once the dir is created, the timer is active
 - unison.rb --sync=backup
 
 Home
@@ -11,28 +13,52 @@ Home
 
 - ~/mine/@infos/history/dobackup #(.history)
 - ~/mine/@infos/00savedata #(mbr, ip addr, blkid...)
+- dofor 'ssh-keygen -lf' ~/.ssh/*.pub >| ~/mine/@infos/ssh_fingerprints
+  Si besoin: ssh-keygen -lf ~/.ssh/known_hosts
 
-Git folders
-===========
+## Git folders
 
 - gitfolders --mirror #mirror repos on mathrice/durin
-- gitfolders -l usrdist action 'cat .git/config' #save git configs
+- gitfolders -l perso,usrdist action 'echo $foldername; cat $folder/.git/config' >| ~/mine/@infos/git-configs #save git configs
 
 Unison
 ======
 
+:unison_type=>
+  {:minimal=>["phare", "FleurBleue"],
+  :standard=>["Gondolin", "Durin", "Baggins", "Numenor", "Valinor"],
+  :full=>["Feanor", "Mithrim", "Doriath", "imb", "4a"],
+  :devel=>["plafrim"]},
+  Note: phare is modified so that its full type is [:minimal, :phare]
+
+case unison_type
+when 'sh' {:full => [ :sh ]}
+when 'devel' {:full => [ :devel, :sh ], :init => :sh}
+when 'minimal' {:full => [ :minimal ]}
+when 'light' {:full => [ :common ]}
+when 'standard' {:full => [ :common, :data ]}
+when 'full' {:full => [ :common, :data, :booklight ], :extra => [ :large, :backup] }
+
+minimal: mine
+sh: some dotfiles
+phare: mine, perso/{website,posts}
+usb_backup: mine, perso, latex, dist [used by ~/script/usbbackup]
+
 backup: var/backup/archives
 book: data/Books
 booklight: Books/mathinfo/{Maths,Info},Roman
-common: mine, pro, perso, latex, dist
-data: data/{Documents,Papiers,Scans,WorkData,usr} Mail/mail-archives
+common: mine, pro, perso, latex, dist, tmp/sync
+data: data/{Documents,Papiers,Scans,WorkData,usr}, Mail/mail-archives
 large: data/{Fonts,Etudes}
 perso: data/Photos, data/Videos/clip
-perso2: data/Music
+perso2: data/{Music,.XXX}
 photoslight: Photos/Photos_de_{Blandine,Damien}
 full: :common, :data, :booklight
-all: :full + :large
+all: :full + :large + :backup
 
+=> unisonsync --all; unisonsync --sync={perso,perso2}; unisonsync -t book
+  TODO: unisonsync --photos (=perso on imb:usbdisk)
+=> unison.rb -t common,data,booklight,book,perso,perso2 ens,4a,imb,feanor,numenor,FleurBleue,durin
 
 Inria Bordeaux
 ==============
@@ -43,42 +69,42 @@ Tablette Asus
 =============
 
 transfert --delete-after ~/Books/mathinfo/{Maths,Info} ~/data/Papiers ~/Books/Roman asus:SDCard/Library/
-# transfert --delete-after ~/Books/mathinfo/Info/ asus:SDCard/Library/Info/
+ # transfert --delete-after ~/Books/mathinfo/Info/ asus:SDCard/Library/Info/
 
 FleurBleue
 ==========
 
 RELDIR=var/backups/dina
 DIR=~/$RELDIR #~dina/Documents est un lien symbolique vers $DIR/Documents
-#mkdir $DIR; chown -R dams:dams $DIR; ~/script/set_acls -Rwd -u dina $DIR
+ #mkdir $DIR; chown -R dams:dams $DIR; ~/script/set_acls -Rwd -u dina $DIR
 
-#Ingoing to Feanor
+* Ingoing to Feanor
   transfert dina@fleurbleue:/home/dina/{BackupPortable,Documents,Bureau} $DIR/
 
-#Outgoing from Feanor
+* Outgoing from Feanor
   #transfert --delete-after $DIR/BackupPortable dina@fleurbleue:
   transfert --delete-after $DIR/ imb:$RELDIR/
   transfert --delete-after $DIR/ 4a:$RELDIR/
   transfert --delete-after $DIR/ mithrim:$RELDIR/
 
-# Transfert ponctuel:
+* Transfert ponctuel:
 transfert imb:$RELDIR/ $DIR/
 
 Mithrim
 =======
 
-# back up to external_disk
+* back up to external_disk
 transfert --delete-after ~/data/Photos ~/var/backups ~/media/external_disk/dams/
 transfert --delete-after ~/Videos/clip ~/media/external_disk/dams/Videos/
 
 Imb
 ===
 
-#Run git gc before transfers:
+* Run git gc before transfers:
   ssh imb vcs update -a ~/dist/imb/*(/)
-  ssh imb vcs action 'git gc --aggressive' ~/dist/imb/*(/) ~/var/backups/gitbackup ~/scratch/yaf
+  ssh imb vcs action 'git my gc --aggressive' ~/dist/imb/*(/) ~/var/backups/gitbackup
 
-#Ingoing to Feanor
+* Ingoing to Feanor
   transfert --delete-after imb:dist/imb ~/var/backups/imb/dist
   transfert --delete-after imb:scratch/backups/archives.old imb:var/backups/gitbackup ~/var/backups/imb/
 
@@ -92,34 +118,41 @@ Feanor
   transfert --delete-after ~/large/spools/forum/forum.xz imb:scratch/backups/spools/
   transfert --delete-after ~/large/spools/yaf imb:scratch/backups/spools/
   transfert --delete-after ~/large/Medias imb:scratch/backups
-=> Outgoing to Mithrim:
+=> Outgoing to Mithrim:external_disk
   # transfert --delete-after ~/large/spools/forum/forum.xz mithrim:media/external_disk/backup/
   transfert --delete-after ~/var/backups/Medias/ mithrim:var/backups/Medias/
 
-- usb disk small backup (btrfs):
-  transfert --delete-after ~/Mail ~/dist ~/latex ~/mine ~/perso ~/pro ~/data/Photos ~/media/small_backup/dams/rsync/
-  sudo btrfs subvolume snapshot -r ~/media/small_backup ~/media/small_backup/snapshot-$(date '+%F')
+- usb disk small_backup (btrfs):
+  sudo mount /mnt/small_backup # don't use udisk to enable zstd compression
+  transfert --delete-after ~/old_data/Photos /mnt/small_backup/dams/
+  # sudo btrfs subvolume snapshot -r /mnt/small_backup /mnt/small_backup/snapshot-$(date '+%F')
 
 - large2 (ext4):
-  bupdirs=(~/ ~/data/ ~/large/{Books,Medias,Music,ipod,spools} ~dina/BackupDina)
-  bup index $bupdirs; bup save -n large2 $bupdirs
+  # bupdirs=(~/ ~/data/ ~/large/{Books,Medias,Music,ipod,spools} ~dina/BackupDina)
+  bupdirs=(~/)
+  bup index --exclude ~/.cache $bupdirs; bup save -n large2 $bupdirs
   bup fsck -g #par2 files
-  transfert --delete-after ~/large/{Isos,.XXX-crypt} ~/large2/rsync/
-  transfert --delete-after --exclude /videos/Recording /large/backups/dams/ ~/large2/rsync/backups/
+  transfert --delete-after ~/data/{Documents,Etudes,Papiers,Scans,WorkData,usr,var} ~/old_data/{Fonts,Medias,Photos} ~/large/{Books,Music,Isos,ipod,spools,.XXX-crypt} ~/large2/rsync/
+  transfert --delete-after ~/large/Medias ~/larg2/rsync/Medias_large
+  transfert --delete-after --exclude /videos/Recording /large/backups/dams/ /old_home/dina/BackupDina ~/large2/rsync/backups/
 
 - large_usb (xfs):
-  transfert --delete-after ~/ ~/media/large_usb/dams/home/
-  transfert --delete-after ~/data/ ~/media/large_usb/dams/data/
-  transfert --delete-after ~/large/ ~/media/large_usb/dams/large/
-  transfert --delete-after /large/backups/dams ~/media/large_usb/dams/backups
+  transfert --delete-after --exclude /.cache ~/ /large_usb/dams/home/
+  transfert --delete-after ~/data/ /large_usb/dams/data/
+  transfert --delete-after ~/old_data/ /large_usb/dams/old_data/
+  transfert --delete ~/large/ /large_usb/dams/large/
+  transfert --delete-after /large/backups/dams /large_usb/dams/backups
 
 - usbdisk_nomad (ext4) [disque usb mobile]:
-  transfert --delete-after ~/Mail ~/dist ~/latex ~/mine ~/perso ~/pro ~/media/usbdisk_nomad/home/dams/
-  transfert --delete-after ~/data/{Documents,Etudes,Fonts,Papiers,Photos,Scans,WorkData,usr} ~/large/{Books,Music} ~/media/usbdisk_nomad/home/dams/data/
+  transfert --delete-after -R ~/./{Mail,dist,latex,mine,perso,pro,var/backups,tmp/sync} ~/media/usbdisk_nomad/home/dams/
+  transfert --delete-after ~/data/{Documents,Etudes,Papiers,Scans,WorkData,usr} ~/old_data/{Fonts,Medias,Photos} ~/large/{Books,Music} ~/media/usbdisk_nomad/home/dams/data/
+  transfert --delete-after ~/large/{Medias,spools} ~/media/usbdisk_nomad/home/dams/large/
 
-Last Backups:
-  2017-10-01 for Feanor
-  2018-07-23 for inriabdx, forum, imb
+Last Backups
+============
+
+  2019-08-22 for Feanor
+  2019-08-21 for inriabdx, forum, imb
   2018-07 for FleurBleue
 
 Notes
@@ -127,41 +160,41 @@ Notes
 
 - Photos is synchronised among my computers and imb's usbdisk (unison perso)
   [Gondolin, Numenor and Valinor do not have the latest photos]
-- Books/mathinfo/{Info,Math};Books/Roman are synchronised across my computers
-- A part of Music [Music \ 01Other, A_Trier, Divers, Mirrors, MP3Albums]  and Video/clip are synchronised on my computers (via unison perso, perso2)
+- Books/mathinfo/{Info,Math}; Books/Roman are synchronised across my computers
+  Books/ is synchronized to imb via unison
+- A part of Music [Music\{01Other, A_Trier, Divers, Mirrors, MP3Albums}]  and Video/clip are synchronised on my computers (via unison perso2, perso)
+- spools and Medias are synchronised to imb + Mithrim ?
 
-imb:
-- Books is synchronised on imb (except Books/mathinfo/Torrent)
-- imb:var/backups/{archives.old,gitbackup},dist/imb -> ~/var/backups/imb
-- imb:usbdisk <- ~backup/dina, Medias and forum's spool (manual) + Photos (unison)  + some Music
-- Photos,Videos are on usbdisk
-  Books,Fonts,Music,opt,yaf,imb:dist (+ alternate unison repo) are on scratch
-#TODO: import imb's usbdisk backup/bup into ~/large2/bup
-Access zfs snapshots on .zfs
+* imb: unison:full => Access zfs snapshots on .zfs
+- imb:scratch/backups/{archives.old,gitbackup},dist/imb -> Feanor:var/backups/imb [rsync]
+- imb:scratch/backups/ <- ~backup/{dina,Medias,spools} [rsync]
+- imb:scratch => Books, Fonts, some Music, part of opt, imb:dist + alternate unison repo
+- imb:usbdisk -> Photos [unison] + Medias [manual] + some Videos #TODO: import imb's usbdisk backup/bup into ~/large2/bup
 
-4a: has ~backup/dina and some photos
+* phare: unison:minimal + perso/{website,posts}
+* 4a: unison:full + ~backup/dina [rsync]
+* inriabdx: mine, pro, perso, latex [rsync]
 
-On Feanor:
-- Mail, dist, latex, mine, perso, pro, Photos are rsynced on my usb disk
-  'small_backup' and usbdisk_nomad
-- data/ and large/{Books,Music} are rsynced to usbdisk_nomad
+* On Feanor:
+- usb disk small_backup: Photos/ [rsync]
+- usb disk 'usbdisk_nomad': Mail, dist, latex, mine, perso, pro, data/ and large/{Books,Music} [rsync]
 - For ~/large:
   - home/, data/ + Books, Medias, Music, ipod, spools are buped to large2
   - Isos, .XXX-crypt are rsynced to large2
   - /large/backups/dams mainly contains original video files
     A part of that is backed up in ~/large2/backup/
-  - All is rsynced large4/
+  - All is rsynced in large4/
 
 - ~/var/backups:
-  archives/{Immobilier, annuaires} [unison]
-  Medias -> ~/large/Medias [imb scratch]
-  dams -> /large/backups/dams/
-  imb -> dams/imb/{archives.old, dist, gitbackup}
-  videos -> dams/videos/ [archives videos non compressées]
-  dina -> ../../../../home/dina/BackupDina/
-    [~/var/backup/dina est synchronisé manuellement sur Feanor, Mithrim, 4a, imb:scratch]
   gitbackup/ [synchronisé automatiquement sur imb via une crontab]
+  archives/{Immobilier, annuaires} [unison]
+  Medias -> ~/large/Medias [imb scratch + imb usbdisk]
   spools -> ../../large/spools/ [imb scratch]
+  imb -> dams/imb/{archives.old, dist, gitbackup} [imb scratch]
+  dams -> /large/backups/dams/
+    videos -> dams/videos/ (archives videos non compressées)
+  dina -> ../../../../home/dina/BackupDina/
+    [~/var/backup/dina est synchronisé manuellement via rsync sur Feanor, Mithrim, 4a, imb:scratch]
 
 - disk layout:
   /boot on /dev/sdc1, /home+/data on /dev/sdc4 et /dev/sda, large on
@@ -200,7 +233,7 @@ Google
 gmail pp: inria, phare
 
 photos dor: all (All ...), Evenements (Divers ...),
-  Photos_de_autres/{Dams,Famille,Gaetan_Bisson,Work}
+  Photos_de_autres/{Dams,Famille,Gaetan_Bisson,Work} (All ...)
 photos pp: Divers (Vrac ...), Photos_de_autres/Divers (Vrac Famille)
 
 musique dor: Music/Albums
@@ -209,6 +242,13 @@ drive dor: Scans/
 drive robertdami: gpg backups of mine, perso, Photos/.crypt
 + ~backups/{dina,archives/{Immobilier,annuaires,.WorldOfGoo}}
 + ~/Documents
-  fusermount -u ~/.crypt-{mine,perso}
-  gpgfiles -c mine -r internal
-  gpgfiles -c perso -r internal
+  [old: fusermount -u ~/.crypt-{mine,perso}; gpgfiles -c mine -r internal]
+
+  Last update: 2019-06-01:
+rclone sync ~backups/archives/annuaires drive_robertdami:Backups/backups/
+rclone sync ~backups/archives/.WorldOfGoo drive_robertdami:Backups/backups/.WorldOfGoo
+gpgfiles -c -o /tmp/Immobilier.tar.xz.gpg ~backups/archives/Immobilier -r internal && rclone -v copy /tmp/Immobilier.tar.xz.gpg drive_robertdami:Backups/backups/
+gpgfiles -c -o /tmp/perso.tar.xz.gpg ~/perso -r internal && rclone -v copy /tmp/perso.tar.xz.gpg drive_robertdami:Backups/
+gpgfiles -c -o /tmp/Documents.tar.xz.gpg ~/data/Documents -r internal && rclone -v copy /tmp/Documents.tar.xz.gpg drive_robertdami:Backups/
+gpgfiles -c -o /tmp/mine.tar.xz.gpg ~/mine -r internal && rclone -v copy /tmp/mine.tar.xz.gpg drive_robertdami:Backups/
+rclone sync -v ~/data/Scans drive_dor:Scans/

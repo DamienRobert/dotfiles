@@ -1,4 +1,5 @@
 #!/bin/zsh
+# Note: $0 no => do not redownload
 
 # https://aur.archlinux.org/packages/ttf-google-fonts-git/ has cantarell-fonts noto-fonts noto-fonts-extra ttf-croscore ttf-fira-mono ttf-fira-sans ttf-inconsolata ttf-merriweather ttf-merriweather-sans ttf-opensans ttf-oswald ttf-quintessential ttf-roboto ttf-signika ttf-ubuntu-font-family [I include all]
 # https://aur.archlinux.org/packages/fonts-meta-extended-lt/ has cantarell-fonts fonts-meta-base gsfonts tex-gyre-fonts ttf-caladea ttf-carlito ttf-droid ttf-gelasio-ib ttf-impallari-cantora ttf-merriweather ttf-merriweather-sans ttf-opensans ttf-oswald ttf-quintessential ttf-signika ttf-ubuntu-font-family [I don't include: ttf-impallari-cantora]
@@ -11,13 +12,14 @@ PKGS=(
   ttf-droid ttf-croscore
   ttf-freefont ttf-liberation ttf-ubuntu-font-family
   ttf-fira-mono  ttf-fira-sans ttf-fira-code # Firefox os
+  otf-fira-mono otf-fira-sans ttf-fira-mono ttf-fira-sans #Firefox os
+  ttf-fira-code otf-fira-code 
   cantarell-fonts ttf-gentium ttf-junicode ttf-linux-libertine 
   ttf-roboto ttf-opensans #fonts from google
   ttf-lato #nice sans font
   ttf-anonymous-pro ttf-hack ttf-inconsolata  # monospace
   awesome-terminal-fonts # ttf-symbola          # symbols
   font-mathematica
-  otf-fira-mono otf-fira-sans ttf-fira-mono ttf-fira-sans #firefox os
 )
 
 AURPKGS=(
@@ -40,20 +42,28 @@ TARGET=~/tmp/Fonts/Free/archlinux
 FONTS=/tmp/arch_free_fonts
 mkdir -p $FONTS $TARGET
 
-sudo pacman -Sw $PKGS
+[[ -z $1 ]] && sudo pacman -Sw $PKGS
 CACHE=/var/cache/pacman/pkg/
 for pkg in $PKGS; do
-  pkgs=($CACHE/$pkg*)
-  lastpkg=$pkgs[-1]
-  cp -f $lastpkg $FONTS
+  pkgs=($CACHE/$pkg*(N))
+  if [[ -n $pkgs ]]; then
+    lastpkg=$pkgs[-1]
+    cp -f $lastpkg $FONTS
+  else
+    echo "Missing package: $pkg"
+  fi
 done
 
-aur.rb install --local --no-install $AURPKGS
+[[ -z $1 ]] && aur.rb install --local --no-install $AURPKGS
 AURCACHE=~/.cache/arch_aur
 for pkg in $AURPKGS; do
-  pkgs=($AURCACHE/$pkg/$pkg*.pkg.tar.xz)
-  lastpkg=$pkgs[-1]
-  cp -f $lastpkg $FONTS
+  pkgs=($AURCACHE/$pkg/$pkg*.pkg.tar.xz(N))
+  if [[ -n $pkgs ]]; then
+    lastpkg=$pkgs[-1]
+    cp -f $lastpkg $FONTS
+  else
+    echo "Missing package: $pkg"
+  fi
 done
 
 cd $FONTS

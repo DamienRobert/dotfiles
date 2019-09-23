@@ -23,9 +23,9 @@ Wants=port_forward_test.timer
 Type=simple
 User=%{user}
 SyslogIdentifier=ssh_port_forward
-ExecStart=/usr/bin/ssh -nN -o "ExitOnForwardFailure yes" -i %{id_file} -R %{remote_port}:%{local_host}:%{local_port} %{remote_host}
+ExecStart=/usr/bin/ssh -nN -o "ExitOnForwardFailure yes" -o "ServerAliveInterval 60" -i %{id_file} -R %{remote_port}:%{local_host}:%{local_port} %{remote_host}
 Restart=always
-RestartSec=60min
+RestartSec=20min
 
 [Install]
 WantedBy=multi-user.target

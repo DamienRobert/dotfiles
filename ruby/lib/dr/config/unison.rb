@@ -96,6 +96,9 @@ module DR
 			def self.ssh
 				SSH
 			end
+			def self.unison
+				Unison
+			end
 			# def self.default_opts
 			# 	super.merge({default_server: "imb"})
 			# end

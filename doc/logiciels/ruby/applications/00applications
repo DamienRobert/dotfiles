@@ -8,6 +8,9 @@ Ruby compilers/lint list: https://github.com/planetruby/awesome-rubies
    Modern concurrency tools for Ruby. Inspired by Erlang, Clojure, Scala, Haskell, F#, C#, Java, and classic concurrency patterns. 
    +Atomic updates
   Note: thread_safe, atomic was merged into concurrent-ruby
++ https://github.com/socketry/async
+  A lightweight celluloid; used by rubydns
+  falcon — A rack compatible server built on top of async-http.
 - Promises: https://github.com/lgierth/promise.rb
   Lightweight implementations of promises following the spec https://promisesaplus.com/
   Nice to see the code
@@ -265,6 +268,8 @@ CM("foo bar http://github.com/akitaonrails/chainable_methods foo bar")
 - https://github.com/k-tsj/pattern-match
   Pattern matching (similar to ml pattern matching)
   See: https://code.google.com/p/tokland/wiki/RubyTextProcessing
++ https://github.com/dry-rb/dry-monads/
+  => Use continuations to have a do notation: https://dry-rb.org/gems/dry-monads/do-notation/
 
 ## RubyWorks
 En plus de facets, cf les modules suivants qui étaient dans facets 2.0:
@@ -369,6 +374,10 @@ Color:
   Pour la couleur dans les strings
 - https://github.com/sickill/rainbow
 - https://github.com/flori/term-ansicolor
+
+Tty utils: https://piotrmurach.github.io/tty/
+eg: https://github.com/piotrmurach/tty-prompt
+    A beautiful and powerful interactive command line prompt.
 
 Table output:
 + https://github.com/cldwalker/hirb
@@ -529,6 +538,8 @@ See web/applications for web frameworks
   Cf: https://coderrr.wordpress.com/2007/12/06/backgrounding-tasks-in-rails-with-threads-and-using-resolv-replace-to-make-them-faster/]
 + https://github.com/allcentury/classy_json
   Turns a json response to an object
++ https://github.com/ipaddress-gem/ipaddress
+  A library to handle IP (both IPv4 and IPv6) addresses in a modern and productive way.
 - https://github.com/rafalchmiel/crib
   A dynamic way of exploring and packaging REST APIs.
 - http://taylor.fausak.me/2015/02/19/announcing-stoplight-a-ruby-circuit-breaker/
@@ -573,10 +584,20 @@ See web/applications for web frameworks
   Ruby implementation of http://goessner.net/articles/JsonPath/
 
 # Api
-- ruby-dbus: Ruby D-Bus is a pure Ruby library for writing clients and services for D-Bus.
-- https://github.com/splattael/libnotify
++ ruby-dbus: Ruby D-Bus is a pure Ruby library for writing clients and services for D-Bus.
++ https://github.com/splattael/libnotify
   Ruby bindings for libnotify using FFI.
 
 # Divers
 - https://github.com/ruport/ruport
   Ruby Reports : Making your reporting life suck less, through Ruby
+
+# Scientific
+
++ https://github.com/jekyll/classifier-reborn
+A general classifier module to allow Bayesian and other types of classifications. A fork of cardmagic/classifier. https://www.classifier-reborn.com
++ Scientific ruby: http://sciruby.com/
+- tensorflow: https://github.com/somaticio/tensorflow.rb
+  https://medium.com/@Arafat./introducing-tensorflow-ruby-api-e77a477ff16e
+- https://github.com/jedld/tensor_stream
+  A ground-up and standalone reimplementation of TensorFlow for ruby. Comes with a pure ruby and OpenCL opcode evaluator

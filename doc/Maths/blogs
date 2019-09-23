@@ -50,7 +50,7 @@ http://www.madore.org/~david/weblog/d.2015-12-11.2341.html
 http://www.madore.org/~david/weblog/d.2013-09-21.2160.definition-schema.html
 -> Schéma
 
-http://www.madore.org/~david/weblog/d.2016-11-29.2410.html#d.2016-11-29.2410
++ http://www.madore.org/~david/weblog/d.2016-11-29.2410.html#d.2016-11-29.2410
 Une version de Gödel sur l'inséparabilité des théorèmes et antithéorèmes
   (https://mathoverflow.net/questions/255446/meta-undecidability/255453#255453)
 http://www.madore.org/~david/weblog/d.2012-12-15.2093.verite-en-mathematiques.html#d.2012-12-15.2093.rapport-entre-verite-et-demontrabilite.reification
@@ -140,6 +140,10 @@ https://terrytao.wordpress.com/2017/11/09/continuous-approximations-to-arithmeti
 https://terrytao.wordpress.com/2018/07/07/1-quasimorphisms-and-group-cohomology/
 https://terrytao.wordpress.com/2019/03/19/prismatic-cohomology/
 https://terrytao.wordpress.com/2019/05/08/the-alternative-hypothesis-for-unitary-matrices/
+https://terrytao.wordpress.com/2019/05/31/searching-for-singularities-in-the-navier-stokes-equations/
+https://terrytao.wordpress.com/2019/06/08/ruling-out-polynomial-bijections-over-the-rationals-via-bombieri-lang/
+https://terrytao.wordpress.com/2019/08/13/eigenvectors-from-eigenvalues/
+https://terrytao.wordpress.com/2019/08/26/large-prime-gaps-and-probabilistic-models/
 
 Gowers
 ======
@@ -193,6 +197,12 @@ https://rjlipton.wordpress.com/2018/08/30/limits-on-matrix-multiplication/
 https://rjlipton.wordpress.com/2018/07/28/a-quest-for-simple-hard-statements/
 https://rjlipton.wordpress.com/2019/03/29/integer-multiplication-in-nlogn-time/
 https://rjlipton.wordpress.com/2019/04/30/network-coding-yields-lower-bounds/
+https://rjlipton.wordpress.com/2019/06/04/a-quantum-connection-for-matrix-rank/
+https://rjlipton.wordpress.com/2019/06/10/net-zero-graphs/
+https://rjlipton.wordpress.com/2009/03/25/whos-afraid-of-natural-proofs/
+https://rjlipton.wordpress.com/2012/07/04/july-fourth-sale-of-ideas/  Manic Monomials
+https://rjlipton.wordpress.com/2019/07/16/summer-reading-in-theory/
+https://rjlipton.wordpress.com/2019/08/15/predicting-chess-and-horses/
 
 Shtetl-Optimized
 ================
@@ -330,6 +340,8 @@ https://johncarlosbaez.wordpress.com/2018/09/20/patterns-that-eventually-fail/
 https://johncarlosbaez.wordpress.com/2019/04/04/hidden-symmetries-of-the-hydrogen-atom/
 https://johncarlosbaez.wordpress.com/2019/04/04/the-pi-calculus-towards-global-computing/
 https://johncarlosbaez.wordpress.com/2019/05/21/the-monoidal-grothendieck-construction/
+https://johncarlosbaez.wordpress.com/2019/06/06/nonstandard-models-of-arithmetic/
+https://johncarlosbaez.wordpress.com/2019/05/16/enriched-lawvere-theories/
 
 Secret Blogging Seminar
 =======================
@@ -372,6 +384,8 @@ http://www.neverendingbooks.org/closing-in-on-gabriels-topos
 https://mathoverflow.net/questions/259263/what-is-precisely-still-missing-in-connes-approach-to-rh/259301#259301
 https://mathoverflow.net/questions/34699/approaches-to-riemann-hypothesis-using-methods-outside-number-theory
 https://mathoverflow.net/questions/69389/riemann-hypothesis-via-absolute-geometry
+http://www.neverendingbooks.org/the-riemann-hypothesis-and-6
+  On the psi function
 
 Choux Romanesco
 ================
@@ -379,12 +393,6 @@ Choux Romanesco
 Nombres de Catalan:
   http://eljjdx.canalblog.com/archives/2017/02/20/34959863.html
   https://en.wikipedia.org/wiki/Catalan_number#First_proof
-
-Quaternions and Octonions
-=========================
-
-https://www.quantamagazine.org/the-strange-numbers-that-birthed-modern-algebra-20180906/
-https://www.quantamagazine.org/the-octonion-math-that-could-underpin-physics-20180720/
 
 Gil Kalai
 =========
@@ -395,6 +403,13 @@ Gil Kalai
 - https://gilkalai.wordpress.com/2019/03/22/danny-nguyen-and-igor-pak-presburger-arithmetic-problem-solved/
 
 - https://gilkalai.wordpress.com/2019/03/26/10-milestones-in-the-history-of-mathematics-according-to-nati-and-me/
+
+- https://gilkalai.wordpress.com/2019/07/17/dan-romik-on-the-riemann-zeta-function/
+
+- https://gilkalai.wordpress.com/2019/08/04/avi-wigdersons-integrating-computational-modeling-algorithms-and-complexity-into-theories-of-nature-marks-a-new-scientific-revolution-an-invitation-for-a-discussion/
+
+- https://gilkalai.wordpress.com/2019/08/21/the-argument-against-quantum-computers-a-cern-colloquium-and-a-new-paper/
+  https://www.quantamagazine.org/gil-kalais-argument-against-quantum-computers-20180207/#comment-4559220424
 
 Categories
 ==========
@@ -457,6 +472,14 @@ https://golem.ph.utexas.edu/category/archives.html
 - https://golem.ph.utexas.edu/category/2019/04/the_zxcalculus_for_stabilizer.html
 - https://golem.ph.utexas.edu/category/2019/05/young_diagrams_and_schur_funct.html
 - https://golem.ph.utexas.edu/category/2019/05/partial_evaluations.html
+- https://golem.ph.utexas.edu/category/2019/07/what_is_the_laplace_transform.html
+- https://golem.ph.utexas.edu/category/2019/04/univalence_in_1toposes.html#more
+- https://golem.ph.utexas.edu/category/2019/08/turing_categories.html
+- https://golem.ph.utexas.edu/category/2019/09/the_riemann_hypothesis_part_1.html
+  https://golem.ph.utexas.edu/category/2019/09/the_riemann_hypothesis_part_2.html
+  https://golem.ph.utexas.edu/category/2019/09/the_riemann_hypothesis_part_3.html
+- https://golem.ph.utexas.edu/category/2019/05/partial_evaluations.html
+  https://golem.ph.utexas.edu/category/2019/09/partial_evaluations_2.html
 
 Intégrales Stochastiques
 ========================
@@ -470,6 +493,7 @@ https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-an-ill
 https://nickler.ninja/blog/2017/05/23/exploiting-low-order-generators-in-one-time-ring-signatures/
 https://www.esat.kuleuven.be/cosic/elliptic-curves-are-quantum-dead-long-live-elliptic-curves/
 http://vitalik.ca/general/2017/11/09/starks_part_1.html => ZK-SNARK
+https://blog.cryptographyengineering.com/2019/06/05/how-does-apple-privately-find-your-offline-devices/
 
 Divers
 ======
@@ -505,6 +529,8 @@ the sierpinski triangle page to end most sierpinski triangle pages ™
 - https://semmibol.wordpress.com/
   Le blog de Zhen Lin Low
   https://semmibol.wordpress.com/2015/11/30/the-localic-reflection-of-the-petit-etale-topos/
+
+- https://simons.berkeley.edu/sites/default/files/docs/6119/doesrandomnesshelp.pdf
 
 Références
 ==========
@@ -549,6 +575,10 @@ https://betterexplained.com/articles/gutcheck/
 Quanta magazine
 ===============
 
+* Quaternions and Octonions
+https://www.quantamagazine.org/the-strange-numbers-that-birthed-modern-algebra-20180906/
+https://www.quantamagazine.org/the-octonion-math-that-could-underpin-physics-20180720/
+
 https://www.quantamagazine.org/solution-evolutionary-math-and-just-so-stories-20180907/
 https://www.quantamagazine.org/titans-of-mathematics-clash-over-epic-proof-of-abc-conjecture-20180920/
 https://www.quantamagazine.org/without-a-proof-mathematicians-wonder-how-much-evidence-is-enough-20181031/
@@ -563,6 +593,10 @@ https://www.quantamagazine.org/how-our-universe-could-emerge-as-a-hologram-20190
 https://www.quantamagazine.org/quantum-scarring-appears-to-defy-universes-push-for-disorder-20190320/
 https://www.quantamagazine.org/in-quantum-games-theres-no-way-to-play-the-odds-20190401/
 https://www.quantamagazine.org/how-the-evercrypt-library-creates-hacker-proof-cryptography-20190402/
+https://www.quantamagazine.org/color-me-polynomial-20190813/
+https://www.quantamagazine.org/new-proof-settles-how-to-approximate-numbers-like-pi-20190814/
+https://www.quantamagazine.org/where-quantum-probability-comes-from-20190909/
+https://www.quantamagazine.org/origin-of-life-study-points-to-chemical-chimeras-not-rna-20190916/
 
 PvsNP
 =====
@@ -641,6 +675,7 @@ http://www.wired.com/2014/08/subhash-khot-nevanlinna-prize/
 - https://blog.computationalcomplexity.org/2018/08/the-zero-one-law-for-random-oracles.html
 - https://blog.computationalcomplexity.org/2018/10/if-pnp-then-we-have-alg-for-sat.html
 - https://blog.computationalcomplexity.org/2018/11/p-np-need-not-give-sat-algorithm.html
+- https://rjlipton.wordpress.com/2019/08/26/a-matroid-quantum-connection/
 
 ## Shtetl-Optimized
 - Is the P vs. NP problem ill-posed? (Answer: no.)
@@ -659,3 +694,12 @@ NP? (answer: maybe)”.)
   => Quantum Theory From Five Reasonable Axioms https://arxiv.org/abs/quant-ph/0101012
   => Informational derivation of Quantum Theory https://arxiv.org/abs/1011.6451
 
+Sensitivity Conjecture
+=======================
+
+http://www.mathcs.emory.edu/~hhuan30/papers/sensitivity_1.pdf
+https://www.quantamagazine.org/mathematician-solves-computer-science-conjecture-in-two-pages-20190725/
+https://www.quantamagazine.org/mathematician-solves-computer-science-conjecture-in-two-pages-20190725/
+https://rjlipton.wordpress.com/2019/07/12/tools-and-sensitivity/
+https://rjlipton.wordpress.com/2019/07/25/discrepancy-games-and-sensitivity/
+https://terrytao.wordpress.com/2019/07/26/twisted-convolution-and-the-sensitivity-conjecture/

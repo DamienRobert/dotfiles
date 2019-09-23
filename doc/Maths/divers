@@ -306,8 +306,17 @@ Voting matter:
 https://www.skishore.me/voting.html
 http://norvig.com/election-faq-2012.html#rational
 
-Geometric Algebra
-=================
+Ranking
+=======
 
-https://math.stackexchange.com/questions/1852691/why-use-geometric-algebra-and-not-differential-forms
-http://www-cs-students.stanford.edu/~blynn/haskell/cga.html
+- ELO
+- Trueskill, trueskill through time
+- Whole history rating: https://www.remi-coulom.fr/WHR/
+  => ruby implem: https://github.com/goshrine/whole_history_rating
+- trueskill2: https://www.microsoft.com/en-us/research/uploads/prod/2018/03/trueskill2.pdf
+- https://rankade.com/ree
+
+- Starcraft => Aligulac: http://aligulac.com/about/faq/
+- Dota: https://www.dotainternational.com/how-dota-2-mmr-ranking-works-detail-guide/
+        https://www.dotainternational.com/calibration-mmr-dota-2-detailed-guide/
+

@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+# netns=${netns-ns1}
+# sudo ip netns exec $netns sudo -u $USER windscribe connect
+# Note: this is now done in windscribe.service
+
+sudo -E ~/script/netns --netns ns_ws --setup-ipvlan
+~/script/systemd-run-local windscribe.service start
+windscribe connect
+
+echo ~/script/netns --netns ns_ws deluge

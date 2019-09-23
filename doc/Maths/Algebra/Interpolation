@@ -220,3 +220,15 @@ Lagrange qui envoit les \lambda_i en e^\lambda_i. Plus généralement si on a
 une multiplicité e il faut prendre les pols d'interpolation à l'ordre e; cf
 la série de Laurent explicite plus haut (ie le polynôme P tel que
 P^(k)(\lambda)=f^(k)(\lambda) pour k<=e)
+
+Interpolation d'une fraction rationnelle
+=========================================
+
+Aka padé approximation
+
+Multivariate Padé:
+- https://link.springer.com/content/pdf/10.1007%2F978-3-0348-7298-0.pdf
+  Multivariate approximation theory IV
+  Moller H.M.: Multivariate Rational Interpolation, p 249
+- https://www.sciencedirect.com/science/article/pii/S037704270000337X
+  Multivariate Padé approximation

@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+
+. ~/script/lib/mount_dir
+MOUNTMODE="udisk"
+
+# MOUNTUUID=("9016-4EF8")
+# MOUNTLABEL=()
+
+mount_dir $@

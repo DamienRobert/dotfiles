@@ -82,10 +82,10 @@ def extract_root(ar)
 		when '.tar'
 			# List archive: `tar tf archive`
 			# Extract to a dir: tar xvf archive -C /target/directory
-			files=`tar -tf #{ar.to_s.shellescape}`.split
+			files=`tar -tf #{ar.to_s.shellescape}`.split("\n")
 			return common_root(*files)
 		when '.zip'
-			files=`zipinfo -1 #{ar.to_s.shellescape}`.split
+			files=`zipinfo -1 #{ar.to_s.shellescape}`.split("\n")
 			return common_root(*files)
 		end
 	end

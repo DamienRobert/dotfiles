@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+user=
+while true; do
+	case $1 in
+		-- ) shift; break ;;
+		--user ) shift; user=t ;;
+		*) break ;;
+	esac
+done
+
+unit=$1; shift
+
+if [[ -n $user ]]; then
+	[[ ${unit:t} == ${unit} ]] && unit=$HOME/.config/systemd/user/$unit
+	mkdir -p $XDG_RUNTIME_DIR/systemd/user
+	cp $unit $XDG_RUNTIME_DIR/systemd/user/${unit:t}
+
+	[[ -n $@ ]] && systemctl --user $@ ${unit:t}
+else
+	[[ ${unit:t} == ${unit} ]] && unit=$HOME/.config/systemd/system/$unit
+	sudo cp $unit /var/run/systemd/system/${unit:t}
+
+	[[ -n $@ ]] && sudo systemctl $@ ${unit:t}
+fi

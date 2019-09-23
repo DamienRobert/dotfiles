@@ -4,30 +4,53 @@ Tools
 =====
 
 * Configuration manager: chef, puppet, salt, ansible
-* VPS: Digital Ocean, RamNode, OVH, LunaNode
-Integration continue: travis (github), jenkins
+* VPS: Digital Ocean, linode, RamNode, OVH, LunaNode
+* Integration continue: travis (github), jenkins
+* Monitoring: ganglia
+* Cloud configuration: https://cloud-init.io/
 
 * Non root containers:
-- patchelf https://nixos.org/patchelf.html
+Cf https://rootlesscontaine.rs/ [tools described there are used by buildah and podman]
+=> https://github.com/mgoltzsche/ctnr rootless runc-based container engine
+
+Namespace wrappers:
++ https://github.com/rootless-containers/rootlesskit
+  kind of Linux-native "fake root" utility, made for mainly running Docker and Kubernetes as an unprivileged user
+  RootlessKit creates user_namespaces(7) and mount_namespaces(7), and executes newuidmap(1)/newgidmap(1) along with subuid(5) and subgid(5).
+  RootlessKit also supports isolating network_namespaces(7) with userspace NAT using "slirp". Kernel NAT using SUID-enabled lxc-user-nic(1) is also experimentally supported.
+  Projects using RootlessKit
+  - Docker/Moby
+  - Usernetes: Docker & Kubernetes, installable under a non-root user's $HOME.
+  - k3s: Lightweight Kubernetes
+  - BuildKit: Next-generation docker build backend
+- https://github.com/giuseppe/become-root
+  minimal tool for creating a new user namespace with multiple UIDs/GIDs mapped inside
+
+Tools for non root containers:
++ patchelf https://nixos.org/patchelf.html
   PatchELF is a small utility to modify the dynamic linker and RPATH of ELF executables.
-- https://proot-me.github.io/
-  PRoot is a user-space implementation of chroot, mount --bind, and binfmt_misc.
-  (uses ptrace)
++ https://proot-me.github.io/
+  PRoot is a user-space implementation of chroot, mount --bind, and binfmt_misc. (uses ptrace)
   -> used by junest: The lightweight Arch Linux based distro that runs upon any Linux distros without root access.
-- mbox: http://pdos.csail.mit.edu/mbox/
+  Voir aussi https://github.com/rootless-containers/PRoot
+  Fork of proot for supporting `user.rootlesscontainers` xattr so as to support persistent `chown(2)`
+- mbox: http://pdos.csail.mit.edu/mbox/ [undeveloped]
   Mbox is a lightweight sandboxing mechanism that any user can use without special privileges in commodity operating systems.
++ slirp: userspace networking
+  cf https://github.com/rootless-containers/slirp4netns
+  slirp4netns: User-mode networking for unprivileged network namespaces
 
 X forwarding
 ============
 
 Xephyr: version moderne de Xnest, supportant les extensions X modernes
 
-Protocols: nx, rdp (windows), vnc
+Protocols: nx, rdp (windows), vnc, spice
   ssh -X/ssh -Y
 
 xpra: rootless (ie la fenêtre s'affiche dans le wm hote) + winswitch (gui helper)
 
-Remmina, vinagre, tigervnc, tightvnc, x2go
+VNC/Spice: Remmina, vinagre (gnome); VNC: tigervnc, tightvnc; NX: x2go
   https://en.wikipedia.org/wiki/Comparison_of_remote_desktop_software
   http://www.techradar.com/news/5-of-the-best-linux-remote-desktop-clients
 
@@ -39,7 +62,10 @@ Containers
 - systemd-nspawn/machinectl
   casync: Content-Addressable Data Synchronization Tool http://0pointer.net/blog/casync-a-tool-for-distributing-file-system-images.html 
   mkosi: create legacy-free OS images
-- docker / rkt / runC / podman
+  Note: since systemd 242, nspawn understand the OCI interface
+- docker / [rkt] / podman. Cf [docker]
+  [Depuis que CoreOs a été racheté par redhat, rkt est deprecated.]
+  runC: low level, used by docker and podman
   singularity: "docker for hpc"
 - chef/habitat: https://medium.com/@bdangit/habitat-and-docker-c8b19d7e5d8c
   Build applications to run anywhere and manage them throughout their lifecycle.
@@ -52,46 +78,11 @@ Containers
     https://jvns.ca/blog/2017/10/05/reasons-kubernetes-is-cool/
     https://www.reddit.com/r/kubernetes/comments/7y54n6/deploying_the_control_plane_kubelet_manifests_vs/ -> https://github.com/kelseyhightower/kubernetes-the-hard-way
     video: https://www.driftingruby.com/episodes/introduction-to-kubernetes
+    Minikube: https://github.com/kubernetes/minikube Run Kubernetes locally
   - https://helm.sh/
     The package manager for Kubernetes
     Helm is the best way to find, share, and use software built for Kubernetes.
   - openshift: red hat distribution for kubernetes
-
-Depuis que CoreOs a été racheté par redhat, rkt est deprecated.
-
-Architecture de docker:
------------------------
-- https://blog.osones.com/le-point-sur-les-container-runtimes.html
-- https://coreos.com/rkt/docs/latest/rkt-vs-other-projects.html
-
-Docker:
- -> dockerd: high level demon
- -> containerd: low level demon: construit l'image container image (par exemple peut utiliser overlayfs)
- -> runC: low level command to run the container
- The Docker daemon prepares the image as an Open Container Image (OCI) bundle and makes an API call to containerd to start the OCI bundle. containerd then starts the container using runC.
-
-=> CRI: kubernetes a une api 'CRI' = container runtime interface pour s'intégrer
-à des container. Il peut utiliser dockerd (via docker-shim) ou parler
-directement à containerd:
-https://kubernetes.io/blog/2018/05/24/kubernetes-containerd-integration-goes-ga/
-
-=> D'autres implémentations plus légères du CRI:
-   - cri-o https://cri-o.io/ Lightweight Container Runtime for Kubernetes
-   - podman: https://podman.io/ Interface cli pour gérer les images containers
-           = alternative au cli docker
-           (ie cri-o est utilisé directement par kubernetes, podman est
-           pour lancer un container en ligne de commande sans kubernetes)
-   - buildah: https://buildah.io/ build container images
-   => Intégrés sous openshift: https://www.openshift.com
-
-Références on cri-o/podman:
-- https://jvns.ca/blog/2016/10/02/i-just-want-to-run-a-container/ Nice but a bit old summary
-- https://www.infoq.com/articles/container-runtimes-kubernetes Runtime for kubernetes
-- https://www.reddit.com/r/kubernetes/comments/9y89wu/a_comparison_of_container_runtimes/ Nice discussion
-- https://kubic.opensuse.org/blog/2018-03-25-podman/ Quick overview of podman
-- https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/ Longer overview of podman and buildah
-- https://blog.openshift.com/crictl-vs-podman/ Nice graphs explaning the different roles of cri-o vs podman
-- https://discussion.fedoraproject.org/t/what-does-fedora-coreos-mean-for-fedora-and-rkt/78/7 Features from rkt (systemd/machinectl integration) missing from podman
 
 Virtual box
 ===========
@@ -113,12 +104,14 @@ openstack: le cloud open source
 binary packagers
 ================
 
-- snap (ubuntu), flatpak (was xdg-app),  guix/nix, 0install, slackware build tools, gentoo (https://wiki.gentoo.org/wiki/Project:Prefix), Suse open build service...
+- snap (ubuntu), flatpak (was xdg-app),  guix/nix, 0install, slackware build tools, gentoo (https://wiki.gentoo.org/wiki/Project:Prefix), Suse open build service, appimage...
 cf https://www.reddit.com/r/linux/comments/4ohvur/nix_vs_snap_vs_flatpak_what_are_the_differences/, https://github.com/probonopd/AppImageKit/wiki/Similar-projects
 - bubblewrap: bubblewrap is a lightweight setuid sandbox application developed from Flatpak (=used by flatpak to run in a sandbox); firejail: another sandbox
-- Containers: lxc, systemd-nspawn, docker, flatpak, bubblewrap, firejail
+  Note: bubblewrap uses namespaces, snap and appimage uses apparmor
+- Containers: lxc, systemd-nspawn, docker
 
 Note: flatpak uses libostree, cf https://ostree.readthedocs.io/en/latest/
 
 * guix https://www.gnu.org/software/guix/
   can build pack and docker images: https://guix-hpc.bordeaux.inria.fr/blog/2017/10/using-guix-without-being-root/
+  => In the absence of user namespaces, we can resort to PRoot

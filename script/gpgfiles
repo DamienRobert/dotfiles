@@ -2,6 +2,7 @@
 
 action=
 doclean=
+output=
 #d: decrypt, c: crypt, ca: crypt all folders, l: list packets
 #gpgfiles -c folder -r ploum; gpgcrypt -ca folder1 folder2 (use my master key)
 while true;
@@ -11,6 +12,7 @@ do
 		--clean ) shift; clean=t ;;
 		-d ) shift; action=d ;;
 		-c ) shift; action=c ;;
+		-o ) shift; output=$1; shift ;;
 		-ca ) shift; action=ca ;;
 		-l ) shift; action=l ;;
 		-lv|-v ) shift; action=lv ;;
@@ -46,11 +48,13 @@ case $action in
 		;;
 	c)
 		dir=$1; shift
-		tar cvfJ - $dir | gpg "$@" -e > $dir.tar.xz.gpg
+		[[ -z $output ]] && output=$dir.tar.xz.gpg
+		tar cvfJ - $dir | gpg "$@" -e > $output
 		[[ -n $doclean ]] && cleanup $dir
 		;;
 	ca)
-		tar cvfJ - "$@" | gpg -r public -e > $1.tar.xz.gpg
-		[[ -n $doclean ]] && cleanup $dir
+		[[ -z $output ]] && output=$1.tar.xz.gpg
+		tar cvfJ - "$@" | gpg -r public -e > $output
+		# [[ -n $doclean ]] && cleanup $1
 		;;
 esac

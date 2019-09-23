@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-#Usage: rm -rf $(~/script/install/clean_progs ~/opt/packages)
+#Usage: rm -rf $(~/script/install/clean_progs ~/opt/local/packages)
+# bad_links --rm ~/opt/local/bin
 
 require 'dr/sh'
 ARGV.empty? ? args=["."] : args=ARGV
@@ -15,7 +16,8 @@ args.each do |dir|
 			Gem::Version.new(v) rescue Gem::Version.new(0)
 		end
 		dirs.sort! {|x,y| version.(x) <=> version.(y) }
-		dirs.length > 1 and puts dirs[0..-2]
-		#p link,dirs
+		dirs -= [ link.readlink ] # we simply keep the current package
+		puts dirs # dirs.length > 1 and puts dirs[0..-2]
+		# p link,dirs
 	end
 end

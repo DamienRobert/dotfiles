@@ -1,8 +1,0 @@
-switch.dummy:
-  hidden: true
-climate.salon:
-  hidden: true
-# group.wifi:
-#   hidden: true
-# group.bluetooth:
-#   hidden: true

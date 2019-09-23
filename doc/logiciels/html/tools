@@ -30,6 +30,9 @@ But this is just a trivial wrapper
 Le contenu à utiliser est dans dist/ (déjà compilé par gulp depuis src/)
 cf dist/doc pour la doc
 
+* Designing And Building A Progressive Web Application Without A Framework (Part 3)
+https://www.smashingmagazine.com/2019/07/progressive-web-application-pwa-framework-part-3/
+
 CSS Templates {{{1
 Css history: https://medium.com/actualize-network/modern-css-explained-for-dinosaurs-5226febe3525, HN: https://news.ycombinator.com/item?id=16306371
 
@@ -140,6 +143,8 @@ See also [~/Documents/Web/webpack/00notes]
   https://webpack.js.org/guides/tree-shaking/
   https://medium.com/modus-create-front-end-development/webpack-2-tree-shaking-configuration-9f1de90f3233
   https://medium.freecodecamp.com/tree-shaking-es6-modules-in-webpack-2-1add6672f31b#.29hke12ah
+
+Alternatives bundler: rollup, @pika/web (npm deps natively in the browser)
 
 ## Systemjs:
 Universal dynamic module loader - loads ES6 modules, AMD, CommonJS and global scripts in the browser and NodeJS.
@@ -310,3 +315,5 @@ nitrous: https://www.nitrous.io/
 codebox: https://github.com/FriendCode/codebox
 
 color palette: http://www.palettable.io/B84E1A
+
+graphql: https://blog.octo.com/graphql-et-pourquoi-faire/

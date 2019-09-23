@@ -1,0 +1,4 @@
+- https://blog.cloudflare.com/towards-post-quantum-cryptography-in-tls/
+- https://blog.cloudflare.com/the-quantum-menace/
+- https://blog.cloudflare.com/introducing-circl/
+  An Advanced Cryptographic Library in go (include sike)

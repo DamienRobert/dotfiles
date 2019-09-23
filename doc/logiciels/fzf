@@ -1,3 +1,8 @@
+vim: ft=markdownlight fdm=expr
+
+fzf tools
+=========
+
 http://owen.cymru/fzf-ripgrep-navigate-with-bash-faster-than-ever-before/
 https://medium.com/@sidneyliebrand/how-fzf-and-ripgrep-improved-my-workflow-61c7ca212861
 https://github.com/junegunn/fzf/wiki
@@ -13,8 +18,9 @@ vim and fzf: https://statico.github.io/vim3.html
 Other fuzzy finders:
 https://github.com/lotabout/skim (in rust)
 
-=============================================
-Standard fzf options:
+Standard fzf options
+====================
+
        -1, --select-1
               Automatically select the only match
        -0, --exit-0
@@ -26,7 +32,9 @@ Standard fzf options:
               Transform the presentation of each line using  field  index  ex‐
               pressions [=only show these fields]
 
-=> bindings:
+Key bindings
+============
+
 ctrl-y:select-all,
 ctrl-n:deselect-all,
 ctrl-t:toggle-all,
@@ -45,31 +53,26 @@ alt-f:preview-page-down,
 alt-b:preview-page-up,
 alt-j:jump'
 
-=> shell shortcuts
+Fzf in the shell
+================
+
+* shell shortcuts
 Esc/Alt-c: fzf-cd
 ^R: fzf-history
 ^T: fzf-file
 
-Complétion:
+* Complétion:
 **<TAB>: expand files with fzf
 kill  <TAB>, cd dir**; ls files**; ssh **; unset/unalias/export **
 
-=> git shell shortcuts:
+* git shell shortcuts:
 ^g^f: files (git status)
 ^g^b: branches
 ^g^t: tags
 ^g^r: remote
 ^g^h: log
 
-=> shell aliases
-preview="fzv --tmux --"
-visual="fzv --tmux --visual -- -1"
-edit="fzv --tmux --edit -- -1"
-open="fzv --tmux --open -- -1"
-cdup="fzv --tmux --cdup --"
-fzcd="fzv --tmux -d --cd --"
-
-=> shell functions
+* shell functions
 fzbin [--fork/--exec]: show path directories and the bin in the paths
 fzedit: preview && $EDITOR $files [might as well use 'edit' alias]
 fzlpass: get lastpass passwords
@@ -106,8 +109,16 @@ fztags: search .tags
 	--complete ) # for use in other completion functions
 	--bare ) There is no actions
 
-=> shell script
+* shell aliases
+preview="fzv --tmux --"
+visual="fzv --tmux --visual -- -1"
+edit="fzv --tmux --edit -- -1"
+open="fzv --tmux --open -- -1"
+cdup="fzv --tmux --cdup --"
+fzcd="fzv --tmux -d --cd -- -q"
+
+* shell script
 fzf_mpd --genre/--artist/--album/--title/--playlist
 
-=> Divers
+* Divers
 path-extractor (alias IPE): g s IPE fzv

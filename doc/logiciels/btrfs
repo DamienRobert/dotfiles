@@ -4,6 +4,7 @@ Periodic checks
 - defragment: sudo btrfs filesystem defragment -r -v /
 - recompress: sudo btrfs filesystem defragment -r -v -czstd /
 - balance: sudo btrfs balance start -v -dusage=5 /
+- check checksum: sudo btrfs scrub /
 - on a ssd: sudo fstrim -a
 
 Create
@@ -17,6 +18,7 @@ mkfs.btrfs -L label -m raid1 -d raid1 /dev/sdb /dev/sdc
 
 See subvolumes:
 sudo btrfs subvolume list -atu /
+Note: rm now understands how to remove subvolumes
 
 Copy on write
 =============
@@ -44,7 +46,7 @@ Use filefrag to see file fragmentation
     btrfs filesystem defragment -r -v /
 - The command above will defragment only file data. To defragment directory metadata for every directory in the file system, run this command:
     find / -xdev -type d -print -exec btrfs filesystem defragment '{}' \;
-[-xdev does not cross devices or subvolumes]
+  [-xdev does not cross devices or subvolumes]
 
 Defrag the journal: (speed-up systemd boot)
 btrfs filesystem defrag -rv /var/log/journal/
@@ -178,3 +180,8 @@ System,DUP: Size:32.00MiB, Used:12.00KiB
    /dev/sdc5	  64.00MiB
 Unallocated:
    /dev/sdc5	   9.96GiB
+
+Get individual file usage: btrfs filesystem du -s:
+Feanor ~ $ sudo btrfs fi du -s /var/
+     Total   Exclusive  Set shared  Filename
+  19.49GiB    17.97GiB   774.92MiB  /var/

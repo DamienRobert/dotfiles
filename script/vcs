@@ -97,7 +97,11 @@ doaction() {
 					msg "last tag"
 					( cd $folder;
 					if git rev-parse 2>/dev/null; then
+						if [[ -n $LAST_TAG ]]; then
+							eval $LAST_TAG
+						else
 							git tag | sort --version-sort | tail -n1
+						fi
 					fi
 					)
 				fi

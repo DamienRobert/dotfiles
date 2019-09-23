@@ -60,7 +60,7 @@ Cf http://elinux.org/Memory_Debuggers
 Autotools
 ---------
 
-- autoreconf: aclocal, autoconf, automake
+* autoreconf: aclocal, autoconf, automake
   https://developer.gnome.org/anjuta-build-tutorial/stable/create-autotools.html.en [cf autotools/]
   https://www.lrde.epita.fr/~adl/autotools.html
 
@@ -77,11 +77,11 @@ Autotools
   Note: there maybe a script called autogen.sh or bootstrap that calls
   `autoreconf`, cf https://www.gnu.org/software/automake/faq/autotools-faq.html#What-does-_002e_002fbootstrap-or-_002e_002fautogen_002esh-do_003f
 
-- libtool
+* libtool
   libtool permet d'abstraire la création de librairies (par exemple en en
   créant à la fois des statiques et des dynamiques)
 
-- pkg-config
+* pkg-config
   pkg-config a le même but que libtool, pour les différences cf
   http://wiki.gentoo.org/wiki/Pkg-config
   [summary: libtool uses specific archive file format (so-called .la files) to provide additional compiler and linker flags when linking against a library; it is implicit while pkg-config is explicit]
@@ -102,9 +102,14 @@ Autotools
   # + looks for a custom path
   PKG_CONFIG_PATH="/home/imb/damienrobert/opt/packages/libarchive/lib/pkgconfig:" pkg-config --variable prefix libarchive
 
+* http://www.pell.portland.or.us/~orc/Code/configure/
+  A simpler configure
+
 # gcc options
 gcc: -O2 -Wall -Wextra -std=c99 -Wpedantic -march=native -mtune=native -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2
 ld: -Wl,-O1,--sort-common,--as-needed,-z,relro
+
+Optimized: gcc -O3 -Wall -Wextra -std=c99 -Wpedantic -march=native -mtune=native -pipe
 
 [More warnings: -Wwrite-strings -Wcast-qual -Wstrict-prototypes]
 -D_GNU_SOURCE pour dire que le programme utilise des features de la libc
@@ -113,6 +118,15 @@ cf http://stackoverflow.com/questions/18676944/gcc-gnu-should-i-still-define-gnu
 Note:
 -march (or -mcpu) builds exclusively for an architecture
 -mtune optimizes for an architecture, but builds for whole processor family
+-Ofast: imprecise floating points
+
+To check what is enabled:
+gcc -march=x86-64 -Q --help=target
+           If the -Q option appears on the command line before the --help=
+           option, then the descriptive text displayed by --help= is changed.
+           Instead of describing the displayed options, an indication is given
+           as to whether the option is enabled, disabled or set to a specific
+           value
 
 Warnings
 --------

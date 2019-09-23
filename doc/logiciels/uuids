@@ -9,6 +9,20 @@ partx: show partitions of a device
   partitions from its bookkeeping.
   Ex: sudo partx --show --output NR,START,END,SECTORS,SIZE,NAME,TYPE,FLAGS,SCHEME,UUID /dev/sdb
 
+label
+=====
+
+* btrfs
+mkfs.btrfs -L LABEL /dev/sdx
+btrfs filesystem label /dev/sdx [newlabel]
+btrfs filesystem label /path [newlabel]
+
+* extx
+tune2fs -L label device
+
+* fat
+fatlabel /dev/device NEW_LABEL
+
 blkid
 =====
 Note: sometime I need to use sudo to refresh the cache (is there a

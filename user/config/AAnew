@@ -6,7 +6,7 @@ Minimal config (via rsync+ssh):
 
 Fully featured config (configured over the host, needs git+ruby):
 - ~/config/run.rb -c dams@arch_virtual --bootstrap :config --all
-- ~/config/run.rb -c cremi --keyid --bootstrap=rsync :config --all
+- ~/config/run.rb -c cremi --keyid --bootstrap=rsync :config --all #to specify the bootstrap type
 
 Full client:
 - ~/config/run.rb -c feanor --bootstrap=unison :config --all ...

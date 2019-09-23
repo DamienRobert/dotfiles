@@ -14,6 +14,8 @@ Listes:
 - https://www.canva.com/learn/resume-fonts/
 - https://www.smashingmagazine.com/2014/03/taking-a-second-look-at-free-fonts/
 - https://codepen.io/sparcut/pen/KXxdeX (test fonts)
+- https://beautifulwebtype.com/ Guide to Only the Best Open-Source Typefaces
+  https://news.ycombinator.com/item?id=20145304
 
 Cf [../liste/logiciels#Fonts] for font informations
 
@@ -96,6 +98,10 @@ https://material.io/guidelines/style/typography.html#
 (note: !Archlinux means we install it in update_free_fonts, +Archlinux
 means it is installed systemwide, ! means in Free/00Others)
 
+## Inter
+https://rsms.me/inter/
+Used by github and mozilla. Fork of roboto to improve legebility on screens.
+
 ## noto
 https://www.google.com/get/noto/
 Beautiful and free fonts for all languages
@@ -177,6 +183,8 @@ Le site contient aussi des versions woff (pour le web)
 - fira-mono, fira-sans
   From firefox os
   !Archlinux: otf-fira-mono, otf-fira-sans, ttf-fira-mono, ttf-fira-sans
+  https://github.com/tonsky/FiraCode = fira-mono + ligatures
+  !Archlinux: otf-fira-code, ttf-fira-code
 
 ## Other Monospace fonts
 See also: http://www.slant.co/topics/67/~what-are-the-best-programming-fonts
@@ -228,6 +236,7 @@ Already patched fonts with these symbols:
 - ! Emoji One (v3).
   Note: v2 was foss, and the fork Emoji Two is available here: https://github.com/EmojiTwo/emojitwo
 - ! Twitter Unicode 10 emoji: https://github.com/eosrei/twemoji-color-font
+- https://openmoji.org/
 
 ===========================================================================
 (symbols: ! linked in Free-Sel, + nice font, ? => to link?)
@@ -445,6 +454,9 @@ https://github.com/google/fonts
 
 ## Free/adobe
 From acroread
+
+Liste de fontes gratuites:
+- https://www.smashingmagazine.com/2019/07/gorgeous-free-open-source-typefaces/
 
 ===========================================================================
 

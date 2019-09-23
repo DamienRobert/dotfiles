@@ -34,6 +34,7 @@ git add --ignore-gitlinks: git add ignorant les sous-répertoires git
 - git pull --no-fetch
 - sequencers harmonisation (git cherry-pick --continue / git am --continue
   don't work if the patch was already commited...)
+  For cherry-pick: it seems a work is in progress
 
 bup
 ---
@@ -47,3 +48,19 @@ systemd
 container
 
 - update user preset so that it looks in $XDG_CONFIG_HOME/systemd/user-preset/*.preset
+
+- loginctl: enable user access via ssh?
+  /usr/lib/udev/rules.d/73-seat-late.rules runs uaccess on all devices
+  tagged as uaccess:
+  https://github.com/systemd/systemd/blob/master/src/udev/udev-builtin-uaccess.c
+        if (sd_device_get_property_value(dev, "ID_SEAT", &seat) < 0)
+                seat = "seat0";
+        r = sd_seat_get_active(seat, NULL, &uid);
+        if (r < 0) {
+                if (IN_SET(r, -ENXIO, -ENODATA))
+                        /* No active session on this seat */
+                        r = 0;
+                else /* error out */
+        }
+        r = devnode_acl(path, true, false, 0, true, uid);
+  So if we login via ssh, we don't have a seat, so no acl.

@@ -53,5 +53,6 @@ if [[ $version == "local" ]]; then
 fi
 
 CUSTOM_COMPILE='./Configure --prefix=$prefix --mt=pthread && make -j4 all && make install'
+CUSTOM_VERSION='nameversion=$(git -C "$folder" describe --tags || git -C "$folder" describe --always)'
 
 build_git

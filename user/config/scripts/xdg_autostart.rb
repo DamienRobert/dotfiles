@@ -1,9 +1,4 @@
-begin
-	autostart=@computer.file(:xdg_config_home)+"autostart"
-	rel_autostart=@computer.home.rel_path_to(autostart, inside: true)
-rescue
-	rel_autostart=".config/autostart"
-end
+rel_autostart=@computer.file(:rel_xdg_config_home)+"autostart"
 xdg=@computer.dig(:user, :xdg_autostart, default: {})
 xdg.each do |k,v|
 	entry=<<EOS

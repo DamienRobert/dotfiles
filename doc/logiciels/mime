@@ -12,7 +12,9 @@ Mime types:
   Local mime info cache: ~/.local/share/mime/mime.cache
   Cf http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.18.html
   The mime info cache allows to associate a mimetype to a file (via a glob
-  on the name or a magic value or...)
+  on the name or a magic value or...). Cf
+  https://gist.github.com/Gro-Tsen/2961f34df4a29d143c7b3499fac7e130 for an
+  exemple
 
 Mime database:
 - desktop files are in /usr/share/applications

@@ -1,16 +1,21 @@
 #!/bin/zsh
 . "$(dirname $0)/_install_helpers"
 
-version="2.51.2"
-prog="unison-$version"
-url="http://www.seas.upenn.edu/~bcpierce/unison//download/releases/$prog/$prog.tar.gz"
+# version="2.51.2"
+# prog="unison-$version"
+# url="http://www.seas.upenn.edu/~bcpierce/unison//download/releases/$prog/$prog.tar.gz"
+# build
+
+url=bcpierce00/unison
 build_helper $@
+version=master #master has fixes to v2.51.2 to compile with ocaml-4.08
 
 CUSTOM_COMPILE='
-make UISTYLE=text && make install INSTALLDIR=$prefix
+make && mkdir -p $prefix && make install INSTALLDIR=$prefix/
 '
+# make UISTYLE=text && make install INSTALLDIR=$prefix/
 
-build
+build_git
 
 ## Compiling unison:
 #http://archlinuxarm.org/forum/viewtopic.php?t=4003

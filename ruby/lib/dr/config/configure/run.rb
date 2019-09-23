@@ -117,7 +117,7 @@ module DR
 			def process_actions(*_)
 				super do |computers, *args, **opts|
 					computers.each do |c|
-						Run.new(c, **opts).process(**opts)
+						Run.new(c, **opts).process(**opts) # => Run#run_command
 						# run a barebone ssh command if '--ssh foo' was passed
 					end
 					if args.first == ":config"

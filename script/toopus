@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+while getopts 'b:' flag; do
+  case $flag in
+    b) bitrate=$OPTARG ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+OPTS=()
+[[ -n $bitrate ]] && OPTS+=(--bitrate $bitrate)
+
+for i in $@; do
+	out=${i:r}.opus
+	[[ -e $out ]] || opusenc $OPTS $i $out
+done

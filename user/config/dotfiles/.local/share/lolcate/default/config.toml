@@ -1,0 +1,17 @@
+description = "Home directory"
+
+# Directories to index.
+dirs = [
+  "~/mine",
+  # "~/first/dir",
+  # "/second/dir"
+]
+
+# Set to true if you want to index directories
+include_dirs = true
+
+# Set to true if you want skip symbolic links
+ignore_symlinks = true
+
+# Set to true if you want to ignore hidden files and directories
+ignore_hidden = false

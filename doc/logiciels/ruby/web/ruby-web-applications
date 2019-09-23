@@ -131,6 +131,7 @@ React: http://reactrb.org/ [Ex: to use in Cuba http://www.sitepoint.com/use-reac
 - ActiveRecord
 - Sequel http://sequel.jeremyevans.net/
   https://mrbrdo.wordpress.com/2013/10/15/why-you-should-stop-using-activerecord-and-start-using-sequel/
+  https://bits.theorem.co/building-sql-expressions-with-sequel/
 - DataMapper [seem to be no longer updated]
 - https://github.com/rom-rb/rom [=DataMapper2]
   http://rom-rb.org/

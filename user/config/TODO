@@ -1,14 +1,21 @@
 TODO
 ====
 
+- firewall
+- dns (unbound) + gondolin.eu
+- vpn (wireguard, zerotier) + look at routing daemon (bird) + vxlan
+- rust cli
+- manual containers, systemd security
+
 - unison file monitor
 - uim
 - pacman-hook to run patchelf
 
-- newer version of magma
+- newer version of magma (segfault)
 - offlineimap: use notification rather than inotify like checkmail does?
   cf https://bbs.archlinux.org/viewtopic.php?id=159790
      https://bitbucket.org/raymonad/offlineimap-notify
+  => reuse oauth for gmail?
 - volume: update notification rather than make a new one
   cf https://bugzilla.xfce.org/show_bug.cgi?id=10795
   [for now i just use xfce4-pulseaudio-plugin]

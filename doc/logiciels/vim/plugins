@@ -445,6 +445,11 @@ Asynchronously control git repositories in Neovim/Vim 8 http://www.vim.org/scrip
   nested folds
 - https://github.com/junegunn/vim-peekaboo
   Peekaboo extends " and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers.
++ https://github.com/alok/notational-fzf-vim
+  https://news.ycombinator.com/item?id=20049075
+  Uses rg+fzf for quick notes taking in vim
+- https://github.com/m00qek/nvim-contabs
+  contextual tabs for vim/neovim
 
 ## Integrations
 Plugins:
@@ -469,6 +474,9 @@ Tmux:
   A simple, vimscript only, command runner for sending commands from vim to tmux.
 - https://github.com/jgdavey/vim-turbux
   Turbo Ruby testing with tmux
+
++ https://www.reddit.com/r/neovim/comments/c1yhpv/introducing_neomux_a_neovim_terminal_integration/
+https://github.com/nikvdp/neomux
 
 Shell:
 + https://github.com/duggiefresh/vim-easydir

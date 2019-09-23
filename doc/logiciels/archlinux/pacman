@@ -54,6 +54,12 @@ Exemples:
   more suited for parsing
   -Si: `pacinfo core/pacman`, -Qi: `pacinfo local/pacman`
 
+Note:
+- `pacman -Qu` will show available updates in testing since I have
+  Usage = Sync Search
+- to only get package that will really update, use
+  pacman -Sddpu --print-format '%n %v'
+
 Note: parsing a db file is complicated, one needs to call
   pacsift --dbpath /tmp/pacsift --dbext '.db.tar.xz'
 where the foo.db.tar.xz is in /tmp/pacsift/sync
@@ -641,7 +647,7 @@ yay -S pkg; yay -Ss pkg
 yay -G #get pkgbuild
 yay -Pw #print arch news
 yay -Ps # print stats
-yay -Pu # print updates
+[ yay -Pu # print updates (deprecated, use yay -Qu instead) ]
 yay --gendb # regenerate the clones of all foreign packages [when migrating from another aur helper]
 yay -Yc[c] # clean uneeded dependencies (essentially does 'pacman -Rcs $(pacman -Qdt[t])')
 

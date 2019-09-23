@@ -28,9 +28,9 @@ done
 #[[ -z $list ]] && add_to_list all
 
 case $mode in
-	mirror) #ex: gitfolders --mirror durin
+	mirror) #ex: gitfolders --mirror durin #gitfolders -l durin to see the repos that will be pushed
 		# ex: gitfolders -d ~/mine/progs/archlinux_image --mirror github
-		# ex: gitfolders --mirror github
+		# ex: gitfolders --mirror github mathrice
 		args=($@)
 		[[ -z $args ]] && args=(durin mathrice)
 		for name in $args; do

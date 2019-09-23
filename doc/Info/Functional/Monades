@@ -1,4 +1,7 @@
+vim: foldmethod=expr ft=markdownlight
+
 # Mathematical definition
+
 - Monoidal category:
 http://en.wikipedia.org/wiki/Monoidal_category
 A monoidal category (or tensor category) is a category C equipped with a bifunctor ⊗ : C × C → C which is associative up to a natural isomorphism, and an object I which is both a left and right identity for ⊗, again up to a natural isomorphism.
@@ -118,12 +121,40 @@ A binding operation of polymorphic type (M t)→(t→M u)→(M u), which Haskell
 - The monad-related structure on those values is also pierced, exposing values of type u.
 - Finally, the monad-related structure is reassembled over all of the results, giving a single value of type (M u).
 
-###########################################################################
-# Introduction aux monades dans ruby
+# Codensity and continuation monad
+[cf aussi Continuations pour la monade continuation]
+
+- https://www.reddit.com/r/haskell/comments/6qn4y0/when_to_use_cps_vs_codensity_vs_reflection/
+  https://stackoverflow.com/questions/45334985/when-to-use-cps-vs-codensity-vs-reflection-without-remorse-in-haskell
+
+- http://comonad.com/reader/2012/unnatural-transformations-and-quantifiers/
+  Haskell point of view on the codensity monad: https://golem.ph.utexas.edu/category/2012/09/where_do_monads_come_from.html
+
+- https://lmcs.episciences.org/4924/pdf
+  CODENSITY  LIFTING  OF  MONADS  AND  ITS  DUAL
+
+- http://blog.sigfpe.com/2008/12/mother-of-all-monads.html
+
+- https://news.ycombinator.com/item?id=10175296
+  From Imperative to Pure-Functional and Back: Monads vs. Scoped Continuations (paralleluniverse.co)
+  => http://blog.paralleluniverse.co/2015/08/07/scoped-continuations/
+
+## Mathematic aspects of the continuation monad
+- https://math.stackexchange.com/questions/2347437/continuations-in-mathematics-nice-examples
+
+# Monads in prog. languages
+
+- https://ncatlab.org/nlab/show/monad%20%28in%20computer%20science%29
+
+## Introduction aux monades dans ruby
 http://moonbase.rydia.net/mental/writings/programming/monads-in-ruby/00introduction.html
 http://stackoverflow.com/questions/2709361/monad-equivalent-in-ruby
 
-# Monades dans Haskell:
+## Dans ML
+
+https://existentialtype.wordpress.com/2011/05/01/of-course-ml-has-monads/
+
+## Monades dans Haskell:
 - la monade continuation:
 http://www.haskellforall.com/2012/12/the-continuation-monad.html
 http://www.haskellforall.com/2012/08/the-category-design-pattern.html
@@ -135,3 +166,36 @@ http://mvanier.livejournal.com/3917.html
 
 Exemples de monades:
 https://en.wikipedia.org/wiki/Monad_(functional_programming)#Other_examples
+
+Free monad in Haskell
+https://www.reddit.com/r/haskell/comments/7q4sku/are_people_using_freer_monads_or_still_mostly/
+
+Right kan extensions
+https://www.reddit.com/r/haskell/comments/6vu2i4/fun_exploration_right_kan_extensions_swapped/
+=> https://gist.github.com/Icelandjack/83e77449d2857f24a7c94fede6d7311b
+
+# Algebraic effects
+cf aussi Info/bookmarks (rust, ocaml)
+
+- http://www.cs.ox.ac.uk/people/samuel.staton/papers/popl2015.pdf
+  Algebraic Effects, Linearity, and Quantum Programming Languages
+
++ https://www.reddit.com/r/haskell/comments/9l0ey4/trycatch_and_asyncawait_are_just_a_specialized/
+  => https://www.microsoft.com/en-us/research/wp-content/uploads/2016/08/algeff-tr-2016-v2.pdf
+  Algebraic Effects for Functional Programming(Type Directed Compilation of Row-typed Algebraic Effects)
+
+- https://www.reddit.com/r/haskell/comments/39wpi8/fusion_for_free_efficient_algebraic_effect/
+- https://www.reddit.com/r/haskell/comments/1b64xh/programming_and_reasoning_with_algebraic_effects/
+
+# Free / Freeer
+
+* Free: https://ncatlab.org/nlab/show/free+monad
+https://stackoverflow.com/questions/13352205/what-are-free-monads
+http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html
+https://www.parsonsmatt.org/2017/09/22/what_does_free_buy_us.html
+https://markkarpov.com/post/free-monad-considered-harmful.html
+
+* Freeer:
+https://reasonablypolymorphic.com/blog/freer-monads/
+http://okmij.org/ftp/Computation/free-monad.html
+=> http://okmij.org/ftp/Haskell/extensible/more.pdf

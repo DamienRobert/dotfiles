@@ -3,6 +3,7 @@
 # vim: foldmethod=marker
 #gem "gli", "2.10.0"
 
+# Headers {{{1
 require 'dr/sh'
 require 'dr/git'
 require 'gli'
@@ -66,6 +67,7 @@ class GLI::Commands::Help
 	end
 end
 
+# Extra commands {{{1
 desc "Extra helpers: aliases/cherry/fork/hg/obliterate/rename_tag/runcmd/set_pr/uncommit/update-worktree/whitespace"
 command :extra do |c| @extra=c end
 desc "Topic helpers: cherry/*log/logs/merged/..."
@@ -74,6 +76,7 @@ command :topic do |c| @topic=c end
 desc "Ls helpers: *blame/files/removed"
 command :ls do |c| @ls=c end
 @ls.default_command :blame
+#}}}1
 
 # Mine
 # archive -> git-archive {{{1
@@ -332,11 +335,11 @@ end
 	c.switch :untracked
 	c.desc "recursively show submodules"
 	c.switch :recursive
-	c.desc "Quiet"
+	c.desc "Quiet [=> Sh Quiet and Dir Quiet]"
 	c.switch :quiet, :q
-	c.desc "Sh Quiet"
+	c.desc "Sh Quiet [run the command silently]"
 	c.switch :shquiet
-	c.desc "Dir Quiet"
+	c.desc "Dir Quiet [don't output the current submodule]"
 	c.switch :dirquiet
 	c.desc "Abort if the command return an error on a submodule"
 	c.switch :abort
@@ -417,6 +420,7 @@ end
 #}}}
 
 # Direct code
+# current {{{1
 desc 'Show current branch'
 long_desc <<EOS
 To get previous behaviour of
@@ -824,6 +828,7 @@ long_desc 'Increase the pack window from 10/250 to 4000'
 command :gc do |c|
 	c.desc 'Expire the reflog and pass --prune=now to git gc'
 	c.switch :now
+	c.switch :aggressive
 	c.action do |global_options,options,args|
 		config={"gc.aggressiveDepth"=>50, #default to 50
 		         "gc.aggressiveWindow"=>4000, #default to 250
@@ -832,6 +837,7 @@ command :gc do |c|
 		        }
 		@sh.sh("git reflog expire --expire=now --all") if options[:now]
 		args.unshift("--prune=now") if options[:now]
+		args.unshift("--aggressive") if options[:aggressive]
 		@sh.sh("git #{config.map {|k,v| "-c #{k}=#{v}"}.join(" ")} gc #{args.shelljoin}")
 	end
 end
@@ -901,7 +907,7 @@ EOS
 	end
 end
 #}}}1
-#
+
 # extra-fork: github fork {{{1
 @extra.desc "Set up a github fork as a three way repo"
 @extra.command :fork do |c|
@@ -1954,6 +1960,7 @@ end
 end
 #}}}1
 
+# others
 #{{{1 latexdiff -> git-latexdiff/git-latexdiff
 desc "git wrapper around latexdiff"
 long_desc <<EOS
@@ -2092,6 +2099,82 @@ EOS
 	c.action do |global_options,options,args|
 		#SH.run_pager(launch: $pageropt)
 		exec ([GITDist+"gitstats/gitstats"]+args).shelljoin
+	end
+end
+#}}}1
+# stats cal -> git-cal/git-cal {{{1
+@stats.desc 'Calendar'
+@stats.long_desc <<EOS
+Usage:
+    "git-cal" is a tool to visualize the git commit history in github's
+    contribution calendar style. The calendar shows how frequently the
+    commits are made over the past year or some choosen period Activity can
+    be displayed using ascii, ansi or unicode characters, default is choosen
+    based on ENV
+
+      git-cal
+
+      git-cal --period=<1..12, -11..0>
+
+      git-cal --author=<author>
+
+      git-cal --ascii
+
+      git-cal --ansi
+
+      git-cal --unicode
+
+      git-cal <options> <filepath>
+
+  Options:
+    [--period|-p]=<n>
+        Do not show the entire year:
+
+        n = 1 to 12
+            Shows only one month (1=Jan .. 12=Dec)
+
+        n = -11 to 0
+            Shows the previous -n months (and the current month)
+
+    --author=<author>
+        View commits of a particular author.
+
+    --all
+        View stats from all branches.
+
+    --ascii
+        Display activity using ASCII characters instead of ANSI colors.
+
+    --ansi
+        Display activity using ANSI colors
+
+    --unicode
+        Display activity using unicode characters
+
+    --help|-?
+        Print this message.
+
+  Additional Options:
+    <filepath> to view the logs of a particular file or directory
+
+  Using git Config:
+    git-cal uses the git config tool to store configuration on disk. Similar
+    keys are used to those listed above with the notable exception being the
+    bundling of ascii, ansi and unicode into a "format" key. Examples of the
+    three supported keys are below.
+
+     git config --global calendar.format ascii
+
+     git config --global calendar.period 5
+
+     git config --global calendar.author karthik
+
+    A command line supplied option will override the matching option set
+    using this method.
+EOS
+@stats.command :'cal' do |c|
+	c.action do |global_options,options,args|
+		exec ([GITDist+"git-cal/git-cal"]+args).shelljoin
 	end
 end
 #}}}1
@@ -2355,6 +2438,257 @@ command :bfg do |c|
 	c.action do |global_options,options,args|
 		script=GITDist.glob("bfg-*.jar").first
 		exec (["java", "-jar", script.to_s]+args).shelljoin
+	end
+end
+
+# git-filter-repo #{{{1
+desc 'Filter repos'
+long_desc <<EOS
+Rewrite (or analyze) repository history
+
+    git-filter-repo destructively rewrites history (unless --analyze or
+    --dry-run are given) according to specified rules.  It refuses to do any
+    rewriting unless either run from a clean fresh clone, or --force was
+    given.
+
+    Basic Usage:
+      git-filter-repo --analyze
+      git-filter-repo [FILTER/RENAME/CONTROL OPTIONS]
+
+    See EXAMPLES section for details.
+
+Analysis:
+  --analyze             Analyze repository history and create a report that
+                        may be useful in determining what to filter in a
+                        subsequent run. Will not modify your repo.
+
+Filtering based on paths (see also --filename-callback):
+  --invert-paths        Invert the selection of files from the specified
+                        --path-{match,glob,regex} options below, i.e. only
+                        select files matching none of those options.
+  --path-match DIR_OR_FILE, --path DIR_OR_FILE
+                        Exact paths (files or directories) to include in
+                        filtered history. Multiple --path options can be
+                        specified to get a union of paths.
+  --path-glob GLOB      Glob of paths to include in filtered history. Multiple
+                        --path-glob options can be specified to get a union of
+                        paths.
+  --path-regex REGEX    Regex of paths to include in filtered history.
+                        Multiple --path-regex options can be specified to get
+                        a union of paths
+  --use-base-name       Match on file base name instead of full path from the
+                        top of the repo. Incompatible with --path-rename.
+
+Renaming based on paths (see also --filename-callback):
+  --path-rename OLD_NAME:NEW_NAME, --path-rename-match OLD_NAME:NEW_NAME
+                        Path to rename; if filename or directory matches
+                        OLD_NAME rename to NEW_NAME. Multiple --path-rename
+                        options can be specified.
+
+Path shortcuts:
+  --paths-from-file FILENAME
+                        Specify several path filtering and renaming
+                        directives, one per line. Lines with '==>' in them
+                        specify path renames, and lines can begin with
+                        'literal:' (the default), 'glob:', or 'regex: ' to
+                        specify different matching styles
+  --subdirectory-filter DIRECTORY
+                        Only look at history that touches the given
+                        subdirectory and treat that directory as the project
+                        root. Equivalent to using '--path DIRECTORY/ --path-
+                        rename DIRECTORY/:'
+  --to-subdirectory-filter DIRECTORY
+                        Treat the project root as instead being under
+                        DIRECTORY. Equivalent to using '--path-rename
+                        :DIRECTORY/'
+
+Content editing filters (see also --blob-callback):
+  --replace-text EXPRESSIONS_FILE
+                        A file with expressions that, if found, will be
+                        replaced. By default, each expression is treated as
+                        literal text, but 'regex:' and 'glob:' prefixes are
+                        supported. You can end the line with '==>' and some
+                        replacement text to choose a replacement choice other
+                        than the default of '***REMOVED***'.
+  --strip-blobs-bigger-than SIZE
+                        Strip blobs (files) bigger than specified size (e.g.
+                        '5M', '2G', etc)
+  --strip-blobs-with-ids BLOB-ID-FILENAME
+                        Strip blob with the specified git object ids (hashes)
+
+Renaming of refs (see also --refname-callback):
+  --tag-rename OLD:NEW  Rename tags starting with OLD to start with NEW. For
+                        example, --tag-rename foo:bar will rename tag
+                        foo-1.2.3 to bar-1.2.3; either OLD or NEW can be
+                        empty.
+
+Filtering of commit messages (see also --message-callback):
+  --preserve-commit-hashes
+                        By default, since commits are rewritten and thus gain
+                        new hashes, references to old commit hashes in commit
+                        messages are replaced with new commit hashes
+                        (abbreviated to the same length as the old reference).
+                        Use this flag to turn off updating commit hashes in
+                        commit messages.
+  --preserve-commit-encoding
+                        Do not reencode commit messages into UTF-8. By
+                        default, if the commit object specifies an encoding
+                        for the commit message, the message is re-encoded into
+                        UTF-8.
+
+Filtering of names & emails (see also --name-callback and --email-callback):
+  --mailmap FILENAME    Use specified mailmap file (see git-shortlog(1) for
+                        details on the format) when rewriting author,
+                        committer, and tagger names and emails. If the
+                        specified file is part of git history, historical
+                        versions of the file will be ignored; only the current
+                        contents are consulted.
+  --use-mailmap         Same as: '--mailmap .mailmap'
+
+Parent rewriting:
+  --replace-refs {delete-no-add,delete-and-add,update-no-add,update-or-add,update-and-add}
+                        Replace refs (see git-replace(1)) are used to rewrite
+                        parents (unless turned off by the usual git
+                        mechanism); this flag specifies what do do with those
+                        refs afterward. Replace refs can either be deleted or
+                        updated to point at new commit hashes. Also, new
+                        replace refs can be added for each commit rewrite.
+                        With 'update-or-add', new replace refs are only added
+                        for commit rewrites that aren't used to update an
+                        existing replace ref. default is 'update-and-add' if
+                        $GIT_DIR/filter-repo/already_ran does not exist;
+                        'update-or-add' otherwise.
+  --prune-empty {always,auto,never}
+                        Whether to prune empty commits. 'auto' (the default)
+                        means only prune commits which become empty (not
+                        commits which were empty in the original repo, unless
+                        their parent was pruned). When the parent of a commit
+                        is pruned, the first non-pruned ancestor becomes the
+                        new parent.
+  --prune-degenerate {always,auto,never}
+                        Since merge commits are needed for history topology,
+                        they are typically exempt from pruning. However, they
+                        can become degenerate with the pruning of other
+                        commits (having fewer than two parents, having one
+                        commit serve as both parents, or having one parent as
+                        the ancestor of the other.) If such merge commits have
+                        no file changes, they can be pruned. The default
+                        ('auto') is to only prune empty merge commits which
+                        become degenerate (not which started as such).
+
+Generic callback code snippets:
+  --filename-callback FUNCTION_BODY
+                        Python code body for processing filenames; see
+                        CALLBACKS sections below.
+  --message-callback FUNCTION_BODY
+                        Python code body for processing messages (both commit
+                        messages and tag messages); see CALLBACKS section
+                        below.
+  --name-callback FUNCTION_BODY
+                        Python code body for processing names of people; see
+                        CALLBACKS section below.
+  --email-callback FUNCTION_BODY
+                        Python code body for processing emails addresses; see
+                        CALLBACKS section below.
+  --refname-callback FUNCTION_BODY
+                        Python code body for processing refnames; see
+                        CALLBACKS section below.
+  --blob-callback FUNCTION_BODY
+                        Python code body for processing blob objects; see
+                        CALLBACKS section below.
+  --commit-callback FUNCTION_BODY
+                        Python code body for processing commit objects; see
+                        CALLBACKS section below.
+  --tag-callback FUNCTION_BODY
+                        Python code body for processing tag objects; see
+                        CALLBACKS section below.
+  --reset-callback FUNCTION_BODY
+                        Python code body for processing reset objects; see
+                        CALLBACKS section below.
+
+Location to filter from/to:
+  Specifying alternate source or target locations will disable some 
+  auxiliary steps such as disconnecting the origin remote, and avoiding
+  mixing new and old history.
+
+  --source SOURCE       Git repository to read from
+  --target TARGET       Git repository to overwrite with filtered history
+
+Miscellaneous options:
+  --help, -h            Show this help message and exit.
+  --force, -f           Rewrite history even if the current repo does not look
+                        like a fresh clone.
+  --dry-run             Do not change the repository. Run `git fast-export`
+                        and filter its output, and save both the original and
+                        the filtered version for comparison. Some filtering of
+                        empty commits may not occur due to inability to query
+                        the fast-import backend.
+  --debug               Print additional information about operations being
+                        performed and commands being run. When used together
+                        with --dry-run, also show extra information about what
+                        would be run.
+  --stdin               Instead of running `git fast-export` and filtering its
+                        output, filter the fast-export stream from stdin.
+  --quiet               Pass --quiet to other git commands called
+
+CALLBACKS
+
+    All callback functions are of the same general format.  For a command line
+    argument like
+      --foo-callback 'BODY'
+
+    the following code will be compiled and called:
+      def foo_callback(foo):
+        BODY
+
+    Thus, to replace 'Jon' with 'John' in author/committer/tagger names:
+      git filter-repo --name-callback 'return name.replace(b"Jon", b"John")'
+
+    To remove all 'Tested-by' tags in commit (or tag) messages:
+      git filter-repo --message-callback 'return re.sub(br"\nTested-by:.*", "", message)'
+
+    To remove all .DS_Store files:
+      git filter-repo --filename-callback 'return None if os.path.basename(filename) == b".DS_Store" else filename'
+
+    For more detailed examples and explanations AND caveats, see
+      https://github.com/newren/git-filter-repo#callbacks
+
+EXAMPLES
+
+    To get a bunch of reports mentioning renames that have occurred in
+    your repo and listing sizes of objects aggregated by any of path,
+    directory, extension, or blob-id:
+      git filter-repo --analyze
+
+    (These reports can help you choose how to filter your repo; it can
+    be useful to re-run this command after filtering to regenerate the
+    report and verify the changes look correct.)
+
+    To extract the history that touched just 'guides' and 'tools/releases':
+      git filter-repo --path guides/ --path tools/releases
+
+    To remove foo.zip and bar/baz/zips from every revision in history:
+      git filter-repo --path foo.zip --path bar/baz/zips/ --invert-paths
+
+    To replace the text 'password' with 'p455w0rd':
+      git filter-repo --replace-text <(echo "password==>p455w0rd")
+
+    To use the current version of the .mailmap file to update authors,
+    committers, and taggers throughout history and make it permanent:
+      git filter-repo --use-mailmap
+
+    To extract the history of 'src/', rename all files to have a new leading
+    directory 'my-module' (e.g. src/foo.java -> my-module/src/foo.java), and
+    add a 'my-module-' prefix to all tags:
+      git filter-repo --path src/ --to-subdirectory-filter my-module --tag-rename '':'my-module-'
+
+    For more detailed examples and explanations, see
+      https://github.com/newren/git-filter-repo#examples
+EOS
+command :filter do |c|
+	c.action do |global_options,options,args|
+		script=GITDist+"git-filter-repo"+"git_filter_repo.py"
+		exec ([script.to_s]+args).shelljoin
 	end
 end
 #}}}1

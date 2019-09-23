@@ -298,15 +298,24 @@ module DR
 				home=Pathname.new(Dir.home)
 				files[:homepath]=home
 				files[:tmpfiles]=[home+"tmp", Pathname.new("/var/tmp"), Pathname.new("/tmp")].select {|d| d.directory?}
-				files[:xdg_config_home]=Pathname.new(ENV['XDG_CONFIG_HOME'] || (home+".config"))
+
+				%i(xdg_config_home xdg_data_home xdg_cache_home xdg_runtime_dir).each do |key|
+					if (p=ENV[key.to_s.upcase])
+						files[key]=Pathname.new(p)
+						rel=home.rel_path_to(p, inside: true)
+					else
+						rel=rel_files[:"rel_#{key}"]
+						files[key]=home+rel
+					end
+					files[:"rel_#{key}"]=Pathname.new(rel)
+				end
+				#files[:runtime_dir]=[files[:xdg_runtime_dir], Pathname.new("/run/user/#{user[:uid]}"), home+"tmp"].select {|d| d.directory?}
+
 				files[:xdg_data_home]=Pathname.new(ENV['XDG_DATA_HOME'] || (home+".local/share"))
 				xdg_data_dirs=ENV['XDG_DATA_DIRS'] || "/usr/local/share/:/usr/share/"
 				files[:xdg_data_dirs]=xdg_data_dirs.split(':').map {|x| Pathname.new(x)}
 				xdg_config_dirs=ENV['XDG_CONFIG_DIRS'] || "/etc/xdg/"
 				files[:xdg_config_dirs]=xdg_config_dirs.split(':').map {|x| Pathname.new(x)}
-				files[:xdg_cache_home]=Pathname.new(ENV['XDG_CACHE_HOME'] || (home+".cache"))
-				files[:xdg_runtime_dir]=Pathname.new(ENV['XDG_RUNTIME_DIR']||home+"tmp")
-				#files[:runtime_dir]=[files[:xdg_runtime_dir], Pathname.new("/run/user/#{user[:uid]}"), home+"tmp"].select {|d| d.directory?}
 				files
 			end
 

@@ -382,6 +382,7 @@ will normally define the function in question, but may also perform
 initialization, which is executed in the context of the function
 execution, and may therefore define local parameters. It is an error if
 the function is not defined by loading the file.
+[ie c'est équivalent à sourcer le fichier, puis à appeler `func $@`]
 
 Otherwise, the function body (with no surrounding ‘funcname() {...}’) is
 taken to be the complete contents of the file. This form allows the file to
@@ -392,6 +393,7 @@ function defined, the file should contain initialization code (which will
 be executed then discarded) in addition to a complete function definition
 (which will be retained for subsequent calls to the function), and a call
 to the shell function, including any arguments, at the end.
+[ie c'est équivalent à faire seulement `func $@` où le body de func est le fichier]
 
 For example, suppose the autoload file func contains
     func() { print This is func; }
@@ -406,6 +408,25 @@ Par contre avec `autoload -z` (ie sans KSH_AUTOLOAD), dans un fichier
 		func() { print This is func; }
 alors 'This is funk' est bien imprimé (comme avec KSH_AUTOLOAD), car il n'y
 a que cette fonction de définie.
+
+Cf
+https://unix.stackexchange.com/questions/33255/how-to-define-and-load-your-own-shell-function-in-zsh
+
+autoload -Uz hello # => search in the fpath
+(-U: desactivate aliases, -z: KSH_AUTOLOAD false)
+
+hello:
+  hello_helper_one () {
+    printf 'hello '
+  }
+  hello_helper_two () {
+    printf 'world.'
+  }
+  hello () {
+    printf '%s %s\n' "$(hello_helper_one)" "$(hello_helper_two)"
+  }
+  # Finally run the redefined function with the same arguments as the current run. If this is left out, the functionality implemented by the newly defined "hello" function is not executed upon its first call. So: 
+  hello "$@"
 
 Default bindings
 ================
@@ -860,3 +881,47 @@ https://github.com/sorin-ionescu/prezto #a fork of oh-my-zsh
 https://github.com/zsh-users/zaw #a plugin to find content
 
 List of plugins: https://github.com/unixorn/awesome-zsh-plugins
+
+Plugins
+========
+
+* Manager
++ https://github.com/zplug/zplug
+Zsh plugin manager, very similar to vim-plug
+$ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+
+=> install in ~/.zplub
+zsh: source ~/.zplug/init.zsh
+
+$ZPLUG_HOME: ~/.zplug
+$ZPLUG_LOADFILE=$ZPLUG_HOME/packages.zsh => This file is used to add plugins from zplug on the command-line. It is also a useful place to isolate your packages list from .zshrc
+
+Exemple:
+  # zplug check returns true if all packages are installed
+  # Therefore, when it returns false, run zplug install
+  if ! zplug check; then
+    zplug install
+  fi
+
+  # source plugins and add commands to the PATH
+  zplug load
+
+  # zplug check returns true if the given repository exists
+  if zplug check b4b4r07/enhancd; then
+    # setting if enhancd is available
+    export ENHANCD_FILTER=fzf-tmux
+  fi
+
+Notes:
+- cf base/core/load.zsh: plugins are either sourced, or if marked as lazy autoloaded. a theme is like a plugin but `setopt prompt_subst` is activated
+(except that the files are searched in *.plugin.zsh for plugins, vs .zsh-theme/.theme-zsh for themes).
+  For commands they are symlinked into ~/.zplug
+- init.zsh change the fpath to add some fplug folders:
+  /home/dams/.zplug/misc/completions /home/dams/.zplug/base/sources...
+  and adds ~/.zplug/bin to the PATH
+
+* Plugins:
++ https://github.com/b4b4r07/enhancd
+  A next-generation cd command with your interactive filter
+- https://github.com/mollifier/anyframe
+  peco/percol/fzf wrapper plugin for zsh

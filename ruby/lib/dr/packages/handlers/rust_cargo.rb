@@ -24,6 +24,10 @@ module DR
 				end
 			end
 
+			def bootstrap(*args)
+				"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y"
+			end
+
 			def install(*args)
 				super do |pkgs,o|
 					"#{@packager} install #{o} #{pkgs}"

@@ -9,27 +9,44 @@ man PKGBUILD
 
 Options [excerpt]
 -------
--c: clean files
--C, --cleanbuild Remove $srcdir/ dir before building the package
--d: don't check deps
--o: download, extract and prepare, but don't build
--e: don't extract (or prepare), only build
---verifysource: only download sources and perform integrity checks
--f: overrides an already built package
--g: generate integrity checks; ex makepkg -g >> PKGBUILD
--i: install built package
--L: logs to $logdest/pkgname-pkgver-pkgrel-arch.log
--R: Repackage contents of the package without rebuilding the package.
--s: install missing dependencies with pacman (-r to remove them after succesfull build)
--S: build a source-only (PKGBUILD) tarball
-    [except if --allsource is passed where the full source are downloaded]
-    Destination into $SRCPKGDEST
---allsource: build a full source-only (PKGBUILD+ the real source code) tarball
---pkg list: only build listed packages from a split package
---check/--nocheck: run/don't run the check() function
---sign/--nosign: sign/don't sign the package
---noconfirm,--needed,--asdeps: Passed to pacman
---skippgpcheck: skip pgp signatures
+
+* Clean up:
+  -c, --clean: clean up work files after build
+  -C, --cleanbuild Remove $srcdir/ dir before building the package
+  -L, --log: logs to $logdest/pkgname-pkgver-pkgrel-arch.log
+
+* Checks:
+  -d, --nodeps: don't check deps
+  -f, --force: overrides an already built package
+  --skipchecksums  Do not verify checksums of the source files
+  --skipinteg      Do not perform any verification checks on source files
+  --skippgpcheck   Do not verify source files with PGP signatures
+  --verifysource: only download sources and perform integrity checks
+
+* Infos:
+  --packagelist    Only list package filepaths that would be produced
+  --printsrcinfo   Print the generated SRCINFO and exit
+  -g: generate integrity checks; ex makepkg -g >> PKGBUILD
+
+* Process:
+  --pkg list: only build listed packages from a split package
+  -S, --source: build a source-only (PKGBUILD) tarball [into $SRCPKGDEST]
+    [except if --allsource is passed where the full source are downloaded:
+     --allsource: build a full source-only (PKGBUILD+ the real source code) tarball]
+
+  -R, --repackage: Repackage contents of the package without rebuilding the package. (calls the 'package() function)
+  -i, --install: install successful built package
+
+  --check/--nocheck: run/don't run the check() function
+  -o, --nobuild: download, extract and prepare, but don't build
+  -e, --noextract: don't extract (or prepare), only build (use existing $srcdir)
+  --noarchive      Do not create package archive
+  --noprepare      Do not run the prepare() function in the PKGBUILD
+  --sign/--nosign: sign/don't sign the package
+
+* Pacman related opts:
+  --noconfirm,--needed,--asdeps: Passed to pacman
+  -s: install missing dependencies with pacman (-r to remove them after succesfull build)
 
 Environment
 ----------

@@ -67,21 +67,26 @@ qu'on considère qu'il va se comporter comme une Promise)
 # Async models/concurrency
 
 Trampoline: https://en.wikipedia.org/wiki/Tail_call#Through_trampolining
+Generators and Coroutines: 
+- https://eli.thegreenplace.net/2009/08/29/co-routines-as-an-alternative-to-state-machines/
++ http://www.dabeaz.com/generators/index.html
+  http://www.dabeaz.com/coroutines/
+  http://www.dabeaz.com/finalgenerator/
 
-- Callback to promises to async (see also [Javascript]):
+## Callback to promises to async (see also [Javascript]):
 https://medium.com/@bluepnume/learn-about-promises-before-you-start-using-async-await-eb148164a9c8#.wxf2gxxxv
 https://medium.com/@rdsubhas/es6-from-callbacks-to-promises-to-generators-87f1c0cd8f2e#.1ip6tvy8j
 https://developers.google.com/web/fundamentals/getting-started/primers/async-functions
 https://strongloop.com/strongblog/node-js-callback-hell-promises-generators/
 
-- async/await in
+## async/await in
   C#: https://msdn.microsoft.com/en-us/library/mt674882.aspx
   Dart: https://www.dartlang.org/articles/language/await-async
         https://www.dartlang.org/articles/language/beyond-async
   Python: https://www.python.org/dev/peps/pep-0492/
   Js: https://github.com/tc39/ecmascript-asyncawait
 
-- Promises are (almost) monads:
+## Promises are (almost) monads:
   https://gist.github.com/briancavalier/3296186 A proof that Promises/A is a Monad
   https://github.com/promises-aplus/promises-spec/issues/94 Incorporate monads and category theory
   http://kybernetikos.com/2012/07/10/design-pattern-wrapper-with-composable-actions/ Design Pattern: Wrapper with Composable Actions
@@ -89,20 +94,32 @@ https://strongloop.com/strongblog/node-js-callback-hell-promises-generators/
   https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5#.pwpt0ar4r From Callback to Future -> Functor -> Monad
   https://blog.jcoglan.com/2011/03/11/promises-are-the-monad-of-asynchronous-programming/ Promises are the monad of asynchronous programming
 
-- Continuation:
+## Continuation:
+[See Info/Functional/Continuations]
 http://stackoverflow.com/questions/14019341/whats-the-difference-between-a-continuation-and-a-callback
 http://softwareengineering.stackexchange.com/questions/212057/what-is-an-example-of-a-continuation-not-implemented-as-a-procedure
 
-- callback passing style to continuation monads
+* callback passing style to continuation monads
 http://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
+  => https://news.ycombinator.com/item?id=8984648
+
 http://www.well-typed.com/blog/2015/02/ziria/ (=http://www.well-typed.com/blog/105/) "Monads: From Web 2.0 to Hardware Drivers"
 http://blog.paralleluniverse.co/2015/08/07/scoped-continuations/ "From Imperative to Pure-Functional and Back Again: Monads vs. Scoped Continuations"
 
-- Actors (scala) vs coroutines (go):
+* Delimited continuations
+https://en.wikipedia.org/wiki/Delimited_continuation
+https://stackoverflow.com/questions/6058959/difference-between-delimited-and-undelimited-continuations
+
+Implémentation en ruby:
+https://max.computer/blog/delimited-continuations-in-ruby-part-1/
+https://max.computer/blog/delimited-continuations-in-ruby-part-2-generators-and-coroutines/
+https://github.com/mveytsman/DelimR
+
+## Actors (scala) vs coroutines (go):
 http://stackoverflow.com/questions/22621514/is-scalas-actors-similar-to-gos-coroutines
 Mention the book reactive design pattern: https://www.manning.com/books/reactive-design-patterns
 
-- Internal vs external iterators
+## Internal vs external iterators
   And why internal iterators need some sort of continuation (to return
   several level up)
   http://journal.stuffwithstuff.com/2013/01/13/iteration-inside-and-out/
@@ -114,7 +131,13 @@ Mention the book reactive design pattern: https://www.manning.com/books/reactive
   https://blogs.msdn.microsoft.com/cyrusn/2004/05/19/internal-and-external-iterators/
   https://blogs.msdn.microsoft.com/cyrusn/2004/06/07/internal-vs-external-iterators-revisted/
 
-- async/await in python and js
+## async/await in python and js
+
+* Modèles de concurrence en python
+https://bytes.yingw787.com/posts/2019/02/09/concurrency_with_python_csp_and_coroutines/
+Historique sur async/await: http://masnun.com/2015/11/13/python-generators-coroutines-native-coroutines-and-async-await.html
+
+* Résumé
 On a des méthodes avac callback:
 read_line(cb), fetch_url(url, cb)
 => read_line( 

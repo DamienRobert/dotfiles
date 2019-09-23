@@ -1,15 +1,21 @@
 #!/bin/zsh
 . "$(dirname $0)/_install_helpers"
 
-pacman="pacman-5.1.0"
-libarchive="libarchive-3.3.2"
+# libarchive="libarchive-3.3.2"
+# do_build libarchive $libarchive $libarchive.tar.gz http://www.libarchive.org/downloads/$libarchive.tar.gz
+build_git -l libarchive
 
-do_build libarchive $libarchive $libarchive.tar.gz http://www.libarchive.org/downloads/$libarchive.tar.gz
-do_build pacman $pacman $pacman.tar.gz https://sources.archlinux.org/other/pacman/$pacman.tar.gz
+# pacman="pacman-5.1.0"
+# do_build pacman $pacman $pacman.tar.gz https://sources.archlinux.org/other/pacman/$pacman.tar.gz
 #--disable-internal-download
 
+url=https://git.archlinux.org/pacman.git
+progname=pacman
+build_helper $@
+build_git
+
 #For alpm database
-cd $OPT/packages/$pacman/etc
+cd $OPT/packages/$nameversion/etc || exit 17
 mv pacman.conf pacman.conf.bak
 ARCHFULL="$HOME/opt/archroot"
 cat <<EOS >pacman.conf
