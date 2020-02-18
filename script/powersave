@@ -1,22 +1,27 @@
 #!/usr/bin/zsh
 . $HOME/.initvars
 LIBSCRIPT=$MYFILES/script/lib/
+. $LIBSCRIPT/find_dev.zsh
+. $LIBSCRIPT/powersave.zsh
 
-WSERVICES=(); WMODULES=()
+WSERVICES=(); WMODULES=();
 ESERVICES=(); EMODULES=()
 BTSERVICES=(); BTMODULES=()
+userservices=(xsession.target)
+internetservices=(network.target mpdas.service)
+systservices=()
+internetsystservices=(systemd-resolved systemd-networkd systemd-timesyncd)
+
 case $MYHOSTNAME in
 	Numenor) EMODULES+=(r8169) ;; #unload eth0 module (consume 600mW)
 esac
-. $LIBSCRIPT/find_dev.zsh
-. $LIBSCRIPT/powersave.zsh
 
 help() {
 	echo "$0: More powersave than what is called automatically in /usr/bin/powersave by /etc/udev/rules.d/50-powersave.rules"
 	echo "- true: deactivate wifi if not running, set brightness to 0, stop bluetooth, stop user services (internet+xsession services)
 	[with -f force stop network devices]
 - false: reverse of true
-- start/stop bt/netdev/services: start/stop bluetooth/network device/services
+- start/stop bt/netdev/services/syst: start/stop bluetooth/network device/services
 - usb on|auto|suspend: set the corresponding action in /sys/bus/usb/devices/*/power/
 - status [usb]: powersave status
 - state: on power or not"
@@ -76,14 +81,15 @@ bluetooth() {
 }
 
 network_dev() {
-	local args device_type nc_dev disconnected
+	local args device_type nc_dev disconnected wpa wpa_services
 	disconnected=t
 	mode=$1; shift
 	while true; do
 		case "$1" in
 			-- ) break ;;
 			-d|--disconnected ) shift; disconnected=t ;;
-			-f ) shift; disconnected=;;
+			-m|--maybe ) shift; disconnected=maybe ;;
+			-f|--force ) shift; disconnected=;;
 			*) break;;
 		esac
 	done
@@ -95,24 +101,41 @@ network_dev() {
 	if [[ -n $disconnected ]]; then
 		nc_dev=()
 		for dev in $args; do
-			if ! test_connection $dev; then
-				nc_dev+=($dev)
-			fi
+			case $disconnected in
+				maybe)
+					if ! test_maybe_connection $dev; then
+						nc_dev+=($dev)
+					fi
+					;;
+					*)
+					if ! test_connection $dev; then
+						nc_dev+=($dev)
+					fi
+					;;
+			esac
 		done
 		args=($nc_dev)
 	fi
 
-	echo "- [$mode] network devices: $args"
+	echo "- [$mode] network devices: $args [disconnected: $disconnected]"
 	for object in $args; do
 		services=;mods=;device_type=;
 		case $object in
-			w*) device_type="wlan" ;;
+			wl*) device_type="wlan" ;;
+			wg*)  device_type="wg" ;;
+			zt*)  device_type="zt" ;;
 			e*) device_type="eth" ;;
+			lo) device_type="local" ;;
 		esac
 		case $device_type in
 			wlan)
 				rfkill_service wifi
-				services=($WSERVICES wpa_supplicant@$object.service)
+				services=($WSERVICES)
+				wpa_services=(iwd wpa_supplicant@$object.service)
+				for wpa in $wpa_services
+				if systemctl is-enabled --quiet $wpa; then
+					services+=($wpa)
+				fi
 				mods=($WMODULES)
 				##done in /usr powersave
 				#echo "-> $object: powersave on"
@@ -132,6 +155,19 @@ network_dev() {
 				#		sudo ethtool -s $object wol d ;;
 				#esac
 				;;
+			zt)
+				services=(zerotier-one.service)
+				;;
+			wg)
+				case $mode in
+					start)
+						echo "-> networkctl reload"
+						sudo networkctl reload ;;
+					stop)
+						echo "-> networkctl delete $object"
+						sudo networkctl delete $object ;;
+				esac
+				;;
 		esac
 		start_stop_mods
 	done
@@ -139,7 +175,7 @@ network_dev() {
 
 services() {
 	mode=$1; shift
-	local force
+	local force services
 	while true; do
 		case "$1" in
 			-- ) break ;;
@@ -147,29 +183,49 @@ services() {
 			*) break;;
 		esac
 	done
-	echo "- [$mode] user services"
 	case $mode in
 		start)
-			echo "-> [$mode] network.target"
-			systemctl --user start network.target
-			echo "-> [$mode] xsession.target"
-			[[ -n $DISPLAY ]] && systemctl --user start "xsession.target"
-			;;
+			services=($userservices $internetservices) ;;
 		stop)
-			[[ -z $force ]] && is_connected
-			[[ -z $connected ]] && {
-				echo "-> [$mode] internet.target"
-				systemctl --user stop internet.target
-			}
-			echo "-> [$mode] xsession.target"
-			systemctl --user stop "xsession.target"
+			services=($userservices)
 			if mpc | grep '\[playing\]' >/dev/null; then
 				echo "! Not stopping mpd [playing]"
 			else
-				echo "-> [$mode] mpd"
-				systemctl --user stop "mpd.service"
+				services+=(mpd)
 			fi
-			;;
+			[[ -z $force ]] && is_connected
+			[[ -z $connected ]] && services+=($internetservices)
+	esac
+	echo "- [$mode] user services: $services"
+	case $mode in
+		start) systemctl --user start $services ;;
+		stop) systemctl --user stop $internetservices ;;
+	esac
+}
+
+syst() {
+	mode=$1; shift
+	local force services
+	while true; do
+		case "$1" in
+			-- ) break ;;
+			-f|--force ) shift; force=t ;;
+			*) break;;
+		esac
+	done
+	case $mode in
+    # since stopping iwd.service and zerotier-one.service remove the interface,
+    # to activate them again we cannot rely on networkd_dev but we must
+    # start them here
+		start) services=($systservices $internetsystservices iwd.service zerotier-one.service) ;;
+		stop) services=($systservices)
+			[[ -z $force ]] && is_connected
+			[[ -z $connected ]] && services+=($internetsystservices) ;;
+	esac
+	echo "- [$mode] syst services: $services"
+	case $mode in
+		start) sudo systemctl start $services ;;
+		stop) sudo systemctl stop $services ;;
 	esac
 }
 
@@ -202,6 +258,7 @@ start_stop() {
 		bt|bluetooth) bluetooth $mode $@ ;;
 		netdev|network_dev) network_dev $mode $@ ;;
 		services) services $mode $@ ;;
+		syst) syst $mode $@ ;;
 		*) network_dev $mode $arg $@ ;;
 	esac
 }
@@ -221,10 +278,12 @@ process() {
 			stop network_dev $opts
 			stop bluetooth
 			stop services $opts
+			stop syst $opts
 			;;
 		false|off )
 			shift
 			[[ -n $do_brightness ]] && set_dpms_brightness -dpms max
+			start syst #we need to start syst first so that the network devices are there
 			start network_dev
 			start bluetooth
 			start services

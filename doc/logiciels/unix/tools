@@ -9,6 +9,8 @@ List of unix commands
 - bhami.com/rosetta.html [utilities across different unixes]
   https://github.com/jlevy/the-art-of-command-line
 
+* flock (manage locks from shell)
+
 
 Extract examples from man pages:
   eg(){

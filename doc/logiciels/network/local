@@ -1,5 +1,22 @@
 vim: ft=markdownlight fdm=expr
 
+localhost
+=========
+
+127.0.0.1/8
+::1/128
+
+* https://tools.ietf.org/id/draft-smith-v6ops-larger-ipv6-loopback-prefix-04.html
+    0001:0000:0000:0000:0000:0000:0000:0000/32 ie  1::/32
+  Mais expired.
+
+Cf aussi: https://serverfault.com/questions/193377/ipv6-loopback-addresses-equivalent-to-127-x-x-x
+=> link local address: sudo ip -6 address add fe80::1/64 dev lo; nc fe80::1%lo 10001
+=> private address: ip -6 route add to local fd66:29e9:f422:8dfe::/64 dev lo
+=> ou sudo ip route add local ::127.0.0.0/104 dev lo; ie widening the routing table into the range reserved for ipv4 compatibility 
+
+* Unspecified address: 0.0.0.0 / ::
+
 Private local addresses
 =======================
 
@@ -42,6 +59,7 @@ IPV6
 ====
 
 ::ffff:192.0.2.128 IPv4-mapped IPv6 addresses
+Ex: ::ffff:7f00:1 should be 127.0.0.1
 
 ::/0 Default unicast
 2002::/16 6to4
@@ -95,32 +113,37 @@ RA destination MAC address is 33:33:00:00:00:01 (all-nodes multicast MAC address
 Address Resolution process
 NS destination MAC address is 33:33:FF:xx:xx:xx (solicited node multicast MAC address)
 
+# All special adresses
 
-DNS
-===
+* https://en.wikipedia.org/wiki/Reserved_IP_addresses
 
-getent hosts www.google.com #the adress used by the dns from nsswitch.conf
-getent ahosts www.google.com #return all adresses
+* unbound
+In unbound, the following adresses are special by default:
+localhost, reverse ipv4/ipv6 loopback, onion, test, invalid domain
 
-nsswitch.conf: hosts: files mymachines myhostname resolve [!UNAVAIL=return] dns
+- reverse RFC1918 local use zones (private local addresses)
+  Reverse  data  for zones 10.in-addr.arpa, 16.172.in-addr.arpa to  31.172.in-addr.arpa,   168.192.in-addr.arpa.
+- reverse RFC3330 IP4 this, link-local, testnet and broadcast
+  Reverse data for zones 0.in-addr.arpa (invalid),
+  254.169.in-addr.arpa (link local)
+  2.0.192.in-addr.arpa (TEST NET 1), 100.51.198.in-addr.arpa (TEST NET 2), 113.0.203.in-addr.arpa (TEST NET 3),
+  255.255.255.255.in-addr.arpa.   
+  And from 64.100.in-addr.arpa to 127.100.in-addr.arpa (Shared Address Space) ie 100.64.0.0/10
+- reverse RFC4291 IP6 unspecified, ie 0 alias ::
+- reverse RFC4193 IPv6 Locally Assigned Local Addresses
+  Reverse data for zone D.F.ip6.arpa. (ie fd::/8)
+- reverse RFC4291 IPv6 Link Local Addresses
+  Reverse data for zones 8.E.F.ip6.arpa to B.E.F.ip6.arpa. (ie fe8::/10)
+- reverse IPv6 Example Prefix
+  8.B.D.0.1.0.0.2.ip6.arpa. (ie 2001:0DB8::/32)
 
-files: /etc/hosts, /etc/passwd and /etc/group
-
-https://www.freedesktop.org/software/systemd/man/nss-myhostname.html
-- The local, configured hostname is resolved to all locally configured IP
-  addresses ordered by their scope, or — if none are configured — the IPv4
-  address 127.0.0.2 (which is on the local loopback) and the IPv6 address
-  ::1 (which is the local host).
-- The hostnames "localhost" and "localhost.localdomain" (as well as any
-  hostname ending in ".localhost" or ".localhost.localdomain") are resolved
-  to the IP addresses 127.0.0.1 and ::1.
-- The hostname "_gateway" is resolved to all current default routing gateway
-  addresses, ordered by their metric. This assigns a stable hostname to the
-  current gateway, useful for referencing it independently of the current
-  network configuration state.
-
-https://www.freedesktop.org/software/systemd/man/nss-mymachines.html
-The container names are resolved to the IP addresses of the specific container, ordered by their scope.
+* ipv4 class A/B/C/D/E
+https://en.wikipedia.org/wiki/Classful_network
+Class A: leading bit 0 -> 0.0.0.0 	127.255.255.255 /8
+Class B: leading bit 10 -> 128.0.0.0 	191.255.255.255 /16
+Class C: leading bit 110 -> 192.0.0.0 	223.255.255.255 /24
+Class D (multicast): leading bit 1110 -> 224.0.0.0 239.255.255.255
+Class E (reserved): leading bit 1111 -> 240.0.0.0 255.255.255.255
 
 zeroconf
 ========

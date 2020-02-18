@@ -112,7 +112,7 @@ done
 netns=${netns-ns1}
 
 if [[ -n $@ ]]; then
-	ip netns exec $netns sudo -E -u ${SUDO_USER-$USER} $@
+	exec ip netns exec $netns sudo -E -u ${SUDO_USER-$USER} $@
 else
-	ip netns exec $netns su ${SUDO_USER-$USER}
+	exec ip netns exec $netns su ${SUDO_USER-$USER}
 fi

@@ -14,6 +14,7 @@ name forum set list_all_groups
 name forum set hist_file_name .hist.forum
 name forum set flnews_ext .forum
 name forum color status yellow  blue    bold
+name forum set alternate damien.robert__forum
 
 name allforum set server |/opt/flrn/bin/tlsclient forum.salle-s.org:2063
 name allforum set list_all_groups

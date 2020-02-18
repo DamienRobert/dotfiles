@@ -70,7 +70,7 @@ end
 # Extra commands {{{1
 desc "Extra helpers: aliases/cherry/fork/hg/obliterate/rename_tag/runcmd/set_pr/uncommit/update-worktree/whitespace"
 command :extra do |c| @extra=c end
-desc "Topic helpers: cherry/*log/logs/merged/..."
+desc "Topic helpers: cherry/*infos/log/logs/push/start/status/sync/..."
 command :topic do |c| @topic=c end
 @topic.default_command :infos
 desc "Ls helpers: *blame/files/removed"
@@ -208,9 +208,11 @@ Here branch and upstream are found using git-topic-helper
 - git mypatch applied/reapply name
 		Move the patches accordingly
 
+|-v|: patch version
+|-g|: global patch dir
 |--dir|: change the patchdir .patches
 |--dir-from|: change the default dirs send/apply
-|--dirto|: change the default dirs sent/applied
+|--dir-to|: change the default dirs sent/applied
 EOS
 command :'patch' do |c|
 	c.action do |global_options,options,args|
@@ -424,7 +426,7 @@ end
 desc 'Show current branch'
 long_desc <<EOS
 To get previous behaviour of
-git symbolic-ref -q --short HEAD || git rev-parse --verify HEAD
+  git symbolic-ref -q --short HEAD || git rev-parse --verify HEAD
 use --name=symbolic-rev
 EOS
 
@@ -458,7 +460,7 @@ end
 
 # update {{{1
 desc 'Update repo'
-long_desc 'Run git remote update -p, show the topic-log, and then merge --ff-only upstream.'
+long_desc 'Run git fetch or git remote update -p, show the topic-log, and then merge --ff-only upstream.'
 arg_name 'remotes'
 command :update do |c|
 	c.desc 'Automatically update svn branch if present'
@@ -469,6 +471,8 @@ command :update do |c|
 	c.flag :svn
 	c.desc "Don't update remotes, only update branches"
 	c.switch :only
+	c.desc "Run git remote update -p rather than git fetch"
+	c.switch :all
 	c.desc "mode: ffonly/merge/rebase/pull"
 	c.default_value 'ffonly'
 	c.flag :mode
@@ -480,8 +484,13 @@ command :update do |c|
 	c.action do |global_options,options,args|
 		$pageropt=:never #prevent the pager when calling topic-log
 		unless options[:only]
-			puts "## remote update ##"
-			system ([ "git", "remote", "update", "-p" ]).shelljoin
+			if options[:all]
+				puts "## remote update ##"
+				system ([ "git", "remote", "update", "-p" ]).shelljoin
+			else
+				puts "## fetch ##"
+				system ([ "git", "fetch"]).shelljoin
+			end
 		end
 		current=DR::Git.current_branch
 		checkout=false #do we need to go back to current?
@@ -549,7 +558,7 @@ end
 		SH.run_pager(launch: $pageropt)
 		local,remote=DR::Git.get_topic_branches(*args)
 		def gitlog(*args)
-			return SH::Run.output_of "git -c color.ui=always --no-pager log --graph --pretty=summary "+args.shelljoin
+			return SH::Run.output_of "git -c color.ui=always --no-pager log --graph --pretty=suminfo "+args.shelljoin
 		end
 		unless local.nil? or remote.nil?
 			puts "## Changes from local '#{local}' to remote '#{remote}'"
@@ -595,7 +604,7 @@ end
 		#this prevent the '%h' of ---oneline
 		#SH.run_pager(launch: $pageropt)
 		local,remote=DR::Git.get_topic_branches(*args)
-		system("git -c color.ui=always --no-pager log --left-right --topo-order --oneline #{local.shellescape}...#{remote.shellescape}")
+		system("git -c color.ui=always --no-pager log --left-right --topo-order --oneline #{local.shellescape}...#{remote.shellescape}") if local.branch && remote.branch
 	end
 end
 #}}}1
@@ -912,12 +921,36 @@ end
 @extra.desc "Set up a github fork as a three way repo"
 @extra.command :fork do |c|
 	c.action do |global_options,options,args|
+		sh! (["hub", "clone"] + args) unless args.empty?
+		# TODO: we need to cd to the cloned directory afterwards...
 		sh <<EOS
 		hub fork && hub push DamienRobert : && git fetch DamienRobert && git config remote.pushDefault DamienRobert
 EOS
 	end
 end
 #}}}1
+# info {{{1
+desc 'Show repo infos'
+long_desc "Shortcut for `topics info --quick`. Can pass up specific branch names, eg 'info HEAD'. Without arguments, also show HEAD and remotes list"
+command :"infos" do |c|
+	c.action do |global_options,options,args|
+		if args.empty?
+			prefix=GitHelpers.prefix
+			toplevel=GitHelpers.toplevel
+			puts "#{"✱ "+toplevel.basename.to_s.color(:bold)}/#{prefix}"
+			current=GitHelpers.name
+			#require 'pry'; binding.pry
+			r="#{"▶ HEAD".color(:bold)}=#{current.color(:yellow)} → "+GitHelpers.run_simple("git -c color.ui=always log --date=human --oneline --no-walk --pretty=quicksummary HEAD")
+			puts r
+		end
+		run ["topic", "info", '--quick', *args]
+		if args.empty?
+			remotes=GitHelpers.run_simple("git remote").each_line.map {|i| i.chomp}
+			puts "#{"▶ Remotes:".color(:bold)} #{remotes.join(", ")}" unless remotes.empty?
+		end
+	end
+end
+
 
 # Direct code via GitHelpers
 #aliases {{{1
@@ -1024,7 +1057,7 @@ end
 	c.switch :remote, :r
 	c.desc "Show all tags"
 	c.switch :tags, :t
-	c.desc "Show all local"
+	c.desc "Show all local [default if no branches specified]"
 	c.switch :local, :l
 	c.desc "Show HEAD"
 	c.switch :current
@@ -1036,6 +1069,12 @@ end
 	c.flag :merged, :m
 	c.desc "Show cherry logs"
 	c.switch :cherry, :status, :s
+	c.desc "Show current log"
+	c.switch :log
+	c.desc "Set log options (implicitely enable log too)"
+	c.flag :log_options
+	c.desc "Set up log with --pretty=quicksummary"
+	c.switch :quick
 	c.action do |global_options,options,args|
 		args << "HEAD" if options[:current]
 		unless options[:all] or options[:remote] or options[:tags] or options[:local] or ! args.empty?
@@ -1050,12 +1089,15 @@ end
 			end
 		else
 			# puts infos
-			GitHelpers.format_branch_infos(infos.values, compare: options[:compare], merged: options[:merged]&.split(','), cherry: options[:cherry])
+			values=infos.values.sort_by {|i| i[:head] ? 0 : 1}
+			options[:log_options]="--pretty=quicksummary" if options[:quick]
+			GitHelpers.format_branch_infos(values, compare: options[:compare], merged: options[:merged]&.split(','), cherry: options[:cherry], log: options[:log_options] || options[:log])
 		end
 	end
 end
 
 @topic.desc 'Info on current branch'
+@topic.long_desc 'Essentially a shortcut for `git my topic infos --current`'
 @topic.arg_name 'Branches'
 @topic.command :status do |c|
 	c.desc "Raw infos"
@@ -1081,8 +1123,12 @@ end
 end
 
 @topic.desc 'Push topic branches'
-@topic.arg_name 'Branches'
+@topic.long_desc 'Push all passed branches to their corresponding remote'
+@topic.arg_name 'branch1[=HEAD], branch2, ...'
 @topic.command :push do |c|
+	# Note: this is useful if the remote to push to was determined as a
+	# default remote rather than as a upstream branch remote; this allows to
+	# set the pushed branch as the new upstream
 	c.desc "Pass -u to push: set the pushed branch as upstream"
 	c.switch :'set-upstream', :u
 	c.action do |global_options,options,args|
@@ -1106,6 +1152,7 @@ end
 end
 
 @topic.desc 'Start new topic'
+@topic.long_desc 'Start new topic branch and then push it to the remote'
 @topic.arg_name 'Topic name; Base branch (default to current)'
 @topic.command :start do |c|
 	c.desc "Pass -u to push: set the pushed branch as upstream"
@@ -1119,6 +1166,8 @@ end
 		if options[:to]
 			@sh.sh! "git push #{options[:u] ? "-u" : ""} #{options[:to]} #{name.shellescape}"
 		else
+			# Even if we setup the local branch as upstream with 'git checkout -t'
+			# if we have a remote.pushDefault this still allows us to push to it
 			to_run= ["topic", "push"]
 			to_run << "-u" if options[:u]
 			to_run << name
@@ -1128,6 +1177,7 @@ end
 end
 
 @topic.desc 'Sync topics'
+@topic.long_desc "Run 'update' and then 'topic push'"
 @topic.arg_name 'Topic names'
 @topic.command :sync do |c|
 	c.action do |global_options,options,args|
@@ -1142,6 +1192,7 @@ def delete_remote_branch(infos)
 end
 
 @topic.desc 'Rename topic'
+@topic.long_desc 'Autodetect if branch and tag, delete old tag/branch on remote, and push the new tag/branch'
 @topic.arg_name '[Old name]; New name'
 @topic.command :rename do |c|
 	c.action do |global_options,options,args|
@@ -1170,12 +1221,12 @@ end
 			end
 			run ["topic", "push", new]
 			delete_remote_branch(infos)
-			@sh.sh!("git push #{infos["push:remotename"]} :#{infos["push:name"]}")
 		end
 	end
 end
 
 @topic.desc 'Delete topics'
+@topic.long_desc 'Detect if branch or tag, and delete local and remote tag/branch'
 @topic.arg_name 'Topic name'
 @topic.command :delete do |c|
 	c.action do |global_options,options,args|
@@ -1275,7 +1326,7 @@ command :"merging-rebase" do |c|
 		exec ([GITScripts+"scripts/git-merging-rebase"]+args).shelljoin
 	end
 end
-#{{{1 # topic merged -> git-happening (replace by git my topic infos)
+#{{{1 # topic merged -> git-happening (replaced by git my topic infos)
 # @topic.desc "Show last commits on each branches"
 # @topic.long_desc <<EOS
 # Similar to git my topic-status show each branches commit.
@@ -1535,18 +1586,56 @@ desc "Merge topic branches on base into integration branch"
 long_desc <<EOS
 Generate instructions:
 (Automatic)
-	git reintegrate --generate pu master
+	git my reintegrate --generate pu master
 (Manual)
-	git reintegrate --create pu master
-	git reintegrate --add=branch1 --add=branch2 --add=branch3
+	git my reintegrate --create pu master
+	git my reintegrate --add=branch1 --add=branch2 --add=branch3
 
 See instructions:
-	git reintegrate --cat
-	git reintegrate --edit
+	git my reintegrate --cat
+	git my reintegrate --edit
 
 Integrate:
-	git reintegrate --rebuild
-	git reintegrate --continue
+	git my reintegrate --rebuild
+	git my reintegrate --continue
+
+All options:
+[Most commands apply to the first argument. If it does not exist they default to HEAD. For --create and --generate, the base default to master]
+  -g, --generate        generate instruction sheet
+  -c, --create          create a new integration branch
+  -a, --add             add a branch to merge in the instruction sheet
+
+  --cat                 show the instructions of an integration branch
+  -e, --edit            edit the instruction sheet for a branch
+
+  -r, --rebuild         rebuild an integration branch
+  --apply [int_branch]  apply an integration branch on the current branch
+  --continue            continue an in-progress rebuild
+  --abort               abort an in-progress rebuild
+  --autocontinue        continue automatically on merge conflicts if possible
+
+  -s, --status          shows the status of all the dependencies of an integration branch
+  -l, --list            list integration branches
+  -d, --delete          delete an integration branch
+
+Explanations:
+--create pu master generate a new branch pu, and an integration branch
+refs/int/pu which contains an 'instruction' file which contains 'base master'.
+--add=branch1 then add to the refs/int/pu branch 'merge branch1' to 'instruction'.
+--generate devel master: automatically add to refs/int/devel the 'base master' and the merged branches 'merge branch' to 'instruction'
+--cat/--edit: cat end edit 'instruction'
+
+--rebuild: rebuild the integration branch pu following the instructions in refs/int/pu
+--apply: take the current instruction, remove the base and the branches already merged into the current branch
+
+--list: show `for-each-ref refs/int`
+--status: ". = branch not found, + = merged to the base branch, * = merged to the integration branch, - = the branch changed"
+
+Files: .git/integration => used for --rebuild
+       .git/GIT-INTEGRATIOn => used for --edit
+
+Config: integration.autocontinue=true => automatically add --autocontinue
+        integration.autorebuild=true => do automatic rebuilds after create, edit and add
 EOS
 command :"reintegrate" do |c|
 	c.action do |global_options,options,args|
@@ -1876,6 +1965,24 @@ Some extra icing on top of git cherry's tasty cake ...
 		line output by `git cherry' is extended to show more than just
 		`+' and `-'.	Run `git icing --help' to show all possibilities.
 
+		git icing --help:
+
+    -v, --verbosity [N]              Set verbosity level
+    -s, --summary                    Show summary
+
+first | verbosity | description of
+field |   level   | classification
+------+-----------+-----------------------------------------------------
+  +   |     1     | not yet upstream
+  !   |     1     | still needs to be upstreamed, tracked on a TODO list
+  .?  |     1     | upstream *and* blacklisted?!
+  !?  |     1     | upstream *and* marked as a TODO?
+  .   |     2     | blacklisted - should not be pushed to this upstream
+  ?   |     2     | not yet upstream, with unparseable note
+  -   |     3     | already upstream
+  #   |     3     | already upstream with an annotation note
+
+
 See: http://blog.adamspiers.org/2013/09/19/easier-upstreaming-with-git/
 EOS
 		@extra.command :cherry do |c|
@@ -2181,6 +2288,8 @@ end
 #{{{1 topic diff -> tbdiff/git-tbdiff.py
 @topic.desc "topic diff"
 @topic.long_desc <<EOS
+Obsolete: use `git range-diff instead`
+
 git-tbdiff: topic branch interdiff
 ==================================
 

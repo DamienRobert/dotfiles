@@ -9,4 +9,5 @@
 (define byeoru-conversion-history-path "/home/dams/.byeoru-uim-history")
 (define byeoru-personal-dict-path "/home/dams/.byeoru-uim-dict")
 (define byeoru-sys-dict-path "/usr/share/uim/byeoru-data/byeoru-dict")
+(define byeoru-refresh-xkb-map-at-switch-on? #f)
 (define byeoru-compatibility-jamos-for-incomplete-syllables? #t)

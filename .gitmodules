@@ -1,0 +1,72 @@
+[submodule "@infos"]
+	path = @infos
+	url = ./@infos
+[submodule "syst/config/pacnew"]
+	path = syst/config/pacnew
+	url = ./syst/config/pacnew
+[submodule "user/config/dotfiles/.ore"]
+	path = user/config/dotfiles/.ore
+	url = ./user/config/dotfiles/.ore
+[submodule "ruby/gems/aur.rb"]
+	path = ruby/gems/aur.rb
+	url = ./ruby/gems/aur.rb
+[submodule "ruby/gems/simplecolor"]
+	path = ruby/gems/simplecolor
+	url = ./ruby/gems/simplecolor
+[submodule "ruby/gems/tiny_singleton"]
+	path = ruby/gems/tiny_singleton
+	url = ./ruby/gems/tiny_singleton
+[submodule "ruby/gems/birthdays"]
+	path = ruby/gems/birthdays
+	url = ./ruby/gems/birthdays
+[submodule "ruby/gems/drain"]
+	path = ruby/gems/drain
+	url = ./ruby/gems/drain
+[submodule "ruby/gems/shell_helpers"]
+	path = ruby/gems/shell_helpers
+	url = ./ruby/gems/shell_helpers
+[submodule "ruby/gems/nano-optparse"]
+	path = ruby/gems/nano-optparse
+	url = ./ruby/gems/nano-optparse
+[submodule "ruby/gems/git_helpers"]
+	path = ruby/gems/git_helpers
+	url = ./ruby/gems/git_helpers
+[submodule "progs/pkgbuild"]
+	path = progs/pkgbuild
+	url = ./progs/pkgbuild
+[submodule "progs/patches"]
+	path = progs/patches
+	url = ./progs/patches
+[submodule "progs/aurutils"]
+	path = progs/aurutils
+	url = ./progs/aurutils
+[submodule "progs/archlinux_image"]
+	path = progs/archlinux_image
+	url = ./progs/archlinux_image
+[submodule "progs/linkutils"]
+	path = progs/linkutils
+	url = ./progs/linkutils
+[submodule "progs/powersave"]
+	path = progs/powersave
+	url = ./progs/powersave
+[submodule "progs/sudoku"]
+	path = progs/sudoku
+	url = ./progs/sudoku
+[submodule "progs/vidir2"]
+	path = progs/vidir2
+	url = ./progs/vidir2
+[submodule "progs/greasemonkey"]
+	path = progs/greasemonkey
+	url = ./progs/greasemonkey
+[submodule "progs/packer-arch"]
+	path = progs/packer-arch
+	url = ./progs/packer-arch
+[submodule "user/config/dotfiles/.homeassistant"]
+	path = user/config/dotfiles/.homeassistant
+	url = ./user/config/dotfiles/.homeassistant
+[submodule "doc"]
+	path = doc
+	url = ./doc
+[submodule "progs/rust_tutorial"]
+	path = progs/rust_tutorial
+	url = ./progs/rust_tutorial

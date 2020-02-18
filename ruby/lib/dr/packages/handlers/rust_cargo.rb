@@ -24,17 +24,17 @@ module DR
 				end
 			end
 
-			def bootstrap(*args)
+			def bootstrap(*args, **kw)
 				"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y"
 			end
 
-			def install(*args)
+			def install(*args, **kw)
 				super do |pkgs,o|
 					"#{@packager} install #{o} #{pkgs}"
 				end
 			end
 
-			def uninstall(*args)
+			def uninstall(*args, **kw)
 				super do |pkgs, o|
 					"#{@packager} uninstall #{o} #{pkgs}"
 				end
@@ -48,7 +48,7 @@ module DR
 				end
 			end
 
-			def update(*args)
+			def update(*args, **kw)
 				super do |pkgs,o|
 					"#{@packager} install-update #{o} -a"
 				end

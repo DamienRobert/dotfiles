@@ -617,6 +617,8 @@ module DR
 				begin
 					require 'dr/config/infos'
 					local_infos=case local
+					when nil, false
+						infos[:local_infos]
 					when :files
 						Config::Infos.file_infos(context: self)
 					when :user
@@ -642,11 +644,8 @@ module DR
 			end
 			def save_local_infos(mode=nil)
 				stored_infos=Computers.get_dumpfile || {}
-				if mode.nil?
-					stored_infos[name]=infos[:local_infos]
-				else
-					stored_infos[name]=get_local_infos(local: mode)
-				end
+				stored_infos[name]=get_local_infos(local: mode)
+				stored_infos[name][:save_date]=Time.now
 				Computers::DUMPFILE.write(Marshal.dump(stored_infos))
 			end
 
@@ -758,6 +757,18 @@ module DR
 			end
 		end
 		include UserHelpers #}}}
+
+		module RunHelpers #{{{
+			def run(**opts)
+				require 'dr/config/configure/run'
+				Run.new(self, **opts)
+			end
+
+			def run_command(*args, **opts)
+				run.run_command(*args, **opts)
+			end
+		end
+		include RunHelpers #}}}
 
 		module XorgHelpers #{{{
 			# There are three strategies:
@@ -1854,7 +1865,9 @@ module DR
 
 			if attribute?(:syst_types,:admin) and attribute?(:distribution,:archlinux)
 				if (wlan=dig(:syst,:net_wlan)&.first)
-					add_to_key(:syst,:services, "wpa_supplicant@#{wlan}.service")
+					#add_to_key(:syst,:services, "wpa_supplicant@#{wlan}.service")
+					#add_to_key(:syst,:services, "iwd.service")
+					add_to_key(:syst,:services, ":wpa@#{wlan}.service")
 				end
 
 				if dig(:syst,:modules)&.include?("bcache")
@@ -1899,15 +1912,15 @@ if __FILE__ == $0 #{{{
 		opt.on("--export=[value]", "Export") do |v|
 			opts[:export]= if v; v else opts[:list] ? "//" : "COMPUTER:/" end
 		end
-		opt.on("--[no-]save[=files/user]","Save", "Save local infos", "If mode is not specified do full save") do |v|
+		opt.on("--[no-]save[=files/user]","Save", "Save local infos", "If mode is not specified do full save. Other modes: files, user") do |v|
 			opts[:local]=v if v #force local to be true
 			opts[:save]=v
 		end
-		opt.on("--[no-]show-save[=files/user]","Show saved infos", "Show what would be saved with --save", "If mode is not specified do full save") do |v|
+		opt.on("--[no-]show-save[=files/user]","Show saved infos", "Show what would be saved with --save", "If mode is not specified show a full save") do |v|
 			opts[:local]=v if v #force local to be true
 			opts[:show_save]=v
 		end
-		opt.on("--[no-]show-dump-file","Show", "Show stored local infos") do |v|
+		opt.on("--[no-]show-dump-file[=date]","Show", "Show stored local infos. If 'date' only show the date the info was saved") do |v|
 			opts[:show_dump_file]=v
 		end
 		opt.on("--ssh","ssh", "Connect to computer") do |v|
@@ -1918,8 +1931,15 @@ if __FILE__ == $0 #{{{
 
 	if opts[:show_dump_file]
 		stored_infos=DR::Computers.get_dumpfile || {}
-		p stored_infos.keys
-		DR::Utils.pretty_print(stored_infos,pretty: opts[:pretty])
+		if opts[:show_dump_file] == "date"
+			stored_infos.each do |k,v|
+				date=v.dig(:save_date) || v.dig(:syst,:timedatectl, "Local time")
+				puts "- #{k}: #{date}"
+			end
+		else
+			p stored_infos.keys
+			DR::Utils.pretty_print(stored_infos,pretty: opts[:pretty])
+		end
 	elsif opts[:list]
 		#computers=DR::Computers::List
 		computers=DR::Computers.list
@@ -1940,15 +1960,10 @@ if __FILE__ == $0 #{{{
 		computers=DR::Computers.computers(*ARGV, default: 'local', :local => opts[:local], :check => opts[:check])
 		computers.each do |comp|
 			if (mode=opts[:show_save])
-				infos=comp.get_local_infos(local: mode.is_a?(String) ? mode.to_sym: mode)
+				infos=comp.get_local_infos(local: mode.is_a?(String) ? mode.to_sym : mode)
 				DR::Utils.pretty_print(infos, pretty: opts[:pretty])
 			elsif (mode=opts[:save])
-				if mode.is_a?(String)
-					#:files, :user
-					comp.save_local_infos(mode.to_sym)
-				else
-					comp.save_local_infos
-				end
+				comp.save_local_infos(mode.is_a?(String) ? mode.to_sym : mode)
 			end
 			if !opts[:show_save]
 				infos=comp.infos

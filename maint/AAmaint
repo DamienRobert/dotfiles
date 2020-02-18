@@ -49,7 +49,7 @@ Clean-up
 --------
 
 - ~maint/packages.rb --shell=exec clean
-  [gitfolders -l all action 'git gc --aggressive']
+  [gitfolders -l all action 'git my gc --aggressive']
 - ~/script/clean_tmp #(clean old ~/tmp files)
 
 - folders to clean up: (cf script/clean_tmp -d foo)

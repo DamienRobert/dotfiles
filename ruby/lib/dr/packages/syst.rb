@@ -14,27 +14,30 @@ module DR
 
 			PACKAGES={ #{{{
 			systemd: %w(systemd),
-			minimal: %w(base base-devel gptfdisk lz4 openssh zsh),
-			base: %w(git ruby tmux vim-minimal btrfs-progs rsync ldns),
-			core: %w(encfs mlocate moreutils tree expect inotify-tools),
+			minimal: %w(base base-devel openssh zsh),
+			base: %w(git ruby tmux vim-minimal),
+			hwbase: %w(btrfs-progs gptfdisk linux-firmware),
+			core: %w(encfs mlocate moreutils tree expect inotify-tools logrotate),
 			coreextra: %w(progress pv convmv),
-			doc: %w(tldr),
+			doc: %w(tldr man-db man-pages),
 
-			ip: %w(bridge-utils sshfs socat whois),
-			iw: %w(iw wpa_supplicant wireless_tools),
-			ipextra: %w(ethtool net-tools wireless_tools wol ifplugd bind-tools bluez bluez-utils corkscrew nmap dante ufw nftables iperf3 aircrack-ng macchanger),
+			ipbase: %w(iputils ldns rsync),
+			ip: %w(bridge-utils sshfs socat whois iputils),
+			iw: %w(iw iwd wpa_supplicant wireless_tools),
+			ipextra: %w(dhcpcd ethtool net-tools wireless_tools wol ifplugd bind-tools bluez bluez-utils corkscrew nmap dante ufw nftables iperf3 aircrack-ng macchanger ipcalc sipcalc mdns-scan sniffglue),
 			dns: %w(bind-tools unbound),
-			vpn: %w(wireguard-arch wireguard-tools tinc),
+			vpn: %w(wireguard-arch wireguard-tools tinc zerotier-one),
 			#net-tools est obsolete, mais contient ifconfig, route et netstat
 			#wireless_tool contient iwconfig
 			#bind-tools est remplacé par ldns, mais contient `host`
 			#Add bluez-firmware? I don't seem to need it for my bluetooth objects yet
+			# Monitoring: jnettop, nload, netwatch
 			net: %w(unison lftp w3m wget),
-			netextra: %w(offlineimap ntp aria2 gnu-netcat lynx links elinks mosh cclive youtube-dl sshuttle openvpn openconnect httpie electrum lastpass-cli rclone), #openconnect: for inria vpn
+			netextra: %w(offlineimap ntp aria2 gnu-netcat lynx links elinks mosh cclive youtube-dl sshuttle openvpn openconnect httpie electrum lastpass-cli rclone s-nail), #openconnect: for inria vpn
 
 			archive: %w(atool lrzip lz4 lzop p7zip cpio unrar zip unzip sharutils),
 			#sharutils contains uuencode
-			files: %w(ack ranger vifm par2cmdline rsnapshot bup wipe
+			files: %w(ack ranger vifm nnn par2cmdline rsnapshot bup wipe
 				ripgrep the_silver_searcher ddrescue perl-file-mimeinfo fzf skim
 				testdisk foremost bat fd ncdu exa lsd tokei trash-cli),
 				#schroot; scalpel-git (in aur): fork of foremost
@@ -62,8 +65,9 @@ module DR
 			#python-eyed3 is an optdep of abcde: ID3 tag support
 			pacman: %w(expac pacgraph package-query pkgfile reflector asp pacman-contrib pacutils aurpublish),
 				# aurman pacaur repoctl
-			text: %w(neovim colordiff ed figlet screen vimpager words),
-			textextra: %w(python-neovim texlive-most biber pstoedit psutils t1utils dialog rlwrap
+			text: %w(neovim colordiff vimpager words),
+			textextra: %w(ed figlet screen vi nano
+			python-pynvim texlive-most biber pstoedit psutils t1utils dialog rlwrap
 			aspell-en aspell-fr hunspell-fr hunspell-en hunspell-en_US mythes-fr
 			dictd jshon highlight tidy unrtf
 			graphviz gnuplot gaupol tidy pandoc qpdf
@@ -73,13 +77,13 @@ module DR
 			unicode-character-database
 			),
 			virtual: %w(vagrant virtualbox qemu ovmf)+ #docker packer-io
-				%w(lib32-mpg123 lib32-gnutls lib32-libldap wine-mono wine_gecko winetricks lib32-libpulse),
+				%w(lib32-mpg123 lib32-gnutls lib32-libldap wine-mono wine-gecko winetricks lib32-libpulse),
 				#wine for battle.net: wine, winetricks, lib32-gnutls, and lib32-libldap
-				#+ wine_gecko wine-mono lib32-mpg123
+				#+ wine-gecko wine-mono lib32-mpg123
 				#+ wine audio: lib32-libpulse
 		
 			devel: %w(ctags devtools elfutils strace),
-			develextra: %w(subversion gdb cmake ruby-docs bzr linux-headers mercurial
+			develextra: %w(subversion gdb cmake ruby-docs linux-headers mercurial
 			bpython ipython clojure coffeescript scala ocaml nodejs npm yarn yasm
 			patchelf pax-utils libfaketime hub android-tools signify
 			hexyl
@@ -89,7 +93,7 @@ module DR
 			#yasm is used for supernes simulator (yasm is a rewrite of nasm)
 			#bower,gulp,uglify-js,grunt: for nodejs packages like popcorntime
 			#libfaketime is to launch old magma bin
-			#`jruby` ruby+jvm
+			#`jruby` ruby+jvm, bzr (now breezy)
 			devellint: %w(eslint babel-cli flake8 python-pytest), #flake8: python linter
 			libextra: %w( perl-authen-sasl perl-mime-tools perl-net-smtp-ssl perl-libwww perl-term-readkey
 			python-service-identity python2-service-identity
@@ -112,7 +116,7 @@ module DR
 			xextra: %w(xfce4 xfce4-goodies xorg-fonts-misc
 			conky terminology uim mesa-demos zenity
 			lightdm-gtk-greeter light-locker transset-df xcompmgr xorg-server-xephyr
-			accountsservice pulseaudio-bluetooth pulseaudio-equalizer
+			accountsservice pulseaudio-bluetooth pulseaudio-equalizer pipewire
 			xdotool wmctrl xdg-user-dirs
 			redshift
 			xss-lock i3lock
@@ -148,7 +152,7 @@ module DR
 			xtextbase: %w(meld pygtksourceview2 mupdf zathura-djvu zathura-pdf-mupdf zathura-ps),
 			xtext: %w(djview gv kdiff3 tig tk goldendict pdf2djvu),
 			# atom, code (=vscode)
-			xtextextra: %w(libreoffice-fresh jre8-openjdk code pdfpc qpdfview xournalpp),
+			xtextextra: %w(libreoffice-fresh jre8-openjdk code pdfpc qpdfview xournalpp rofimoji),
 			xtypography: %w(fontforge),
 			xweb: %w(flashplugin wireshark-qt),
 			gnome: %w(baobab cheese ekiga eog eog-plugins evince
@@ -185,8 +189,8 @@ module DR
 				develextra: %w(universal-ctags-git rust-cargo-utils rbspy),
 				fsextra: %w(jmtpfs bcache-tools simple-mtpfs),
 				mailextra: %w(archivemail),
-				mediaextra: %w(google-musicmanager gtkpod ponymix-git mp3gain mpdas mpdscribble pulseaudio-dlna),
-				netextra: %w(windscribe-cli tor-browser weboob),
+				mediaextra: %w(google-musicmanager gtkpod ponymix-git mp3gain mpdas mpdscribble), #pulseaudio-dlna
+				netextra: %w(windscribe-cli tor-browser weboob bitwarden-bin),
 				textextra: %w(fast-p pdftk-bin),
 
 				xcom: %w(purple-battlenet-hg purple-hangouts-hg),
@@ -206,11 +210,12 @@ module DR
 				develextra: %w(universal-ctags-git unetbootin),
 				crack: %w(hashcat hashcat-utils john pdfcrack intel-compute-runtime),
 				hardware: %w(heimdall),
-				fonts: %w(awesome-terminal-fonts ttf-gentium ttf-hack ttf-junicode),
+				fonts: %w(awesome-terminal-fonts gentium-plus-font ttf-hack ttf-junicode),
 				devops: %w(chef-workstation buildah podman), #sysdig
 				fsextra: %w(mtpfs git-annex-bin),
 				files: %w(dropbox scalpel-git),
 				xextra: %w(xorg-xfd xorg-xlsfonts xorg-xfontsel),
+				xmisc: %w(subsurface),
 				xtextextra: %w(pdfpc neovim-qt),
 				xmedia: %w(gtkpod linphone popcorntime),
 				xweb: %w(tor-browser-en chromium pepper-flash),
@@ -228,7 +233,7 @@ module DR
 			end
 			#packages that lives in aur and not available in the local repo
 			AUR=AUR_LOCAL_REPO +
-				%w(linphone unetbootin) -
+				%w(linphone unetbootin ekiga) -
 				LOCAL_REPO
 			#Not in aur anymore: git-annex-bin
 			#Not used anymore: arenatracker asp-git roxterm skype-electron skypeforlinux-stable-bin

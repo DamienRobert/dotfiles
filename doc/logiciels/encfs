@@ -1,3 +1,15 @@
 DIR=$PWD
 encfs $DIR/.XXX-crypt $DIR/.XXX
 echo "encfs $DIR/.XXX-crypt/ $DIR/.XXX" > .Xmount
+
+Not really maintained anymore, security holes.
+encfs alternatives: 
++ gocryptfs: https://nuetzlich.net/gocryptfs/comparison/
+- https://www.cryfs.org/
+  https://www.cryfs.org/comparison/
+  => encrypt file size, but slower than cryfs
+
+* gocryptfs
+https://github.com/rfjakob/gocryptfs/issues/3
+Can filename/foldername encryption be disabled? #3
+$ gocryptfs --init --plaintextnames my_encrypted_files

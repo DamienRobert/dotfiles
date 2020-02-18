@@ -6,4 +6,4 @@ perl -F'\t' -alne  'print "$F[1]\t$F[0]"
 -lOctnum pour choisir l'output separator (par defaut la valeur de l'input separator)
 -0Octnum pour choisir l'input separator (par défaut the null character avec -0)
 
-Perl and Unicode: http://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default
+* Perl and Unicode: http://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default

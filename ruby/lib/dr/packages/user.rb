@@ -39,7 +39,7 @@ module DR
 			ssh: %w(sshkit airbrussh ed25519 bcrypt_pbkdf), #airbrussh is for prettier sshkit output, ed25519 and bcrypt_pbkdf to suppoert ed25519 keys
 			uri: %w(addressable),
 			template: %w(kramdown rouge asciidoctor),
-			web: %w(nokogiri webgen sass scss_lint),
+			web: %w(nokogiri webgen sass scss_lint sassc),
 			webserver: %w(thin),
 			websites: %w(redd), #reddit wrapper, used by save_posts.rb
 			yaml: %w(yaml_command),
@@ -67,8 +67,8 @@ module DR
 			notebook_extra: %w(gnuplot rubyvis nyaplot),
 			rails: %w(rails pry-rails),
 			webserver: %w(sinatra),
-			devops: %w(chef chef-dk berkshelf chef-provisioning-ssh test-kitchen knife-solo knife-zero), #+ itamae?
-			web: %w(oga cani), #oga: nokogiri in ruby; cani: caniuse database
+			# devops: %w(chef chef-dk berkshelf chef-provisioning-ssh test-kitchen knife-solo knife-zero), #+ itamae?
+			web: %w(oga cani rubydns), #oga: nokogiri in ruby; cani: caniuse database
 			webgen_extra: %w(webgen-templates-bundle webgen-zurb_foundation-bundle webgen-font_awesome-bundle), #webgen templates
 			#For webgen website: builder coderay maruku rdiscount haml RedCloth
 			css: %w(compass),
@@ -89,7 +89,7 @@ module DR
 			html: %w(html5validator urlscan)}
 		# stapler (not maintened anymore)
 
-		NPM={ doc: %w(tldr)}
+		NPM={ doc: %w(tldr), password: %(@bitwarden/cli)}
 
 		# cf scripts/tools.d for more details
 		NPM_LINT={
@@ -125,7 +125,9 @@ module DR
 				:formal => %w(pari cmh cado-nfs cme mpc ecm mpfr pari-gnump),}
 
 		GO={text: %w(github.com/bellecp/fast-p github.com/edi9999/path-extractor/path-extractor)}
+		#git: %w(github.com/apenwarr/git-subtrac)
 
+		# available natively on arch
 		CARGO={ruby: %w(rbspy),
 			cli: %w(hyperfine exa lsd)}
 		#, cargo: %w(cargo-update)} # cargo-update is added automatically if the pkg list is non empty
@@ -135,17 +137,17 @@ module DR
 			cargo: %w(cargo-cache cargo-tree cargo-install-update),
 			core: %w(bingrep cw runiq),
 			doc: %w(tealdeer),
-			files: %w(broot lolcate rm-improved tree-rs xcompress xcp),
-			disk: %w(diskus sn dupe-krill dua-cli dirstat-rs du-dust amber dutree),
+			files: %w(amber broot lolcate rm-improved tree-rs xcompress xcp),
+			disk: %w(diskus sn dupe-krill dua-cli dirstat-rs du-dust dutree spruce),
 			utils: %w(genact ttdl hors), #howto-cli (does not compile)
-			monitoring: %w(battop hyperfine mprober procs strace-analyzer process_viewer),
-			text: %w(fastmod gig ruplacer sd tabwriter-bin xv ripgrep_all diffr mdcat),
+			monitoring: %w(battop hyperfine mprober procs strace-analyzer process_viewer bandwhich),
+			text: %w(fastmod gig ruplacer sd tabwriter-bin xv ripgrep_all diffr mdcat), #typeracer
 			data: %w(jql xsv fst-bin),
 			fs: %w(hunter),
 			git: %w(git-find git-global),
 			ssh: %w(slink),
 			shell: %w(starship),
-			system: %(topgrade),
+			system: %(topgrade b3sum),
 		}
 
 		CARGO_TOOLS_BIN={

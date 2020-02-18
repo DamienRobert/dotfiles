@@ -194,8 +194,8 @@ alias recode_latin='recode UTF-8..ISO8859-1'
 alias recode_utf8='recode ISO8859-1..UTF-8'
 
 # pour les transferts de fichiers
-alias transfert2='rsync -vazPHAXS'
-alias transfert='rsync -vazP'
+alias transfert2='rsync -vazzPHAXS'
+alias transfert='rsync -vazzP'
 
 alias aspire='wget -rkpENnp'
 
@@ -240,6 +240,8 @@ alias prettyping="~/usr/dist/prettyping/prettyping --nolegend"
 
 alias glances="glances --theme-white"
 
+alias iwctl TERM=vte-256color iwctl #correct screen update
+
 # ~directories {{{2
 #cd ~util -> /usr/local/util
 hash -d mine=~/mine
@@ -259,6 +261,7 @@ hash -d services=~config/systemd/user
 hash -d services2=~/.config/systemd/user
 hash -d rubylib=~ruby/lib
 hash -d rubydr=~rubylib/dr
+hash -d rubydrconfig=~rubydr/config
 hash -d rubygems=~ruby/gems
 hash -d coregems=~ruby/core_gems/gems
 hash -d comps=~/.cache/@comps
@@ -1007,7 +1010,7 @@ function _zle_inplaceMkDirs() {
 zle -N zle_inplaceMkDirs _zle_inplaceMkDirs
 bindkeyboth '^oM' zle_inplaceMkDirs
 
-# press "ctrl-e d" to insert the actual date in the form yyyy-mm-dd
+# press "ctrl-o d" to insert the actual date in the form yyyy-mm-dd
 function _zle_insert-datestamp() { LBUFFER+=${(%):-'%D{%Y-%m-%d}'}; }
 function _zle_insert-timedatestamp() { LBUFFER+=${(%):-'%D{%Y-%m-%dT%T%z}'}; }
 zle -N zle_insert-datestamp _zle_insert-datestamp
@@ -1209,45 +1212,45 @@ bindkey -a 'gq' mquote
 bindkey -a 'gs' sudo-command-line
 #}}}
 # Summary of custom bindings {{{
+
+## History
 # PageUp: history-beginning-search-backward #whole command completion
 # PageDown: history-beginning-search-forward
 # (I) "^p" _history-complete-older #word completion
 # (I) "^n" _history-complete-newer
-# (N) '^p' history-beginning-search-backward-end #complete and put cursor at end
+# (N) '^p' history-beginning-search-backward-end #whole command completion and put cursor at end
 # (N) '^n' history-beginning-search-forward-end
-# (N) 'gj' down-history
+# (N) 'gj' down-history #when editing multilines
 # (N) 'gk' up-history
-# bindkeyboth "^oh" hist-complete # complete word from history with menu
-# bindkeyboth "^oH" history-beginning-search-menu # complete full command from history with menu
-# bindkeyboth "^R" zle_history-incremental-preserving-pattern-search-backward
-# bindkey -M isearch "^R" history-incremental-pattern-search-backward
-# zle -N zle_history-incremental-preserving-pattern-search-forward
-# bindkeyboth "^S" zle_history-incremental-preserving-pattern-search-forward
-# bindkey -M isearch "^S" zle_history-incremental-pattern-search-forward
+
+# "^oh" hist-complete # complete word from history with menu
+# "^oH" history-beginning-search-menu # complete full command from history with menu
+# "^R" zle_history-incremental-preserving-pattern-search-backward
+# "^S" zle_history-incremental-preserving-pattern-search-forward
 # '^o^p', '^op', (N) gJ history-substring-search-down #complete whole line as a subcommand
 # '^o^n', '^on', (N) gK history-substring-search-up
-# bindkeyboth '^Or', '^O^R' zaw-history #substring search with menu
-# bindkeyboth '^Oz' zaw
+# '^Or', '^O^R' zaw-history #substring search with menu
+# '^Oz' zaw
 #
-#bindkeyboth '^I' complete-or-list-files #^I=tab
-#bindkeyboth '^x^w' slash-backward-kill-word
-#bindkeyboth '^xi' incremental-complete-word
-#bindkeyboth "^o^m" commit-to-history
-#bindkeyboth "^o," copy-earlier-word
-#bindkeyboth '^o1',g1 jump_after_first_word
-#bindkeyboth '^oa' accept-line-and-down-history
-#bindkeyboth "^od" insert-datestamp
-#bindkeyboth '^oe',ge edit-command-line
-#bindkeyboth "^of",gf complete-files #ie force to show files
-#bindkeyboth "^og" insert-files
-#bindkeyboth "^oh",gh hist-complete # complete word from history with menu
-#bindkeyboth "^oH",gH history-beginning-search-menu # complete command from history with menu
-#bindkeyboth '^om',gm menu-complete
-#bindkeyboth '^oM',gM inplaceMkDirs
-#bindkeyboth '^oq',gq mquote
-#bindkeyboth "^os",gs sudo-command-line
-#bindkeyboth "^ot" insert-timedatestamp
-#bindkeyboth '^ou' insert-unicode-char
+#'^I' complete-or-list-files #^I=tab
+#'^x^w' slash-backward-kill-word
+#'^xi' incremental-complete-word
+#"^o^m" commit-to-history
+#"^o," copy-earlier-word
+#'^o1',g1 jump_after_first_word
+#'^oa' accept-line-and-down-history
+#"^od" insert-datestamp
+#'^oe',ge edit-command-line
+#"^of",gf complete-files #ie force to show files
+#"^og" insert-files
+#"^oh",gh hist-complete # complete word from history with menu
+#"^oH",gH history-beginning-search-menu # complete command from history with menu
+#'^om',gm menu-complete
+#'^oM',gM inplaceMkDirs
+#'^oq',gq mquote
+#"^os",gs sudo-command-line
+#"^ot" insert-timedatestamp
+#'^ou' insert-unicode-char
 #}}}
 #}}}
 
@@ -1317,10 +1320,10 @@ if [[ -f /etc/machine-info ]]; then
 	. /etc/machine-info
 	SHOWHOST=$PRETTY_HOSTNAME
 fi
-SHOWNAMEHOST="${SHOWNAME}${SHOWHOST}"
 #[[ -n $SSH_CONNECTION ]] && SHOWHOST="♒$SHOWHOST"
-# [[ -n $SSH_CONNECTION ]] && SHOWNAMEHOST="☀$SHOWNAMEHOST"
+# [[ -n $SSH_CONNECTION ]] && SHOWHOST="☀$SHOWHOST"
 [[ -n $SSH_CONNECTION ]] && SHOWHOST="☁$SHOWHOST"
+SHOWNAMEHOST="${SHOWNAME}${SHOWHOST}"
 
 #gitstatus.rb
 if [[ -x /usr/bin/ruby && -n $__ZSHGITSTATUS ]]; then
@@ -1589,7 +1592,7 @@ alias visual="fzv --tmux --visual -- -1"
 alias edit="fzv --tmux --edit -- -1"
 alias open="fzv --tmux --open -- -1"
 alias cdup="fzv --tmux --cdup --"
-alias fzcd="fzv --tmux -d --cd -- -q"
+alias fzcd="fzv --tmux -d --cd --query"
 # todo: fzf git; fzf exec
 
 ## Paths

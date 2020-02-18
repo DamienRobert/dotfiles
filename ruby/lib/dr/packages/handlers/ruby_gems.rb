@@ -41,7 +41,7 @@ module DR
 				end
 			end
 
-			def update(*args)
+			def update(*args, **kw)
 				super do |o|
 					"#{@packager} update #{o}"
 				end

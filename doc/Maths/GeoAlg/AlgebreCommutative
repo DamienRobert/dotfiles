@@ -125,10 +125,12 @@ Anneaux locaux complets
 
 Théorème de Cohen (cf Eisenbud):
 - R local complet => R=A[[x1,...xn]]/I où A local complet principal. 
-- Si R contient un corps (<=> d'égale
-  charactéristique à son résidu K=R/m), alors on peut même prendre A=K.
-- Si on n'est pas d'équale charac, car R=0 et car K=p, si K parfait on peut
-  prendre A=W(K) l'anneau des vecteurs de Witt.
+  A[[x1,...,xn]] est un anneau régulier
+  (si A=K, de dim n, si A=W(K) de dim n+1)
+- Si R contient un corps (<=> est d'égale charactéristique à son résidu
+  K=R/m), alors on peut même prendre A=K.
+- Si on n'est pas d'équale charac, alors car R=0 et car K=p, si K parfait
+  on peut prendre A=W(K) l'anneau des vecteurs de Witt.
   (dans le cas non parfait il existe toujours W(K) local complet d'idéal
   max = <p> et de corps résiduel K mais il n'est plus unique; on peut
   encore prendre A=W(K)).
@@ -138,21 +140,77 @@ Si R local complet, K=R/m, R contient un corps k, et K/k séparable.
 Soit B une base différentielle de K/k. Alors il y a bijection entre les
 corps de coefficients Ktilde \iso K dans R et les lifts de la base
 différentielle B. Si k parfait de car p>0, k est inclus dans tous les
-Ktilde.
+Ktilde. [Si R contient un corps, il contient Q ou F_p qui est parfait, donc
+R contient toujours K]
 
-
-Généralisation: si f:R->S morphisme d'anneau  local, f se factorise
+Généralisation: si f:R->S morphisme d'anneau local, f se factorise
 en R->R'->>S où R' local complet et R'/mR' anneau local régulier.
-Par ex si S local complet S/m=K de car p, on peut prendre
+Par ex si S local complet S/m=K de car p, on peut factoriser Z_(p)->S via
 R'=W(K)[[x1,...xn]] par ce qui précède.
 
+Rem (Section 10.3): Si (R,m) est régulier, alors R est intègre (et même
+factoriel), un système de paramètre régulier x_1, ..., x_n de m donne une
+séquence régulière. Si R local complet régulier de corps résiduel k, alors
+si R contient un corps, R \iso k[[x_1,...x_d] pour tout système de
+paramètres x_i de R.
 
+* Serre (Corps Locaux)
 
-Rem (Section 10.3):
-Si (R,m) est régulier, alors R est intègre (et même factoriel), un système
-de paramètre régulier x_1, ..., x_n de m donne une séquence régulière.
-Si R local complet régulier de corps résiduel k, alors si R contient un
-corps, R \iso k[[x_1,...x_d] pour tout système de paramètres x_i de R.
+$ Cas d'égale carac
+Th 2: Si A anneau de valuation discrète complet, de corps résiduel k et de
+corps de fraction K. Si k et K ont égale caractéristique, A=k[[T]].
+
+Preuve: on a un syst de représentant S qui est un corps (iso à k), 
+dans tous les cas tout élément de A s'écrit uniquement \sum_{i>=0} s_i π^n
+(et une série de Laurent pour x dans K), donc A=k[[T]].
+
+(i) k de carac 0
+Soit A un anneau local séparé complet pour a_i (a_i a_j \subset a_i+j).
+Si k=A/a_0 corps de carac 0, alors il existe dans A un syst de représentant de k
+qui est un corps.
+
+La preuve utilise Hensel: si A/a_0 est un corps, f a une racine simple dans
+A/a_0, alors cette racine se lifte uniquement.
+
+(ii) k et K de carac p
+Prop 8: Soit A un anneau séparé complet pour a_i (a_i a_j \subset a_i+j).
+Si k=A/a_0 anneau parfait de carac p, alors 
+- il existe dans A un syst de représentant f:k->A qui commute au Frobenius: f(x)^p=f(x^p)
+- x \in f(k) ssi x est une puissance p^n-ième pour tout n
+- f(xy)=f(x)f(y)
+- Si A de carac p, f(x+y)=f(x)+f(y)
+
+$ Cas d'inégale carac
+A est de carac 0, on a Z_p -> A, e=v(p) l'indice de ramification absolu. A
+absolument non ramifié si e=1.
+
+Th: si k parfait de carac p, il existe un unique anneau W(k) de valuation
+discrète complet absolument non ramifié de corps résiduel k.
+Si A est de ramification absolue e, il existe un unique morphisme W(k)->A
+au-dessus de k, ce morphisme est injectif et A est libre sur W(k) de rang e
+(et donc A s'obtient en ajoutant une équation d'Eisenstein à W(k))
+
+Exemple: si k=F_q, W(k)=Z_q et A est est un Z_q module libre de rang e,
+donc Z_p module libre de rang ef où q=p^f.
+
+Déf: A p-anneau si A un anneau séparé complet pour a_i=p^i, d'anneau
+résiduel k=A/p anneau parfait de carac p, et A est un p-anneau strict si de
+plus p non diviseur de 0 dans A. Alors il existe un système de rep
+multiplicatif f:k->A par la Prop 8 et tout élément s'écrit uniquement de la
+forme a=\sum f(α_i) p^i.
+
+Zhat[X_i^{p^-\infty}] est un p-anneau strict universel (il encode la
+multiplication dans le développement de a plus haut), les X_i étant des
+représentants multiplicatifs.
+
+Th:
+- Si k anneau parfait de carac p, il existe un unique p-anneau strict W(k)
+  d'anneau résiduel k
+- Si A et A' des p-anneaux d'anneaux résiduels k et k', et A strict, tout
+  morphisme k->k' se lifte uniquement en A->A'.
+Th: On a W_n schéma affine et de type fini sur Z, W_n(A) dont la limite
+projective et W(A), l'anneau des vecteurs de Witt. Si k parfait de carac p,
+W(k) est bien un p-anneau strict (de corps résiduel k).
 
 Invariants
 ==========
@@ -287,4 +345,17 @@ suffisante?
 
 En particulier, dans le cas où les d_i sont égaux aux e_i, est-ce que
 R=S?
+
+Nakayama
+========
+
+cf https://mathoverflow.net/questions/32133/expressing-adja-as-a-polynomial-in-a
+Proposition 2.4. in Atiyah-Macdonald, http://www.math.toronto.edu/jcarlson/A--M.pdf
+Si f un endo de M, un A-module fini, alors on a Cayley-Hamilton: det(X-A)(A)=0
+Donc si f(M) \subset IM, on a un polynôme annulateur de f
+f^n+a_1 f^{n-1} + ... a_n où les a_i sont dans A.
+
+Cor: 
+- si IM=M, il existe x=1 mod I tel que xM=0
+- si IM=M et I dans l'idéal de Jacobson de A, M=0
 

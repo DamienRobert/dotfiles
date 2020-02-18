@@ -1,3 +1,5 @@
+vim: ft=markdownlight fdm=expr
+
 Chiffrement/Déchiffrement
 =========================
 
@@ -280,16 +282,16 @@ http://www.incenp.org/notes/2015/gnupg-for-ssh-authentication.html
 https://wiki.archlinux.org/index.php/SSH_keys#GnuPG_Agent
 
 On the file ~/.gnupg/sshcontrol:
-# List of allowed ssh keys.  Only keys present in this file are used
-# in the SSH protocol.  The ssh-add tool may add new entries to this
-# file to enable them; you may also add them manually.  Comment
-# lines, like this one, as well as empty lines are ignored.  Lines do
-# have a certain length limit but this is not serious limitation as
-# the format of the entries is fixed and checked by gpg-agent. A
-# non-comment line starts with optional white spaces, followed by the
-# keygrip of the key given as 40 hex digits, optionally followed by a
-# caching TTL in seconds, and another optional field for arbitrary
-# flags.   Prepend the keygrip with an '!' mark to disable it.
+  # List of allowed ssh keys.  Only keys present in this file are used
+  # in the SSH protocol.  The ssh-add tool may add new entries to this
+  # file to enable them; you may also add them manually.  Comment
+  # lines, like this one, as well as empty lines are ignored.  Lines do
+  # have a certain length limit but this is not serious limitation as
+  # the format of the entries is fixed and checked by gpg-agent. A
+  # non-comment line starts with optional white spaces, followed by the
+  # keygrip of the key given as 40 hex digits, optionally followed by a
+  # caching TTL in seconds, and another optional field for arbitrary
+  # flags.   Prepend the keygrip with an '!' mark to disable it.
 
 One can use the "authenticate" flag to use a gpg key in ssh:
 https://lists.gnupg.org/pipermail/gnupg-users/2015-December/054874.html
@@ -361,6 +363,8 @@ Newer versions use /run/user/$(id -u)/gnupg/*
 
 My Keys
 =======
+
+-r mainkey, internal, public, oldpublic
 
 (See the backups in ~/.gnupg/mykeys/; I just put here the last values of
 the fingerprint, which are shown by --list-packets.
@@ -485,3 +489,9 @@ Utilities
 
 Wrapper: https://github.com/peff/pass
  Pass - a very simple password storage mechanism
+
+https://www.gopass.pw/
+ gopass is a simple but powerful password manager for your terminal.
+
+https://gist.github.com/rjhansen/67ab921ffb4084c865b3618d6955275f
+SKS Keyserver Network Under Attack

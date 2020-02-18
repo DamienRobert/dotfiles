@@ -75,6 +75,8 @@ kill  <TAB>, cd dir**; ls files**; ssh **; unset/unalias/export **
 * shell functions
 fzbin [--fork/--exec]: show path directories and the bin in the paths
 fzedit: preview && $EDITOR $files [might as well use 'edit' alias]
+  -> files=("$(preview -m --print0)") && $EDITOR ${(0@)files}
+  -> vs edit='fzv --tmux --edit -- -1'
 fzlpass: get lastpass passwords
 fzpdf: uses fast-p to search words in pdf
   [`fd .pdf | fast-p` to extract text. Cache in ~/.cache/fast-p-pdftotext-output]
@@ -107,7 +109,8 @@ fztags: search .tags
 	# Misc
 	--cdup ) #Call fzf on ../../... folders and cd to it
 	--complete ) # for use in other completion functions
-	--bare ) There is no actions
+	--bare ) #There is no actions
+	--query) #optional query parameter
 
 * shell aliases
 preview="fzv --tmux --"
@@ -115,10 +118,10 @@ visual="fzv --tmux --visual -- -1"
 edit="fzv --tmux --edit -- -1"
 open="fzv --tmux --open -- -1"
 cdup="fzv --tmux --cdup --"
-fzcd="fzv --tmux -d --cd -- -q"
+fzcd="fzv --tmux -d --cd --query"
 
 * shell script
 fzf_mpd --genre/--artist/--album/--title/--playlist
 
 * Divers
-path-extractor (alias IPE): g s IPE fzv
+path-extractor (alias IPE): g s IPE fzv / g s IPZ

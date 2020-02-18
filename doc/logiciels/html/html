@@ -300,3 +300,6 @@ Special xml attributes:
 http://www.informit.com/articles/article.aspx?p=31837&seqNum=9
 xml:id, xml:base, xml:space, xml:lang, xmlns [the xml namespace is automatically
 defined in xml documents; base, lang and id are like their html equivalent)
+
+Bookmarks {{{1
+- https://www.smashingmagazine.com/2020/01/html5-article-section/

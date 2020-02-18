@@ -2785,6 +2785,7 @@ foo.:bar #-> foo.method(:bar)
 - then as alias to yield_self
   "foo".tap {|s| s+"bar"} #foo
   "foo".then {|s| s+"bar"} #foobar
+  "foo".itself #foo
 - endless ranges
 - Enumerable#chain and Enumerator#+
 - function composition operators << and >> to Proc and Method.

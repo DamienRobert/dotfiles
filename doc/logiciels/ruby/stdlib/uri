@@ -126,6 +126,10 @@ Private :punycode_encode/decode => encode/decode a unicode code point to ascii
 Escaping
 ========
 URI.escape("foo baré") => "foo%20bar%C3%A9"
+  => use URI.encode_www_form_component instead
+  Problem:  URI.escape("http://foo / baré") => http://foo%20/%20bar%C3%A9
+  URI.encode_www_form_component("http://foo / baré") => http%3A%2F%2Ffoo+%2F+bar%C3%A9 (ie like CGI.escape)
+  Solution: DR::URI.escape
 CGI.escape("foo baré") => "foo+bar%C3%A9"
 CGI::escapeHTML('Usage: foo "bar" <baz>') => "Usage: foo &quot;bar&quot; &lt;baz&gt;"
 CGI::escapeElement('<BR><a HREF="url"></a>', ["A", "IMG"]) => <BR>&lt;a HREF=&quot;url&quot;&gt;&lt;/a&gt"

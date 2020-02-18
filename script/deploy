@@ -1,0 +1,12 @@
+#!/usr/bin/zsh
+
+f() {
+	local target=$1
+	echo "# Deploying to $target"
+	rsync -vazP --keep-dirlinks --copy-unsafe-links --delete ~/deploy/ $target:deploy/
+}
+
+[[ -z $@ ]] && f paridev
+for i in $@; do
+	f $i
+done

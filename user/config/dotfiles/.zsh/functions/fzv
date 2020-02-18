@@ -7,7 +7,8 @@ fzv() {
 	local fzf_preview_dir="ls"
 	local fzf_opts=("-0" "--ansi")
 	local fzf_preview_launch
-	local OPTS=$(getopt -o 'l:bdfevoa' --long 'bookmarks,locate:,dir,files,edit,visual,open,cd,cdup,complete,hidden,tmux,height:,pre:,all,bare,post:,preview:,filepreview:,dirpreview:,bat,cat,vimcat' -- "$@") || return 1
+	local query
+	local OPTS=$(getopt -o 'l:bdfevoa' --long 'bookmarks,locate:,dir,files,edit,visual,open,cd,cdup,complete,hidden,tmux,height:,pre:,all,bare,post:,preview:,filepreview:,dirpreview:,bat,cat,vimcat,query:' -- "$@" 2> /dev/null) || return 1
 	eval set -- "$OPTS"
 	while true; do
 		case $1 in
@@ -54,6 +55,7 @@ fzv() {
 			--complete ) shift; do_start=t; fzf_post=(_fzf_complete '-m'); action= ;;
 			# don't use print0 and don't expect alt-c; and don't parse the result afterwards
 			--bare ) shift; action= ;;
+			--query ) shift; query=$1; shift ;;
 			*) printf "[$0] Error: unsupported option '%s'" $1; return 1 ;;
 		esac
 	done
@@ -80,6 +82,7 @@ fzv() {
 		fi'"
 	fzf_opts+=("--preview" $fzf_preview_launch)
 	[[ -n $action ]] && fzf_opts+=("--expect" "alt-c" "--print0")
+	[[ -n $query ]] && fzf_opts+=("-q" $query)
 	if [[ -z $fzf_post ]]; then
 		fzf_post=($fzf_bin)
 	fi

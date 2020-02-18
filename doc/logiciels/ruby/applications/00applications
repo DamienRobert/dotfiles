@@ -587,6 +587,8 @@ See web/applications for web frameworks
 + ruby-dbus: Ruby D-Bus is a pure Ruby library for writing clients and services for D-Bus.
 + https://github.com/splattael/libnotify
   Ruby bindings for libnotify using FFI.
+- https://github.com/sosodev/kinchan
+  Composable browser automation with Ruby (wrapper around selenium)
 
 # Divers
 - https://github.com/ruport/ruport

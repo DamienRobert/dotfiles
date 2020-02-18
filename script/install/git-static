@@ -9,4 +9,4 @@ progname=$(basename $0)
 CUSTOM_COMPILE='make prefix=$prefix CFLAGS="${CFLAGS} -static-libgcc" install quick-install-man'
 
 build_helper $@
-build_git
+build_git -- $args

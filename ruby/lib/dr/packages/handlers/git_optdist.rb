@@ -122,7 +122,7 @@ module DR
 			end
 				
 
-			def update(*args)
+			def update(*args, **kw)
 				super do
 					"gitfolders -l optdist update -a"
 				end
@@ -192,6 +192,11 @@ module DR
 								instance.git_url(arg)
 							end
 							puts repos
+						end
+					end
+					optparse.on("--list", "Show all our custom repos url") do |v|
+						opts[:action]=lambda do |*args,**opts|
+							self.new(**opts).show_repos(*args)
 						end
 					end
 				end

@@ -8,7 +8,7 @@ module DR
 		#return should be ["config_string", *config_files]
 		def custom_config(type)
 			case type
-			when :common,:minimal,:sh,:usb_backup
+			when :common,:minimal,:sh,:usb_backup,:phare
 				["",@unisonfiles+"ignore-common"]
 			when :deploy
 				["follow = Name deploy/*\n"]

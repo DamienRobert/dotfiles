@@ -38,7 +38,7 @@ module DR
 			end
 
 			def full_graph
-				@full_graph||=Graph.new(go_deps)
+				@full_graph||=Graph.new(go_deps, **{})
 			end
 
 			def install(*args)
@@ -46,8 +46,7 @@ module DR
 					# we get the sub pkgs too, because when updating, `go get -u all`
 					# will install them anyway
 					## "#{@packager} get -v #{o} #{pkgs.shellsplit.map {|pkg| "#{pkg}/..."}.shelljoin}"
-					# Update: we now call `update` with our list of installed
-					# packages rather than all of them.
+					# Update: we now call `update` with our list of installed packages rather than all of them, so no need to install the subpackages
 					"#{@packager} get -v #{o} #{pkgs}"
 				end
 			end
@@ -66,9 +65,10 @@ module DR
 				uninstall(*unneeded, recursive: false)
 			end
 
-			def update(*args)
-				super do |pkgs,o|
-					"#{@packager} get -v -u #{o} #{list_packages.shelljoin}"
+			def update(*args, **kw)
+				super do |o, **opts|
+					l=list_packages
+					"#{@packager} get -v -u #{o} #{l.shelljoin}" unless l.empty?
 				end
 			end
 			# def update_or_check(*args)

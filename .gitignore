@@ -1,2 +1,2 @@
-.crypt
-bin/latexmk.pl
+/.crypt*/
+/bin/latexmk.pl

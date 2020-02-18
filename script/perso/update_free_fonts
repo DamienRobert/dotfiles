@@ -14,12 +14,13 @@ PKGS=(
   ttf-fira-mono  ttf-fira-sans ttf-fira-code # Firefox os
   otf-fira-mono otf-fira-sans ttf-fira-mono ttf-fira-sans #Firefox os
   ttf-fira-code otf-fira-code 
-  cantarell-fonts ttf-gentium ttf-junicode ttf-linux-libertine 
+  cantarell-fonts gentium-plus-font ttf-junicode ttf-linux-libertine 
   ttf-roboto ttf-opensans #fonts from google
   ttf-lato #nice sans font
   ttf-anonymous-pro ttf-hack ttf-inconsolata  # monospace
   awesome-terminal-fonts # ttf-symbola          # symbols
   font-mathematica
+  ttf-joypixels # formerly EmojiOne
 )
 
 AURPKGS=(
@@ -80,4 +81,3 @@ cp -rf /usr/share/texmf-dist/fonts/opentype/public/${^texfonts} $TARGET/texmf
 # rm -rf Expert
 # mkdir -p Expert
 # cp Expert-symlinks/* Expert/
-

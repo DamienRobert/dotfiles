@@ -1,19 +1,28 @@
 vim: ft=markdownlight fdm=expr
 
+Pour la descente Galoisienne, cf [GeoAlg/Morphismes]
+Pour la théorie de Galois catégorique, cf [Categorie/Categorie#Topos/Galois]
+
+Extensions séparables/inséparables
+==================================
+
 Multiplicités
-=============
+-------------
 
-P est séparable <=> il est premier avec P'; et P/P \wedge P' est toujours
-séparable. 
-Sur un corps parfait, un irréductible est toujours séparable.
-Contre exemple classique: X^p-T est irréductible non séparable.
+- P est séparable <=> il est premier avec P'
+  P/P \wedge P' est toujours séparable. 
+- Sur un corps parfait, un irréductible est séparable.
+- Contre exemple classique: X^p-T est irréductible non séparable sur k(T) (on a une racine de mult p dans une cloture algébrique.)
 
-Preuve:
+(Preuve:
 Si P=P0^n Q, P'= n P0' P0^{n-1} Q + P0^n Q' donc P0^{n-1} divise P \wedge P',
 ie P non séparable => P non premier à P', ie P premier à P'=>P séparable.
 En carac p, on a même P0^n divise P \wedge P' si n est divisible par p.
 Donc Q=P/ P \wedge P' = \prod P_i où les P_i sont distincts et P_i n'est pas de
 multiplicité un multiple de p dans P.
+
+Autrement dit, si P=\prod P_i^n_i décomposition en irréductible, alors
+P \wedge P'=1 ssi n_i=1 et P'_i \ne 0 pour tout i.
 
 En raisonnant sur kbar (ça ne change pas P \wedge P'), on a donc que
 (P \wedge P')=\prod (x-a)^m où a racine de P, et m=n-1 si a est d'ordre n
@@ -25,18 +34,387 @@ P/ P \wedge Q^deg P qui est égal à la p-partie de P,
 donc sur un corps parfait on peut prendre une racine p-ième et itérer.
 
 Enfin si P est irréductible, alors P est premier avec P' sauf si P'=0, ie
-si P=Q^p sur kbar. Si k est parfait alors Q \in k[X] donc P n'est pas
-irréductible.
+si P=Q^p sur kbar. Si k est parfait alors Q \in k[X] (en effet, si P'=0,
+P=\sum X^p^i=(\sum X^p^{i-1} + \alpha)^p où \alpha^p=terme constant),
+donc P n'est pas irréductible.)
 
-Critère de résolubilité
-=======================
+Exemple: si K alg clos, P \wedge P'=1 ssi les racines sont de multiplicité
+1, et P'=0 ssi toutes les racines sont de multiplicité divisible par p.
+
+Inséparabilité
+--------------
+
+Si K/k est une extension algébrique, il existe K_s \subset K qui est
+l'extension séparable maximale; alors K/K_s est purement inséparable.
+
+Si K est normal, alors on regarde K_i=K^G, on a k-k_i purement inséparable
+et k_i-K est séparable.
+
+   K
+
+K_i K_s
+
+   k
+On vérifie facilement que K=K_i K_s et K_i \inter K_s=k (ie ils sont
+linéairement disjoint)
+
+cf http://mathoverflow.net/questions/15987/if-k-k-is-a-finite-normal-extension-of-fields-is-there-always-an-intermediate-f, qui renvoit vers Lang Proposition 6.11
+
+Séparabilité
+------------
+
+Déf: K (de type fini) est séparément généré si il existe une base de
+transcendance telle que K/k(x1,...,xn) soit séparable (finie).
+Déf: K séparable si K'/k séparément généré pour tout K'/k de type fini.
+Th: K sep généré => K séparable.
+    Si K de type fini, K sep généré <=> K séparable
+
+Attention: K=k(T) est séparément généré, mais K n'est pas séparable sur
+k(T^p) [en carac p], ie toute base de transcendance n'est pas forcément
+séparable.
+
+Attention: K=\union k(T^{1/p^n}) est séparable et de degré de transcendance
+1, mais n'est séparable sur aucun k(u).
+
+p-base: x_i p-base  ssi les P(x_i)/  deg_x_i P <p est une base de K/k*K^p
+Prop: - si B=x_i p-base, alors K=k*K^q[B] pour tout q=p^n
+      - si de plus K/k séparable, B q-base; donc en poussant n->\infty: les
+        x_i sont alg indépendant sur k*K^p^\infty, ie base de transcendance
+        (si K/k non séparable alors B contient une base de transcendance
+        qui peut être plus petite)
+Cor: - separating transcendance basis => p-basis
+     - B p-basis + K/k finitely generated => K/k(B) finite,separable
+       si de plus K/k séparable => B base de transcendance séparable
+
+* Résumé:
+- p-base <=> base des différentielles
+- base de transcendance séparable => p-base
+  p-base => base de transcendance si K/k séparable
+  p-base => K/k(B) fini séparable si K/k de type fini
+- Donc si K/k de type fini séparable, p-base <=> base de transcendance séparable
+
+Différentielles
+---------------
+
+Th: Omega_K/k a pour base les dx_i, ssi x_i est une p-base (en car 0 ssi x_i base de transcendance). Donc si K/k séparable de type fini, Omega_K/k a pour base
+dx_i ssi x_i base de transcendance séparable.
+
+Lemme: si K/k séparable algébrique, Omega_R/K=K \tens_k \Omega_R/k
+
+Cor: Si R/k localisation d'une algèbre de type fini sur k,
+Omega_R/k=0 <=> R étale (ie R somme directe finie de corps k'/k finis séparables)
+
+Cor: si K/k est de deg transcendance r, dim_k Omega_K/k>=r avec équalité
+ssi K/r séparable.
+Cor: si K/k de type fini (en tant que corps) séparable, tout système de
+générateurs contient une base de transcendance séparable.
+
+Note: si K/k de type fini séparable, Spec K -> Spec k n'est pas "lisse" car
+ce n'est pas de type fini en tant qu'algèbre. Cependant, en prenant une base
+de transcendance x_i + un générateur monogène z et en regardant
+A=k[x_i, z]/P(z), on a K=Frac A, et du coup Spec A -> k est lisse en le point
+générique η. Il y a un ouvert U de Spec A tel que U->k est lisse, par
+exemple on peut localiser pour que P soit unitaire et P' inversible dans
+k[x_i]; on a alors U -étale> A^n_k -> k.
+
+Caractérisations
+----------------
+
+cf Eisenbud
+Th: K est séparable sur k équivaut à
+(i) Pour toute extension L/k, L \tens_k K est réduit
+(ii) k^{1/p^\infity) \tens_k K est réduit
+(iii) k^{1/p) \tens_k K est réduit
+(iv) k^{1/p^\infity) est linéairement disjoint de K
+(v) k^{1/p) est linéairement disjoint de K
+(vi) K^p est linéairement disjoint de k sur k^p [cf wikipedia]
+
+Résumé:
+- K/k séparable <=> toute extension de type fini K'/k a une base de
+transcendance séparable <=> toute extension de type finie K'/k est
+séparable <=> pour toute ext de type fini K'/k, Omega_K'/k = deg tr_k K'.
+- Si K/k algébrique, K/k séparable <=> tout x dans K est séparable <=>
+Omega_K/k=0.
+
+* Conrad:
+http://www.math.uconn.edu/~kconrad/blurbs/galoistheory/separable2.pdf
+Caractérisations d'une extension séparable et extension aux cas
+d'extensions non algébriques.
+
+- Cas fini <=>
+0) L/K séparable ssi tous les éléments sont séparables ssi L est engendré
+par des éléments séparables
+1) L/K séparable <=> Tr_L/K is not 0
+2) L \tens_K Kbar est réduite
+3) toute K dérivation s'étend en une unique L dérivation sur L
+ie Omega_L/K=0
+
+- Cas algébrique <=>
+0) L/K séparable ssi tous les éléments sont séparables
+2) L \tens_K Kbar est réduite
+3) toute K dérivation s'étend en une unique L dérivation sur L
+ie Omega_L/K=0
+
+- Cas quelconque
+2) L \tens_K Kbar est réduite
+3) (Si deg tr_K(L)=n) Omega_L/K est de dimension n.
+
+- Cas d'une K-algèbre commutative
+0) (Si A/K fini) A étale
+1) (Si A/K fini) Tr_A/K non dégénérée
+2) A \tens_K Kbar est réduite
+
+Critère de résolubilité par radicaux
+====================================
 
 Si P \in Q[x] est irréd de degré premier, alors Gal(P) est résolube ssi le
 spliting field est engendré par 2 racines de P.
 http://mathoverflow.net/questions/110727/on-a-theorem-of-galois
 http://mathoverflow.net/questions/24081/solvable-transitive-groups-of-prime-degree
 
+Normal basis
+============
 
+* See Normal Bases over Finite Fields by Shuhong Gao http://www.math.clemson.edu/~sgao/papers/thesis.pdf
+
+L/K ext Gal
+
+Discriminant: \Delta=dét (Tr(a_i a_j))
+\Delta !=0 iff the a_i forms a basis of L/K
+
+Let A=(\sigma_j(a_i)). Then \Delta=dét (A A^T)
+so a_i basis iff \dét A != 0
+
+Plus généralement:
+a_i \in L forment une famille libre dans L(=K^n) sur K
+ssi les vecteurs (\sigma_j(a_i)) forment une famille libre dans L^n sur L.
+
+Preuve marteau pilon: c'est de la descente Galoisienne,
+si V est l'espace engendré par les a_i, alors V \tens_K L est engendré par
+les (\sigma_j(a_i))
+Sinon c'est de l'algèbre linéaire
+
+Additive polynomials
+--------------------
+
+* http://en.wikipedia.org/wiki/Additive_polynomial
+
+P(a+b)=P(a)+P(b)
+Then P(x)=\sum a_i x^p^i
+k{\tau_p} ring of additive polynomial (under sum and composition)
+
+Let P(x) be a separable polynomial with coefficients in k, then P(x) is
+additive if and only if the roots forms a group with the field addition.
+
+For proofs and a lot more details, see:
+http://math.usask.ca/~fvk/Fvkbook.htm
+Chapter 12: http://math.usask.ca/~fvk/bookch12.pdf
+
+Détail: soit donc W un sous-espace de dim m de \F_p^n de dim m
+(un sous-groupe additif est un ev car on a la mult par Z).
+Alors si b_1, ... b_m est une base,
+le polynôme qui s'annule sur W est donné par
+dét(b_i^p^j; x, x^p, ...)
+Cf Normal_Basis
+
+Produit tensoriel
+=================
+- Si R est intègre, S réduit et contiennent un corps k.
+  Alors si K(R)/k est séparable, R \tens_k S est réduit.
+
+  Application: si K/k séparable et L/K séparable, L/k séparable.
+
+- Si R, S sont intègres et contiennent un corps k.
+  Si K(R)/k est séparable et k alg clos dans K(R), alors
+  R \tens_k S est intègre.
+
+Application: le produit de deux variétés irréductibles sur k alg clos est
+une variété irréductible.
+
+-  Si K(R)/k est fini et purement inséparable, R \tens_k S est irréductible
+   (ie il y a juste un premier minimal).
+
+Cf: http://mathoverflow.net/questions/82083/when-is-the-tensor-product-of-two-fields-a-field
+  A field extension E/k is primary if the algebraic closure of k in E is purely inseparable over k. In that case for any field extension F/k the quotient E⊗kF/Nil(E ⊗_k F) is a domain. In other words Spec(E ⊗_k F) is irreducible.
+
+  Theorem (Grothendieck-Sharp ) The Krull dimension of the tensor product of the field extensions K/k,L/k is given by the formula
+  dim_Krull(K ⊗_k L)=min(trdeg_k(K),trdeg_k(L))
+
+Extensions de Kummer et d'Artin-Schreier
+========================================
+
+Kummer
+------
+
+A Kummer extension is a field extension L/K, where for some given integer n > 1 we have
+- K contains n distinct nth roots of unity (i.e., roots of X^n-1)
+- L/K has abelian Galois group of exponent n.
+
+Kummer theory: if K has n distinc nth roots of unity, then
+abelian extensions of K of exponent n correspond bijectively with subgroups
+of
+  K*/K*^n
+via the correspondance
+  \Delta -> K(\Delta^{1/n})
+and reciprocally L -> \Delta = (K* \cap L*^n)/K*^n \iso Hom(Gal(L/K), \mu_n)
+où l'isomorphisme est $a \mapsto (\sigma \mapsto \sigma(\alpha)/\alpha)$ où
+$a=\alpha^n$.
+
+Exemple: si L=K(\beta)/K est cyclique de degré p, \zeta racine primitive p-ième,
+\alpha =\sum_{l=0}^{p-1}\zeta^l \sigma^l(\beta)
+vérifie \sigma(\alpha)=\alpha/\zeta, donc \alpha^p=N_{L/K}(\alpha) \in K.
+
+Artin Schreier
+--------------
+
+K de carac p.
+
+P(X)=X^p-X+a, par Galois P splitte complètement dans son corps de rupture
+donc soit P est tot split sur K soit P irréductible et L=K(\beta)/K est
+cyclique d'ordre p: \sigma^i(\beta)=\beta+i.
+
+Récip si, L/K cyclique de degré p, alors L vient d'une extension d'Artin
+Schreier.
+
+Résolvantes
+===========
+
+S_n agit sur k[X1,...,Xn]
+H \subset S_n.
+P=\sum_{\sigma \in H} \prod X^i_{\sigma(i)}
+Alors Stab P=H
+
+Plus généralement si c \in S_n/H;
+P_c=\sum_{\sigma \in c} \prod X^i_{\sigma(i)}
+
+Groupe de Galois de Q(\alpha)=Q(\alpha_1,...,\alpha_n) (le corps de décomp
+d'un pol Q)
+=> On calcule les P_c(\alpha)_{c \in S_n/H}
+
+Th: - Si Gal \subset H, P_0(\alpha) \in Q
+    - R=\prod_c (X-P_c(\alpha)) a une racine simple ds Q <=> \Gal \subset H
+      (à conjugaison près)
+
+Plus généralement (Cohen, Algebraic Number Theory, Section 6.3 p316):
+Soit G un sous-groupe de S_n contenant Gal(T)
+P un pol tel que Stab P=H (dans G)
+Résolvante: R_G(P,T)=\prod_{c \in G/H} (X-P o c(\alpha)))
+[comme Stab P=H, Poc ne dépend que de la classe de c]
+
+Th 6.3.3: si R_G(P,T) est square free, son groupe de Galois est
+\phi(Gal(T)) où \phi représente l'action de G sur G/H (ie \phi(G) \subset
+S_m, avec m=#G/H=deg R_G)
+En particulier la liste des degrés des facteurs irréductibles de R_G donne
+la liste des longueurs des orbites de \phi(Gal(T)) sur {1,...,m}.
+En particulier R_G a une racine dans Q (et donc dans Z) ssi Gal(T) est
+conjugué dans G a un sous-groupe de H.
+[Ce dernier énoncé n'a en fait pas besoin que R_G soit square free, le =>
+est évident et pour le <= on a juste besoin que la racine soit simple]
+
+NFS
+---
+
+Res(a-bX,f) =~ max(|a|,|b|)^deg f
+Res(a-bX,g) =~ a-bm =~ b ||g||
+
+Revêtements topologiques
+========================
+
+Propriétés topo élémentaires
+----------------------------
+
+Def pour B loc connexe:
+X/B est un revêtement ssi
+il existe un recouvrement de B par des ouverts connexes U, tel que toute
+composante connexe V de \pi^-1(U) soit isomorphe à U.
+
+Déf: pour X/B, étalé=homéo local, séparé=la diagonale fibrée est fermée
+- Si X/B est étalé séparé, alors X est un revêtement trivial ssi tout point
+x\in X admet une section.
+- Si B connexe et loc connexe, X/B revêtement, alors X trivial <=> tout
+  point d'une fibre admet une section
+
+- Si f,g Y->X sont des morphismes de B-revêtement, f=g sur un ensemble ouvert
+fermé. En particulier, si Y connexe et f(y)=g(y), ou si B connexe et f=g
+sur une fibre, alors f=g.
+- Si f Y->X morphisme de revetement, B loc connexe, f est un revetement
+  (En effet, si B connexe et que Y, X sont triviaux, alors Y->X est un
+  revetement de X, trivial sur chaque composante connexe de X)
+Application:
+  - si f Y-> X morphisme de revetement, f(Y) est ouvert fermé dans X, en
+  particulier f est surj si X connexe
+  - si B est connexe et que f est une bij sur une fibre, f est un iso.
+Inversement, si Y revetement de X, X revetement de B, et X/B fini ou B loc
+simplement connexe => Y/B revetement.
+
+Prop: X/B revetement fini <=> X->B est étale, propre et séparée
+
+Th: si g,f B'-> B sont homotopes, X/B revetement, alors les pullback de X
+par f et g sont des revêtements isomorphes sur B'
+
+Revetement universel
+-------------------
+
+Def: revetement universel, represente le foncteur fibre X -> X(b_0) de
+l'espace pointé (B,b_0). E/B revetement, E universel <=> E est connexe +
+trivialise toute revetement de B. En particulier, si E simplement connexe
+il est universel.
+
+Prop: si B est connexe, loc simplement connexe, il admet un revetement
+universel simplement connexe
+
+Revetement galoisien
+--------------------
+
+E/B est Galoisient si E se trivialise, ie Aut_B(E) opére transitivement sur les fibres de E.
+
+Si X/B est connexe et f:E -> X morphisme de revetement, alors E/X est
+galoisien, et Aut_X(E) est le sous-groupe de Aut_B(E) stabilisant f. Si B
+est loc connexe, E trivialise X.
+
+On a Hom_B(E,X)=Hom_E(E,E x_B X) = sections du pullback de X à E.
+
+Théorème: Le foncteur Hom_B(E,-) est une équiv de catégorie est les
+Aut_X(E)-Ens et les revetements de B trivialisés par E.
+
+Groupe fondamental
+------------------
+
+\pi_1(B,b_0) c'est le groupe d'automorphie du foncteur fibre
+(ne dépend que de la composante connexe de b_0 si B loc connexe)
+
+Si E/B est un revetement universel, tel que E(b_0) est non vide, alors
+\pi_1(B,b_0) est antiisomorphe à Aut_B(E)
+
+Théorème: B connexe, loc connexe et admet un revetement universel.
+Alors le foncteur fibre est une équivalence de catégorie avec
+\pi_1(B,b_0)-ens
+
+Dico:
+- union disjointe topo <=> union disjointe des fibres
+- connexe <=> action transitive
+- revetements pointés connexes <=> sous groupes
+- X/B et X'/B connexes sont isomorphes <=> leur stabilisateurs sont
+  conjugués
+- X/B connexe, galoisien  <=> stabilisateur distingué
+
+(Passage à la limite:)
+Prop: B connexe admettant un revetement simplement connexe, X/B revetement
+Alors le pullback \pi_1(X,x_0) -> \pi_1(B,b_0) est injectif, d'image le
+stabilisateur de x_0
+Donc en particulier, les sous-groupes du dico qui viennent des
+stabilisateurs sont les \pi_1(X,x_0). Et X galoisien, alors
+Aut_B(X)=\pi_1(B,b_0)/\pi_1(X,x_0)
+
+Th: si B est loc simplement connexe par arc, alors \pi_1(B,b_0) est
+isomorphe à l'espace des lacets à homothépie près.
+
+
+Références:
+https://ncatlab.org/nlab/show/Galois+theory
+https://ncatlab.org/nlab/show/Grothendieck%27s+Galois+theory
+Eduardo Dubuc, C. S. de la Vega, On the Galois theory of Grothendieck, Bol. Acad. Nac. Cienc. (Cordoba) 65 (2000) 111–136. arXiv:math.CT/0009145
+Marco Antònio Delgado Robalo, Galois theory towards dessins d’enfants, masters thesis, Lisboa 2009, pdf
 Groupe fondamental
 ==================
 
@@ -122,298 +500,13 @@ Comme G-ens est régulière, on a une bonne notion d'image, et l'image de f
 coincide avec l'image de u (on peut voir ça en définissant l'image comme
 factorisant f en un épi suivit d'un mono; ça reste stable par anti-équivalence de catégorie).
 
-TODO:
+TODO: dictionnaire Galoisien avec les G-ensembles
 - caractériser les extensions linéairement disjointes
 - Gal(L_1 L_2)=Gal(L_1)x_Gal(K) Gal(L_2)
 - Changement de base (ie alg étales au-dessus de K) comme la catégorie
   fibrée au-dessus de X
 - Restriction à K \subset L galoisien (ie X=G/H groupe) [=> restriction aux
   alg étales déployées sur K]
-
-Produit tensoriel
-=================
-cf Eisenbud
-
-Th: K est séparable sur k équivaut à
-(i) Pour toute extension L/k, L \tens_k K est réduit
-(ii) k^{1/p^\infity) \tens_k K est réduit
-(iii) k^{1/p) \tens_k K est réduit
-(iv) k^{1/p^\infity) est linéairement disjoint de K
-(v) k^{1/p) est linéairement disjoint de K
-(vi) K^p est linéairement disjoint de k sur k^p [cf wikipedia]
-
-- Si R est intègre, S réduit et contiennent un corps k.
-  Alors si K(R)/k est séparable, R \tens_k S est réduit.
-
-  Application: si K/k séparable et L/K séparable, L/k séparable.
-
-- Si R, S sont intègres et contiennent un corps k.
-  Si K(R)/k est séparable et k alg clos dans K(R), alors
-  R \tens_k S est intègre.
-
-Application: le produit de deux variétés irréductibles sur k alg clos est
-une variété irréductible.
-
--  Si K(R)/k est fini et purement inséparable, R \tens_k S est irréductible
-   (ie il y a juste un premier minimal).
-
-   http://mathoverflow.net/questions/82083/when-is-the-tensor-product-of-two-fields-a-field
-   A field extension E/k is primary if the algebraic closure of k in E is purely inseparable over k. In that case for any field extension F/k the quotient E⊗kF/Nil(E⊗kF) is a domain. In other words Spec(E⊗kF) is irreducible.
-
-http://mathoverflow.net/questions/82083/when-is-the-tensor-product-of-two-fields-a-field
-Theorem (Grothendieck-Sharp ) The Krull dimension of the tensor product of the field extensions K/k,L/k is given by the formula
-dimKrull(K⊗kL)=min(trdegk(K),trdegk(L))
-
-Extensions séparables/inséparables
-==================================
-
-Résumé: K/k séparable <=> toute extension de type finie K'/k a une base de
-transcendance séparable <=> toute extension de type finie K'/k est
-séparable <=> pour toute ext de type finie K'/k, Omega_K'/k = deg tr_k K'.
-Si K/k algébrique, K/k séparable <=> tout x dans K est séparable <=>
-Omega_K/k=0.
-
-Conrad:
-http://www.math.uconn.edu/~kconrad/blurbs/galoistheory/separable2.pdf
-Caractérisations d'une extension séparable et extension aux cas
-d'extensions non algébriques.
-
-Multiplicité
-------------
-
-K corps de carac p.
-
-Si P=\prod P_i^n_i décomposition en irréductible, alors
-P \wedge P'=1 ssi n_i=1 et P'_i \ne 0 pour tout i.
-Or si K parfait, P irréductible => P' \ne 0, donc P \wedge P'=1 ssi P a des
-facteurs simples.
-[Pr: si P'=0, P=\sum X^p^i=(\sum X^p^{i-1} + \alpha)^p où \alpha^p=terme
-constant, donc P non irréductible]
-
-Exemple: si K alg clos, P \wedge P'=1 ssi les racines sont de multiplicité
-1, et P'=0 ssi toutes les racines sont de multiplicité divisible par p.
-
-L'exemple de X^p-T dans F_p(T) montre qu'on peut être irréductible mais
-avoir une racine de mult p dans une cloture algébrique.
-
-Inséparabilité
---------------
-
-Si K/k est une extension algébrique, il existe K_s \subset K qui est
-l'extension séparable maximale; alors K/K_s est purement inséparable.
-
-Si K est normal, alors on regarde K_i=K^G, on a k-k_i purement inséparable
-et k_i-K est séparable.
-
-   K
-
-K_i K_s
-
-   k
-On vérifie facilement que K=K_i K_s et K_i \inter K_s=k (ie ils sont
-linéairement disjoint)
-
-cf http://mathoverflow.net/questions/15987/if-k-k-is-a-finite-normal-extension-of-fields-is-there-always-an-intermediate-f, qui renvoit vers Lang Proposition 6.11
-
-Séparabilité
-------------
-
-Déf: K est séparément généré si il existe une base de transcendance telle
-que K/k(x1,...,xn) soit séparable.
-Déf: K séparable si K'/k séparément généré pour tout K'/k de type fini.
-     K sep généré => K séparable.
-
-p-base: x_i p-base  ssi les P(x_i)/  deg_x_i P <p est une base de K/k*K^p
-Prop: si B=x_i p-base, alors K=k*K^q[B] pour q=p^n
-      si de plus K/k séparable, B q-base; donc en poussant n->\infty
-      les x_i sont alg indépendant sur k*K^p^\infty
-      (si K/k non séparable alors B contient une base de transcendance qui
-      peut être plus petite)
-Cor: - separating transcendance basis => p-basis
-     - B p-basis + K/k finitely generated => K/k(B) finite,separable
-       si de plus K/k séparable => B base de transcendance séparable
-
-Résumé: K/k séparable, p-base => base de transcendance (séparable si K/k de
-type fini); et base de transcendance séparable => p-base.
-
-Différentielles
----------------
-
-Th: Omega_K/k a pour base les dx_i, ssi x_i est une p-base (en car 0 ssi x_i base de transcendance). Donc si K/k séparable de type fini, Omega_K/k a pour base
-dx_i ssi x_i base de transcendance séparable.
-
-Lemme: si K/k séparable algébrique, Omega_R/K=K \tens_k \Omega_R/k
-
-Cor: R/k localisation d'une algèbre de type fini sur k.
-Omega_R/k=0 <=> R étale (ie R somme directe finie de corps k'/k finis séparables)
-Cor: si K/k est de deg transcendance r, dim_k Omega_K/k>=r avec équalité
-ssi K/r séparable.
-Cor: si K/k de type fini séparable, tout système de générateurs contient
-une base de transcendance séparable
-Descent
-=======
-
-Galois Descent
---------------
-
-Cf: http://www.tac.mta.ca/tac/volumes/23/5/23-05.pdf
-(Monadic descent rather than Grothendieck descent)
-
-http://www.sphere.univ-paris-diderot.fr/IMG/pdf/Descent_theory_torsors.pdf
-Galois Descent theory, descent along fppf topology and the fact that they
-form a stack.
-
-http://www.math.uconn.edu/~kconrad/blurbs/galoistheory/galoisdescent.pdf
-Elementary introduction to Galois descent
-
-Faithfully flat descent
------------------------
-
-http://pub.math.leidenuniv.nl/~zomervruchtw/docs/ffdesc.pdf
-Faithfully flat descent, Wouter Zomervrucht, November 6, 2013
-
-- QCoh is an fpqc stack, ie every descent datum is effective for
-quasi-coherent sheaves on the fpqc topology
-- representable functors are fpqc sheaves:
-  if U->S is an fpqc covering and we have a morphism f:U->Xx_S U
-  such that the pullbacks on Ux_S U coincide then f comes from a
-  g:S->X
-
-Remarque: si f:Y->X est fidèlement plate de prés finie; alors f est ouverte
-(f est submersif); le polynôme de Hilbert des fibres est constant.
-Exemple: extension des scalaires
-
-Application: http://math.stackexchange.com/questions/424758/a-question-on-faithfully-flat-extension
-Let B be a faithfully flat extension of A. Can I claim that b⊗1=1⊗b in B⊗AB if and only if b∈A?
-
-Réponse oui: par descente on peut tensoriser par B, et demander si c'est
-vrai pour B'/B où B'=B\tens_A B. Mais on a une section de \Spec B'->\Spec B
-donnée par B'->B: x \tens y=xy, ie on peut supposer B'=B \somme I; donc
-B' \tens_B B'=B + I + I + I \tens_B I.
-The general philosophy behind this kind of argument is that for answering these kinds of questions when A→B is faithfully flat, it is usually no loss of generality to assume in addition that A is a direct summand of B as an A-module.
-
-Extensions de Kummer et d'Artin-Schreier
-========================================
-
-Kummer
-------
-
-A Kummer extension is a field extension L/K, where for some given integer n > 1 we have
-- K contains n distinct nth roots of unity (i.e., roots of X^n-1)
-- L/K has abelian Galois group of exponent n.
-
-Kummer theory: if K has n distinc nth roots of unity, then
-abelian extensions of K of exponent n correspond bijectively with subgroups
-of
-  K*/K*^n
-via the correspondance
-  \Delta -> K(\Delta^{1/n})
-and reciprocally L -> \Delta = (K* \cap L*^n)/K*^n \iso Hom(Gal(L/K), \mu_n)
-où l'isomorphisme est $a \mapsto (\sigma \mapsto \sigma(\alpha)/\alpha)$ où
-$a=\alpha^n$.
-
-Exemple: si L=K(\beta)/K est cyclique de degré p, \zeta racine primitive p-ième,
-\alpha =\sum_{l=0}^{p-1}\zeta^l \sigma^l(\beta)
-vérifie \sigma(\alpha)=\alpha/\zeta, donc \alpha^p=N_{L/K}(\alpha) \in K.
-
-Artin Schreier
---------------
-
-K de carac p.
-
-P(X)=X^p-X+a, par Galois P splitte complètement dans son corps de rupture
-donc soit P est tot split sur K soit P irréductible et L=K(\beta)/K est
-cyclique d'ordre p: \sigma^i(\beta)=\beta+i.
-
-Récip si, L/K cyclique de degré p, alors L vient d'une extension d'Artin
-Schreier.
-
-Normal basis
-============
-
-See Normal Bases over Finite Fields by Shuhong Gao
-http://www.math.clemson.edu/~sgao/papers/thesis.pdf
-
-L/K ext Gal
-
-Discriminant: \Delta=dét (Tr(a_i a_j))
-\Delta !=0 iff the a_i forms a basis of L/K
-
-Let A=(\sigma_j(a_i)). Then \Delta=dét (A A^T)
-so a_i basis iff \dét A != 0
-
-Plus généralement:
-a_i \in L forment une famille libre dans L(=K^n) sur K
-ssi les vecteurs (\sigma_j(a_i)) forment une famille libre dans L^n sur L.
-
-Preuve marteau pilon: c'est de la descente Galoisienne,
-si V est l'espace engendré par les a_i, alors V \tens_K L est engendré par
-les (\sigma_j(a_i))
-Sinon c'est de l'algèbre linéaire
-
-Additive polynomials
---------------------
-
-http://en.wikipedia.org/wiki/Additive_polynomial
-
-P(a+b)=P(a)+P(b)
-Then P(x)=\sum a_i x^p^i
-k{\tau_p} ring of additive polynomial (under sum and composition)
-
-Let P(x) be a separable polynomial with coefficients in k, then P(x) is
-additive if and only if the roots forms a group with the field addition.
-
-For proofs and a lot more details, see:
-http://math.usask.ca/~fvk/Fvkbook.htm
-Chapter 12: http://math.usask.ca/~fvk/bookch12.pdf
-
-Détail: soit donc W un sous-espace de dim m de \F_p^n de dim m
-(un sous-groupe additif est un ev car on a la mult par Z).
-Alors si b_1, ... b_m est une base,
-le polynôme qui s'annule sur W est donné par
-dét(b_i^p^j; x, x^p, ...)
-Cf Normal_Basis
-
-Résolvantes
-===========
-
-S_n agit sur k[X1,...,Xn]
-H \subset S_n.
-P=\sum_{\sigma \in H} \prod X^i_{\sigma(i)}
-Alors Stab P=H
-
-Plus généralement si c \in S_n/H;
-P_c=\sum_{\sigma \in c} \prod X^i_{\sigma(i)}
-
-Groupe de Galois de Q(\alpha)=Q(\alpha_1,...,\alpha_n) (le corps de décomp
-d'un pol Q)
-=> On calcule les P_c(\alpha)_{c \in S_n/H}
-
-Th: - Si Gal \subset H, P_0(\alpha) \in Q
-    - R=\prod_c (X-P_c(\alpha)) a une racine simple ds Q <=> \Gal \subset H
-      (à conjugaison près)
-
-Plus généralement (Cohen, Algebraic Number Theory, Section 6.3 p316):
-Soit G un sous-groupe de S_n contenant Gal(T)
-P un pol tel que Stab P=H (dans G)
-Résolvante: R_G(P,T)=\prod_{c \in G/H} (X-P o c(\alpha)))
-[comme Stab P=H, Poc ne dépend que de la classe de c]
-
-Th 6.3.3: si R_G(P,T) est square free, son groupe de Galois est
-\phi(Gal(T)) où \phi représente l'action de G sur G/H (ie \phi(G) \subset
-S_m, avec m=#G/H=deg R_G)
-En particulier la liste des degrés des facteurs irréductibles de R_G donne
-la liste des longueurs des orbites de \phi(Gal(T)) sur {1,...,m}.
-En particulier R_G a une racine dans Q (et donc dans Z) ssi Gal(T) est
-conjugué dans G a un sous-groupe de H.
-[Ce dernier énoncé n'a en fait pas besoin que R_G soit square free, le =>
-est évident et pour le <= on a juste besoin que la racine soit simple]
-
-NFS
----
-
-Res(a-bX,f) =~ max(|a|,|b|)^deg f
-Res(a-bX,g) =~ a-bm =~ b ||g||
 
 Corps finis (forum)
 ===========
@@ -555,102 +648,3 @@ David, qui n'a jamais trouvé aucun endroit où ces choses étaient bien
 expliquées.  Du coup, on en retient une idée très vague des corps
 finis.
 
-Revêtements topologiques
-========================
-
-Propriétés topo élémentaires
-----------------------------
-
-Def pour B loc connexe:
-X/B est un revêtement ssi
-il existe un recouvrement de B par des ouverts connexes U, tel que toute
-composante connexe V de \pi^-1(U) soit isomorphe à U.
-
-Déf: pour X/B, étalé=homéo local, séparé=la diagonale fibrée est fermée
-- Si X/B est étalé séparé, alors X est un revêtement trivial ssi tout point
-x\in X admet une section.
-- Si B connexe et loc connexe, X/B revêtement, alors X trivial <=> tout
-  point d'une fibre admet une section
-
-- Si f,g Y->X sont des morphismes de B-revêtement, f=g sur un ensemble ouvert
-fermé. En particulier, si Y connexe et f(y)=g(y), ou si B connexe et f=g
-sur une fibre, alors f=g.
-- Si f Y->X morphisme de revetement, B loc connexe, f est un revetement
-  (En effet, si B connexe et que Y, X sont triviaux, alors Y->X est un
-  revetement de X, trivial sur chaque composante connexe de X)
-Application:
-  - si f Y-> X morphisme de revetement, f(Y) est ouvert fermé dans X, en
-  particulier f est surj si X connexe
-  - si B est connexe et que f est une bij sur une fibre, f est un iso.
-Inversement, si Y revetement de X, X revetement de B, et X/B fini ou B loc
-simplement connexe => Y/B revetement.
-
-Prop: X/B revetement fini <=> X->B est étale, propre et séparée
-
-Th: si g,f B'-> B sont homotopes, X/B revetement, alors les pullback de X
-par f et g sont des revêtements isomorphes sur B'
-
-Revetement universel
--------------------
-
-Def: revetement universel, represente le foncteur fibre X -> X(b_0) de
-l'espace pointé (B,b_0). E/B revetement, E universel <=> E est connexe +
-trivialise toute revetement de B. En particulier, si E simplement connexe
-il est universel.
-
-Prop: si B est connexe, loc simplement connexe, il admet un revetement
-universel simplement connexe
-
-Revetement galoisien
---------------------
-
-E/B est Galoisient si E se trivialise, ie Aut_B(E) opére transitivement sur les fibres de E.
-
-Si X/B est connexe et f:E -> X morphisme de revetement, alors E/X est
-galoisien, et Aut_X(E) est le sous-groupe de Aut_B(E) stabilisant f. Si B
-est loc connexe, E trivialise X.
-
-On a Hom_B(E,X)=Hom_E(E,E x_B X) = sections du pullback de X à E.
-
-Théorème: Le foncteur Hom_B(E,-) est une équiv de catégorie est les
-Aut_X(E)-Ens et les revetements de B trivialisés par E.
-
-Groupe fondamental
-------------------
-
-\pi_1(B,b_0) c'est le groupe d'automorphie du foncteur fibre
-(ne dépend que de la composante connexe de b_0 si B loc connexe)
-
-Si E/B est un revetement universel, tel que E(b_0) est non vide, alors
-\pi_1(B,b_0) est antiisomorphe à Aut_B(E)
-
-Théorème: B connexe, loc connexe et admet un revetement universel.
-Alors le foncteur fibre est une équivalence de catégorie avec
-\pi_1(B,b_0)-ens
-
-Dico:
-- union disjointe topo <=> union disjointe des fibres
-- connexe <=> action transitive
-- revetements pointés connexes <=> sous groupes
-- X/B et X'/B connexes sont isomorphes <=> leur stabilisateurs sont
-  conjugués
-- X/B connexe, galoisien  <=> stabilisateur distingué
-
-(Passage à la limite:)
-Prop: B connexe admettant un revetement simplement connexe, X/B revetement
-Alors le pullback \pi_1(X,x_0) -> \pi_1(B,b_0) est injectif, d'image le
-stabilisateur de x_0
-Donc en particulier, les sous-groupes du dico qui viennent des
-stabilisateurs sont les \pi_1(X,x_0). Et X galoisien, alors
-Aut_B(X)=\pi_1(B,b_0)/\pi_1(X,x_0)
-
-Th: si B est loc simplement connexe par arc, alors \pi_1(B,b_0) est
-isomorphe à l'espace des lacets à homothépie près.
-
-# Théorie de Galois catégorique
-
-Références:
-https://ncatlab.org/nlab/show/Galois+theory
-https://ncatlab.org/nlab/show/Grothendieck%27s+Galois+theory
-Eduardo Dubuc, C. S. de la Vega, On the Galois theory of Grothendieck, Bol. Acad. Nac. Cienc. (Cordoba) 65 (2000) 111–136. arXiv:math.CT/0009145
-Marco Antònio Delgado Robalo, Galois theory towards dessins d’enfants, masters thesis, Lisboa 2009, pdf

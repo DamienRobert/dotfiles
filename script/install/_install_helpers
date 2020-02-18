@@ -1,7 +1,7 @@
 # vim: ft=sh
 # Usage:
 # 1) git folders
-# build_git  [-l] progname/url version [configure args]
+# build_git  [-l] progname/url [version] [configure args]
 #   $url, [$version]
 #   $progname <- basename $url
 #   $url <- git_optdist $url
@@ -9,26 +9,26 @@
 #   -> build_git $@
 #
 # 2) archives source
-# build / build url [configure args]
+# build [-l] / build [-l] url [configure args]
 #   $url
 #   $archive <- $url
 #   $prog [versioned] <- $archive
 #   $progname [basename] <- $prog
 #   -> do_build $progname $prog $archive $url $@
 #
-# github_archive / github_archive repository version
+# github_archive [-l] / github_archive [-l] repository version
 #   $repository, $version
 #   $progname <-> $repository
 #   $prog, $archive, $url <- $progname, $version
 #   -> build $@
 #
 # 3) low level functions
-# do_build name nameversion archivename url
+# do_build name nameversion archivename url [configure args]
 #   get_src $archivename $url
 #   do_compile $nameversion $nameversion $@
 #   do_symlink $name $nameversion
 #
-# do_build_git name folder url version
+# do_build_git name folder url [version] [configure args]
 #   get_git_src $folder $url $version
 #   nameversion <- $CUSTOM_VERSION || git describe
 #   do_compile $folder $nameversion $@
@@ -87,6 +87,11 @@ get_src() {
 	cd "$OLDPWD"
 }
 
+if [[ -n $vcs_opts ]]; then
+	vcs_opts=(-d)
+	[[ -n $VCS_RAW ]] && vcs_opts=()
+fi
+
 # get_git_src folder url [version] (if version is empty => version=LAST)
 get_git_src() {
 	local folder url version
@@ -94,7 +99,7 @@ get_git_src() {
 	url="$2"
 	version="$3"
 	[ -z "$version" ] && version=LAST
-	vcs clone_or_update --checkout "$version" "$url" "$folder"
+	vcs clone_or_update $vcs_opts --checkout "$version" "$url" "$folder"
 }
 
 # not used
@@ -302,13 +307,14 @@ build_git() {
 	[[ -z $progname ]] && progname="$(basename $url)"
 	[[ -z $version && -n $1 && x$1 != x-- ]] && { version=$1; shift }
 	[[ -n $1 && x$1 == x-- ]] && shift
-	# if url is not in the db of git_optdist.rb
-	# url=foo:dqf/dfq -> return self
-	# url=foo/bar -> return https://www.github.com/foo/bar
-	# url=foo -> return https://www.github.com/foo/foo
-	# + remember the gh:... git shortcut
-	url=$(~/mine/ruby/lib/dr/packages/handlers/git_optdist.rb --repo $url)
+	# if url is not in the db of git_optdist.rb, then
+	#   url=foo:dqf/dfq -> return self
+	#   url=foo/bar -> return https://www.github.com/foo/bar
+	#   url=foo -> return https://www.github.com/foo/foo
+	# + remember there is also the gh:... git shortcut
+	# url=$(~/mine/ruby/lib/dr/packages/handlers/git_optdist.rb --repo $url)
 	#Note: we could also pass the option '-d' to 'vcs clone_or_update' which does that too
+	# => Done; we use vcs_opts=(-d) by default, except if VCS_RAW=t
 	if [[ -z $gitfolder ]]; then
 		gitfolder=~/opt/dist/$progname
 		if [[ -d $gitfolder ]]; then
@@ -334,7 +340,8 @@ build_helper() {
 	# Unfortunately ZSH_ARGZERO is only in recent versions of zsh (5.6)
 	# meanwhile I need to specify url manually in the scripts
 	[[ -z $url ]] && url=$(basename ${ZSH_ARGZERO-$BASH_SOURCE[0]})
-	[[ -n $1 ]] && version=$1
+	[[ -n $1 && x$1 != x-- ]] && { version=$1; shift }
+	args=($@)
 }
 
 clear_globals() {

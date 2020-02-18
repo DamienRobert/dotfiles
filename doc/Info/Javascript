@@ -348,7 +348,7 @@ In nodejs, to write use 'console.log/info/warn'
 JSON.stringify; JSON.parse
 
 # ECMA Script 6/ ECMA Script 2015
-http://exploringjs.com/es6/index.html
+* http://exploringjs.com/es6/index.html
 
 - let (block scoped variable), const (like let but not modifiable)
 

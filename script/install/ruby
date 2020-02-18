@@ -3,6 +3,7 @@
 version=LAST
 dest=
 srcdir=~/usr/dist/@ruby/ruby-build
+VCS_RAW=t #don't use ruby in 'vcs'
 vcs clone_or_update --checkout master "https://github.com/rbenv/ruby-build" $srcdir
 prog=$srcdir/bin/ruby-build
 [[ -n $1 ]] && version=$1

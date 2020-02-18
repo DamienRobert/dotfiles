@@ -12,7 +12,7 @@ build_git -l libarchive
 url=https://git.archlinux.org/pacman.git
 progname=pacman
 build_helper $@
-build_git
+build_git -- $args
 
 #For alpm database
 cd $OPT/packages/$nameversion/etc || exit 17

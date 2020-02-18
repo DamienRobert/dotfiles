@@ -7,15 +7,23 @@
 # build
 
 url=bcpierce00/unison
-build_helper $@
 version=master #master has fixes to v2.51.2 to compile with ocaml-4.08
+build_helper $@
+
+if [[ x$UI == xgui ]]; then
+  build -l "https://github.com/garrigue/lablgtk/releases/download/lablgtk2188/lablgtk-2.18.8.tar.gz"
+  # note: if I get an error "cannot use ocamlfind, use old-install"; then go to the source directory and do `make old-install`
+  # Unfortunately, this does not seem to install everything, unison is
+  # missing a lablgtk.cmxa (there is the lablgtk.cmx).
+  # Solution: install via opam $ opam install lablgtk unison
+fi
 
 CUSTOM_COMPILE='
 make && mkdir -p $prefix && make install INSTALLDIR=$prefix/
 '
 # make UISTYLE=text && make install INSTALLDIR=$prefix/
 
-build_git
+build_git -- $args
 
 ## Compiling unison:
 #http://archlinuxarm.org/forum/viewtopic.php?t=4003

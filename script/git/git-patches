@@ -122,7 +122,7 @@ case $action in
 		getlist
 		for patch in $list; do
 			echo "*** Testing $patch (mostly usefull for whitespace errors) ***"
-			git apply --check --whitespace=error-all $gth_rest $patch 2>&1 | grep --color -E '.*whitespace.*|$'
+			git apply --check --whitespace=error-all $@ $patch 2>&1 | grep --color -E '.*whitespace.*|$'
 			#clever trick to color the match on whitespace: grep match all lines,
 			#but most of them only on the end of line which is not colored
 		done
@@ -147,7 +147,7 @@ case $action in
 	;;
 
 	format )
-		[[ -n $upstream ]] && signature="--signature=Patched on top of $(git describe --always $(git merge-base $branch $upstream)) ($(git --version))" || signature=""
+		[[ -n $upstream ]] && signature="--signature=Patched on top of $(git describe --always $(git merge-base $branch $upstream)) ($(git --version))" || signature="$(git --version)"
 		if [[ -z $gth_rest ]]; then
 			if [[ -n $upstream ]]; then
 				gth_rest=("$upstream..$branch")

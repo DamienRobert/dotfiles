@@ -6,7 +6,7 @@ module DR
 	module Packages
 		class Handler::PythonPip2 < Handler::Generic
 			include Handler::Python
-			def initialize(*args)
+			def initialize(*args, **kw)
 				super
 				@python="python2"
 			end

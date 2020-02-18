@@ -1,3 +1,5 @@
+(define skk-show-annotation? #t)
+(define skk-show-annotation-in-preedit? #f)
 (define enable-annotation? #t)
 (define annotation-agent 'eb)
 (define eb-enable-for-annotation? #f)
@@ -11,5 +13,3 @@
 (define annotation-filter-tcpserver-name "localhost")
 (define annotation-filter-tcpserver-port 6789)
 (define annotation-filter-command "/path/of/filter-program")
-(define skk-show-annotation? #t)
-(define skk-show-annotation-in-preedit? #f)

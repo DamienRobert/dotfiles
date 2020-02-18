@@ -11,4 +11,4 @@ url="gh:git/git"
 CUSTOM_COMPILE='make prefix=$prefix install quick-install-man'
 
 build_helper $@
-build_git
+build_git -- $args

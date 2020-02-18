@@ -34,7 +34,8 @@ hwdec=auto
 
 [big-cache]
 profile-desc="Bigger cache settings"
-cache=256000 #default 75000kb
+cache=yes
+demuxer-max-bytes=512000K #default 75000kb
 demuxer-readahead-secs=20
 
 [slow]

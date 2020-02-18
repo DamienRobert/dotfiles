@@ -113,7 +113,7 @@ case $service in
 	wpa_helper)
 		_arguments \
 			"-i[interface]:interface name" \
-			"1:Action:(scan commit menu add save pass)" \
+			"1:Action:(scan commit menu add save pass cli list qr select help)" \
 			"2:ssid:" \
 			"3:pass:"
 	;;

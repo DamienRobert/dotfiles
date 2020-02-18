@@ -107,7 +107,9 @@ Build images
   => used by Orca as a builder
 - docker: buildkit, cf https://events.linuxfoundation.org/wp-content/uploads/2017/11/Comparing-Next-Generation-Container-Image-Building-Tools-OSS-Akihiro-Suda.pdf
 - by hand, using ostree: https://bcksp.blogspot.com/2018/02/diy-docker-using-skopeoostreerunc.html
-- other tools: orca-build, img, diy, buildah
+- https://github.com/wagoodman/dive
+  A tool for exploring each layer in a docker image
+- other tools: orca-build, img, diy, buildah, oci-image-tool
   https://www.projectatomic.io/blog/2018/03/the-many-ways-to-build-oci-images/
 
 Buildah

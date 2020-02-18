@@ -153,3 +153,19 @@ let g:ale_sign_style_warning='☂'
 
 """ interface/ranger.vim {{{1
 let g:ranger_map_keys = 0
+
+""" language/start/polyglot.vim {{{1
+" polyglot includes LaTeX-Box but we want vimtex
+let g:polyglot_disabled = ['latex']
+""" language/start/vimtex.vim {{{1
+let g:vimtex_view_method='zathura'
+let g:vimtex_env_change_autofill=1 "keep the name of the env in cse
+let g:vimtex_fold_enabled=1 "enable folding
+let g:vimtex_quickfix_latexlog = {
+  \ 'overfull' : 0,
+  \ 'underfull' : 0,
+    \ 'packages' : {
+    \   'hyperref' : 0,
+    \ },
+  \}
+let g:vimtex_quickfix_mode=0 "don't open the qf automatically

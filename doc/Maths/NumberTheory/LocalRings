@@ -159,7 +159,7 @@ GF(p^n,d)*=i(K*)x(1+M) avec 1+m \iso (Z/p^{n-1}Z)^d si p>2.
 Hensel lift
 ===========
 
-https://en.wikipedia.org/wiki/Hensel's_lemma
+* https://en.wikipedia.org/wiki/Hensel's_lemma
 
 Si f(r)=0 mod p^n et f'(r) \ne 0 mod p, on peut lifter r p-adiquement.
 Plus généralement, on peut lifter dès que

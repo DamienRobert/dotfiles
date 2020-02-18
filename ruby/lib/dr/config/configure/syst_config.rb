@@ -13,7 +13,12 @@ module DR
 			end
 
 			def has_file?(file)
-				@processor.present? && Pathname.new(@computer.root+file).exist? 
+				# since ContextHelper is included in both Squel and extended in
+				# @context, during erb evaluation we may call has_file? directly or
+				# as @processor.has_file?
+				# In the first case we need to use @processor.present? and in the
+				# second as self.present?
+				(@processor||self).present? && Pathname.new(@computer.root+file).exist? 
 			end
 
 			def has_dns_server?
@@ -39,6 +44,43 @@ module DR
 				else
 					chroot(*args, chroot: chroot, **opts)
 				end
+			end
+
+			def services
+				services=@computer[:syst][:services]||[]
+				services=services.keys if services.is_a?(Hash)
+				services=(services-disabled_services).map do |service|
+					case service
+					when /^:wpa@/
+						if has_package?("iwd")
+							"iwd.service"
+						else
+							wlan=service[/:wpa@(.*).service/,1]
+							"wpa_supplican@#{wlan}.service"
+						end
+					else
+						service
+					end
+				end.select do |service|
+					case service
+					when /^tinc@/
+						has_package?("tinc")
+					when "unbound.service", "lightdm.service"
+						has_package?(service.delete_suffix(".service"))
+					else
+						true
+					end
+				end.uniq
+				return services
+			end
+			def disabled_services
+				services=@computer[:syst][:services]||[]
+				disabled_services=if services.is_a?(Hash)
+					services.keys.select {|s| !services[s]}
+					else
+						[]
+					end
+				disabled_services
 			end
 		end
 

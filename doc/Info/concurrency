@@ -1,6 +1,6 @@
 vim: foldmethod=expr ft=markdownlight
 
-# Clojure delay/futures/promises
+# Clojure's delay/futures/promises
 Delay: something that is evaluated when needed (and kept in memory)
 
 ~~~ clojure
@@ -47,10 +47,12 @@ user=> @x
 ~~~
 
 # JS promises:
-https://promisesaplus.com/
-https://blog.domenic.me/youre-missing-the-point-of-promises/
+
+- https://promisesaplus.com/
+- https://blog.domenic.me/youre-missing-the-point-of-promises/
+
 Rappel: 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
 Promise.resolve(value)
   The Promise.resolve(value) method returns a Promise object that is
   resolved with the given value. If the value is a thenable (i.e. has a
@@ -66,12 +68,15 @@ qu'on considère qu'il va se comporter comme une Promise)
 
 # Async models/concurrency
 
-Trampoline: https://en.wikipedia.org/wiki/Tail_call#Through_trampolining
-Generators and Coroutines: 
+* Trampoline: https://en.wikipedia.org/wiki/Tail_call#Through_trampolining
+
+* Generators and Coroutines: 
 - https://eli.thegreenplace.net/2009/08/29/co-routines-as-an-alternative-to-state-machines/
 + http://www.dabeaz.com/generators/index.html
   http://www.dabeaz.com/coroutines/
   http://www.dabeaz.com/finalgenerator/
+
+* Algebraic effects: see [Functional/Monades]
 
 ## Callback to promises to async (see also [Javascript]):
 https://medium.com/@bluepnume/learn-about-promises-before-you-start-using-async-await-eb148164a9c8#.wxf2gxxxv
@@ -200,3 +205,10 @@ de laisser le choix d'implém à la boucle d'évènements (en bout de chaîne
 est-ce qu'on veut des futures... ou autre chose); par contre avec js comme
 les async func sont wrappées dans des promises c'est plus simple à
 manipuler (on ne les distingue pas des vraies promises).
+
+## Structured Concurrency
+
+- https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/
+- https://github.com/tokio-rs/tokio/issues/1879
+  Structured Concurrency Support (rust)
+  https://www.reddit.com/r/rust/comments/ec2ery/exploring_async_structured_concurrency_scoping/

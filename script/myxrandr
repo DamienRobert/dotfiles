@@ -16,17 +16,10 @@ MAIN=$eDPs[1]
 SECOND=$others[1]
 echo "# Main: $MAIN, Second: $SECOND"
 
-# MAIN=LVDS; SECOND=VGA-0
-# case $MYHOSTNAME in
-# 	Mithrim) MAIN="eDP1" SECOND="DP1-1";;
-# 	Doriath) MAIN="eDP1" SECOND="HDMI1";;
-# 	Numenor) SECOND="HDMI-0";;
-# 	Feanor) MAIN="DP2" SECOND="HDMI1";;
-# 	Valinor) MAIN="eDP-1" SECOND="VGA-1";;
-# esac
-
-[[ $# -eq 0 ]] && help
-case $1 in
+process() {
+local arg
+for arg in $@; do
+case $arg in
 	-h|-help|--help ) help ;;
 	true|on )
 		xrandr --output $SECOND --auto --same-as $MAIN ;;
@@ -38,6 +31,7 @@ case $1 in
 	 xrandr --output $MAIN --off
 	 xrandr --output $MAIN --auto
 	;;
+	reset_second ) xrandr --output $SECOND --auto ;;
 	first_primary) xrandr --output $MAIN --primary ;;
 	second_primary) xrandr --output $SECOND --primary ;;
 	first)
@@ -48,10 +42,33 @@ case $1 in
 	 xrandr --output $SECOND --auto
 	 xrandr --output $MAIN --off
 	 ;;
+	all)
+	 xrandr --output $MAIN --auto
+	 xrandr --output $SECOND --auto
+	 ;;
+	conf|configure ) . ~/.initvars
+case $MYHOSTNAME in
+ 	Mithrim) process all second_primary ;;
+esac ;;
 	dpi)
 		# reset the dpi to the value of the currently active screen
 		size=$(xrandr | sed -n '/ connected primary / {s/.* \([0-9]\+\)mm x \([0-9]\+\)mm/\1x\2/p;q}')
 		[[ -z $size ]] && size=$(xrandr | sed -n '/ primary / {s/.* \([0-9]\+\)mm x \([0-9]\+\)mm/\1x\2/p;q}')
 		[[ -n $size ]] && echo "xrandr --fbmm $size" && xrandr --fbmm $size
 		;;
+	*) echo "Argument '$arg' not understood" ;;
 esac
+done
+}
+
+# MAIN=LVDS; SECOND=VGA-0
+# case $MYHOSTNAME in
+# 	Mithrim) MAIN="eDP1" SECOND="DP1-1";;
+# 	Doriath) MAIN="eDP1" SECOND="HDMI1";;
+# 	Numenor) SECOND="HDMI-0";;
+# 	Feanor) MAIN="DP2" SECOND="HDMI1";;
+# 	Valinor) MAIN="eDP-1" SECOND="VGA-1";;
+# esac
+
+[[ $# -eq 0 ]] && help
+process $@

@@ -2341,7 +2341,7 @@ Tannaka-Krein over Set is the same story about BGBG and a point, only instead of
 Presentable stacks
 ------------------
 
-- https://arxiv.org/abs/math/0306176
+* https://arxiv.org/abs/math/0306176
 Topological and Smooth Stacks
 David Metzler
     We review the basic definition of a stack and apply it to the topological and smooth settings. We then address two subtleties of the theory: the correct definition of a ``stack over a stack'' and the distinction between small stacks (which are algebraic objects) and large stacks (which are generalized spaces). 
@@ -2351,7 +2351,7 @@ and $5.2:
 Proposition (Giraud [Gir71]). Let F be a stack over a site C. Then there is a strict stack G over C and a natural equivalence i:F∼→G of stacks
 Hence we can suppose that we start with a strict small stack F on Op(X). In particular this is an honest sheaf of groupoids. It is easy to see ([AGV72], [MLM94]) that this is the same thing as a groupoid object in the category Sh(Op(X)) of (small) sheaves of sets on X. But this is the same as a groupoid object, call it G, in the category of  ́etale spaces over X.
 
-- https://projecteuclid.org/download/pdf_1/euclid.agt/1513715541
+* https://projecteuclid.org/download/pdf_1/euclid.agt/1513715541
 An étalé space construction for stacks
 DAVID CARCHEDI (2013)
 
@@ -2359,7 +2359,7 @@ We generalize the notion of a sheaf of sets over a space to define the notion of
 
 Note the appendix C: Sheaves in groupoids versus stacks
 
-- https://arxiv.org/abs/1212.2282
+* https://arxiv.org/abs/1212.2282
 Étale Stacks as Prolongations
 David Carchedi (2012-2013)
     In this article, we derive many properties of étale stacks in various contexts, and prove that étale stacks may be characterized categorically as those stacks that arise as prolongations of stacks on a site of spaces and local homeomorphisms. Moreover, we show that the bicategory of étale differentiable stacks and local diffeomorphisms is equivalent to the 2-topos of stacks on the site of smooth manifolds and local diffeomorphisms. An analogous statement holds for other flavors of manifolds (topological, Ck, complex, super...), and topological spaces locally homeomorphic to a given space X. A slight modification of this result also holds in an even more general context, including all étale topological stacks, and Zariski étale stacks, and we also sketch a proof of an analogous characterization of Deligne-Mumford algebraic stacks. We go on to characterize effective étale stacks as precisely those stacks arising as the prolongations of sheaves. It follows that étale stacks (and in particular orbifolds) induce a small gerbe over their effective part, and all gerbes over effective étale stacks arise in this way. As an application, we show that well known Lie groupoids arising in foliation theory give presentations for certain moduli stacks. For example, there exists a classifying stack for Riemannian metrics, presented by Haefliger's groupoid RΓ and submersions into this stack classify Riemannian foliations, and similarly for symplectic structures, with the role of RΓ replaced with ΓSp. We also prove some unexpected results, for example: the category of smooth n-manifolds and local diffeomorphisms has binary products.
@@ -2527,11 +2527,11 @@ André Joyal, Myles Tierney
 Calculus of fractions
 ---------------------
 
-- Le calcul général de fractions dans une bicatégorie est introduit ici:
+* Le calcul général de fractions dans une bicatégorie est introduit ici:
 DORETTE A. PRONK (1996): Etendues and stacks as bicategories of fractions
 http://archive.numdam.org/ARCHIVE/CM/CM_1996__102_3/CM_1996__102_3_243_0/CM_1996__102_3_243_0.pdf
 
-- Cependant on utilise souvent ça pour inverser des weak equivalences entre
+* Cependant on utilise souvent ça pour inverser des weak equivalences entre
 groupoides (pour l'étude de stack presentable), où la construction peut
 être simplifiée:
 https://perso.uclouvain.be/enrico.vitale/FrazioniFedeli.pdf
@@ -2542,14 +2542,14 @@ entre groupoides internes à une categorie reguliere A qui admet
 suffisamment d’objets projectifs reguliers, alors  la description  de
 Grpd(A)[Σ^−1] peut etre considerablement simplifiee.
 
-- Une autre simplification utilisant des anafoncteurs
+* Une autre simplification utilisant des anafoncteurs
   Note: il y a un appendix sur les sites superextensifs.
   https://arxiv.org/abs/1101.2363
   Internal categories, anafunctors and localisations
 David M. Roberts (2011)
     In this article we review the theory of anafunctors introduced by Makkai and Bartels, and show that given a subcanonical site S, one can form a bicategorical localisation of various 2-categories of internal categories or groupoids at weak equivalences using anafunctors as 1-arrows. This unifies a number of proofs throughout the literature, using the fewest assumptions possible on S.
 
-- Ce papier remplace le système de fraction par de l'homotopie et explique
+* Ce papier remplace le système de fraction par de l'homotopie et explique
   comment on peut voir des stacks algébriques comme de l'homotopie entre
   prestacks algébriques.
   https://arxiv.org/abs/1303.0340
@@ -2559,7 +2559,7 @@ Dorette A. Pronk, Michael A. Warren (2013)
     The familiar construction of categories of fractions, due to Gabriel and Zisman, allows one to invert a class W of arrows in a category in a universal way. Similarly, bicategories of fractions allow one to invert a collection of arrows in a bicategory. In this case the arrows are inverted in the sense that they are made into equivalences. As with categories of fractions, bicategories of fractions suffer from the defect that they need not be locally small even when the bicategory in which W lives is locally small. Similarly, in the case where W is a class of arrows in a 2-category, the bicategory of fractions will not in general be a 2-category.
     In this paper we introduce two notions ---systems of fibrant objects and fibration systems--- which will allow us to associate to a bicategory B a homotopy bicategory Ho(B) in such a way that Ho(B) is the universal way to invert weak equivalences in B. This construction resolves both of the difficulties with bicategories of fractions mentioned above. We also describe a fibration system on the 2-category of prestacks on a site and prove that the resulting homotopy bicategory is the 2-category of stacks. Further examples considered include algebraic, differentiable and topological stacks. 
 
-- https://arxiv.org/abs/1402.7108
+* https://arxiv.org/abs/1402.7108
  On certain 2-categories admitting localisation by bicategories of fractions
 David Michael Roberts (2014-2015)
     Pronk's theorem on bicategories of fractions is applied, in almost all cases in the literature, to 2-categories of geometrically presentable stacks on a 1-site. We give an proof that subsumes all previous such results and which is purely 2-categorical in nature, ignoring the nature of the objects involved. The proof holds for 2-categories that are not (2,1)-categories, and we give conditions for local essential smallness.
@@ -2578,8 +2578,6 @@ categories:
 Corollary 3.6: Cat(S)/X, Gpd(S)/X also admit bicategories of fraction for
 the weak equivalence.
 
-
-
 ∞-categories
 ============
 
@@ -2594,9 +2592,9 @@ the weak equivalence.
 
 ## Z.L. Low: Algebraic Theories
 
-### Monads
+### Chapter 1 Monads
 
-* 2 Monadicity 
+$ 2 Monadicity 
 
 - Eilenberg-Moore: for each adjunction F ⊣ U : D → C inducing the monad T, there is a unique functor K : D → C^T such that K F = F^T, U =U^T K
   KA := (UA, U \epsilon_A)
@@ -2649,7 +2647,7 @@ monadic, then the composite VU : D → E is also monadic.
 
 Proposition ... A monadic functor is an amnestic [ie Uf=Id => f=Id] isofibration [ie isomorphisms lifts] if and only if it is strictly monadic.
 
-*  Colimits in the Eilenberg–Moore category
+$  Colimits in the Eilenberg–Moore category
 
 Theorem .. (Linton). Let T be a monad on a finitely cocomplete (resp.
 cocomplete) category S. The following are equivalent:
@@ -2702,7 +2700,7 @@ congruence is the coeqs of g,h. Note that K is a small intersection because
 if (k: K->BxB is a mono, there is at most one sub-T-module structure on K
 compatible with BxB).
 
-*  Morphisms of monads
+$  Morphisms of monads
 
 Definition ... Let S be a monad on C and let T be a monad on D. A morphism of monads S → T consists of
 • a functor F : C → D and
@@ -2780,7 +2778,7 @@ Proposition ... In the case above, if R is fully faithfull and
 hold), then: a T-module (X,ξ) is in the essential/strict image of R^φ iff X
 is in the essential/strict image of R.
 
-*  Descent and base change
+$  Descent and base change
 
 Let A and B be rings, not necessarily commutative, and suppose we have
 a ring homomorphism f : B → A. This induces an adjunction between the
@@ -2806,7 +2804,7 @@ Notice that we have a coreflexive fork in C for each object X:
 X->UFX => UFUFX
 Moreover, its image under F is a reflexive split equaliser in D:
 FX -> FUFX -> FUFUFX
-which induce a split equaliser diagram in the category D_G of comodules for G.
+which induce a split equaliser [todo: reflexif non?] diagram in the category D_G of comodules for G.
 
 Thus, if D_G is to be a ‘good’ model of C, the adjunction unit η_X : X → UFX should be the equaliser of UFη_X,η_{UFX} :UFX →UFUFX. This motivates the following
 definition:
@@ -2823,7 +2821,7 @@ one of the form (FX,FηX), then we say comonadic descent is effective for F.
 Proposition ... Let F ⊣ (U : D → C) be an adjunction of categories with unit
 η : id_C ⇒ UF and counit ϵ : FU ⇒ id_D. Let G be the induced comonad on D,
 and let K : C → D_G be the comparison functor induced by the formal dual of
-the Eilenberg–Moore theorem (..). e following are equivalent:
+the Eilenberg–Moore theorem (..). The following are equivalent:
 (i) For each object X in C, the adjunction unit η_X : X → UFX is a regular
 monomorphism.
 (ii) F : C → D is a functor of comonadic descent type.
@@ -2867,7 +2865,7 @@ subcategory of C^T. If C′ has coequalisers for all reflexive pairs and the res
 Example ... Ab, the category of abelian groups, is monadic over Set and
 has all coequalisers, so it is a reflective subcategory of Grp.
 
-TODO
+TODO Z.L. Low: Algebraic Theories $1.6: constructing monads
 
 ## Johnstone, The Elephant
 

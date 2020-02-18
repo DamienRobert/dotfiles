@@ -12,7 +12,8 @@
 	autocrlf = input
 	safecrlf = warn
 	tabwidth=2
-	untrackedCache = true
+[feature]
+	manyFiles = true #index.version=4, core.untrackedCache=true
 [advice]
 	pushNonFastForward=false
 	commitBeforeMerge=false
@@ -22,6 +23,8 @@
 	autosetupmerge=always
 [column]
 	ui=auto
+[checkout]
+	defaultRemote=origin
 [color "diff"]
 	#colors: normal black red green yellow blue magenta cyan white, bold dim ul blink reverse
 	#context, meta, frag, func, old, new, commit, whitespace
@@ -43,6 +46,8 @@
 	submodule = log
 	colorMoved = dimmed-zebra
 	colorMovedWS = allow-indentation-change
+[fetch]
+	writeCommitGraph=true # this is part of feature.experimental
 [format]
 	signoff = true
 	numbered = true
@@ -63,8 +68,10 @@
 	rewriteRef=refs/notes/* #copier les notes en cas de amend/rebase
 	displayRef=notes/*
 [pretty]
-	summary = "format:%C(auto)%h%d %s %C(auto,green)(%cd) %C(auto,bold blue)<%aN>%C(auto)"
-	sumdate = "format:%C(auto)%h%d %C(auto,green)%cd %C(auto,bold blue)<%aN>%C(auto) %s"
+	#%h: abreviated commit, %d: decorate, %cd: committer date, %aN: author name
+	suminfo = "format:%C(auto)%h%d %s %C(auto,green)(%cd) %C(auto,bold blue)<%aN>%C(auto)" # 09d8ca47 (HEAD -> master) syst/network.rb: iwd Settings and Security (Mon Jan 27 19:35:57 2020 +0100) <Damien Robert>
+	quicksummary = "format:%C(auto)%s %C(auto,green)(%cd) %C(auto,bold blue)<%aN>%C(auto)" # syst/network.rb: iwd Settings and Security (Mon Jan 27 19:35:57 2020 +0100) <Damien Robert>
+	sumdate = "format:%C(auto)%h%d %C(auto,green)%cd %C(auto,bold blue)<%aN>%C(auto) %s" # 09d8ca47 (HEAD -> master) Mon Jan 27 19:35:57 2020 +0100 <Damien Robert> syst/network.rb: iwd Settings and Security
 [pull]
 	ff=only
 [push]
@@ -157,7 +164,7 @@
 
 	# long alias
 	noteslog = !sh -c 'git log $(git notes get-ref) "$@"' --
-	whatis = show --no-patch --pretty=summary --date=human
+	whatis = show --no-patch --pretty=suminfo --date=human
 
 	# clean-up
 	prune-now = "! git reflog expire --expire=${1-now} --all && git prune --expire=${1-now}"
@@ -165,8 +172,8 @@
 	prune-all-remote = !git remote | xargs -n 1 git remote prune # Prune all stale remote branches
 	#cf 'git my gc --now --aggressive' which combine 'pruneall' with 'repacker'
 	lost="!f(){ git fsck $@ | awk '/dangling commit/ {print $3}'; }; f"
-	lostshow="! f() { git lost $@ | git show --pretty=summary -s --date=human --stdin; }; f"
-	lostshowdiff="! f() { git lost $@ | git show --pretty=summary --date=human --stdin; }; f"
+	lostshow="! f() { git lost $@ | git show --pretty=suminfo -s --date=human --stdin; }; f"
+	lostshowdiff="! f() { git lost $@ | git show --pretty=suminfo --date=human --stdin; }; f"
 
 	# fixup and undo
 	undo = reset --soft HEAD^
@@ -221,14 +228,14 @@
 
 	lg	 = log --oneline --graph --date-order
 	lt	 = log --oneline --graph --topo-order
-	lgm  = log --pretty=summary --graph --date-order --date=relative #rel date
-	ltm  = log --pretty=summary --graph --topo-order --date=relative
-	lgma = log --pretty=summary --graph --date-order --date=relative --all # rel date and all branches
-	ltma = log --pretty=summary --graph --topo-order --date=relative --all
-	lgh  = log --pretty=summary --graph --date-order --date=human #rel then full date
-	lth  = log --pretty=summary --graph --topo-order --date=human
-	lgha = log --pretty=summary --graph --date-order --date=human --all
-	ltha = log --pretty=summary --graph --topo-order --date=human --all
+	lgm  = log --pretty=suminfo --graph --date-order --date=relative #rel date
+	ltm  = log --pretty=suminfo --graph --topo-order --date=relative
+	lgma = log --pretty=suminfo --graph --date-order --date=relative --all # rel date and all branches
+	ltma = log --pretty=suminfo --graph --topo-order --date=relative --all
+	lgh  = log --pretty=suminfo --graph --date-order --date=human #rel then full date
+	lth  = log --pretty=suminfo --graph --topo-order --date=human
+	lgha = log --pretty=suminfo --graph --date-order --date=human --all
+	ltha = log --pretty=suminfo --graph --topo-order --date=human --all
 	lga  = lgha
 	lta  = ltha
 	lgd  = log --pretty=sumdate --graph --date-order --date=iso #show full date
@@ -267,14 +274,14 @@
 	subdi="!f() { git mysubfor git di --color \"$@\";}; f"
 	subdc="!f() { git mysubfor git dc --color \"$@\";}; f"
 	subupdate="submodule update --recursive --remote --merge"
-	recs="!f() {git s \"$@\"; git subs \"$@\";}; f"
-	recadd="! f() {git add \"$@\"; git subadd \"$@\";}; f"
+	recs="!f() { git s \"$@\"; git subs \"$@\";}; f"
+	recadd="! f() { git add \"$@\"; git subadd \"$@\";}; f"
 	#recdi="! ( git di --color \"$@\" && git subdi \"$@\"\" ) | less || :"
 	recdi="di --submodule=diff"
 	recdc="di --cached --submodule=diff"
 	#ciAll: alias are case insensitive => ciaall
 	recci="!f() { git subci \"$@\"; git ci \"$@\";}; f"
-	recciA="!f() {git subadd -A; git subci \"$@\"; git add -A; git ci \"$@\";}; f"
+	recciA="!f() { git subadd -A; git subci \"$@\"; git add -A; git ci \"$@\";}; f"
 	recpush="push --recurse-submodules=on-demand"
 
 	# diff

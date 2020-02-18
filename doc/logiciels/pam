@@ -45,6 +45,7 @@ auth      required  pam_unix.so     try_first_pass nullok
 password  required  pam_unix.so     try_first_pass nullok sha512 shadow
 
 pam_securetty is a PAM module that allows root logins only if the user is logging in on a "secure" tty, as defined by the listing in /etc/securetty.
+(maybe add pts/0 for containers?, cf gmane arch.general:61970)
 
 pam_unix:
        nullok

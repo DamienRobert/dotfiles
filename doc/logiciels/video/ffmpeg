@@ -268,3 +268,9 @@ ffmpeg -f image2 -pattern_type glob -framerate 3 -i '*.JPG' gopro3.mkv
 ffmpeg -stream_loop -1 -i input.mp4 -c copy -fflags +genpts output.mp4
   -1: repeat infinity
   genpts: Generate missing PTS if DTS is present. 
+
+Complex filters
+---------------
+
+Cf the thread https://twitter.com/gro_tsen/status/1174246336973197312
+https://gist.github.com/Gro-Tsen/c5d0274e3139e570c7b0992ea42cbe32

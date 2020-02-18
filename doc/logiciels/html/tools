@@ -35,6 +35,7 @@ https://www.smashingmagazine.com/2019/07/progressive-web-application-pwa-framewo
 
 CSS Templates {{{1
 Css history: https://medium.com/actualize-network/modern-css-explained-for-dinosaurs-5226febe3525, HN: https://news.ycombinator.com/item?id=16306371
+https://scotch.io/bar-talk/6-popular-css-frameworks-to-use-in-2019
 
 #Frameworks
 + zurb-foundation
@@ -53,6 +54,7 @@ Css history: https://medium.com/actualize-network/modern-css-explained-for-dinos
 - http://tachyons.io/
   For functional css, cf https://adamwathan.me/css-utility-classes-and-separation-of-concerns/ and https://www.smashingmagazine.com/2013/10/challenging-css-best-practices-atomic-approach/
 - http://materializecss.com/ A modern responsive front-end framework based on Material Design
+- https://tailwindcss.com For components, built in postcss
 
 #Css Grid systems via floats:
 http://www.sitepoint.com/understanding-css-grid-systems/
@@ -123,6 +125,7 @@ See http://stackoverflow.com/questions/35062852/npm-vs-bower-vs-browserify-vs-gu
 - grunt (deprecated) / gulp [makefile like]
   But can use npm: https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/
 - browserify/webpack/jspm (systemjs) [assets manager]
+  New kids on the block: rollup, parcel
 - scaffolder: yeoman
 
 Modules: AMD (RequireJS) or CommonJS (nodejs). On ES6: Harmony (esm)
@@ -193,11 +196,12 @@ https://jquery.com/
   http://ponyfoo.com/articles/getting-over-jquery
   Without jquery: http://vanilla-js.com/
     https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
-  https://www.smashingmagazine.com/2018/02/jquery-vue-javascript/
+  -> use vue instead: https://www.smashingmagazine.com/2018/02/jquery-vue-javascript/
 - jquery-ui https://jqueryui.com/
 - ember/angular/react/vue (cf https://vuejs.org/v2/guide/comparison.html)
   next: framework on top of react https://zeit.co/blog/next
   mithril: light weight react like; https://mithril.js.org/framework-comparison.html
++ svelte (reactive js compiler)
 
 # Html5
 - Modernizr: html5 feature detection (can be set up to load polyfills if the feature is not implemented in the browser)
@@ -317,3 +321,4 @@ codebox: https://github.com/FriendCode/codebox
 color palette: http://www.palettable.io/B84E1A
 
 graphql: https://blog.octo.com/graphql-et-pourquoi-faire/
+ -> https://www.apollographql.com/ (graphql implementation)

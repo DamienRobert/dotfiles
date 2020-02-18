@@ -2,6 +2,8 @@ vim: ft=markdownlight fdm=expr
 
 Calculabilité
 =============
+cf [Logique#Calculabilite] pour les degrés de turing et les machines de
+Turing infinies.
 
 Arithmétique
 ------------
@@ -143,7 +145,7 @@ Alors G2 est d'ordre omega, G3 d'ordre epsilon_0 et (conjecture) G_n est d'ordre
 L'hydre de Kirby-Paris est d'ordre \epsilon_0
 
 La fonction Tree, d'ordre entre \Gamma_0 (Feferman-Schütte et le petit
-ordinal de Weblen)
+ordinal de Veblen) [update: wiki dit petit ordinal de Veblen]
   Tree(n) est le (plus petit) nombre tel que pour toute suite d'arbres T_1,
   ..., T_f(n), chaque arbre étant étiqueté par un élément dans {1, ..., n},
   et l'arbre T_i ayant au plus i sommets, alors il y a forcément deux arbres
@@ -171,7 +173,7 @@ ordinal de Weblen)
   Friedman has demonstrated that the growth rate of the n function lies asymptotically between f_{ω^ω}(n) and f_{ω^ω+1}(n)
   )
 
-La même sur les graphes, d'ordre le collapse de \Omega_\Omega
+La même sur les graphes, d'ordre le collapse de \Omega_\omega
   http://en.wikipedia.org/wiki/Robertson%E2%80%93Seymour_theorem
   Theorem: For every positive integer n, there is an integer m so large
   that if G1, ..., Gm is a sequence of finite undirected graphs, where each

@@ -215,7 +215,7 @@ Style "deluge" StartsOnPage 2 1 0, SkipMapping
 
 #Desk 3:
 Style "Mozilla" StartsOnDesk 3, SkipMapping
-Style "Firefox" StartsOnDesk 3, SkipMapping
+Style "*Mozilla Firefox" StartsOnDesk 3, SkipMapping
 Style "Namoroka" StartsOnDesk 3, SkipMapping
 Style "*weasel" StartsOnDesk 3, SkipMapping
 #firefox download window is annoying

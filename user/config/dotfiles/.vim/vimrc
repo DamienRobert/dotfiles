@@ -221,8 +221,10 @@ else
   silent! colorscheme minimal
 endif
 
-"from defaults.vom
+"from defaults.vim
 let c_comment_strings=1
+
+let g:tex_flavor = "latex" "I never do plain tex
 " }}}
 
 " Paste {{{

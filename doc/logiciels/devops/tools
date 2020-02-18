@@ -43,12 +43,12 @@ Tools for non root containers:
 X forwarding
 ============
 
-Xephyr: version moderne de Xnest, supportant les extensions X modernes
+- Xephyr: version moderne de Xnest, supportant les extensions X modernes
 
-Protocols: nx, rdp (windows), vnc, spice
+- Protocols: nx, rdp (windows), vnc, spice
   ssh -X/ssh -Y
 
-xpra: rootless (ie la fenêtre s'affiche dans le wm hote) + winswitch (gui helper)
++ xpra: rootless (ie la fenêtre s'affiche dans le wm hote) + winswitch (gui helper)
 
 VNC/Spice: Remmina, vinagre (gnome); VNC: tigervnc, tightvnc; NX: x2go
   https://en.wikipedia.org/wiki/Comparison_of_remote_desktop_software
@@ -104,13 +104,13 @@ openstack: le cloud open source
 binary packagers
 ================
 
-- snap (ubuntu), flatpak (was xdg-app),  guix/nix, 0install, slackware build tools, gentoo (https://wiki.gentoo.org/wiki/Project:Prefix), Suse open build service, appimage...
-cf https://www.reddit.com/r/linux/comments/4ohvur/nix_vs_snap_vs_flatpak_what_are_the_differences/, https://github.com/probonopd/AppImageKit/wiki/Similar-projects
-- bubblewrap: bubblewrap is a lightweight setuid sandbox application developed from Flatpak (=used by flatpak to run in a sandbox); firejail: another sandbox
+- guix/nix, slackware build tools, gentoo (https://wiki.gentoo.org/wiki/Project:Prefix), Suse open build service, 
+- Images: snap (ubuntu), flatpak (was xdg-app), appimage, 0install...
+  cf https://www.reddit.com/r/linux/comments/4ohvur/nix_vs_snap_vs_flatpak_what_are_the_differences/, https://github.com/probonopd/AppImageKit/wiki/Similar-projects
+  Note: flatpak uses libostree, cf https://ostree.readthedocs.io/en/latest/
+- sandbox: bubblewrap (lightweight setuid sandbox application developed used by flatpak); firejail: another sandbox
   Note: bubblewrap uses namespaces, snap and appimage uses apparmor
 - Containers: lxc, systemd-nspawn, docker
-
-Note: flatpak uses libostree, cf https://ostree.readthedocs.io/en/latest/
 
 * guix https://www.gnu.org/software/guix/
   can build pack and docker images: https://guix-hpc.bordeaux.inria.fr/blog/2017/10/using-guix-without-being-root/

@@ -1,3 +1,11 @@
+syntax sync fromstart
+setlocal spellfile=~/.vim/spell/latex.utf-8.add
+"setlocal efm+=%E%f:%l:\ %m
+"setlocal iskeyword+=_,-,:,@-@,48-57
+"/vim/syntax/tex.vim m'override ça, donc il faut configurer cette variable!
+let g:tex_isk='_,-,:,48-57,a-z,A-Z,192-255'
+
+if exists('s:initLatexSuite') "LatexSuite is loaded
 "on ne veut pas que Alt + touche amène au menu
 "set winaltkeys=no
 "let g:Tex_UsePython=0
@@ -22,13 +30,6 @@ let g:Tex_SectionMaps=0
 
 " Si on veut tout désactiver
 "let g:Imap_FreezeImap=1
-
-"setlocal efm+=%E%f:%l:\ %m
-setlocal iskeyword+=_,-,:,@-@,48-57
-"/vim/syntax/tex.vim m'override ça, donc il faut configurer cette variable!
-let g:tex_isk='_,-,:,48-57,a-z,A-Z,192-255'
-
-setlocal spellfile=~/.vim/spell/latex.utf-8.add
 
 "on remplace `  par ² dans les raccourcis
 "meilleure idée: on fait un mapping
@@ -99,7 +100,6 @@ let g:Tex_NestPackagesMenu=0
 "je regroupe tous les menus
 let g:Tex_MenuPrefix='&LaTeX-Suite.'
 
-syntax sync fromstart
 "on finit les parenthèses
 "(le noremap est important!!!!)
 "il faudrait trouver un moyen pour bien positionner le curseur
@@ -123,3 +123,4 @@ let g:EnvLabelprefix_equation="eq:"
 let g:EnvLabelprefix_eqnarray="eq:"
 let g:EnvLabelprefix_aling="eq:"
 let g:EnvLabelprefix_multline="eq:"
+endif

@@ -134,6 +134,10 @@ Up to birational equivalence:
 
 Ed25519: http://blog.cr.yp.to/20140323-ecdsa.html
 
+* Geometric interpretation
+https://crypto.stackexchange.com/questions/66325/geometric-interpretation-of-an-edwards-curve
+https://arxiv.org/pdf/1610.05278.pdf The Group Law for Edwards Curves, Thomas C. Hales
+
 Curve25519
 ----------
 

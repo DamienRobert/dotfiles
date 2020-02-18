@@ -1,4 +1,8 @@
-vim: ft=markdownlight
+vim: ft=markdownlight fdm=expr
+
+# Listes
+Liste de fontes gratuites:
+- https://www.smashingmagazine.com/2019/07/gorgeous-free-open-source-typefaces/
 
 TeX: see ~/doc/tex/
 - ~/latex/essais/xetex-test/ex-polices.pdf
@@ -16,6 +20,8 @@ Listes:
 - https://codepen.io/sparcut/pen/KXxdeX (test fonts)
 - https://beautifulwebtype.com/ Guide to Only the Best Open-Source Typefaces
   https://news.ycombinator.com/item?id=20145304
+- https://news.ycombinator.com/item?id=21302498
+  Lesser Known Coding Fonts (vfoley.xyz)
 
 Cf [../liste/logiciels#Fonts] for font informations
 
@@ -68,7 +74,11 @@ Avant guarde: ressemble à futura en plus expandée.
 - Bitstream Vera Sans Mono, DejaVu Sans Mono, Hack (a variation of DejaVu Sans Mono)
 - Inconsolata
 - Consolas (Windows Cleartype)
-- Source Code Pro
+- Source Code Pro (adobe)
+- Jet Brains Mono (https://www.jetbrains.com/lp/mono/), has ligatures
+- Fira Code = Fira Mono + ligatures: https://github.com/tonsky/FiraCode
+  (the Readme has links to other monospace fonts with ligatures
+  eg https://github.com/SSNikolaevich/DejaVuSansCode)
 
 # Cursive
 - Comic Sans, Chancery [=Chorus], Zapfino, Calligra
@@ -199,6 +209,8 @@ See also: http://www.slant.co/topics/67/~what-are-the-best-programming-fonts
 - In Free/00Others: Office Code Pro, MesloLG, Courier Prime
 - ! https://news.ycombinator.com/item?id=14011303
   Input Mono – A Typeface for Code, from Font Bureau
+- https://ctrlcctrlv.github.io/TT2020/
+  A typewriter like font
 
 ### Bitmap monospace
 - DEC VT 220 (truetype, imitates a VT font): http://christfollower.me/misc/glasstty/
@@ -209,7 +221,7 @@ See also: http://www.slant.co/topics/67/~what-are-the-best-programming-fonts
 ### Not Free monospace
 - Pragmata Pro (a condensed font): http://www.fsd.it/fonts/pragmatapro.htm
 
-# Symbol fonts
+## Symbol fonts
 Exemples of software using fancy symbols: https://github.com/arialdomartini/oh-my-git
 
 - http://fontawesome.io/
@@ -229,7 +241,7 @@ Already patched fonts with these symbols:
   (+ links to original repos!)
   Cf https://github.com/ryanoasis/nerd-fonts/tree/master/src/glyphs for the complete symbols.
 
-# Emoji fonts
+## Emoji fonts
 
 - Noto color emoji (!Archlinux: noto-fonts-emoji)
 - ! Segoe UI Emoji (windows)
@@ -238,79 +250,81 @@ Already patched fonts with these symbols:
 - ! Twitter Unicode 10 emoji: https://github.com/eosrei/twemoji-color-font
 - https://openmoji.org/
 
-===========================================================================
+List of installed Fonts
+=======================
+
 (symbols: ! linked in Free-Sel, + nice font, ? => to link?)
 (Removed because they are now in google-fonts:
 cantarell [also in arch], cardo, +exo2 [was in otf], PT Sans
 
-# Emoji
+## Emoji
 
-## ! Emoji One
+### ! Emoji One
   https://www.emojione.com/emoji/v3
   https://github.com/emojione/emojione/tree/master/extras/fonts
   https://github.com/emojione/emojione-assets/releases/download/3.1.2/emojione-android.ttf
 
-## ! NerdFont
+### ! NerdFont
 Symbols, cf above.
   https://github.com/ryanoasis/nerd-fonts/blob/master/src/glyphs/Symbols-1000-em%20Nerd%20Font%20Complete.ttf
   https://github.com/ryanoasis/nerd-fonts/blob/master/src/glyphs/Symbols-2048-em%20Nerd%20Font%20Complete.ttf
 
-## powerlines
+### powerlines
 http://powerline.readthedocs.org/en/latest/installation.html#fonts-installation
 Font symbols
 
-## ! TwitterColorEmoji (twemoji)
+### ! TwitterColorEmoji (twemoji)
 v1.3
 https://github.com/eosrei/twemoji-color-font
 
-# Monospace
+## Monospace
 
-## ! CourierPrime
+### ! CourierPrime
 It’s Courier, just better.
 http://quoteunquoteapps.com/courierprime/
 
-# !+ Input-Font
+### !+ Input-Font
 http://input.fontbureau.com/
 Letter form of a,g,i,l,0,*,{} can be customized. I chose the default
 This is a monospace font but Input Sans and Input Serif are almost monospaced so can be used to code too.
 
-## Meslo LG
+### Meslo LG
 Meslo LG, a customized version of Menlo Regular, which is a customized
 version of Bitstram Vera Mono: https://github.com/andreberg/Meslo-Font
 
-## ? OfficeCodePro
+### ? OfficeCodePro
 A customized version of Adobe Source Code Pro
 https://github.com/nathco/Office-Code-Pro
 
-# Other Free fonts:
+## Other Free fonts:
 
 Fonts in .fonts/Free/00Others
 
-## Calligra.otf
+### Calligra.otf
 Family: CALLIG15
 Made from fontforge from the Calligra PS Type 1
 /usr/share/texmf-dist/fonts/type1/public/calligra-type1/callig15.pfb
 See http://www.tug.dk/FontCatalogue/calligra/
 
-## MankSans:
+### MankSans:
 http://www.dafont.com/mank-sans.font
 Une jolie fonte sans sérif
 
-## PT_Sans:
+### PT_Sans:
 http://www.fontsquirrel.com/fonts/PT-Sans
 Une autre jolie fonte sans sérif
 
-## TTF Lido Stf:
+### TTF Lido Stf:
 http://www.myfonts.com/fonts/storm/lido-stf/
 Times with a Human Face
 
-## ? code2000
+### ? code2000
 http://www.fontspace.com/james-kass/code2000
 
-## +? comic-neue-1.1
+### +? comic-neue-1.1
 http://comicneue.com/
 
-## + exljbris
+### + exljbris
 http://www.exljbris.com/
 - Delicious
   The Delicious is a font I designed because of my admiration for
@@ -337,23 +351,23 @@ Some Free:
 - Calluna: a text typeface with flow
 - Fertigo; Museo, MuseoSans; MuseoSlab; CallunaSans, GeoticaThree, Tenso
 
-## gw-fonts-ttf-1.0:
+### gw-fonts-ttf-1.0:
 http://www.fontspace.com/george-williams
 Contient des versions de Courier, Caslon et Helvetica
 
-## fontsite
+### fontsite
 - fontsite/Bergamo Std (serif)
 - fontsite/CartoGothic Std (sans)
 - fontsite/CombiNumerals Ltd (déco avec des ronds autour des chiffres)
 
-## Lavoisier:
+### Lavoisier:
 http://haikumonkey.net/lavoisier-font/
 Une fonte sans sérif que je n'aime pas trop...
 
-## new_cicle:
+### new_cicle:
 Une fonte sans assez élégante
 
-## + sil
+### + sil
 http://scripts.sil.org
 (Des versions compactes et Literacy sont disponibles, ainsi que des
 versions woff, de même pour gentium)
@@ -399,12 +413,12 @@ versions woff, de même pour gentium)
   casing, uppercase characters are not included in this font. A basic set
   of Latin glyphs is also provided. 
 
-## + sil-Gentium
+### + sil-Gentium
 [Gentium basic  in archlinux/]
 http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=gentium
 - Gentium plus: des caractères en plus de Gentium
 
-## syllabics:
+### syllabics:
 http://www.tiro.com/syllabics/resources/index.html
 Des fontes 'nord américaine' (avec des symboles de langues indiennes)
  Euphemia & Uqammaq: Two Font Families for Inuktitut & Cree
@@ -414,7 +428,7 @@ Des fontes 'nord américaine' (avec des symboles de langues indiennes)
  Carrier script. Both font families are available with free licenses to end
  users. 
 
-## + thessalonica
+### + thessalonica
 http://www.thessalonica.org.ru/en/fonts-download.html
 (WOFF versions available)
 - Old Standard une fonte moderne (XIXe siècle, avec support multilingual)
@@ -436,29 +450,25 @@ http://www.thessalonica.org.ru/en/fonts-download.html
 - Tempora: une version unicode basée sur Times (yet again, moins développée
   que les autres)
 
-## thryomanes
+### thryomanes
 http://www.urbanfonts.com/fonts/Thryomanes.htm (Serif)
 
-## ! urwfonts-8.71
+### ! urwfonts-8.71
 From: ctan urwfonts-8.71.tar.bz2
 True types font (some of them are availabe in otf in the 'gsfonts' arch
 package. Contains GaramondNo8 (also available as ugmr8a.pfb, but the
 postscript version as less glyphs than the truetype 1 according to the
 doc of garamondx, for instances it misses the f-ligatures)
 
-## web
+### web
 Nice fonts found in dafont.com
 
-## Free/google-fonts
+### Free/google-fonts
 https://github.com/google/fonts
 
-## Free/adobe
+### Free/adobe
 From acroread
 
-Liste de fontes gratuites:
-- https://www.smashingmagazine.com/2019/07/gorgeous-free-open-source-typefaces/
-
-===========================================================================
 
 Tex fonts
 =========
@@ -491,8 +501,6 @@ Examples: [+] means it is already in ~/texmf/00Packages:
   fonts/type1/urw/garamond and the afm files in fonts/afm/urw/garamond]
 - garamondx: version based on Gael's one
   https://www.ctan.org/pkg/garamondx
-
-===========================================================================
 
 # Compatible font metrics
   https://wiki.archlinux.org/index.php/Metric-compatible_fonts
@@ -589,8 +597,6 @@ Examples: [+] means it is already in ~/texmf/00Packages:
   Verdana => DejaVu Sans
   Wingdings => Symbola
 
-===========================================================================
-
 # ~/Fonts:
 Linotype Opentype Library
 Windows7, Windows8
@@ -604,7 +610,7 @@ Zapfino, Minion Pro, Myriad Pro...
 The Monotype Imaging collections are from before 2004
 In Expert/ I put these new versions.
 
-# Old ~/.fonts/Sel
+## Old ~/.fonts/Sel
 ~/.fonts/Sel/windows: arial, calibri, cambria, candara, comic sans, consolas, constantia, corbel, courrier, georgia, impact, times, trebuchet, verdana
 
 tree ~/.fonts/Sel

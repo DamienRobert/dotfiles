@@ -250,8 +250,7 @@ Other tools
   cf https://wiki.archlinux.org/index.php/AUR_helpers#Comparison_table
 - repository managers: repoctl, repose
 - powerpill, pacserve: multiple downloads resp local cache to speed up dl
-
-* pacutils
+- publish: aurpublish, aur publisher (https://gitlab.com/es20490446e/aur-publisher)
 
 * pacman-contrib (which was split from pacman)
 - /usr/bin/bacman: rebuild a package from the files in the system
@@ -295,7 +294,7 @@ Other tools
 - expac: alpm data extraction utility (format packages info in the local
   database)
 - namcap: Namcap is a tool to check binary packages and source PKGBUILDs for common packaging mistakes, which can also be automatically enabled.
-- aurpublish
+- aurpublish [push a subtree to the aur]
 
 * pacutils
 - install and remove: pactrans/pacinstall/pacremove, pacsync
@@ -334,7 +333,6 @@ partially installed or upgraded.
 - pacman_log_clean: output a cleanup up version of pacman log
     Ex: ./pacman_log_clean 1
 
-
 * Xyne's scripts
 http://xyne.archlinux.ca/projects/#arch-linux
 http://xyne.archlinux.ca/projects/#aur
@@ -370,7 +368,8 @@ https://wiki.archlinux.org/index.php/Unofficial_user_repositories
 Server = http://repo.archlinux.fr/$arch
 SigLevel = Optional TrustAll
 
-Ex: repo-ck
+Ex: 
+- repo-ck
 https://wiki.archlinux.org/index.php/repo-ck
     Maintainer: graysky
     Description: Kernel and modules with Brain Fuck Scheduler and all the goodies in the ck1 patch set.
@@ -380,6 +379,8 @@ https://wiki.archlinux.org/index.php/repo-ck
 
 [repo-ck]
 Server = http://repo-ck.com/$arch
+
+- https://wiki.archlinux.org/index.php/Unofficial_user_repositories#chaotic-aur
 
 Mirror List
 -----------

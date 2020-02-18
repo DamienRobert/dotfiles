@@ -36,7 +36,7 @@ do_sync() {
 		git push --all $USBGIT
 		cd
 		echo "$ unison.rb $@ usb_backup"
-		unison.rb --push "$@" usb_backup
+		unison.rb --no-detach --push "$@" usb_backup
 		echo "$ sync"
 		sync
 	else

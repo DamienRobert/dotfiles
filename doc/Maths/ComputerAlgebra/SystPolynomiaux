@@ -1,37 +1,92 @@
 vim: ft=markdownlight fdm=expr
 
-Ref: thèse de Bardet - Etude des systèmes algébriques surdéterminés
-     thèse de Pierre-Jean
-
-Notations: m polynômes en n variables de degrés d_i; d=max(d_i)
-
 Méthode de Newton
 ==================
 
-https://en.wikipedia.org/wiki/Householder%27s_method
-     x_{n+1} = x_n + d (1/f)^(d−1)(x_n)/(1/f)^(d)(x_n)
+cf [NumberTheory/LocalRings] pour les polygones de Newton
 
-En p-adique: si f'(x_0)=u p^e, f''(x_0)/2=v
+* https://en.wikipedia.org/wiki/Householder%27s_method
+     x_{n+1} = x_n + d (1/f)^(d−1)(x_n)/(1/f)^(d)(x_n)
+  Householder's method of order 1 is just Newton's method
+
+* En p-adique:
 f(x_0)=0 mod p, ie = a p.
 
-1) f(x0+x1p)=f(x0)+f'(x0)x1p +f''(x0)/2 x1^2 p^2 + O(p^3)
-            =ap + p^{e+1}u x1 + vp^2 x_1^2
-    Donc pas de solutions si e>0, sauf si a=0 mod p, dans ce cas on a une
-    équation de type (a1+vx_1^2=0) où (a1+ux1+vx_1^2=0) à résoudre.
+1) Si on a x0 mod p tel que f(x0)=0 mod p et f'(x_0) de valuation e:
+  f'(x0)=u p^e, f''(x_0)/2=v.
+  On pose X_1=x0, X_2=x0+x1p
+  f(x0+x1p)=f(x0)+f'(x0)x1p +f''(x0)/2 x1^2 p^2 + O(p^3)
+            =ap + p^{e+1}u x1 + vp^2 x_1^2 + O(p^3)
+  Donc pas de solutions si e>0, sauf si a=0 mod p, dans ce cas on divise
+  par p^2 et on a une équation de type (a1+vx_1^2=0) où (a1+ux1+vx_1^2=0)
+  à résoudre, pour trouver X_2 mod p^2 tel que f(X_2)=0 mod p^3.
+  [Et f'(X_2) est de valuation 1 si 1<e et x_1 \ne 0.]
 
-2) Si X_n est défini mod p^{n+1}, f(X_n)=0 mod p^{2n}
-   f(X_n+ x_{n+1}p^{n+1})=f(X_n)+p^{e+n+1} u x_{n+1} + p^{2n+2} v x_{n+1}^2 +O(...)
-   si e>=n+1, il faut que f(X_n)=0 mod p^{2n+1}, et on a une équation de
-   degré 2 à résoudre
+2) Plus généralement, si on a X_n mod p^n, f'(X_n) de valuation e, et e>=n, et par exemple f(X_n)=0 mod p^{2n-1}.
+   On pose Y_n=X_n + p^n Z_n,
+   f(Y_n)=f(X_n)+f'(X_n) p^n Z_n + f''(X_n)/2 p^{2n} Z_n^2 +O(p^{3n})
+   donc f(X_{n+1})=f(X_n) mod p^{2n}. On veut donc nécessairement f(X_n)=0 mod p^{2n}, on cherche f(Y_n)=0 mod p^{3n} et on se ramène à résoudre une équation de degré 2 en Z_n mod p^n.
+   -> On a alors X_{2n}:=Y_n mod p^{2n}, f(X_{2n})=0 mod p^{3n}
+   [f'(Y_n)=f'(X_n)+f''(X_n) p^{n} Z_n est de valuation n si e>n et x_n \ne 0 (et >=e si e=n).]
+   -> On peut aussi juste chercher Z_n mod p, ie Z_n=x_n, on trouve
+   X_{n+1}:=Y_n mod p^{n+1}, f(X_{n+1})=0 mod p^{2n+1}
+   Dans les bons cas (cf 2bis) f'(X_{n+1}) va être de valuation n, donc on pourra faire du Newton, cf 3) (ça inclus cas limite e=n).
 
-3) Si n >=e, X_n est déf mod p^{n+1} et f(X_n)=0 mod p^{n+e+1}=a_n p^{e+n+1}
-   alors on pose x_{n+1}=-a_n / u.
-   Plus généralement, on peut regarder f(X_n+Y_n p^{n+1})
-   et déterminer Y_n mod p^{n+1-e} tel que f(...)=0 mod p^{2n+2}
-   et déterminer X_{2n+1-e} mod p^{2n-e+2} directement tel que f(X_{2n-e})=0 mod p^{2n+2}
+3) Si on a X_n mod p^n, f'(X_n) de valuation e, e<n, et f(X_n)=0 mod p^{n+e}.
+   On regarde Y_n=X_n + p^n Z_n
+   f(X_n+Z_n p^n)=f(X_n)+f'(X_n) Z_n p^n + O(p^2n)
+   donc f(Y_n)=f(X_n) mod p^{n+e}, et on cherche f(Y_n)=0 mod p^{2n}
+   donc on divise par p^{n+e} et on se ramène à a+u*Z_n=0 mod p^{n-e}
+   On obtient ainsi Z_n mod p^{n-e}, X_{2n-e}:=Y_n mod p^{2n-e} tel que f(X_{2n-e})=0 mod p^{2n}, de plus f'(Y_n)=f'(X_n).
+
+  Le cas limite est n=e+1: on a X_{e+1} mod p^{e+1} / f(X_{e+1})=0 mod p^{2e+1}
+  On trouve X_{e+2} mod p^{e+2} / f(X_{e+2})=0 mod p^{2e+2}
+            X_{e+4} mod p^{e+4} / f(X_{e+4})=0 mod p^{2e+4}
+            X_{e+8} mod p^{e+8} / f(X_{e+8})=0 mod p^{2e+8}...
+  En fait en changeant d'indices: on part de X_{e+m} mod p^{e+m} tel que
+  f(X_{e+m})=0 mod p^{2e+m} (m>1) et on obtient X_{e+2m} mod p^{e+2m} tel que
+  f(X_{e+2m})=0 mod p^{2e+2m}.
+
+  Le Newton est bien défini: X_{e+2m}=X_{e+m} - f(X_{e+m})/f'(X_{e+m})
+  le terme tout à droite étant de valuation 2e+m-e=e+m on a bien
+  X_{e+2m}=X_{e+m} mod p^{e+m}.
+
+
+2bis) Retour sur résoudre l'équation de degré 2 en Z_n. On peut faire du
+Newton, mais en fait on peut aussi juste regarder x_n (ie chercher X_{n+1})
+et après faire du Newton sur l'équation originale.
+Si l'on pose a=f(X_n)/p^{2n}, u=f'(X_n)/p^e (=> u inversible mod p) et v=f''(x_n)/2), X_{n+1}=X_n+p^n x_n et on cherche f(X_{n+1})=0 mod p^{2n+1}, on a:
+  a+u p^{e-n} x_n + v x_n^2 mod p
+  Si la solution x_n existe, on a f'(X_{n+1})=f'(X_n)+f''(X_n)p^n x_n=up^e+2v p^n x_n.
+On a deux cas:
+- soit f(X_n)=0 mod p^{2n} exactement. On a alors a \ne 0, donc si une
+  solution existe, x_n \ne 0 mod p.
+  - Si v=0, une solution n'est possible que si e=n, et alors f'(X_{n+1})
+    reste de valuation e, et on a gagné (ie faire du Newton ensuite).
+  - Si v \ne 0, on a deux solutions potentielles. 
+    - Si e>n, f'(X_{n+1}) est de valuation n<e, et on a gagné (les deux
+      solutions se liftent).
+    - Si e=n, f'(X_{n+1}) est de valuation e (et on a gagné), sauf si u+2v
+      x_n=0, ie si x_n est une solution double de a+ux_n+v x_n^2=0, ie si
+      le discriminant u^2-4va=0 mod p.
+- sinon, a=0 mod p.
+  - Si e>n, et v!=0, x_n=0 est une solution double, X_{n+1}=X_n et f'(X_{n+1})
+    est de valuation e. On ne pourra continuer que si a=0 mod p^2, ie
+    f(X_n)=0 mod p^{2n+2}. (Si v=0 tout le monde est solution).
+  - Si e=n, on a toujours x_n=0 comme solution, mais on a aussi si v!=0 la
+    solution x_n=-u/v. Comme x_n n'est pas double, f'(X_n) est de valuation
+    e. donc on a gagné.
+-> En résumé, si n<e alors et v!=0, alors soit f(X_n) est de valuation p^2n et on trouve deux X_{n+1} tels que f'(X_{n+1}) de valuation n, soit f(X_n) est de valuation supérieure et pour continuer il faut f(X_n) de valuation p^{2n+2}; on prend X_{n+1}=X_n.
+Si n=e, alors on a 1 ou 2 solutions (suivant que v=0 ou pas), et on a gagné
+sauf si on a une solution double.
 
 Base de Groebner
 ================
+
+* Ref: thèse de Bardet - Etude des systèmes algébriques surdéterminés
+     thèse de Pierre-Jean
+
+Notations: m polynômes en n variables de degrés d_i; d=max(d_i)
 
 Complexité dans le pire cas: 2^2^O(n)
 
@@ -44,7 +99,7 @@ complète donc on a une suite régulière donc on est en borne de Macauley
 pour grevlex et même l'ordre lexico est au pire en D^n).
 
 Cas des systèmes de dimension 0
-===============================
+-------------------------------
 
 Si le système n'admet qu'un nombre fini de solutions, la complexité est de
 d^O(n^2) où d est le degré maximum d'un élément de l'idéal (pour mettre en
@@ -84,7 +139,7 @@ Si un idéal à D solutions, FGLM se fait en O(nD^3).
 (Update: cf Gaudry-Faugère-... O(nD^w))
 
 Fonction de Hilbert
-===================
+-------------------
 
 Soit HF la fonction de Hilbert associé à k[x_0,...,x_n]/I; HF est égale à
 un polynôme pour n>=l'indice de régularité H(I).
@@ -109,7 +164,7 @@ K[X]/I)+ 1. Moreover, for any monomial ordering i_reg (I) bounds the
 degree of all polynomial in a minimal homogeneous Grobner basis of I.
 
 Suite régulière
-===============
+---------------
 
 Si I=(f_1,...,f_m) est un idéal de codim h, il existe un changement de
 variable linéaire (en drapeau)
@@ -174,7 +229,7 @@ de Macauley
 [Cf Bardet, Th 3.4.1]
 
 Cas des systèmes surdéterminés
-==============================
+------------------------------
 
 Une suite est semi-régulière ssi sa série de Hilbert est
 \prod_i=1^m (1-z^d_i)  / (1-z)^n
@@ -194,12 +249,12 @@ diviseur de 0; mais dans ce cas on veut qu'il soit plus grand que l'indice
 de régularité)
 
 Calcul des solutions
-====================
+--------------------
 
 Soit f_i homogène de degré d pour simplifier. Quitte à faire un changement
 de variable, on peut supposer que les n premiers sont réguliers (et en
 position de Noether) donc on raisonne là-dessus (une fois qu'on a les
-solutions pour f_1,...,f_n, il suffit de sélectionner parmis celles qui
+solutions pour f_1,...,f_n, il suffit de sélectionner parmi celles qui
 vérifient aussi f_{n+1}...=0).
 Ce système a un degré <=d^n.
 

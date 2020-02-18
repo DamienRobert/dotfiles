@@ -157,6 +157,91 @@ récursivement énumérable (ou axiomatisable de façon récursivement
 énumérable, cela revient au même) ; il existe toujours un énoncé G_0 Pi_1
 indécidable dans T.
 
+# Reverse Maths
+
+* https://en.wikipedia.org/wiki/Reverse_mathematics#The_base_system_RCA0
+- RCA0 is the fragment of second-order arithmetic whose axioms are the
+  axioms of Robinson arithmetic, induction for Σ^0_1 formulas, and
+  comprehension for Δ^0_1 formulas. 
+
+  The first-order part of RCA0 (the theorems of the system that do not
+  involve any set variables) is the set of theorems of first-order Peano
+  arithmetic with induction limited to Σ^0_1 formulas. It is provably
+  consistent, as is RCA0, in full first-order Peano arithmetic.
+
+  Ordinal order: ω^ω
+
+- Weak Kőnig's lemma WKL0
+  RCA0 + every infinite subtree of the full binary tree has an infinite path
+
+  WKL0 can also be defined as the principle of Σ^0_1 separation (given two
+  Σ^0_1 formulas of a free variable n which are exclusive, there is a class
+  containing all n satisfying the one and no n satisfying the other)
+
+  It turns out that RCA0 and WKL0 have the same first-order part, meaning
+  that they prove the same first-order sentences.
+
+  Ordinal order: ω^ω
+
+- Arithmetical comprehension ACA0
+  RCA0 + the comprehension scheme for arithmetical formulas
+  Actually, it suffices to add to RCA0 the comprehension scheme for Σ_1
+  formulas in order to obtain full arithmetical comprehension.
+
+  The first-order part of ACA0 is exactly first-order Peano arithmetic;
+  ACA0 is a conservative extension of first-order Peano arithmetic.
+  ACA0 can be thought of as a framework of predicative mathematics,
+  although there are predicatively provable theorems that are not provable
+  in ACA0.
+
+  Ordinal order: ε_0
+
+- Arithmetical transfinite recursion ATR0
+
+  The system ATR0 adds to ACA0 an axiom which states, informally, that any
+  arithmetical functional (meaning any arithmetical formula with a free
+  number variable n and a free class variable X, seen as the operator
+  taking X to the set of n satisfying the formula) can be iterated
+  transfinitely along any countable well ordering starting with any set.
+  ATR0 is equivalent over ACA0 to the principle of Σ^1_1 separation. ATR0 is
+  impredicative, and has the proof-theoretic ordinal Γ_0,
+  the supremum of that of predicative systems.
+
+- Π^1_1 comprehension Π^1_1-CA0
+  Π^1_1-CA0 is stronger than arithmetical transfinite recursion and is
+  fully impredicative. It consists of RCA0 plus the comprehension scheme
+  for Π^1_1 formulas.
+
+  In a sense, Π^1_1-CA0 comprehension is to arithmetical transfinite
+  recursion (Σ^1_1 separation) as ACA0 is to weak Kőnig's lemma (Σ^0_1
+  separation).
+
+  Ordinal order: ψ_0(Ω_ω)
+
+# Calculability
+
+* Turing degree and turing jump
+* https://en.wikipedia.org/wiki/Turing_jump
+- The Turing jump 0′ of the empty set is Turing equivalent to the halting problem.
+- For each n, the set 0(n) is m-complete at level Σ_n^0 in the arithmetical hierarchy (by Post's theorem). https://en.wikipedia.org/wiki/Post%27s_theorem
+  => Cf [Ordinaux/Calculabilite] pour l'extension de la hierarchie
+  arithmétique (arithmétique = L_1 \cap P(w_0)) le long d'ordinaux récursifs (ie à L_{w_1^CK} \cap P(w_0) ie hyperarithmétique) puis le long des L_alpha.
+
+* https://en.wikipedia.org/wiki/Turing_degree
+- For every degree a there is a degree strictly between a and a′. In fact, there is a countable sequence of pairwise incomparable degrees between a and a′.
+- A degree a is of the form b′ if and only if 0′ ≤ a.
+- For any degree a there is a degree b such that a < b and b′ = a′; such a degree b is called low relative to a.
+- There is an infinite sequence ai of degrees such that a′i+1 ≤ ai for each i.
+- A degree is called r.e. (recursively enumerable) if it contains a recursively enumerable set. Every r.e. degree is less than or equal to 0′ but not every degree less than 0′ is an r.e. degree.
+  (G. E. Sacks, 1964) The r.e. degrees are dense; between any two r.e. degrees there is a third r.e. degree.
+
+* https://arxiv.org/pdf/math/9808093.pdf
+Infinite Time Turing Machines Joel David Hamkins and Andy Lewis
+= machine de turing qui ont un état "limite", permettant de passer à la
+limite sur un ordinal. Plus puissant que la higher recursion theory:
+
+There has been much work in higher recursion theory analyzing well-founded computations on infinite objects (see e.g. [Sacks]). Much of that theory, however, grows out of the analogy which associates the ∆^1_1 sets with the finite sets and the Π^1_1 sets with the semi-decidable sets.  It there foregives a different analysis than ours, since in our account, the Π^1_1 sets will become actually decidable, along with their complements the Σ^1_1sets, and the semi-decidable sets, with the jump operator, will stratify the class of ∆^1_2 sets.
+
 forum
 =====
 

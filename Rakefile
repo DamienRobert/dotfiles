@@ -62,7 +62,7 @@ namespace :remote do
 		require 'dr/config/configure/run'
 		unison_list.each do |c|
 			# ~config/run.rb -c _ToUnison :config --all
-			DR::Run.new(c).remote_config(*args)
+			c.run.remote_config(*args)
 		end
 	end
 
@@ -78,6 +78,13 @@ namespace :remote do
 Procedure: if the glibc archlinux version is too recent; compile unison on imb (eventually compile ocaml first): ~/script/install/{ocaml,unison}
 Put the unison binary in ~/opt/unison
 Then $ transfert aimb:opt/unison ~/tmp/
+
+Algorithm:
+- we search for unison-2.51.2-text-64 in /opt/unison and /tmp/unison
+  here 2.51.2 is the version, text the type and 64 the arch.
+- if not found, and the current computer match the arch, we look for the version of /usr/bin/unison-text
+- if found, we upload it to remote:bin/unison-2.51.2-text-64 and symlink remote:bin/unison to it
+Also if uploading to UnisonServer, we upload both text and gtk versions to opt/unison
 =end
 	desc "Update unison binary to latest version
 	If 'version' is not passed autodetect it from the unison binary.
@@ -87,6 +94,8 @@ Then $ transfert aimb:opt/unison ~/tmp/
 		require 'dr/config/configure/run'
 		curcomp=DR::Computer.new
 		unison="unison"
+		clobber=false
+		clobber=true if ENV['Force']
 
 		# unison version
 		universion = lambda do |ubin|
@@ -125,8 +134,6 @@ Then $ transfert aimb:opt/unison ~/tmp/
 			end
 		end
 
-		# rsync -vaczP /bin/unison-text imbu:opt/unison/${VERSION}-64
-		# rsync -vaczP /bin/unison-gtk2 imbu:opt/unison/${VERSION}-gtk2-64
 
 		# a.with_defaults(version: "unison-2.51.2")
 		version=a.version
@@ -138,9 +145,11 @@ Then $ transfert aimb:opt/unison ~/tmp/
 				if c === DR::Computers::UnisonServer
 					arch=comparch.call(curcomp)
 					puts "-- #{c} [#{c.ssh_name}]: opt/unison/ => #{arch} --"
+					# rsync -vaczP /bin/unison-text imbu:opt/unison/${VERSION}-64
+					# rsync -vaczP /bin/unison-gtk2 imbu:opt/unison/${VERSION}-gtk2-64
 					[ "#{ubin}-gtk2-#{arch}", "#{ubin}-text-#{arch}"].each do |target|
 						if (obin=findbin.call(target))
-							SH.rsync("#{obin}", c.sshfile("opt/unison/#{target}", escape: true, universal: true))
+							SH.rsync("#{obin}", c.sshfile("opt/unison/#{target}", escape: true, universal: true), clobber: clobber)
 						end
 					end
 				end
@@ -153,9 +162,13 @@ Then $ transfert aimb:opt/unison ~/tmp/
 				end
 				puts "-- #{c} [#{c.ssh_name}]: #{bin} --"
 				if (obin=findbin.call(bin))
-					DR::Run.new(c).run_command("mkdir -p bin", universal: true)
-					suc, _=SH.rsync(curcomp.sshfile(obin, escape: true, universal: true), c.sshfile("bin/#{bin}", escape: true, universal: true))
-					DR::Run.new(c).run_command("ln -snf #{bin.shellescape} bin/unison", universal: true) if suc
+					c.run_command("mkdir -p bin", universal: true)
+					# TODO: do we really need the curcomp.sshfile here?
+					# we don't use it in the rsync call above
+					suc, _=SH.rsync(curcomp.sshfile(obin, escape: true, universal: true), c.sshfile("bin/#{bin}", escape: true, universal: true), clobber: clobber)
+					ln_opts=''
+					ln_opts='nf' if ENV['Force'] || ENV['ForceLink']
+					c.run_command("ln -s#{ln_opts} #{bin.shellescape} bin/unison", universal: true) if suc
 				end
 			end
 		end

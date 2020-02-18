@@ -9,5 +9,7 @@ Nosql
 =====
 
 - https://www.mongodb.com/nosql-inline
+  MongoDB is a general purpose, document-based, distributed database built for modern application developers and for the cloud era.
 - https://rethinkdb.com/faq/
   RethinkDB is the first open-source, scalable database designed specifically to push data to applications in realtime. It dramatically reduces the time and effort necessary to build scalable realtime apps.
+  Unfortunately no longer active: http://www.defmacro.org/2017/01/18/why-rethinkdb-failed.html

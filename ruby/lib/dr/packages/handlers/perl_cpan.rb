@@ -65,7 +65,7 @@ EOF
 				end
 			end
 
-			def update(*args)
+			def update(*args, **kw)
 				super do |o|
 					##cpanm --self-upgrade is just a shortcup for cpanm App::cpanminus
 					##so no need for a special case

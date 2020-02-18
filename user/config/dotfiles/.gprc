@@ -14,5 +14,5 @@ log=1
 #ifnot EMACS help = "/usr/bin/gphelp -detex -ch 4 -cb 0 -cu 2"
 
 parisize=40M
-parisizemax=4G
+parisizemax=3G
 threadsizemax=1G

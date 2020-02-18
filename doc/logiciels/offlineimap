@@ -5,3 +5,10 @@ autorefresh=10 #sync every 10 minutes
 - https://wiki.archlinux.org/index.php/OfflineIMAP#Overriding_UI_and_autorefresh_settings
  synchronize everything once:
  offlineimap -o -u blinkenlights
+
+* Alternatives: 
+- https://wiki.archlinux.org/index.php/Isync -> mbsync
+https://people.kernel.org/mcgrof/replacing-offlineimap-with-mbsync
+
+- https://github.com/OfflineIMAP/imapfw [seems dead]
+  http://imapfw.offlineimap.org/

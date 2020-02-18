@@ -6,8 +6,8 @@ while true;
 do
   case "$1" in
     -- ) break ;;
-    -b ) shift; start=t ;;
-    -i|--init ) shift; init=$1 ;;
+    -b ) shift; start=t ;; #start bluetooth
+    -i|--init ) shift; init=$1 ;; #pair
     *) break;;
   esac
 done
@@ -15,26 +15,15 @@ done
 connect() {
 	dev=$1; shift
 	case $dev in
-		ueboom|uebooml)
-			dev="88:C6:26:06:F4:D1" #UE BOOM Left
-			;;
-		ueboomr)
-			dev="88:C6:26:07:18:A6" #UE BOOM Right
-			;;
-		android)
+		ueboom|uebooml) dev="88:C6:26:06:F4:D1" ;; #UE BOOM Left
+		ueboomr) dev="88:C6:26:07:18:A6" ;; #UE BOOM Right
+		android) dev="14:9F:3C:4E:25:56" ;; # Galaxy A8 (2018)
 			# dev="88:82:54:00:13:1E" #samsung galaxy 3 mini
-			# dev="88:82:54:00:13:1E" #samsung galaxy 3 mini
-			# Device 14:9F:3C:4E:25:56 Galaxy A8 (2018)
-			dev="14:9F:3C:4E:25:56"
-			;;
-		soundbar)
-			dev="FC:F1:36:C6:BD:97"
-			#[NEW] Device FC:F1:36:B7:44:CC [TV]Samsung LED48
+		soundbar) dev="FC:F1:36:C6:BD:97" ;; #[Samsung] Soundbar J-Series
 			#[NEW] Device 38:01:95:9F:20:26 [Samsung] Soundbar
-			#[NEW] Device FC:F1:36:C6:BD:97 [Samsung] Soundbar J-Series
-			;;
+		tv) dev="FC:F1:36:B7:44:CC" ;; #[TV]Samsung LED48
+		fx|fxaudio) dev="FC:58:FA:C2:F1:EF" ;;
 		*) #assume this is a fingerprint
-			;;
 	esac
 	[[ -z $dev ]] && return 1
 	echo "=> $dev"
@@ -69,19 +58,20 @@ EOS
 }
 
 start_bluetooth() {
+	echo "# Starting bluetooth"
 	sudo modprobe btusb
 	#rfkill unblock bluetooth
 	sudo systemctl start "rfkill-unblock@bluetooth.service"
 	#sudo hciconfig hci0 up #this is done by 'power on' in bluetoothctl
 	#sudo systemctl start bluetooth.target #this is done automatically by systemd
-	sudo systemctl start bluetooth.service #this is done automatically by systemd
+	sudo systemctl start bluetooth.service
 	# stop: sudo systemctl start "rfkill-block@bluetooth.service"
 	#       sudo systemctl stop bluetooth.service
-
 }
-[[ $# == 0 ]] && exit 0 
 
 [[ -n $start ]] && start_bluetooth
+
+[[ $# == 0 ]] && exit 0 
 for dev in $@; do
 	connect $dev
 done

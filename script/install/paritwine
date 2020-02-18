@@ -9,4 +9,4 @@ build_git -l cmh master
 
 version=master
 build_helper $@
-built_git
+built_git -- $args

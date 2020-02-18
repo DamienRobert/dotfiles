@@ -97,6 +97,22 @@ http://www.ams.org/notices/199511/forum.pdf
   Oliver Lorscheid
     This text serves as an introduction to F1-geometry for the general mathematician. We explain the initial motivations for F1-geometry in detail, provide an overview of the different approaches to F1 and describe the main achievements of the field. 
 
+- https://arxiv.org/abs/1803.01466
+  Learning how to Prove: From the Coq Proof Assistant to Textbook Style
+Sebastian Böhne (Universität Potsdam), Christoph Kreitz (Universität Potsdam)
+(Submitted on 5 Mar 2018)
+    We have developed an alternative approach to teaching computer science students how to prove. First, students are taught how to prove theorems with the Coq proof assistant. In a second, more difficult, step students will transfer their acquired skills to the area of textbook proofs. In this article we present a realisation of the second step.
+    Proofs in Coq have a high degree of formality while textbook proofs have only a medium one. Therefore our key idea is to reduce the degree of formality from the level of Coq to textbook proofs in several small steps. For that purpose we introduce three proof styles between Coq and textbook proofs, called line by line comments, weakened line by line comments, and structure faithful proofs.
+    While this article is mostly conceptional we also report on experiences with putting our approach into practise.
+
+- https://webusers.imj-prg.fr/~pierre.colmez/FW.html
+    (des lettres très intéressantes), et
+    https://webusers.imj-prg.fr/~pierre.colmez/FW.pdf
+    LE PROGRAMME DE FONTAINE par Pierre Colmez
+
+- https://webusers.imj-prg.fr/~pierre.colmez/ams-ST.pdf
+  TATE’S WORK AND THE SERRE-TATE CORRESPONDENCE, PIERRE COLMEZ
+
 Calcul sur les corps algébriquement clos
 ========================================
 
@@ -238,6 +254,10 @@ Christophe Petit and Kristin Lauter
  Kirsten Eisentraeger and Sean Hallgren and Kristin Lauter and Travis
  Morrison and Christophe Petit
 
+- https://who.rocq.inria.fr/Xavier.Bonnetain/pdfs/these.pdf
+  Hidden Structures and Quantum Cryptanalysis
+  Thèse de doctorat d’informatiquePrésentée parXavier Bonnetain
+
 Arithmetic
 ----------
 
@@ -252,6 +272,13 @@ Hwajeong Seo and Zhe Liu and Patrick Longa and Zhi Hu
 https://eprint.iacr.org/2018/376
 Arithmetic Considerations for Isogeny Based Cryptography
 Joppe W. Bos and Simon Friedberger
+
+Size
+----
+
+https://eprint.iacr.org/2019/499.pdf
+ual Isogenies and Their Application to Public-key Compression for Isogeny-based Cryptography
+Michael Naehrig and Joost Renes
 
 Preprints
 =========
@@ -1003,3 +1030,22 @@ https://arxiv.org/abs/1504.07697 <https://arxiv.org/abs/1712.00669>.
 https://arxiv.org/abs/1908.02499
 The Argument against Quantum Computers
 Gil Kalai (Submitted on 7 Aug 2019)
+
+https://arxiv.org/abs/1911.03748
+Quantum speedups need structure
+  We prove the following conjecture, raised by Aaronson and Ambainis in 2008: Let f:{−1,1}n→[−1,1] be a multilinear polynomial of degree d. Then there exists a variable xi whose influence on f is at least poly(Var(f)/d).
+  As was shown by Aaronson and Ambainis, this result implies the following well-known conjecture on the power of quantum computing, dating back to 1999: Let Q be a quantum algorithm that makes T queries to a Boolean input and let ϵ,δ>0. Then there exists a deterministic classical algorithm that makes poly(T,1/ϵ,1/δ) queries to the input and that approximates Q's acceptance probability to within an additive error ϵ on a 1−δ fraction of inputs. In other words, any quantum algorithm can be simulated on most inputs by a classical algorithm which is only polynomially slower, in terms of query complexity.
+
+https://eprint.iacr.org/2019/1336
+ Critical Perspectives on Provable Security: Fifteen Years of "Another Look" Papers
+Neal Koblitz and Alfred Menezes
+
+https://arxiv.org/abs/cs/0012023
+The Tale of One-way Functions
+Leonid A. Levin
+    The existence of one-way functions is arguably the most important problem in computer theory. The article discusses and refines a number of concepts relevant to this problem. For instance, it gives the first combinatorial complete owf, i.e., a function which is one-way if any function is. There are surprisingly many subtleties in basic definitions. Some of these subtleties are discussed or hinted at in the literature and some are overlooked. Here, a unified approach is attempted.
+
+https://arxiv.org/abs/1807.02890
+Instability in invariant theory
+George Kempf
+     Transcriber's note: In the fall of 1976, my advisor, David Mumford, handed me a short preprint by George Kempf to read. It was the first state of what eventually became his influential Annals paper "Instability in Invariant Theory" (Annals of Mathematics, Second Series, Vol. 108, No. 2 (Sep., 1978), pp. 299-316). The introduction to the published version ends with an acknowledgement and a dig: "I want to thank the referee of the first version of this paper for pointing out Corollary 4-5 and conjecturing that the original {0}-instability could be replaced by S-instability. Unfortunately, the inclusion of S-instability has completely destroyed the simplicity of the original version." Over the intervening years, the simplicity and elegance of the first version has continued to create a readership for it, and copies (see Figure 8) continue to circulate informally. I created this LaTeX'ed version to make the paper accessible to all who may be interested in it, trying to keep the look close to that of the original typewritten preprint and making changes only to correct a few obvious typos and harmonize the markup. My thanks to George's children, Robin and Lucas Kempf, for graciously granting me permission to post this transcription. Comments welcome to Ian Morrison (morrison@fordham.edu)

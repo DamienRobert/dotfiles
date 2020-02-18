@@ -108,6 +108,11 @@ Adb diagnostic mode: https://stackoverflow.com/questions/24006903/android-diagno
     su; setprop sys.usb.config diag,adb
     setprop sys.usb.config mtp #back to mtp
 
+Exemple pour virer les applis oem: https://www.xda-developers.com/uninstall-carrier-oem-bloatware-without-root-access/
+- pm list packages | grep '<OEM/Carrier/App Name>'
+- pm uninstall -k --user 0 <name of package>
+- Reinstall: adb shell cmd package install-existing <name of package>
+
 # Installer une nouvelle rom:
 https://tektab.com/2015/10/31/android-bootloaderfastboot-mode-and-recovery-mode-explained/
 https://developers.google.com/android/images #Instruction for flashing nexus
@@ -220,6 +225,11 @@ Roms:
   https://www.reddit.com/r/Axon7/comments/6e515u/difference_between_android_ice_cold_project_and/
   AICP has lots more customization options and supports substratum
   officially. AICP also comes with magisk
+
+Cross compilation
+=================
+
+https://wiki.gentoo.org/wiki/Project:Android/tarball
 
 Phones
 ======

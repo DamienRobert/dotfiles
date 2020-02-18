@@ -5,7 +5,7 @@ require 'dr/packages/handlers'
 module DR
 	module Packages
 		class Handler::Nodejs < Handler::Generic
-			def initialize(*args)
+			def initialize(*args, **kw)
 				super
 				@graph_type=:manual
 			end
@@ -78,7 +78,7 @@ module DR
 				true
 			end
 
-			def update(*args)
+			def update(*args, **kw)
 				super do |o|
 					if check_folder
 						pkgs=output_list("#{@packager} outdated -g --parseable --depth=0")

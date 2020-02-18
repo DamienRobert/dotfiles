@@ -90,3 +90,49 @@ négative. Si on demande de plus |r|<k/2 alors on n'a plus qu'une solution:
 
 Résumé: a/b est bien approximé par -v_i/u_i (|a/b-p/q|<1/2q^2).
         et r_i/u_i approxime bien a modulo b
+
+
+Irrationalité
+=============
+
+* Liouville-Roth irrationality measure:
+http://mathworld.wolfram.com/IrrationalityMeasure.html
+
+the largest possible value for μ such that 0 < | x − p/q | < 1/q^μ is satisfied by an infinite number of integer pairs (p, q) with q > 0.
+Ou encore l'inf des μ pour lesquels il n'y a qu'un nombre fini de solutions, ou encore l'inf des μ pour lesquels | x − p/q | > 1/q^{μ+ε} pour p,q assez grands.
+
+- si x rational, μ=1
+- Dirichlet's approximation theorem: for an irrational α, the inequality
+    | α − p/q | < 1/q^2
+  is satisfied by infinitely many integers p and q, ie irrationality measure >= 2.
+  Meilleure amélioration possible:
+  https://en.wikipedia.org/wiki/Hurwitz%27s_theorem_(number_theory)
+  for every irrational number ξ there are infinitely many relatively prime integers m, n such that | ξ − p/q | < 1/sqrt{5}q^2.
+- Transcendental numbers have irrationality measure 2 or greater
+- The Liouville numbers are precisely those numbers having infinite irrationality measure
+- Almost all numbers have an irrationality measure equal to 2.
+- Roth: an algebraic number as irrationality measure = 2
+  Liouville: irrationality measure of a degree d alg number is <= d.
+
+μ(x)=1+lim sup(ln q_(n+1))/(ln q_n)
+    =2+lim sup(ln a_(n+1))/(ln q_n)
+où [a_0, a_1, ...] est le développement en fraction continues de x et
+p_n/q_n le nième convergent.
+
+=> prouver l'irrationalité: si on exhibe |α-r_n/s_n|=o(1/s_n)
+   ie |s_n α-r_n|->0, alors α est irrationel;
+   et si |α-r_n/s_n|=O(1/s_n^{2+ε}) alors α est trascendant.
+   Utilisé par Apery pour la preuve de l'irrationalité de ς(3):
+   https://math.stackexchange.com/questions/62878/proving-irrationality
+
+* Résultats de transcendance:
+- https://en.wikipedia.org/wiki/Gelfond%E2%80%93Schneider_theorem (1934)
+    If a and b are algebraic numbers with a ≠ 0, 1, and b irrational, then any value of ab is a transcendental number.
+
+- https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem (1885)
+
+Lindemann–Weierstrass theorem — if α1, ..., αn are algebraic numbers that are linearly independent over the rational numbers ℚ, then e^α1, ..., e^αn are algebraically independent over ℚ.
+
+An equivalent formulation — If α1, ..., αn are distinct algebraic numbers, then the exponentials e^α1, ..., e^αn are linearly independent over the algebraic numbers.
+
+Application:  e^α is transcendental for every non-zero algebraic number α, thereby establishing that e and π are transcendental.

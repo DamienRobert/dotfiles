@@ -31,8 +31,11 @@ which can be used to filter the passwds we want to crack.
 john -show /tmp/passwwd
 john --pot=hashcat.potfile --show foo.htpasswd
 
-Hashmask
-========
+Hashcat
+=======
+
+git clone https://github.com/hashcat/hashcat.git
+make
 
 hashcat --force -m 1500 --username -a 3 -1 '?a'  /tmp/passwd '?1?1?1?1?1?1?1?1'
   -m 1500: des mode
@@ -41,14 +44,18 @@ hashcat --force -m 1500 --username -a 3 -1 '?a'  /tmp/passwd '?1?1?1?1?1?1?1?1'
   -1 '?a' the '?1' corresponds to a-zA-Z0-9+spéciaux
 Misc options: --incremental
 
+Note: the default session name is hashcat
+To specify a mask: https://hashcat.net/wiki/doku.php?id=mask_attack
+
 Ex: openssl passwd -crypt -salt ab foobar
     abVbJXzHUY99s
 
 
 => srun -p long_sirocco --time=2-00:00:00 --pty zsh -i
+   module load compiler/cuda/10.0/toolkit/10.0
    hashcat/hashcat -m1500 -a 3 -1 '?l?d?s' foo/passwd_one '?1?1?1?1?1?1?1?1'
    hashcat/hashcat --session foo -a3 -m1500 --username foo/passwd '?h?h?h?h?h?h?h?h'
-   hashcat --restore
+   hashcat [--session foo] --restore
    hashcat/hashcat --benchmark > benchmark
    hashcat/hashcat -m1500 -a 3 foo/passwd1 '?a?a?a?a?a?a?a?a' foo/passwd_hashcat
    hashcat/hashcat --force -m 1500 --username -a 3 foo/passwd2 masks

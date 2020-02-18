@@ -5,4 +5,4 @@ url=https://github.com/zsh-users/zsh
 build_helper $@
 CUSTOM_VERSION='nameversion=$(git -C "$folder" describe --tags || git -C "$folder" describe --always)'
 
-build_git
+build_git -- $args

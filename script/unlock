@@ -51,11 +51,17 @@ mountcrypt() {
 	idir=$1; odir=$2
 	if [[ -d $idir ]]; then
 		echo "# encfs: $idir -> $odir"
-		if findmnt -t fuse.encfs $odir >/dev/null; then
+		if findmnt -t fuse.encfs,fuse.gocryptfs $odir >/dev/null; then
 			echo "## encfs already mounted on $odir"
 		else
 			mkdir -m 700 -p $odir
-			encfs --stdinpass $idir $odir <<< $ENCFS
+			if [[ -f $idir/gocryptfs.conf ]]; then
+				gocryptfs $idir $odir <<< $ENCFS
+			elif [[ -f $idir/.encfs6.xml ]]; then
+				encfs --stdinpass $idir $odir <<< $ENCFS
+			else
+				"!! $idir encryption type not detected"
+			fi
 		fi
 	fi
 }

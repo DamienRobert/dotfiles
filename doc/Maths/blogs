@@ -1,16 +1,5 @@
 vim: foldmethod=expr ft=markdownlight
 
-Elliptic News
-=============
-
-https://ellipticnews.wordpress.com/2016/05/02/kim-barbulescu-variant-of-the-number-field-sieve-to-compute-discrete-logarithms-in-finite-fields/
-https://ellipticnews.wordpress.com/2017/08/14/isogeny-based-post-quantum-crypto/
-
-https://ellipticnews.wordpress.com/2019/03/27/ams-sectional-meeting-special-session-on-the-mathematics-of-cryptography/
--> links on sidhzm
-
-https://ellipticnews.wordpress.com/2019/04/20/recent-work-on-pairing-inversion-2/
-
 David Madore
 ============
 
@@ -39,6 +28,7 @@ La forme élégante du plan projectif complexe
 
 http://www.madore.org/~david/weblog/d.2013-01-16.2104.grands-nombres.html
 http://www.reddit.com/r/math/comments/283298/how_to_compute_a_very_large_number/
+http://www.madore.org/~david/weblog/d.2014-06-15.2208.grand-nombre.html#d.2014-06-15.2208
 -> Large numbers
 
 http://www.madore.org/~david/weblog/d.2008-03-16.1534.ordinaux-et-hydres.html
@@ -76,10 +66,62 @@ Où je commence par penser tout haut toujours à propos de spectres, et finis pa
 http://www.madore.org/~david/weblog/d.2018-07-10.2535.html#d.2018-07-10.2535
 Un peu de mécanique quantique : information négative et probabilités négatives
 
-David Monniaux
-==============
+Elliptic News
+=============
 
-http://david.monniaux.free.fr/dotclear/index.php/post/2012/02/04/Terminaison-de-la-fonction-d-Ackermann
+https://ellipticnews.wordpress.com/2016/05/02/kim-barbulescu-variant-of-the-number-field-sieve-to-compute-discrete-logarithms-in-finite-fields/
+https://ellipticnews.wordpress.com/2017/08/14/isogeny-based-post-quantum-crypto/
+
+https://ellipticnews.wordpress.com/2019/03/27/ams-sectional-meeting-special-session-on-the-mathematics-of-cryptography/
+-> links on sidhzm
+
+https://ellipticnews.wordpress.com/2019/04/20/recent-work-on-pairing-inversion-2/
+https://ellipticnews.wordpress.com/2019/11/09/isogeny-crypto/
+
+Hard Arithmetic (Alex Youcis)
+===============
+
+https://ayoucis.wordpress.com/2015/08/10/p-divisible-groups-formal-groups-and-the-serre-tate-theorem/
+https://ayoucis.wordpress.com/2014/07/22/what-information-is-contained-in-an-infinitesimal-neighborhood-of-a-point/
+https://ayoucis.wordpress.com/2015/07/24/a-different-viewpoint-on-etale-cohomology/
+
+Never Ending Books
+==================
+
+http://www.neverendingbooks.org/the-oracle-on-the-symmetries-of-roots
+  The compact connected Hausdorff space Mcyc of Kucharczyk and Scholze is nothing but the space of complex points of Spec(Qcyc)/F1!
+
+http://www.neverendingbooks.org/car-crashes-in-scheme-theory
+  On thick points
+
+http://www.neverendingbooks.org/grothendieck-topologies-as-functors-to-top
+
+http://www.neverendingbooks.org/the-geometry-of-football
+David Sumpter, the author of Soccermatics: Mathematical Adventures in the Beautiful Game, wrote a nice article over at Medium The geometry of attacking football.
+
+Livres:
+http://www.neverendingbooks.org/lets-spend-3k-on-mathbooks
+http://www.neverendingbooks.org/how-much-to-spend-on-catbooks
+
+http://www.neverendingbooks.org/moonshine-for-everyone
+
+http://www.neverendingbooks.org/arithmetic-topology-in-quanta
+In this analogy, which is based on the similarity between finite connected covers of manifolds on the one hand and connected etale extensions of rings on the other, the prime spectrum of Z should correspond (due to Minkowski’s result on discriminants and Perelman’s proof of the Poincare-conjecture) to the 3-sphere S3.
+
+http://www.neverendingbooks.org/from-the-da-vinci-code-to-galois
+The set of all integral linear recursive sequences, R(Z), is a ring (easy),
+but also a co-algebra (which involve Hankel matrix)
+
+http://www.neverendingbooks.org/the-langlands-program-and-non-commutative-geometry
+=> http://www.ams.org/journals/bull/0000-000-00/S0273-0979-2018-01609-1/home.html
+   On the genesis of Robert P. Langlands' conjectures and his letter to André Weil
+
+http://www.neverendingbooks.org/closing-in-on-gabriels-topos
+https://mathoverflow.net/questions/259263/what-is-precisely-still-missing-in-connes-approach-to-rh/259301#259301
+https://mathoverflow.net/questions/34699/approaches-to-riemann-hypothesis-using-methods-outside-number-theory
+https://mathoverflow.net/questions/69389/riemann-hypothesis-via-absolute-geometry
+http://www.neverendingbooks.org/the-riemann-hypothesis-and-6
+  On the psi function
 
 Terrence Tao
 ============
@@ -143,7 +185,12 @@ https://terrytao.wordpress.com/2019/05/08/the-alternative-hypothesis-for-unitary
 https://terrytao.wordpress.com/2019/05/31/searching-for-singularities-in-the-navier-stokes-equations/
 https://terrytao.wordpress.com/2019/06/08/ruling-out-polynomial-bijections-over-the-rationals-via-bombieri-lang/
 https://terrytao.wordpress.com/2019/08/13/eigenvectors-from-eigenvalues/
+=> https://terrytao.wordpress.com/2019/12/03/eigenvectors-from-eigenvalues-a-survey-of-a-basic-identity-in-linear-algebra/
 https://terrytao.wordpress.com/2019/08/26/large-prime-gaps-and-probabilistic-models/
+https://terrytao.wordpress.com/2014/07/15/real-analysis-relative-to-a-finite-measure-space/ [Internal reasoning in the topos of probability]
+Voir aussi:
+- https://terrytao.wordpress.com/2012/04/02/a-cheap-version-of-nonstandard-analysis/
+- https://terrytao.wordpress.com/2010/01/30/the-ultralimit-argument-and-quantitative-algebraic-geometry/
 
 Gowers
 ======
@@ -166,7 +213,73 @@ See also: https://www.quantamagazine.org/20160531-set-proof-stuns-mathematicians
 zm
 https://gowers.wordpress.com/2017/09/19/two-infinities-that-are-surprisingly-equal/
 
-Godel lost letter
+Kowalski
+========
+
+http://blogs.ethz.ch/kowalski/2012/11/14/trace-functions-ii-examples/
+http://blogs.ethz.ch/kowalski/2014/01/01/three-little-things-i-learnt-recently/
+  (Un corps de carac !=2 a un "square root morphism" ssi -1 n'est pas un carré)
+http://blogs.ethz.ch/kowalski/2014/05/01/normalizers-everywhere/
+  \xi^a H\xi^b = H <=> \xi^{a+b}\in H and \xi^{(a,b)}\in N(H), where (a,b) is the gcd of a and b. In particular, for all pairs (a,b) where a and b are coprime, the condition above implies that \xi belongs to the normalizer of H.
+http://blogs.ethz.ch/kowalski/2015/04/11/worms-brains-and-graphes-expanseurs/
+http://blogs.ethz.ch/kowalski/2016/06/05/a-geometric-interpretation-of-schinzels-hypothesis/
+http://noncommutativegeometry.blogspot.fr/2017/01/gamma-functions-and-nonarchimedean.html# => Twisted characteristic p zeta functions and Drinfeld modules
+
+Gil Kalai
+=========
+- https://gilkalai.wordpress.com/2019/03/09/8866128975287528%c2%b3-8778405442862239%c2%b3-2736111468807040%c2%b3/
+  8866128975287528³+(-8778405442862239)³+(-2736111468807040)³
+  via la recherche de points sur la courbe elliptique k = x^3 + y^3 + z^3.
+
+- https://gilkalai.wordpress.com/2019/03/22/danny-nguyen-and-igor-pak-presburger-arithmetic-problem-solved/
+
+- https://gilkalai.wordpress.com/2019/03/26/10-milestones-in-the-history-of-mathematics-according-to-nati-and-me/
+
+- https://gilkalai.wordpress.com/2019/07/17/dan-romik-on-the-riemann-zeta-function/
+
+- https://gilkalai.wordpress.com/2019/08/04/avi-wigdersons-integrating-computational-modeling-algorithms-and-complexity-into-theories-of-nature-marks-a-new-scientific-revolution-an-invitation-for-a-discussion/
+
+- https://gilkalai.wordpress.com/2019/08/21/the-argument-against-quantum-computers-a-cern-colloquium-and-a-new-paper/
+  https://www.quantamagazine.org/gil-kalais-argument-against-quantum-computers-20180207/#comment-4559220424
+- https://gilkalai.wordpress.com/2019/09/23/quantum-computers-amazing-progress-google-ibm-and-extraordinary-but-probably-false-supremacy-claims-google/
+- https://gilkalai.wordpress.com/2019/09/22/jeff-kahn-and-jinyoung-park-maximal-independent-sets-and-a-new-isoperimetric-inequality-for-the-hamming-cube/
+
+- https://gilkalai.wordpress.com/2019/10/13/gerard-cornuejolss-bakers-eighteen-5000-dollars-conjectures/
+
+- https://gilkalai.wordpress.com/2019/11/13/gils-collegial-quantum-supremacy-skepticism-faq/
+
+- https://gilkalai.wordpress.com/2020/01/17/amazing-zhengfeng-ji-anand-natarajan-thomas-vidick-john-wright-and-henry-yuen-proved-that-mip-re-and-thus-disproved-connes-1976-embedding-conjecture-and-provided-a-negative-answer-to-tsirelso/
+
+Geometry and the imagination
+============================
+
+http://lamington.wordpress.com/2013/11/20/kahler-manifolds-and-groups-part-1/
+http://lamington.wordpress.com/2013/11/25/kahler-manifolds-and-groups-part-2/
+Intro on Kahler manifolds (and the properties of complex abelian varieties
+that arise as their Kahler structure):
+http://math.bu.edu/people/jsweinst/Teaching/MA843Fall13/Lecture6VariationsOfHS.pdf (Kahler manifolds and variations of Hodge structures)
+
+http://lamington.wordpress.com/2014/05/26/div-grad-curl-and-all-this/
+Notes: http://math.uchicago.edu/~dannyc/courses/riem_geo_2013/riem_geo_notes.pdf
+       http://math.uchicago.edu/~dannyc/courses/minimal_surfaces_2014/minimal_surfaces_notes.pdf
+
+http://lamington.wordpress.com/2014/10/24/mapping-class-groups-the-next-generation/
+ The geometry of surfaces
+
+http://lamington.wordpress.com/2014/11/07/explosions-now-in-glorious-2d/
+
+Joel David Hamkins
+==================
+
+http://jdh.hamkins.org/satisfaction-is-not-absolute/
+  We prove that the satisfaction relation N⊨φ[a] of first-order logic is not absolute between models of set theory having the structure N and the formulas φ all in common.
+
+David Monniaux
+==============
+
+http://david.monniaux.free.fr/dotclear/index.php/post/2012/02/04/Terminaison-de-la-fonction-d-Ackermann
+
+Godel lost letter (rjlipton)
 =================
 
 https://rjlipton.wordpress.com/2009/08/01/the-chinese-remainder-theorem-with-limits/
@@ -203,6 +316,14 @@ https://rjlipton.wordpress.com/2009/03/25/whos-afraid-of-natural-proofs/
 https://rjlipton.wordpress.com/2012/07/04/july-fourth-sale-of-ideas/  Manic Monomials
 https://rjlipton.wordpress.com/2019/07/16/summer-reading-in-theory/
 https://rjlipton.wordpress.com/2019/08/15/predicting-chess-and-horses/
+https://rjlipton.wordpress.com/2019/09/26/quantum-switch-em/
+https://rjlipton.wordpress.com/2019/11/11/goldbach-a-curious-conjecture/
+  Random model for the primes and link with permutations
+https://rjlipton.wordpress.com/2019/11/29/predicating-predictivity/
+https://rjlipton.wordpress.com/2020/01/12/our-thoughts-on-pnp/
+https://rjlipton.wordpress.com/2020/01/25/the-halting-no-go-theorem/
+https://rjlipton.wordpress.com/2020/02/01/subliminal-graph-duals/
+https://rjlipton.wordpress.com/2020/02/03/tricks-of-the-trade/
 
 Shtetl-Optimized
 ================
@@ -241,92 +362,72 @@ The 8000th Busy Beaver number eludes ZF set theory
 - https://www.scottaaronson.com/blog/?p=3997
   Teaching quantum in junior high: special Thanksgiving guest post by Terry Rudolph
 
-Kowalski
-========
+- https://news.ycombinator.com/item?id=21053405
+  Scott’s Supreme Quantum Supremacy FAQ!
+  https://news.ycombinator.com/item?id=21053405
+  => https://ai.googleblog.com/2019/10/quantum-supremacy-using-programmable.html
 
-http://blogs.ethz.ch/kowalski/2012/11/14/trace-functions-ii-examples/
-http://blogs.ethz.ch/kowalski/2014/01/01/three-little-things-i-learnt-recently/
-  (Un corps de carac !=2 a un "square root morphism" ssi -1 n'est pas un carré)
-http://blogs.ethz.ch/kowalski/2014/05/01/normalizers-everywhere/
-  \xi^a H\xi^b = H <=> \xi^{a+b}\in H and \xi^{(a,b)}\in N(H), where (a,b) is the gcd of a and b. In particular, for all pairs (a,b) where a and b are coprime, the condition above implies that \xi belongs to the normalizer of H.
-http://blogs.ethz.ch/kowalski/2015/04/11/worms-brains-and-graphes-expanseurs/
-http://blogs.ethz.ch/kowalski/2016/06/05/a-geometric-interpretation-of-schinzels-hypothesis/
-http://noncommutativegeometry.blogspot.fr/2017/01/gamma-functions-and-nonarchimedean.html# => Twisted characteristic p zeta functions and Drinfeld modules
+- https://www.scottaaronson.com/blog/?p=4414
+  The Aaronson-Ambainis Conjecture (2008-2019)
+
+- https://www.scottaaronson.com/blog/?p=4432
+  Guest post by Greg Kuperberg: Archimedes’ other principle and quantum supremacy
 
 Quiaochu Yan
 ============
 
+* Analyse
+https://qchu.wordpress.com/2012/07/17/banach-algebras-the-gelfand-representation-and-the-commutative-gelfand-naimark-theorem/
+https://qchu.wordpress.com/2017/03/13/singular-value-decomposition/
+https://qchu.wordpress.com/2018/02/07/gradient-descent/
+
+* Algèbre
+https://qchu.wordpress.com/2015/11/30/lie-algebras-are-groups/
+  Lie algebra = group objects in a certain category which can be interpreted as a category of “infinitesimal spaces.”
+https://qchu.wordpress.com/2016/03/27/separable-algebras/
+https://qchu.wordpress.com/2012/01/25/a-first-blog-post-on-noncommutative-rings/
+https://qchu.wordpress.com/2017/11/26/the-representation-theory-of-the-additive-group-scheme/#more-28419
+
+* Combinatoire
+https://qchu.wordpress.com/2009/08/20/introduction-to-symmetric-functions/
+
+* Ramanujan
 https://qchu.wordpress.com/2016/05/08/the-man-who-knew-elliptic-integrals-prime-number-theorems-and-black-holes/
 https://qchu.wordpress.com/2016/05/20/the-man-who-knew-partition-asymptotics/
 https://qchu.wordpress.com/2016/05/23/more-on-partition-asymptotics/
-https://qchu.wordpress.com/2015/12/15/monads-are-idempotents/
-https://qchu.wordpress.com/2015/11/30/lie-algebras-are-groups/
-https://qchu.wordpress.com/2016/03/27/separable-algebras/
-https://qchu.wordpress.com/2017/03/13/singular-value-decomposition/
-https://qchu.wordpress.com/2012/07/17/banach-algebras-the-gelfand-representation-and-the-commutative-gelfand-naimark-theorem/
-https://qchu.wordpress.com/2012/01/25/a-first-blog-post-on-noncommutative-rings/
-https://qchu.wordpress.com/2009/08/20/introduction-to-symmetric-functions/
-https://qchu.wordpress.com/2012/11/10/small-factors-in-random-polynomials-over-a-finite-field/#more-11798
 
-Link between random permutations and factorisations (of
-polynomials/integers)
+* Link between random permutations and factorisations (of polynomials/integers)
+=> http://www.dms.umontreal.ca/~andrew/PDF/Anatomy.pdf
 https://qchu.wordpress.com/2012/11/07/fixed-points-of-random-permutations/
 https://qchu.wordpress.com/2012/11/09/short-cycles-in-random-permutations/
 https://qchu.wordpress.com/2012/11/10/small-factors-in-random-polynomials-over-a-finite-field/#more-11798
-http://www.dms.umontreal.ca/~andrew/PDF/Anatomy.pdf
 Use the exponential function theorem: https://qchu.wordpress.com/2009/06/24/gila-vi-the-cycle-index-polynomials-of-the-symmetric-groups/
 https://qchu.wordpress.com/2009/11/03/the-cyclotomic-identity-and-lyndon-words/
 
-Hard Arithmetic
-===============
+* Lawrere
+http://qchu.wordpress.com/2013/09/28/cartesian-closed-categories-and-the-lawvere-fixed-point-theorem/
+http://qchu.wordpress.com/2013/06/09/operations-and-lawvere-theories/
+  #polynomials with coefficients in a commutative ring R are precisely the
+  #morphisms in the Lawvere theory of commutative R-algebras, cf
+  #http://mathoverflow.net/questions/171724/why-are-polynomials-so-useful-in-mathematics
 
-https://ayoucis.wordpress.com/2015/08/10/p-divisible-groups-formal-groups-and-the-serre-tate-theorem/
-https://ayoucis.wordpress.com/2014/07/22/what-information-is-contained-in-an-infinitesimal-neighborhood-of-a-point/
-https://ayoucis.wordpress.com/2015/07/24/a-different-viewpoint-on-etale-cohomology/
-
-Geometry and the imagination
-============================
-
-http://lamington.wordpress.com/2013/11/20/kahler-manifolds-and-groups-part-1/
-http://lamington.wordpress.com/2013/11/25/kahler-manifolds-and-groups-part-2/
-Intro on Kahler manifolds (and the properties of complex abelian varieties
-that arise as their Kahler structure):
-http://math.bu.edu/people/jsweinst/Teaching/MA843Fall13/Lecture6VariationsOfHS.pdf (Kahler manifolds and variations of Hodge structures)
-
-http://lamington.wordpress.com/2014/05/26/div-grad-curl-and-all-this/
-Notes: http://math.uchicago.edu/~dannyc/courses/riem_geo_2013/riem_geo_notes.pdf
-       http://math.uchicago.edu/~dannyc/courses/minimal_surfaces_2014/minimal_surfaces_notes.pdf
-
-http://lamington.wordpress.com/2014/10/24/mapping-class-groups-the-next-generation/
- The geometry of surfaces
-
-http://lamington.wordpress.com/2014/11/07/explosions-now-in-glorious-2d/
-
-Ars Mathematica
-===============
-
-http://www.arsmathematica.net/2012/11/25/its-my-turn/
-  a proof of the Snake Lemma appeared in a 1980 romantic comedy, It’s My Turn
-http://www.arsmathematica.net/2013/04/11/applications-of-cosheaves/
-  Un bouquin sur sheaves and cosheaves et leurs applications dans les
-  réseaux
-http://www.arsmathematica.net/2013/12/30/nonassociative-algebras/
-http://www.arsmathematica.net/2013/07/09/linear-bestiary-of-francois-pottier/
-
-Joel David Hamkins
-==================
-
-http://jdh.hamkins.org/satisfaction-is-not-absolute/
-  We prove that the satisfaction relation N⊨φ[a] of first-order logic is not absolute between models of set theory having the structure N and the formulas φ all in common.
+* Descent
+https://qchu.wordpress.com/2015/11/11/fixed-points-of-group-actions-on-categories/ Link with Galois descent
+https://qchu.wordpress.com/2015/12/15/monads-are-idempotents/
 
 John Baez
 =========
 
+* http://johncarlosbaez.wordpress.com/2014/02/06/categories-in-control/
+  - des slides sur les liens entre graphes et théorie des catégories
+  Donne aussi des pointeurs sur les papiers suivants très intéressants:
+  - http://arxiv.org/abs/0908.2469 (A Prehistory of n-Categorical Physics)
+  - http://arxiv.org/abs/0903.0340 (Physics, Topology, Logic and Computation: A Rosetta Stone)
 https://arxiv.org/abs/0903.0340 Physics, Topology, Logic and Computation: A Rosetta Stone
 https://arxiv.org/abs/gr-qc/9902017 Higher-Dimensional Algebra and Planck-Scale Physics
 https://arxiv.org/abs/quant-ph/0404040 Quantum Quandaries: a Category-Theoretic Perspective
 
-Classical vs quantum computations:
+* Classical vs quantum computations:
 http://math.ucr.edu/home/baez/qg-fall2006/index.html#computation
 http://math.ucr.edu/home/baez/qg-winter2007/index.html#computation
 
@@ -342,95 +443,21 @@ https://johncarlosbaez.wordpress.com/2019/04/04/the-pi-calculus-towards-global-c
 https://johncarlosbaez.wordpress.com/2019/05/21/the-monoidal-grothendieck-construction/
 https://johncarlosbaez.wordpress.com/2019/06/06/nonstandard-models-of-arithmetic/
 https://johncarlosbaez.wordpress.com/2019/05/16/enriched-lawvere-theories/
+https://johncarlosbaez.wordpress.com/2019/10/06/quantales-from-petri-nets/
+https://johncarlosbaez.wordpress.com/2020/01/05/schrodinger-and-einstein/
 
 Secret Blogging Seminar
 =======================
 
 https://sbseminar.wordpress.com/2016/07/08/bounds-for-sum-free-sets-in-prime-power-cyclic-groups-three-ways/
 
-
-Never Ending Books
-==================
-
-http://www.neverendingbooks.org/the-oracle-on-the-symmetries-of-roots
-  The compact connected Hausdorff space Mcyc of Kucharczyk and Scholze is nothing but the space of complex points of Spec(Qcyc)/F1!
-
-http://www.neverendingbooks.org/car-crashes-in-scheme-theory
-  On thick points
-
-http://www.neverendingbooks.org/grothendieck-topologies-as-functors-to-top
-
-http://www.neverendingbooks.org/the-geometry-of-football
-David Sumpter, the author of Soccermatics: Mathematical Adventures in the Beautiful Game, wrote a nice article over at Medium The geometry of attacking football.
-
-Livres:
-http://www.neverendingbooks.org/lets-spend-3k-on-mathbooks
-http://www.neverendingbooks.org/how-much-to-spend-on-catbooks
-
-http://www.neverendingbooks.org/moonshine-for-everyone
-
-http://www.neverendingbooks.org/arithmetic-topology-in-quanta
-In this analogy, which is based on the similarity between finite connected covers of manifolds on the one hand and connected etale extensions of rings on the other, the prime spectrum of Z should correspond (due to Minkowski’s result on discriminants and Perelman’s proof of the Poincare-conjecture) to the 3-sphere S3.
-
-http://www.neverendingbooks.org/from-the-da-vinci-code-to-galois
-The set of all integral linear recursive sequences, R(Z), is a ring (easy),
-but also a co-algebra (which involve Hankel matrix)
-
-http://www.neverendingbooks.org/the-langlands-program-and-non-commutative-geometry
-=> http://www.ams.org/journals/bull/0000-000-00/S0273-0979-2018-01609-1/home.html
-   On the genesis of Robert P. Langlands' conjectures and his letter to André Weil
-
-http://www.neverendingbooks.org/closing-in-on-gabriels-topos
-https://mathoverflow.net/questions/259263/what-is-precisely-still-missing-in-connes-approach-to-rh/259301#259301
-https://mathoverflow.net/questions/34699/approaches-to-riemann-hypothesis-using-methods-outside-number-theory
-https://mathoverflow.net/questions/69389/riemann-hypothesis-via-absolute-geometry
-http://www.neverendingbooks.org/the-riemann-hypothesis-and-6
-  On the psi function
-
-Choux Romanesco
-================
-
-Nombres de Catalan:
-  http://eljjdx.canalblog.com/archives/2017/02/20/34959863.html
-  https://en.wikipedia.org/wiki/Catalan_number#First_proof
-
-Gil Kalai
-=========
-- https://gilkalai.wordpress.com/2019/03/09/8866128975287528%c2%b3-8778405442862239%c2%b3-2736111468807040%c2%b3/
-  8866128975287528³+(-8778405442862239)³+(-2736111468807040)³
-  via la recherche de points sur la courbe elliptique k = x^3 + y^3 + z^3.
-
-- https://gilkalai.wordpress.com/2019/03/22/danny-nguyen-and-igor-pak-presburger-arithmetic-problem-solved/
-
-- https://gilkalai.wordpress.com/2019/03/26/10-milestones-in-the-history-of-mathematics-according-to-nati-and-me/
-
-- https://gilkalai.wordpress.com/2019/07/17/dan-romik-on-the-riemann-zeta-function/
-
-- https://gilkalai.wordpress.com/2019/08/04/avi-wigdersons-integrating-computational-modeling-algorithms-and-complexity-into-theories-of-nature-marks-a-new-scientific-revolution-an-invitation-for-a-discussion/
-
-- https://gilkalai.wordpress.com/2019/08/21/the-argument-against-quantum-computers-a-cern-colloquium-and-a-new-paper/
-  https://www.quantamagazine.org/gil-kalais-argument-against-quantum-computers-20180207/#comment-4559220424
-
-Categories
-==========
-
 http://sbseminar.wordpress.com/2012/11/16/the-canonical-model-structure-on-cat/
 http://sbseminar.wordpress.com/2014/05/26/what-makes-the-monster-lie-algebra-special/
   # Monster representation and relations on coefficients of the J-invariant
 
-http://qchu.wordpress.com/2013/09/28/cartesian-closed-categories-and-the-lawvere-fixed-point-theorem/
-http://qchu.wordpress.com/2013/06/09/operations-and-lawvere-theories/
-  #polynomials with coefficients in a commutative ring R are precisely the
-  #morphisms in the Lawvere theory of commutative R-algebras, cf
-  #http://mathoverflow.net/questions/171724/why-are-polynomials-so-useful-in-mathematics
 
-http://johncarlosbaez.wordpress.com/2014/02/06/categories-in-control/
-  - des slides sur les liens entre graphes et théorie des catégories
-  Donne aussi des pointeurs sur les papiers suivants très intéressants:
-  - http://arxiv.org/abs/0908.2469 (A Prehistory of n-Categorical Physics)
-  - http://arxiv.org/abs/0903.0340 (Physics, Topology, Logic and Computation: A Rosetta Stone)
-
-# The n-Category cafe
+The n-Category cafe
+===================
 https://golem.ph.utexas.edu/category/archives.html
 
 - https://golem.ph.utexas.edu/category/2006/08/cartesian_closed_categories_an.html
@@ -475,102 +502,50 @@ https://golem.ph.utexas.edu/category/archives.html
 - https://golem.ph.utexas.edu/category/2019/07/what_is_the_laplace_transform.html
 - https://golem.ph.utexas.edu/category/2019/04/univalence_in_1toposes.html#more
 - https://golem.ph.utexas.edu/category/2019/08/turing_categories.html
+  https://golem.ph.utexas.edu/category/2019/11/total_maps_of_turing_categorie.html
 - https://golem.ph.utexas.edu/category/2019/09/the_riemann_hypothesis_part_1.html
   https://golem.ph.utexas.edu/category/2019/09/the_riemann_hypothesis_part_2.html
   https://golem.ph.utexas.edu/category/2019/09/the_riemann_hypothesis_part_3.html
 - https://golem.ph.utexas.edu/category/2019/05/partial_evaluations.html
   https://golem.ph.utexas.edu/category/2019/09/partial_evaluations_2.html
+- https://golem.ph.utexas.edu/category/2019/10/screw_theory.html
+- https://golem.ph.utexas.edu/category/2019/10/jaynes_on_clever_tricks.html
+  I’ve posted before about the eminently browsable, infuriating, provocative, inspiring, opinionated, visionary, bracing, occasionally funny, unfinished book Probability Theory: The Logic of Science that arch-Bayesian apostle of maximum entropy Edwin Jaynes was still writing when he died.
+- https://golem.ph.utexas.edu/category/2019/11/doubles_for_monoidal_categorie.html
+  Nice introduction to coend
+- https://golem.ph.utexas.edu/category/2019/11/geodesic_spheres_and_gram_matr.html
+- https://golem.ph.utexas.edu/category/2019/11/random_permutations_part_4.html
+  https://golem.ph.utexas.edu/category/2019/12/random_permutations_part_10.html
+  https://golem.ph.utexas.edu/category/2020/01/random_permutations_part_12.html
+  => groupoid cardinality: https://qchu.wordpress.com/2012/11/08/groupoid-cardinality/
+  => http://math.ucr.edu/home/baez/week300.html
+- https://golem.ph.utexas.edu/category/2019/12/counting_nilpotents.html
+  https://golem.ph.utexas.edu/category/2019/12/a_joyaltype_proof_of_the_numbe.html
+  https://golem.ph.utexas.edu/category/2019/12/counting_nilpotents_a_short_pa.html
+- https://golem.ph.utexas.edu/category/2019/12/topoi_from_lawvere_theories.html
+- https://golem.ph.utexas.edu/category/2019/12/a_visual_telling_of_joyals_pro.html
+- https://golem.ph.utexas.edu/category/2020/01/quotienting_out_the_degenerate.html
+- https://golem.ph.utexas.edu/category/2020/01/profunctor_optics_the_categori.html
+- https://golem.ph.utexas.edu/category/2020/02/modal_homotopy_type_theory_the.html
+- https://golem.ph.utexas.edu/category/2020/02/ega1_the_language_of_schemes.html
 
-Intégrales Stochastiques
-========================
+Choux Romanesco
+================
 
-https://almostsure.wordpress.com/
+Nombres de Catalan:
+  http://eljjdx.canalblog.com/archives/2017/02/20/34959863.html
+  https://en.wikipedia.org/wiki/Catalan_number#First_proof
 
-Cryptography
-============
+Ars Mathematica
+===============
 
-https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-an-illustrated-primer-part-2/
-https://nickler.ninja/blog/2017/05/23/exploiting-low-order-generators-in-one-time-ring-signatures/
-https://www.esat.kuleuven.be/cosic/elliptic-curves-are-quantum-dead-long-live-elliptic-curves/
-http://vitalik.ca/general/2017/11/09/starks_part_1.html => ZK-SNARK
-https://blog.cryptographyengineering.com/2019/06/05/how-does-apple-privately-find-your-offline-devices/
-
-Divers
-======
-
-- http://amathew.wordpress.com/tag/flatness/
-=> Une preuve que a formally smooth morphism of noetherian rings (which is essentially of finite type) = flat+smooth fibers.
-
-- http://modular.math.washington.edu/129/ant/html/node84.html
-=> Strong approximation theorem (in number fields)
-
-- http://www.oftenpaper.net/sierpinski.htm
-the sierpinski triangle page to end most sierpinski triangle pages ™
-
-- https://blogdemaths.wordpress.com/2015/02/23/arnaquez-vos-amis-a-pile-ou-face/
-  https://blogdemaths.wordpress.com/2017/07/18/des-triangles-rectangles-presque-isoceles-a-la-pelle/
-
-- https://rigtriv.wordpress.com/2009/05/14/endomorphisms-of-elliptic-curves-and-the-tate-module/
-
-- http://cr.yp.to/zgk.html
-  The Zariski-Goldman-Krull theorem (the generalized Nullstellensatz)
-  If K is a field, R is a subring of K, and K/R finitely generated, then there exists r in R\{0} such that R[1/r] is a field and K/R[1/r] is finite.
-
-- http://noncommutativegeometry.blogspot.fr/2016/06/what-is-functional-equation.html
-
-- https://golem.ph.utexas.edu/~distler/blog/archives/002890.html
-  Coriolis. I really like the science fiction TV series The Expanse
-
-- SIDH: https://www.lvh.io/posts/supersingular-isogeny-diffie-hellman-101.html
-
-- Logique, Calcul des séquents et logique linéaire
-  https://blog.plover.com/math/logic/cut-rule.html
-
-- https://semmibol.wordpress.com/
-  Le blog de Zhen Lin Low
-  https://semmibol.wordpress.com/2015/11/30/the-localic-reflection-of-the-petit-etale-topos/
-
-- https://simons.berkeley.edu/sites/default/files/docs/6119/doesrandomnesshelp.pdf
-
-Références
-==========
-
-Mindmap de sites de maths
-http://www.mindomo.com/view?m=38cc4f6a467acbfde4be796e68399450
-
-http://cring.adeel.ru/cgit.cgi/
-(the commutative ring project)
-
-http://cringproject.wordpress.com/
-(associated blog)
-
-http://www.bourbaki.ens.fr/
-Le séminaire bourbaki (text+vidéo)
-
-My Posts
-========
-
-http://forums.futura-sciences.com/mathematiques-superieur/755539-demontre-t-on-lindecidabilite-dune-proposition-mathematique-5.html#post5730830 [Godel]
-
-http://forums.futura-sciences.com/mathematiques-superieur/761173-langage-categories.html#post5766838
-
-http://forums.futura-sciences.com/mathematiques-superieur/718990-base-canonique-vraiment-canonique.html#post5766588
-
-http://forums.futura-sciences.com/mathematiques-superieur/762937-geometrie-algebrique-approximation-de-fonctions-a-n-variables.html#post5766527
-
-http://forums.futura-sciences.com/mathematiques-superieur/759735-factoriser-trouver-racines-dun-polynome-de-degre-n.html#post5746813
-
-Vulgarisation
-=============
-
-Paradoxe des anniversaires:
-http://fabrice.orgogozo.perso.math.cnrs.fr/articles/anniversaires.pdf
-
-Jeu de nim:
-http://www.madore.org/~david/.misc/20170325-mathenjeans.pdf
-
-Betterexplained:
-https://betterexplained.com/articles/gutcheck/
+http://www.arsmathematica.net/2012/11/25/its-my-turn/
+  a proof of the Snake Lemma appeared in a 1980 romantic comedy, It’s My Turn
+http://www.arsmathematica.net/2013/04/11/applications-of-cosheaves/
+  Un bouquin sur sheaves and cosheaves et leurs applications dans les
+  réseaux
+http://www.arsmathematica.net/2013/12/30/nonassociative-algebras/
+http://www.arsmathematica.net/2013/07/09/linear-bestiary-of-francois-pottier/
 
 Quanta magazine
 ===============
@@ -597,9 +572,77 @@ https://www.quantamagazine.org/color-me-polynomial-20190813/
 https://www.quantamagazine.org/new-proof-settles-how-to-approximate-numbers-like-pi-20190814/
 https://www.quantamagazine.org/where-quantum-probability-comes-from-20190909/
 https://www.quantamagazine.org/origin-of-life-study-points-to-chemical-chimeras-not-rna-20190916/
+https://www.quantamagazine.org/stephanie-wehner-is-designing-a-quantum-internet-20190925/
+https://www.quantamagazine.org/big-question-about-primes-proved-in-small-number-systems-20190926/
+https://www.quantamagazine.org/math-puzzle-solution-perfect-randomness-20190927/
+https://www.quantamagazine.org/univalent-foundations-redefines-mathematics-20150519/
+https://www.quantamagazine.org/with-category-theory-mathematics-escapes-from-equality-20191010/
+https://www.quantamagazine.org/how-simple-math-can-cover-even-the-most-complex-holes-20200108/
+https://www.quantamagazine.org/how-pi-connects-colliding-blocks-to-a-quantum-search-algorithm-20200121/
+https://www.quantamagazine.org/the-grand-unified-theory-of-rogue-waves-20200205/
 
-PvsNP
-=====
+# Cryptography
+
+https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-an-illustrated-primer-part-2/
+https://nickler.ninja/blog/2017/05/23/exploiting-low-order-generators-in-one-time-ring-signatures/
+http://vitalik.ca/general/2017/11/09/starks_part_1.html => ZK-SNARK
+https://blog.cryptographyengineering.com/2019/06/05/how-does-apple-privately-find-your-offline-devices/
+
+* SIDH:
+- https://www.esat.kuleuven.be/cosic/elliptic-curves-are-quantum-dead-long-live-elliptic-curves/
+- https://www.lvh.io/posts/supersingular-isogeny-diffie-hellman-101.html
+
+# Logique
+
+- https://diagonalargument.com/mathnotes/nonstandard-models-of-arithmetic-the-series/
+
+- https://cs.stackexchange.com/questions/48672/what-is-the-curry-howard-analogue-for-linear-logics
+
+- Logique, Calcul des séquents et logique linéaire
+  https://blog.plover.com/math/logic/cut-rule.html
+
+- http://math.andrej.com/2008/02/06/representations-of-uncomputable-and-uncountable-sets/
+
+- https://twitter.com/JDHamkins/status/1213771972456394752
+  Klein tree
+  http://math.andrej.com/2006/04/25/konigs-lemma-and-the-kleene-tree/
+
+# Geo Alg and Number Theory
+
+* Akhil Mathew
+- http://amathew.wordpress.com/tag/flatness/
+=> Une preuve que a formally smooth morphism of noetherian rings (which is essentially of finite type) = flat+smooth fibers.
+- https://amathew.wordpress.com/2013/05/23/projective-normality-and-independent-conditions/
+
+- http://modular.math.washington.edu/129/ant/html/node84.html
+=> Strong approximation theorem (in number fields)
+
+- https://rigtriv.wordpress.com/2009/05/14/endomorphisms-of-elliptic-curves-and-the-tate-module/
+
+- http://cr.yp.to/zgk.html
+  The Zariski-Goldman-Krull theorem (the generalized Nullstellensatz)
+  If K is a field, R is a subring of K, and K/R finitely generated, then there exists r in R\{0} such that R[1/r] is a field and K/R[1/r] is finite.
+
+- http://noncommutativegeometry.blogspot.fr/2016/06/what-is-functional-equation.html
+
+- https://totallydisconnected.wordpress.com/
+  On perfectoid spaces
+
+* https://semmibol.wordpress.com/
+  Le blog de Zhen Lin Low
+  - https://semmibol.wordpress.com/2015/11/30/the-localic-reflection-of-the-petit-etale-topos/
+  So the localic reflection of the petit étale topos of X is the petit Zariski topos of X. Note also that the same argument works for the petit fppf topos of X – the point being that flat morphisms locally of finite presentation are open.
+  - https://semmibol.wordpress.com/2015/06/25/local-objects-and-projective-objects/
+  - https://semmibol.wordpress.com/2015/05/13/a-formal-analogy-between-flat-morphisms-and-open-maps/
+  - https://semmibol.wordpress.com/2015/02/19/when-are-fibres-path-connected/
+  - https://semmibol.wordpress.com/2014/08/16/the-free-strict-monoidal-category-with-n-monoids/
+  - https://semmibol.wordpress.com/2014/07/28/the-quantale-of-ideals/
+  - https://semmibol.wordpress.com/2014/07/23/a-characterisation-of-local-schemes/
+  - https://semmibol.wordpress.com/2014/06/24/the-morita-model-structure-on-cat/
+  - https://semmibol.wordpress.com/2014/03/19/you-could-have-invented-simplicial-sets/
+  - https://semmibol.wordpress.com/2014/03/11/the-number-of-abstract-simplicial-complexes/
+
+# PvsNP
 
 http://www.scottaaronson.com/blog/?p=3095
 My 116-page survey article on P vs. NP: better late than never
@@ -676,6 +719,11 @@ http://www.wired.com/2014/08/subhash-khot-nevanlinna-prize/
 - https://blog.computationalcomplexity.org/2018/10/if-pnp-then-we-have-alg-for-sat.html
 - https://blog.computationalcomplexity.org/2018/11/p-np-need-not-give-sat-algorithm.html
 - https://rjlipton.wordpress.com/2019/08/26/a-matroid-quantum-connection/
+- https://rjlipton.wordpress.com/2019/09/30/writing-33-as-a-sum-of-cubes/
+- https://blog.computationalcomplexity.org/2019/10/quantum-supremacy-guest-post-by-abhinav.html
+- https://blog.computationalcomplexity.org/2019/10/the-sheldon-conjecture-too-late-for.html
+- https://blog.computationalcomplexity.org/2020/01/the-wikipedia-entry-on-np-intermediary.html
+- https://blog.computationalcomplexity.org/2020/01/quantum-provers-to-infinity-and-beyond.html
 
 ## Shtetl-Optimized
 - Is the P vs. NP problem ill-posed? (Answer: no.)
@@ -694,8 +742,7 @@ NP? (answer: maybe)”.)
   => Quantum Theory From Five Reasonable Axioms https://arxiv.org/abs/quant-ph/0101012
   => Informational derivation of Quantum Theory https://arxiv.org/abs/1011.6451
 
-Sensitivity Conjecture
-=======================
+# Sensitivity Conjecture
 
 http://www.mathcs.emory.edu/~hhuan30/papers/sensitivity_1.pdf
 https://www.quantamagazine.org/mathematician-solves-computer-science-conjecture-in-two-pages-20190725/
@@ -703,3 +750,67 @@ https://www.quantamagazine.org/mathematician-solves-computer-science-conjecture-
 https://rjlipton.wordpress.com/2019/07/12/tools-and-sensitivity/
 https://rjlipton.wordpress.com/2019/07/25/discrepancy-games-and-sensitivity/
 https://terrytao.wordpress.com/2019/07/26/twisted-convolution-and-the-sensitivity-conjecture/
+# Divers
+
+- http://www.oftenpaper.net/sierpinski.htm
+the sierpinski triangle page to end most sierpinski triangle pages ™
+
+- https://blogdemaths.wordpress.com/2015/02/23/arnaquez-vos-amis-a-pile-ou-face/
+  https://blogdemaths.wordpress.com/2017/07/18/des-triangles-rectangles-presque-isoceles-a-la-pelle/
+
+- https://golem.ph.utexas.edu/~distler/blog/archives/002890.html
+  Coriolis. I really like the science fiction TV series The Expanse
+
+- http://noncommutativegeometry.blogspot.com/2019/10/sir-michael-atiyah-knight-mathematician.html#
+
+- https://sciencetonnante.wordpress.com/2020/01/09/parcoursup/
+
+* Probas et Intégrales Stochastiques
+- https://almostsure.wordpress.com/
+- https://simons.berkeley.edu/sites/default/files/docs/6119/doesrandomnesshelp.pdf
+
+* Googology
+- https://googology.wikia.org/wiki/Finite_promise_games
+- https://googology.wikia.org/wiki/Greedy_clique_sequence
+
+# Références
+
+Mindmap de sites de maths
+http://www.mindomo.com/view?m=38cc4f6a467acbfde4be796e68399450
+
+http://cring.adeel.ru/cgit.cgi/
+(the commutative ring project)
+
+http://cringproject.wordpress.com/
+(associated blog)
+
+http://www.bourbaki.ens.fr/
+Le séminaire bourbaki (text+vidéo)
+
+# Crackpots
+
+https://mathematics21.org/algebraic-general-topology-and-math-synthesis/
+
+# Vulgarisation
+
+Paradoxe des anniversaires:
+http://fabrice.orgogozo.perso.math.cnrs.fr/articles/anniversaires.pdf
+
+Jeu de nim:
+http://www.madore.org/~david/.misc/20170325-mathenjeans.pdf
+
+Betterexplained:
+https://betterexplained.com/articles/gutcheck/
+
+# My Posts
+
+http://forums.futura-sciences.com/mathematiques-superieur/755539-demontre-t-on-lindecidabilite-dune-proposition-mathematique-5.html#post5730830 [Godel]
+
+http://forums.futura-sciences.com/mathematiques-superieur/761173-langage-categories.html#post5766838
+
+http://forums.futura-sciences.com/mathematiques-superieur/718990-base-canonique-vraiment-canonique.html#post5766588
+
+http://forums.futura-sciences.com/mathematiques-superieur/762937-geometrie-algebrique-approximation-de-fonctions-a-n-variables.html#post5766527
+
+http://forums.futura-sciences.com/mathematiques-superieur/759735-factoriser-trouver-racines-dun-polynome-de-degre-n.html#post5746813
+

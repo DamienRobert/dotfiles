@@ -1,3 +1,5 @@
+vim: ft=markdownlight fdm=expr
+
 man kernal-command-line, bootparam
 man bootup [man boot for legacy sysinitV]
 
@@ -157,3 +159,77 @@ lvm2-monitor.service@       systemd-hwdb-update.service@        systemd-sysusers
 timers.target.wants:
 logrotate.timer@  shadow.timer@  systemd-tmpfiles-clean.timer@
 
+my system services
+------------------
+
+getty.target.wants
+│   └── getty@tty1.service -> /usr/lib/systemd/system/getty@.service
+
+├── multi-user.target.wants
+│   ├── machines.target -> /usr/lib/systemd/system/machines.target
+│   ├── remote-cryptsetup.target -> /usr/lib/systemd/system/remote-cryptsetup.target
+│   ├── remote-fs.target -> /usr/lib/systemd/system/remote-fs.target
+│   ├── systemd-networkd.service -> /usr/lib/systemd/system/systemd-networkd.service
+│   ├── systemd-resolved.service -> /usr/lib/systemd/system/systemd-resolved.service
+│   ├── unbound.service -> /usr/lib/systemd/system/unbound.service
+│   ├── wpa_supplicant@wlp2s0.service -> /usr/lib/systemd/system/wpa_supplicant@.service
+│   └── zerotier-one.service -> /usr/lib/systemd/system/zerotier-one.service
+
+├── sockets.target.wants
+│   ├── avahi-daemon.socket -> /usr/lib/systemd/system/avahi-daemon.socket
+│   ├── org.cups.cupsd.socket -> /usr/lib/systemd/system/org.cups.cupsd.socket
+│   ├── sshd.socket -> /etc/systemd/system/sshd.socket
+│   └── systemd-networkd.socket -> /usr/lib/systemd/system/systemd-networkd.socket
+
+sysinit.target.wants
+│   └── systemd-timesyncd.service -> /usr/lib/systemd/system/systemd-timesyncd.service
+
+dbus
+----
+
+* /usr/share/dbus-1/system-services => SystemdService=
+[!] running, but because they are launched by default
+[x] typically launched via dbus in my session
+[etc] the symlink from the dbus service name to the real service file is in etc/
+
+[x] org.freedesktop.RealtimeKit1.service => rtkit-daemon.service
+[x] org.freedesktop.Accounts.service => accounts-daemon.service
+[x] org.freedesktop.UDisks2.service => udisks2.service
+[x] org.freedesktop.UPower.service => upower.service
+[x] org.freedesktop.PolicyKit1.service => polkit.service
+org.freedesktop.ColorManager.service => colord.service
+org.freedesktop.Avahi.service => dbus-org.freedesktop.Avahi.service
+[x] org.freedesktop.GeoClue2.service => geoclue.service
+org.freedesktop.fwupd.service => fwupd.service
+org.freedesktop.ModemManager1.service => dbus-org.freedesktop.ModemManager1.service
+fi.w1.wpa_supplicant1.service => wpa_supplicant.service
+org.bluez.mesh.service => dbus-org.bluez.mesh.service
+org.bluez.service => dbus-org.bluez.service
+org.freedesktop.nm_dispatcher.service => dbus-org.freedesktop.nm-dispatcher.service
+
+org.freedesktop.hostname1.service => dbus-org.freedesktop.hostname1.service -> systemd-hostnamed.service [hostnamectl]
+org.freedesktop.import1.service => dbus-org.freedesktop.import1.service -> systemd-importd.service [companion for machinectl]
+org.freedesktop.locale1.service => dbus-org.freedesktop.locale1.service -> systemd-localed.service [localectl]
+org.freedesktop.machine1.service => dbus-org.freedesktop.machine1.service -> systemd-machined.service [machinectl]
+[!] org.freedesktop.login1.service => dbus-org.freedesktop.login1.service -> systemd.logind.service [loginctl]
+[!] org.freedesktop.network1.service => dbus-org.freedesktop.network1.service -> [etc] systemd-networkd.service [networkctl]
+org.freedesktop.portable1.service => dbus-org.freedesktop.portable1.service -> systemd-portabled.service [portablectl]
+[!] org.freedesktop.resolve1.service => dbus-org.freedesktop.resolve1.service -> [etc] systemd-resolved.service [resolvectl]
+org.freedesktop.timedate1.service => dbus-org.freedesktop.timedate1.service -> systemd-timedated.service [timedatectl]
+[!] org.freedesktop.timesync1.service => dbus-org.freedesktop.timesync1.service -> [etc] systemd-timesyncd.service
+
+system-preset
+-------------
+
+* 90-systemd.preset
+enable remote-fs.target
+enable remote-cryptsetup.target
+enable machines.target
+
+enable getty@.service
+enable systemd-timesyncd.service
+enable systemd-networkd.service
+enable systemd-resolved.service
+
+* 99-default.preset
+disable *

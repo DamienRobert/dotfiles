@@ -1,52 +1,105 @@
 vim: ft=markdownlight fdm=expr
 
-# Point de vue fonctoriel
+# Point de vue fonctoriel des schémas
 
-https://nforum.ncatlab.org/discussion/7521/functorial-geometry/?Focus=69419#Comment_69419
+- https://nforum.ncatlab.org/discussion/7521/functorial-geometry/?Focus=69419#Comment_69419
 cf https://www.repository.cam.ac.uk/handle/1810/256998, Low, Z. L. (2016). Categories of spaces built from local models (Doctoral thesis). https://doi.org/10.17863/CAM.384
 
-Lawrere: http://permalink.gmane.org/gmane.science.mathematics.categories/2228
+- Lawrere: http://permalink.gmane.org/gmane.science.mathematics.categories/2228
 
-https://sbseminar.wordpress.com/2009/08/06/algebraic-geometry-without-prime-ideals/ and the following discussion.
+- https://sbseminar.wordpress.com/2009/08/06/algebraic-geometry-without-prime-ideals/ and the following discussion.
 
 Tannaka
 =======
 
-https://ncatlab.org/nlab/show/Tannaka+duality
-https://ncatlab.org/nlab/show/Deligne%27s+theorem+on+tensor+categories
-http://math.mit.edu/~hood/talk_notes/Tannakian-Categories.pdf
-https://en.wikipedia.org/wiki/Tannakian_formalism
+* Références
+- https://ncatlab.org/nlab/show/Tannaka+duality
+- https://ncatlab.org/nlab/show/Deligne%27s+theorem+on+tensor+categories
+- https://en.wikipedia.org/wiki/Tannakian_formalism
 
-https://publications.ias.edu/sites/default/files/60_categoriestanna.pdf
-Catégories tannakiennes, P. Deligne
+* Introduction: http://web.science.mq.edu.au/~street/CT90Como.pdf
+AN  INTRODUCTION  TO  TANNAKA  DUALITY  AND  QUANTUM  GROUPS by André JOYAL   and   Ross STREET
 
-https://www.math.ias.edu/files/deligne/Tensorielles.pdf
-CATEGORIES TENSORIELLES P. Deligne
-
-http://www.jmilne.org/math/xnotes/tc2018.pdf
-Tannakian Categories, P. Deligne and J.S. Milne
-
-http://www-math.mit.edu/~etingof/egnobookfinal.pdf
 Tensor Categories
-Mathematical Surveys and Monographs Volume 205, American Mathematical Society
+-----------------
 
-Applications aux schémas:
-https://arxiv.org/pdf/1404.7483.pdf
-ALGEBRAIZATION AND TANNAKA DUALITY, BHARGAV BHATT
+* Tannakian and Tensor Categories
+- http://math.mit.edu/~hood/talk_notes/Tannakian-Categories.pdf
+  Bon résumé
+
+* Deligne
+- https://publications.ias.edu/sites/default/files/60_categoriestanna.pdf
+  Catégories tannakiennes, P. Deligne
+
+- https://www.math.ias.edu/files/deligne/Tensorielles.pdf
+  CATEGORIES TENSORIELLES P. Deligne
+
+* Milne
+- http://www.jmilne.org/math/xnotes/tc2018.pdf
+  Tannakian Categories, P. Deligne and J.S. Milne
+
+- https://www.jmilne.org/math/CourseNotes/LAG.pdf
+  Nice intro aux catégories tannakiennes, p. 110 (résumé de l'article avec
+  Deligne)
+
+* Livres / Thèses
+- http://www-math.mit.edu/~etingof/egnobookfinal.pdf
+  Tensor Categories
+  Mathematical Surveys and Monographs Volume 205, American Mathematical Society
+
+- https://arxiv.org/pdf/1410.1716.pdf
+  Tensor categorical foundations of algebraic geometry Martin Brandenburg
+
+Tannaka pour les schémas
+------------------------
+
+* https://amathew.wordpress.com/2012/08/01/serres-criterion-for-affineness-as-morita-theory/
+
+* https://arxiv.org/pdf/1310.5978.pdf
+  TODO Rosenberg’s Reconstruction Theorem (after Gabber) Martin Brandenburg
+  Alexander L. Rosenberg has constructed a spectrum for abelian categorieswhich is able to reconstruct a quasi-separated scheme from its category ofquasi-coherent sheaves ([R1]).
+
+  Theorem 1.1 (Gabriel, Rosenberg). Let X, Y be quasi-separated schemes. If the categories Qcoh(X) and Qcoh(Y) are equivalent, then X, Y are isomorphic.
+  [marche aussi pour quasi-compact separated algebraic spaces]
+
+  Si on utilise la structure tensorielle:
+  Reconstruct qcqs schemes from its tensor triangulated category of perfect complexe; Lurie reconstruct geometric stack from its tensor category of quasi-coherent sheaves.
+
+* https://arxiv.org/pdf/1404.7483.pdf
+  ALGEBRAIZATION AND TANNAKA DUALITY, BHARGAV BHATT
      Our goal in this paper is to identify certain naturally occurring colimits of schemes and algebraic spaces. To do so, we use (and prove) some new Tannaka duality theorems for maps of algebraic spaces.
 
-http://www.math.harvard.edu/~lurie/papers/Tannaka.pdf
-TANNAKA DUALITY FOR GEOMETRIC STACKS
+Tannaka pour les stacks
+-----------------------
 
-https://www.sciencedirect.com/science/article/pii/S0001870812004094
-A Tannakian context for Galois theory, Eduardo J.Dubuc, MartínSzyld
+* http://www.math.harvard.edu/~lurie/papers/Tannaka.pdf
+  TANNAKA DUALITY FOR GEOMETRIC STACKS
+  https://arxiv.org/abs/math/0412266
+  Jacob Lurie, Tannaka duality for geometric stacks,
 
-Généralisations:
-https://arxiv.org/abs/0911.0977 Tannaka duality for comonoids in cosmoi
+=> if X is a geometric stack, then there exists a Tannakian characterization for morphisms f:S→X, in both the algebraic and analytic categories.  More precisely, we will show that giving amorphism f is equivalent to specifying a “pullback functor” f^∗ from coherent sheaves on X to coherent sheaves on S.
+[geometric stack = qc with affine diagonal = Hopf algebroid]
 
-# Tannaka for stacks
+Corollary: if S is a DM stack proper over C, X a geometric stack of finite
+type over C, then the analytification functor Hom_C(S,X)->Hom(S^an, X^an) is an equiv of categories
 
-https://ncatlab.org/nlab/show/Tannaka+duality+for+geometric+stacks
+* https://arxiv.org/abs/1206.2764
+  A characterization of categories of coherent sheaves of certain algebraic stacks Daniel Schäppi 
+  => Our goal is to complement Lurie’s result with a characterization of categoriesof quasi-coherent sheaves in terms of fiber functors.
+
+* https://arxiv.org/abs/1312.6358
+  Which abelian tensor categories are geometric?, Daniel Schäppi 
+
+  => For a large class of geometric objects, the passage to categories of quasi-coherent sheaves provides an embedding in the 2-category of abelian tensor categories. The notion of weakly Tannakian categories introduced by the author gives a characterization of tensor categories in the image of this embedding.
+
+  However, this notion requires additional structure to be present, namely a fiber functor. For the case of classical Tannakian categories in characteristic zero, Deligne has found intrinsic properties - expressible entirely within the language of tensor categories - which are necessary and sufficient for the existence of a fiber functor. In this paper we generalize Deligne's result to weakly Tannakian categories in characteristic zero. The class of geometric objects whose tensor categories of quasi-coherent sheaves can be recognized in this manner includes both the gerbes arising in classical Tannaka duality and more classical geometric objects such as projective varieties over a field of characteristic zero.
+
+  Our proof uses a different perspective on fiber functors, which we formalize through the notion of geometric tensor categories. A second application of this perspective allows us to describe categories of quasi-coherent sheaves on fiber products.
+
+### ncatlab
+
+* https://ncatlab.org/nlab/show/Tannaka+duality+for+geometric+stacks
+An overview of Lurie's paper
 
 A complete abelian tensor category is an abelian tensor category such that
   - it satisfies the axiom AB5 at additive and abelian categories;
@@ -74,18 +127,17 @@ RngdTopos(S,Sh(X_et))≃Hom⊗(QC(X),𝒪 SMod).
 
 Remark. It follows that forming quasicoherent sheaves constitutes a full and faithful (2,1)-functor QC:GeomStacks→TCAbTens^op from geometric stacks to tame complete abelian tensor categories.
 
-Références:
-- https://amathew.wordpress.com/2012/08/01/serres-criterion-for-affineness-as-morita-theory/
-- Jacob Lurie, Tannaka duality for geometric stacks,
-  https://arxiv.org/abs/math/0412266
-- https://arxiv.org/pdf/1310.5978.pdf
-  Rosenberg’s Reconstruction Theorem (after Gabber) Martin Brandenburg
-- https://arxiv.org/abs/1206.2764
-  A characterization of categories of coherent sheaves of certain algebraic stacks Daniel Schäppi 
-- https://arxiv.org/abs/1312.6358
-  Which abelian tensor categories are geometric?, Daniel Schäppi 
-- https://arxiv.org/pdf/1410.1716.pdf
-  Tensor categorical foundations of algebraic geometry Martin Brandenburg
+Autres versions
+---------------
+
+- https://www.sciencedirect.com/science/article/pii/S0001870812004094
+A Tannakian context for Galois theory, Eduardo J.Dubuc, MartínSzyld
+  We construct an explicit (neutral) Tannakian context for the Galois theory of atomic topoi and prove equivalence for the fundamental theorem.
+
+Généralisations:
+- https://arxiv.org/abs/0911.0977 Tannaka duality for comonoids in cosmoi
+Daniel Schäppi
+ a generalization of these questions to an arbitrary cosmos, that is, a complete and cocomplete symmetric monoidal closed category. Instead of representations on finite dimensional vector spaces we look at representations on objects of the cosmos which have a dual. We give a necessary and sufficient condition that ensures that a comonoid can be reconstructed from its representations, and we characterize categories of representations of certain comonoids.
 
 Derived schemes
 ===============
@@ -123,6 +175,7 @@ Géométrie algébrique généralisée
 ================================
 
 ## Martin Brandenburg: Tensor categorical foundations of algebraic geometry
+https://arxiv.org/abs/1410.1716
 
 $2.2 Algebraic geometry
 
@@ -408,5 +461,6 @@ We have a left adjoint of the forgetful 2-functor from (resp. symmetric) monoida
 On a aussi un adjoint à gauche du foncteur d'oubli symmetric monoidal
 category -> monoidal category.
 
-TODO
+TODO Martin Brandenburg: Tensor categorical foundations of algebraic geometry
+$ 5   Constructions with cocomplete tensor categories, $ 6   Monoidal monads and their modules
 

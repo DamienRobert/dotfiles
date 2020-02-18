@@ -1,5 +1,9 @@
 vim: foldmethod=marker
 
+$ aur.rb install --devel -uv 
+~/script/rust_utils_update
+$ aur.rb db clean -f
+
 # packages {{{1
 # ========
 
@@ -157,39 +161,77 @@ pip install --user foo bar -U
 pip show foo
 
 # python paths
-python -m site
+PYTHONUSERBASE=/home/dams/opt/pkgmgr/pip
+$ python -m site
+  sys.path = [
+      '/home/dams',
+      '/usr/lib/python37.zip',
+      '/usr/lib/python3.7',
+      '/usr/lib/python3.7/lib-dynload',
+      '/home/dams/opt/pkgmgr/pip/lib/python3.7/site-packages',
+      '/usr/lib/python3.7/site-packages',
+  ]
+  USER_BASE: '/home/dams/opt/pkgmgr/pip' (exists)
+  USER_SITE: '/home/dams/opt/pkgmgr/pip/lib/python3.7/site-packages' (exists)
+  ENABLE_USER_SITE: True
+
 
 https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH
-https://docs.python.org/3/install/index.html#inst-alt-install-user
-  PYTHONPATH="/www/python:/opt/ploum"
+  PYTHONPATH="/www/python:/opt/ploum" = default search path for module files.
 
 https://docs.python.org/3/using/cmdline.html#envvar-PYTHONUSERBASE
-  PYTHONUSERBASE Defines the user base directory, which is used to compute the path of the user site-packages
+  PYTHONUSERBASE: Defines the user base directory, which is used to compute the path of the user site-packages and Distutils installation paths for python setup.py install --user.
+  From https://www.python.org/dev/peps/pep-0370/ PEP 370 -- Per user site-packages directory
+  => set up site.USER_BASE from which site.USER_SITE is derived
+  site.USER_BASE: ~/.local 
+  site.USER_SITE: ~/.local/lib/pythonX.Y/site-packages
+
+=> https://docs.python.org/3/install/index.html#inst-alt-install-user
 
 $ python setup.py install --user
-modules userbase/lib/pythonX.Y/site-packages
-scripts userbase/bin
-data userbase
-C headers userbase/include/pythonX.Yabiflags/distname
+  modules userbase/lib/pythonX.Y/site-packages
+  scripts userbase/bin
+  data userbase
+  C headers userbase/include/pythonX.Yabiflags/distname
 
 $ python setup.py install --home=<dir> #~ expand to $HOME
-modules home/lib/python
-scripts home/bin
-data home
-C headers home/include/python/distname
+  modules home/lib/python
+  scripts home/bin
+  data home
+  C headers home/include/python/distname
 
 $ /usr/bin/python setup.py install --prefix=/usr/local
-Python modules prefix/lib/pythonX.Y/site-packages
-extension modules exec-prefix/lib/pythonX.Y/site-packages
-scripts prefix/bin
-data prefix
-C headers prefix/include/pythonX.Yabiflags/distname
+[--user is like --prefix=$PYTHONUSERBASE
+setup.py without option is like --prefix=sys.prefix]
+  Python modules prefix/lib/pythonX.Y/site-packages
+  extension modules exec-prefix/lib/pythonX.Y/site-packages
+  scripts prefix/bin
+  data prefix
+  C headers prefix/include/pythonX.Yabiflags/distname
 
 # venv
+* https://pymotw.com/3/venv/
 
-https://pymotw.com/3/venv/
+Replace the older virtualenv
+The venv module provides support for creating lightweight “virtual environments” with their own site directories, optionally isolated from system site directories. Each virtual environment has its own Python binary (which matches the version of the binary that was used to create this environment) and can have its own independent set of installed Python packages in its site directories.
+
 $ python3 -m venv /tmp/demoenv
 $ /tmp/demoenv/bin/pip install Sphinx==1.3.6
+
+Running this command creates the target directory (creating any parent
+directories that don’t exist already) and places a pyvenv.cfg file in it
+with a home key pointing to the Python installation from which the command
+was run (a common name for the target directory is .venv). It also creates
+a bin subdirectory containing a copy/symlink of the Python binary/binaries
+(as appropriate for the platform or arguments used at environment creation
+time). It also creates an (initially empty) lib/pythonX.Y/site-packages
+subdirectory
+
+# poetry
+https://poetry.eustace.io/
+Like bundler for python, a modern version of pipenv
+(pipenv: https://pypi.org/project/pipenv/
+= pip + virtualenv + Pipfile)
 
 # perl (cpan) {{{1
 # ===========
@@ -272,7 +314,7 @@ Ex: git_optdist.rb --optdir=/tmp install systemd
 # Haskell {{{1
 # #######
 
-cabal
+* cabal
 -> pacman -S cabal-install
 
 Ex:
@@ -286,8 +328,26 @@ https://www.fpcomplete.com/blog/2015/06/why-is-stack-not-cabal
 curl -sSL https://get.haskellstack.org/ | sh
 #on arch the 'stack' package is available
 
+* stack
+https://docs.haskellstack.org/en/stable/README/
+= bundler for haskell (while cabal-install is rubygem for haskell)
+
 # Ocaml {{{1
 # #####
+
+* Installation in ~/opt/local/bin:
+$ sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
+$ opam init --disable-sandboxing #when bwrap is not installed
+$ opam env
+OPAM_SWITCH_PREFIX='/home/imb/damienrobert/.opam/default'
+CAML_LD_LIBRARY_PATH='/home/imb/damienrobert/.opam/default/lib/stublibs:/home/imb/damienrobert/opt/local/packages/ocaml-4.08.0/lib/ocaml/stublibs:/home/imb/damienrobert/opt/local/packages/ocaml-4.08.0/lib/ocaml'
+OCAML_TOPLEVEL_PATH='/home/imb/damienrobert/.opam/default/lib/toplevel'
+MANPATH='...:/home/imb/damienrobert/.opam/default/man'; export MANPATH;
+PATH='/home/imb/damienrobert/.opam/default/bin:...'
+
+* Opam root: https://opam.ocaml.org/doc/Manual.html
+OPAMROOT=...
+opam --root=...
 
 opam #available on aur
 # https://opam.ocaml.org/doc/1.1/Basic_Usage.html
@@ -416,3 +476,9 @@ https://golang.org/cmd/go/#hdr-Download_and_install_packages_and_dependencies
 - go build: Compile packages and dependencies 
 - go install: Compile and install packages and dependencies
   The -i flag installs the dependencies of the named packages as well. 
+
+# Universal package manager {{{1
+
+- nix/guix
+- https://github.com/replit/upm
+- https://docs.conda.io/en/latest/

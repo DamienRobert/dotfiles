@@ -342,7 +342,7 @@ EOS
 			case type
 			when :perso, :imb
 				<<'EOS'
-mailboxes =inria =inria/Inbox =phare =phare/Inbox =damien.olivier.robert@gmail =damien.olivier.robert@gmail/Inbox =ploum.plam@gmail =ploum.plam@gmail/Inbox =ploum.plam@gmail/accounts =ploum.plam@gmail/accounts/Olympe =ploum.plam@gmail/accounts/dr1984 =ploum.plam@gmail/accounts/drd2i =ploum.plam@gmail/accounts/ploumplamplim =ploum.plam@gmail/accounts/robertdami =ploum.plam@gmail/accounts/yahoo =ploum.plam@gmail/accounts/zolienuit =ploum.plam@gmail/robertdamien@yahoo.com =inria_ML =inria/ML/lfant =inria/ML/work =inria/ML/abonnements =phare_ML =phare/ML
+mailboxes =inria/Inbox =phare/Inbox =damien.olivier.robert@gmail/Inbox =ploum.plam@gmail/Inbox =ploum.plam@gmail/accounts =ploum.plam@gmail/accounts/Olympe =ploum.plam@gmail/accounts/dr1984 =ploum.plam@gmail/accounts/drd2i =ploum.plam@gmail/accounts/ploumplamplim =ploum.plam@gmail/accounts/robertdami =ploum.plam@gmail/accounts/yahoo =ploum.plam@gmail/accounts/zolienuit =ploum.plam@gmail/robertdamien@yahoo.com =inria/ML/lfant =inria/ML/work =inria/ML/abonnements =phare/ML
 EOS
 			when :phare
 				<<'EOS'

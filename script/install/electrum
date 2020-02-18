@@ -8,4 +8,4 @@ export LAST_TAG="git tag | egrep '^([[:digit:]]+.?)*$' | sort --version-sort | t
 CUSTOM_COMPILE="copy_srcdir $nameversion"
 
 build_helper $@
-build_git
+build_git -- $args

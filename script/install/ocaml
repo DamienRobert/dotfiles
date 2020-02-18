@@ -12,4 +12,4 @@ make world &&
 make opt &&
 make install'
 
-build_git
+build_git -- $args

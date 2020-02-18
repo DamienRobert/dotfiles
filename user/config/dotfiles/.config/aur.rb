@@ -47,18 +47,20 @@ end
 	require 'aur'
 	imb=Archlinux.config.imb_db
 
-# copy manually to remote database:
+# copy manually to remote database: $ pkgs=($(aur.rb db list -q)); aur.rb --imb db add $pkgs
 	db=Archlinux.config.db
 	imb.show_updates(db.package_files)
 	imb.add_to_db(db.package_files)
 
-# update remote db: aur.rb --imb db update -c
+# update remote db: $ aur.rb --imb db update [-c]
 	imb.show_updates
 	imb.update
-# clean remote db: aur.rb --imb db clean
+# clean remote db: $ aur.rb --imb db clean [-f]
 	imb.clean(dry_run: true)
 
 # check unneeded packages
+$ wanted=($(ruby -e "require 'dr/packages/syst'; wanted=DR::Packages::Syst::AUR_LOCAL_REPO; puts wanted.join(',')")); aur.rb --imb pkgs compare @db "@rget($wanted)"
+
 	require 'dr/packages/syst'; wanted=DR::Packages::Syst::AUR_LOCAL_REPO
 	pkgs = imb.packages
 	needed = pkgs.rget(*wanted)
@@ -68,12 +70,11 @@ end
 	imb.remove(*notneeded.map {|m| Archlinux::Query.strip(m)})
 =end
 
-=begin
-Solve invalid signatures
-cd ~/.cache/arch_aur/.db
-pkgs=(foo.xz)
-aur.rb --v sign -f $pkgs
-aur.rb --imb db add -f $pkgs
+=begin Solve invalid signatures
+$ cd ~/.cache/arch_aur/.db
+$ pkgs=(foo.xz)
+$ aur.rb --v sign -f $pkgs
+$ aur.rb --imb db add -f $pkgs #when adding a new package, the signature is done automatically
 =end
 
 {

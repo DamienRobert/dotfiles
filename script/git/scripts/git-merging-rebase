@@ -1,24 +1,13 @@
 #!/bin/zsh
 # From: https://github.com/msysgit/msysgit/blob/master/share/msysGit/merging-rebase.sh
 # Commit: 9c1c7680d4827fa55092f78646d43de3ed1a1ab3
-#
-# Rebase 'master' on top of an upstream branch (defaults to 'junio/next'),
+
+# Rebase 'master' on top of an upstream branch (using topic helpers)
 # retaining "fast-forwardability" by "merging" (with the "ours" strategy) the
-# previous state on top of the current upstream state.
-#
-# options:
-#  --dry-run
-#     do not perform the rebase but only display the revisions selected
-#
-#  --graph
-#     as for dry-run but display the commits as a graph
-#
-#  --cherry
-#     as for --dry-run but display the commits using cherry notation to mark
-#     commits that are suitable for upstream consideration.
+# previous state on top of the current upstream state before rebasing.
 SUBDIRECTORY_OK=true
 . "$(git --exec-path)/git-sh-setup" ""
-require_clean_work_tree "mysquash" "Please commit or stash them"
+require_clean_work_tree "git-merging-rebase" "Please commit or stash them"
 
 force=
 dryrun=
@@ -28,26 +17,15 @@ theirs=
 while [[ $# -gt 0 ]]
 do
 	case "$1" in
-	-f|--force)
-		force=t
-		;;
-	-s|--show|-d|--dry-run)
-		dryrun=t
-		;;
-	-g|--graph)
-		dryrun=t
-		graph=--graph
-		;;
-	-c|--cherry)
-		dryrun=t
-		cherry=--cherry
-		;;
-	-t|--theirs)
-		theirs=t
-		;;
-	--merge-base) shift;
-		mergebase="$1"; shift
-		;;
+	-f|--force) force=t ;;
+	#do not perform the rebase but only display the revisions selected
+	-s|--show|-d|--dry-run) dryrun=t ;;
+	#as for dry-run but display the commits as a graph
+	-g|--graph) dryrun=t; graph=--graph ;;
+	#as for --dry-run but display the commits using cherry notation to mark commits that are suitable for upstream consideration.
+	-c|--cherry) dryrun=t; cherry=--cherry ;;
+	-t|--theirs) theirs=t ;; #=> the merge before rebase has for first parent the local branch rather than the upstream branch
+	--merge-base) shift; mergebase="$1"; shift ;;
 	-h|--help)
 		cat >&2 << EOF
 Usage: $0 [options] [<upstream>]
@@ -59,15 +37,11 @@ Options:
 -c|--cherry	like show, but try to leave out commits that were applied upstream
 --merge-base base	explicit mergebase
 EOF
-		exit 1
-		;;
+		exit 1 ;;
 	-*)
 		echo "Unknown option: $1" >&2
-		exit 1
-		;;
-	*)
-		break
-		;;
+		exit 1 ;;
+	*) break ;;
 	esac
 	shift
 done
@@ -87,17 +61,15 @@ then
 fi
 
 # Find old merging rebase, if any
-# in this case we want to rebase only the commits from
-# $mergebase..$gth_local
-
+# in this case we want to rebase only the commits from $mergebase..$gth_local
+# this default to git merge-base $gth_local $TO is no merging-rebase is found
 if [[ -z $mergebase ]]; then
 	. ~/mine/script/git/.squashmergebase
 	findmergebase $gth_local $TO
 fi
 
-RANGE=${REBASING_BASE-$TO}..$gth_local
-if [[ -n $dryrun ]]
-then
+if [[ -n $dryrun ]]; then
+	RANGE=${mergebase-$TO}..$gth_local
 	git log --oneline $graph $cherry --boundary $RANGE
 	exit
 fi
@@ -107,7 +79,8 @@ TODO_EXTRA="$(git rev-parse --git-dir)/.todo-extra"
 TMP_EDITOR="$(git rev-parse --git-dir)/.rebasing-editor.sh" &&
 echo > $TMP_EDITOR && chmod a+x $TMP_EDITOR
 
-if [[ -z $theirs ]]; then
+if [[ -z $theirs ]]; then #ours merge
+	# => merge $HEAD_NAME into $TO (keeping $TO's tree) and rebase
 	BASE_MESSAGE=
 	if [[ -n $mergebase ]]
 	then
@@ -138,10 +111,11 @@ esac &&
 exec "$(git var GIT_EDITOR)" "\$@"
 EOF
 
-# Rebase!
-	GIT_EDITOR=$TMP_EDITOR GIT_SEQUENCE_EDITOR=$TMP_EDITOR git rebase --autosquash --preserve-merges -i ${mergebase:-$TO} $gth_local
+	# Rebase!
+	GIT_EDITOR=$TMP_EDITOR GIT_SEQUENCE_EDITOR=$TMP_EDITOR git rebase --autosquash --rebase-merges -i ${mergebase:-$TO} $gth_local
 
-else
+else #theirs merge
+	# we merge $TO into ourselves (using $TO's tree), and rebase
 	git my trivial -- --merge --theirs -m "Trivial merge from '$TO' (for the rebase on '$HEAD_NAME')" --go $TO
 	cat > "$TODO_EXTRA" << EOF
 
@@ -156,5 +130,5 @@ case "\$1" in
 esac &&
 exec "$(git var GIT_EDITOR)" "\$@"
 EOF
-	GIT_EDITOR=$TMP_EDITOR GIT_SEQUENCE_EDITOR=$TMP_EDITOR git rebase --autosquash --preserve-merges -i --onto $gth_local ${mergebase:-$TO} $gth_local^
+	GIT_EDITOR=$TMP_EDITOR GIT_SEQUENCE_EDITOR=$TMP_EDITOR git rebase --autosquash --rebase-merges -i --onto $gth_local ${mergebase:-$TO} $gth_local^
 fi

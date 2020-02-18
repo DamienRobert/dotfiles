@@ -128,7 +128,7 @@ EOS
 			tinc=@computer.connect_to(comp, service: :tinc, service_name: tincname)
 			if tinc
 				servername=tinc[:servername]||comp.name
-				addr=tinc.addr.all_addrs
+				addr=tinc.addr.all_addrs(exclude: :vpn)
 				subnet=if tinc.key?(:subnet)
 						tinc[:subnet]
 					else

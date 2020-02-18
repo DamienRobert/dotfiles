@@ -9,4 +9,4 @@ export LAST_TAG=
 url=tmux
 # version="2.9"
 build_helper $@
-build_git
+build_git -- $args

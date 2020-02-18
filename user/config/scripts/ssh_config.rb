@@ -4,7 +4,14 @@ def get_ssh_config(host, data)
 	hostname = data[:hostname]
 	port = data[:port]
 	proxy = data[:proxy]
-	proxy = "ssh -W %h:%p #{proxy}" if proxy
+	if proxy
+		proxy_host='%h'
+		proxy_port='%p'
+		# if the host is a local dns address, we need to replace it by its true
+		# ip, otherwise
+		proxy_host=data[:addr].best.addr(reverse_dns: false) if hostname =~ /\.lan$/
+		proxy = "ssh -W #{proxy_host}:#{proxy_port} #{proxy}" 
+	end
 	proxy ||= data[:proxycommand]
 	if hostname
 		r << "Host #{host}\n"
@@ -17,11 +24,15 @@ def get_ssh_config(host, data)
 	r
 end
 
-if @computer.network
+if @computer.local_network
 	content=""
 	@computer.others_network.each do |c|
 		ssh=@computer.connect_to(c, service: :ssh)
 		data=ssh.ip_data
+		# since the default port setting may be overloaded by further
+		# 'config_global' settings (since we don't set the port directly), lets
+		# put it there so it gets written out
+		data[:port] ||= 22
 		content += get_ssh_config(c.to_s.downcase, data) if data
 	end
 	unless content.empty?
@@ -37,6 +48,7 @@ end
 
 if ::DR::Config::Network.global_network.names.include?(@computer.name)
 	gcontent=""
+	basenames=[]
 	@computer.global_network.each do |c|
 		c.get_services(:ssh).each do |ssh_name, ssh|
 			ssh.addr.all_addresses(current_zones: :all, dns_extension: nil, reverse_dns: false).each do |fqdn, addrs|
@@ -51,6 +63,7 @@ if ::DR::Config::Network.global_network.names.include?(@computer.name)
 						if key == :addr #add the short name
 							basename, domainname=host.split('.', 2)
 							if domainname=="internet"
+								basenames << basename
 								gcontent += get_ssh_config(basename, data)
 							end
 						end
@@ -58,6 +71,10 @@ if ::DR::Config::Network.global_network.names.include?(@computer.name)
 				end
 			end
 		end
+	end
+	unless basenames.empty?
+		gcontent += "Host #{basenames.map {|b| "*#{b}*"}.join(' ')}\n"
+		gcontent += "ForwardAgent yes\n"
 	end
 	unless gcontent.empty?
 		gcontent=<<EOS

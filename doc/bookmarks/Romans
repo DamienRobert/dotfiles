@@ -55,6 +55,7 @@ Crypto
 - The Codebreakers by David Kahn
 - L'espion du président
 - True Names (Vernor Vinge) http://passcode.csmonitor.com/cypherpunk
+- Factor Man, https://www.cs.umd.edu/users/gasarch/BLOGPAPERS/factorman.pdf (P=NP)
 
 Sociologie
 ==========
@@ -153,6 +154,25 @@ http://marginalrevolution.com/marginalrevolution/2018/03/ten-favorite-science-fi
 https://deathworlders.com/books/deathworlders/chapter-09-gains-losses/
 
 https://entertainment.slashdot.org/story/19/08/24/0348225/2019-hugo-award-winners-include-a-fan-fiction-site-and-spider-man-into-the-spider-verse
+
+https://www.wired.com/2012/12/and-the-winner-is-readers-choice-for-top-10-science-fiction-novel/
+  - Dune by Frank Herbert
+  - Ender’s Game by Orson Scott Card
+  - The Hitchhiker’s Guide to the Galaxy by Douglas Adams
+  - Foundation by Isaac Asimov
+  - 1984 by George Orwell
+  - Fahrenheit 451 by Ray Bradbury
+  - Neuromancer by William Gibson
+  - Starship Troopers by Robert Heinlein
+  - Snow Crash by Neal Stephenson
+  - Ringworld by Larry Niven
+
+Maths
+=====
+
+Petits meurtres entre mathématiciens, Tecfros Michaelides
+Le nouveau monde de M. Tompkins, Russell Stannard
+L'assassin des échecs, Benoît Rittaud
 
 Fantasy
 =======

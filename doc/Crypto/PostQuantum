@@ -2,3 +2,11 @@
 - https://blog.cloudflare.com/the-quantum-menace/
 - https://blog.cloudflare.com/introducing-circl/
   An Advanced Cryptographic Library in go (include sike)
+
+Quantum algos
+=============
+
+- https://en.wikipedia.org/wiki/Quantum_algorithm
+- https://en.wikipedia.org/wiki/Quantum_phase_estimation_algorithm
+- https://en.wikipedia.org/wiki/Shor%27s_algorithm
+- https://en.wikipedia.org/wiki/Grover%27s_algorithm

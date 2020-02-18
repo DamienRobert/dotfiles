@@ -5,7 +5,7 @@ require 'dr/packages/handlers'
 module DR
 	module Packages
 		class Handler::ArchAbs < Handler::Generic
-			def initialize(*args)
+			def initialize(*args, **kwd)
 				super
 				@graph_type=:manual
 				@pacmancheck=find_executable("checkupdates")
@@ -106,13 +106,13 @@ module DR
 				end
 			end
 
-			def update(*args)
+			def update(*args, **kw)
 				return super if block_given?
 				super do |o|
 					"#{@sudo} #{@packager} #{o} -Syu"
 				end
 			end
-			def check_update(*args)
+			def check_update(*args, **kw)
 				return super if block_given?
 				super do |_o|
 					@pacmancheck

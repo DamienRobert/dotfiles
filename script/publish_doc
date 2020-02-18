@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+DEST=~/usr/dist/@DamienRobert/doc
+cd ~/doc
+for file in $(rg -li 'vim:.*markdown'); do
+	# rsync -v $file $DEST
+	dir=${file:h}
+	base=${file:t}
+	mkdir -p $DEST/$dir
+	cp -a $file $DEST/$dir/$base.md
+	kramdown $file > $DEST/$dir/$base.html
+done

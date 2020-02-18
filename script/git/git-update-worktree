@@ -3,6 +3,7 @@ GITDIR=$(git rev-parse --git-dir)
 
 #- git update-worktree [--cached/--index] [--reset/--keep-unmerged,--ff] tree
 #- git update-worktree --merge [--index,--keep-unmerged,--ff] tree
+#- git update-worktree --tmp worktree options -- git command to run in tmp worktree
 #- git update-worktree --tmp-index program
 #- git update-worktree --merge-recursive common old new
 #- unmerged=$(git ls-files -u) && git update worktree --restore-unmerged $unmerged
@@ -57,7 +58,7 @@ GITDIR=$(git rev-parse --git-dir)
 #  git-read-tree -m $index
 #or by doing
 #  TMPFILE=.git/index.tmp
-#  cp $GIT_INDEX_FILE .git/index.tmp
+#  cp $GIT_INDEX_FILE $TMPFILE
 #  GIT_INDEX_FILE=$TMPFILE git read-tree -u ...
 #we choose the second option, this let the unmerged entries in the index.
 
@@ -86,6 +87,7 @@ do
 		--index ) shift; indexmode="index" ;;
 		--cached ) shift; indexmode="cached" ;;
 		-m|--merge ) shift; merge=1 ;;
+		--tmp ) shift; temp_worktree=1 ; break ;;
 		--tmp-index ) shift; temp=1 ;;
 		--merge-recursive ) shift; mergerecursive=1 ;;
 		--restore-unmerged ) shift; restoreunmerged=1 ;;
@@ -167,13 +169,33 @@ doautostash() {
 
 . ~/mine/script/git/git-topic-helper
 
-if [[ -n $temp ]]; then
+if [[ -n $temp_worktree ]]; then #--tmp
+	set -e #exit on error
+	opts=()
+	while [[ $# > 0 ]];
+	do
+		case "$1" in
+			-- ) break ;;
+			*) opts+=$1 ; shift ;;
+		esac
+	done
+
+	name=$(basename $(git rev-parse --show-toplevel))
+	git worktree add ~/tmp/worktree_$name $opts
+	cd ~/tmp/worktree_$name
+	eval $@
+	cd -
+	git worktree remove ~/tmp/worktree_$name
+	exit 0
+fi
+
+if [[ -n $temp ]]; then #--tmp-index
 	gth_tmp_index
 	exec "$@"
 fi
 
 doautostash
-if [[ -n $mergerecursive ]]; then
+if [[ -n $mergerecursive ]]; then #--merge-recursive
 	gth_special_branches "$@"
 	branchcommon=$gth_branches_rev[1];
 	branch1=$gth_branches_rev[2];
@@ -186,13 +208,13 @@ if [[ -n $mergerecursive ]]; then
 	exit $?
 fi
 
-if [[ -n $restoreunmerged ]]; then
+if [[ -n $restoreunmerged ]]; then #--restore-unmerged
 	unmerged="$@"
 	restore_unmerged $unmerged
 	exit $?
 fi
 
-if [[ -n $merge ]]; then
+if [[ -n $merge ]]; then #--merge
 	[[ $indexmode == "cached" ]] && abort "--merge and --cached is incompatible"
 	[[ -z $indexmode ]] && index=$(git write-tree)
 	gth_topic "$@"

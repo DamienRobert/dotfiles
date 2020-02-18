@@ -2,6 +2,7 @@
 
 # Adapted from git-aliae https://github.com/ConradIrwin/git-aliae
 # A little script to show you who's working on what.
+# [replaced by git my topic info]
 # Prints out a list of branches on 'origin' (or the remote you name)
 #
 # For each branch shows you who last committed to it, and when.

@@ -1,0 +1,94 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+<site uuid='580c92b1' name='Open Water Tahiti'>
+</site>
+</divesites>
+<dives>
+<dive number='2' divesiteid='580c92b1' date='2020-01-16' time='13:30:17' duration='30:00 min'>
+  <divemaster>Philippe Muralon</divemaster>
+  <notes>Baptème Fluid @Aquarium</notes>
+  <divecomputer model='manually added dive' last-manual-time='30:00 min'>
+  <depth max='8.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='0:53 min' depth='8.0 m' />
+  <sample time='29:07 min' depth='8.0 m' />
+  <sample time='30:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='1' divesiteid='580c92b1' date='2020-01-18' time='10:30:37' duration='38:00 min'>
+  <divemaster>Arnaud Priet</divemaster>
+  <notes>Aquarium
+
+Combi taille 6
+Gilet taille M
+Plomb: 3 ou 4
+Plames taille 42-43</notes>
+  <divetemperature air='30.0 C' water='28.0 C'/>
+  <divecomputer model='manually added dive' last-manual-time='38:00 min'>
+  <depth max='10.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='1:07 min' depth='10.0 m' />
+  <sample time='33:53 min' depth='10.0 m' />
+  <sample time='34:27 min' depth='5.0 m' />
+  <sample time='37:27 min' depth='5.0 m' />
+  <sample time='38:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='2' divesiteid='580c92b1' date='2020-01-19' time='09:30:35' duration='48:00 min'>
+  <divemaster>Arnaud Priet</divemaster>
+  <notes>Les Eboulis</notes>
+  <divecomputer model='manually added dive' last-manual-time='48:00 min'>
+  <depth max='11.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='1:13 min' depth='11.0 m' />
+  <sample time='43:47 min' depth='11.0 m' />
+  <sample time='44:27 min' depth='5.0 m' />
+  <sample time='47:27 min' depth='5.0 m' />
+  <sample time='48:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='3' divesiteid='580c92b1' date='2020-01-19' time='13:30:30' duration='45:00 min'>
+  <divemaster>Arnaud Priet</divemaster>
+  <notes>Les 3 Piliers</notes>
+  <divecomputer model='manually added dive' last-manual-time='45:00 min'>
+  <depth max='18.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='2:00 min' depth='18.0 m' />
+  <sample time='40:00 min' depth='18.0 m' />
+  <sample time='41:27 min' depth='5.0 m' />
+  <sample time='44:27 min' depth='5.0 m' />
+  <sample time='45:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='3' divesiteid='580c92b1' date='2020-01-21' time='13:30:25' duration='44:00 min'>
+  <divemaster>Philippe Muralon</divemaster>
+  <notes>La Faille Saint-Etienne
+
+Requins + Tortues</notes>
+  <divecomputer model='manually added dive' last-manual-time='44:00 min'>
+  <depth max='21.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='2:20 min' depth='21.0 m' />
+  <sample time='38:40 min' depth='21.0 m' />
+  <sample time='40:27 min' depth='5.0 m' />
+  <sample time='43:27 min' depth='5.0 m' />
+  <sample time='44:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='4' divesiteid='580c92b1' date='2020-01-22' time='13:30:23' duration='38:00 min'>
+  <divemaster>Arnaud Priet</divemaster>
+  <notes>Tombant Saint-Etienne</notes>
+  <divecomputer model='manually added dive' last-manual-time='38:00 min'>
+  <depth max='19.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='2:07 min' depth='19.0 m' />
+  <sample time='32:53 min' depth='19.0 m' />
+  <sample time='34:27 min' depth='5.0 m' />
+  <sample time='37:27 min' depth='5.0 m' />
+  <sample time='38:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

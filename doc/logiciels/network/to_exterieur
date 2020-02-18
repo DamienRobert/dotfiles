@@ -1,17 +1,36 @@
 vim: ft=markdownlight fdm=expr
 
+Interface web pour le mail
+==========================
+
+squirrelmail (old)
+roundcube => https://www.normalesup.org/phare/roundcube/, https://quatramaran.salle-s.org/roundcube
+
+
 SSH via http/https
 ==================
 http: port 80, https: port 443
 
+* Foo over http:
 - phare2.normalesup.org:443 est un serveur ssh
 
 - Shellinabox, un émulateur de terminal accessible via navigateur web, a
   été installé sur phare (il remplace Ajaxterm qui a divers problèmes):
   https://www.normalesup.org/phare/shellinabox/
+  => https://github.com/shellinabox/shellinabox
+
+- https://github.com/tsl0922/ttyd
+  use xtermjs, better terminal emulation than shellinabox
+
+- https://github.com/novnc/noVNC
+  VNC client using HTML5 (WebSockets, Canvas) https://novnc.com
 
 * https://www.unixmen.com/sslh-a-sslssh-multiplexer-for-linux/
   sslh accepts connections in HTTP, HTTPS, SSH, OpenVPN, tinc, XMPP, or any other protocol that can be tested using a regular expression, on the same port. This makes it possible to connect to any of these servers on port 443 while still serving HTTPS on that port
+
+* Foo over dns
+- iodine (dns tunnel): https://github.com/yarrick/iodine
+  https://davidhamann.de/2019/05/12/tunnel-traffic-over-dns-ssh/
 
 Port forwarding
 ===============
@@ -103,7 +122,14 @@ http_proxy='http://user:password@prox-server:3128'
 
 - corkscrew [last release 2007], proxytunnel [last release 2008]
   Tunnel through http/https proxies.
-  httptunnel can also be used to tunnel through proxies
+  Eg ProxyCommand /usr/local/bin/corkscrew proxy.example.com 8080 %h %p
+  [Note: httptunnel can also be used to tunnel through proxies]
+
+  Update: corkscrew is still active, cf https://news.ycombinator.com/item?id=21383765
+
+- https://github.com/erebe/wstunnel
+  Tunneling over websocket protocol - Static binary available
+  eg: https://kirill888.github.io/notes/wireguard-via-websocket/
 
 Proxy Socks
 ===========
@@ -276,6 +302,12 @@ a non root user:
 $ sudo cat /var/lib/zerotier-one/authtoken.secret >>.zeroTierOneAuthToken
 $ sudo chown user:group .zeroTierOneAuthToken
 $ chmod 0600 .zeroTierOneAuthToken
+
+* https://www.zerotier.com/zerotier-2-0-status/
+HN discussion https://news.ycombinator.com/item?id=21066821
+
+AES-GMAC-CTR (SIV) (zerotier.com)
+https://news.ycombinator.com/item?id=20878207
 
 Sshuttle
 --------

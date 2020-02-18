@@ -5,7 +5,7 @@ require 'dr/packages/handlers'
 module DR
 	module Packages
 		class Handler::Yarn < Handler::Generic
-			def initialize(*args)
+			def initialize(*args, **kw)
 				super
 				@graph_type=:manual
 			end
@@ -44,7 +44,7 @@ module DR
 				end
 			end
 
-			def update(*args)
+			def update(*args, **kw)
 				# See https://github.com/yarnpkg/yarn/issues/5001
 				# yarn global add some-package would add a carret-range, something like ^1.0.0 so if a 2.0.0 comes out, yarn global upgrade would not upgrade to that because it doesn't fit the range. You would specify the --latest/-L flag to ignore the semver range and get the latest as tagged in the registry.
 				super do |o|

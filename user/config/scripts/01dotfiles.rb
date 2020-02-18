@@ -4,7 +4,7 @@ def handle_dotfiles(dotfiles)
 	# its parent, and so on.
 	# -1 means descend all the ways down to files
 	conf={"/" => 1} # default to 1 level
-	%w(.cpan .config .electrum .flrn .gem .gnome2 .mpd .mplayer .mpv .ncmpcpp .ssh).each { |squel| conf["/"+squel]=1 }
+	%w(.cpan .config .electrum .flrn .gem .gnome2 .mpd .mplayer .mpv .ncmpcpp .ssh .subsurface).each { |squel| conf["/"+squel]=1 }
 	%w(.cups .local .subversion bin).each { |squel| conf["/"+squel]=-1 }
 
   # .config/... dirs

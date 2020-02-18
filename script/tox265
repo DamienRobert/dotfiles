@@ -5,6 +5,7 @@ VF="hqdn3d"
 EXTRAOPT=(-threads 0 -avoid_negative_ts 0)
 REMOVE=
 PRESET=veryslow
+#For only audio encoding: opusenc --bitrate 128, or my scripte 'toopus'
 
 acodec() {
 	ACODEC=$1

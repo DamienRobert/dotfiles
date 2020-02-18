@@ -36,7 +36,7 @@ if $PROGRAM_NAME == __FILE__
 		opt.on("-d", "--[no-]dry-run", "dry run") do |v|
 			opts[:dryrun] = v
 		end
-		opt.on("-y", "--year", "=[year]", "update year", "Use current year when on by default") do |v|
+		opt.on("-y", "--year", "=[year]", "update year", "When true (default), use current year. Special mode 'git' which looks at last modification") do |v|
 			opts[:year] = v
 		end
 		opt.on("--name=name", "Only update copyright for name") do |v|
@@ -62,6 +62,6 @@ end
 # ~/script/copyright.rb -d -y {~rubygems,~progs}/*/{LICENSE,README,COPYING}*(N)
 
 # ~/script/copyright.rb --name="Damien Robert" --year=git -d ~/dist/@github/*/{COPYING,*.{md,txt}} ~/website/common/erb_common.rb
-# gitstatus.rb
+# gitstatus.rb ~/dist/@github/*
 # vcs action 'git ci -a -m "Copyright"' ~/dist/@github/*
 # vcs push ~/dist/@github/*

@@ -276,3 +276,38 @@ https://github.com/pmq20/ruby-packer
   On using ROM instead
 
 - https://www.reddit.com/r/ruby/comments/cck08e/dragonruby_game_toolkit_released/
+
+- http://bitsandrubies.blog/wearing-stripes #on using stripes for paiments, blog by wetransfert
+
+Algebraic effects in ruby:
+- https://dry-rb.org/news/2019/10/03/introducing-dry-effects/
+- https://www.reddit.com/r/ruby/comments/cjnwj0/affect_algebraic_effects_for_ruby/
+=> https://overreacted.io/algebraic-effects-for-the-rest-of-us/
+
+- https://metaredux.com/posts/2019/10/04/rubocop-meets-minitest.html
+
+- https://news.ycombinator.com/item?id=21395295
+Httpx: A Ruby HTTP library for tomorrow and beyond (gitlab.com)
+
+- https://mensfeld.pl/2019/11/the-hidden-cost-of-the-ruby-2-7-dot-colon-method-reference-usage/
+  https://bugs.ruby-lang.org/issues/16273 'on .:'
+
+- https://www.ruby-lang.org/en/news/2019/12/12/separation-of-positional-and-keyword-arguments-in-ruby-3-0/
+
+- https://www.ruby-lang.org/en/news/2019/12/17/ruby-2-7-0-rc1-released/
+  -> revert `.:method` (use numbered parameters instead): https://bugs.ruby-lang.org/issues/16275
+  -> implicit numbered parameters in blocks: https://bugs.ruby-lang.org/issues/15723 => We picked _1, _2... as numbered parameters. The whole parameter (e.g. |a|) can be captured using _0.
+  -> Allow private method of self to be called: https://bugs.ruby-lang.org/issues/11297, https://bugs.ruby-lang.org/issues/16123 
+  -> pattern matching: https://bugs.ruby-lang.org/issues/14912
+
+- https://sourcediving.com/ruby-2-7-news-commentary-by-cookpads-full-time-ruby-comitters-bdbaacb36d0c
+
+- https://ankane.org/new-ml-gems
+  16 New ML Gems for Ruby
+  => https://github.com/yoshoku/rumale
+
+- https://www.honeybadger.io/blog/use-any-c-library-from-ruby-via-fiddle-the-ruby-standard-librarys-best-kept-secret/
+  There’s also the FFI gem, which provides higher-level functionality and overcomes some limitations of Fiddle (like the ability to pass structs by value).
+
+- https://kukicola.io/posts/handling-ruby-27-deprecations-warnings
+  => https://github.com/jeremyevans/ruby-warning

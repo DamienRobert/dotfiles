@@ -119,3 +119,10 @@ portablectl — Attach, detach or inspect portable service images
 cf https://systemd.io/PORTABLE_SERVICES.html
 => essentially attach images and copy the services with a
 RootImage=/path/to/foobar.raw
+
+images
+======
+
+https://nspawn.org/
+Wrapper: https://github.com/nspawn/nspawn
+Simple build script: https://github.com/shibumi/mknspawn

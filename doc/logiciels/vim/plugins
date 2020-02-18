@@ -17,6 +17,7 @@ gtk: http://www.wezm.net/technical/2017/12/a-killer-linux-gui-for-neovim-neovimg
 https://github.com/dzhou121/gonvim (qt)
 https://github.com/equalsraf/neovim-qt (qt, more active, in archlinux)
 https://github.com/onivim/oni neovim IDE; replaced by oni2 [=neovim+vscode]
+https://github.com/vhakulinen/gnvim GUI for neovim, without any web bloat (in rust)
 
 ## code
 start:
@@ -231,7 +232,7 @@ start:
 - ervandew/maximize
   commande pour maximize/minimize une fenetre
   :MaximizeWindow, :MinimizeWindow, :MinimizeRestore
-- scrooloose/nerdtree (Stopped here)
+- scrooloose/nerdtree (TODO Stopped here)
   un explorateur de fichier
 - majutsushi/tagbar
   tags on the source file
@@ -507,7 +508,31 @@ Rake.vim is a plugin leveraging projectionist.vim to enable you to use all those
   This is a lightweight bag of Vim goodies for Bundler, best accompanied by rake.vim and/or rails.vim.
 
 ! https://github.com/lervag/vimtex
+
   A modern vim plugin for editing LaTeX files. (contains LatexBox)
+  - Text objects: `id` `ad` Delimiters, `ie` `ae` LaTeX environments, `i$` `a$` Inline math structures, `iP` `aP` Sections
+  - Delete/Change surrounding: dsc, dse, ds$, dsd; csc, cse, cs$, csd
+  - Toggle starred command/environment/delim: tsc, tse, tsd/tsD
+  - new command: F7, close command: ]]
+  - Motions: section boundaries with `[[`, `[]`, `][`, and `]]`
+             environment boundaries with `[m`, `[M`, `]m`, and `]M`
+             comment boundaries with `[*` and `]*`
+             matching delimiters with `%`
+  - normal bindings
+   \li  vimtex-info \lI  vimtex-info-full
+   \lt  vimtex-toc-open \lT  vimtex-toc-toggle
+   \lq  vimtex-log
+   \lv  vimtex-view
+   \lr  vimtex-reverse-search
+   \ll  vimtex-compile \lL  vimtex-compile-selected
+   \lk  vimtex-stop \lK  vimtex-stop-all
+   \le  vimtex-errors \lo  vimtex-compile-output
+   \lg  vimtex-status \lG  vimtex-status-all
+   \lc  vimtex-clean \lC  vimtex-clean-full
+   \lm  vimtex-imaps-list
+   \lx  vimtex-reload \lX  vimtex-reload-state
+   \ls  vimtex-toggle-main
+   K    vimtex-doc-package
 
 ## Shougo
 https://github.com/Shougo?tab=repositories

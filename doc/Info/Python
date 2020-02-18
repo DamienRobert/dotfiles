@@ -1,6 +1,6 @@
-# vim: foldmethod=marker ft=markdownlight
+vim: foldmethod=expr ft=markdownlight
 
-Libraries #{{{1
+Libraries
 =========
 
 python completion: https://docs.python.org/2/tutorial/interactive.html
@@ -20,9 +20,8 @@ To build package use 'distutils' (in the stdlib) or 'setuptools' if more
 features are needed.
 
 Virtualenv: https://wiki.archlinux.org/index.php/Python_VirtualEnv
-#}}}1
 
-Scope #{{{1
+Scope
 =====
 
 http://stackoverflow.com/questions/291978/short-description-of-python-scoping-rules
@@ -46,11 +45,10 @@ def f(x):
 g=f(2) #cloture x->2+x
 
 Scopes modifier: global, nonlocal (for nested function scopes)
-#}}}1
 
-Packages #{{{1
+Packages
 ========
-https://docs.python.org/3/reference/import.html
+* https://docs.python.org/3/reference/import.html
 
 Unlike in ruby, in python
 'import foo'
@@ -59,10 +57,10 @@ To flatten the namespace, do
 'from foo import ploum, plam' or 'from foo import *'
 Use 'import foo.bar' to refer to the package foo/bar.py
 
-# Regular package:
+* Regular package:
 « Python defines two types of packages, regular packages and namespace packages. Regular packages are traditional packages as they existed in Python 3.2 and earlier. A regular package is typically implemented as a directory containing an __init__.py file. When a regular package is imported, this __init__.py file is implicitly executed, and the objects it defines are bound to names in the package’s namespace. The __init__.py file can contain the same Python code that any other module can contain, and Python will add some additional attributes to the module when it is imported. »
 
-# python 3.3 implicit namespace package:
+* python 3.3 implicit namespace package:
         If <directory>/foo/__init__.py is found, a regular package is imported and returned.
         If not, but <directory>/foo.{py,pyc,so,pyd} is found, a module is imported and returned. The exact list of extension varies by platform and whether the -O flag is specified. The list here is representative.
         If not, but <directory>/foo is found and is a directory, it is recorded and the scan continues with the next directory in the parent path.
@@ -87,18 +85,18 @@ Feanor /tmp/python $ tree                                                   ⚡2
 └── main.py
 
 ~~~ python
-#foo1/baz/bar.py:
+ #foo1/baz/bar.py:
 bar1="foo1"
-#foo2/baz/bar.py:
+ #foo2/baz/bar.py:
 bar2="foo2"
-# main.py:
+ # main.py:
 import sys
 sys.path += ['foo1', 'foo2']
 import baz.bar
 print(baz.__path__) #=>_NamespacePath(['foo1/baz', 'foo2/baz'])
 print(baz.bar.bar1) #=> foo1
 print(baz.bar.bar2)
-#=>
+ #=>
 Traceback (most recent call last):
   File "main.py", line 6, in <module>
     print(baz.bar.bar2)
@@ -109,7 +107,7 @@ Still if we rename foo2/baz/bar.py into foo2/baz/bar2.py, then
 'import baz.bar2' would work because due to packages namespaces, 'baz'
 refer to both 'foo1/baz' and 'foo2/baz' (cf the NamespacePath above)
 
-# Note on names:
+* Note on names:
 By default names with a leading underscore are not imported by import *.
 This can be customized by setting the __all__ variable, to set up the
 variables imported by import *
@@ -142,9 +140,8 @@ AttributeError: myClass instance has no attribute '__superprivate'
 >>> print mc.__dict__
 {'_MyClass__superprivate': 'Hello', '_semiprivate': ', world!'}
 ~~~
-#}}}1
 
-Syntax #{{{1
+Syntax
 ======
 
 python2 vs python3
@@ -271,14 +268,13 @@ Lambda
 f=lambda x: x+1
 lambda x,y: x+y
 (a lambda can only contain an expression, not several statements)
-#}}}1
 
-# Generators {{{1
-## Generators as iterators {{{2
+# Generators
+## Generators as iterators
 https://www.python.org/dev/peps/pep-0255/
 https://wiki.python.org/moin/Generators
 ~~~ python
-# a generator that yields items instead of returning a list
+ # a generator that yields items instead of returning a list
 def firstn(n):
     num = 0
     while num < n:
@@ -287,7 +283,7 @@ def firstn(n):
 
 sum_of_first_n = sum(firstn(1000000))
 
-# Using the generator pattern (an iterable) via a class
+ # Using the generator pattern (an iterable) via a class
 class firstn(object):
     def __init__(self, n):
         self.n = n
@@ -304,15 +300,15 @@ class firstn(object):
         else:
             raise StopIteration()
 
-#square is a generator
+ #square is a generator
 square = (i*i for i in range(1000000))
-#add the squares
+ #add the squares
 total = 0
 for i in square:
    total += i
 ~~~
 
-## Generators as coroutine: {{{2
+## Generators as coroutine:
 https://www.python.org/dev/peps/pep-0342/
 https://docs.python.org/2/reference/expressions.html
 
@@ -359,7 +355,7 @@ TypeError('spam',)
 >>> generator.close()
 Don't forget to clean up when 'close()' is called.
 
-## yield from {{{2
+## yield from
 https://www.python.org/dev/peps/pep-0380/
 New syntax in python3.3 to delegate to a subgenerator: yield from https://docs.python.org/dev/whatsnew/3.3.html#pep-380-syntax-for-delegating-to-a-subgenerator
 
@@ -395,7 +391,7 @@ yield from is an expression:
  The value of the yield from expression is the first argument to the StopIteration exception raised by the iterator when it terminates.
 return expr in a generator causes StopIteration(expr) to be raised upon exit from the generator.
 
-## Coroutines with async/await {{{2
+## Coroutines with async/await
 https://www.python.org/dev/peps/pep-0492/
 https://snarky.ca/how-the-heck-does-async-await-work-in-python-3-5/
 http://benno.id.au/blog/2015/05/25/await1
@@ -493,7 +489,7 @@ values (a 'native coroutine' can only return once). In practice
 -> reference the very interesting thread on pep482: https://mail.python.org/pipermail/python-dev/2015-April/thread.html#139728
 
 
-## Asynchronous generators {{{2
+## Asynchronous generators
 A generator allows to easily implement an iterable (__iter__,__next__),
 while an asynchronous generator allow to easily implement an asynchronous
 iterable (__aiter__, __anext__)
@@ -526,7 +522,7 @@ async def ticker(delay, to):
         yield i
         await asyncio.sleep(delay)
 
-## Summary {{{2
+## Summary
 ~~~ python
 def func():            # a function
     return
@@ -658,9 +654,8 @@ wheras CO_COROUTINE is used to mark native coroutines (defined with new syntax).
 => yield from checks for __iter__ while await checks for __await__ OR a
 coroutine based generator
 
-#}}}1
 
-Classes #{{{1
+Classes
 =======
 
 x=0
@@ -751,11 +746,10 @@ class Foo:
 foo=Foo(2)
 foo(3) #=> 5
 ~~~
-#}}}1
 
-# Decorators and descriptors {{{1
+# Decorators and descriptors
 
-Decorator {{{2
+Decorator
 ---------
 http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 
@@ -779,19 +773,19 @@ Use @classmethod to define a class method
 def f(cls,args) #here cls refer to the class
 
 ~~~ python
-#via a function
+ #via a function
 def logger(func):
     def inner(*args, **kwargs): #1
         print "Arguments were: %s, %s" % (args, kwargs)
         return func(*args, **kwargs) #2
     return inner
-#Notice our inner function takes any arbitrary number and type of parameters at point #1 and passes them along as arguments to the wrapped function at point #2. This allows us to wrap or decorate any function, no matter it's signature.
+ #Notice our inner function takes any arbitrary number and type of parameters at point #1 and passes them along as arguments to the wrapped function at point #2. This allows us to wrap or decorate any function, no matter it's signature.
 @logger
 def foo1(x, y=1):
     return x * y
 
-#via an object
-#see: http://www.artima.com/weblogs/viewpost.jsp?thread=240808
+ #via an object
+ #see: http://www.artima.com/weblogs/viewpost.jsp?thread=240808
 class myDecorator:
   def __init__(self, f):
     self.f=f
@@ -810,7 +804,7 @@ class Foo:
   def foo(self):
     print("In foo")
     return self
-#this does not work because when Foo().foo is wrapped myDecorator it is just a function, not yet a method. So in myDecorator, 'self.f' refer to the foo with self unbound. Now when called, since foo is now a myDecorator and not an instance method, it won't get passed the current instance as parameter. This would work with a function wrapper for decorator because it would still be interpreted as a class method
+ #this does not work because when Foo().foo is wrapped myDecorator it is just a function, not yet a method. So in myDecorator, 'self.f' refer to the foo with self unbound. Now when called, since foo is now a myDecorator and not an instance method, it won't get passed the current instance as parameter. This would work with a function wrapper for decorator because it would still be interpreted as a class method
 print(Foo().foo())
 ~~~
 
@@ -825,7 +819,7 @@ decorator with a descriptor
         new_func = self.func.__get__(obj, type) #curry the function with the instance 'obj' [*]
         return self.__class__(new_func) #we wrap the curried function rather than the original function
         #this works because we use a descriptor to wrap the function at runtime rather than when the method is defined
-#Full example from the stackoverflow answer
+ #Full example from the stackoverflow answer
 class logger(object):
     def __init__(self, func):
         self.func = func
@@ -839,7 +833,7 @@ class C(object):
     def f(self, x, y):
         return x+y
 C().f(1, 2)
-# => Entering <bound method C.f of <__main__.C object at 0x...>>
+ # => Entering <bound method C.f of <__main__.C object at 0x...>>
 ~~~
 [*] Indeed according to https://docs.python.org/2/howto/descriptor.html,
 the way a function is transformed to a method is via __get__:
@@ -850,7 +844,7 @@ class Function(object):
         return types.MethodType(self, obj, objtype)
 ~~~
 
-Descriptor #{{{2
+Descriptor
 ----------
 
 class Descriptor
@@ -953,9 +947,8 @@ The Descriptor Howto includes a pure python sample implementation of the propert
         def deleter(self, fdel):
             return type(self)(self.fget, self.fset, fdel, self.__doc__)
 ~~~
-#}}}1
 
-# Metaclasses {{{1
+# Metaclasses
 
 class ploum(metaclass=foo)
 end
@@ -988,11 +981,10 @@ have a getter. See the diagram in the link below]
 
 https://docs.python.org/3/reference/datamodel.html#invoking-descriptors
 http://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/
-# }}}1
 
-# Examples {{{
-## read json file encoding information on servers (was used in offlineimap.py)
-#recursive merge from http://stackoverflow.com/questions/7204805/dictionaries-of-dictionaries-merge
+# Examples
+ ## read json file encoding information on servers (was used in offlineimap.py)
+ #recursive merge from http://stackoverflow.com/questions/7204805/dictionaries-of-dictionaries-merge
 def mergedicts(dict1, dict2):
     for k in set(dict1.keys()).union(dict2.keys()):
         if k in dict1 and k in dict2:
@@ -1014,9 +1006,8 @@ if serverdict is None:
   auth = subprocess.check_output(["gpg", "--no-tty", "-d", os.environ['HOME']+"/mine/config/.authinfo.gpg"]).decode("utf-8")
   serverdict=dict(mergedicts(serverdict,json.loads(auth)))
   #print(serverdict)
-# }}}1
 
-# Asyncio {{{1
+# Asyncio
 Originally called tulip
 Pep: https://www.python.org/dev/peps/pep-3156/
 
@@ -1051,13 +1042,13 @@ Exemples:
 Implementation:
 
 ~~~ python
-# cpython/Lib/asyncio:
-# - coroutine.py
-# flag a generator as a 'coroutine'
-# also support awaitables and functions returning a future, not just generators
-# so that when wrapping a future result the return value is the result of
-# the future, not the future itself.
-# Note types.coroutine only flags a generator as a coroutine, cf Lib/types.py
+ # cpython/Lib/asyncio:
+ # - coroutine.py
+ # flag a generator as a 'coroutine'
+ # also support awaitables and functions returning a future, not just generators
+ # so that when wrapping a future result the return value is the result of
+ # the future, not the future itself.
+ # Note types.coroutine only flags a generator as a coroutine, cf Lib/types.py
 def coroutine(func):
   if inspect.iscoroutinefunction(func):
       # In Python 3.5 that's all we need to do for coroutines
@@ -1088,10 +1079,10 @@ def coroutine(func):
     wrapper._is_coroutine = _is_coroutine  # For iscoroutinefunction().
     return wrapper
 
-# - future.py
-# yield from future => this yield the future to the event loop which adds a
-# callback to resume when the future is done (cf __iter__ below)
-# ie this is the way to wait for a future
+- future.py
+ # yield from future => this yield the future to the event loop which adds a
+ # callback to resume when the future is done (cf __iter__ below)
+ # ie this is the way to wait for a future
 
 class Future:
     # This field is used for a dual purpose:
@@ -1112,10 +1103,10 @@ class Future:
         return self.result()  # May raise too.
     __iter__ = __await__ # make compatible with 'yield from'.
 
-#- tasks.py
-# Essentially the event loop serves as a trampoline for the futures yielded
-# by the coroutines. A coroutine is wrapped into a future via the Task
-# class.
+- tasks.py
+ # Essentially the event loop serves as a trampoline for the futures yielded
+ # by the coroutines. A coroutine is wrapped into a future via the Task
+ # class.
 
 class Task(futures.Future):
     """A coroutine wrapped in a Future."""
@@ -1172,9 +1163,9 @@ class Task(futures.Future):
             # that return non-generator iterators from their `__iter__`.
             self._step()
 
-# cf http://stackoverflow.com/questions/27076577/yield-from-coroutine-vs-yield-from-task
-# ensure_future wraps a coro inside a Task (which is a future), so that we
-# can start a coroutine in the background
+ # cf http://stackoverflow.com/questions/27076577/yield-from-coroutine-vs-yield-from-task
+ # ensure_future wraps a coro inside a Task (which is a future), so that we
+ # can start a coroutine in the background
 def ensure_future(coro_or_future, *, loop=None):
     """Wrap a coroutine or an awaitable in a future.
     If the argument is a Future, it is returned directly.
@@ -1192,7 +1183,7 @@ def _wrap_awaitable(awaitable):
     return (yield from awaitable.__await__())
 
 
-#Exemple:
+* Exemple:
 import asyncio
 @asyncio.coroutine
 def test1():
@@ -1211,7 +1202,75 @@ def main():
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
-#=> in test1; dummy ran
+ #=> in test1; dummy ran
 ~~~
 
-}}}1
+# Ruby vs Python
+
+Legend: + -> Advantage ruby, - -> Advantage python, = -> equality
+
+= In ruby, everything (apart from keywords and variables) is a method call.
+This is great for unicity, but this mean that to call a lambda one has to
+use l.call(*args) or l[*args] or l.(*args); l(*args) will refer to the
+method call self.l(*args).
+By contrast python has methods (more precisely attributes that are functions) and functions
+
++ pry is better than ipython or bpython
++ rubygem is much much better than pip. + it is integrated directly on ruby
+  On python the state fo packaging is not clear cut yet, see
+  http://stackoverflow.com/questions/6344076/differences-between-distribute-distutils-setuptools-and-distutils2
++ python2 vs python3 is a horrible mess
+- it's easier to access docstrings in python (where they are automatically
+  transformed into attributes) than in ruby where we must use
+  Method#source_location (or the gem MethodSource that wraps
+  source_location)
+- for scientific programming, there is a lot more available in python
+  (sage, scipython...)
+
+- python has multiple inheritences, and the inheritence can be changed at
+  runtime. Ruby support multiple inheritence which is a bit less flexible
+  (one can only include module although now on 2.2 refinements can transform
+  class into modules) and we can only add to the inheritence at runtime (by
+  dynamic include statements), not remove them (there are C extensions to
+  manipulate the inheritence chain directly but it is not baked in the
+  langage)
++ ruby has singleton_class. And the singleton_class of a class has for
+ancestors the singleton_class of the ancestors of this class. This is
+inspired by smalltalk and is so elegant that it solves all metaclass
+problems, and allows to have metaclasses of metaclasses. The python
+equivalent of metaclass is just subclassing type (in ruby this would be
+subclassing Module) and class decorators; this is a lot less flexible
++ Likewise in ruby function decorator are simply instance methods of
+Module, there is no need for the special @ syntax of python
+- python has list/set/hash/generator comprehensions
++ ruby has blocks. Blocks are awesome!
++ ruby has continuations! And coroutines. Python has generators and
+coroutines, but not continuations. Also coroutines are easier to handle in
+ruby than in python (where we need decorators)
++ ruby has string interpolation directly in the string, there is no need to
+call % or format like in python. Also regexp are there by defaut, no need
+to load a module
++ reduce is there by default, no need to load a module either
+- In python3 most of the builtins handling list like objects return
+generators; while ruby2 has 'lazy' it has to be enabled by hand on an
+enumerator, by default it won't be lazy
+= both ruby and python easily support autovivication
+cf http://en.wikipedia.org/wiki/Autovivification
+http://stackoverflow.com/questions/651794/whats-the-best-way-to-initialize-a-dict-of-dicts-in-python
++ ruby can be used to replace some of perl's short oneliners; it uses the
+same magic variables convention as perl and the same -F,-p,-e,-n,-a command
+lines arguments
+
++ python has only lambda that wraps one expression. Also python don't have
+real closures (python functions are like Proc.new in ruby:
+~~~ python
+x=0
+def foo(y):
+  return x+y
+x=1
+foo(2) #=>3
+~~~
+~~~ ruby
+x=0; l=lambda {|y| x+y}; x=1; l.call(3) #=>3
+ #to check, this now gives 4??
+~~~

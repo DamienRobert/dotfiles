@@ -18,7 +18,7 @@ updatecur() {
 }
 
 transfert() {
-	rsync -vazP "$@"
+	rsync -vazzP "$@"
 }
 
 do_transfert() {
@@ -27,13 +27,13 @@ do_transfert() {
 	updatecur
 }
 
-alphabetic_mode() {
+alphabetic_mode() { #alphabetic or state
 	# echo "** alphabetic mode"
 	PHOTOS=($CAMERAPHOTOS/${(@)^~PHOTOSGLOB})
-	[[ -n $PHOTOS ]] && LAST=${PHOTOS[-1]:t:r} #not used
+	[[ -n $PHOTOS ]] && LAST=${PHOTOS[-1]:t:r} #for updatecur
 	if [[ -n $CAMERAVIDEOS ]]; then
 		VIDEOS=($CAMERAVIDEOS/${(@)^~VIDEOSGLOB})
-		[[ -n $VIDEOS ]] && LASTVID=${VIDEOS[-1]:t:r} #not used
+		[[ -n $VIDEOS ]] && LASTVID=${VIDEOS[-1]:t:r} #for updatecur
 	fi
 	# echo "all photos: $PHOTOS"
 	# echo "all videos: $VIDEOS"
@@ -105,11 +105,13 @@ PHOTODIR=$1
 MOUNTMODE="udisk"
 find_mount && do_mount
 [[ -z $CAMERADIR ]] && CAMERADIR=$MOUNTTARGET
-[[ -d $CAMERADIR ]] || exit 1
+[[ -z $CAMERAPHOTOS ]] && ( [[ -d $CAMERADIR ]] || exit 1 )
+#Set it up explicitely to override $CURFILE variables
 [[ -z $CAMERAPHOTOS ]] && CAMERAPHOTOS=$CAMERADIR/$CAMERAPHOTOSNAME
 [[ -z $CAMERAVIDEOS && -n $CAMERAVIDEOSNAME ]] && CAMERAVIDEOS=$CAMERADIR/$CAMERAVIDEOSNAME
 [[ -z $PHOTOSGLOB ]] && PHOTOSGLOB="**/*(.N)"
 [[ -z $VIDEOSGLOB ]] && VIDEOSGLOB="**/*(.N)"
+echo "Dir=$CAMERADIR, Photos=$CAMERAPHOTOS, Videos=$CAMERAVIDEOS"
 
 case $mode in
 	'stat') alphabetic_mode ;;
@@ -130,6 +132,9 @@ esac
 #   gvfs-mount 'mtp://[usb:001,030]/'
 #   CAMERAPHOTOS="$HOME/.gvfs/mtp:host=%5Busb%3A001%2C056%5D/Card/DCIM/Camera"
 # - udisk:
-#   udisk status; 
+#   udiskctl status
+# - jmtpfs / simple-mtpfs:
+#   simple-mtpfs ~/mnt/usb
+#   CAMERAPHOTOS=~/mnt/usb/Card/DCIM ~/script/photos
 
 [[ -n $DID_MOUNT ]] && do_umount

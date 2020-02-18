@@ -274,13 +274,15 @@ Votes
 
 
 https://en.wikipedia.org/wiki/Electoral_system
-
 ## Ranked voting methods:
 vote  simple  transferable (STV), (vote alternatif)
 https://en.wikipedia.org/wiki/Single_transferable_vote
 
 https://en.wikipedia.org/wiki/Maximal_lotteries
 Probabilistic: Nash equilibrium
+
+https://en.wikipedia.org/wiki/Schulze_method
+The Schulze method (/ˈʃʊltsə/) is an electoral system developed in 1997 by Markus Schulze that selects a single winner using votes that express preferences.
 
 ## Rated voting methods:
 In "range voting", voters score or rate each option on a range, and the
@@ -320,3 +322,7 @@ Ranking
 - Dota: https://www.dotainternational.com/how-dota-2-mmr-ranking-works-detail-guide/
         https://www.dotainternational.com/calibration-mmr-dota-2-detailed-guide/
 
+Probas
+======
+
+https://www.gregegan.net/ESSAYS/TUESDAY/Tuesday.html

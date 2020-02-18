@@ -156,12 +156,27 @@ https://mathoverflow.net/questions/156577/formal-group-laws-of-abelian-varieties
   For any (smooth, finite-dimensional) commutative formal group G over a field of char. 0, the theory of logarithms provides an isomorphism to a power of the formal additive group. But in positive characteristic p the formal group of an abelian variety "is" the identity component of its p-divisible group,
 https://mathoverflow.net/questions/153495/are-automorphisms-of-abelian-varieties-detected-by-the-formal-group
 https://mathoverflow.net/questions/123573/the-formal-group-of-the-dual-abelian-variety
-https://mathoverflow.net/questions/43529/decomposition-of-an-algebraic-group-in-an-affine-and-a-proper-part
 https://math.stackexchange.com/questions/1680144/automorphism-group-of-genus-2-curve
 https://mathoverflow.net/questions/114647/what-is-the-universal-deformation-of-the-formal-additive-group-widehat-mathbb
 https://mathoverflow.net/questions/76585/moduli-space-of-genus-2-curves
 https://mathoverflow.net/questions/326350/applications-of-the-idea-of-deformation-in-algebraic-geometry-and-other-areas
 -> application of deformation theory for abelian varieties
+https://mathoverflow.net/questions/127421/is-there-a-right-proof-of-riemanns-theta-relation
+https://mathoverflow.net/questions/224283/p-torsion-of-an-abelian-variety-of-p-rank-0/224290#224290
+https://mathoverflow.net/questions/243380/is-a-polarization-on-an-abelian-scheme-an-open-condition/243414#243414
+  Recall that a polarisation on A/S is a morphism of abelian schemes λ:A→At such that, for every geometric point s of S, λ_s is of the form a↦t_∗aL⊗L−1 for some ample line bundle L over A_s.
+  => a homomorphism λ:A→At is a polarization if and only if it satisfies the following conditions: (i) λ is symmetric with respect to double duality, (ii) the line bundle (1,λ)^∗(PA) on A is fiberwise ample
+https://mathoverflow.net/questions/131705/when-is-an-ample-line-bundle-on-an-abelian-variety-base-point-free
+https://mathoverflow.net/questions/328454/preparation-for-git-geometric-invariant-theory
+https://mathoverflow.net/questions/287861/identification-of-cohomology-sheaf-in-the-definition-of-the-kodaira-spencer-morp?rq=1
+https://mathoverflow.net/questions/69453/dual-isogeny-for-abelian-varieties-over-a-general-field?rq=1
+https://mathoverflow.net/questions/265505/extending-homomorphisms-of-abelian-schemes
+https://mathoverflow.net/questions/22881/scheme-theoretic-description-of-abelian-schemes
+ X/S ab. scheme=smooth proper morphisms X→S with connected fibers, a
+ section S→X, such that the sheaf of Kähler differentials ΩX/S is a
+ pullback from S, and such that the group scheme Aut_S X acts transitively
+ on the fibers (the last condition is automatic in car 0)
+https://mathoverflow.net/questions/265584/is-there-a-langlands-philosophy-reason-for-the-fact-that-the-l-function-of-the
 
 #Algebra
 ========
@@ -201,6 +216,14 @@ https://math.stackexchange.com/questions/920120/is-serres-s-1-condition-equivale
 https://mathoverflow.net/questions/6789/why-are-flat-morphisms-flat/6844
 https://mathoverflow.net/questions/325037/axiom-of-choice-and-algebraic-tensor-product/325070#comment811594_325070
 https://mathoverflow.net/questions/268836/is-the-theory-of-vector-bundles-just-linear-algebra-done-in-a-suitable-toposzm
+https://mathoverflow.net/questions/191725/completion-of-a-local-ring-of-a-curve
+https://mathoverflow.net/questions/93276/a-game-on-noetherian-rings
+https://mathoverflow.net/questions/250238/clarifying-the-connection-between-etale-locally-and-formally-locally/250318#250318
+  Question. Let R be an excellent henselian local domain that is normal, with fraction field K. Let Kˆ denote the fraction field of the completion Rˆ. Do the Galois groups of K and Kˆ naturally coincide?
+  Answer: non in general, yes in dim 1.
+  => E⇝E⊗KKˆ is an equivalence of categories of finite etale algebraic over K and Kˆ respectively in dim 1.
+https://mathoverflow.net/questions/61446/how-to-memorise-understand-nakayamas-lemma-and-its-corollaries
+  Mnemonic: M=IM⇒m=im
 
 #Algebraic Geometry
 ===================
@@ -255,7 +278,6 @@ http://mathoverflow.net/questions/13616/a-book-on-locally-ringed-spaces
   #+ See also:
   http://mathoverflow.net/questions/2314/several-topos-theory-questions
   http://ncatlab.org/nlab/show/scheme
-http://mathoverflow.net/questions/153602/is-stackiness-transitive-and-a-couple-other-basic-questions-about-stacks
 http://mathoverflow.net/questions/48527/why-open-immersion-rather-than-open-embedding
 http://mathoverflow.net/questions/56591/what-are-the-monomorphisms-in-the-category-of-schemes
 http://mathoverflow.net/questions/109/what-do-epimorphisms-of-commutative-rings-look-like
@@ -280,11 +302,11 @@ http://mathoverflow.net/questions/106560/philosophy-behind-mochizukis-work-on-th
   #Nice discussions on anabelian geometry
 http://mathoverflow.net/questions/27197/local-complete-intersections-which-are-not-complete-intersections
   #complete intersection: defined by c equations (c=codim)
-  #loc complete intersection: local ring whose completion is a quotient of
-  #a regular local ring by a regular sequence
+  #loc complete intersection: local ring whose completion is a quotient of a regular local ring by a regular sequence
   #This is indeed locally a local (in a Zariski neighboorhood) complete intersection:
   #http://math.stackexchange.com/questions/726937/what-does-it-mean-geometrically-for-a-variety-to-be-locally-a-complete-intersect
 http://mathoverflow.net/questions/9751/is-every-smooth-affine-curve-isomorphic-to-a-smooth-affine-plane-curve
+  => every reduced and irreducible prjective variety has an affine open set which is a hypersurface
 http://mathoverflow.net/questions/54876/geometric-meaning-of-cohen-macaulay-schemes
 http://mathoverflow.net/questions/172350/a-short-proof-for-dimrt-dimr1
   #an elementary caracterisation of the dimension of a ring
@@ -306,7 +328,6 @@ http://mathoverflow.net/questions/189118/properties-of-finite-quotients-of-quasi
 http://mathoverflow.net/questions/195165/what-is-the-purpose-of-the-flat-fppf-fpqc-topologies
 http://mathoverflow.net/questions/2446/best-algebraic-geometry-text-book-other-than-hartshorne
 http://mathoverflow.net/questions/200513/did-bourbaki-write-a-text-on-algebraic-geometry
-http://mathoverflow.net/questions/15897/in-what-topology-dm-stacks-are-stacks/15910#15910
 http://mathoverflow.net/questions/209079/effective-nullstellensatz-and-bounds-on-the-nilpotency-index-of-reduced-ideal-to
 http://mathoverflow.net/questions/210148/number-of-mathbb-f-p-points-constant-mod-p
 http://mathoverflow.net/questions/193/when-is-fiber-dimension-upper-semi-continuous
@@ -350,8 +371,6 @@ http://mathoverflow.net/questions/248497/what-is-meant-by-the-inverse-function-t
 http://mathoverflow.net/questions/249523/crux-of-dworks-proof-of-rationality-of-the-zeta-function http://mathoverflow.net/questions/249539/weaker-version-of-dworks-rationality-of-zeta-function-what-is-needed-to-beef-u http://mathoverflow.net/questions/250572/dworks-proof-of-rationality-of-zeta-function-crux-of-his-generalization-of-a-r
 http://mathoverflow.net/questions/251555/role-of-cohomology-of-coherent-sheaves-in-sga-4-5-%c3%a9tale-cohomology
 http://mathoverflow.net/questions/253090/elementary-proof-of-riemann-roch-for-compact-riemann-surfaces
-http://mathoverflow.net/questions/253466/algebraic-groups-without-torsors
-  ## why a fine moduli space cannot have non trivial automorphisms
 http://mathoverflow.net/questions/254114/why-there-is-a-quot-scheme-not-a-sub-scheme
 https://mathoverflow.net/questions/79956/jacobian-criterion-for-smoothness-of-schemes
 https://math.stackexchange.com/questions/1215571/definition-of-multiplicity
@@ -367,7 +386,7 @@ https://mathoverflow.net/questions/133840/potentially-good-semi-stable-reduction
 https://math.stackexchange.com/questions/1144805/whats-with-the-diagonal-morphism
 https://mathoverflow.net/questions/48690/what-does-an-etale-topos-classify
 https://mathoverflow.net/questions/20863/is-the-functor-of-open-subschemes-representable
-=> It is representable by a formally étale fpqc sheaf (SGA I.VIII.4.4)
+  => It is representable by a formally étale fpqc sheaf (SGA I.VIII.4.4)
 https://math.stackexchange.com/questions/524465/what-is-the-field-of-definition-of-an-invariant-ideal
   If I is invariant par the Galois group G(K/k) then it is defined by
   polynomials in k[x_i]. This is standard Galois descent, but the proof
@@ -377,24 +396,71 @@ https://math.stackexchange.com/questions/524465/what-is-the-field-of-definition-
   Hilbert 90 theorem, the non-abelian cohomology H^1(G,GL_m_d(K)) vanishes,
   and this implies by the usual argument that the map I^G_d⊗_k K→I_d is
   surjective, i.e. I_d has a basis B_d defined over k.
-
   Note: sur un corps parfait, X \subset A^n ou P^n est invariant par Galois
   <=> Ideal(X) est généré par des polynômes définis sur k <=> X=Var(ideal
   défini par des polynômes sur k). Cf par exemple Hindry-Silverman Exo A.1.13
 https://math.stackexchange.com/questions/121424/picard-group-and-cohomology
   Pic(X)=H^1(X,O∗X)
+https://math.stackexchange.com/questions/409222/projective-normality
+  Voir aussi https://amathew.wordpress.com/2013/05/23/projective-normality-and-independent-conditions/
 
-Voevodskys:
+* Voevodskys:
   https://mathoverflow.net/questions/249069/voevodskys-triangulated-categories-of-motives-and-their-relationships
   https://mathoverflow.net/questions/315816/why-is-voevodskys-motivic-homotopy-theory-the-right-approach
   https://mathoverflow.net/questions/15687/what-is-dag-and-what-has-it-to-do-with-the-ideas-of-voevodsky
 
+* Stacks and algebraic spaces
 https://mathoverflow.net/questions/230258/algebraic-spaces-as-locally-ringed-spaces
   There is no 'nice' embedding of algebraic space into locally ringed space
 https://mathoverflow.net/questions/326389/fully-faithful-functor-from-schemes-to-spaces
+https://mathoverflow.net/questions/11226/commutative-rings-to-algebraic-spaces-in-one-jump
+  A Deligne--Mumford stack is an étale-locally ringed topos that is locally equivalent to the étale-locally ringed topos of an affine scheme. A Deligne--Mumford stack is an algebraic space if its diagonal is an embedding.
+https://mathoverflow.net/questions/12765/algebraic-stacks-from-scratch
+-> http://www.tolypreygel.com/notes/note_stacks.pdf
+https://mathoverflow.net/questions/12472/is-the-inertia-stack-of-a-deligne-mumford-stack-always-finite
+-> The inertia stack of a separated Deligne Mumford stack is finite. In general algebraic stacks with finite inertia have coarse moduli space.
+https://mathoverflow.net/questions/12499/coarse-moduli-space-of-dm-stacks/14855#14855
 
+http://mathoverflow.net/questions/153602/is-stackiness-transitive-and-a-couple-other-basic-questions-about-stacks
+http://mathoverflow.net/questions/15897/in-what-topology-dm-stacks-are-stacks/15910#15910
 https://mathoverflow.net/questions/57057/what-about-stacks-of-categories-in-algebraic-geometry-ii?rq=1
 https://mathoverflow.net/questions/26506/categorical-construction-of-the-category-of-schemes/279363#279363
+https://mathoverflow.net/questions/224124/definition-of-%C3%A9tale-etc-for-non-representable-morphisms-of-algebraic-stacks
+https://mathoverflow.net/questions/7152/intuition-about-the-section-after-base-change-for-flat-descent-and-exactness-o
+https://mathoverflow.net/questions/256277/can-the-algebraic-geometry-of-schemes-be-developed-internally-in-topoi
+https://mathoverflow.net/questions/54197/why-is-the-hodge-conjecture-so-important/54218#54218
+https://mathoverflow.net/questions/254564/application-of-the-g-a-g-a-principle/254580#254580
+https://mathoverflow.net/questions/255861/is-quasi-coherent-an-fpqc-local-property-of-modules/255870#255870
+https://math.stackexchange.com/questions/315273/how-should-i-think-about-very-ample-sheaves
+https://mathoverflow.net/questions/234234/etale-localization-reference-request
+https://math.stackexchange.com/questions/121105/which-functor-does-the-projective-space-represent
+https://mathoverflow.net/questions/46116/a-valued-points-of-projective-space
+  Cf aussi https://stacks.math.columbia.edu/tag/01ND
+https://mathoverflow.net/questions/22015/example-of-a-smooth-morphism-where-you-cant-lift-a-map-from-a-nilpotent-thicken
+  Cf https://mathoverflow.net/questions/22393/is-formal-smoothness-a-local-property, because 
+  et https://mathoverflow.net/questions/10731/possible-formal-smoothness-mistake-in-ega
+  Smooth/Etale/Unramified = formally foo + loc. finite pres.
+  Formally foo: requires lift for affine schemes
+  Formally etale/unramified -> has lift for arbitrary scheme (since the lift on the affine is unique, it glues together).
+  If loc. finite pres: suffice to check lift for local artinian rings
+  Still works for formally étale/unramified.
+  For formally smooth: Zariski locally formally smooth => formally smooth because being projective is an fpqc local condition, so formally smooth is even an étale local condition on the source
+https://mathoverflow.net/questions/404/does-a-scheme-have-a-separification/3497#3497
+https://math.stackexchange.com/questions/630465/morphisms-of-k-schemes-who-agree-on-overlinek-points
+https://mathoverflow.net/questions/95277/properties-of-the-fibers-of-a-flat-morphism
+https://mathoverflow.net/questions/150879/does-push-forward-commute-with-taking-dual?rq=1
+https://mathoverflow.net/questions/25603/ample-line-bundles-sections-morphisms-to-projective-space?rq=1
+https://mathoverflow.net/questions/84674/algebraization-theorems
+https://mathoverflow.net/questions/59071/what-elementary-problems-can-you-solve-with-schemes
+https://mathoverflow.net/questions/34717/analytic-tools-in-algebraic-geometry
+
+#Algebraic groups
+=================
+
+https://mathoverflow.net/questions/43529/decomposition-of-an-algebraic-group-in-an-affine-and-a-proper-part
+http://mathoverflow.net/questions/253466/algebraic-groups-without-torsors
+  ## why a fine moduli space cannot have non trivial automorphisms
+https://mathoverflow.net/questions/324887/why-is-for-a-group-scheme-of-finite-type-smooth-resp-irreducible-equivale?rq=1
 
 #Algebraic Topology
 ===================
@@ -475,6 +541,8 @@ http://mathoverflow.net/questions/237959/who-proved-that-l1-and-l10-1-are-not-is
 http://math.stackexchange.com/questions/287716/the-composition-of-two-convex-functions-is-convex
   => convex-nondecreasing & convex -> convex, convex-nonincreasing & concave -> convex, concave-nondecreasing & concave -> concave, concave-nonincreasing & convex -> concave
 https://math.stackexchange.com/questions/458230/continuity-of-l1-functions-with-respect-to-translation
+https://mathoverflow.net/questions/125861/f3-f2-are-the-cube-and-quadratic-of-f-respectively-and-both-infinite-differe
+  Very nice ∂¯proof 
 
 #Arithmetic Geometry
 ====================
@@ -532,9 +600,12 @@ https://mathoverflow.net/questions/169187/what-non-categorical-applications-are-
 https://mathoverflow.net/questions/24378/equality-vs-isomorphism-vs-specific-isomorphism
 https://mathoverflow.net/questions/169187/what-non-categorical-applications-are-there-of-homotopical-algebra
 https://sites.google.com/site/geometriclanglands2014/suggested-reading-and-references/infinity-categories
-
 https://mathoverflow.net/questions/8663/infinity-1-categories-directly-from-model-categories/8675#8675
 https://mathoverflow.net/questions/92454/relation-between-topos-and-infty-topos
+https://mathoverflow.net/questions/815/triangulated-vs-dg-a-infinity
+https://mathoverflow.net/questions/242460/dg-categories-in-algebraic-geometry-guide-to-the-literature
+https://mathoverflow.net/questions/114251/stable-infinity-categories-vs-dg-categories
+
 https://mathoverflow.net/questions/307931/has-incorrect-notation-ever-led-to-a-mistaken-proof
 https://mathoverflow.net/questions/126466/are-there-non-categorical-notions-in-topos-theory/126486#126486
 
@@ -558,6 +629,10 @@ https://mathoverflow.net/questions/2015/can-the-category-of-schemes-be-concretiz
 https://mathoverflow.net/questions/273632/injectivity-implies-surjectivity
 https://golem.ph.utexas.edu/category/2011/12/the_eventual_image.html
 https://golem.ph.utexas.edu/category/2011/12/the_eventual_image_part_2.html
+
+https://mathoverflow.net/questions/157974/varieties-where-every-algebra-is-free/210979
+https://mathoverflow.net/questions/91785/derived-functors-versus-spectral-sequences/91798#91798
+https://mathoverflow.net/questions/4214/equivalence-of-grothendieck-style-versus-cech-style-sheaf-cohomology/4229#4229
 
 #Combinatoric
 ==============
@@ -648,6 +723,7 @@ https://mathoverflow.net/questions/20493/what-is-torsion-in-differential-geometr
 https://mathoverflow.net/questions/149842/geodesics-on-the-twisted-pseudosphere-dinis-surface
 https://mathoverflow.net/questions/533/largest-hyperbolic-disk-embeddable-in-euclidean-3-space/3708#3708
 https://mathoverflow.net/questions/17325/why-is-cotangent-more-canonical-than-tangent
+https://mathoverflow.net/questions/14877/how-much-of-differential-geometry-can-be-developed-entirely-without-atlases
 
 #Elliptic Curves
 ================
@@ -681,8 +757,15 @@ https://mathoverflow.net/questions/52241/formal-group-laws-and-l-series
 https://mathoverflow.net/questions/82597/geometric-picture-of-invariant-differential-of-an-elliptic-curve
 https://math.stackexchange.com/questions/890827/the-moduli-stack-of-elliptic-curves-what-is-it
 https://mathoverflow.net/questions/199008/a-reference-for-mathbba1-r-being-a-coarse-moduli-space-of-the-stack-of-ell
+https://math.stackexchange.com/questions/3168916/equivalent-definitions-of-elliptic-curves-over-a-scheme
+https://mathoverflow.net/questions/129031/equivalence-between-katz-and-classical-modular-forms
+https://mathoverflow.net/questions/127739/is-there-an-elliptic-surface-over-y1/127890#127890
+https://mathoverflow.net/questions/220449/is-an-elliptic-curve-that-is-isomorphic-to-its-frobenius-conjugate-defined-over/220452
+https://mathoverflow.net/questions/221260/reinterpreting-galois-descent-over-finite-fields/221265#221265
+https://mathoverflow.net/questions/291268/infinite-extensions-such-that-every-elliptic-curve-has-finite-rank
 
 #Functional Analysis
+====================
 
 http://mathoverflow.net/questions/198466/ultraweak-topology-on-bx-is-the-map-x-otimes-x-bx-isometric
 http://mathoverflow.net/questions/241743/what-is-the-banach-mazur-distance-between-ell-infty-and-l-infty
@@ -720,8 +803,12 @@ https://mathoverflow.net/questions/21110/is-there-a-natural-way-to-view-the-proo
   => Lien avec etale descent for 1-dimensional vector spaces
   Voir aussi
   https://mathoverflow.net/questions/253663/galois-descent-for-dimension-of-vector-spaces
+https://mathoverflow.net/questions/311287/factoring-polynomials-over-the-abelian-closure-of-the-rationals
+https://mathoverflow.net/questions/265377/galois-cohomology-of-finite-fields/265418#265418
+https://mathoverflow.net/questions/32418/grothendiecks-galois-theory-today
 
 #Geometry
+=========
 http://mathoverflow.net/questions/195938/grothendieck-on-polyhedra-over-finite-fields
 http://mathoverflow.net/questions/235299/sphere-packings-what-next-after-the-recent-breakthrough-of-viazovska-et-al
 http://mathoverflow.net/questions/247718/does-there-exist-something-like-an-h-3-and-h-4-icosahedral-lie-algebra-or
@@ -776,6 +863,9 @@ http://mathoverflow.net/questions/236151/conjugacy-classes-of-sl-2z
 http://mathoverflow.net/questions/240337/is-there-a-nice-explanation-for-this-curious-fact-about-cyclic-subgroups
 http://mathoverflow.net/questions/55071/nilpotency-of-a-group-by-looking-at-orders-of-elements
 http://mathoverflow.net/questions/251434/is-it-decidable-to-check-if-an-element-has-finite-order-or-not
+https://mathoverflow.net/questions/244893/is-the-assignment-of-a-root-system-to-a-complex-semisimple-lie-algebra-functoria/244895#244895
+https://mathoverflow.net/questions/223584/which-philosophy-for-reductive-groups/223895#223895
+https://mathoverflow.net/questions/244893/is-the-assignment-of-a-root-system-to-a-complex-semisimple-lie-algebra-functoria/244895#244895
 
 #Hilbert (and Banach) Spaces
 ===========================
@@ -966,6 +1056,7 @@ https://mathoverflow.net/questions/57225/kunens-use-of-countable-transitive-mode
 https://mathoverflow.net/questions/55392/intended-interpretations-of-set-theories/57222#57222
   Suppose M is a model of ZF. Does the subset K of M consisting of the first-order definable (without parameters) elements of M form a model of ZF?
 https://math.stackexchange.com/questions/2126493/existence-of-transitive-standard-models-of-zfc-independent-of-existence-of-model
+https://mathoverflow.net/questions/325876/ordinal-valued-sheaves-as-internal-ordinals
 
 #Meta
 =====
@@ -1227,6 +1318,13 @@ https://math.stackexchange.com/questions/25090/whats-the-significance-of-tates-t
 https://mathoverflow.net/questions/248945/what-is-the-p-adic-langlands-conjecture-for-mathbfgl-1
 https://mathoverflow.net/questions/243959/why-is-there-a-factor-p-in-the-definition-of-t-p-via-hecke-correspondences-o
 https://mathoverflow.net/questions/14456/sum-of-squares-in-ring-of-integers
+https://mathoverflow.net/questions/60355/relation-between-theta-series-and-eisensteinseries
+https://mathoverflow.net/questions/177234/cases-where-the-number-field-case-and-the-function-field-with-positive-characte/211837#211837
+https://mathoverflow.net/questions/259263/what-is-precisely-still-missing-in-connes-approach-to-rh/259301#259301
+https://mathoverflow.net/questions/28776/does-the-ideal-class-of-the-different-of-a-number-field-have-a-canonical-squar
+https://mathoverflow.net/questions/65729/what-are-perfectoid-spaces/66563#66563
+https://mathoverflow.net/questions/349673/is-there-a-clear-criterion-or-rule-about-when-one-can-use-the-heuristic-given-by => Cramer random model for primes
+https://mathoverflow.net/questions/64146/grothendieck-teichmuller-conjecture
 
 #Physic
 =======
@@ -1276,10 +1374,10 @@ https://mathoverflow.net/questions/27399/when-is-a-stack-not-geometric
 https://mathoverflow.net/questions/2124/good-introductory-references-on-algebraic-stacks
 https://mathoverflow.net/questions/93948/link-between-internal-groupoids-and-stacks-on-a-topos
 
-Stackification:
-  https://mathoverflow.net/questions/13371/is-there-a-good-notion-of-separated-stack
-  https://mathoverflow.net/questions/183171/question-regarding-2-mathematics-can-you-stackify-a-2-functor-without-prestacki
-  https://mathoverflow.net/questions/21492/stacks-in-the-zariski-topology/21500
+* Stackification:
+- https://mathoverflow.net/questions/13371/is-there-a-good-notion-of-separated-stack
+- https://mathoverflow.net/questions/183171/question-regarding-2-mathematics-can-you-stackify-a-2-functor-without-prestacki
+- https://mathoverflow.net/questions/21492/stacks-in-the-zariski-topology/21500
   If you have groupoid objects (which means that certain pullbacks need to exist), you can look at those stacks arising as torsors of groupoid objects (these will be the stackification of pseudo-functors of the form Hom( ,G)). Whether or not these deserve to be called Artin stacks in general may indeed be contentious, but this is why I used quotation marks. I agree that you will need additional axioms for these "Artin stacks" to be equivalent to a bicategory of groupoids and torsors,
 
 

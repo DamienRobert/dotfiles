@@ -45,7 +45,11 @@ doaction() {
 					msg "update $AUTO"
 					( cd $folder;
 					if git rev-parse 2>/dev/null; then
+						if [[ -n $VCS_RAW ]]; then
+							git pull $OPTS
+						else
 							git my update $AUTO $OPTS
+						fi
 					fi
 					if [[ -d .hg ]]; then hg pull -u; fi
 					if [[ -d .svn ]]; then svn update; fi
@@ -202,7 +206,11 @@ case $action in
 			mkdir -p $(dirname $dir)
 			if [[ -d $dir ]]; then
 				# msg "updating $dir" (vcs update will log)
-				vcs update $OPTS $dir
+				if [[ $action == clone_or_update ]]; then
+					vcs update $OPTS $dir
+				else
+				  msg "$dir already exists"
+				fi
 			else
 				msg "cloning $url to $dir"
 				git clone $url $dir

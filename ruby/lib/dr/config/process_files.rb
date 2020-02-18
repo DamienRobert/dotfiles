@@ -36,6 +36,11 @@ module DR
 			#functions to which the included scripts will have access
 			module ContextHelper
 				include SH::CLILogging
+				def get_file(file)
+					file=Pathname.new(file)
+					file=@dir[:out]+file if file.relative?
+					file
+				end
 				def read_file(file)
 					file=Pathname.new(file)
 					file=@dir[:out]+file if file.relative?
@@ -254,6 +259,7 @@ module DR
 					}.join("\n")
 				#be careful with this option!
 				log_and_do(:rm_rf, definee: Pathname.new(@dir[:out]), severity: Logger::DEBUG) if cleanup_out
+				@dir[:dest].mkpath; @dir[:dest].chmod(0700)
 				@dir[:out].mkpath
 
 				if block_given?
@@ -362,11 +368,11 @@ module DR
 				end
 			end
 
-			private def process_ruby(*args)
-				Eruby.process_ruby(*args)
+			private def process_ruby(*args,**kw)
+				Eruby.process_ruby(*args,**kw)
 			end
-			private def process_eruby(*args)
-				Eruby.process_eruby(*args)
+			private def process_eruby(*args,**kw)
+				Eruby.process_eruby(*args,**kw)
 			end
 
 			private def process_ruby_wrapper(code, eruby: false, context: @context, **opts)

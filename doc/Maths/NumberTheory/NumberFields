@@ -1,5 +1,17 @@
 vim: ft=markdownlight fdm=expr
 
+Polynômes cyclotomiques
+=======================
+
+* https://en.wikipedia.org/wiki/Cyclotomic_polynomial
+Calcul: si n est impair, Phi_2n(x)=Phi_n(-x)
+Si n=p^m r, Phi_n(x)=Phi_pr(x^p^{m-1}) et donc si q est le radical de n, Phi_n(x)=Phi_q(x^{n/q})
+Si n=p r, Phi_n(x)=Phi_r(x^p)/Phi_r(x)
+
+\phi_n mod p se décompose suivant les classes p-cyclotomiques modulo n: le
+Frobenius agit comme i->pi mod n, et donc les orbites donnent les facteurs
+irréductibles.
+
 Quadratic Orders
 ================
 Réf: Cox, primes of the form x^2+n y^2
@@ -88,6 +100,7 @@ premier à f.
 
 Formules des classes
 --------------------
+[cf Orders pour la formule générale]
 
 h(O)=h(O_K)/[O_K*:O*]*\prod_{p \mid f} [1-\lengendre{d_K/p} 1/p]
 En effet dans le terme de droite on a (O_K/f)* et (O/f)*=(Z/f)*
@@ -97,14 +110,14 @@ Or h(O_K)=\sum_{n=1}^{|d_K|-1} \legendre{d_K/n}n
 Units
 =====
 
-- x est une unité ssi N(x)=1.
+* x est une unité ssi N(x)=1.
 
-- x est une racine de l'unité ssi pour tout plongement i, ||x||_i=1.
+* x est une racine de l'unité ssi pour tout plongement i, ||x||_i=1.
 http://math.stackexchange.com/questions/4323/are-all-algebraic-integers-with-absolute-value-1-roots-of-unity
 En particulier s'il existe un plongement réel, les seules racines de
 l'unité sont \pm 1.
 
-- Le groupe des unités est de rang r=r_1+r_2-1 où r_1 est le nombre de
+* Le groupe des unités est de rang r=r_1+r_2-1 où r_1 est le nombre de
 plongements réels, r_2 le nombre de plongements complexes.
 
 Plus précisément le plongement log ||u||_i dans R^{r+1} réalise les unités
@@ -113,6 +126,13 @@ de somme nulle.
 
 Ici, ||u||_i dénote la valeur absolue normalisée du i-ième plongement, ie
 si c'est un plongement complexe c'est |\phi_i(u)|^2.
+
+* Le volume d'un domaine fondamental est R \sqrt{r+1} où R est le régulateur:
+R=|déterminant| de la matrice r x (r+1) où l'on a enlevé une colonne (la
+somme des lignes étant 0, ce déterminant ne dépend pas de la colonne)
+
+Ex: le régulateur d'un corps quadratique imaginaire est 0, et d'un corps
+quadratique réel est log(ξ) où ξ unité fondamentale.
 
 - Application: L/K est une extension telle que rang unités(L)=rang
   unités(K) ssi L est un corps CM et K le corps réel associé (ie tout
@@ -128,11 +148,25 @@ si c'est un plongement complexe c'est |\phi_i(u)|^2.
   Application: si x \in Z[\zeta_n] est de valeur absolue 1, alors x est une
   racine 2n-ième de l'unité. [Pr: Q(\zeta_n) est un corps CM].
 
+# Class number formula
+
+* https://en.wikipedia.org/wiki/Class_number_formula
+
+    Theorem (Class Number Formula). ζ_K(s) converges absolutely for Re(s) > 1 and extends to a meromorphic function defined for all complex s with only one simple pole at s = 1, with residue
+        lim_s→1 (s−1) ζ_K(s) = 2^r1⋅(2π)^r2⋅Reg_K⋅h_K / w_K⋅\sqrt{|D_K|}
+    où D_K=discriminant, h_K class number, w_K nombre de racines de
+    l'unité, Reg_K régulateur, [K:Q]=n=r1+2r2.
+
 Ramification
 ============
 
-Cf Neukirch:
-L/K extension, K non archimedian henselian.
+Serre, corps locaux, p. 68.
+Ω_A(B)=I/I^2=I \tens_{B \tens_A B} B où I le noyau de B \tens_A B -> B.
+Prop 14: si A Dedekind, K=Frac(A), L/K séparable, B cloture intégrale. On
+suppose que B/P est séparable pour tout premier de B. Alors Ω_A(B) est un
+B-module monogène, dont l'annulateur est la différente D_B/A.
+
+Cf Neukirch: L/K extension, K non archimedian henselian.
 
 Unramificatied case
 -------------------
@@ -168,15 +202,17 @@ v(K*)  =  w(T*)   w(L*)^(p)   w(L*)
 - The subextensions of T/K correspond 1-1 to the subextensions of l_s/k
 - The subextensions of V/T correspond 1-1 to the subgroups of w(V*)/w(T*).
 
-* Extensions de Q_p:
-- non ramification
+Extensions de Q_p:
+------------------
+
+* non ramification
 Il y a bijection entre les extensions non ramifiées de Q_p et les
 extensions de F_p. En particulier, l'extension maximale non ramifiée de Q_p
 est donnée par toutes les racines n-ième de l'unité, n premier à p.
 
 Le groupe de Galois et donc Gal(Fpbar/Fp)=Z^
 
-- ramification modérée
+* ramification modérée
 La ramification modérée est donnée par les racines e-ièmes de p, avec e
 premier avec p
 
@@ -187,22 +223,26 @@ la suite exacte associé \prod Z^_\ell -> G -> \Z^ splitte et
 G=\Z^ x| \prod Z^_ell
 Dans G, \Z^ est engendré par le Frobenius, donc l'action du produit semi-direct est donné par multiplication par p sur les facteurs Z^_\ell
 
-- ramification sauvage
+* ramification sauvage
 On rajoute les racines p^n-ièmes de p, en particulier on a aussi les
 racines p^n-ièmes de l'unité.
 
 * Cyclotomic extension de Q_p:
 Let \zeta_n be a primitive n-th root of unity, with n=dp^m.
-We have
-\Q_p \subset T=\Q_p(\zeta_d) \subset V=T(\zeta_p) \subset \Q_p(\zeta_n)
+\Q_p \subset T=\Q_p(\zeta_d) \subset V=T(\zeta_dp) \subset \Q_p(\zeta_n)
 
 Ramification, trace et nilpotents
 ---------------------------------
 
+* Résumé: k un corps parfait et A une k-algebre de dimension finie sur k.
+A sans nilpotent ssi tr_A on dégénérée.
+Ainsi, p divise disc(D) ssi la trace de D/pD est degeneree, ssi D/pD a des
+nilpotents, ssi p est ramifie.
+
 Cf: clipper/2003-2004/GT par Gaetan Chevenier
 
 Voila une methode un peu semblable et legerement plus conceptuelle
-qui prouve l'equivalence.
+qui prouve l'equivalence (p | Disc D <=> p ramifié).
 
 i) p est ramifie ssi D/pD, qui est une F_p-algebre finie, a un element
 nilpotent non nul:
@@ -327,73 +367,44 @@ Preuve que SL_n(O)->SL_n(O/I) est surjectif pour un ordre O.
 (Strong approximation for SL_2 implies Sl_2(Z)->>SL_Z(Z/nZ), but there are
 more elementary proofs given here)
 
-Polynômes cyclotomiques
-=======================
+Local global
+============
 
-https://en.wikipedia.org/wiki/Cyclotomic_polynomial
-Calcul: si n est impair, Phi_2n(x)=Phi_n(-x)
-Si n=p^m r, Phi_n(x)=Phi_pr(x^p^{m-1}) et donc si q est le radical de n, Phi_n(x)=Phi_q(x^{n/q})
-Si n=p r, Phi_n(x)=Phi_r(x^p)/Phi_r(x)
+* https://en.wikipedia.org/wiki/Hasse_principle
+- Local-Global pour les formes quadratiques
 
-\phi_n mod p se décompose suivant les classes p-cyclotomiques modulo n: le
-Frobenius agit comme i->pi mod n, et donc les orbites donnent les facteurs
-irréductibles.
+- The Albert–Brauer–Hasse–Noether theorem establishes a local–global
+principle for the splitting of a central simple algebra A over an algebraic
+number field K. It states that if A splits over every completion Kv then it
+is isomorphic to a matrix algebra over K.
 
-Variétés de Shimura, Théorie de Hodge et représentation Galoisiennes
-====================================================================
+- The Hasse principle for algebraic groups states that if G is a simply-connected algebraic group defined over the global field k then the map from
+    H^1(k ,G) → ∏_s H^1(k_s, G)
+is injective, where the product is over all places s of k.
 
-## Cas elliptique
+The Hasse principle for orthogonal groups is closely related to the Hasse principle for the corresponding quadratic forms.
 
-Si on prend une forme modulaire pour X_0(n), l'algèbre de Hecke agit
-dessus, et le noyau donne un idéal I.
+* https://en.wikipedia.org/wiki/Approximation_in_algebraic_groups
+G be a linear algebraic group over a global field k, and A the adele ring of k.
+S is a non-empty finite set of places of k.
+- Weak approximation: If the group G is connected and k-rational, then it
+  satisfies weak approximation with respect to any set S, ie  G(k) in
+  G(A_S) has dense image.
+  For any connected group G, there is a finite set T of finite places of k
+  such that G satisfies weak approximation with respect to any set S that
+  is disjoint with T (Platonov, Rapinchuk 1994, p.415). In particular, if k
+  is an algebraic number field then any group G satisfies weak
+  approximation with respect to the set S = S∞ of infinite places.
+- Strong approximation is whether the embedding of G(k) in G(A^S) has dense
+  image, or equivalently whether the set G(k)G(AS) is a dense subset in
+  G(A).
+  The main theorem of strong approximation (Kneser 1966, p.188) states that a non-solvable linear algebraic group G over a global field k has strong approximation for the finite set S if and only if its radical N is unipotent, G/N is simply connected, and each almost simple component H of G/N has a non-compact component H_s for some s in S (depending on H).
 
-Maintenant la cohomologie étale donne une représentation Galoisienne de
-X_0(n), et un réseau dedans est donné par le module de Tate.
+* https://en.wikipedia.org/wiki/Hasse_norm_theorem
+Hasse norm theorem states that if L/K is a cyclic extension of number fields, then if a nonzero element of K is a local norm everywhere, then it is a global norm
 
-Si on prend J(X_0(n))[I]_0, alors on trouve une courbe elliptique, de telle
-sorte que X_0(n) -> E, en particulier on a une application entre la
-cohomologie.
-
-## Dimension supérieure
-
-En général, si f est une forme modulaire de Siegel, elle correspond à une
-forme automorphe (ie une fonction sur G(Adèles)/G(Q)) où G correspond ici à
-GSP_4 pour l'espace de Siegel.
-
-Si on a une représentation automorphe V (aka une représentation du groupe
-précédent), on peut chercher à identifier des éléments dedans. Par exemple,
-si on se fixe un sous-groupe compact K, alors on a un double quotient
-K/G(Adèles)/K, qui agit sur V^K. Ceci est une généralisation de l'action de
-Hecke précédente.
-
-En particulier on peut chercher à lire ça dans la cohomologie étale de la
-variété de Shimura.
-
-## Théorie de hodge p-adique
-https://en.wikipedia.org/wiki/P-adic_Hodge_theory
-
-Si K est un corps local, on regarde les représentations du groupe de galois
-de K. Dedans on peut trouver des sous-espaces sympa, avec des foncteurs
-pleinement fidèles vers des objets d'algèbres linéaires.
-
-Représentation crystalline < Représentation semi-stables <Représentation de
-De Rham < Représentation de Hodge-Tate < Toutes les représentations.
-
-On gros on associe un anneau, genre B_cris, de sorte que B_cris tens
-cohomologie étale sur Q donne B_cris tens cohomologie de De Rham sur K pour
-une bonne variété.
-
-On défini D_cris(V)=(B_cris \tens_Q_p V)^G, par ce qui précède pour une bonne
-variété, D_cris(cohomologie étale)=cohomologie de De Rham.
-
-On dit que V est crystallin si B \tens D_cris(V) -> V est un isomorphisme.
-
-- V -> D_cris(V) est un foncteur pleinement fidèle des représentations
-crystallines vers les \phi-module.
-- V -> D_st(V) est un foncteur pleinement fidèle des représentations
-crystallines vers les (\phi,N)-module.
-
-En général, il y a une équivalence de catégorie entre les représentations
-et les (phi, Gamma)-modules d'un certain type.
-
+* https://en.wikipedia.org/wiki/Grunwald%E2%80%93Wang_theorem
+A local-global principle stating that—except in some precisely defined
+cases—an element x in a number field K is an nth power in K if it is an nth
+power in the completion K_p for all but finitely many primes p of K.
 

@@ -22,10 +22,10 @@ générique.
 Quasi-Compact
 -------------
 
-f: X->Y est quasi compact si l'image réciproque d'un qc est qc.
-Un sous-ensemble Z de X est rétrocompact si l'inclusion est qc. Ca veut
+- f: X->Y est quasi compact si l'image réciproque d'un qc est qc.
+- Un sous-ensemble Z de X est rétrocompact si l'inclusion est qc. Ca veut
 dire que l'intersection de Z avec tout qc de X est qc.
-f: X->Y est quasi séparé si la diagonale (=le morphisme diagonal) est
+- f: X->Y est quasi séparé si la diagonale (=le morphisme diagonal) est
 quasi-compacte (pour un morphisme de schéma, séparé <=> la diagonale est
 une immersion fermée => quasi-séparé)
 
@@ -33,14 +33,14 @@ Ex: un fermé qc est rétrocompact.
 
 Soit f:X->Y continue. X qc => f(X) qc; f qc => f(X) rétro compact.
 
-Lemme: Soit X un espace T0 (aka espace de Kolmogorov, aka pour tout point
-x, y, il existe un ouvert contenant x mais pas y. Example: les schémas sont
-T0) non vide et qc. Alors l'ensemble des points fermés de X est non vide et
-qc.
+Lemme: Soit X un espace T0 non vide et qc.
+Alors l'ensemble des points fermés de X est non vide et qc.
+[T0 = espace de Kolmogorov, aka pour tout point x, y, il existe un ouvert contenant x mais pas y. Example: les schémas sont T0)]
 
 Déf: un espace est localement quasi-compact ssi tout point a des voisinages
 quasi compacts. Il est dit quasi séparé si l'intersection de deux qc
 ouverts est qc.
+Quasi séparé = la diagonale X->XxX est qc.
 
 Rem: si on a une base d'ouverts qc, il suffit de vérifier que
 l'intersection de ces ouverts est qc pour être qs.
@@ -58,10 +58,16 @@ Lemme: soit X un espace qs qui a une base d'ouverts qc. Alors
 
 Composantes connexes:
 --------------------
+
 Soit X un espace qc, qui a une base d'ouverts qc (ex: localement qc) et qs.
 Alors T est fermé dans X, union de composantes connexes <=> T est
-intersection d'ensembles ouvers fermés dans X. De plus la composante
+intersection d'ensembles ouverts fermés dans X. De plus la composante
 connexe de x \in X est l'intersection des ouverts fermés contenant x.
+
+Note: pour un schéma, si U ouvert fermé dans X, ie X=U union disjointe V
+on peut prendre une section e qui vaut 1 sur U et 0 sur V, ie on a une
+section idempotente. Si X=Spec A, on a alors A=Ae x A(1-e), U=D(e)=Spec(Ae)
+https://stacks.math.columbia.edu/tag/00EE
 
 Noetherian
 ----------

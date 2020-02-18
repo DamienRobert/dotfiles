@@ -38,7 +38,7 @@ esac
 if [[ -n $audio ]]; then
 	OPTS=($OPTS --vo=null)
 else
-	OPTS=($OPTS --cache=8192)
+	# OPTS=($OPTS --cache=8192)
 fi
 if [[ -n $slow ]]; then
 	#OPTS=($OPTS -lavdopts fast:skiploopfilter=all -framedrop -hardframedrop)

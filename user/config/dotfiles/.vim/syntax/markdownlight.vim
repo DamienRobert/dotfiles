@@ -58,7 +58,7 @@ syn match markdownBlockquote ">\%(\s\|$\)" contained nextgroup=@markdownBlock
 syn region markdownCodeBlock start="    \|\t" end="$" contained
 
 " TODO: real nesting
-syn match markdownListMarker "\%(\t\| \{0,4\}\)[-*+$!]\%(\s\+\S\)\@=" contained
+syn match markdownListMarker "\%(\t\| \{0,4\}\)[-*+$!x]\{1,3\}\%(\s\+\S\)\@=" contained
 syn match markdownOrderedListMarker "\%(\t\| \{0,4}\)\<\d\+\.\%(\s\+\S\)\@=" contained
 
 syn match markdownRule "\* *\* *\*[ *]*$" contained

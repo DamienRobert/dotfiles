@@ -22,6 +22,12 @@ ROOT="$OPT/magma$VERSION/"
 export ROOT MAGMAPASSFILE MAGMA_FLAVOUR FAKE_MAC FAKE_TIME
 
 LD_PRELOAD=$LAUNCHROOT/fake_mac.so
+if [[ ! -f $LD_PRELOAD ]]; then
+	( cd $LAUNCHROOT
+	gcc -Wall -O2 -fPIC -c fake_mac.c
+	ld -Bshareable -o fake_mac.so fake_mac.o -ldl
+	)
+fi
 LD_PRELOAD=$LD_PRELOAD exec "$LAUNCHROOT/magma-launch"
 
 ##magma-2.20.5 is static so we setup a virtual interface

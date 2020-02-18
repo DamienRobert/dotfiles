@@ -27,6 +27,7 @@ Note: `git co branch` affects HEAD, index and directory
   Cf also the topic-* aliases in https://news.ycombinator.com/item?id=14385813
 - tips: http://gitready.com/ (not updated anymore)
 - https://git.github.io/rev_news/ Development news
+  https://git.github.io/rev_news/archive/
 - http://changelog.com/topic/git Links on git articles
 
 Everyday
@@ -800,6 +801,12 @@ Updates:
 - git 2.19: git range-diff
 - git 2.21: new date format "--date=human"; "--date=auto:human"
 - git 2.22: git branch --show-current
+            git rebase [-i] --rebase-merges
+- git 2.23: restore and switch; git merge --quit, git cherry-pick --skip
+            git log will automatically apply .mailmap rewriting
+- git 2.24: features $ git config feature.manyFiles true, commit graphs enabled by default
+- git 2.25: git sparse-checkout (helper to configure partial clone, see
+  https://github.blog/2020-01-13-highlights-from-git-2-25/)
 
 Detailed git commands
 =====================
@@ -1998,7 +2005,7 @@ on .gitmodules (commited, so global). git submodule init/sync synchronise the tw
 
 * Individual submodule config:
 submodule.<name>.update=checkout, rebase, merge or none -> git submodule update
-submodule.<name>.branch The remote branch name for a submodule, used by git submodule update --remote.
+submodule.<name>.branch The remote branch name for a submodule, used by git submodule update --remote. Special value '.' means the name of the current branch in the supermodule. If not specified, default to master.
 submodule.<name>.fetchRecurseSubmodules=true/false -> recursive fetching of the submodule
 submodule.<name>.ignore=all/dirty/untracked/none -> ignore setting for `git status/diff`
 submodule.<name>.active=true/false -> the submodule we recurse into via
@@ -2217,6 +2224,13 @@ me donne
     Date: Wed, 18 Dec 2013 12:34:02 +0100
 ie il prend d'abord les headers après les scissors
 
+## Sparse checkout
+
+git sparse-checkout
+  cf https://github.blog/2020-01-13-highlights-from-git-2-25/
+
+Filter spec: cf git-rev-list#--filter
+
 Config and environment + hooks
 ==============================
 
@@ -2248,6 +2262,11 @@ Config and environment + hooks
         System-wide configuration file.
 
 Note: `$GIT_DIR/*` are not tracked
+
+## Features
+
+feature.experimental => pack.useSparse=true, fetch.negotiationAlgorithm=skipping, fetch.writeCommitGraph=true
+feature.manyFiles => index.version=4, core.untrackedCache=true
 
 ## Alias
 Pour mettre des scripts dans les alias:
@@ -2944,6 +2963,12 @@ Valinor ~/dist/forks/bup/.git $ git remote show origin
     master           pushes to master           (fast-forwardable)
     tmp/pending/meta pushes to tmp/pending/meta (up to date)
 
+* git-remote-ext:
+helper used when <URL> begins with ext::.
+Examples:
+- "ext::ssh -i /home/foo/.ssh/somekey user@host.example %S foo/repo"
+  Like host.example:foo/repo, but use /home/foo/.ssh/somekey as keypair and
+  user as user on remote side. This avoids needing to edit .ssh/config
 
 ## Pushing and pulling
 * A propos des thin packs: http://stackoverflow.com/questions/1583904/what-are-gits-thin-packs
@@ -2985,6 +3010,7 @@ git push --tags #add tags to be pushed (ie refs/tags)
 - Push to all remotes:
 https://stackoverflow.com/questions/5785549/able-to-push-to-all-git-remotes-with-the-one-command
 $ git remote | xargs -L1 git push --all
+   -L: max-lines, -R replace-str
 
 I have these tow aliases:
   pushall="!f() { git remote | xargs -P0 -L1 -I R -- git push R $@; }; f"
@@ -3369,6 +3395,96 @@ git branch --track branch_to_track origin/branch_to_track
 Expert usage:
 =============
 
+## git layout
+
+* $GIT_DIR layout
+`man gitrepository-layout`
+
+- $GIT_DIR, --git-dir: .git/, .git file: 'gitdir: <path>'
+- $GIT_COMMON_DIR, .git/commondir: used for objects, refs, packed-refs, config, branches, info, remotes, logs, shallow, worktrees, and can be specified by the file 'commondir'
+- $GIT_WORK_TREE, --work-tree, core.worktree: path to the root of the working tree
+  Note: if GIT_COMMON_DIR is set, this is ignored because this is a setting that applies only to the main worktree
+  Used eg in absorbed submodules
+
+objects/[0-9a-f][0-9a-f]
+objects/pack
+objects/info/{packs,alternates,http-alternates,commit-graph,commit-graphs/}
+refs/{heads,tags,remotes}/name
+refs/replace/<obj-sha1>
+packed-refs, HEAD
+config, config.worktree
+branches/, remotes/, hooks/, common/, commondir, modules/, shallow
+index, sharedindex.<SHA-1>
+info/{refs,grafts,exclude,attributes,sparse-checkout}
+logs/refs/{heads,tages}/name
+worktrees/<id>/{gitdir,locked,config.worktree}
+
+* Worktree exemple:
+foo1 is a worktree ,the .git is 'gitdir: /tmp/test/foo/.git/worktrees/foo1'
+In foo/.git/worktrees/foo1, commondir='../..' and gitdir='/tmp/test/foo1/.git'
+
+Config: When extensions.worktreeConfig is enabled, the config file .git/worktrees/<id>/config.worktree is read after .git/config is.
+
+* Format version
+core.repositoryformatversion=0 (default)
+                            =1 (=> allows extensions)
+extensions.preciousObjects=true # objects in the repository MUST NOT be deleted (e.g., by git-prune or git repack -d) -> usefull for alternates
+extensions.partialclone=promisor_remote
+extensions.worktreeConfig #read from config then config.worktree
+
+* Branches:
+HEAD: symref 'ref: refs/heads/master'
+$GIT_DIR/{remotes,branches}: alternate (legacy) ways to specify remotes, cf `git-fetch#REMOTES`
+
+* Grafts and replace:
+- replace (git-replace) -> refs/replace/
+- grafts (obsolete): cf https://blog.developer.atlassian.com/grafting-earlier-history-with-git/
+  .git/info/grafts: <commit sha1> <parent sha1> [<parent sha1>]*
+
+* Alternates and namespaces
+$GIT_ALTERNATE_OBJECT_DIRECTORIES
+objects/info/alternates
+
+Maintenance: git repack -adl -> skip alternates objects
+             git repack -ad -> pack all objects, including alternates ones
+  Cf https://git-blame.blogspot.com/2012/08/bringing-bit-more-sanity-to-alternates.html
+
+Exemple:
+$ git clone --shared foo bar
+$ cat bar/.git/objects/info/alternates
+-> /tmp/test/foo/.git/object
+$ git clone --reference foo bar baz # clone bar but use foo as an alternate
+Note: adding --dissociate after --shared or --reference will then run `git repack -a -d` to recover the objects and remove the alternates file.
+
+Namespaces: $GIT_NAMESPACE, --namespace=foo
+  Git supports dividing the refs of a single repository into multiple
+  namespaces, each of which has its own branches, tags, and HEAD. Git can
+  expose each namespace as an independent repository to pull from and push
+  to, while sharing the object store, and exposing all the refs to
+  operations such as git-gc(1).
+  Storing multiple repositories as namespaces of a single repository avoids
+  storing duplicate copies of the same objects, such as when storing
+  multiple branches of the same source. The alternates mechanism provides
+  similar support for avoiding duplicates, but alternates do not prevent
+  duplication between new objects added to the repositories without ongoing
+  maintenance, while namespaces do.
+Cf https://stackoverflow.com/questions/24564351/how-do-i-use-git-namespaces-locally
+
+* Optimisations:
+- reftable: https://github.com/google/reftable
+- commit graph: core.commitGraph=true (default) => read the commit-graph file,
+  fetch.writeCommitGraph=true -> also write it during a fetch
+- multi pack index: https://github.com/libgit2/libgit2/issues/5399
+- delta island: https://github.blog/2019-02-24-highlights-from-git-2-21/#delta-islands
+- bitmap indexes: https://github.blog/2015-09-22-counting-objects/
+  `git repack -b,--write-bitmap-index`, repack.writeBitmaps=true
+- Index: split index (cf git-update-index): core.splitIndex=true, untracked cache: core.untrackedCache=true, index.version=4 (`git update-index --index-version 4`), file system monitor: core.fsmonitor
+  Untracked cache: https://stackoverflow.com/questions/44205477/how-do-i-get-rid-of-the-warning-untracked-cache-is-disabled-on-this-system -> The untracked cache saves its current state in the UNTR index extension
+
+Cf also in git-config: feature.experimental, feature.manyFiles
+feature.experimental => pack.useSparse=true, fetch.negotiationAlgorithm=skipping, fetch.writeCommitGraph=true
+feature.manyFiles => index.version=4, core.untrackedCache=true
+
 ## tree-objects
 http://stackoverflow.com/questions/9594169/create-a-git-tree-from-working-tree-without-touching-the-index
 
@@ -3406,6 +3522,10 @@ for instance git diff, git status or git checkout. But gitk does not, so
 sometimes one has to call git status and reload gitk. Also: zsh vcscommand
 also calls git update-index --refresh.
 
+Features: assume-unchanged, skip-worktree, refresh/really-refresh,
+cacheinfo/info-only, index-info, split index, untracked cache, file system
+monitor (cf man git-update-index)
+
 ### git update-index
 
 --assume-unchanged: git suppose que le fichier n'est pas changé, et donc peut
@@ -3426,7 +3546,7 @@ le flag)
 --info-only: pour rajouter un fichier dans l'index, sans le mettre dans
 l'object database. Par exemple si on veut juste savoir si des fichiers ont
 changé, pas connaitre leurs contenu
---cacheinfo:  pour enregistrer dans l'index un fichier qui est dans la base
+--cacheinfo  <mode>,<object>,<path>:  pour enregistrer dans l'index un fichier qui est dans la base
 mais plus dans le working dir
     ex:git update-index --cacheinfo 100755 $(perl -lne 'print unless (/^#/)' post_load | git hash-object -w --stdin) post_load
       pour changer post_load dans l'index sans changer le fichier
@@ -4160,6 +4280,62 @@ cf http://stackoverflow.com/questions/16037623/simplest-possible-way-git-can-out
 
 git diff --name-only --diff-filter=U | uniq  | xargs $EDITOR
 
+### Rebasing multiple branches at once
+
+- https://stackoverflow.com/questions/5628236/when-git-rebasing-two-branches-with-some-shared-history-is-there-an-easy-way-to/5631439#5631439
+-> make a fake merge commit and use `git rebase -p`
+
+Another solution given is to use
+git rebase --committer-date-is-author-date --preserve-merges --onto A* A C
+git rebase --committer-date-is-author-date --preserve-merges --onto A* A B
+where the commiter-date... is there to keep the common commits having the same sha1 
+
+- https://stackoverflow.com/questions/9407234/git-maintaining-many-topic-branches-on-a-frequently-moving-base
+  Perl script top automate the above merge trick (to speedup we could use
+  git new-workdir)
+
+  # Construct a placeholder commit that has all topics as parent.
+  HEADS="$(git for-each-ref refs/heads/\*)" &&
+  MAGIC_COMMIT=$(echo "Magic Octopus"$'\n\n'"$HEADS" |
+    git commit-tree \
+      $(git merge-base $(echo "$HEADS" | sed 's/ .*//' ))^{tree} \
+      $(echo "$HEADS" | sed 's/ .*//;s/^/-p /')) &&
+  git update-ref refs/hidden/all $MAGIC_COMMIT
+  # Rebase the whole lot at once.
+  git rebase --preserve-merges master refs/hidden/all
+  # Resolve conflicts and all that jazz.
+  # Update topic refs from the rebased placeholder.
+  PARENT=
+  echo "$HEADS" |
+  while read HASH TYPE REF
+  do
+    let ++PARENT
+    git update-ref -m 'Mass rebase' "$REF" refs/hidden/all^$PARENT "$HASH"
+  done
+
+  More complete version here:
+  https://github.com/nornagon/git-rebase-all/blob/master/git-rebase-all
+  => incorporated into git rebuild
+
+- Other github scripts that do this:
+  https://github.com/goncalopp/git-utilities
+  => written in python, it reimplements manually --rebase-merge essentially
+  (meaning that it rebase the first branch, calculate the new fork point,
+  and so on...)
+
+* On this topic: cousins in rebase
+https://stackoverflow.com/questions/56529435/what-is-the-behavior-of-the-cousins-options-in-git-rebase-rebase-merges
+
+...--o--*--o---o   <-- main
+      \  \
+       \  A--B---F--G   <-- branch
+        \       /
+         C--D--E
+
+By default --rebase-merges will just move A B F G to main and merge with
+the original C D E. With -rebase-merges=rebase-cousins then C D E are also
+moved before the merge
+
 ## Small scripts to do small things
 
 From: https://github.com/ConradIrwin/git-aliae
@@ -4342,4 +4518,6 @@ See also https://public-inbox.org/git/20170403211644.26814-1-avarab@gmail.com/
   interdiff = !sh -c 'git show "$1" > .git/commit1 && git show "$2" > .git/commit2 && interdiff .git/commit[12] | less -FRS' - # Calling "interdiff" between commits: if upstream applied a slightly modified patch, and we want to see the modifications, we use the program interdiff of the patchutils package.
   graphviz = !"f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f" # Use graphviz for display. Eg: $ git graphviz --first-parent HEAD~100..HEAD~60 | dotty /dev/stdin
 
-
+## mailing lists
+- public inbox: https://public-inbox.org/public-inbox-v2-format.html
+- Incorporated in lore.kernel.org: https://lore.kernel.org/git/

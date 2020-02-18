@@ -17,3 +17,9 @@ Option on hearthstone: -force-d3d9
 # Battle.net
 # => launch the game directly, cf https://steamcommunity.com/sharedfiles/filedetails/?id=1113049716
 env WINEPREFIX="/home/dams/.wine" wine C:\\\\windows\\\\command\\\\start.exe /Unix /home/dams/.wine/dosdevices/c:/Program\ Files\ \(x86\)/Blizzard\ App/Battle.net.exe battlenet://HS
+
+* Other tools:
+- Proton: wine + steam
+- Lutris: wine + a steam like engine for non steam games
+          (=more modern version of playonlinux)
+Cf https://www.reddit.com/r/linux_gaming/comments/at102f/proton_lutris_or_wine/

@@ -11,6 +11,7 @@ module DR
 	module Config
 		module Network
 			DnsExtension="lan"
+			VpnZones=%i(wg tinc zerotier)
 			extend self
 
 			class Addr #{{{1
@@ -514,12 +515,14 @@ module DR
 						z=z.clone.update(**kwds) unless kwds.empty?
 						z
 					else
-						self.new(*self.parse_args(*args, **kwds))
+						*args, kwds=self.parse_args(*args, **kwds)
+						self.new(*args, **kwds)
 					end
 				end
 
-				def add(*args)
-					add_address(*self.class.parse_args(*args))
+				def add(*args, **kwds)
+					*args, kwds=self.class.parse_args(*args, **kwds)
+					add_address(*args, **kwds)
 				end
 
 				def merge(*za)
@@ -540,11 +543,33 @@ module DR
 				end
 
 				def zones(current=self.default_current_zones)
-					(current && current != :all) ? current_zones : all_zones
+					grading=zones_grading
+					z=current_zones.sort {|x,y| grading[x] <=> grading[y] }
+					if (current && current != :all)
+						z
+					else
+						rest=(all_zones-current_zones).sort {|x,y| grading[x] <=> grading[y] }
+						z+rest
+					end
 				end
+
+				# for a ComputerNetwork, the zones_grading refer to the
+				# connected_zones, ie the zones we want to reach first
+				# hare the zones_grading refer to zones, ie the zones we are
+				# accessible from. Since this is potentially from anyone, internet
+				# is ranked first here
+				def zones_grading
+					unless @zones_grading
+						@zones_grading={home: 10, imb: 20, internet: 1, wg: 510, tinc: 530, zerotier: 520} #the order we try to connect to
+						@zones_grading.default=9999 #misc zones
+					end
+					@zones_grading
+				end
+
 				def all_zones
 					keys
 				end
+
 				# zones we currently are reachable from
 				def current_zones
 					all_zones-unreachable_zones
@@ -673,8 +698,19 @@ module DR
 					r
 				end
 
-				def all
-					addrs.values.flatten
+				def all(exclude: nil, &b)
+					if b
+						addrs.map(&b).flatten.compact
+					elsif exclude
+						if exclude == :vpn
+							excludelist=Network::VpnZones
+						else
+							excludelist=[*exclude]
+						end
+						addrs.map {|k,v| v unless excludelist.include?(k)}.flatten.compact
+					else
+						addrs.values.flatten
+					end
 				end
 				def best_zone
 					filter(addrs.keys.first)
@@ -686,8 +722,8 @@ module DR
 					best_zone_addrs&.first
 				end
 				#like all, but in string (and uniq) form
-				def all_addrs
-					all.map {|a| a.to_s}.uniq
+				def all_addrs(**opts, &b)
+					all(**opts, &b).map {|a| a.to_s}.uniq
 				end
 
 				def connect_to_zones(cur=:all)
@@ -739,7 +775,7 @@ module DR
 					end
 					Array(acc_zones).each do |zone|
 						if addrs.key?(zone)
-							a.add({zone => addrs[zone]})
+							a.add(**{zone => addrs[zone]})
 						end
 					end
 					a
@@ -751,7 +787,7 @@ module DR
 				# if values: keep the values, not the original address
 				def all_addresses(values: false, **fqdn_opts)
 					r={}
-					# can also pass 'current: :all' in fqdn_opts
+					# can also pass 'current_zones: :all' in fqdn_opts
 					each_fqdn(**fqdn_opts) do |fqdn, a|
 						r[fqdn]||={addr: [], ip: [], ip6: [], ip4: [], domain: [], rdns: [], dnsname: []}
 						if values
@@ -880,10 +916,10 @@ module DR
 					s
 				end
 
-				def connect(*args, &b)
+				def connect(*args, **kws, &b)
 					# s=self.get
 					s=self.clone
-					s.addr=s.addr.connect(*args, &b)
+					s.addr=s.addr.connect(*args, **kws, &b)
 					s
 				end
 
@@ -957,7 +993,7 @@ module DR
 					data[:service_name]||=name
 					data[:service_type]||=service
 					data[:computer]||=self
-					serv[name]=Service.new(data)
+					serv[name]=Service.new(**data)
 				end
 
 				def get_service(service, service_name: :default)
@@ -1068,7 +1104,7 @@ module DR
 				#
 				# Note that since we call 'dns' directly and don't use #each_fqdn,
 				# then fqdn_mode is equivalent to fqdn_mode_for_dns since we
-				# fallback to fqdn_mode
+				# fallback to fqdn_mode in fqdn_mode_for_dns
 				def dns_of(*comps, **opts)
 					dns=Dns.new
 					opts=fqdn_opts_of.merge(opts)
@@ -1281,7 +1317,7 @@ module DR
 						imb_ssh=imb.map {|a| a.clone.update(proxy: "aimb")}
 						comp.add(internet_firewalled: imb)
 						comp.services.dig(:ssh, :main).add_extra_addr(*imb_ssh)
-						comp.services.dig(:wg, :main).add_extra_addr(*imb)
+						comp.services.dig(:wg, :main).add_extra_addr(*imb) #this adds to the :internet zone
 					end
 					n << comp
 				end

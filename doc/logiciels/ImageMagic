@@ -1,0 +1,11 @@
+* Security policy:
+- https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
+- https://stackoverflow.com/questions/52703123/override-default-imagemagick-policy-xml
+
+* https://stackoverflow.com/questions/6605006/convert-pdf-to-image-with-high-resolution
+  $ convert -density 300 -trim test.pdf -quality 100 test.jpg
+    -density 300 sets the dpi that the PDF is rendered at.
+    -trim removes any edge pixels that are the same color as the corner pixels.
+    -quality 100 sets the JPEG compression quality to the highest quality.
+   Things like -sharpen don't work well with text because they undo things your font rendering system did to make it more legible.
+  $ convert -verbose -density 150 -trim test.pdf -quality 100 -flatten -sharpen 0x1.0 24-18.jpg

@@ -3,19 +3,164 @@ vim: ft=markdownlight fdm=expr
 Algèbres
 ========
 
-Algèbre simple = pas d'idéaux bilatères non triviaux
-=> A=M_n(D) (Wedderburn)
+Artinian, Noetheterien
+----------------------
+
+* https://en.wikipedia.org/wiki/Artinian_ring
+
+- R left artinian => left noeth
+  Attention: un module peut être left artinian sans être left noeth
+  Attention: on peut avoir un anneau artinian à gauche mais pas à droite
+
+- Modules sur un artinian:
+Let M be a left module over a left Artinian ring. Then the following are
+equivalent (Hopkins' theorem):
+(i) M is finitely generated,
+(ii) M has finite length (i.e., has composition series),
+(iii) M is Noetherian,
+(iv) M is Artinian.[3]
+
+* https://en.wikipedia.org/wiki/Hopkins%E2%80%93Levitzki_theorem
+If R is a semiprimary ring and M is an R module, the three module
+conditions Noetherian, Artinian and "has a composition series" are
+equivalent. Without the semiprimary condition, the only true implication is
+that if M has a composition series, then M is both Noetherian and Artinian. 
+
+Rappel: semiprimary=
+ R/J(R) is semisimple and J(R) is a nilpotent ideal
+
+Conséquences:
+- Since right Artinian rings are semiprimary, a direct corollary of the theorem is: a right Artinian ring is also right Noetherian.
+- If R is right Artinian, then R is left Artinian if and only if it is left Noetherian => si R right Artinian et simple, il est left Artinian.
+
+Algèbres simples
+----------------
+
+* https://en.wikipedia.org/wiki/Simple_ring
+Algèbre simple = pas d'idéaux bilatères non triviaux and the multiplication operation is not zero
+
+* http://en.wikipedia.org/wiki/Artin%E2%80%93Wedderburn_theorem
+
+Si A est simple *et artinienne*, A=M_n(D) (Wedderburn)
+
+En fait, si R is a simple ring with a minimal left/right ideal, then R is semisimple (donc artinien).
+Cf https://en.wikipedia.org/wiki/Semisimple_module#Semisimple_rings
+[??? 0 est toujours un idéal minimal]
+
+### Algèbres centrales simples
+
+* http://en.wikipedia.org/wiki/Central_simple_algebra
+= a finite-dimensional associative algebra A, which is simple, and for which the center is exactly K
+Note: si A est de K-dim finie, elle est artinienne.
+
+- A centrale simple sur K, alors A=M_n(S), S à division (Wedderburn).
+- Automorphism of a central simple algebra is an inner automorphism (follows from Skolem–Noether theorem).
+
+- dim_K S=m^2, deg_K(S):=m. dim_K A=n^2 m^2, deg_K(A):=nm.
+- deg_K(S)=dim_K k où k=corps commutatif maximal inclus dans S
+  => S \tens k = M_m(k) (ie k splitting field de S et A).
+     A \tens k = M_{nm}(k).
+  Rem: https://qchu.wordpress.com/2016/03/27/separable-algebras/
+    A \tens_K A^{op} = M_N(K), où N = \dim_K A.
+
+Indice A := Degree S := m.
+Exposant A=Ordre(S) dans le groupe de Brauer.
+Exposant A | Indice A (et ils ont même facteurs premiers)
+
+- If S is a simple subalgebra of a central simple algebra A then dim_K S divides dim_K A.
+- If D is a central division algebra over K for which the index has prime factorisation
+    indice(D) = \prod_{i=1}^r p_i^{m_i}
+  then D has a tensor product decomposition
+     D = \otimes_{i=1}^r D_i
+  where each component Di is a central division algebra of index p_i^{m_i},
+  and the components are uniquely determined up to isomorphism.
+
+### Skolem Noether
+
+* http://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem
+[ Deux morphismes f,g: A->B d'algèbres simples sont conjugués ]
+
+Let A and B be simple rings, and let k be the centre of B.
+Suppose further that the dimension of B over k is finite, i.e. that B is a
+central simple algebra. Then given k-algebra homomorphisms
+    f, g : A → B
+there exists a unit b in B such that for all a in A[1][2]
+    g(a) = b · f(a) · b^−1.
+In particular, every automorphism of a central simple k-algebra is an inner
+automorphism.
+
+* Ex: http://en.wikipedia.org/wiki/Schur%27s_lemma
+If M and N are two simple modules over a ring R, then any homomorphism f: M
+→ N of R-modules is either invertible or zero. In particular, the
+endomorphism ring of a simple module is a division ring.
+
+Schur's lemma is frequently applied in the following particular case. Suppose that R is an algebra over the field C of complex numbers and M = N is a finite-dimensional simple module over R. Then Schur's lemma says that the endomorphism ring of the module M is a division ring; this division ring contains C in its center, is finite-dimensional over C and is therefore equal to C. Thus the endomorphism ring of the module M is "as small as possible".
+ie si V G-irréd, End_G(V)=\C.
+
+* Generalisation: A module is said to be strongly indecomposable if its endomorphism ring is a local ring. For the important class of modules of finite length, the following properties are equivalent (Lam 2001, §19):
+  -  A module M is indecomposable;
+  -  M is strongly indecomposable;
+  -  Every endomorphism of M is either nilpotent or invertible.
+
+Algèbres semi-simples
+---------------------
+
+Semi-simple = artinian + J(R)=0 où J=idéal de Jacobson
+            = produit d'algèbres simples
+            = \prod M_{n_i} (D_i)
+Rappel: Algèbre simple = pas d'idéaux bilatères non triviaux
+        => A=M_n(D) (Wedderburn)
+
+* https://en.wikipedia.org/wiki/Semisimple_algebra
 
 A semisimple algebra is an associative artinian algebra over a field which has trivial Jacobson radical
 => A = le produit de ses idéaux bilatères minimaux (qui sont des algèbres simples)
+
 Si A algèbre de dim finie sur k, A semi-simple <=> pas d'idéaux (à gauche) nilpotents [en effet dans ce cas A est artinienne, donc J(R) est le plus grand idéal nilpotent]
 
 [Voir aussi https://www.math.upenn.edu/~chai/602f06/math602f06.html]
 
+* Jacobson and nilradical:
+- si R noeth, nil radical = unique largest (left, right, or two-sided)
+  nilpotent ideal of the ring = intersection des idéaux premiers
+  [attention, contrairement au cas commutatif il peut être différent de
+  l'ensemble des éléments nilpotents de R]
+- J(R)=intersection des idéaux maximaux (à gauche ou à droite). Il contient
+  le nilradical. Si R artinien, J(R) nilpotent, donc c'est le nil radical.
+
+* http://en.wikipedia.org/wiki/Artin%E2%80%93Wedderburn_theorem
+
+An (Artinian [en particulière une K-alg de dim finie]) semisimple ring R is
+isomorphic to a product of finitely many ni-by-ni matrix rings over
+division rings Di, for some integers ni, both of which are uniquely
+determined up to permutation of the index i.
+
+Simple: In particular, any simple left or right Artinian ring is isomorphic
+to an n-by-n matrix ring over a division ring D, where both n and D are
+uniquely determined.
+
+It follows from the Jordan–Hölder theorem that, while the decomposition
+into a direct sum of irreducible subrepresentations may not be unique, the
+irreducible pieces have well-defined multiplicities. In particular, a
+representation of a finite group over a field of characteristic zero is
+determined up to isomorphism by its character.
+
+* Semi simple <=> les modules sont semi simples
+https://math.stackexchange.com/questions/2055190/why-r-is-semisimple-ring-iff-every-r-module-is-semisimple
+<=>
+- R is semisimple.
+- Every left (or right) R-module M is a semisimple module.
+- Every left (or right) R-module M is injective.
+- Every short exact sequence of left (or right) R-modules splits.
+- Every left (or right) R-module M is projective.
+- R is semisimple as an R-module
+- There is a faithfull semi-simple module (=R is semi-primitive) + R is left (or
+  right) artinian
+
 Jacobson radical
 ----------------
 
-https://en.wikipedia.org/wiki/Jacobson_radical
+* https://en.wikipedia.org/wiki/Jacobson_radical
 The Jacobson radical of a ring R is the ideal consisting of those elements in R that annihilate all simple right R-modules
 [de manière équivalente J(R)={les annulateurs de tout les R-modules simples
 à gauche donc J(R) est bilatère]
@@ -24,6 +169,21 @@ The Jacobson radical of a ring R is the ideal consisting of those elements in R 
 - J(R) contains every nil ideal of R. If R is left or right Artinian, then J(R) is a nilpotent ideal.
 
 Ex: Rings for which J(R) is {0} are called semiprimitive rings, or sometimes "Jacobson semisimple rings". The Jacobson radical of any field, any von Neumann regular ring and any left or right primitive ring is {0}. The Jacobson radical of the integers is {0}.
+
+Nakayama: si M est un R-module de type fini, R(J).M=0 => M=0.
+
+* https://www.jmilne.org/math/CourseNotes/LAG.pdf
+
+Review of Jacobson radicals: R(A)=\cap maximal left ideal of A
+
+2.16 The following conditions on an element x of A are equivalent:
+(a) x lies in the radical R(A)
+(b) 1-ax has a left inverse for all a
+(c) xM=0 pour tous les A-modules simples
+
+2.18: R(A) contient tous les nil-idéal à gauche de A (ie des idéaux
+composés de nilpotents). Si A/k est de dimension finie, R(A)^N=0 pour N>>0.
+(en fait A Artinien suffirait)
 
 Nilradical
 ----------
@@ -53,25 +213,8 @@ Levitzki radical are nilpotent and coincide, allowing the nilradical of any
 noetherian ring to be defined as the unique largest (left, right, or
 two-sided) nilpotent ideal of the ring.
 
-Algèbres Semi Simples
----------------------
-
-https://en.wikipedia.org/wiki/Semisimple_algebra
-
-* http://en.wikipedia.org/wiki/Artin%E2%80%93Wedderburn_theorem
-
-An (Artinian [en particulière une K-alg de dim finie]) semisimple ring R is
-isomorphic to a product of finitely many ni-by-ni matrix rings over
-division rings Di, for some integers ni, both of which are uniquely
-determined up to permutation of the index i. In particular, any simple left
-or right Artinian ring is isomorphic to an n-by-n matrix ring over a
-division ring D, where both n and D are uniquely determined.
-
-It follows from the Jordan–Hölder theorem that, while the decomposition
-into a direct sum of irreducible subrepresentations may not be unique, the
-irreducible pieces have well-defined multiplicities. In particular, a
-representation of a finite group over a field of characteristic zero is
-determined up to isomorphism by its character.
+Cas des groupes
+---------------
 
 Ex: http://en.wikipedia.org/wiki/Maschke%27s_theorem
     Maschke's Theorem. Let G be a finite group and K a field whose characteristic does not divide the order of G. Then K[G], the group algebra of G, is semisimple.
@@ -80,71 +223,136 @@ Ex: http://en.wikipedia.org/wiki/Maschke%27s_theorem
 http://en.wikipedia.org/wiki/Representation_theory_of_finite_groups
     Theorem. C[G] ≅ \sum_V \bar{V}\otimes_G V where the sum is taken over the inequivalent G-irreducible representations V.
 
-* http://en.wikipedia.org/wiki/Central_simple_algebra
-
-A centrale simple sur K, alors A= M_n(S), S à division.
-(centrale/K veut dire que Z(A)=K)
-S à division, k corps maximal inclus dans S, alors
-S est de dim m^2 sur k et S \tens k = M_m(S) (ie k splitting field de A).
-
-Indice A := Degree S := m.
-Exposant A=Ordre(S) dans le groupe de Brauer.
-Exposant A | Indice A.
-
-- If S is a simple subalgebra of a central simple algebra A then dim_K S divides dim-K A.
-- If D is a central division algebra over K for which the index has prime factorisation
-    indice(D) = \prod_{i=1}^r p_i^{m_i}
-  then D has a tensor product decomposition
-     D = \otimes_{i=1}^r D_i
-  where each component Di is a central division algebra of index p_i^{m_i},
-  and the components are uniquely determined up to isomorphism.
-
-
-* http://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem
-
-Let A and B be simple rings, and let k be the centre of B.
-Suppose further that the dimension of B over k is finite, i.e. that B is a
-central simple algebra. Then given k-algebra homomorphisms
-    f, g : A → B
-there exists a unit b in B such that for all a in A[1][2]
-    g(a) = b · f(a) · b^−1.
-In particular, every automorphism of a central simple k-algebra is an inner
-automorphism.
-
-Ex: http://en.wikipedia.org/wiki/Schur%27s_lemma
-If M and N are two simple modules over a ring R, then any homomorphism f: M
-→ N of R-modules is either invertible or zero. In particular, the
-endomorphism ring of a simple module is a division ring.
-
-Schur's lemma is frequently applied in the following particular case. Suppose that R is an algebra over the field C of complex numbers and M = N is a finite-dimensional simple module over R. Then Schur's lemma says that the endomorphism ring of the module M is a division ring; this division ring contains C in its center, is finite-dimensional over C and is therefore equal to C. Thus the endomorphism ring of the module M is "as small as possible".
-ie si V G-irréd, End_G(V)=\C.
-
-Generalisation: A module is said to be strongly indecomposable if its endomorphism ring is a local ring. For the important class of modules of finite length, the following properties are equivalent (Lam 2001, §19):
-  -  A module M is indecomposable;
-  -  M is strongly indecomposable;
-  -  Every endomorphism of M is either nilpotent or invertible.
-
 Primitive and Semi-primitive
 ----------------------------
 
-https://en.wikipedia.org/wiki/Primitive_ideal [annilator of a simple module]
-https://en.wikipedia.org/wiki/Prime_ideal#Prime_ideals_for_noncommutative_rings
-https://en.wikipedia.org/wiki/Prime_ring
+* https://en.wikipedia.org/wiki/Primitive_ideal
+= annilator of a simple module => prime ideal
 
-https://en.wikipedia.org/wiki/Primitive_ring [has a faithful simple module, => Prime ring]
+* https://en.wikipedia.org/wiki/Prime_ideal#Prime_ideals_for_noncommutative_rings
+= If the product of ideals AB is contained in P, then at least one of A and B is contained in P.
+
+* https://en.wikipedia.org/wiki/Prime_ring
+= {0} is a prime ideal in the noncommutative sense
+
+* https://en.wikipedia.org/wiki/Primitive_ring
+= has a faithful simple module = {0} is a primitive ideal => Prime ring
+
 - For a left Artinian ring, it is known that the conditions "left primitive", "right primitive", "prime", and "simple" are all equivalent, and in this case it is a semisimple ring isomorphic to a square matrix ring over a division ring. More generally, in any ring with a minimal one sided ideal, "left primitive"="right primitive"="prime".
 - A commutative ring is left primitive if and only if it is a field.
 
-https://en.wikipedia.org/wiki/Semiprimitive_ring [Jacobson radical=0]
-Semiprimitive <=> faithful semisimple left module
+* https://en.wikipedia.org/wiki/Semiprimitive_ring
+= Jacobson radical=0 <=> has a faithful semisimple left module
+
 - A ring is semiprimitive if and only if it is a subdirect product of left primitive rings.
 - A commutative ring is semiprimitive if and only if it is a subdirect product of fields, (Lam 1995, p. 137).
 - A left artinian ring is semiprimitive if and only if it is semisimple
+  (since by definition semisimple = artinian + semiprimitive)
+
+Séparabilité
+------------
+
+Cas commutatif: algèbre étale
+* https://en.wikipedia.org/wiki/%C3%89tale_algebra
+
+Let K be a field and let L be a K-algebra. Then L is called étale or separable if L ⊗_K Ω ≃ Ω^n as K-algebras, where Ω is an algebraically closed extension of K and n ≥ 0.
+
+Equivalently, L is étale if it is isomorphic to a finite product of separable extensions of K. When these extensions are all of finite degree, L is said to be finite étale; in this case one can replace Ω with a finite separable extension of K in the definition above.
+
+A third definition says that an étale algebra is a finite dimensional commutative algebra whose trace form (x,y) = Tr(xy) is non-degenerate.
+
+* https://en.wikipedia.org/wiki/Separable_algebra
+
+A ring homomorphism (of unital, but not necessarily commutative rings) K → A
+is called separable (or a separable extension) if the multiplication map
+    μ : A ⊗_K A → A , a ⊗ b ↦ a b
+admits a section
+    σ : A → A ⊗_K A by means of a homomorphism σ of A-A-bimodules.
+
+Separable algebras over a field K can be classified as follows: they are
+the same as finite products of matrix algebras over finite-dimensional
+division algebras whose centers are finite-dimensional separable field
+extensions of the field K. In particular: Every separable algebra is itself
+finite-dimensional. If K is a perfect field --- for example a field of
+characteristic zero, or a finite field, or an algebraically closed field
+--- then every extension of K is separable so that separable K-algebras are
+finite products of matrix algebras over finite-dimensional division
+algebras over field K. In other words, if K is a perfect field, there is no
+difference between a separable algebra over K and a finite-dimensional
+semisimple algebra over K. It can be shown by a generalized theorem of
+Maschke that an associative K-algebra A is separable if for every field
+extension L / K, A ⊗_K L is semisimple.
+
+* https://qchu.wordpress.com/2016/03/27/separable-algebras/
+
+$ Définition
+A k-algebra (non commutative), k a commutative ring
+
+Definition-Theorem: The following conditions on A are all equivalent, and all define what it means for A to be a separable k-algebra:
+  - A is projective as an (A, A)-bimodule (equivalently, as a left A \otimes_k A^{op}-module).
+  - The multiplication map A \otimes_k A^{op} -> A, (a, b) -> ab has a section as an (A, A)-bimodule map.
+  - A admits a separability idempotent: an element p \in A \otimes_k A^{op} such that m(p) = 1 and ap = pa for all a \in A (which implies that p^2 = p).
+
+When k is a field, this condition turns out to be a natural strengthening of the condition that A is semisimple (cf plus haut, il faut que les corps centraux soient séparables). In general, loosely speaking, a separable k-algebra is like a “bundle of semisimple algebras” over Spec k.
+
+$ Examples
+- The matrix algebra M_n(k) is a separable k-algebra.
+  p = \sum_i e_{ij} \otimes e_{ji} est un separability idempotent
+- Maschke: If G is a finite group whose order |G| is invertible in k, then the group algebra k[G] is a separable k-algebra.
+  p = 1/|G| \sum_g g \otimes g^{-1}
+
+$ Caractérisations
+
+Note: la séparabilité est stable par produit, produit tensoriel, changement
+de base, quotient, équivalence de Morita, transitivité.
+
+Theorem: The separable algebras over a field k are precisely the finite products of matrix algebras over finite-dimensional division algebras over k whose centers are separable extensions of k.
+
+Over a perfect field, the last condition is automatic, so this just says that the separable algebras over k are precisely the finite-dimensional semisimple k-algebras.
+
+(( Preuve: Séparabilité et semisimplicité quand k=corps
+
+Lemma: If A \otimes_k A^{op} is semisimple, then A is separable over k.
+
+Proof. A ring is semisimple iff every module over it is projective. So if A \otimes_k A^{op} is semisimple, then in particular A is a projective A \otimes_k A^{op}-module.
+
+Corollary: If L is a finite separable extension of a field k (in the usual sense), then L is separable over k (in the above sense).
+
+Lemma: If A is separable over a field k, then A is semisimple.
+
+Donc, si k est un corps, A/k séparable <=> A \otimes_k A^{op} est semisimple.
+
+De plus: If A is separable over a field k, then A is geometrically semisimple: A \otimes_k L is semisimple for every field extension k \to L.
+
+Lemma: Let A, B be algebras over a field k. Then Z(A \otimes_k B) =~ Z(A) \otimes_k Z(B).
+
+Lemma: If A is a separable algebra over a field k, then so is its center Z(A).
+
+Theorem: Let L be a field extension of a field k. The following conditions are equivalent:
+  - L is a finite separable extension of k (in the usual sense).
+  - L is a separable k-algebra (in the above sense).
+  - L is geometrically semisimple: L \otimes_k L' is semisimple for all field extensions k \to L'.
+  - L \otimes_k \bar{k} is a finite product of copies of \bar{k}.
+
+Exemple: si k=kbar, k(t) est semi-simple, mais n'est plus semi-simple après
+changement de base sur k(t).
+
+Corollary: If a division algebra D over a field k is separable over k, then D is finite-dimensional over k, and its center Z(D) is a finite separable extension of k (in the usual sense).
+
+Theorem: Let A be a central simple algebra over a field L: that is, A is a finite-dimensional simple L-algebra with center L. Then A \otimes_L A^{op} =~ M_n(L), where n = \dim_L A.
+
+Corollary: A central simple algebra over a field L is separable over L.
+
+Corollary: A finite-dimensional division algebra D over a field k whose center Z(D) is a finite separable extension of k is separable over k.
+
+Corollary: The separable algebras over a field k are precisely the finite products of matrix algebras over finite-dimensional division algebras over k whose centers are separable extensions of k.
+))
 
 Morita Equivalence
 ==================
 
 * http://en.wikipedia.org/wiki/Morita_equivalence
+= ont la même catégorie de modules
 
 The ring of n-by-n matrices with elements in R, denoted Mn(R), is Morita-equivalent to R for any n > 0
 
@@ -182,6 +390,48 @@ The following properties are Morita invariant:
     semiprimary, right (or left) perfect, semiperfect
     semilocal
 Examples of properties which are not Morita invariant include commutative, local, reduced, domain, right (or left) Goldie, Frobenius, invariant basis number, and Dedekind finite.
+
+Semi simple catagories
+======================
+
+https://www.jmilne.org/math/CourseNotes/LAG.pdf
+* Preliminaries on semisimplicity, p. 46
+
+In every k-linear abelian category whose objects have finite length (eg les
+A-modules finis pour A une k-algèbre):
+
+M=semi simple <=> M somme de modules simples <=> M somme directe de modules
+simples <=> tout sous-module a un supplémentaire
+
+En particulier M= \oplus m_i S_i où les S_i sont les composantes
+isotypiques de M, ie S_i simple et non isomorphe à S_j.
+
+Lemme 5.4 (Schur): Si V est un A-module simple de dim finie sur k=kbar,
+End_A(V)=k.
+
+DEFINITION 5.8  A k-algebra A is semisimple if every A-module is semisimple
+PROPOSITION 5.9 <=>
+(a) A is semisimple
+(b) A is a product of simple k-algebras
+(c) the Jacobson radical R(A) of A is trivial
+
+Prop 5.9 et 5.10:
+- Si A/k est une algèbre de centre C, A \tens_k K est une algèbre simple de
+  centre K pour C \subset K
+- Si A \tens_k K est semisimple, A est semisimple. Si A est semisimple, A
+  \tens_k K est semisimple si K/k séparable.
+
+ASIDE 5.12  A k-algebra A is separable if L \tens_k A is semisimple for all fields L containing k. The above arguments show that A is separable if and only if it is a product of simple k-algebras whosecentres are separable over k.
+
+* Semisimple categories
+Prop 5.13: Si M est un A-module de type fini comme End_A(M)-module. Alors M
+semisimple <=> son anneau d'homothétie A_M = image de A dans End_Z(M) est semisimple
+
+PROPOSITION 5.14 Let A be a k-linear abelian category such that End(X) is finite-dimensional over k for all objects X. Then A is semisimple if and only if End(X) is a semisimple k-algebra for all X.
+
+=> on peut appliquer ça a la catégorie des représentations d'un groupe
+algébrique ou d'une algèbre de Lie sur k.
+
 Bourbaki
 ========
 

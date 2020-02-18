@@ -18,12 +18,12 @@ Prog langages
 
 * Functional:
 - Ocaml
+  https://reasonml.github.io/docs/en/faq = ocaml with a js syntax (facebook)
+  https://bucklescript.github.io/docs/en/what-why (ocaml to js transpiler)
 - Haskell
 - scheme (lisp like)
   racket: descendant of scheme
-  Cf:
-  http://stackoverflow.com/questions/3345397/how-is-racket-different-from-scheme
-  http://stackoverflow.com/questions/11223403/what-are-the-differences-between-clojure-scheme-racket-and-common-lisp
+  Cf: http://stackoverflow.com/questions/3345397/how-is-racket-different-from-scheme, http://stackoverflow.com/questions/11223403/what-are-the-differences-between-clojure-scheme-racket-and-common-lisp
 
 * Scripts:
 - Ruby
@@ -42,14 +42,8 @@ Prog langages
 - rust
 
 * New langages:
-- v: https://vlang.io/, https://vlang.io/compare [=go done right]
-
-http://stackoverflow.com/questions/3165525/go-scala-go-what-are-the-main-differences
-- go (philosophy: C), crystal (compiled, statically type checked via type
-  inference, similar syntax to ruby: https://blog.codeship.com/an-introduction-to-crystal-fast-as-c-slick-as-ruby/)
-- D, C# (philosophy: C++/Java), nim (was nimrod, http://hookrace.net/blog/what-is-special-about-nim/)
-- Rust (C+ML), Scala [java like], groovy [java like], clojure [lisp like] (functional, on the jvm)
-- erlang (concurrency), elixir (=erlang with a ruby syntax)
++ zig: https://ziglang.org/ [=better C]
+- v/vlang: https://vlang.io/, https://vlang.io/compare [=go done right, used to build volt]
 
 * http://en.wikipedia.org/wiki/Esoteric_programming_language
 
@@ -60,12 +54,21 @@ http://stackoverflow.com/questions/3165525/go-scala-go-what-are-the-main-differe
 * http://rigaux.org/language-study/syntax-across-languages/
 * http://learnxinyminutes.com/
 
+* http://stackoverflow.com/questions/3165525/go-scala-go-what-are-the-main-differences
+- go (philosophy: C), crystal (compiled, statically type checked via type
+  inference, similar syntax to ruby: https://blog.codeship.com/an-introduction-to-crystal-fast-as-c-slick-as-ruby/)
+- D, C# (philosophy: C++/Java), nim (was nimrod, http://hookrace.net/blog/what-is-special-about-nim/)
+- Rust (C+ML), Scala [java like], groovy [java like], clojure [lisp like] (functional, on the jvm)
+- erlang (concurrency), elixir (=erlang with a ruby syntax)
+
 * https://news.ycombinator.com/item?id=20115532 Nim 0.20.0 (1.0 RC1) released (nim-lang.org)
   Objective-C -> Swift
-  Python -> Nim
-  Ruby -> Crystal
+  Python -> Nim; Ruby -> Crystal
   JavaScript -> Elm—or maybe TypeScript?
   C/C++ -> Rust
+  Java -> Kotlin
+
+* Nim vs
 - nim vs d: https://forum.nim-lang.org/t/1779/2
 - https://news.ycombinator.com/item?id=8883791
   A Quick Comparison of Nim vs. Rust (arthurtw.github.io)

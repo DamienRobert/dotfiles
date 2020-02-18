@@ -19,7 +19,7 @@ Do a ours merge of current branch with branches 'branches'
 
 Common options:
 --empty: use 'empty' tree [default for non merge]
---ours: use 'ours' tree   [default for merge]
+--ours: use 'ours' tree (the one from the current branch) [default for merge]
 --theirs: use 'theirs' tree (ie tree from first commit passed as argument)
 -t|--tree tree: use tree 'tree' rather than an empty tree
 -g|--go: don't edit commit message
@@ -44,6 +44,10 @@ will allow to deploy the branch next while keeping fastforwardibility
 	- git trivial --use HEAD parent1 parent2
 	-> change the parents of HEAD while retaining the tree/date/message
 	(this does something similar to git-reparent)
+	- git trivial -B public --use master public
+	-> add master's tree to public branch and ff
+	- git trivial -b branch_log --merge branch1 branch2
+	-> keep the current state of branch1 and branch2 (typically before rebase)
 "
 }
 

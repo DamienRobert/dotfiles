@@ -10,6 +10,7 @@ is_their_merge () {
 }
 
 findmergebase() {
+	local DOWN UP
 	#mergebase=$(git rev-parse --verify "$DOWN^{/Trivial merge from '$UP' .squashed by '$DOWN'.}" 2>/dev/null || git merge-base $DOWN $UP)
 	DOWN=$1; UP=$2
 	mergebase=

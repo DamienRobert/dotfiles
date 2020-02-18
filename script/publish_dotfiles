@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+cd ~/usr/dist/@DamienRobert/dotfiles
+rm -rf *
+cp -a ~/mine/{*,.gitignore,.gitmodules} .
+git checkout README.md
+
+rm -rf doc/.git
+rm -f doc/bookmarks/{torrents,epub,Movies,Web-DTC}
+rm -f medias/playlists/{*.m3u,*.pls}
+rm -rf doc/medical
+rm -f user/config/dotfiles/.ssh/{config,config_global,known_hosts} #{,id_*.pub}
+rm -rf user/config/files/.ssh
+
+(
+cd @infos
+rm -rf .git .gitmodules .tags @comps history network computers.dump git-configs local_network ssh_fingerprints
+)
+
+echo "git add -A && git commit -m 'Mirror @$(date '+%Y-%m-%d')' && git push --recurse-submodules=false"

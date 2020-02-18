@@ -42,7 +42,8 @@ let _ =
   done;
   output_string stderr "\n";
   flush stderr;;
-EOF)
+EOF
+	)
 				;;
 		esac
 		while true; do

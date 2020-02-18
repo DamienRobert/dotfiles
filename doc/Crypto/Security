@@ -125,6 +125,7 @@ PAKE
 ----
 
 Password authenticated key exchange (PAKE)
+Cf Opaque
 
 PKCS
 ----
@@ -213,18 +214,24 @@ Cf https://blog.cryptographyengineering.com/2014/02/21/cryptographic-obfuscation
 https://en.wikipedia.org/wiki/Functional_encryption
 https://crypto.stackexchange.com/questions/386/what-are-the-differences-between-white-box-cryptography-and-code-obfuscation
 
+* Math mesh: http://mathmesh.com/Documents/draft-hallambaker-mesh-architecture.html
+  https://mailarchive.ietf.org/arch/browse/mathmesh/?qdr=y
+
 Software
 --------
 
 * gpg alternative
 - https://latacora.micro.blog/2019/07/16/the-pgp-problem.html
 - https://blog.gtank.cc/modern-alternatives-to-pgp/
-  File transfert (using pake): https://magic-wormhole.readthedocs.io/en/latest/welcome.html
-  Signature: signify / minisign
-  Encryption: age https://docs.google.com/document/d/11yHom20CrsuX8KQJXBBw04s80Unjv8zCg_A7sPAX_9Y/view, https://news.ycombinator.com/item?id=19951405
+
+- File transfert (using pake): https://magic-wormhole.readthedocs.io/en/latest/welcome.html
+  firefox send cli: https://gitlab.com/timvisee/ffsend
+- Signature: signify / minisign
+- Encryption: age https://docs.google.com/document/d/11yHom20CrsuX8KQJXBBw04s80Unjv8zCg_A7sPAX_9Y/view, https://news.ycombinator.com/item?id=19951405
+  https://github.com/FiloSottile/age
 
 * gpg
-- gpg: 
+- gpg:
     gpg4win [=gpg + kleopatra]
     chrome/firefox plugin: Flowcrypt, Mailvelope
     Web Key Directory: https://wiki.gnupg.org/WKD [=authoritative version
@@ -250,8 +257,9 @@ Software
 - telegram, threema, wire (closed source)
 - matrix: https://matrix.org/blog/2019/06/11/introducing-matrix-1-0-and-the-matrix-org-foundation
   Client: Riot.im
+  => https://blog.jabberhead.tk/2019/03/10/a-look-at-matrix-orgs-olm-megolm-encryption-protocol/ [Olm=Matrix, vs Omemo]
 - xmpp: OTR (off the record), OMEMO (multi client end-to-end encryption
-  using double ratchet algorithm)
+  using double ratchet algorithm, based on signal's protocol)
 
 * Web:
 - https://letsencrypt.org/ #free ssl certificates
@@ -308,7 +316,7 @@ Malleability is a property of some cryptographic algorithms.[1] An encryption al
 Bugs et attaques
 ================
 
-Spectre et Meltdown:
+* Spectre et Meltdown:
 https://googleprojectzero.blogspot.fr/2018/01/reading-privileged-memory-with-side.html
 
 Explications:
@@ -319,6 +327,9 @@ sor-has-unfixable-security-flaws/
 
 https://www.reddit.com/r/sysadmin/comments/7o39et/meltdown_spectre_megathread/
 
-Efail:
+* Efail:
 https://efail.de/
 The EFAIL attacks break PGP and S/MIME email encryption by coercing clients into sending the full plaintext of the emails to the attacker.
+
+* HTTP Desync
+https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn

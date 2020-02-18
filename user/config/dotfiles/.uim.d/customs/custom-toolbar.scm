@@ -1,3 +1,4 @@
+(define toolbar-display-time 'always)
 (define toolbar-show-action-based-switcher-button? #t)
 (define imsw-coverage 'app-global)
 (define toolbar-show-switcher-button? #f)

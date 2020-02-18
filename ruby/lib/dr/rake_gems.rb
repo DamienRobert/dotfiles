@@ -122,6 +122,18 @@ module Gem
         task :bump_version => "bump_version:#{@project.primary_gemspec}"
       end
 
+      def bump
+  @@bump[self] ||= begin
+                     segments = self.segments
+                     segments.pop while segments.any? { |s| String === s }
+                     segments.pop if segments.size > 1
+
+                     segments[-1] = segments[-1].succ
+                     self.class.new segments.join(".")
+                   end
+end
+
+
       def bump_version(name=nil)
         require 'pathname'
         gemspec = @project.gemspec(name)
@@ -132,9 +144,16 @@ module Gem
           file=Pathname.new(version_file)
           content=file.read
           content.match(/^\s*VERSION\s*=\s*['"](.*)['"]/) do |m|
-            p m
             version=m[1]
-            bump=Gem::Version.new(version).bump
+            version=Gem::Version.new(version)
+            # version.bump
+            # Grmpf => reimplement the code to not remove the minor version
+              segments = version.segments
+              segments.pop while segments.any? { |s| String === s }
+              #segments.pop if segments.size > 1
+              segments[-1] = segments[-1].succ
+              bump= Gem::Version.new segments.join(".")
+            puts "Version: #{version} => #{bump}"
             new_content=content.sub(/^(\s*VERSION\s*=\s*['"]).*(['"])/, "\\1#{bump}\\2")
             file.write(new_content)
           end

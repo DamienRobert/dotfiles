@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+outfolders=(~/**/out)
+realoutfolders=()
+for dir in $outfolders; do
+	case $dir in
+		*/perso/web/*) true ;;
+		*/pro/web/*) true ;;
+		*) realoutfolders+=$dir ;;
+	esac
+done
+
+du -sh $realoutfolders
+echo "Clean up? (yes)"
+read
+rm -rf $realoutfolders

@@ -1,14 +1,10 @@
 vim: foldmethod=marker
 
 CSS {{{1
-CSS3: http://www.w3schools.com/css/css3_intro.asp
-Docs:
-- http://www.css3.info/
-- http://css3clickchart.com/
 - reference: http://cssreference.io/
 - w3c validator: http://www.css-validator.org/
 
-# @rules
+@rules
 - https://css-tricks.com/the-at-rules-of-css/
 
 ## Misc {{{2
@@ -85,6 +81,9 @@ New display: flow-root to make a new block formatting context
   - Empty blocks: If there is no border, padding, inline content, height, or min-height to separate a block's margin-top from its margin-bottom, then its top and bottom margins collapse.
   - Margins of floating and absolutely positioned elements never collapse.
 
+# Overflow: {{{2
+https://www.smashingmagazine.com/2019/09/overflow-data-loss-css/
+
 # Modules {{{2
 Gradients: http://lea.verou.me/css3patterns/
 
@@ -102,6 +101,7 @@ Flexbox:
   [Examples of flexbox uses]
 - https://www.smashingmagazine.com/2016/02/the-flexbox-reading-list/
 - http://www.flexboxpatterns.com/home
+- https://kgrz.io/coping-with-flexbox.html
 
 Css Grid Layout module:
 - https://css-tricks.com/snippets/css/complete-guide-grid/
@@ -117,6 +117,8 @@ Css Grid Layout module:
   CSS Grid Layout using @supports with Flexbox fallback
 - https://tutorialzine.com/2017/03/css-grid-vs-flexbox
 - https://www.smashingmagazine.com/2018/05/guide-css-layout/
+- https://css-tricks.com/look-ma-no-media-queries-responsive-layouts-using-css-grid/
+- https://www.smashingmagazine.com/2020/01/understanding-css-grid-container/
 
 Floats {{{1
 Clearing floats:
@@ -134,6 +136,8 @@ Summaries of clearing methods
 - http://www.sitepoint.com/clearing-floats-overview-different-clearfix-methods/
 => The future: contain-floats
    Update: this is now called display: flow-root
+   https://rachelandrew.co.uk/archives/2017/01/24/the-end-of-the-clearfix-hack/
+   -> Can also use: “min-height: min-content” https://stackoverflow.com/questions/51285308/how-do-min-content-and-max-content-work
 
 ## The method used in html5-boilerplate:
    http://nicolasgallagher.com/micro-clearfix-hack/
@@ -225,3 +229,10 @@ width=device-width is redondant with initial-scale=1 but is useful for
 legacy browsers:
 http://stackoverflow.com/questions/21266901/is-width-device-width-redundant-alongside-initial-scale-1
 
+# New features {{{1
+CSS3: http://www.w3schools.com/css/css3_intro.asp
+Docs:
+- http://www.css3.info/
+- http://css3clickchart.com/
+
+- https://www.smashingmagazine.com/2019/11/css-things-cant-yet-do/

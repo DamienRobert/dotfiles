@@ -401,6 +401,7 @@ On a la suite exacte:
 1->O*_K/O* -> (O_K/f)*/(O/f)* -> Pic(O)->Cl(K)->1
 donc #Pic(O)=h_K/(O_K*:O*) * #(O_K/f)* / #(O/f)*
 et (O*_K/O*)=w(O) reg(O_K) / reg(O) w(O_K) (où w(O) est le nombre de racines de l'unités)
+
 [Pr: l'image des unités par l'application de Dedekind 1|2 * log |u_i|_j
 est un réseaux de rang r=r1+r2-1 dans R^{r1+r2} de volume fondamental
 Reg(O_K) \sqrt{r1+r2}.]
@@ -416,19 +417,30 @@ d'où 1->O*_K/O* -> (O_K/f)*/(O/f)* -> Pic(O)->Cl(K)->1
 et #Pic(O)=h_K/(O_K*:O*) * #(O_K/f)* / #(O/f)*
 et (O*_K/O*)=w(O) reg(O_K) / reg(O) w(O_K)
 
-Pour la formule de la norme, cf:
-http://mathoverflow.net/questions/32050/class-number-of-non-maximal-order-in-imaginary-quadratic-function-field
+Pour la formule de la norme, #(O/f)* = N(f) ∏_{𝔭⊃f} (1−1/N(𝔭))
+cf: http://mathoverflow.net/questions/32050/class-number-of-non-maximal-order-in-imaginary-quadratic-function-field
 
-There is a formula that works in all degrees, not just imaginary quadratic. In a global field K, let O be integral over Z or F[t] (F a finite field) and be "big", i.e., it has fraction field K. Let 𝔠 be the conductor ideal of O in its integral closure R. Then
-h(O)=h(R)/[R×:O×]*φR(𝔠)/φO(𝔠),
-where φO(𝔠) is the number of units in O/𝔠 and φR(𝔠) is the number of units in R/𝔠. This is derived in Neukirch's alg. number theory book in the number field case, but it goes through to any one-dimensional Noetherian domain with a finite residue rings and a finite class group. In the imag. quadratic case the unit index [R×:O×] is 1 most of the time so you don't notice it.
+  There is a formula that works in all degrees, not just imaginary
+  quadratic. In a global field K, let O be integral over Z or F[t] (F a
+  finite field) and be "big", i.e., it has fraction field K. Let 𝔠 be the
+  conductor ideal of O in its integral closure R. Then
+      h(O)=h(R)/[R×:O×]* φR(𝔠)/φO(𝔠),
+  where φO(𝔠) is the number of units in O/𝔠 and φR(𝔠) is the number of
+  units in R/𝔠. This is derived in Neukirch's alg. number theory book in
+  the number field case, but it goes through to any one-dimensional
+  Noetherian domain with a finite residue rings and a finite class group.
+  In the imag. quadratic case the unit index [R×:O×] is 1 most of the time
+  so you don't notice it.
 
-Both φR(𝔠) and φO(𝔠) can be written in the form N(𝔠)∏𝔭⊃𝔠(1−1/N(𝔭)), where the ideal norm N means the index in R or O and 𝔭 runs over primes in R or O for the two cases.
-[Preuve: Dans le cas maximal on se ramène à c=p^n, et on a la suite exacte
-1->O_K/p -> (O_K/p^n)* -> (O_K/p^{n-1})* -> 1 qui montre que
- #(O_K/p^n)*=N(p)^{n-1}(N(p)-1)=N(p^n)(1-1/N(p))]
+  Both φR(𝔠) and φO(𝔠) can be written in the form N(𝔠)∏𝔭⊃𝔠(1−1/N(𝔭)), where
+  the ideal norm N means the index in R or O and 𝔭 runs over primes in R or
+  O for the two cases.
+  [Preuve: Dans le cas maximal on se ramène à c=p^n, et on a la suite exacte
+   1->O_K/p -> (O_K/p^n)* -> (O_K/p^{n-1})* -> 1 qui montre que
+   #(O_K/p^n)*=N(p)^{n-1}(N(p)-1)=N(p^n)(1-1/N(p))]
 
 ### The conductor square
+[voir aussi GeoAlg/Schemes#Dualité]
 
 cf Eisenbud Exo 11.15 et 11.16
 
@@ -452,6 +464,4 @@ d'où h=h_K \phi(O_K/c) / (\phi(O/c) [O_K*:O*])
 
 Une autre méthode est de regarder la suite exacte de faisceau et d'appliquer la cohomologie
 1→O*_R->i* O*_S -> i* O*_S/O*_R ->1
-cf http://mathoverflow.net/questions/137605/class-numbers-of-orders
-
-
+cf http://mathoverflow.net/questions/137605/class-numbers-of-orders, Gene S. Kopp

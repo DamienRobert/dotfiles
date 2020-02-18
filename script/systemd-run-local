@@ -1,4 +1,5 @@
 #!/bin/zsh
+#run a specific service
 
 user=
 while true; do
@@ -13,6 +14,8 @@ unit=$1; shift
 
 if [[ -n $user ]]; then
 	[[ ${unit:t} == ${unit} ]] && unit=$HOME/.config/systemd/user/$unit
+	# Note: we might as well run directly 'sv le_service' in this case...
+
 	mkdir -p $XDG_RUNTIME_DIR/systemd/user
 	cp $unit $XDG_RUNTIME_DIR/systemd/user/${unit:t}
 

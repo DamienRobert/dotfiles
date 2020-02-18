@@ -131,7 +131,7 @@ module DR
 					# graphs; we need to add them back
 					packages_str=(packages+dependency_packages(packages.uniq, needed: needed, recursive: recursive, mode: mode)).uniq.shelljoin
 					o=common_options(**opts)
-					eval_shell(yield(packages_str, o),**opts)
+					eval_shell(yield(packages_str, o),**opts) unless packages_str.empty?
 				end
 			end
 

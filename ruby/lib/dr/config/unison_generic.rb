@@ -240,6 +240,9 @@ EOS
 		def default_config
 			read(@unisonfiles+"default_config.prf", @local_unisonfiles+".default_config.prf")
 		end
+		def important_config #like default, but at end
+			read(@unisonfiles+"important_config.prf", @local_unisonfiles+".important_config.prf")
+		end
 
 		def config(*types)
 			typesname=typesname(*types)
@@ -257,6 +260,7 @@ EOS
 				config << "path=#{path}\n"
 			end
 			config+=get_alias
+			config+=important_config
 			config=wrap_config(config)
 			raise ConfigError, "No paths detected" unless config =~ /^path/
 			configfile.write(config)
@@ -490,6 +494,13 @@ EOS
 					opt.on("--prog PROG", "path to unison") do |v|
 						opts[:prog]=v
 					end
+					opt.on("--remote-prog PROG", "path to remote unison") do |v|
+						opts[:unison].push("-servercmd",v)
+					end
+					opt.on("--vprog PROG", "path to local and remote unison") do |v|
+						opts[:prog]=v
+						opts[:unison].push("-servercmd",v)
+					end
 					opt.on("--[no-]push", "Push files") do |v|
 						opts[:push]=v
 					end
@@ -533,7 +544,7 @@ EOS
 						# if opts[:server]==:default, then look at opts[:default_server]
 						# if opts[:server]==nil, fallback to current
 					end
-					opt.on("--mode MODE", "inbound/outbound") do |v|
+					opt.on("--mode MODE", "inbound/outbound", "Example: --mode=oio") do |v|
 						opts[:mode]=v
 					end
 					opt.on("--ssh client", "connect to 'client' via ssh") do |v|

@@ -1,0 +1,6 @@
+#!/usr/bin/zsh
+
+doi=$1
+
+curl -LH "Accept: application/x-bibtex" http://dx.doi.org/$doi
+# curl -LH "Accept: application/x-bibtex" http://data.crossref.org/$doi

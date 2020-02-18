@@ -8,6 +8,7 @@ do
     -- ) break ;;
     -u|--url ) shift; mode=url ;;
     -a|--all ) shift; mode=all ;;
+    -g|--git ) shift; mode=git ;;
     *) break;;
   esac
 done

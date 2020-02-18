@@ -21,6 +21,11 @@ TODO
   [for now i just use xfce4-pulseaudio-plugin]
   wrapper around ponymix?
 
+- unison: unisonsync does not quit (update: it does, just the ssh goes
+  hairwire if we wait too long. + --detach yields a broken pipe in the gui
+  :-()
+          test FORCE
+
 website
 -------
 - Switch to html5 (use Foundation?)

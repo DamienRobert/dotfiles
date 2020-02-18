@@ -1,3 +1,5 @@
+vim: ft=markdownlight fdm=expr
+
 interface names
 ===============
 
@@ -162,7 +164,7 @@ UseTimezone=yes
 Name=ve-*
 Driver=veth
 [Network]
-# Default to using a /28 prefix, giving up to 13 addresses per container.
+ # Default to using a /28 prefix, giving up to 13 addresses per container.
 Address=0.0.0.0/28
 LinkLocalAddressing=yes
 DHCPServer=yes

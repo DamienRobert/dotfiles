@@ -1,3 +1,5 @@
+vim: ft=markdownlight fdm=expr
+
 Dbus explanation
 ================
 
@@ -122,6 +124,19 @@ Monitor
 =======
 
 dbus-monitor "type='method_call',interface='org.gtk.vfs.Metadata'"
+
+* https://unix.stackexchange.com/questions/46301/a-list-of-available-dbus-services
+dbus-send --session           \
+  --dest=org.freedesktop.DBus \
+  --type=method_call          \
+  --print-reply               \
+  /org/freedesktop/DBus       \
+  org.freedesktop.DBus.ListNames
+
+Gui:
+- qdbusviewer
+- DFeet: https://wiki.gnome.org/action/show/Apps/DFeet?action=show&redirect=DFeet
+
 
 Power off
 =========

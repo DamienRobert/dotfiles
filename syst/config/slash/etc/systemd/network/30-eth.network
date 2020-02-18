@@ -1,0 +1,8 @@
+[Match]
+# Type=ether doesn't work, cf https://lists.freedesktop.org/archives/systemd-devel/2014-January/015999.html
+Name=en* eth*
+
+[Network]
+DHCP=ipv4
+UseDomains=route
+MulticastDNS=true

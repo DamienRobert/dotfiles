@@ -1,6 +1,11 @@
+vim: syntax=mardownlight
+
+Input methods
+=============
+
 GTK_IM_MODULE="xim" => use the X input method
 
-http://unix.stackexchange.com/questions/39547/dead-compose-keys-not-working-in-gtk-apps-since-upgrade/65755#65755
+* http://unix.stackexchange.com/questions/39547/dead-compose-keys-not-working-in-gtk-apps-since-upgrade/65755#65755
 
     If you use an input module at the X11 level (eg, one defined by
     XMODIFIERS=…), then X11 doesn't handle dead keys nor compose anymore,
@@ -10,7 +15,7 @@ http://unix.stackexchange.com/questions/39547/dead-compose-keys-not-working-in-g
 Note: "@im=none" is the default (=xim?), it handles the compose key by default.
 Setting another im suppose that the im will handle the compose key.
 
-http://unix.stackexchange.com/questions/260601/understanding-setting-up-different-input-methods
+* http://unix.stackexchange.com/questions/260601/understanding-setting-up-different-input-methods
     If you want to explicitly disable any input method, use these settings:
     export GTK_IM_MODULE="gtk-im-context-simple"
     export QT_IM_MODULE="simple"
@@ -24,7 +29,12 @@ http://unix.stackexchange.com/questions/260601/understanding-setting-up-differen
     of those two. The only reason why you would want to set
     GTK_IM_MODULE="xim" is to override GTK's hardcoded ComposeKey settings.
 
-https://wiki.archlinux.org/index.php/Internationalization#Input_methods_in_Xorg
+Note https://help.ubuntu.com/community/ComposeKey#XIM
+dit aussi d'utiliser `export GTK_IM_MODULE="xim"` pour overrider le
+hardcoding de gnome. Mais il semble que dans gtk-3 ce n'est plus hardcodé,
+mon .XCompose marche bien.
+
+* https://wiki.archlinux.org/index.php/Internationalization#Input_methods_in_Xorg
 gtk input module order:
 - GTK_IM_MODULE environment variable
 - XSETTINGS value of Gtk/IMModule
@@ -38,8 +48,9 @@ qt input module order:
 - XIM
 To disable input method module loading in QT: export QT_IM_MODULE="simple". 
 
-==========================================================
-Ibus:
+Ibus
+====
+
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus

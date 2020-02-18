@@ -158,6 +158,128 @@ BPF port-based firewall for systemd services (kailueke.gitlab.io)
 https://news.ycombinator.com/item?id=20974793
 Linux Kernel Fastboot [pdf] (linuxplumbersconf.org)
 
+https://news.ycombinator.com/item?id=21047795
+My Talk at Microsoft (stallman.org)
+
+https://news.ycombinator.com/item?id=21044529
+When TCP sockets refuse to die (popcount.org)
+- https://idea.popcount.org/2019-09-20-when-tcp-sockets-refuse-to-die/
+- https://blog.cloudflare.com/when-tcp-sockets-refuse-to-die/
+=>Then there is a discussion about forcefully killing sockets :)
+  - close(): socket will be lingering in background as usual
+  - shutdown(SHUT_RD): no network side effect, discards read buffer
+  - shutdown(SHUT_WR): equivalent to FIN SO_LINGER socket - if timeout non-zero blocks until write buffer flushed; if timeout is zero then immediately sends RST
+  - the trick with close() after TCP_REPAIR: (https://lwn.net/Articles/495304/) immediately discard a socket with no network side effects.
+  - "ss --kill" command: forcefully close a socket from outside process, done with netlink SOCK_DESTROY command. 
+
+https://news.ycombinator.com/item?id=21057748
+Pi-Hole 4.3.2 (pi-hole.net)
+=> https://deadc0de.re/articles/unbound-blocking-ads.html
+   simple alternative with a dns server (dnsmasq or unbound) + periodically updated hosts file (via systemd timer) passed to the dns server.
+=> https://adguard.com/en/adguard-dns/overview.html
+   a public dns server blocking ads
+=> Lists: https://firebog.net/
+          https://www.github.developerdan.com/hosts/
+          https://github.com/StevenBlack/hosts
+
+https://news.ycombinator.com/item?id=21088046
+Upstreaming multipath TCP (lwn.net)
+- https://apenwarr.ca/log/20170810
+  => QUIC
+  => https://cr.yp.to/papers.html#minimalt
+
+https://news.ycombinator.com/item?id=21124900
+Big ISPs aren’t happy about Google’s plans for encrypted DNS (arstechnica.com)
+
+https://news.ycombinator.com/item?id=21155056
+Why does 1.1.1.1 not resolve archive.is? (stackexchange.com)
+
+https://news.ycombinator.com/item?id=21159004
+A new Linux memory controller promises to save lots of RAM (thenewstack.io)
+
+https://news.ycombinator.com/item?id=21167871
+Google, Xiaomi, and Huawei affected by zero-day flaw that unlocks root access (thenextweb.com)
+
+https://news.ycombinator.com/item?id=21169798
+CloudFlare is ruining the internet for me (2016) (slashgeek.net)
+
+https://news.ycombinator.com/item?id=21218707
+BPF at Facebook and beyond (lwn.net)
+
+https://news.ycombinator.com/item?id=21218905
+USB-C Has Finally Come into Its Own (wired.com)
+
+https://news.ycombinator.com/item?id=21182628
+Collapse OS (collapseos.org)
+https://old.reddit.com/r/collapse/comments/dejmvz/collapse_os_bootstrap_postcollapse_technology/
+
+https://news.ycombinator.com/item?id=21332283
+Using Web Bluetooth to Communicate with Bluetooth Devices (balena.io)
+
+https://news.ycombinator.com/item?id=21439340
+DNS Wars (potaroo.net)
+
+https://news.ycombinator.com/item?id=21567481
+How Containers Work: Overlayfs (jvns.ca)
+
+https://news.ycombinator.com/item?id=21588893
+Myths Programmers Believe about CPU Caches (2018) (rajivprab.com)
+
+https://news.ycombinator.com/item?id=21617643
+Jslinux (2018) (bellard.org)
+
+https://news.ycombinator.com/item?id=21624656
+Are We Wayland Yet? (swalladge.net)
+
+https://news.ycombinator.com/item?id=21657930
+Smart TVs like Samsung, LG and Roku are tracking everything (washingtonpost.com)
+
+https://news.ycombinator.com/item?id=21812641
+Linux 3.8 introduced unprivileged user namespaces [pdf] (man7.org)
+
+https://news.ycombinator.com/item?id=21893481
+BSD vs. Ubuntu motd(5) (twitter.com)
+
+https://news.ycombinator.com/item?id=21904690
+Encoding your WiFi access point password into a QR code (cloud.geek.nz)
+
+https://news.ycombinator.com/item?id=21955234
+Mutexes are faster than Spinlocks (matklad.github.io)zm
+https://news.ycombinator.com/item?id=21959692
+No nuances, just buggy code (was: related to Spinlock implementation) (realworldtech.com)
+
+https://news.ycombinator.com/item?id=22027459
+Deploy your side-projects at scale for basically nothing – Google Cloud Run (alexolivier.me)
+
+https://news.ycombinator.com/item?id=22053998
+JetBrains Mono: A free and open-source typeface for developers (jetbrains.com)
+
+https://news.ycombinator.com/item?id=22114540
+DuckDuckGo Traffic (duckduckgo.com)
+
+https://christine.website/blog/dhall-kubernetes-2020-01-25
+
+https://news.ycombinator.com/item?id=22152633
+Distri: 20x faster initramfs (initrd) from scratch (stapelberg.ch)
+
+https://news.ycombinator.com/item?id=22156292
+Disk Prices on Amazon (diskprices.com)
+
+https://news.ycombinator.com/item?id=22200260
+Let's remove Quaternions from every 3D Engine (2018) (marctenbosch.com)
+
+https://news.ycombinator.com/item?id=22224782IBM's Lost Decade (platformonomics.com)
+IBM's Lost Decade (platformonomics.com)
+
+https://news.ycombinator.com/item?id=22255914
+Reverse engineering my router's firmware with binwalk (embeddedbits.org)
+
+https://news.ycombinator.com/item?id=22261612
+FLIF – Free Lossless Image Format (flif.info)
+
+https://christine.website/blog/i-was-wrong-about-nix-2020-02-10
+-> Nix for docker and go
+
 # Programming
 
 https://news.ycombinator.com/item?id=11847529
@@ -327,6 +449,180 @@ Modern C, Second Edition (gustedt.wordpress.com)
 https://news.ycombinator.com/item?id=21016664
 The Pragmatic Programmer, 20th Anniversary Edition (pragprog.com)
 
+https://news.ycombinator.com/item?id=21053140
+Nim 1.0 (nim-lang.org)
+
+https://news.ycombinator.com/item?id=21064911
+V8 adds support for top-level await (googlesource.com)
+(nice discussions on async programming)
+
+https://news.ycombinator.com/item?id=21117105
+Zig 0.5.0 Release Notes (ziglang.org)
+
+https://news.ycombinator.com/item?id=21121193
+Go Interfaces, the Tricky Parts (timr.co)
+=> https://eli.thegreenplace.net/2018/covariance-and-contravariance-in-subtyping/
+
+https://news.ycombinator.com/item?id=21201413
+Guix Reduces Bootstrap Seed by Half (gnu.org)
+
+https://news.ycombinator.com/item?id=21210087
+Small C Compilers (miraheze.org)
+
+https://news.ycombinator.com/item?id=21170547
+Learning Haskell is no harder than learning any other programming language
+(williamyaoh.com)
+
+https://news.ycombinator.com/item?id=21227430
+Larry Wall has approved renaming Perl 6 to Raku (github.com)
+
+https://news.ycombinator.com/item?id=21230419
+How to write fast code in Ruby on Rails (shopify.com)
+
+https://news.ycombinator.com/item?id=21231208
+Show HN: Bel (paulgraham.com)
+
+https://news.ycombinator.com/item?id=21252784
+What’s New in Python 3.8 (python.org)
+
+https://news.ycombinator.com/item?id=21405962
+Dependency injection is dynamic scoping in disguise (gustavlundin.com)
+
+https://news.ycombinator.com/item?id=21466333
+The Emergent Features of JuliaLang: Part II – Traits (invenia.github.io)
+
+https://news.ycombinator.com/item?id=21469295
+Comparing Parallel Rust and C++ (parallel-rust-cpp.github.io)
+
+https://news.ycombinator.com/item?id=21545425
+The Value in Go’s Simplicity (benjamincongdon.me)
+
+https://news.ycombinator.com/item?id=21571938
+Algebraic Data Types: Things I wish someone explained on functional programming (jrsinclair.com)
+
+https://news.ycombinator.com/item?id=21488415
+How Swift Achieved Dynamic Linking Where Rust Couldn't (gankra.github.io)
+
+https://news.ycombinator.com/item?id=21579333
+Clang Format Tanks Performance (travisdowns.github.io)
+
+https://news.ycombinator.com/item?id=21602113
+Show HN: TeXMe Demo – Self-Rendering Markdown and LaTeX Documents (opendocs.github.io)
+
+https://news.ycombinator.com/item?id=21611379
+Command Line Applications in Rust (rust-lang-nursery.github.io)
+
+https://news.ycombinator.com/item?id=21604136
+Programming with Effects (matfournier.com)
+
+https://news.ycombinator.com/item?id=21739514
+Game Boy Advance “Hello World” Using Zig (github.com)
+
+https://news.ycombinator.com/item?id=21807233
+Kotlin vs. Java (kotlinvsjava.com)
+
+https://news.ycombinator.com/item?id=21812656
+An opinionated approach to GNU Make (davis-hansson.com)
+
+https://news.ycombinator.com/item?id=21831747
+State of JavaScript 2019 (stateofjs.com)
+
+https://news.ycombinator.com/item?id=21842075
+Reverse Engineering Dungeon Generation in Enter the Gungeon (boristhebrave.com)
+
+https://news.ycombinator.com/item?id=21862069
+Learn Rust the Dangerous Way (cliffle.com)
+https://news.ycombinator.com/item?id=21927248
+Rewriting m4vgalib in Rust (cliffle.com)
+
+https://news.ycombinator.com/item?id=21860713
+Lilith: x86-64 OS written in Crystal (github.com)
+
+https://news.ycombinator.com/item?id=21883882
+Nim vs. Crystal (status.im)
+
+https://news.ycombinator.com/item?id=21879397
+T * sin (t) ≈ Christmas tree (2013) (github.com)
+
+https://news.ycombinator.com/item?id=21891026
+What's Next for R? (qz.com)
+
+https://news.ycombinator.com/item?id=21897687
+Optimizing for the Speed of Light (bizcoder.com)
+
+https://news.ycombinator.com/item?id=21900488
+RosettaGit: Same projects in many programming languages (rosettagit.org)
+
+https://news.ycombinator.com/item?id=21927009
+Automate the Boring Stuff with Python: – Practical Guide to Getting Started (automatetheboringstuff.com)
+
+https://news.ycombinator.com/item?id=21937888
+WebAssembly is easy – a hello world example (fodor.org)
+
+http://www.iecl.univ-lorraine.fr/~Olivier.Garet/livre_julia/
+
+https://news.ycombinator.com/item?id=21944573
+Terrain rendering algorithm in less than 20 lines of code (github.com)
+
+https://news.ycombinator.com/item?id=21979555
+Translating Quake 3 into Rust (immunant.com)
+
+https://news.ycombinator.com/item?id=21980885
+Pattern Matching in Ruby 2.7 (2019) (speakerdeck.com)
+
+https://news.ycombinator.com/item?id=22022466
+Goodbye, Clean Code (overreacted.io)
+
+https://news.ycombinator.com/item?id=22075076
+A Sad Day for Rust (steveklabnik.com) -> http client comparisons
+
+https://news.ycombinator.com/item?id=22090700
+Dynamic type systems are not inherently more open (lexi-lambda.github.io)
+
+https://news.ycombinator.com/item?id=22088406
+A game in a pure language (part 1): introduction and problems with Idris (flowing.systems)
+
+https://news.ycombinator.com/item?id=22098604
+Pharo 8.0 (pharo.org)
+
+https://news.ycombinator.com/item?id=22102656
+Deno: JavaScript Runtime for V8 Written in Rust (deno.land)
+
+https://news.ycombinator.com/item?id=22139668
+Clojure – Fascinated, Disappointed, Astonished (2016) (lewandowski.io)
+
+https://news.ycombinator.com/item?id=22150603
+Ambitions for a Unix Shell (oilshell.org)
+
+https://news.ycombinator.com/item?id=22176968
+Rust Lang in a nutshell (softax.pl)
+=> an overview of the ownership system
+
+https://news.ycombinator.com/item?id=22188704
+Show HN: Let's Destroy C (gist.github.com)
+
+https://news.ycombinator.com/item?id=22209985
+MoonScript: Dynamic scripting language that compiles into Lua (moonscript.org)
+
+https://news.ycombinator.com/item?id=22205652
+TypeScript’s quirks: How inconsistencies make the language more complex (asana.com)
+
+https://news.ycombinator.com/item?id=22265654
+HyperCard: What Could Have Been (2002) (wired.com)
+
+https://news.ycombinator.com/item?id=22288735
+JuliaLang: The Ingredients for a Composable Programming Language (ucc.asn.au)
+
+https://news.ycombinator.com/item?id=22335707
+ESbuild – A fast JavaScript bundler and minifier in Go (github.com)
+-> https://swc-project.github.io/ (rust implementation of babel)
+
+https://news.ycombinator.com/item?id=22353532
+C4: C in Four Functions (2014) (github.com)
+
+https://news.ycombinator.com/item?id=22349531
+The Myth of the Myth of the 10x Programmer (payne.org)
+
 # Software
 http://blog.burntsushi.net/ripgrep/
 ripgrep is faster than {grep, ag, git grep, ucg, pt, sift}
@@ -441,7 +737,9 @@ mtime comparison considered harmful
 
 https://news.ycombinator.com/item?id=18594564
 Quora User Data Compromised (quora.com)
-=> password managers, like lastpass, bitwarden...
+=> password managers, like lastpass, 1password, +bitwarden...
+https://news.ycombinator.com/item?id=22098808
+LastPass stores passwords so securely, not even its users can access them (theregister.co.uk)
 
 https://news.ycombinator.com/item?id=18831470
 LiteCLI – A user-friendly command-line client for SQLite database (pgcli.com)
@@ -646,6 +944,126 @@ WTF: A personal information dashboard for your terminal (github.com)
 https://news.ycombinator.com/item?id=21042390
 Show HN: Ascii_tree – A way to create beautiful ASCII trees (github.com)
 
+https://news.ycombinator.com/item?id=21055468
+Tmux Tutorial (leimao.github.io)
+-> ctrl + b + space to change the layout of panes
+
+https://news.ycombinator.com/item?id=21070321
+WARP is here (cloudflare.com)
+
+https://news.ycombinator.com/item?id=21157895
+XMPP: A Communication Protocol for the Internet of Things (briskbraintech.com)
+
+https://news.ycombinator.com/item?id=21163359
+Sqlite 3.30.0 (sqlite.org)
+
+https://news.ycombinator.com/item?id=21189256
+99% of the Git commands you'll need at work, demonstrated in a single script (bitbucket.org)
+
+https://news.ycombinator.com/item?id=21289827
+My Favourite Git Commit (fatbusinessman.com)
+=> awesome rant against locales: https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe
+=> the yolo vision tool https://github.com/pjreddie/darknet/commits/master
+    https://pjreddie.com/darknet/yolo/
+    https://arxiv.org/pdf/1804.02767.pdf
+    https://pjreddie.com/static/Redmon%20Resume.pdf
+
+https://news.ycombinator.com/item?id=21382998
+Cluster SSH – Manage Multiple Linux Servers Simultaneously (putorius.net)
+
+https://news.ycombinator.com/item?id=21394678
+Unfork() (github.com)
+
+https://news.ycombinator.com/item?id=21383765
+CorkScrew: A tool for tunneling SSH through HTTP proxies (github.com)
+
+https://news.ycombinator.com/item?id=21410833
+Restic – Backups Done Right (restic.net)
+[+ discussion about borg in the comments
+https://stickleback.dk/borg-or-restic/
+https://sysadministrivia.com/episodes/S4E5]
+
+https://news.ycombinator.com/item?id=21417552
+Asterisk 17 (mail-archive.com)
+[+ discussions on FreeSWITCH]
+
+https://news.ycombinator.com/item?id=21418033
+Linus Torvalds: Git proved I could be more than a one-hit wonder (techrepublic.com)
+=> git-lfs https://git-lfs.github.com/ Git Large File Storage
+
+https://news.ycombinator.com/item?id=21418251
+Opensourcing the Universal Package Manager (repl.it)
+https://repl.it/site/blog/upm
+=> https://github.com/replit/prybar
+  Prybar is a universal interpreter front-end. Same interface, same REPL, different languages.
+=> https://github.com/replit/polygott
+  Repl.it allows you to quickly get started with any programming language online. In order to provide this capability, our evaluation server uses Docker to ensure that all these languages are installed with the appropriate environment set up.
+=> https://github.com/replit/upm
+   Universal Package Manager - Python, Node.js, Ruby, Emacs Lisp. https://repl.it/
+
+https://news.ycombinator.com/item?id=21642364
+BorgBackup: Deduplicating Archiver (borgbackup.org)
+
+https://news.ycombinator.com/item?id=21685660
+The Plain Text Project (plaintextproject.online)
+
+https://news.ycombinator.com/item?id=21692418
+Big Pile of Vim-Like (reversed.top)
+
+https://news.ycombinator.com/item?id=21710105
+Web-assembly powered WYSIWYG LaTeX Editor, supporting nearly all LaTeX package (github.com)
+
+https://news.ycombinator.com/item?id=21772610
+An open-source alternative to Zapier (github.com)
+-> https://github.com/huginn/huginn
+
+https://news.ycombinator.com/item?id=21799988
+SQL Murder Mystery (knightlab.com)
+
+https://news.ycombinator.com/item?id=21819471
+Show HN: Run – Easily manage and invoke small scripts and wrappers (github.com)
+
+https://news.ycombinator.com/item?id=21840140
+This Page is Designed to Last (jeffhuang.com)
+=> SinglePage (save complete web page but inline)
+=> Joplin (notes taking app)
+
+https://news.ycombinator.com/item?id=21951679
+Scripting tmux (arp242.net)
+
+https://news.ycombinator.com/item?id=21953634
+Webfs: A Filesystem Built on Top of the Web (github.com)
+
+https://news.ycombinator.com/item?id=21988968
+How to Exit Vim (github.com)
+
+https://news.ycombinator.com/item?id=21998638
+Broot – A new way to see and navigate directory trees (dystroy.org)
+
+https://news.ycombinator.com/item?id=22153665
+GNU Recutils (tomasino.org) (textual db)
+
+https://news.ycombinator.com/item?id=22233295
+A new hash algorithm for Git (lwn.net)
+
+https://news.ycombinator.com/item?id=22250614
+Netflix Now Streaming AV1 on Android (netflixtechblog.com)
+
+https://news.ycombinator.com/item?id=22252330
+Free OpenStreetMap tile library: watercolor, black and white, terrain (stamen.com)
+
+https://news.ycombinator.com/item?id=22232705
+Linux containers in 500 lines of code (2016) (lizzie.io)
+
+https://github.com/Cigaes/xropen
+X11 remote open tool
+
+https://github.com/twosigma/debootwrap
+Create a Debian chroot unprivileged, with the help of bubblewrap and debootstrap.
+
+https://github.com/xiph/rav1e
+The fastest and safest AV1 encoder.
+
 # Web
 
 ## Navigateurs:
@@ -669,6 +1087,17 @@ Living without the modern browser (an3223.github.io)
 https://news.ycombinator.com/item?id=20794937
 What happens when you launch Google Chrome for the first time? (twitter.com)
 
+https://news.ycombinator.com/item?id=21323663
+Firefox 70 – a bountiful release for all (hacks.mozilla.org)
+https://news.ycombinator.com/item?id=21323292
+Latest Firefox Brings Privacy Protections Front and Center (blog.mozilla.org)
+
+https://news.ycombinator.com/item?id=21515032
+Lynx is dead – Long live Browsh for text-based internet browsing (2018) (hanselman.com)
+
+https://news.ycombinator.com/item?id=22236106
+Google has a backdoor to track individual users per Chrome installation ID (github.com)
+
 ## Sites:
 https://news.ycombinator.com/item?id=14209119
 GitPitch – Markdown Presentations for Devs on GitHub and GitLab
@@ -684,6 +1113,36 @@ OpenBitTorrent – An Open Tracker Project (openbittorrent.com)
 => https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt
 => https://newtrackon.com/list
 
+https://news.ycombinator.com/item?id=21175492
+Show HN: I had issues organizing my favorite recipes, so I built this
+(feastgenius.com)
+https://news.ycombinator.com/item?id=20676755
+Why has examine.com disappeared from search results? (examine.com)
+=> https://examine.com/nutrition/google-update-july-2019/
+=> https://selfhacked.com/blog/google-censorship-of-health-websites-is-taken-to-the-next-level/
+
+https://matt.haughey.com/on-the-future-of-metafilter-941d15ec96f0?gi=1d33cda738dd
+
+https://news.ycombinator.com/item?id=21393645
+Google Announces .new Domain Availability (whats.new)
+
+https://news.ycombinator.com/item?id=21408178
+I Accidentally Uncovered a Nationwide Scam on Airbnb (vice.com)
+
+https://news.ycombinator.com/item?id=21416049
+Million Short (millionshort.com) [a search interface]
+ People often cite DuckDuckGo or Reddit search as popular alternatives to Google. A few other little known ones that go well alongside Million Short:
+- https://wiby.me
+- https://www.mojeek.com
+- Personal fave: https://pinboard.in/search/
+- Also, google "<keywords> site:are.na"
+
+https://news.ycombinator.com/item?id=21842892
+FortyQ: Answering any question in 42 minutes flat (fortyq.com)
+
+https://news.ycombinator.com/item?id=22141903
+List of Twitter mute words for your timeline (gist.github.com)
+
 ## Web content
 
 Facebook cookies:
@@ -697,6 +1156,45 @@ You probably don’t need ReCAPTCHA (kevv.net)
 https://news.ycombinator.com/item?id=20294801
 Google’s new reCAPTCHA has a dark side (fastcompany.com)
 => get recaptcha score: https://recaptcha-demo.appspot.com/recaptcha-v3-request-scores.php
+
+https://news.ycombinator.com/item?id=21052969
+Show HN: A website speed test tool to compare uBlock Origin with plain Chrome (webtest.app)
+
+https://news.ycombinator.com/item?id=21416614
+Lack of cdnjs activity (github.com)
+[a cdn, cf also unpkg.com]
+
+https://news.ycombinator.com/item?id=21427217
+Google are removing URLs entirely from search results? (reddit.com)
+https://www.reddit.com/r/bigseo/comments/def9gg/google_are_removing_urls_entirely_from_the_search/
+
+https://news.ycombinator.com/item?id=21582698
+uBlock Origin: Address first-party tracker blocking (github.com)
+Voir aussi https://www.reddit.com/r/france/comments/dyxyzg/to_prevent_thirdparty_trackers_disguised_as/
+et https://framagit.org/Shaft/blocage-dmp-unbound
+pour une solution à base de zones unbound:
+blocked.zone: $TTL 10800 @	IN SOA localhost. nobody.invalid. ( 	1 	3600 	1200 	604800 	10800 	)
+auth-zone: 	name: "eulerian.net." 	zonefile: "/etc/unbound/blocked.zone"
+
+https://news.ycombinator.com/item?id=21955739
+Promiscuous cookies and their impending death via the SameSite policy (troyhunt.com)
+
+## IP
+
+https://news.ycombinator.com/item?id=21611677
+Save .org (savedotorg.org)
+
+https://news.ycombinator.com/item?id=21667355
+ISOC sold the .org registry to Ethos Capital for $1.1B (keypointsabout.org)
+
+https://news.ycombinator.com/item?id=21604825
+Cname cloaking, a disguise of third-party trackers (medium.com)
+
+https://news.ycombinator.com/item?id=21737696
+Verizon/Yahoo Blocking Attempts to Archive Yahoo Groups – Deletion: Dec. 14 (modsandmembersblog.wordpress.com)
+
+https://news.ycombinator.com/item?id=21804383
+Giving every IPv6 address a name (has-a.name)
 
 ## Webdev
 
@@ -730,6 +1228,15 @@ How not to get a $30k bill from Firebase (medium.com)
 
 https://news.ycombinator.com/item?id=20920555
 Running GitHub on Rails 6.0 (github.blog)
+
+https://news.ycombinator.com/item?id=21046547
+Serverless: slower and more expensive (einaregilsson.com)
+
+https://news.ycombinator.com/item?id=21884245
+I only use an iFrame to crawl and scrape content (airovic.com)
+
+https://news.ycombinator.com/item?id=21961963
+Parcel – Blazing fast, zero configuration web application bundler (parceljs.org)
 
 ## Divers
 
@@ -773,6 +1280,22 @@ Super Mario 64 has been decompiled (gbatemp.net)
 
 https://news.ycombinator.com/item?id=20972197
 Warcraft 3: Remastered Will Work with Old Custom Maps (playwarcraft3.com)
+
+https://news.ycombinator.com/item?id=21175921
+Zachtronics: Ten Years of Terrible Games (2017) [video] (youtube.com)
+
+https://news.ycombinator.com/item?id=21175198
+An Inside Look at Microsoft’s Newest Flight Simulator (eaa.org)
+
+https://news.ycombinator.com/item?id=21402717
+BZFlag (bzflag.org) = free 3D online multi-player tank battle game 
+
+https://news.ycombinator.com/item?id=21893656
+Super Mario World Memory Map (smwcentral.net)
+
+https://news.ycombinator.com/item?id=22342295
+Defacto: Factorio-like game in the browser for the PICO-8 (lexaloffle.com)
+-> factorio, oxygen not included
 
 # Computer Science
 https://github.com/alkrauss48/code_samples
@@ -923,6 +1446,23 @@ Arend: Theorem Prover Based on Homotopy Type Theory by JetBrains (arend-lang.git
 https://news.ycombinator.com/item?id=20653453
 Alan Kay's answer to 'what are some forgotten books programmers should read' (quora.com)
 
+https://news.ycombinator.com/item?id=21167368
+Quantum computers: amazing progress, but probably false supremacy claims (gilkalai.wordpress.com)
+
+https://news.ycombinator.com/item?id=21332768
+Quantum Supremacy Using a Programmable Superconducting Processor (googleblog.com)
+https://news.ycombinator.com/item?id=21333105
+IBM casts doubt on Google's claims of quantum supremacy (sciencemag.org)
+
+https://news.ycombinator.com/item?id=21613098
+The Power of One-State Turing Machines (2018) (nearly42.org)
+
+https://github.com/passy/awesome-recursion-schemes
+
+https://github.com/hmemcpy/milewski-ctfp-pdf/releases/tag/v1.4.0-rc1
+It's here! The first release of the OCaml edition of Category Theory for
+Programmers! (also has Scala and Haskell versions)
+
 # Crypto
 
 https://news.ycombinator.com/item?id=13712912
@@ -961,6 +1501,60 @@ Who’s Behind the GandCrab Ransomware? (krebsonsecurity.com)
 
 https://news.ycombinator.com/item?id=20724043
 The League of Entropy Is Making Randomness Truly Random (onezero.medium.com)
+
+https://news.ycombinator.com/item?id=21169768
+VPN⁰: A Privacy-Preserving Distributed VPN (brave.com)
+
+https://news.ycombinator.com/item?id=21114524
+Fixing Getrandom() (lwn.net)
+=> https://www.openbsd.org/papers/hackfest2014-arc4random/index.html
+https://news.ycombinator.com/item?id=21290306
+Really Fixing Getrandom() (lwn.net)
+
+https://news.ycombinator.com/item?id=21895671
+Age: A simple, modern and secure file encryption tool (github.com)
+
+https://news.ycombinator.com/item?id=21352282
+Why EdDSA held up better than ECDSA against Minerva (cr.yp.to)
+
+https://news.ycombinator.com/item?id=21421365
+Setting up a home VPN server with WireGuard (hoegh.org)
+https://news.ycombinator.com/item?id=22183506
+Building a Simple VPN with WireGuard with a Raspberry Pi as Server (snikt.net)
+
+https://www.zerotier.com/lf-announcement/
+LF: A Fully Decentralized Fully Replicated Key/Value Store
+https://www.zerotier.com/zerotier-2-0-status/
+
+https://news.ycombinator.com/item?id=21917505
+Too Much Crypto [pdf] (iacr.org) [arguments to reduce the number of rounds]
+
+https://spectrum.ieee.org/tech-history/silicon-revolution/the-crazy-story-of-how-soviet-russia-bugged-an-american-embassys-typewriters
+
+https://news.ycombinator.com/item?id=21978472
+Removing the Linux /dev/random blocking pool (lwn.net)
+
+https://news.ycombinator.com/item?id=21979333
+The first chosen-prefix collision for SHA-1 (sha-mbles.github.io)
+
+https://news.ycombinator.com/item?id=21980199
+The Curious Case of WebCrypto Diffie-Hellman on Firefox (intothesymmetry.com)
+
+https://news.ycombinator.com/item?id=22003315
+The BLAKE3 cryptographic hash function (github.com)
+https://news.ycombinator.com/item?id=22021769
+Blake3 is 10 times faster than SHA-2 (nextjournal.com)
+=> see also kangarootwelve which is the fast version of SHA-3/Keccak
+
+https://news.ycombinator.com/item?id=22202740
+New Cryptographic Tools on Keybase (keybase.io)
+=> https://keybase.io/blog/crypto
+
+https://news.ycombinator.com/item?id=22176032
+WireGuard is now in Linus' tree (zx2c4.com)
+
+https://news.ycombinator.com/item?id=22326731
+Signal is finally bringing its secure messaging to the masses (wired.com)
 
 # Machine Learning
 https://news.ycombinator.com/item?id=14034426
@@ -1015,9 +1609,77 @@ https://nostalgebraist.tumblr.com/post/187579086034/it-seems-pretty-clear-to-me-
 => https://minimaxir.com/2019/09/howto-gpt2/
    https://talktotransformer.com/
    https://old.reddit.com/r/SubSimulatorGPT2/
+https://nostalgebraist.tumblr.com/post/190086745889/in-case-anyone-was-wondering-maybe-no-one-was Details about how I host GPT-2 continuously
+
 
 https://news.ycombinator.com/item?id=21042468
 Show HN: I made a neural net that analyzes privacy policies (useguard.com)
+
+https://news.ycombinator.com/item?id=21057684
+Adblock Radio (github.com) #block pub in web radios
+
+https://news.ycombinator.com/item?id=21216200
+The State of Machine Learning Frameworks (thegradient.pub)
+(pytorch vs tensorflow)
+
+https://news.ycombinator.com/item?id=21240057
+Deep Learning with PyTorch: A 60 Minute Blitz (pytorch.org)
+
+https://news.ycombinator.com/item?id=21241906
+Algebra, Topology, Differential Calculus, and Optimization Theory for CS and ML [pdf] (upenn.edu)
+
+https://news.ycombinator.com/item?id=21298233
+ML From Scratch, Part 1: Linear Regression (oranlooney.com)
++ "Thinking in Tensors, Writing in PyTorch": https://github.com/stared/thinking-in-tensors-writing-in-pytorch
+
+https://news.ycombinator.com/item?id=21394291
+Multiplayer AlphaZero (arxiv.org)
+
+https://news.ycombinator.com/item?id=21405188
+Grandmaster level in StarCraft II using multi-agent reinforcement learning (deepmind.com)
+
+https://news.ycombinator.com/item?id=21431071
+Extract voice, piano, drums, etc. from any music track (github.com)
+[works really well]
+=> https://github.com/deezer/spleeter
+
+https://news.ycombinator.com/item?id=21454273
+OpenAI Releases Largest GPT-2 Text Generation Model (openai.com)
+
+https://news.ycombinator.com/item?id=21589719
+Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model (arxiv.org)
+
+https://news.ycombinator.com/item?id=21601774
+Deep Learning with PyTorch (pytorch.org)
+
+https://news.ycombinator.com/item?id=21661013
+Making Git and Jupyter Notebooks play nice (timstaley.co.uk)
+=> jupytext
+
+https://news.ycombinator.com/item?id=21717022
+Show HN: AI Dungeon 2 – AI-generated text adventure built with 1.5B param GPT-2 (aidungeon.io)
+https://news.ycombinator.com/item?id=21739879
+AI Dungeon 2 costing over $10k/day to run on GCS/Colab (twitter.com)
+https://news.ycombinator.com/item?id=21804896
+Play AI Dungeon 2. Become a Dragon. Eat the Moon (aiweirdness.com)
+
+https://news.ycombinator.com/item?id=21980924
+Training GPT-2 to Play Chess (slatestarcodex.com)
+
+http://gregorygundersen.com/blog/2020/01/12/why-research-blog/
+-> liste de liens vers des aspects maths du ML
+
+https://news.ycombinator.com/item?id=22128652
+Talking to myself: how I trained GPT2-1.5b for rubber ducking using my chat data (svilentodorov.xyz)
+
+https://news.ycombinator.com/item?id=22274938
+Colab Pro (research.google.com)
+
+https://news.ycombinator.com/item?id=22279503
+Jupyter Notebooks to Web App (github.com)
+
+https://news.ycombinator.com/item?id=22345255
+Google/Trax – Understand and explore advanced deep learning (github.com)
 
 # Security
 http://www.tedunangst.com/flak/post/features-are-faults-redux
@@ -1041,28 +1703,17 @@ What can we learn from the matrix.org compromise? (medium.com)
 https://news.ycombinator.com/item?id=19911715
 CPU.fail (cpu.fail)
 
-# Geography
+https://news.ycombinator.com/item?id=21099996
+Developer of Checkm8 explains why iDevice jailbreak exploit is a game changer (arstechnica.com)
 
-http://geoawesomeness.com/why-dont-we-start-using-a-more-accurate-world-map-rather-than-the-conventional-mercator-map/
-Mercator, Gall-Peters, Miller, Winkel-Tripel, Authagraph
+https://news.ycombinator.com/item?id=21202905
+Ken Thompson's Unix Password (leahneukirchen.org)
 
-# History
-https://www.reddit.com/r/todayilearned/comments/8juu2p/til_the_vietnam_memorial_was_designed_by_a_21/
-=> https://www.history.com/news/the-21-year-old-college-student-who-designed-the-vietnam-memorial
+https://news.ycombinator.com/item?id=22345295
+An SSH server that knows who you are (twitter.com)
 
-https://news.ycombinator.com/item?id=17250080
-D-Day: How a British Oceanographer's Invention Decided Normandy's Fate (inverse.com)
-=> cf aussi (dans les commentaires): https://medium.com/@garius/the-weatherman-the-man-who-decided-d-day-d0eb5cad3f7e
-
-http://www.oapen.org/view?docId=1000161.nxml&bookId=614607
-Introduction: A Global History of Execution and the Criminal Corpse The Gibbet
-in the Landscape: Locating the Criminal Corpse in Mid-Eighteenth-Century
-England
-
-https://www.reddit.com/r/bestof/comments/bz2tl9/ugeorgy_k_zhukov_explains_how_a_lack_of_english/
-
-https://news.ycombinator.com/item?id=20919461
-‘We May Have to Shoot Down This Aircraft’ (politico.com)
+https://news.ycombinator.com/item?id=22348568
+Pay up or we’ll make Google ban your ads (krebsonsecurity.com)
 
 # Maths
 
@@ -1186,6 +1837,49 @@ https://joemathjoe.wordpress.com/2019/07/18/what-is-the-grothendieck-constructio
 https://news.ycombinator.com/item?id=20912380
 The Riemann Hypothesis (utexas.edu)
 
+https://www.lesswrong.com/posts/DoPo4PDjgSySquHX8/heads-i-win-tails-never-heard-of-her-or-selective-reporting
+
+https://news.ycombinator.com/item?id=21430275
+Mathematical Treasures (maa.org)
+
+https://news.ycombinator.com/item?id=21542054
+Eigenvectors from Eigenvalues (terrytao.wordpress.com)
+https://www.reddit.com/r/math/comments/ci665j/linear_algebra_question_from_a_physicist/
+https://terrytao.wordpress.com/2019/08/13/eigenvectors-from-eigenvalues/
+
+https://news.ycombinator.com/item?id=21677797
+What is Symplectic Geometry? (2016) [pdf] (ams.org)
+
+https://news.ycombinator.com/item?id=21780068
+Mathematician Proves Result on ‘Dangerous’ Problem (quantamagazine.org)
+
+https://news.ycombinator.com/item?id=21941133
+How strong is your knot? (mit.edu)
+
+https://news.ycombinator.com/item?id=22142706
+Projective Geometric Algebra Done Right (terathon.com)
+
+https://news.ycombinator.com/item?id=22253961
+EGA Chapter 1: The Language of Schemes (utexas.edu)
+
+https://news.ycombinator.com/item?id=22275295
+Volume of a Sphere (solipsys.co.uk)
+
+https://news.ycombinator.com/item?id=22290812
+Show HN: Discover the World of Mathematics (mathpendium.org)
+
+https://news.ycombinator.com/item?id=22327864
+Introduction to Clifford Algebra (2006) (av8n.com)
+
+https://news.ycombinator.com/item?id=22343276
+Math Keeps Changing (macwright.org) [=erreurs d'arondis]
+
+https://news.ycombinator.com/item?id=22342682
+Ramanujan Surprises Again (2015) (maths.org) [1729 and K3 surfaces]
+
+https://news.ycombinator.com/item?id=22345655
+Calculating Pi: My Attempt at Breaking the Pi World Record (timothymullican.com)
+
 # Physics
 http://www.teamliquid.net/blogs/483814-a-basic-introduction-to-astrophysics
 
@@ -1248,6 +1942,28 @@ Sand won't save you this time (2008) (sciencemag.org)
 Possibly the best of the "Things I won't work with" series: https://blogs.sciencemag.org/pipeline/archives/category/things-i-wont-work-with
  The book that quote is originally from, Ignition!, is 100% worth a read. Picked up a copy through Amazon a few months ago, and it’s one of the funniest (in a nerdy way) and most interesting books I’ve read in a loooong time. 
 
+https://news.ycombinator.com/item?id=21078068
+What If Planet 9 Is a Primordial Black Hole? (arxiv.org)
+=> Death's End novel of Remembrance of Earth's Past trilogy from the writer Liu Cixin;  _The Forge of God_ by Greg Bea
+
+https://news.ycombinator.com/item?id=21250577
+NASA engineer's 'helical engine' may violate the laws of physics (newscientist.com)
+
+https://news.ycombinator.com/item?id=21743847
+Simple Rules ‘Bootstrap’ the Laws of Physics (quantamagazine.org)
+
+https://news.ycombinator.com/item?id=21802674
+Superdeterminism: The path we didn’t take (backreaction.blogspot.com)
+
+https://news.ycombinator.com/item?id=21954029
+The world is not enough (the-tls.co.uk)
+
+https://news.ycombinator.com/item?id=21974117
+Evidence that the key assumption made in discovery of dark energy is in error (phys.org)
+
+https://news.ycombinator.com/item?id=22261670
+The limits of high-speed rail (mappingignorance.org)
+
 # Science
 http://blog.vixra.org/category/crackpots-who-were-right/
 Edge question https://www.edge.org/annual-question/what-scientific-term-or%C2%A0concept-ought-to-be-more-widely-known
@@ -1287,6 +2003,58 @@ Sci-Hub and Alexandra Basic Information (engineuring.wordpress.com)
 
 https://news.ycombinator.com/item?id=20443822
 Why did we wait so long for the bicycle? (rootsofprogress.org)
+
+https://news.ycombinator.com/item?id=21082845
+The Octopus: An Alien Among Us (lithub.com)
+
+https://news.ycombinator.com/item?id=21108665
+Starship Prototype Unveiled (space.com)
+
+https://news.ycombinator.com/item?id=21229390
+I’m Convinced We Found Evidence of Life on Mars in the 1970s (scientificamerican.com)
+
+https://news.ycombinator.com/item?id=22008566
+The Unstoppable Rise of Sci-Hub (2019) (lse.ac.uk)
+
+# Geography
+
+http://geoawesomeness.com/why-dont-we-start-using-a-more-accurate-world-map-rather-than-the-conventional-mercator-map/
+Mercator, Gall-Peters, Miller, Winkel-Tripel, Authagraph
+
+# History
+https://www.reddit.com/r/todayilearned/comments/8juu2p/til_the_vietnam_memorial_was_designed_by_a_21/
+=> https://www.history.com/news/the-21-year-old-college-student-who-designed-the-vietnam-memorial
+
+https://news.ycombinator.com/item?id=17250080
+D-Day: How a British Oceanographer's Invention Decided Normandy's Fate (inverse.com)
+=> cf aussi (dans les commentaires): https://medium.com/@garius/the-weatherman-the-man-who-decided-d-day-d0eb5cad3f7e
+
+http://www.oapen.org/view?docId=1000161.nxml&bookId=614607
+Introduction: A Global History of Execution and the Criminal Corpse The Gibbet
+in the Landscape: Locating the Criminal Corpse in Mid-Eighteenth-Century
+England
+
+https://www.reddit.com/r/bestof/comments/bz2tl9/ugeorgy_k_zhukov_explains_how_a_lack_of_english/
+
+https://news.ycombinator.com/item?id=20919461
+‘We May Have to Shoot Down This Aircraft’ (politico.com)
+
+https://scholars-stage.blogspot.com/2018/12/on-taking-cross-cultural-psychology.html?m=1
+
+https://slatestarcodex.com/2019/11/26/mental-mountains/
+
+https://news.ycombinator.com/item?id=21840320
+The Silurian Hypothesis (fermatslibrary.com)
+
+https://news.ycombinator.com/item?id=22066728
+Almost Everything in “Dr. Strangelove” Was True (2014) (newyorker.com)
+-> books and movies: command and control, failsafe, yes prime minister
+
+https://news.ycombinator.com/item?id=22176774
+Clues That Neanderthals Didn't Know How to Make Fire (2017) (theatlantic.com)
+
+https://news.ycombinator.com/item?id=22166759
+The greatest migration: the history and mystery of Polynesian navigation (2019) (news.harvard.edu)
 
 # Sociologie
 http://www.scottaaronson.com/blog/?p=3389
@@ -1337,6 +2105,22 @@ How to parent more predictably (2018) (jefftk.com)
 https://news.ycombinator.com/item?id=20610175
 Why the French love to say no (bbc.com)
 
+https://www.reddit.com/r/slatestarcodex/comments/cr73ur/the_professional_triumph_of_the_firstborns_by_joe/ex5pog6/
+
+https://news.ycombinator.com/item?id=21304815
+When Introverts Act Like Extraverts (and Vice Versa) (learningandthebrain.com)
+
+https://news.ycombinator.com/item?id=21729725
+The ego depletion saga demonstrates the importance of effect sizes (pigee.wordpress.com)
+
+https://marginalrevolution.com/marginalrevolution/2019/12/sex-differences-in-personality-are-large-and-important.html
+
+https://news.ycombinator.com/item?id=22077603
+An alternative argument for why women leave STEM (medium.com)
+
+https://news.ycombinator.com/item?id=22193451
+Not everyone has an internal monologue (ryanandrewlangdon.wordpress.com)
+
 # Economie
 
 https://news.ycombinator.com/item?id=18593407
@@ -1354,10 +2138,21 @@ Dad, Are We Rich? (wealthydoc.org)
 https://news.ycombinator.com/item?id=20113623
 How to get rich without getting lucky (2018) (nav.al)
 
+https://news.ycombinator.com/item?id=21088425
+What do executives do, anyway? (apenwarr.ca)
+
+https://news.ycombinator.com/item?id=21454383
+When George Soros Broke the British Pound (2014) (priceonomics.com)
+
+http://aswathdamodaran.blogspot.com/2020/02/data-update-3-for-2020-price-of-risk.html
+
 # Finance
 
 https://www.troyhunt.com/10-personal-finance-lessons-for-technology-professionals/
 https://www.lesswrong.com/posts/p9PM2Wc3CSvLKRMwG/get-rich-real-slowly-1
+
+https://news.ycombinator.com/item?id=21610687
+Collection of Jupyter notebooks for quantitative finance (github.com)
 
 # Bitcoin
 http://www.righto.com/2014/02/ascii-bernanke-wikileaks-photographs.html
@@ -1393,6 +2188,21 @@ Cloudflare's Ethereum Gateway (cloudflare.com)
 https://news.ycombinator.com/item?id=20919958
 94k Bitcoin (1B USD) transferred from unknown wallet to unknown wallet (twitter.com)
 
+https://news.ycombinator.com/item?id=21458595
+One Tether Trader Didn't Cause the Bitcoin Bubble (bloomberg.com)
+
+https://news.ycombinator.com/item?id=21438075
+The trillion-dollar lawsuit against Tether (danco.substack.com)
+
+https://news.ycombinator.com/item?id=21618079
+Hard Problems in Cryptocurrency: Five Years Later (vitalik.ca)
+
+https://news.ycombinator.com/item?id=21618346
+Cryptoqueen: A woman scammed the world, then vanished (bbc.co.uk)
+
+https://www.wired.com/story/blockchain-bandit-ethereum-weak-private-keys/
+A 'Blockchain Bandit' Is Guessing Private Keys and Scoring Millions
+
 # Books
 
 https://samzdat.com/2017/05/22/man-as-a-rationalist-animal/
@@ -1408,6 +2218,9 @@ https://news.ycombinator.com/item?id=16221188
 
 https://news.ycombinator.com/item?id=16359049
   The diabolical genius of the baby advice industry (theguardian.com)
+
+https://news.ycombinator.com/item?id=21230141
+“Dune” Endures (2013) (newyorker.com)
 
 # Comics
 http://www.bouletcorp.com/2015/04/10/et-si-cetait-vrai/
@@ -1428,8 +2241,11 @@ https://news.ycombinator.com/item?id=12926684
   On Leonard Cohen
 
 https://news.ycombinator.com/item?id=14068049
-  Jean Michel Jarre – Equinoxe IV (1981) [
+  Jean Michel Jarre – Equinoxe IV (1981)
   (In the thread: links to electronic music)
+
+https://news.ycombinator.com/item?id=21902652
+FreeDB Is Shutting Down (freedb.org)
 
 # Pictures
 A billion degrees of separation: https://i.imgur.com/NckLH6n.png
@@ -1472,6 +2288,44 @@ The race is on to develop new strategies for storing nuclear waste (ensia.com)
 
 https://news.ycombinator.com/item?id=21015964
 Solar and Wind Power So Cheap They’re Outgrowing Subsidies (bloomberg.com)
+
+https://news.ycombinator.com/item?id=21042101
+Charts show how little progress has been made in limiting greenhouse emissions (nature.com)
+
+https://www.reddit.com/r/france/comments/d3m3ni/r%C3%A9sum%C3%A9_du_livre_comment_tout_peut_seffondrer/
+
+https://news.ycombinator.com/item?id=21083255
+How climate change is melting, drying and flooding Earth – in pictures (nature.com)
+
+https://news.ycombinator.com/item?id=21125829
+Jet fuel from thin air: Aviation's hope or hype? (bbc.com)
+
+https://www.lesswrong.com/posts/XRTiojqqJ3wrFFZAf/can-we-really-prevent-all-warming-for-less-than-10busd-with
+
+https://news.ycombinator.com/item?id=21210164
+A Solar Power Plant designed to deliver 100% of the electricity after sunset (pv-magazine-usa.com)
+=> https://www.lazard.com/perspective/levelized-cost-of-energy-and-levelized-cost-of-storage-2018/
+
+https://news.ycombinator.com/item?id=21338391
+Climate change has turned permafrost into a carbon emitter (cbc.ca)
+
+https://news.ycombinator.com/item?id=21648582
+Why Apocalyptic Claims About Climate Change Are Wrong (forbes.com)
+
+https://news.ycombinator.com/item?id=21663798
+To reduce energy consumption, give up GDP growth (jancovici.com)
+
+https://news.ycombinator.com/item?id=21811888
+MIT's browser based climate change simulation (climateinteractive.org)
+
+https://news.ycombinator.com/item?id=21996102
+To Store Renewable Energy, Try Freezing Air (scientificamerican.com)
+
+https://news.ycombinator.com/item?id=22021530
+Study Confirms Climate Models Are Getting Future Warming Projections Right (nasa.gov)
+
+https://news.ycombinator.com/item?id=22224141
+Climate Models Are Running Red Hot, and Scientists Don’t Know Why (bloomberg.com)
 
 # Politique
 http://www.slate.com/articles/news_and_politics/cover_story/2016/08/the_week_democracy_died_how_brexit_nice_turkey_and_trump_are_all_connected.html
@@ -1548,6 +2402,33 @@ Medical Reversals (elifesciences.org)
 https://news.ycombinator.com/item?id=20188093
 Gut microbes eat medication (chemistry.harvard.edu)
 
+https://selfhacked.com/
+Cutting-Edge Solid Science-Based Information for Health Hackers
+https://examine.com/
+Nutrition and supplement information based on science
+
+https://news.ycombinator.com/item?id=21427058
+Opinion: Standard Time all year round is the healthy choice (theglobeandmail.com)
+
+http://chevrepensante.fr/2019/03/06/trolldejournalisme/
+Le journalisme qui criait au Troll (sur le glyphosate)
+=> https://www.atlantico.fr/decryptage/3563924/glyphosate--l-incroyable-manque-de-rigueur-scientifique-d-envoye-special-marcel-kuntz
+
+https://news.ycombinator.com/item?id=21870695
+In glyphosate review, WHO agency edited out “non-carcinogenic” findings (2017) (reuters.com)
+
+Intermitent fasting: https://www.gwern.net/docs/longevity/2019-decabo.pdf
+https://slatestarcodex.com/2019/12/12/acc-does-calorie-restriction-slow-aging/
+
+https://news.ycombinator.com/item?id=21960001
+Television viewing and cognitive decline in older age (nature.com)
+
+https://news.ycombinator.com/item?id=22101611
+Miscarriage can lead to 'long-term post-traumatic stress' (bbc.com)
+
+https://news.ycombinator.com/item?id=22163943
+Preliminary assessment of the International Spreading Risk of Coronavirus [pdf] (mobs-lab.org)
+
 # Flights
 https://www.google.fr/flights/
 
@@ -1606,41 +2487,46 @@ https://www.theatlantic.com/magazine/archive/2019/07/mh370-malaysia-airlines/590
   - https://www.vanityfair.com/news/business/2014/10/air-france-flight-447-crash
   - https://www.nytimes.com/2019/09/18/magazine/boeing-737-max-crashes.html
 
+https://news.ycombinator.com/item?id=21090685
+Plane Tests Must Use Average Pilots, NTSB Says After 737 Max Crashes (wsj.com)
+
+https://news.ycombinator.com/item?id=21245284
+My Letter to the Editor of New York Times Magazine (sullysullenberger.com)
+
+https://news.ycombinator.com/item?id=21304277
+Boeing Engineers Lost Control of the Company (perell.com)
+
+https://news.ycombinator.com/item?id=21459237
+Boeing whistleblower raises doubts over 787 oxygen system (bbc.com)
+
+https://news.ycombinator.com/item?id=21864011
+Boeing CEO ousted as 737 Max crisis deepens (reuters.com)
+
+https://news.ycombinator.com/item?id=22207812
+Airbus ran ‘massive’ bribery scheme to win orders (ft.com)
+
 # Magic
+
+Chaines youtube: 
+- Facto Fusion
+https://www.youtube.com/channel/UCd-1pQG-2H5IJl4Jkmy3bXw
 
 https://news.ycombinator.com/item?id=19511451
 A Magician Explains Why We See What’s Not There (nautil.us)
-=> https://rebelmagic.com/david-blaines-hand-sandwich-card-trick-revealed/
 
-David Blaine Hand Sandwich trick:
+=> https://rebelmagic.com/david-blaines-hand-sandwich-card-trick-revealed/
+=> David Blaine Hand Sandwich trick [Disturb Reality] (double lift):
 https://www.youtube.com/watch?v=n1TGCg8VPyo
 
-Two card monte:
-https://www.youtube.com/watch?v=Mm0EcpCkCi8
-
-Three card monte:
-https://www.youtube.com/watch?v=QJv44-Ghj_Y&t=327s
-
-The invisible deck:
-https://www.youtube.com/watch?v=7aYFmYaBixg
-
-Easy double reverse trick:
-https://www.youtube.com/watch?v=ubLRMKqkAr0
-
-SI Stebbbins Stack:
-https://www.youtube.com/watch?v=edH6D4TqhOU
-
-Stairways by Marcus Eddie:
-https://www.youtube.com/watch?v=JiXRXrDgdvM
-
-Ambitious Card:
-https://www.youtube.com/watch?v=6wfDX-34Dwc
-
-Another David Blaine trick
-https://www.youtube.com/watch?v=Ac3OcbIgKYU&t=315s
-
-An easy trick:
-https://www.youtube.com/watch?v=ixiB5CM0b_Y
+- Two card monte (triple lift): https://www.youtube.com/watch?v=Mm0EcpCkCi8
+- Three card monte: https://www.youtube.com/watch?v=QJv44-Ghj_Y&t=327s
+- The invisible deck (cards upside down): https://www.youtube.com/watch?v=7aYFmYaBixg
+- Easy double reverse trick: https://www.youtube.com/watch?v=ubLRMKqkAr0
+- SI Stebbbins Stack: https://www.youtube.com/watch?v=edH6D4TqhOU
+- Stairways by Marcus Eddie (élastique): https://www.youtube.com/watch?v=JiXRXrDgdvM
+- Ambitious Card (make cards jump to the top): https://www.youtube.com/watch?v=6wfDX-34Dwc
+- Another David Blaine trick (make cards disappear): https://www.youtube.com/watch?v=Ac3OcbIgKYU
+- An easy trick (shuffling card upside down): https://www.youtube.com/watch?v=ixiB5CM0b_Y
 
 # Divers
 http://www.cracked.com/article_20063_the-6-most-mind-blowing-and-pointless-gaming-achievements.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+CrackedRSS+%28Cracked%3A+All+Posts%29&utm_content=Google+Reader
@@ -1695,7 +2581,59 @@ https://news.ycombinator.com/item?id=20965771
 Estimates that mineral levels in vegetables have dropped by up to 90% since 1914 (nih.gov)
 Estimates that mineral levels in vegetables have dropped by up to 90% since
 
+https://news.ycombinator.com/item?id=21045550
+Thomas Cook collapses, stranding 150k UK holidaymakers (theguardian.com)
+
+https://thistothat.com/index.shtml
+Because people have a need to glue things to other things
+
+https://news.ycombinator.com/item?id=21163126
+Monty Python at 50 (theguardian.com)
+
+https://news.ycombinator.com/item?id=21231992
+Tall Buildings of the Last Fifty Years (ctbuh2019.com)
+
+https://news.ycombinator.com/item?id=21508495
+David Lynch’s TV commercials (2017) (lwlies.com)
+
+https://news.ycombinator.com/item?id=21613357
+The Bus Ticket Theory of Genius (paulgraham.com)
+
+https://news.ycombinator.com/item?id=21790396
+Having Kids (paulgraham.com)
+
+https://news.ycombinator.com/item?id=21828888
+Who Was the Buddha? (aeon.co)
+
+https://news.ycombinator.com/item?id=21883313
+ISO week date (wikipedia.org)
+
+https://news.ycombinator.com/item?id=21903668
+The Bastard Operator From Hell (bjash.com)
+
+https://nacto.org/docs/usdg/disappearing_traffic_cairns.pdf
+Disappearing traffic? The story so far
+
+https://news.ycombinator.com/item?id=22282612
+Tom and Jerry: 80 years of cat vs. mouse (bbc.co.uk)
+
+https://news.ycombinator.com/item?id=22292003
+Jules Verne’s Most Famous Books Were Part of a 54-Volume Masterpiece (openculture.com)
+
+https://news.ycombinator.com/item?id=22349363
+An investigation of the Pentagon's UFO program (popularmechanics.com)
+
+# Rationality
+
+https://www.reddit.com/r/SneerClub/comments/ej68qg/fucking_hell_they_are_now_in_power/
+https://irrationallyspeaking.home.blog/2019/10/22/dominics-basilisk-part-1/
+https://dominiccummings.com/2020/01/02/two-hands-are-a-lot-were-hiring-data-scientists-project-managers-policy-experts-assorted-weirdos/
+https://dynamicland.org/
+
 # Blogs
 ## slatestarcodex
 http://slatestarcodex.com/2018/04/01/the-hour-i-first-believed/
 http://slatestarcodex.com/2018/09/26/adversarial-collaboration-contest-results/
+
+## rationalite
+https://irrationallyspeaking.home.blog/2019/04/09/a-guide-for-the-perplexed-philosophers-jesse-singal-and-the-rationalist-subculture/
