@@ -2,15 +2,18 @@
 
 This repository contain dotfiles files and custom scripts.
 
-- bin: symlinks to scripts that I use often, in my `PATH`. Some symlinks
+- [bin](bin): symlinks to scripts that I use often, in my `PATH`. Some symlinks
   are broken here because they reference programs available in my other
   github repositories.
-- config: dotfiles
-- doc: notes on several things (maths, git, ruby, ...)
-- ruby: custom ruby library
-- script: custom scripts
-- syst: scripts to administrate my [archlinux](https://www.archlinux.org/)
-  computers.
+- [doc](doc): notes on several things (maths, git, ruby, ...).
+    A selection of this documentation rendered with `kramdown` is
+    available at <https://github.com/DamienRobert/Documentation>.
+- [ruby](ruby): custom ruby library
+- [script](script): custom scripts
+- [syst](syst): scripts to administrate my [archlinux](https://www.archlinux.org/) computers.
+- [user](user): scripts to administrate by `$HOME` folders. In
+    particular my [config](user/config) files are there, along
+    with static [dotfiles](user/config/dotfiles).
 
 Some of the files are not complete since I have removed (most of) my
 personal information.
