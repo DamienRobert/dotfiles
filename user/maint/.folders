@@ -1,9 +1,11 @@
 # vim: ft=zsh
 find_vcs() {
-	local dir
+  setopt extendedglob
+	local dir dirname
 	vcs=()
-	for dir in ${(@)^@}/{.*,*}/{.git,.svn,.hg,.bzr}(/N); do
-		vcs+=$(dirname $dir)
+	for dir in ${(@)^@}/{.*,*}(^@)/{.git,.svn,.hg,.bzr}(N); do
+	  dirname=${dir:h}
+	  [[ -h $dirname ]] || vcs+=(${dirname})
 	done
 }
 find_remote_vcs() {
@@ -45,7 +47,7 @@ get_vcs() {
 				PERSO=(~/perso $vcs) ;;
 			pro)
 				[[ -n $PRO ]] && continue
-				find_vcs ~/pro
+				find_vcs ~/pro ~/pro/progs
 				PRO=($vcs) ;;
 			latex)
 				[[ -n $LATEX ]] && continue
@@ -72,14 +74,18 @@ get_vcs() {
 				[[ -n $OPTDIST ]] && continue
 				find_vcs ~/opt/dist
 				OPTDIST=($vcs) ;;
+			vimscript)
+				[[ -n $VIMSCRIPT ]] && continue
+				find_vcs ~/usr/vim-script ~/usr/vim-script/*/{start,opt}(/N)
+				VIMSCRIPT=($vcs) ;;
 			usrdist)
 				[[ -n $USRDIST ]] && continue
-				find_vcs ~/usr/dist ~/usr/dist/*(/N) ~/usr/vim-script/*(/N)
+				find_vcs ~/usr/dist ~/usr/dist/@*(/N) ~/usr/vim-script ~/usr/vim-script/*/{start,opt}(/N)
 				USRDIST=($vcs) ;;
 			dist)
 				[[ -n $DIST ]] && continue
-				get_vcs pro op usrdist
-				DIST=($PRODIST $USRDIST $OPTDIST) ;;
+				get_vcs prodist optdist usrdist vimscript
+				DIST=($PRODIST $USRDIST $VIMSCRIPT $OPTDIST) ;;
 
 			all)
 				[[ -n $ALL ]] && continue

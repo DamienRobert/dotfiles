@@ -42,6 +42,7 @@ hub create ploum -d 'It shall be mine, all mine!' -h 'url'
   [ repo created on GitHub ]
   > git remote add origin git@github.com:YOUR_USER/recipes.git
 Pusher la branch: git push --set-upstream origin master
+Eventuellement (si push.followTags n'est pas suffisant): git push --tags
 
 * Delete repo: hub delete repo
 
@@ -245,50 +246,150 @@ client.user
 Web applications
 ================
 
-Github Oauth: c4science.ch [public infos], Code Climate [public infos], Travis CI for Open Source [Public infos + Write repository hooks]
--> https://github.com/settings/applications
+* Tokens: https://github.com/settings/tokens
+- hub for dams@feanor — repo
+- The gist gem (2020-02-22 15:33:05 +0100) — gist
+- ghi on doriath — public_repo, repo
 
-Tokens: https://github.com/settings/tokens
+TODO: travis is no longer needed
+      test github-pages
 
-- travis: run tests when code is pushed
-- code climate: how much code is covered by tests
+OAuth
+-----
+
+* Authorized OAuths Apps: https://github.com/settings/applications
+- Travis CI for Open Source
+  -> run tests when code is pushed
+      Read org and team membership, read org projects
+      Access commit status
+      Access deployment status
+      Access user email addresses (read-only)
+      Write repository hooks
+- Code Climate
+  -> how much code is covered by tests
   [codecov.io: code coverage (similar to code climate)]
+      Access public repositories
+      Access user email addresses (read-only)
 - inch ci: how much code is covered by documentation
-- gemnasium: check if dependencies are up to date
+      Read org and team membership, read org projects
+      Access user email addresses (read-only)
+      Write repository hooks
+[- c4science.ch [public infos]]
+[- gemnasium: check if dependencies are up to date]
 
-travis: https://travis-ci.org, https://travis-ci.org/profile/DamienRobert
-- add a repository on the web interface (this activates the 'Travis CI' service in the repo)
+$ travis: https://travis-ci.org, https://travis-ci.org/profile/DamienRobert
+- add a repository on the web interface (this activates the travis webhook in the repo)
 - push a .travis.yml (cf rubygems)
 - badge: https://travis-ci.org/DamienRobert/tiny_singleton.svg?branch=master
+-> will replace by github actions
 
-code climate: https://codeclimate.com, https://codeclimate.com/oss/dashboard
-- adds the repo on the web interface (apparently does not need to activate a service on the github repo)
+$ code climate: https://codeclimate.com, https://codeclimate.com/oss/dashboard
+- adds the repo on the web interface (this activate the webhooks, which can be resintalled in 'Connections')
 - Configure with a .codeclimate.yml
 - badges: cf https://docs.codeclimate.com/docs/how-grades-are-calculated
-  All badges: https://lima.codeclimate.com/github/DamienRobert/tiny_singleton/badges
   - https://codeclimate.com/github/DamienRobert/tiny_singleton/badges/gpa.svg
   - https://codeclimate.com/github/DamienRobert/tiny_singleton/badges/coverage.svg
 
-inch: https://inch-ci.org/, https://inch-ci.org/github/DamienRobert
+-> installed github app: CodeClimate, with access to the repo test_github
+
+$ inch: https://inch-ci.org/, https://inch-ci.org/github/DamienRobert
 - Add a webhook, cf https://inch-ci.org/help/webhook
   This activates the https://inch-ci.org/rebuild webhook
   Ex: https://github.com/DamienRobert/tiny_singleton/settings/hooks
   => Projects are built automatically each time you push your code to GitHub.
-  (Otherwise go to the profile page and refresh manually)
-- Badge: https://inch-ci.org/github/DamienRobert/tiny_singleton.svg?branch=master&style=flat
+    (Otherwise go to the profile page and refresh manually)
+- Badge: https://inch-ci.org/github/DamienRobert/tiny_singleton.svg?branch=master&style=flat -> https://inch-ci.org/github/DamienRobert/tiny_singleton
 
-Gemnasium: https://gemnasium.com/dashboard
+Note: rubydoc.info can generate doc for a github repo (inch provides the
+symlink), eg https://rubydoc.info/github/DamienRobert/test_github/master
+
+X Gemnasium: https://gemnasium.com/dashboard
 - add a new project in the web interface (this activates the 'Gemnasium' service in the repo)
 => Closed (integrated into gitlab)
+
+Web hooks
+---------
+
+Exemples:
+* tiny_singleton:
+- https://github.com/DamienRobert/tiny_singleton/settings/hooks
+  - https://inch-ci.org/rebuild (push)
+  - https://notify.travis-ci.org/ (create, delete, issue_comment, member, public, pull_request, push, and repository)
+
+- https://github.com/DamienRobert/tiny_singleton/settings/installations
+  Services:
+   Gemnasium
+   Travis CI
+  Note that Services are deprecated and are no longer activated
+  https://developer.github.com/changes/2018-04-25-github-services-deprecation/
+
+* aur.rb:
+- https://github.com/DamienRobert/aur.rb/settings/hooks
+ - https://codeclimate.com/webhooks (pull_request and push)
+ - https://notify.travis-ci.org/ (create, delete, issue_comment, member, public, pull_request, push, and repository)
+
+* Notes:
+- inch webhooks enabled for test_github and tiny_singleton
+- travis webhooks enabled for aur.rb, birthdays, drain, git_helpers, shell_helpers, simplecolor, tiny_singleton
+- codeclimate webhook enabled for test_github
+
+Actions
+-------
+Doc: https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+* https://github.com/marketplace/actions
+
+* Badge:
+https://github.com/<OWNER>/<REPOSITORY>/workflows/<WORKFLOW_NAME>/badge.svg
+cf https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#adding-a-workflow-status-badge-to-your-repository
+
+Markdown: [![Actions Status](https://github.com/{owner}/{repo}/workflows/{workflow_name}/badge.svg)](https://github.com/{owner}/{repo}/actions)
+
+* Query:
+https://github.com/DamienRobert/test_github/actions
+https://github.com/DamienRobert/test_github/actions?query=workflow%3ARuby
+
+* Actions:
+- https://github.com/ruby/setup-ruby
+  See also https://github.com/actions/setup-ruby/issues/44
+
+- https://github.com/marketplace/actions/publish-to-rubygems
+
+* Secrets:
+github automatically setup a github.token also available as
+secrets.GITHUB_TOKEN
+
+Cf https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token
+   https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context
+   https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+
+Packages
+--------
+
+- https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-rubygems-for-use-with-github-packages
+  $ gem push --key github --host https://rubygems.pkg.github.com/DamienRobert pkg/test_github-0.1.0.gem
+
+  $ gem install test_github --version "0.1.0" --source "https://rubygems.pkg.github.com/damienrobert"
+
+  source "https://rubygems.pkg.github.com/damienrobert" do
+    gem "test_github", "0.1.0"
+  end
 
 Badges
 ======
 
-Example: bundler badges https://raw.githubusercontent.com/bundler/bundler/master/README.md
+* Example: bundler badges https://raw.githubusercontent.com/bundler/bundler/master/README.md
+
 [![Version     ](https://img.shields.io/gem/v/bundler.svg?style=flat)](https://rubygems.org/gems/bundler)
 [![Build Status](https://img.shields.io/travis/bundler/bundler/master.svg?style=flat)](https://travis-ci.org/bundler/bundler)
 [![Code Climate](https://img.shields.io/codeclimate/github/bundler/bundler.svg?style=flat)](https://codeclimate.com/github/bundler/bundler)
 [![Inline docs ](http://inch-ci.org/github/bundler/bundler.svg?style=flat)](http://inch-ci.org/github/bundler/bundler)
+[![Slack       ](https://bundler-slackin.herokuapp.com/badge.svg)](https://bundler-slackin.herokuapp.com)
 
-https://shields.io/ is an api to have nice badges
+* https://shields.io/ is an api to have nice badges
 See also https://badge.fury.io/ to get a badge for a gem version: https://badge.fury.io/for/rb/simplecolor
+
+* My configured badges in ore:
+<%= link_to image("https://codeclimate.com/github/#{@github_user}/#{@name}/badges/gpa.svg",'Code Climate GPA'), "https://codeclimate.com/github/#{@github_user}/#{@name}" %>
+<%= link_to image("https://img.shields.io/gem/v/#{@name}.svg","Gem Version"), "https://rubygems.org/gems/#{@name}" %>
+<%= link_to image("https://travis-ci.com/#{@github_user}/#{@name}.svg?branch=master",'Build Status'), "https://travis-ci.com/#{@github_user}/#{@name}" %>

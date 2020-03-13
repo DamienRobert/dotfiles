@@ -125,7 +125,7 @@ endif
 augroup myfiles_settings
 autocmd!
 
-autocmd Filetype c,ruby,python,perl,sh,zsh,gitconfig setlocal ts=2 noexpandtab
+autocmd Filetype c,ruby,python,perl,sh,zsh,gitconfig setlocal ts=2 "noexpandtab
 autocmd FileType mail setlocal fo-=o
 autocmd Filetype tex compiler tex "pour dire qu'un fichier tex est par defaut du latex et pas du plain tex
 

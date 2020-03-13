@@ -9,7 +9,7 @@ module DR
 	module Packages
 		class User < Resolver
 			def self.all_types
-				[:ruby_gems, :python_pip3, :nodejs, :perl_cpan, :git_optdist, :yarn, :go, :rust_cargo]
+				[:ruby_gems, :python_pip3, :nodejs, :perl_cpan, :git_optdist, :yarn, :go, :rust_cargo, :ocaml_opam]
 			end
 		GEMS={ #{{{
 			#gems that were previously bundled with ruby
@@ -68,6 +68,7 @@ module DR
 			rails: %w(rails pry-rails),
 			webserver: %w(sinatra),
 			# devops: %w(chef chef-dk berkshelf chef-provisioning-ssh test-kitchen knife-solo knife-zero), #+ itamae?
+			devops: %w(itamae hocho),
 			web: %w(oga cani rubydns), #oga: nokogiri in ruby; cani: caniuse database
 			webgen_extra: %w(webgen-templates-bundle webgen-zurb_foundation-bundle webgen-font_awesome-bundle), #webgen templates
 			#For webgen website: builder coderay maruku rdiscount haml RedCloth
@@ -82,14 +83,16 @@ module DR
 		PIP3={
 			python: %w(flake8 pytest), #flake8: linter
 			medias: %w(gallery-get praw hachoir urwid), #praw: for ~usr/dist/export-saved-reddit, urwid is for hachoir-urwid
-			extra: %w(howdoi), # percol (replaced by fzf)
-			automation: %w(homeassistant home-assistantcli home-assistant-frontend samsungctl),
-			# samsungctl: https://github.com/Ape/samsungctl
-			# Remote control Samsung televisions via a TCP/IP connection
 			html: %w(html5validator urlscan)}
-		# stapler (not maintened anymore)
 
-		NPM={ doc: %w(tldr), password: %(@bitwarden/cli)}
+		PIP3_EXTRA={ automation: %w(homeassistant home-assistantcli home-assistant-frontend samsungctl), 
+			extra: %w(howdoi), # percol (replaced by fzf), howdoi -> hors in rust
+		}
+			# samsungctl: https://github.com/Ape/samsungctl
+	  	# stapler (not maintened anymore)
+			# Remote control Samsung televisions via a TCP/IP connection
+
+		NPM={ password: %(@bitwarden/cli)}
 
 		# cf scripts/tools.d for more details
 		NPM_LINT={
@@ -101,7 +104,7 @@ module DR
 			#  babel-preset-minify: for .babelrc: presets: ['minify']
 			## babel-loader: for webpack
 			lint: %w(eslint eslint-config-airbnb-base eslint-plugin-import
-				stylelint stylelint-config-standard stylelint-scss stylelint-order stylelint-no-unsupported-browser-features),
+				stylelint stylelint-config-standard stylelint-config-recommended stylelint-scss stylelint-order stylelint-no-unsupported-browser-features),
 				## htmllint-cli html5-lint
 				#eslint-plugin-import: to lint es2015+ import syntax
 				#stylelint-scss: to parse .scss
@@ -112,33 +115,38 @@ module DR
 			html: %w(html-minifier),
 		}
 		NPM_EXTRA=NPM_LINT.merge({
+		  doc: %w(tldr), # tealdeer from rust, tldr from arch
 			dev: %w(webpack),
+			text: %w(emoj emoji-finder),
 		})
 
-		CPAN={core: %w(App::cpanminus),
+    CPAN=%w()
+		CPAN_EXTRA={core: %w(App::cpanminus),
 					media: %w(MusicBrainz::DiscID WebService::MusicBrainz) #for abcde
 				}
 
-		GIT={git: %w(git),
+    GIT=%w()
+		GIT_EXTRA={git: %w(git),
 				:'git-doc' => %w(git-manpages git-htmldocs),
 				:systemd => %w(systemd),
 				:formal => %w(pari cmh cado-nfs cme mpc ecm mpfr pari-gnump),}
 
-		GO={text: %w(github.com/bellecp/fast-p github.com/edi9999/path-extractor/path-extractor)}
+		GO={text: %w(github.com/bellecp/fast-p github.com/edi9999/path-extractor/path-extractor https://github.com/arp242/uni)}
 		#git: %w(github.com/apenwarr/git-subtrac)
 
-		# available natively on arch
-		CARGO={ruby: %w(rbspy),
-			cli: %w(hyperfine exa lsd)}
+		# Packages to install via cargo
+		# These are all available natively on arch
+		CARGO={ cli: %w(hyperfine exa lsd), }
 		#, cargo: %w(cargo-update)} # cargo-update is added automatically if the pkg list is non empty
+		CARGO_EXTRA={ ruby: %w(rbspy), }
 
-		# for my pkgbuilds
+		# For my pkgbuilds, so I have them in my personal db
 		CARGO_TOOLS={
-			cargo: %w(cargo-cache cargo-tree cargo-install-update),
+			cargo: %w(cargo-cache cargo-tree cargo-update),
 			core: %w(bingrep cw runiq),
 			doc: %w(tealdeer),
-			files: %w(amber broot lolcate rm-improved tree-rs xcompress xcp),
-			disk: %w(diskus sn dupe-krill dua-cli dirstat-rs du-dust dutree spruce),
+			files: %w(amber broot lolcate-rs rm-improved tree-rs xcompress xcp),
+			disk: %w(diskus tin-summer dupe-krill dua-cli dirstat-rs du-dust dutree spruce),
 			utils: %w(genact ttdl hors), #howto-cli (does not compile)
 			monitoring: %w(battop hyperfine mprober procs strace-analyzer process_viewer bandwhich),
 			text: %w(fastmod gig ruplacer sd tabwriter-bin xv ripgrep_all diffr mdcat), #typeracer
@@ -151,7 +159,14 @@ module DR
 		}
 
 		CARGO_TOOLS_BIN={
-			cargo: CARGO_TOOLS[:cargo]+%w(cargo-install-update-config),
+			cargo: CARGO_TOOLS[:cargo].map do |pkg|
+				case pkg
+				when "cargo-update"
+					["cargo-install-update", "cargo-install-update-config"]
+				else
+					pkg[/(.*)-bin/,1] || pkg
+				end
+			end,
 			cli: CARGO_TOOLS.reject {|k,_v| k==:cargo}.values.flatten.map do |pkg|
 				case pkg
 				when "hunter"
@@ -170,6 +185,10 @@ module DR
 					"rip"
 				when "tealdeer"
 					"tldr"
+				when "lolcate-rs"
+					"lolcate"
+				when "tin-summer"
+					"sn"
 				else
 					pkg[/(.*)-bin/,1] || pkg
 				end
@@ -178,25 +197,21 @@ module DR
 
 		#packages that are awailable on arch (or my aur repo)
 		ARCHLINUX={
-			yarn: %w(babel-cli eslint tldr),
-			go: %w(github.com/bellecp/fast-p github.com/edi9999/path-extractor/path-extractor),
+			yarn: %w(babel-cli eslint tldr @bitwarden/cli), #aur: bitwarden-cli-bin
+			go: GO.values.flatten,
 			python_pip3: %w(flake8 urlscan praw urwid pytest), #python-{urwid,praw,pytest}
 			rust_cargo: %w(rbspy hyperfine exa lsd),
+			ruby_gems: %w(ghi gist),
 		}
 
 			def packages_setup
-				@packages={ ruby_gems: {pkgs: GEMS}, python_pip2: PIP2, python_pip3: PIP3, yarn: {pkgs: NPM}, perl_cpan: CPAN, git_optdist: GIT, go: GO, rust_cargo: CARGO}
-
-				extra={ruby_gems: GEMS_EXTRA, yarn: NPM_EXTRA}
-				extra.each do |ptype, extras|
-					#more details for ruby gems extra packages
-					@packages[ptype][:classify]={}
-					extra_ok=[]
-					extras.each do |type, values|
-						@packages[ptype][:classify][type]=values
-						extra_ok+=values
+			  @packages={}
+				lists={ ruby_gems: :GEMS, python_pip2: :PIP2, python_pip3: :PIP3, yarn: :NPM, perl_cpan: :CPAN, git_optdist: :GIT, go: :GO, rust_cargo: :CARGO}
+				lists.each do |ptype, const|
+				  @packages[ptype]={pkgs: self.class.const_get(const)}
+				  if self.class.const_defined?(:"#{const}_EXTRA")
+					  @packages[ptype][:extra_ok]=self.class.const_get(:"#{const}_EXTRA")
 					end
-					@packages[ptype][:extra_ok]=extra_ok
 				end
 
 				minimal=[:core, :commands, :doc, :pry, :tests]

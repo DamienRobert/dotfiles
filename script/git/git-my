@@ -24,7 +24,7 @@ desc 'Set log level'
 arg_name 'log_level'
 default_value 'info'
 flag :log
-desc 'debug'
+desc 'debug' # set GLI_DEBUG=true to see backtrace
 switch :debug
 desc 'Always use pager'
 switch :pager
@@ -638,6 +638,8 @@ command :test do |c|
 	c.switch :complicated
 	c.desc 'Create two repos to test push'
 	c.switch :push
+	c.desc 'Create three repos to test upstream/push'
+	c.switch :threepush
 	c.desc 'Recreate the TREESAME example in git log'
 	c.switch :logtreesame
 	c.action do |global_options,options,args|
@@ -729,12 +731,30 @@ command :test do |c|
 			git clone first second
 			cd first
 			git remote add origin ../second
+			git fetch
+			git branch --set-upstream-to origin/master
 			echo "new line on a, not in repo second" >> a
 			git commit -am "add a new commit"
 			EOS
 			#}}}
 		#same layout as standard in first, git clone first second
 		#add a commit to master in first
+		end
+		if options[:threepush]
+			execute= <<-EOS
+			git my test first
+			git clone first second
+			git clone first third
+			cd first
+			git remote add second ../second
+			git remote add third ../third
+			git config push.pushDefault third
+			git fetch --all
+			git branch --set-upstream-to second/master
+			git config branch.master.pushRemote third #merge=... has precedence over pushDefault otherwise
+			echo "new line on a, not in repo second" >> a
+			git commit -am "add a new commit"
+			EOS
 		end
 		if options[:logtreesame]
 			# See the thread gmane.comp.version-control.git:239529
@@ -920,11 +940,17 @@ end
 # extra-fork: github fork {{{1
 @extra.desc "Set up a github fork as a three way repo"
 @extra.command :fork do |c|
+  c.desc "Pass options to hub fork"
+	c.flag :fork
+  c.desc "Select an organisation"
+	c.flag :org
 	c.action do |global_options,options,args|
 		sh! (["hub", "clone"] + args) unless args.empty?
 		# TODO: we need to cd to the cloned directory afterwards...
+		org=options[:org]
+		pushname= org ? org : "DamienRobert"
 		sh <<EOS
-		hub fork && hub push DamienRobert : && git fetch DamienRobert && git config remote.pushDefault DamienRobert
+		hub fork #{ org ? "--org #{org}" : ''} #{options[:fork]} && hub push '#{pushname}' : && git fetch '#{pushname}' && git config remote.pushDefault '#{pushname}'
 EOS
 	end
 end

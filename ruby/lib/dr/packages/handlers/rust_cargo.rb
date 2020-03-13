@@ -50,13 +50,23 @@ module DR
 
 			def update(*args, **kw)
 				super do |pkgs,o|
-					"#{@packager} install-update #{o} -a"
+					if (rustup=find_executable("rustup"))
+						"#{rustup} update"
+					end
+					if find_executable("cargo-install-update")
+						"#{@packager} install-update #{o} -a"
+					end
 				end
 			end
 
 			def check_update(*args)
 				super do |o|
-					"#{@packager} install-update #{o} -la"
+					if (rustup=find_executable("rustup"))
+						"#{rustup} check"
+					end
+					if find_executable("cargo-install-update")
+						"#{@packager} install-update #{o} -la"
+					end
 				end
 			end
 		end

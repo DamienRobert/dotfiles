@@ -196,6 +196,7 @@ alias recode_utf8='recode ISO8859-1..UTF-8'
 # pour les transferts de fichiers
 alias transfert2='rsync -vazzPHAXS'
 alias transfert='rsync -vazzP'
+alias oldtransfert='rsync -vaP'
 
 alias aspire='wget -rkpENnp'
 
@@ -293,25 +294,25 @@ hash -d vim=/usr/share/vim/vim74/
 hash -d zsh=/usr/share/zsh
 hash -d zshcompletion=~zsh/functions/Completion
 hash -d rubysyslib=/usr/lib/ruby
+hash -d oretemplate=~ruby/submodules/ore/data/ore/templates/
 
 # Global aliases {{{2
 #suffixes
-alias -g IC="| cat"
-alias -g CA="2>&1 | cat -A"
-alias -g DISP="DISPLAY=:0.0"
-alias -g EO="2>&1"
-alias -g EG='|& egrep'
-alias -g EL='|& less'
-alias -g EP='|& vimpager'
-alias -g IF=' | fmt -'
-alias -g IG='| egrep'
-alias -g IL="| less"
-alias -g IV="| vimpager"
-alias -g IH="| head"
-alias -g IT="| tail"
 alias -g NO="> /dev/null"
 alias -g NE="2> /dev/null"
 alias -g NUL="> /dev/null 2>&1"
+alias -g EO="2>&1"
+alias -g IC="| cat"
+alias -g EC="|& cat"
+alias -g IG='| egrep'
+alias -g EG='|& egrep'
+alias -g IL="| less"
+alias -g EL='|& less'
+alias -g EV='|& vimpager'
+alias -g IV="| vimpager"
+alias -g IF='| fmt -'
+alias -g IH="| head"
+alias -g IT="| tail"
 alias -g IS="| sort"
 alias -g IU="| uniq"
 alias -g IX='| xargs'
@@ -319,6 +320,10 @@ alias -g IW="| w3m -T text/html"
 alias -g IWC="| wc"
 alias -g IPE='| path-extractor'
 alias -g IPZ='| path-extractor | fzv'
+alias -g XC='| xclip -rmlastnl -selection clipboard'
+alias -g CA="2>&1 | cat -A"
+
+alias DISP="DISPLAY=:0.0"
 alias VP="PAGER=vimpager"
 
 # helper functions {{{2

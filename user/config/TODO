@@ -1,33 +1,50 @@
+vim: ft=markdownlight fdm=expr
+
+Légende: - TODO, + partially done, x essentially done, ! important, ? TODO?
+
 TODO
 ====
 
-- firewall
-- dns (unbound) + gondolin.eu
-- vpn (wireguard, zerotier) + look at routing daemon (bird) + vxlan
-- rust cli
-- manual containers, systemd security
++ rust clis
+x manual containers, systemd security
+- itamae
+- plex / emby / jellyfin
 
-- unison file monitor
+Programmes
+----------
+
 - uim
 - pacman-hook to run patchelf
+- newer version of magma (static and segfault)
 
-- newer version of magma (segfault)
 - offlineimap: use notification rather than inotify like checkmail does?
   cf https://bbs.archlinux.org/viewtopic.php?id=159790
      https://bitbucket.org/raymonad/offlineimap-notify
   => reuse oauth for gmail?
+
 - volume: update notification rather than make a new one
   cf https://bugzilla.xfce.org/show_bug.cgi?id=10795
   [for now i just use xfce4-pulseaudio-plugin]
   wrapper around ponymix?
 
-- unison: unisonsync does not quit (update: it does, just the ssh goes
-  hairwire if we wait too long. + --detach yields a broken pipe in the gui
-  :-()
-          test FORCE
+- unison: unisonsync does not quit 
+  (update: it does, just the ssh goes hairwire if we wait too long +
+  --detach yields a broken pipe in the gui :-()
+  + test FORCE
+- unison file monitor
+
+network
+-------
+
+x vpn (wireguard, zerotier)
+- firewall (nftable scripts)
++ posts dans forum pour les réseaux
++ dns (unbound) + gondolin.eu
+? look at routing daemon (bird) + vxlan
 
 website
 -------
+
 - Switch to html5 (use Foundation?)
   -> flexbox + [compass] + webgen
 
@@ -38,10 +55,9 @@ ruby
 - cv: (finish) rewrite into a more OO way (and extract logic independant code), tests
 - nanooptparse [don't use slop; look at new features of optparse, write wrapper around optparse]
 - binaries for shell_utils
-- play with 'yield from' and lazy piping of Enumerators?
 - finish aur.rb
 - write a mail icon using yad
-- gitstatus.rb: use libgit2?
+? gitstatus.rb: use libgit2?
 
 ruby wrappers:
 ? ruby wrappers around scripts for ~maint/onetime
@@ -58,8 +74,8 @@ config
 
 Long term:
 ---------
+
 - latex: revoir MyPackages/ quand latex3 et luatex seront stables...
   [au moins adapter pour unicode-math et polyglossia, et utiliser lualatex
   par défaut dans latexmk (partially done)]
 - vim colorscheme + new plugins (attendre neovim?)
-- nftable for firewall

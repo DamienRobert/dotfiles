@@ -1,3 +1,5 @@
+vim: ft=markdownlight fdm=expr
+
 Moments
 =======
 
@@ -37,3 +39,42 @@ Gaussienne
 - φ_X(u)=exp(i u^T μ -1/2 u^T Σ u)
 - X=AZ+μ où Z_n~N(0,1) iid. A matrice k*l et Σ=AA^T.
 - toute combinaison linéaire \sum a_i X_i est une gaussienne
+
+Statistiques
+============
+
+* https://fr.wikipedia.org/wiki/Coefficient_de_d%C3%A9termination
+En statistique, le coefficient de détermination, noté R2 ou r2, est une mesure de la qualité de la prédiction d'une régression linéaire.
+Il est défini par :
+    R^2 = 1 − ∑(y_i−y_i^)^2/∑(y_i−y¯)^2
+où n est le nombre de mesures, y_i la valeur de la mesure no i, y_i^ la valeur prédite correspondante et y¯ la moyenne des mesures.
+
+Lemme:
+- R^2 = corr(y^,y)^2
+- Dans le cas univarié, on montre que c'est aussi le carré du coefficient de corrélation entre les valeurs x_i de la variable prédictive et les mesures y_i.
+
+- https://fr.wikipedia.org/wiki/Corr%C3%A9lation_(statistiques)#Coefficient_de_corr%C3%A9lation_lin%C3%A9aire_de_Bravais-Pearson
+  Coefficient de corrélation corr: r = Cov(X,Y)/σ_Xσ_Y
+
+* χ²: https://fr.wikipedia.org/wiki/Test_du_%CF%87%C2%B2
+  T = ∑_{j=1}^J (N p_j^ − N p_j)^2/Np_j
+Sous l'hypothèse nulle, cette statistique suit asymptotiquement une loi du χ^2 à (J–1) degrés de liberté.
+
+* https://fr.wikipedia.org/wiki/Loi_du_%CF%87%C2%B2
+la loi du χ^2 centrée avec k degrés de liberté est la loi de la somme de carrés de k lois normales centrées réduites indépendantes.
+Conformément au théorème central limite, lorsque k est « grand » (k > 100), la loi d'une variable de χ^2, somme de variables aléatoires indépendantes, peut être approchée par une loi normale d'espérance k et de variance 2k.
+
+* https://fr.wikipedia.org/wiki/Test_de_Student
+On veut comparer la moyenne μ d'une population de loi normale et d’écart type σ non connu à une valeur déterminée μ0. Pour ce faire, on tire de cette population un échantillon de taille n dont on calcule la moyenne empirique x¯ = 1/n ∑ x_i et l'on remplace sa variance σ2 par son estimateur sans biais
+    S_n^∗2 = 1/(n−1) ∑ (X_i − X¯_n)^2
+Selon l’hypothèse nulle, la distribution d’échantillonnage de cette moyenne se distribue elle aussi normalement avec un écart type σ/√n.
+La statistique de test :
+    Z = \sqrt{n} (X¯−μ0)/S_n^∗
+suit alors une loi de Student à n – 1 degrés de liberté
+
+* https://fr.wikipedia.org/wiki/Loi_de_Student
+Soit Z une variable aléatoire de loi normale centrée et réduite et soit U une variable indépendante de Z et distribuée suivant la loi du χ^2 à k degrés de liberté. Par définition, la variable
+    T = Z/\sqrt{U/k}
+suit une loi de Student à k degrés de liberté. 
+
+* https://biology.stackexchange.com/questions/13486/deciding-between-chi-square-and-t-test

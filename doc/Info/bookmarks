@@ -31,6 +31,8 @@ Rust
 - https://www.reddit.com/r/rust/comments/bgikmz/rusts_2019_roadmap/
 - http://adventures.michaelfbryan.com/posts/how-not-to-riir/ (build an interface to a C library)
 - https://interrupt.memfault.com/blog/zero-to-main-rust-1 (rust for embarked devices)
+- https://github.com/spacejam/rio
+  pure rust io_uring library, built on libc, thread & async friendly, misuse resistant
 
 Go
 ==

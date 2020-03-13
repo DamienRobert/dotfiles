@@ -119,18 +119,17 @@ rake release  # Create tag v0.1.0 and build and push ploum-0.1.0.gem to Rub...
 ## Ore/Mine
 [une alternative à 'ore' est 'gemsmith': https://github.com/bkuhlmann/gemsmith]
 Pour créer un dossier pour la gem:
- mine monprojet --mini-test --markdown --yard --gemspec-yml --bin
-   #si on veut markdown il faut utiliser yard plutôt que rdoc car rdoc force le markup à être rdoc
-   #gemspec-yml pour faire la spec dans un fichier yaml
-   #mini-test pour remplacer rspec qui est le défaut
-Note:
-  J'ai configuré ~/.ore pour avoir par défaut
+ oremine monprojet --bin --github-actions
+
+Note: J'ai configuré ~/.ore pour avoir par défaut
+  --default, qui active (cf default/template.ym):
   --markdown --gemspec_yml --git --minitest --rubygems_taks --yard
   and some custom templates
-  (=> bundler_light, gem_badge)
+  (=> base, bundler_light, gem_badge)
+    - bundler_light = comme bundler, mais sans la dépendance à bundler dans development_dependencies
 
-Try to update a template:
-mine --no-markdown --no-gemspec-yml --no-git --no-minitest --no-rubygems-task --no-yard --no-bundler-light --no-mit --no-gem-badge --travis .
+Try to update a template: [--no-scm]
+THOR_MERGE=meld oremine --no-default --github-actions .
 
 Variables disponibles dans les templates (cf generator.rb):
 @root, @project_dir, @name, @scm,
@@ -148,6 +147,15 @@ Ore default templates: ~gems/ore/data/ore/templates
   bsd/      gem_package_task/  hg/    rdoc/      travis/
   bundler/  gemspec_yml/       lgpl/  rspec/     yard/
 
+Note that in templates, *.erb are generated, _*.erg are partial templates
+(available via include), *.md are read only if markup=markdown (default)
+
+Used partial templates:
+:gemfile_prelude, :gemfile, :gemfile_development, :badges, :tasks, :gemspec
+Deps uses the variables @dependencies, @development_dependencies (used in
+the gemspec), but we can add extra deps in the Gemfil by using the partial
+templates _gemfile_*
+
 ## Push on github
 hub init -g
 hub create -d 'description' #or hub create "toto" -d "ploum"
@@ -159,7 +167,7 @@ git push --tags
 GEM=gem_name
 mine ~rubygems/$GEM
 cd ~rubygems/$GEM
- #vi README.md gemspec.yml
+ # vi README.md gemspec.yml
  # (cd ~mine; git submodule add ./ruby/gems/$GEM ruby/gems/$GEM)
  # (cd ~mine; git subadd ruby/gems/$GEM)
 
@@ -175,6 +183,10 @@ EOS
 
 git remote rename origin github
 git push --set-upstream github master
+
+## Bumping a gem version
+rake prepare # rake "prepare[minor]" # rake "prepare[no]" 
+rake release #this will retag with a signed annotated tag
 
 ## Gem plugins:
 https://github.com/rubygems/guides/blob/gh-pages/plugins.md

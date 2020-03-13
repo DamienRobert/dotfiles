@@ -528,6 +528,7 @@ https://golem.ph.utexas.edu/category/archives.html
 - https://golem.ph.utexas.edu/category/2020/01/profunctor_optics_the_categori.html
 - https://golem.ph.utexas.edu/category/2020/02/modal_homotopy_type_theory_the.html
 - https://golem.ph.utexas.edu/category/2020/02/ega1_the_language_of_schemes.html
+- https://golem.ph.utexas.edu/category/2020/02/2dimensional_categories.html
 
 Choux Romanesco
 ================
@@ -606,6 +607,8 @@ https://blog.cryptographyengineering.com/2019/06/05/how-does-apple-privately-fin
 - https://twitter.com/JDHamkins/status/1213771972456394752
   Klein tree
   http://math.andrej.com/2006/04/25/konigs-lemma-and-the-kleene-tree/
+
+- http://jdh.hamkins.org/the-real-numbers-are-not-interpretable-in-the-complex-field/
 
 # Geo Alg and Number Theory
 

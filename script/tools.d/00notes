@@ -5,9 +5,14 @@ Syntax check:
 - bash/zsh -n
 - node -c
 
-Install yarn packages:
-yarn add $(ruby -e "require 'dr/packages/user'; puts DR::Packages::User::NPM_LINT.values.flatten.join(' ')")
-Update: yarn upgrade -L
+* Install yarn packages:
+yarn global add $(ruby -e "require 'dr/packages/user'; puts DR::Packages::User::NPM_LINT.values.flatten.join(' ')")
+Update: yarn global upgrade -L
+
+(Attention: comme je symlinke vers 'yarn global', `yarn install` va enlever
+les autres paquest installés globalement
+=> use global add / global upgrade.
+Et pour mettre à jour le packages.json localement, faire un symlink vers /tmp)
 
 # Config and modules resolution
 
@@ -243,7 +248,7 @@ posthtml: https://github.com/posthtml/posthtml
 rubocop
 =======
 
-The default ~/.rubocop.yml config is
+My default ~/.rubocop.yml config is
 
 AllCops:
   DisabledByDefault: true
@@ -251,4 +256,10 @@ AllCops:
 Lint:
   Enabled: true
 
-This is also .rubocop_check.yml. .rubocop_style has almost all cops.
+This is also .rubocop_check.yml in tools.d. There .rubocop_style has almost all cops.
+
+Others
+======
+
+- https://github.com/remarkjs/remark
+  markdown linter

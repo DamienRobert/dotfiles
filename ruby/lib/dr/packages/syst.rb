@@ -17,7 +17,7 @@ module DR
 			minimal: %w(base base-devel openssh zsh),
 			base: %w(git ruby tmux vim-minimal),
 			hwbase: %w(btrfs-progs gptfdisk linux-firmware),
-			core: %w(encfs mlocate moreutils tree expect inotify-tools logrotate),
+			core: %w(gocryptfs encfs mlocate moreutils tree expect inotify-tools logrotate watchman),
 			coreextra: %w(progress pv convmv),
 			doc: %w(tldr man-db man-pages),
 
@@ -33,7 +33,7 @@ module DR
 			#Add bluez-firmware? I don't seem to need it for my bluetooth objects yet
 			# Monitoring: jnettop, nload, netwatch
 			net: %w(unison lftp w3m wget),
-			netextra: %w(offlineimap ntp aria2 gnu-netcat lynx links elinks mosh cclive youtube-dl sshuttle openvpn openconnect httpie electrum lastpass-cli rclone s-nail), #openconnect: for inria vpn
+			netextra: %w(offlineimap ntp aria2 gnu-netcat lynx links elinks mosh cclive youtube-dl sshuttle openvpn openconnect httpie electrum lastpass-cli rclone s-nail ghi gist), #openconnect: for inria vpn
 
 			archive: %w(atool lrzip lz4 lzop p7zip cpio unrar zip unzip sharutils),
 			#sharutils contains uuencode
@@ -73,7 +73,7 @@ module DR
 			graphviz gnuplot gaupol tidy pandoc qpdf
 			asciidoc asciidoctor
 			arch-wiki-docs arch-wiki-lite
-			cowsay ponysay pdftk-bin dos2unix units
+			cowsay ponysay pdftk dos2unix units
 			unicode-character-database
 			),
 			virtual: %w(vagrant virtualbox qemu ovmf)+ #docker packer-io
@@ -84,12 +84,12 @@ module DR
 		
 			devel: %w(ctags devtools elfutils strace),
 			develextra: %w(subversion gdb cmake ruby-docs linux-headers mercurial
-			bpython ipython clojure coffeescript scala ocaml nodejs npm yarn yasm
+			bpython ipython clojure coffeescript scala ocaml opam nodejs npm yarn yasm
 			patchelf pax-utils libfaketime hub android-tools signify
 			hexyl
 			bower gulp uglify-js grunt-cli
 			clang llvm lldb scons meson go rust
-			rbspy python-pip python2-pip), #cython, cython2?
+			python-pip python2-pip), #cython, cython2?
 			#yasm is used for supernes simulator (yasm is a rewrite of nasm)
 			#bower,gulp,uglify-js,grunt: for nodejs packages like popcorntime
 			#libfaketime is to launch old magma bin
@@ -120,7 +120,7 @@ module DR
 			xdotool wmctrl xdg-user-dirs
 			redshift
 			xss-lock i3lock
-			x2goclient xpra
+			x2goclient xpra yad
 			), #accountsservice is optional for lightdm
 			#if needed: lxde, lxqt? Terminals: kitty, alacritty
 			#xorg-fonts-misc (I think its dependences xorg-fonts-{encodings,alias} is needed for X programs to use X fonts; otherwise I get:
@@ -135,8 +135,8 @@ module DR
 				gnome-backgrounds gnome-icon-theme gnome-icon-theme-extras gnome-icon-theme-symbolic gnome-themes-extra gtk-engines),
 			xcom: %w(pidgin hexchat teamspeak3
 				purple-facebook purple-skypeweb),
-			xfile: %w(calibre k3b deluge gparted usbview rmlint-shredder),
-			xgames: %w(arenatracker-bin),
+			xfile: %w(calibre k3b deluge-gtk gparted usbview rmlint-shredder),
+			xgames: %w(),
 			xmedia: %w(kdegraphics krita
 			pavucontrol paprefs gstreamer
 			gst-plugins-base gst-plugins-good gst-plugins-bad
@@ -180,26 +180,32 @@ module DR
 			GROUPS=[:all] #:all means obtain the groups automatically
 
 			# static list of 'dams' local repo
+			# this is deep_merged into PACKAGES afterwards
 			AUR_LOCAL_PKGS={
 				aurhelpers: %w(auracle-git aurman aurutils-git repoctl pacaur package-query yay pkgbuild-introspection powerpill),
-				devops: %w(chef-workstation),
+				devops: %w(chef-workstation mitamae),
 				files: %w(dropbox scalpel-git),
-				hardware: %w(modtree heimdall), #heimdall: flash Samsung phone firmware
-				coreextra: %w(rust-cli-utils path-extractor fpp-git),
-				develextra: %w(universal-ctags-git rust-cargo-utils rbspy),
+				hardware: %w(modtree),
+				coreextra: %w(rust-cli-utils path-extractor fpp-git xe-git),
+				develextra: %w(universal-ctags-git rust-cargo-utils rbspy github-cli),
 				fsextra: %w(jmtpfs bcache-tools simple-mtpfs),
 				mailextra: %w(archivemail),
-				mediaextra: %w(google-musicmanager gtkpod ponymix-git mp3gain mpdas mpdscribble), #pulseaudio-dlna
-				netextra: %w(windscribe-cli tor-browser weboob bitwarden-bin),
-				textextra: %w(fast-p pdftk-bin),
-
+				mediaextra: %w(google-musicmanager gtkpod ponymix-git mp3gain mpdas mpdscribble),
+				netextra: %w(windscribe-cli tor-browser weboob bitwarden-bin bitwarden-cli-bin),
+				textextra: %w(fast-p uni),
 				xcom: %w(purple-battlenet-hg purple-hangouts-hg),
 				xfonttools: %w(font-manager),
-				xgames: %w(arenatracker-bin),
 				xmedia: %w(penguin-subtitle-player-git popcorntime),
 				xtext: %w(neovim-gtk), # neovim-qt is in aur now
-				xextra: %w(winswitch yad),
+				xextra: %w(winswitch),
 				xtextextra: %w(impressive masterpdfeditor),
+			}
+			# packages that I don't want (anymore), but still want to keep in the DB
+			#Not used anymore: arenatracker asp-git roxterm skype-electron skypeforlinux-stable-bin
+			DB_LOCAL_PKGS={
+			  mediaextra: %w(pulseaudio-dlna),
+			  xmedia: %w(), #ekiga, this is not in aur anymore, so we get missing package warning for ekiga and its dependencies: opal, ptlib
+				xgames: %w(arenatracker-bin),
 			}
 
 			#packages that I may have (depending on which computer I am), aka
@@ -207,9 +213,9 @@ module DR
 			#when they are)
 			CUSTOM={
 				aurhelpers: AUR_LOCAL_PKGS[:aurhelpers],
-				develextra: %w(universal-ctags-git unetbootin),
+				develextra: %w(universal-ctags-git unetbootin go-pie),
 				crack: %w(hashcat hashcat-utils john pdfcrack intel-compute-runtime),
-				hardware: %w(heimdall),
+				hardware: %w(heimdall), #heimdall: flash Samsung phone firmware
 				fonts: %w(awesome-terminal-fonts gentium-plus-font ttf-hack ttf-junicode),
 				devops: %w(chef-workstation buildah podman), #sysdig
 				fsextra: %w(mtpfs git-annex-bin),
@@ -218,10 +224,10 @@ module DR
 				xmisc: %w(subsurface),
 				xtextextra: %w(pdfpc neovim-qt),
 				xmedia: %w(gtkpod linphone popcorntime),
-				xweb: %w(tor-browser-en chromium pepper-flash),
+				xweb: %w(tor-browser chromium pepper-flash),
 			}
 
-			AUR_LOCAL_REPO=AUR_LOCAL_PKGS.values.flatten.sort
+			AUR_LOCAL_REPO=(AUR_LOCAL_PKGS.values.flatten + DB_LOCAL_PKGS.values.flatten).sort.uniq
 			# try a dynamic list if possible
 			if (db=Pathname.new("/var/lib/pacman/sync/dams.db")).exist?
 				require 'aur/no_load_config'
@@ -233,10 +239,9 @@ module DR
 			end
 			#packages that lives in aur and not available in the local repo
 			AUR=AUR_LOCAL_REPO +
-				%w(linphone unetbootin ekiga) -
+				%w(linphone unetbootin) -
 				LOCAL_REPO
-			#Not in aur anymore: git-annex-bin
-			#Not used anymore: arenatracker asp-git roxterm skype-electron skypeforlinux-stable-bin
+			#Not in aur anymore: git-annex-bin, ekiga
 
 			PACKAGES.deep_merge!(AUR_LOCAL_PKGS,append: true).each do |k,v|
 				PACKAGES[k]=v-(CUSTOM[k]||[])
@@ -250,9 +255,10 @@ module DR
 			# CONFLICT["pari-sage"]=%w(pari)
 			# CONFLICT["neomutt"]=%w(mutt) #these don't conflict anymore
 			CONFLICT["universal-ctags-git"]=%w(ctags)
+			CONFLICT["go-pie"]=%w(go)
 			#}}}
 
-			def initialize(*args)
+			def initialize(*args, **kw)
 				@pkg_helper=Proc.new do |*args|
 					base=[]
 					busutils=%w(pcmciautils pciutils usbutils)

@@ -3,7 +3,7 @@ be  protected with  double or single quotes or a backslash) or newlines,
 and executes the command (default is /bin/echo) one or more times with any
 initial- arguments  followed  by items read from standard input.
 
-Options:
+* Options:
        -L max-lines
               Use at most max-lines nonblank input  lines  per  command  line.
               Trailing blanks cause an input line to be logically continued on
@@ -17,7 +17,21 @@ Options:
               terminate  input  items;  instead  the  separator is the newline
               character.  Implies -x and -L 1.
        -p: ask for confirmation
+       -d: delimiter
+       -n max-args: Use at most max-args per command line
+       -r, --no-run-if-empty
 
-Exemples:
+https://unix.stackexchange.com/questions/448290/are-l1-and-n-1-the-same-for-xargs
+-L1 does not join args on multiple lines, but args in one line are still joined
+  echo 'foo bar' | xargs -L1 rm -> rm foo bar
+  echo 'foo bar' | xargs -n1 rm -> rm foo; rm bar
+
+
+* Exemples:
 $ git remote | xargs -L1 git push --all
 $ git remote | xargs -L1 -I R git push R master
+
+* https://github.com/leahneukirchen/xe
+  simple xargs and apply replacement
+
+  Sane defaults (behaves like xargs -d'\n' -I{} -n1 -r).

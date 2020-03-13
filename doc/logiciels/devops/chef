@@ -322,3 +322,18 @@ https://docs.chef.io/ohai.html
 
 Cf the binary ohai to get information on the computer without chef
 require 'ohai'; Ohai::System.new.all_plugins
+
+Exemple
+=======
+
+~~~ ruby
+package 'nginx'
+
+service 'nginx' do
+  action [:enable, :start]
+end
+
+file 'motd' do
+  content 'hello world'
+end
+~~~

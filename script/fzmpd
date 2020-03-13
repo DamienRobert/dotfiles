@@ -1,12 +1,12 @@
 #!/usr/bin/zsh
 
 help() {
-	$0 [options] query
+  echo "$0 [options] query
 	--genre genre
 	--artist artist
 	--album album
 	--title title
-	--playlist playlist
+	--playlist playlist"
 }
 
 # id3info: id3lib
@@ -21,7 +21,7 @@ fzf_mpd() {
 	while true; do
 		case $1 in
 			-- ) shift; break ;;
-			-h ) shift; help ;;
+			-h ) shift; help ; exit 1;;
 			--genre ) shift; mode="genre" ;;
 			--artist ) shift; mode="artist" ;;
 			--album ) shift; mode="album" ;;
@@ -37,7 +37,7 @@ fzf_mpd() {
 				mpc search $mode $seli
 			done } | fzf_select_songs ;;
 		playlist)
-			song_position=$(mpc -f "%position%) %artist% - %title%" playlist | \
+			song_position=$(mpc -f "%position%) [[%artist% - ][%album% - ][%track%##]%title%]|[%file%][ %time%][ (%date%)]" playlist | \
 				fzf-tmux --query=$1 -0 -1 +m | \
 				sed -n 's/^\([0-9]\+\)).*/\1/p') || return 1
 			  [[ -n $song_position ]] && mpc -q play $song_position

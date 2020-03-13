@@ -33,6 +33,8 @@ Note https://help.ubuntu.com/community/ComposeKey#XIM
 dit aussi d'utiliser `export GTK_IM_MODULE="xim"` pour overrider le
 hardcoding de gnome. Mais il semble que dans gtk-3 ce n'est plus hardcodé,
 mon .XCompose marche bien.
+Hum https://twitter.com/gro_tsen/status/1230803845070106625 a l'air
+d'indiqué que gtk3 ne lit pas le /usr/share/X11/locale/en_US.UTF-8/Compose
 
 * https://wiki.archlinux.org/index.php/Internationalization#Input_methods_in_Xorg
 gtk input module order:

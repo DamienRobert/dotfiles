@@ -32,7 +32,7 @@ or the result.
 If multiple cases apply, the one used is listed first.
 
 A result which changes the index is an error if the index is not empty
-and not up-to-date.
+and not up to date.
 
 Entries marked '+' have stat information. Spaces marked '*' don't
 affect the result.
@@ -65,7 +65,7 @@ empty, no entry is left for that stage). Otherwise, the given entry is
 left in stage 0, and there are no other entries.
 
 A result of "no merge" is an error if the index is not empty and not
-up-to-date.
+up to date.
 
 *empty* means that the tree must not have a directory-file conflict
  with the entry.
@@ -74,24 +74,24 @@ For multiple ancestors, a '+' means that this case applies even if
 only one ancestor or remote fits; a '^' means all of the ancestors
 must be the same.
 
-case  ancest    head    remote    result
-----------------------------------------
-1     (empty)+  (empty) (empty)   (empty)
-2ALT  (empty)+  *empty* remote    remote
-2     (empty)^  (empty) remote    no merge
-3ALT  (empty)+  head    *empty*   head
-3     (empty)^  head    (empty)   no merge
-4     (empty)^  head    remote    no merge
-5ALT  *         head    head      head
-6     ancest+   (empty) (empty)   no merge
-8     ancest^   (empty) ancest    no merge
-7     ancest+   (empty) remote    no merge
-10    ancest^   ancest  (empty)   no merge
-9     ancest+   head    (empty)   no merge
-16    anc1/anc2 anc1    anc2      no merge
-13    ancest+   head    ancest    head
-14    ancest+   ancest  remote    remote
-11    ancest+   head    remote    no merge
+ case  ancest    head    remote    result
+ ----------------------------------------
+ 1     (empty)+  (empty) (empty)   (empty)
+ 2ALT  (empty)+  *empty* remote    remote
+ 2     (empty)^  (empty) remote    no merge
+ 3ALT  (empty)+  head    *empty*   head
+ 3     (empty)^  head    (empty)   no merge
+ 4     (empty)^  head    remote    no merge
+ 5ALT  *         head    head      head
+ 6     ancest+   (empty) (empty)   no merge
+ 8     ancest^   (empty) ancest    no merge
+ 7     ancest+   (empty) remote    no merge
+ 10    ancest^   ancest  (empty)   no merge
+ 9     ancest+   head    (empty)   no merge
+ 16    anc1/anc2 anc1    anc2      no merge
+ 13    ancest+   head    ancest    head
+ 14    ancest+   ancest  remote    remote
+ 11    ancest+   head    remote    no merge
 
 Only #2ALT and #3ALT use *empty*, because these are the only cases
 where there can be conflicts that didn't exist before. Note that we

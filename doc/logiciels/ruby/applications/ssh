@@ -519,4 +519,3 @@ Note: Command#on_stdout:
       interaction_handler.on_data(self, stream_name, data, channel) if interaction_handler.respond_to?(:on_data)
     end
 ~~~
-

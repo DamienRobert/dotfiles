@@ -280,6 +280,27 @@ FLIF – Free Lossless Image Format (flif.info)
 https://christine.website/blog/i-was-wrong-about-nix-2020-02-10
 -> Nix for docker and go
 
+https://news.ycombinator.com/item?id=22369080
+Reducing Docker Image Size (ardanlabs.com)
+
+https://news.ycombinator.com/item?id=22374093
+Setting up a Raspberry Pi 4 home server (smalldata.tech)
+
+https://news.ycombinator.com/item?id=22434208
+The $35 Raspberry Pi 4 now comes with double the RAM (engadget.com)
+
+https://news.ycombinator.com/item?id=22373422
+500 Byte Images: The Haiku Vector Icon Format (leahhanson.us)
+
+https://news.ycombinator.com/item?id=22436704
+Using BPF to Transform SSH Sessions into Structured Events (gravitational.com)
+
+https://news.ycombinator.com/item?id=22506722
+Cloud Storage for $2 per TB per month (sia.tech)
+
+https://news.ycombinator.com/item?id=22564665
+Linux Kernel Lectures and Labs (linux-kernel-labs.github.io)
+
 # Programming
 
 https://news.ycombinator.com/item?id=11847529
@@ -622,6 +643,30 @@ C4: C in Four Functions (2014) (github.com)
 
 https://news.ycombinator.com/item?id=22349531
 The Myth of the Myth of the 10x Programmer (payne.org)
+
+https://news.ycombinator.com/item?id=22381956
+Amb (rosettacode.org)
+
+https://news.ycombinator.com/item?id=22390662
+Learn Rust with Entirely Too Many Linked Lists (rust-unofficial.github.io)
+
+https://news.ycombinator.com/item?id=22448933
+A half-hour to learn Rust (fasterthanli.me)
+
+https://news.ycombinator.com/item?id=22491536
+Why not to use (f)lex, yacc or bison (tomassetti.me)
+
+https://news.ycombinator.com/item?id=22482223
+Hundred Year Mistakes (ericlippert.com)
+
+https://news.ycombinator.com/item?id=22504106
+Stages of denial in encountering K (nsl.com)
+
+https://news.ycombinator.com/item?id=22537250
+MessagePack: like JSON, but fast and small (msgpack.org)
+
+https://news.ycombinator.com/item?id=22548910
+Using WASM with Rust (alopex.li)
 
 # Software
 http://blog.burntsushi.net/ripgrep/
@@ -1064,6 +1109,31 @@ Create a Debian chroot unprivileged, with the help of bubblewrap and debootstrap
 https://github.com/xiph/rav1e
 The fastest and safest AV1 encoder.
 
+https://news.ycombinator.com/item?id=22367104
+Why SQLite succeeded as a database (2016) (changelog.com)
+
+https://news.ycombinator.com/item?id=22366638
+Unix Toolbox (2008) (cb.vu)
+
+https://antora.org/
+The multi-repository documentation site generator for tech writers who love writing in AsciiDoc.
+https://github.com/asciidoctor/kramdown-asciidoc
+A kramdown extension for converting Markdown documents to AsciiDoc.
+
+https://news.ycombinator.com/item?id=22420231
+Isomorphic-git v1.0 (isomorphic-git.org)
+= git in js
+-> I wonder how this compares to wasm-git[1], which is libgit2 compiled to wasm for use in both the browser and node.
+
+https://news.ycombinator.com/item?id=22434200
+Show HN: Goodreads Data Pipeline (github.com)
+
+https://news.ycombinator.com/item?id=22495518
+Show HN: Unscreen – Remove Video and GIF Backgrounds (unscreen.com)
+
+https://news.ycombinator.com/item?id=22498665
+CLUI: Building a Graphical Command Line (repl.it)
+
 # Web
 
 ## Navigateurs:
@@ -1097,6 +1167,9 @@ Lynx is dead – Long live Browsh for text-based internet browsing (2018) (hanse
 
 https://news.ycombinator.com/item?id=22236106
 Google has a backdoor to track individual users per Chrome installation ID (github.com)
+
+https://news.ycombinator.com/item?id=22474641
+Firefox 75 on Linux (Wayland) now to have WebGL and video hardware acceleration (phoronix.com)
 
 ## Sites:
 https://news.ycombinator.com/item?id=14209119
@@ -1143,6 +1216,9 @@ FortyQ: Answering any question in 42 minutes flat (fortyq.com)
 https://news.ycombinator.com/item?id=22141903
 List of Twitter mute words for your timeline (gist.github.com)
 
+https://github.com/getpatchwork/patchwork
+Patchwork is a web-based patch tracking system designed to facilitate the contribution and management of contributions to an open-source project. http://jk.ozlabs.org/projects/patchwork/
+
 ## Web content
 
 Facebook cookies:
@@ -1179,6 +1255,10 @@ auth-zone: 	name: "eulerian.net." 	zonefile: "/etc/unbound/blocked.zone"
 https://news.ycombinator.com/item?id=21955739
 Promiscuous cookies and their impending death via the SameSite policy (troyhunt.com)
 
+https://news.ycombinator.com/item?id=22503220
+Who is Facebook's mysterious “Lan Tim 2”? (shkspr.mobi)
+-> https://www.facebook.com/off_facebook_activity/activity_list
+
 ## IP
 
 https://news.ycombinator.com/item?id=21611677
@@ -1195,6 +1275,19 @@ Verizon/Yahoo Blocking Attempts to Archive Yahoo Groups – Deletion: Dec. 14 (m
 
 https://news.ycombinator.com/item?id=21804383
 Giving every IPv6 address a name (has-a.name)
+
+https://news.ycombinator.com/item?id=22364830
+How 1500 bytes became the MTU of the internet (benjojo.co.uk)
+-> https://blog.cloudflare.com/ip-fragmentation-is-broken/
+
+https://news.ycombinator.com/item?id=22412409
+Mozilla’s DNS over HTTPs (blog.mozilla.org)
+
+https://news.ycombinator.com/item?id=22432386
+New improvements to IPFS Bitswap for faster container image distribution (ipfs.io)
+=> https://blog.ipfs.io/2020-02-14-improved-bitswap-for-container-distribution/
+https://github.com/ipfs/go-ipfs
+https://github.com/ipfs/go-bitswap
 
 ## Webdev
 
@@ -1237,6 +1330,9 @@ I only use an iFrame to crawl and scrape content (airovic.com)
 
 https://news.ycombinator.com/item?id=21961963
 Parcel – Blazing fast, zero configuration web application bundler (parceljs.org)
+
+https://news.ycombinator.com/item?id=22534639
+Why Svelte is our choice for a large web project (github.com)
 
 ## Divers
 
@@ -1297,6 +1393,9 @@ https://news.ycombinator.com/item?id=22342295
 Defacto: Factorio-like game in the browser for the PICO-8 (lexaloffle.com)
 -> factorio, oxygen not included
 
+https://news.ycombinator.com/item?id=22373006
+Create a First-Person Shooter In Godot (godottutorials.pro)
+
 # Computer Science
 https://github.com/alkrauss48/code_samples
 http://www.gwern.net/Turing-complete: Surprisingly Turing-Complete, nice examples of turing complete stuff
@@ -1329,10 +1428,23 @@ Emulation:
 https://blog.codinghorror.com/the-raspberry-pi-has-revolutionized-emulation/
 https://news.ycombinator.com/item?id=12155273
 
-Bloom filters:
+* Bloom filters:
 https://news.ycombinator.com/item?id=12231623
+What are Bloom filters? (2015) (medium.com)
+https://news.ycombinator.com/item?id=22463979
+When Bloom filters don't bloom (cloudflare.com)
+
+https://stackoverflow.com/questions/635728/opposite-of-bloom-filter
+https://www.somethingsimilar.com/2012/05/21/the-opposite-of-a-bloom-filter/
+
+* Cuckoo filters:
 https://github.com/irfansharif/cfilter #cuckoo filters
+https://en.wikipedia.org/wiki/Cuckoo_filter
+https://en.wikipedia.org/wiki/Cuckoo_hashing
 https://news.ycombinator.com/item?id=12241332
+Show HN: Cuckoo Filter Implementation in Go, Better Than Bloom Filters (github.com)
+  After the Bloom Filter post the other day, I've been doing a dive on probabilistic data structures. This one was obviously on the list along with: skip list, bloom filter, count-min sketch, linear counting, loglog, hyperloglog.
+  -> https://research.neustar.biz/tag/sketching/
 
 A Magnetized Needle and a Steady Hand
 This article uses the ingenious technique of accreting a minimal executable file via the Unix echo command, which can indeed write binary output using C-style escape codes.
@@ -1463,6 +1575,19 @@ https://github.com/hmemcpy/milewski-ctfp-pdf/releases/tag/v1.4.0-rc1
 It's here! The first release of the OCaml edition of Category Theory for
 Programmers! (also has Scala and Haskell versions)
 
+https://news.ycombinator.com/item?id=22353713
+MOV is Turing-complete (2013) [pdf] (virtadpt.net)
+-> https://pragprog.com/magazines/2012-03/the-nor-machine
+
+https://news.ycombinator.com/item?id=22406070
+Donald Knuth Was Framed (buttondown.email)
+On WEB programming
+
+https://news.ycombinator.com/item?id=22525038
+Defunctionalisation: An underappreciated tool for writing good software (gresearch.co.uk)
+https://www.gresearch.co.uk/article/defunctionalisation/
+https://github.com/nickcowle/Talks/blob/3babf57d01db905ef057624250543753acfde4cb/Initial%20Algebras%20for%20the%20Uninitiated.pdf
+
 # Crypto
 
 https://news.ycombinator.com/item?id=13712912
@@ -1555,6 +1680,29 @@ WireGuard is now in Linus' tree (zx2c4.com)
 
 https://news.ycombinator.com/item?id=22326731
 Signal is finally bringing its secure messaging to the masses (wired.com)
+
+https://news.ycombinator.com/item?id=22464765
+WireGuard Gives Linux a Faster, More Secure VPN (wired.com)
+-> https://github.com/StreisandEffect/streisand
+   Streisand sets up a new server running your choice of WireGuard, OpenConnect, OpenSSH, OpenVPN, Shadowsocks, sslh, Stunnel, or a Tor bridge. It also generates custom instructions for all of these services. At the end of the run you are given an HTML file with instructions that can be shared with friends, family members, and fellow activists
+-> https://yggdrasil-network.github.io/
+   Yggdrasil is an early-stage implementation of a fully end-to-end encrypted IPv6 network
+-> https://github.com/tailscale/tailscale [@apenwarr]
+   The easiest, most secure way to use WireGuard. https://tailscale.com/
+   - https://tailscale.com/kb/1017/install
+   - https://news.ycombinator.com/item?id=22192588
+   Joining Tailscale: Simplifying Networking, Authentication, and Authorization (bradfitz.com)
+   - https://news.ycombinator.com/item?id=21708483
+   TailScale – Instantly interconnect your devices and services, wherever they are (tailscale.com)
+   - https://news.ycombinator.com/item?id=22408269
+   What are these 100.x.x.x addresses? (tailscale.com)
+
+https://news.ycombinator.com/item?id=22521035
+Cryptographic Signatures, Surprising Pitfalls, and LetsEncrypt (cryptologie.net)
+
+https://www.washingtonpost.com/graphics/2020/world/national-security/cia-crypto-encryption-machines-espionage/
+
+http://cristal.inria.fr/~remy/livre_blanc_cybersecurite/
 
 # Machine Learning
 https://news.ycombinator.com/item?id=14034426
@@ -1680,6 +1828,12 @@ Jupyter Notebooks to Web App (github.com)
 
 https://news.ycombinator.com/item?id=22345255
 Google/Trax – Understand and explore advanced deep learning (github.com)
+
+https://www.deeplearningbook.org/
+
+https://news.ycombinator.com/item?id=22375774
+A group of ex-NSA and Amazon engineers are building a ‘GitHub for data’ (techcrunch.com)
+https://github.com/geraldb/talks/blob/master/git_for_data.md
 
 # Security
 http://www.tedunangst.com/flak/post/features-are-faults-redux
@@ -1880,6 +2034,16 @@ Ramanujan Surprises Again (2015) (maths.org) [1729 and K3 surfaces]
 https://news.ycombinator.com/item?id=22345655
 Calculating Pi: My Attempt at Breaking the Pi World Record (timothymullican.com)
 
+https://news.ycombinator.com/item?id=22382942
+Maryam Mirzakhani (wikipedia.org)
+
+https://news.ycombinator.com/item?id=22488927
+https://www.quantamagazine.org/landmark-computer-science-proof-cascades-through-physics-and-math-20200304/
+Landmark computer science proof cascades through physics and math (quantamagazine.org)
+
+https://twitter.com/syzygay1/status/1237219287116525570
+An introductory thread on almost mathematics!
+
 # Physics
 http://www.teamliquid.net/blogs/483814-a-basic-introduction-to-astrophysics
 
@@ -1963,6 +2127,9 @@ Evidence that the key assumption made in discovery of dark energy is in error (p
 
 https://news.ycombinator.com/item?id=22261670
 The limits of high-speed rail (mappingignorance.org)
+
+https://news.ycombinator.com/item?id=22555855
+Superdeterminism may help us overcome the current crisis in physics (nautil.us)
 
 # Science
 http://blog.vixra.org/category/crackpots-who-were-right/
@@ -2146,6 +2313,9 @@ When George Soros Broke the British Pound (2014) (priceonomics.com)
 
 http://aswathdamodaran.blogspot.com/2020/02/data-update-3-for-2020-price-of-risk.html
 
+https://news.ycombinator.com/item?id=22556681
+S&P 500 drops 7% triggering 15-minute trading halt for the second time this week (bloomberg.com)
+
 # Finance
 
 https://www.troyhunt.com/10-personal-finance-lessons-for-technology-professionals/
@@ -2153,6 +2323,10 @@ https://www.lesswrong.com/posts/p9PM2Wc3CSvLKRMwG/get-rich-real-slowly-1
 
 https://news.ycombinator.com/item?id=21610687
 Collection of Jupyter notebooks for quantitative finance (github.com)
+
+https://news.ycombinator.com/item?id=22478854
+Reddit has become a guide to personal finance (qz.com)
+https://tech.slashdot.org/story/20/03/04/2023205/reddit-has-become-the-gospel-of-personal-finance
 
 # Bitcoin
 http://www.righto.com/2014/02/ascii-bernanke-wikileaks-photographs.html
@@ -2429,6 +2603,12 @@ Miscarriage can lead to 'long-term post-traumatic stress' (bbc.com)
 https://news.ycombinator.com/item?id=22163943
 Preliminary assessment of the International Spreading Risk of Coronavirus [pdf] (mobs-lab.org)
 
+https://news.ycombinator.com/item?id=22360300
+Heart doctors 'held back stent death data' (bbc.com)
+
+https://news.ycombinator.com/item?id=22496533
+The human body’s remarkable ability to adapt to the cold (bbc.com)
+
 # Flights
 https://www.google.fr/flights/
 
@@ -2629,11 +2809,16 @@ https://www.reddit.com/r/SneerClub/comments/ej68qg/fucking_hell_they_are_now_in_
 https://irrationallyspeaking.home.blog/2019/10/22/dominics-basilisk-part-1/
 https://dominiccummings.com/2020/01/02/two-hands-are-a-lot-were-hiring-data-scientists-project-managers-policy-experts-assorted-weirdos/
 https://dynamicland.org/
+https://irrationallyspeaking.home.blog/2019/04/09/a-guide-for-the-perplexed-philosophers-jesse-singal-and-the-rationalist-subculture/
 
 # Blogs
 ## slatestarcodex
 http://slatestarcodex.com/2018/04/01/the-hour-i-first-believed/
 http://slatestarcodex.com/2018/09/26/adversarial-collaboration-contest-results/
 
-## rationalite
-https://irrationallyspeaking.home.blog/2019/04/09/a-guide-for-the-perplexed-philosophers-jesse-singal-and-the-rationalist-subculture/
+# ESR
+
+https://wikileaks.org/macron-emails/fileid/50687/18178
+  mail d’un conseillé de Macron qui a fuité pendant les présidentielles, histoire de se rappeler ce que compte faire la Macronie, sans langue de bois :
+
+https://github.com/brunoscherrer/salaires_pensions

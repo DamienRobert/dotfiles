@@ -1,0 +1,15 @@
+fzbw() {
+  local fzf="fzf"
+  local copy="cat"
+  while true;
+  do
+    case "$1" in
+      -- ) break ;;
+      -x ) shift; copy=(xclip -rmlastnl -selection clipboard); fzf=(rofi -dmenu) ;;
+      -c ) shift; common+=" $1"; shift ;;
+      *) break;;
+    esac
+  done
+
+  bw get item $(bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | $fzf | awk '{print $(NF -0)}' | sed 's/\"//g') | jq '.login.password' | sed 's/\"//g' | $copy
+}

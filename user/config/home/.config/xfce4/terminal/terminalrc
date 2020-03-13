@@ -4,7 +4,7 @@
 [Configuration]
 MiscAlwaysShowTabs=TRUE
 MiscBell=FALSE
-MiscBellUrgent=FALSE
+MiscBellUrgent=TRUE
 MiscBordersDefault=TRUE
 MiscCopyOnSelect=FALSE
 MiscCursorBlinks=FALSE
@@ -27,6 +27,10 @@ MiscTabCloseMiddleClick=TRUE
 MiscTabPosition=GTK_POS_TOP
 MiscUseShiftArrowsToScroll=FALSE
 MiscShowUnsafePasteDialog=FALSE
+MiscNewTabAdjacent=TRUE
+ShortcutsNoMnemonics=TRUE
+ShortcutsNoHelpkey=TRUE
+ShortcutsNoMenukey=TRUE
 ScrollingOnOutput=FALSE
 TabActivityTimeout=30
 <% if colors %>

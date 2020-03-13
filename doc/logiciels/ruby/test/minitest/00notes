@@ -1,4 +1,4 @@
-Guides:
+* Guides:
 http://www.reddit.com/r/ruby/comments/2ynzxw/which_tools_should_i_be_using_for_testing/
 
 Minitest 6.0 new expect style spec:
@@ -7,6 +7,10 @@ Minitest 6.0 new expect style spec:
 
 Test one method in one file:
 rake test TEST=test/test_foobar.rb TESTOPTS="--name=test_foobar1 -v"
+
+rake test runs:
+/usr/bin/ruby -w -I"lib:test" -I"/data/dams/opt/pkgmgr/gems/gems/rake-13.0.1/lib" "/data/dams/opt/pkgmgr/gems/gems/rake-13.0.1/lib/rake/rake_test_loader.rb" "test/test_rgb.rb"
+directly: ruby -I "lib:test" test/test_simplecolor.rb
 
 helper.rb:
 require 'minitest/autorun'

@@ -336,6 +336,10 @@ $ git my topic help
   Faster git-filter-branch to remove files.
   Ex: java -jar ~/usr/dist/@git/bfg-1.13.0.jar --delete-folders .crypt
       java -jar ~/usr/dist/@git/bfg-1.13.0.jar --delete-files foo.jpg
+-> now replaced by git-filter-repo, cf git my filter
+    To remove foo.zip and bar/baz/zips from every revision in history:
+      git filter-repo --path foo.zip --path bar/baz/zips/ --invert-paths
+
 - git-imerge/ (mhagger) -> git my imerge
   git-imerge can merge/rebase with the smallest patchset each time
 - git-latexdiff/ (Matthieu Moy) -> g my latexdiff
@@ -549,6 +553,14 @@ Processing references: 26
 | * Maximum tag depth      [1] |     1     | *                              |
 
 [1]  e628f39d3b5e4d1a9c341a443bbdddbe664c0403 (refs/tags/v0.1)
+
+### patches
+
+$ /tmp/git git my patch -- list -g ref-filter_fix
+/home/dams/progs/patches/git/ref-filter_fix/0001-ref-filter-use-correct-branch-for-push-track.patch
+
+$ git my patch format upstream
+$ git my patch format local upstream
 
 ## Obsolete exemples
 

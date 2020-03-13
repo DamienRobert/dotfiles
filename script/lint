@@ -1,7 +1,14 @@
 #!/usr/bin/zsh
+
 . $HOME/.initvars
 TOOLSD=$MYFILES/script/tools.d
-NODEMODULES=~/opt/pkgmgr/npm/lib/node_modules
+for i in $TOOLSD/node_modules ~/opt/pkgmgr/{yarn,npm}/lib/node_modules; do
+  if [[ -e $i ]]; then
+    NODEMODULES=$i
+    break
+  fi
+done
+[[ -e $NODEMODULES/.bin ]] && PATH=$NODEMODULES/.bin:$PATH
 
 info() {
 	echo $@ >&2
@@ -34,7 +41,7 @@ css_check() {
 	#only check for errors
 	info "# stylelint (css check)"
 	get_browsers
-	stylelint --config $NODEMODULES/stylelint-config-standard/node_modules/stylelint-config-recommended $OPTS "$@"
+	stylelint --config $NODEMODULES/stylelint-config-recommended/index.js $OPTS "$@"
 }
 
 css_doiuse() {
@@ -137,7 +144,7 @@ do
     -s|--strict ) shift; lintmode=strict ;;
     -c|--check ) shift; lintmode=check ;;
     --no-browsers ) shift; setbrowsers= ;;
-    --browsers ) shift; setbrowsers=t ;;
+    --browsers ) shift; setbrowsers=t ;; #default
     --allb ) shift; BROWSERSLISTCONFIG=".browserslistallrc";;
     -* ) OPTS+=$1; shift;;
     *) break;;

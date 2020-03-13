@@ -9,26 +9,35 @@ Docs and bookmarks:
   gittutorial, gittutorial-2: tuto
   giteveryday, gitglossary, gitworkflows, gitcli
   gitcore-tutorial: overview of plumbing
+- gitk: http://sitaramc.github.com/1-basic-usage/gitk.html
+- http://changelog.com/topic/git Links on git articles
 
+* Git workflows
 - http://steveko.wordpress.com/2012/02/24/10-things-i-hate-about-git/
   Great diagrams of svn and git workflow
-- gitk: http://sitaramc.github.com/1-basic-usage/gitk.html
-
 - https://stackoverflow.com/questions/3639342/whats-the-difference-between-git-reset-and-git-checkout
 Directory               Stage           History
           -> git add files   -> git commit
           <- git co -- files <- git reset --files
 Note: `git co branch` affects HEAD, index and directory
       `git reset branch` affects HEAD, current branch, index (unless `--soft`) + directory if `--hard`
-
-- bitmaps: https://githubengineering.com/counting-objects/
 - https://github.com/k88hudson/git-flight-rules Howtos
 - git aliases: http://www.gitalias.com/
   Cf also the topic-* aliases in https://news.ycombinator.com/item?id=14385813
 - tips: http://gitready.com/ (not updated anymore)
+
+* Devel:
 - https://git.github.io/rev_news/ Development news
   https://git.github.io/rev_news/archive/
-- http://changelog.com/topic/git Links on git articles
+- bitmaps: https://github.blog/2015-09-22-counting-objects/
+- https://git-repo.info/en/2020/03/agit-flow-and-git-repo/
+- git at scale: https://stolee.dev/docs/git-merge-2020.pdf
+  -> https://github.com/microsoft/VFSForGit (was gvfs)
+     gvfs on linux: https://github.com/microsoft/VFSForGit/issues/126
+     -> https://github.com/github/libprojfs Linux projected filesystem library
+  -> https://facebook.github.io/watchman/
+  -> scalar: https://devblogs.microsoft.com/devops/introducing-scalar/
+- https://github.com/newren/presentations/blob/pdfs/merge-performance/merge-performance-slides.pdf
 
 Everyday
 ========
@@ -1523,8 +1532,13 @@ suite à cause du reflog, il faut d'abord faire
 ### git repack
  git repack: compress loose objects in a pack
   -a: Instead of incrementally packing the unpacked objects, pack everything referenced into a single pack => merge all packs in one
-  -A: merge packs in one but keep unreachable objects inside pack in loose object => in particular -d deletes then delete the repacked packs, but we still have the unreachable objects as loose objects (subject to git prune) => comme -a, sauf si l'option -d est ajoutée, où les objets unreachables contenus dans un vieux pack deviennent loose (alors qu'avec -a -d, un unreachable object dans un pack n'est pas ajouté dans le nouveau pack, et avec -d le pack dans lequel il est risque de se faire détruire, car pour savoir si le pack est redondant on ne check pas les unreachables)
-  -d: remove redundant packs after the repack (i think using git pack-redundant to get them) + run git prune-packed to remove redundant loose files
+
+  -A: merge packs in one but keep unreachable objects inside pack in loose object => in particular -d deletes then delete the repacked packs, but we still have the unreachable objects as loose objects (subject to git prune) 
+    => comme -a, sauf qu'on loose les unreachable objects contenus dans un vieux pac, donc -d ne va pas les enlever (alors qu'avec -a -d, un unreachable object dans un pack n'est pas ajouté dans le nouveau pack, et avec -d le pack dans lequel il est risque de se faire détruire, car pour savoir si le pack est redondant on ne check pas les unreachables)
+
+  -d: remove redundant packs after the repack 
+     (i think using git pack-redundant to get them) + run git prune-packed to remove redundant loose files
+
   -l: pass --local on git pack-objects
        --local
            This flag causes an object that is borrowed from an alternate
@@ -1533,6 +1547,7 @@ suite à cause du reflog, il faut d'abord faire
        --incremental
            This flag causes an object already in a pack to be ignored even if
            it would have otherwise been packed.
+
   -f: pass no-reuse-delta, -F: pass no-reuse-object to git pack-objects
        --no-reuse-delta
            When creating a packed archive in a repository that has existing
@@ -1545,6 +1560,50 @@ suite à cause du reflog, il faut d'abord faire
            everything. This implies --no-reuse-delta. Useful only in the
            obscure case where wholesale enforcement of a different compression
            level on the packed data is desired.
+
+  --pack-kept-objects: Include objects in .keep files when repacking.
+    (ie prevent from passing --honor-pack-keep)
+
+  + use the following options to pack-object:
+  --honor-pack-keep (except if --pack-kept-objects)
+  --keep-true-parents, --no-empty, --all, --reflog, --indexed-objects
+  --exclude-promisor-objects (if has_promisor_remote)
+  + --unpacked --incremental (if -a is not passed)
+  + pass the following options accordingly: 
+  --keep-pack=, --window, --window-memory, --depth,
+  --threads, --max-pack-size, --no-reuse-delta, --no-reuse-objects,
+  --local, --quiet, --delta-base-offset
+  --write-bitmap-index[-quiet], --delta-islands
+  + When using -ad, the following options are also passed:
+  -k, --keep-unreachable: add unreachable objects loose and in pack
+      -> pass --keep-unreachable and --pack-loose-unreachable
+  --unpack-unreachable=<when>
+      -> pass --unpack-unreachable (also when using -A)
+  Note that -A is essentially equivalent to '-a --unpack-unreachable'
+
+git pack-objects:
+       --window=<n>, --depth=<n>
+       --unpacked: limit to unpacked objects
+       --honor-pack-keep
+           This flag causes an object already in a local pack that has a .keep
+           file to be ignored, even if it would have otherwise been packed.
+           [eg: .git/objects/pack/pack-da1296273b09aec6a0a6cf3d78e9f65196c51ac4.keep]
+       --exclude-promisor-objects
+       --keep-unreachable
+           Objects unreachable from the refs in packs named with --unpacked=
+           option are added to the resulting pack, in addition to the
+           reachable objects that are not in packs marked with *.keep files.
+           This implies --revs.
+           -> add to pack unreachable packed unreachable objects
+       --pack-loose-unreachable
+           Pack unreachable loose objects (and their loose counterparts
+           removed). This implies --revs.
+       --unpack-unreachable
+           Keep unreachable objects in loose form. This implies --revs.
+           -> move packed unreachable objects to loose form
+       --delta-islands
+           Restrict delta matches based on "islands". See DELTA ISLANDS below.
+
 
 ### on git gc --aggressive
 > --depth=250 means to allow chains of "To get this object, first
@@ -1798,6 +1857,7 @@ git reflog expire/delete [--rewrite] [--updateref]
 git reflog exists
 
 ## git submodule
+
 http://git-scm.com/book/en/v2/Git-Tools-Submodules
 man git-submodule(1)
 man gitsubmodules(7) gitmodules(5)
@@ -2018,7 +2078,13 @@ submodule.recurse=true/false -> pass --recurse-submodules for all the git comman
 
 fetch.recurseSubmodules: default to 'on-demand' -> value of --recurse-submodules
 push.recurseSubmodules: default to 'no' -> value of --recurse-submodules (which default to on-demand when specified on the command line)
-[=> so submodule.recurse=true does not change `git fetch` since it already default to 'on-demand' and pass 'ondemand' for `git push]
+[=> so submodule.recurse=true does not change `git fetch` since it already default to 'on-demand' and pass 'ondemand' for `git push.
+More preciesly fetch.recurseSubmodules has priority over
+submodule.recurse, but if not set submodule.recurse is looked at before the
+on-demand default. If set, then we pass --recurse-submodules=yes.
+For push it is the same, except that if submodule.recurse is set we pass
+--recurse-submodules=on-demand.
+]
 
 Note that `git foo --recurse-submodules` only recurse into active submodules
 `git sub update` also only look at active submodules.
@@ -2062,6 +2128,41 @@ cd .git/modules; /bin/ls | sort > /tmp/available
 gitdiff /tmp/available /tmp/used
 comm -23 /tmp/available /tmp/used
 unused=(${(@f)$(comm -23 =(sort /tmp/available) =(sort /tmp/used))})
+
+* git status and submodules
+
+$ git s
+M progs/patches       # new commits and may be modified
+m progs/rust_tutorial # modified but no new commits
+
+$ git status
+	modified:   progs/patches (new commits, modified content, untracked content)
+	modified:   progs/rust_tutorial (modified content)
+
+$ git status --porcelain=v2
+1 .M SCMU 160000 160000 160000 aad167e7a2a1aacba96333a6a23f43ae5a362e3a aad167e7a2a1aacba96333a6a23f43ae5a362e3a progs/patches
+1 .M S.M. 160000 160000 160000 e76b80151552c8f8c9a1a6c23c7d68816f5ef942 e76b80151552c8f8c9a1a6c23c7d68816f5ef942 progs/rust_tutorial
+S: submodule, C: commit changed, M: tracked changes, U: untracked changes
+
+$ gitstatus.rb: ✚4✦2✧5
+✦2 -> submodules with 'C'
+✧5 -> submodules with 'M' or 'U'
+(so here 'progs/patches' appear both in ✦ and ✧)
+
+$ git add progs/patches
+$ git s
+Mm progs/patches
+
+$ git status
+Changes to be committed
+	modified:   progs/patches
+Changes not staged for commit:
+	modified:   progs/patches (modified content, untracked content)
+
+$ git status --porcelain=v2
+1 MM S.MU 160000 160000 160000 aad167e7a2a1aacba96333a6a23f43ae5a362e3a a3b3e0e45169fed57f260a2a422dad1d806fa60e progs/patches
+
+$ gitstatus.rb: ●1✚4✦1✧5
 
 ## git worktree
 
@@ -2119,8 +2220,8 @@ Exemple: git worktree add foo_worktree
 => crée un *fichier* 'foo_worktree/.git' qui contient:
    gitdir: /tmp/foo/.git/worktrees/foo_worktree
 et .git/worktrees/foo_worktree/ contient
-gitdir=/tmp/foo/foo_worktree/.git ($GIT_DIR)
-commondir=../.. ($GIT_COMMON_DIR)
+     - gitdir=/tmp/foo/foo_worktree/.git ($GIT_DIR)
+     - commondir=../.. ($GIT_COMMON_DIR)
 
 $ g rev-parse worktrees/ploum/HEAD
 $ g rev-parse main-worktree/HEAD
@@ -2146,7 +2247,27 @@ $ g rev-parse main-worktree/HEAD
            Create multipart/mixed attachment, the first part of which is the
            commit message and the patch itself in the second part, with
            Content-Disposition: inline.
+       --cover-from-description=<mode>
+           Controls which parts of the cover letter will be automatically
+           populated using the branch’s description.
+         - If <mode> is message or default, the cover letter subject will be
+           populated with placeholder text. The body of the cover letter will
+           be populated with the branch’s description. This is the default
+           mode when no configuration nor command line option is specified.
+         - If <mode> is subject, the first paragraph of the branch description
+           will populate the cover letter subject. The remainder of the
+           description will populate the body of the cover letter.
+         - If <mode> is auto, if the first paragraph of the branch description
+           is greater than 100 bytes, then the mode will be message, otherwise
+           subject will be used. [my default config]
+         - If <mode> is none, both the cover letter subject and body will be
+           populated with placeholder text.
+
 git format-patch -s --cover-letter -o 00patch-upstream/tosend/ branch
+
+Note: the cover letter uses the branch description
+cf $ git branch --edit-description
+This just sets up the config branch.$name.description = ...
 
 ### git send-email
 
@@ -2226,10 +2347,47 @@ ie il prend d'abord les headers après les scissors
 
 ## Sparse checkout
 
-git sparse-checkout
-  cf https://github.blog/2020-01-13-highlights-from-git-2-25/
+* git sparse-checkout and partial clones
+! Doc
+- Doc on partial clones: https://git-scm.com/docs/partial-clone
+  (ie promisor remotes)
+- https://github.blog/2020-01-13-highlights-from-git-2-25/
+  using the sparse-checkout command
+- Filter spec: cf git-rev-list#--filter
+  --filter=blob:none, --filter=blob:limit=<n>,
+  --filter=sparse:oid=<blob-ish>,
+  --filter=tree:<depth>
 
-Filter spec: cf git-rev-list#--filter
+! Ex: git clone --no-checkout https://github.com/derrickstolee/sparse-checkout-example
+-> Receiving objects: 100% (1901/1901), 170.91 MiB | 6.89 MiB/s, done.
+-> activate worktreeConfig=true, and sparsecheckout=true in config.worktree
+
+cat .git/info/sparse-checkout #/* \n !/*
+git sparse-checkout init --cone
+git sparse-checkout set service web/browser
+
+! With a partial clone
+git clone --filter=blob:none --no-checkout https://github.com/derrickstolee/sparse-checkout-example sparse-checkout-example2
+->Receiving objects: 100% (373/373), 76.35 KiB | 806.00 KiB/s, done.
+-> this add the following config to [remote "origin"]
+	promisor = true
+	partialclonefilter = blob:none
+
+git sparse-checkout init --cone #be careful to run this before a git status, or git status will make the promisor download all files
+git sparse-checkout set service web/browser
+-> this load files as needed
+
+* Shallow clone: git clone --depth=5
+This create a .git/shallow file that behaves as graft.
+
+Unshallow: git fetch --unshallow
+--unshallow
+    If the source repository is complete, convert a shallow repository to a complete one, removing all the limitations imposed by shallow repositories.
+
+    If the source repository is shallow, fetch as much as possible so that the current repository has the same history as the source repository.
+
+--update-shallow
+    By default when fetching from a shallow repository, git fetch refuses refs that require updating .git/shallow. This option updates .git/shallow and accept such refs.
 
 Config and environment + hooks
 ==============================
@@ -2285,7 +2443,10 @@ GIT_DIR=.git / git --git-dir=...
   or a .git file containing 'gitdir: <path>'
 GIT_INDEX_FILE=$GIT_DIR/index
 GIT_WORK_TREE=... / git --work-tree=... / core.worktree=...
-GIT_COMMON_DIR=...
+GIT_COMMON_DIR=... / .git/commondir
+[used for shell alias, hooks
+GIT_PREFIX (the prefix where the alias was launched, git always cd to the
+toplevel before running shell aliases)
 
 man git
        GIT_INDEX_FILE
@@ -3423,7 +3584,7 @@ worktrees/<id>/{gitdir,locked,config.worktree}
 foo1 is a worktree ,the .git is 'gitdir: /tmp/test/foo/.git/worktrees/foo1'
 In foo/.git/worktrees/foo1, commondir='../..' and gitdir='/tmp/test/foo1/.git'
 
-Config: When extensions.worktreeConfig is enabled, the config file .git/worktrees/<id>/config.worktree is read after .git/config is.
+Config: When extensions.worktreeConfig is enabled, the config file .git/worktrees/<id>/config.worktree is read after .git/config is. (and .git/config.worktree is read for the main worktree)
 
 * Format version
 core.repositoryformatversion=0 (default)
@@ -3469,21 +3630,6 @@ Namespaces: $GIT_NAMESPACE, --namespace=foo
   duplication between new objects added to the repositories without ongoing
   maintenance, while namespaces do.
 Cf https://stackoverflow.com/questions/24564351/how-do-i-use-git-namespaces-locally
-
-* Optimisations:
-- reftable: https://github.com/google/reftable
-- commit graph: core.commitGraph=true (default) => read the commit-graph file,
-  fetch.writeCommitGraph=true -> also write it during a fetch
-- multi pack index: https://github.com/libgit2/libgit2/issues/5399
-- delta island: https://github.blog/2019-02-24-highlights-from-git-2-21/#delta-islands
-- bitmap indexes: https://github.blog/2015-09-22-counting-objects/
-  `git repack -b,--write-bitmap-index`, repack.writeBitmaps=true
-- Index: split index (cf git-update-index): core.splitIndex=true, untracked cache: core.untrackedCache=true, index.version=4 (`git update-index --index-version 4`), file system monitor: core.fsmonitor
-  Untracked cache: https://stackoverflow.com/questions/44205477/how-do-i-get-rid-of-the-warning-untracked-cache-is-disabled-on-this-system -> The untracked cache saves its current state in the UNTR index extension
-
-Cf also in git-config: feature.experimental, feature.manyFiles
-feature.experimental => pack.useSparse=true, fetch.negotiationAlgorithm=skipping, fetch.writeCommitGraph=true
-feature.manyFiles => index.version=4, core.untrackedCache=true
 
 ## tree-objects
 http://stackoverflow.com/questions/9594169/create-a-git-tree-from-working-tree-without-touching-the-index
@@ -4017,6 +4163,24 @@ http://stackoverflow.com/questions/449541/how-do-you-merge-selective-files-with-
 ou
     git diff ... | git apply [-3] --include=filepattern [--exclude=...]
 
+## Packs and deltas
+
+- http://stefan.saasen.me/articles/git-clone-in-haskell-from-the-bottom-up/#pack_file_format
+  Reimplementing “git clone” in Haskell from the bottom up
+  Very nice description of git internals
+
+- https://stackoverflow.com/questions/9478023/is-the-git-binary-diff-algorithm-delta-storage-standardized
+  I think the diff algo used for pack files was linked to one of the delta encoding out there: initially (2005) xdelta, and then libXDiff.
+    (cf http://git.661346.n2.nabble.com/diff-ing-files-td6446460.html
+     http://www.xmailserver.org/xdiff.html)
+  But then, as detailed below, it shifted to a custom implementation.
+  -> http://xdelta.org/ (xdelta3)
+     Note: https://en.wikipedia.org/wiki/Xdelta has a link to rsync's phd thesis (xdelta1)
+
+- https://stackoverflow.com/questions/17888604/git-with-large-files/19494211#19494211
+
+- Thin packs: https://stackoverflow.com/questions/1583904/what-are-gits-thin-packs
+
 Divers
 ======
 ## Choses apprises sur la ML de git
@@ -4503,16 +4667,46 @@ https://public-inbox.org/git/CA+dhYEViN4-boZLN+5QJyE7RtX+q6a92p0C2O6TA53==BZfTrQ
 ## Performance optimisations
 See also https://public-inbox.org/git/20170403211644.26814-1-avarab@gmail.com/
 
-- git status: core.untrackedCache, core.fsmonitor
-  core.commitGraph, pack.useBitmaps (default to yes)
++ reftable: https://github.com/google/reftable
 
++ commit graph: core.commitGraph=true (default) => read the commit-graph file,
+    fetch.writeCommitGraph=true [true if feature.experimental]-> also write it during a fetch
+    gc.writeCommmitGraph [default to true] -> write commit graph during a gc
   git-commit-graph(1)
       Write and verify Git commit-graph files.
       write -> .git/objects/info/commit-graph
   Cf https://devblogs.microsoft.com/devops/supercharging-the-git-commit-graph/
+     https://devblogs.microsoft.com/devops/supercharging-the-git-commit-graph-ii-file-format/
+     https://devblogs.microsoft.com/devops/supercharging-the-git-commit-graph-iii-generations/
+     https://devblogs.microsoft.com/devops/super-charging-the-git-commit-graph-iv-bloom-filters/
+     https://devblogs.microsoft.com/devops/updates-to-the-git-commit-graph-feature/
 
-  Multi packs: git multi-pack-index
++ Multi pack index: https://git-scm.com/docs/multi-pack-index
   Cf https://github.blog/2019-02-24-highlights-from-git-2-21/
+     https://github.com/libgit2/libgit2/issues/5399
+  $ git multi-pack-index / git midx write/verify/expire/repack
+
++ delta island: https://github.blog/2019-02-24-highlights-from-git-2-21/#delta-islands
+
++ bitmap indexes: https://github.blog/2015-09-22-counting-objects/
+  $ git repack -b,--write-bitmap-index
+    repack.writeBitmaps=true [Defaults to true on bare repos, false otherwise.]
+    pack.useBitmaps (default to yes)
+
++ Index:
+  - split index (cf git-update-index): core.splitIndex=true [=false]
+  - untracked cache: core.untrackedCache=true [=keep]
+    https://stackoverflow.com/questions/44205477/how-do-i-get-rid-of-the-warning-untracked-cache-is-disabled-on-this-system -> The untracked cache saves its current state in the UNTR index extension
+  - index.version=4 [true if feature.manyFiles] (`git update-index --index-version 4`)
+  - file system monitor: core.fsmonitor
+
++ config features (cf git-config):
+  feature.experimental, feature.manyFiles
+  - feature.experimental => pack.useSparse=true, fetch.negotiationAlgorithm=skipping, fetch.writeCommitGraph=true
+  - feature.manyFiles => index.version=4, core.untrackedCache=true
+  => I enabled feature.manyFiles
+
+  -> pack.useSparse=true: https://devblogs.microsoft.com/devops/exploring-new-frontiers-for-git-push-performance/
 
 ## potential git alias
   interdiff = !sh -c 'git show "$1" > .git/commit1 && git show "$2" > .git/commit2 && interdiff .git/commit[12] | less -FRS' - # Calling "interdiff" between commits: if upstream applied a slightly modified patch, and we want to see the modifications, we use the program interdiff of the patchutils package.
@@ -4521,3 +4715,44 @@ See also https://public-inbox.org/git/20170403211644.26814-1-avarab@gmail.com/
 ## mailing lists
 - public inbox: https://public-inbox.org/public-inbox-v2-format.html
 - Incorporated in lore.kernel.org: https://lore.kernel.org/git/
+
+## Prompt
+
+Checking if work tree dirty:
+$ git diff --no-ext-diff --quiet
+Checking if index changed:
+$ git diff --no-ext-diff --cached --quiet
+
+Devel
+=====
+
+Tests:
+- can be run individually
+      $ sh ./t9200-git-cvsexport-commit.sh --run='1-21'
+- with make:
+  $ make
+  $ make t0000-basic.sh
+
+Warning: when testing, do not do PATH=~/tmp/git:$PATH ...
+but PATH=~/tmp/git/bin-wrapper:$PATH or call directly
+~/tmp/git/bin-wrapper/git.
+Indeed git-receive-pack may not have the correct settings otherwise.
+
+* remote.c
+Bug fix for:
+"upstream"=>"refs/remotes/second/master", "upstream:short"=>"second/master", "upstream:track"=>"[ahead 1]", "upstream:remotename"=>"second", "upstream:remoteref"=>"refs/heads/master", "push"=>"refs/remotes/third/master", "push:short"=>"third/master", "push:track"=>"[ahead 1]", "push:remotename"=>"third", "push:remoteref"=>""
+
+remote_ref_for_branch: for push:remoteref -> pushremote_for_branch
+			const char *dst, *remote_name =
+				pushremote_for_branch(branch, NULL);
+			struct remote *remote = remote_get(remote_name);
+
+branch_get_push: set branch->push_tracking_ref via branch_get_push_1
+branch_get_push_1: compute dst and
+		ret = tracking_for_push_dest(remote, dst, err);
+
+remote_get(name): -> remote_get_1(name, remote_for_branch) -> sanitizes and use url_alias
+  remote_for_branch: falls back to origin
+
+pushremote_get -> remote_get_1(name, pushremote_for_branch);
+  pushremote_for_branch: &branch->pushremote (=branch.pushRemote) || pushremote_name (=remote.pushDefault) || remote

@@ -88,7 +88,7 @@ get_src() {
 }
 
 if [[ -n $vcs_opts ]]; then
-	vcs_opts=(-d)
+	vcs_opts=(-d) # use git_optdist to get the url
 	[[ -n $VCS_RAW ]] && vcs_opts=()
 fi
 

@@ -1,3 +1,7 @@
 Examples:
 - Show intersection of two files: grep -Fxf file1 file2
 - Show file2 - file1: grep -Fxvf file1 file2
+
+Grep for non ascii characters:
+https://stackoverflow.com/questions/3001177/how-do-i-grep-for-all-non-ascii-characters
+grep --color='auto' -P -n "[^[:ascii:]]" myfile.txt

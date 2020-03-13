@@ -15,12 +15,14 @@ https://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html
 tabstop/ts: number of spaces for an actual <Tab>
 softtabstop/sts: virtual number of spaces for a <Tab> or <BS>
 shiftwidth/sw
-expandtab/et
+expandtab/et: replace a tab by spaces
 smartab/tsta: <tab> => shiftwidth or <tab>
-   (note that with smartab+noexpandtab, vim will replace 8 spaces with a tab when using <tab>, ie as if the shiftwidth was a softtabstop)
+   (note that with smartab+noexpandtab, vim will replace 8 spaces with a tab when using <tab> in shiftwidth mode, ie as if the shiftwidth was a softtabstop)
 
 Exemples: set shiftwidth=2 expandtab smarttab
           autocmd Filetype c,ruby,python,perl,sh,zsh,gitconfig setlocal ts=2 noexpandtab
+
+For git: set shiftwidth=8 ts=8 noexpandtab
 
 # Tips:
 - http://stackoverflow.com/questions/4097259/in-vim-how-do-i-highlight-todo-and-fixme

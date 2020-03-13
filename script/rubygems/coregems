@@ -1,3 +1,10 @@
 #!/bin/sh
 
-GEM_HOME=$HOME/mine/ruby/core_gems GEM_PATH= gem "$@"
+if [[ -n $1 && "x$1" = "x-a" ]]; then
+  shift
+  # still the standard gems
+  GEM_HOME=$HOME/mine/ruby/core_gems GEM_PATH=$GEM_HOME:$GEM_PATH gem "$@"
+else
+  # only core_gems
+  GEM_HOME=$HOME/mine/ruby/core_gems GEM_PATH= gem "$@"
+fi

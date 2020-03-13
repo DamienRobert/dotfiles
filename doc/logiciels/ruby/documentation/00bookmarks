@@ -311,3 +311,8 @@ Httpx: A Ruby HTTP library for tomorrow and beyond (gitlab.com)
 
 - https://kukicola.io/posts/handling-ruby-27-deprecations-warnings
   => https://github.com/jeremyevans/ruby-warning
+
+- https://nts.strzibny.name/how-to-test-static-sites-with-rspec-capybara-and-webkit/
+
+- dragonruby: https://dragonruby.itch.io/dragonruby-gtk
+  gamme toolkit. Part of rubymotion http://www.rubymotion.com/

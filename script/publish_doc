@@ -10,3 +10,5 @@ for file in $(rg -li 'vim:.*markdown'); do
 	cp -a $file $DEST/$dir/$base.md
 	kramdown $file > $DEST/$dir/$base.html
 done
+
+echo "git add -A && git commit -m 'Documentation @$(date '+%Y-%m-%d')' && git push"

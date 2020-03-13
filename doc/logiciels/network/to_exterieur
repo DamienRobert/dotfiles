@@ -174,6 +174,7 @@ Wireguard
 - https://wiki.archlinux.org/index.php/WireGuard
 - https://gist.github.com/i4ApvDqgDV/db8b165179e0b6488f544af404b9ff0f A script to spin up a Wireguard VPN server with Unbound recursive DNS in a hurry 
 - https://www.ckn.io/blog/2017/11/14/wireguard-vpn-typical-setup/
+- https://github.com/pirate/wireguard-docs
 
 $ wg genkey | tee privatekey | wg pubkey > publickey
 $ wg show / showconf / set / setconf / addconf / genkey / genpsk / pubkey

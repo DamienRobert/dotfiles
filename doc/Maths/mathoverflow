@@ -177,6 +177,8 @@ https://mathoverflow.net/questions/22881/scheme-theoretic-description-of-abelian
  pullback from S, and such that the group scheme Aut_S X acts transitively
  on the fibers (the last condition is automatic in car 0)
 https://mathoverflow.net/questions/265584/is-there-a-langlands-philosophy-reason-for-the-fact-that-the-l-function-of-the
+https://mathoverflow.net/questions/281759/when-is-a-quotient-by-a-strictly-free-group-action-%C3%A9tale
+  => https://www.math.ru.nl/~bmoonen/BookAV/Quotients.pdf
 
 #Algebra
 ========
@@ -433,9 +435,16 @@ https://mathoverflow.net/questions/254564/application-of-the-g-a-g-a-principle/2
 https://mathoverflow.net/questions/255861/is-quasi-coherent-an-fpqc-local-property-of-modules/255870#255870
 https://math.stackexchange.com/questions/315273/how-should-i-think-about-very-ample-sheaves
 https://mathoverflow.net/questions/234234/etale-localization-reference-request
+
+Projective space:
 https://math.stackexchange.com/questions/121105/which-functor-does-the-projective-space-represent
+  - rank one direct summands of R^{n+1}
+    ex: a free R-module R(r0,r1,⋯,rn)⊂R^{n+1} is a supplemented line bundle iff the ri's generate R i.e. Σ Rr_i=R
+  - If S is a scheme and E is a locally free module on S, then the projective space bundle P(E)→S represents the following functor:
+  Sch/S→Set,(f:X→S)↦{invertible quotients of f∗E}
 https://mathoverflow.net/questions/46116/a-valued-points-of-projective-space
   Cf aussi https://stacks.math.columbia.edu/tag/01ND
+
 https://mathoverflow.net/questions/22015/example-of-a-smooth-morphism-where-you-cant-lift-a-map-from-a-nilpotent-thicken
   Cf https://mathoverflow.net/questions/22393/is-formal-smoothness-a-local-property, because 
   et https://mathoverflow.net/questions/10731/possible-formal-smoothness-mistake-in-ega
@@ -679,6 +688,7 @@ http://mathoverflow.net/questions/236840/languages-beyond-enumerable
 http://cstheory.stackexchange.com/questions/6660/polynomial-time-algorithms-with-huge-exponent-constant/14654
 http://cs.stackexchange.com/questions/68828/is-there-a-different-resolution-of-the-dangling-else-problem-other-than-match/68880#68880
 https://math.stackexchange.com/questions/51246/can-someone-explain-the-y-combinator
+https://mathoverflow.net/questions/11540/what-are-the-most-attractive-turing-undecidable-problems-in-mathematics/103415#103415
 
 #Counter-Examples
 ================
@@ -1190,6 +1200,7 @@ http://mathoverflow.net/questions/248167/why-are-the-julia-sets-so-simple-quadra
 http://mathoverflow.net/questions/248186/group-cohomology-and-condensed-matter
 https://mathoverflow.net/questions/315832/what-is-the-fairest-order-for-stage-striking-and-is-it-the-thue-morse-sequence
 https://mathoverflow.net/questions/37276/fairest-way-to-choose-gifts
+https://mathoverflow.net/questions/199926/parodies-of-abstruse-mathematical-writing/200039?stw=2#200039
 
 #Number Theory
 ==============

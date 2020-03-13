@@ -1,0 +1,16 @@
+# Implicit dependencies:
+
+|--cmdparse 3.0.5
+|--erubi 1.9.0
+|--gli 2.19.0
+|--pry 0.12.2
+    |--coderay 1.1.2
+    |--method_source 0.9.2
+|--slop 4.8.0
+
+Clean up
+========
+
+cd ~ruby/core_gems
+rm -rf *(/)
+coregems install cmdparse erubi gli pry slop

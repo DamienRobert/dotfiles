@@ -3,10 +3,10 @@
 rustup update
 
 pkg=($( ruby -e "require 'dr/packages/user'; puts DR::Packages::User::CARGO_TOOLS.values.flatten.join(' ')"))
-cargo +nightly install $pkg
 cargo +nightly install-update -a
+cargo +nightly install $pkg # add new pkgs
 
 cd ~/progs/pkgbuild/rust-utils
 PKGDEST=/tmp makepkg -c -R --sign $@
-pkgver=$(date '+%Y%m%d')
-aur.rb --imb db add /tmp/rust-*utils-$pkgver-*.pkg.tar.xz
+pkgver=$(date '+%Y%m%d') 
+aur.rb --imb db add /tmp/rust-*utils-$pkgver-*.pkg.tar.{xz,zst}(N)

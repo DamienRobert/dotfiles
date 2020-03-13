@@ -27,9 +27,9 @@ module DR
 			end
 			# sometime we want to hide packages (think about npm);
 			# this command will show *all* of them
-			def list_all_packages(*args)
+			def list_all_packages(**opts)
 				return @all_packages if @all_packages
-				@all_packages=list_packages(*args)
+				@all_packages=list_packages(**opts)
 			end
 
 			def package_dependency(pkg)
@@ -65,7 +65,7 @@ module DR
 				g|packages_dependencies(l) if mode != :manual
 				# add trivial deps so that the nodes passed are in the graph
 				deps={}; l.each {|p| deps[p]=[]}; g|deps
-				g.subgraph(*l) if restrict
+				g=g.subgraph(*l) if restrict
 				g
 			end
 

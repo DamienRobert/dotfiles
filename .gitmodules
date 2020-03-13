@@ -1,72 +1,86 @@
+[submodule "doc"]
+	path = doc
+	url = ./doc
 [submodule "@infos"]
 	path = @infos
 	url = ./@infos
+
 [submodule "syst/config/pacnew"]
 	path = syst/config/pacnew
 	url = ./syst/config/pacnew
-[submodule "user/config/dotfiles/.ore"]
-	path = user/config/dotfiles/.ore
-	url = ./user/config/dotfiles/.ore
+
+# [submodule "user/config/dotfiles/.ore"]
+# 	path = user/config/dotfiles/.ore
+# 	url = ./user/config/dotfiles/.ore
+[submodule "user/config/dotfiles/.homeassistant"]
+	path = user/config/dotfiles/.homeassistant
+	url = ./user/config/dotfiles/.homeassistant
+
 [submodule "ruby/gems/aur.rb"]
 	path = ruby/gems/aur.rb
-	url = ./ruby/gems/aur.rb
+	url = git@github.com:DamienRobert/aur.rb.git
 [submodule "ruby/gems/simplecolor"]
 	path = ruby/gems/simplecolor
-	url = ./ruby/gems/simplecolor
+	url = git@github.com:DamienRobert/simplecolor.git
 [submodule "ruby/gems/tiny_singleton"]
 	path = ruby/gems/tiny_singleton
-	url = ./ruby/gems/tiny_singleton
+	url = git@github.com:DamienRobert/tiny_singleton.git
 [submodule "ruby/gems/birthdays"]
 	path = ruby/gems/birthdays
-	url = ./ruby/gems/birthdays
+	url = git@github.com:DamienRobert/birthdays.git
 [submodule "ruby/gems/drain"]
 	path = ruby/gems/drain
-	url = ./ruby/gems/drain
+	url = git@github.com:DamienRobert/drain.git
 [submodule "ruby/gems/shell_helpers"]
 	path = ruby/gems/shell_helpers
-	url = ./ruby/gems/shell_helpers
+	url = git@github.com:DamienRobert/shell_helpers.git
 [submodule "ruby/gems/nano-optparse"]
 	path = ruby/gems/nano-optparse
-	url = ./ruby/gems/nano-optparse
+	url = git@github.com:DamienRobert/nano-optparse.git
 [submodule "ruby/gems/git_helpers"]
 	path = ruby/gems/git_helpers
-	url = ./ruby/gems/git_helpers
+	url = git@github.com:DamienRobert/git_helpers.git
+[submodule "ruby/submodules/ore"]
+	path = ruby/submodules/ore
+	url = https://github.com/ruby-ore-templates/ore
+
 [submodule "progs/pkgbuild"]
 	path = progs/pkgbuild
-	url = ./progs/pkgbuild
+	url = git@github.com:DamienRobert/pkgbuild.git
 [submodule "progs/patches"]
 	path = progs/patches
 	url = ./progs/patches
 [submodule "progs/aurutils"]
 	path = progs/aurutils
-	url = ./progs/aurutils
+	url = git@github.com:DamienRobert/aurutils.git
+	active = false
 [submodule "progs/archlinux_image"]
 	path = progs/archlinux_image
-	url = ./progs/archlinux_image
+	url = git@github.com:DamienRobert/archlinux_image.git
 [submodule "progs/linkutils"]
 	path = progs/linkutils
-	url = ./progs/linkutils
+	url = git@github.com:DamienRobert/linkutils.git
 [submodule "progs/powersave"]
 	path = progs/powersave
-	url = ./progs/powersave
+	url = git@github.com:DamienRobert/powersave.git
 [submodule "progs/sudoku"]
 	path = progs/sudoku
-	url = ./progs/sudoku
+	url = git@github.com:DamienRobert/sudoku.git
 [submodule "progs/vidir2"]
 	path = progs/vidir2
-	url = ./progs/vidir2
+	url = git@github.com:DamienRobert/vidir2.git
 [submodule "progs/greasemonkey"]
 	path = progs/greasemonkey
-	url = ./progs/greasemonkey
+	url = git@github.com:DamienRobert/greasemonkey.git
 [submodule "progs/packer-arch"]
 	path = progs/packer-arch
-	url = ./progs/packer-arch
-[submodule "user/config/dotfiles/.homeassistant"]
-	path = user/config/dotfiles/.homeassistant
-	url = ./user/config/dotfiles/.homeassistant
-[submodule "doc"]
-	path = doc
-	url = ./doc
+	url = git@github.com:DamienRobert/packer-arch.git
 [submodule "progs/rust_tutorial"]
 	path = progs/rust_tutorial
 	url = ./progs/rust_tutorial
+[submodule "progs/test_github"]
+	path = progs/test_github
+	url = git@github.com:DamienRobert/test_github.git
+[submodule "progs/test_github_pages"]
+	path = progs/test_github_pages
+	url = git@github.com:DamienRobert/test_github.git

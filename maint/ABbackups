@@ -57,7 +57,7 @@ full: :common, :data, :booklight
 all: :full + :large + :backup
 
 => unisonsync --all; unisonsync --sync={perso,perso2}; unisonsync -t book
-  TODO: unisonsync --photos (=perso on imb:usbdisk)
+  TODO: unisonsync --photos (=perso on imb:usbdisk) [Done @2020-02-19]
 => unison.rb -t common,data,booklight,book,perso,perso2 ens,4a,imb,feanor,numenor,FleurBleue,durin
 
 Inria Bordeaux
@@ -93,9 +93,18 @@ transfert imb:$RELDIR/ $DIR/
 Mithrim
 =======
 
-* back up to external_disk
-transfert --delete-after ~/data/Photos ~/var/backups ~/media/external_disk/dams/
-transfert --delete-after ~/Videos/clip ~/media/external_disk/dams/Videos/
+* back up to external_disk (obsolete, we transfert directly from Feanor now)
+ # transfert --delete-after ~/data/Photos ~/var/backups ~/media/external_disk/dams/
+ # transfert --delete-after ~/Videos/clip ~/media/external_disk/dams/Videos/
+
+transfert --delete-after ~/var/backups/{archives,dina} ~/media/external_disk/dams/backups/
+
+* From Feanor
+transfert --delete-after feanor:Photos/ ~/media/external_disk/dams/Photos/
+transfert --delete-after feanor:Videos/clip ~/media/external_disk/dams/Videos/
+
+For var/backups: Medias and spools/ is transferred to external_disk in #Feanor below
+                 archives is transfered to mithrim: via unison and then to external_disk
 
 Imb
 ===
@@ -119,8 +128,9 @@ Feanor
   transfert --delete-after ~/large/spools/yaf imb:scratch/backups/spools/
   transfert --delete-after ~/large/Medias imb:scratch/backups
 => Outgoing to Mithrim:external_disk
-  # transfert --delete-after ~/large/spools/forum/forum.xz mithrim:media/external_disk/backup/
-  transfert --delete-after ~/var/backups/Medias/ mithrim:var/backups/Medias/
+  transfert --delete-after ~/large/spools/forum/forum.xz mithrim:media/external_disk/dams/backups/spools/
+  transfert --delete-after ~/large/spools/yaf mithrim:media/external_disk/dams/backups/spools/
+  transfert --delete-after ~/var/backups/Medias/ mithrim:media/external_disk/dams/backups/Medias/
 
 - usb disk small_backup (btrfs):
   sudo mount /mnt/small_backup # don't use udisk to enable zstd compression
@@ -154,6 +164,7 @@ Last Backups
   2019-08-22 for Feanor
   2019-08-21 for inriabdx, forum, imb
   2018-07 for FleurBleue
+  2020-02-19 for Mithrim#external_disk
 
 Notes
 =====

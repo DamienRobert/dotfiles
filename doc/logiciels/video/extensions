@@ -73,5 +73,7 @@ Images
   heif: https://en.wikipedia.org/wiki/High_Efficiency_Image_File_Format
 - flif: lossless but more efficient than png
 - avif: basé sur av1
+  https://netflixtechblog.com/avif-for-next-generation-image-coding-b1d75675fe4
 - flif: https://en.wikipedia.org/wiki/Free_Lossless_Image_Format
   http://flif.info/
+- -> superseded by Jpeg-XL

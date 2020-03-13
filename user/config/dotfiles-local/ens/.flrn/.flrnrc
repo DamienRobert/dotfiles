@@ -61,7 +61,7 @@ name cachan set hist_file_name .hist.cachan
 name cachan color status yellow green bold
 
 # gmane
-name gmane set server news.gmane.org
+name gmane set server news.gmane.io
 name gmane set port 119
 name gmane set flnews_ext .gmane
 name gmane set hist_file_name .hist.gmane

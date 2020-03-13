@@ -1,0 +1,63 @@
+#!/bin/sh
+# https://github.com/arp242/uni/blob/master/dmenu-uni
+#   dmenu-uni all            All codepoints, won't include ZWJ emoji sequences.
+#   dmenu-uni emoji          All emojis.
+#   dmenu-uni emoji-common   Common emojis
+
+fzuni() {
+  local fzf copy common
+  copy="cat"
+  #copy="xclip -rmlastnl -selection clipboard"
+  fzf="fzf"
+  #fzf="dmenu -i"
+  #fzf="rofi -dmenu"
+
+  # Common emojis I use >99% of the time:
+  common="-groups smileys,hand-fingers-open,hand-fingers-partial,hand-single-finger,hand-fingers-closed,hands,body-parts,person-gesture"
+  # Only include gender-neutral "person":
+  #common="$common -gender person"
+  # Set skin tone:
+  #common="$common -tone mediumdark"
+
+  while true;
+  do
+    case "$1" in
+      -- ) break ;;
+      -x ) shift; copy=(xclip -rmlastnl -selection clipboard); fzf=(rofi -dmenu) ;;
+      -c ) shift; common+=" $1"; shift ;;
+      *) break;;
+    esac
+  done
+
+  case "${1:-all}" in
+    # List all codepoints.
+    a|all)
+      uni -q p all |
+        $fzf |
+        grep -o "^'.'" |
+        tr -d "'" |
+        $copy
+      ;;
+  
+    # List all emojis.
+    e|emoj|emoji)
+      uni -q e all |
+        $fzf |
+        cut -d' ' -f1 |
+        $copy
+      ;;
+  
+    # List common facial expressions, excluding flags, guitars, lobsters, map of
+    # Japan, and what-have-you.
+    ec|emoji-common)
+      uni -q e $common | 
+        $fzf |
+        cut -d' ' -f1 |
+        $copy
+      ;;
+  
+    *)
+      echo >&2 "fzuni: unknown '$1'"
+      ;;
+  esac
+}

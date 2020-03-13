@@ -1,0 +1,22 @@
+{
+    "alias": "",
+    "auto_connect": true,
+    "check_updates": false,
+    "config_version": 3,
+    "console-history": [],
+    "decimal_point": 5,
+    "fee_level": 2,
+    "gui_last_wallet": "/home/dams/.crypt-mine/electrum/wallets/default_wallet",
+    "history_rates": "checked",
+    "is_maximized": false,
+    "recently_open": [
+        "/home/dams/.crypt-mine/electrum/wallets/default_wallet",
+        "/home/dams/.crypt-mine/electrum/wallets/wallet_big",
+        "/home/dams/mine/user/config/dotfiles/.electrum/wallets/default_wallet",
+        "/home/dams/.electrum/wallets/default_wallet"
+    ],
+    "rpcpassword": "o9J70SQ_ydiM0FqAVxDG7Q==",
+    "rpcuser": "user",
+    "show_addresses_tab": true,
+    "use_exchange_rate": true
+}

@@ -1,0 +1,46 @@
+zsh alias: XC = '| xclip -rmlastnl -selection clipboard'
+
+* Options
+   -i, -in
+          read  text  into  X  selection from standard input or files (de‐
+          fault)
+   -o, -out
+          print the selection to standard out (generally for piping  to  a
+          file or program)
+   -l, -loops
+          number  of  X selection requests (pastes into X applications) to
+          wait for before exiting, with a value  of  0  (default)  causing
+          xclip  to wait for an unlimited number of requests until another
+          application (possibly another invocation of xclip) takes  owner‐
+          ship of the selection
+   -selection
+          specify  which  X selection to use, options are "primary" to use
+          XA_PRIMARY (default), "secondary"  for  XA_SECONDARY  or  "clip‐
+          board" for XA_CLIPBOARD
+   -verbose
+          provide a running commentary of what xclip is doing
+   -r, -rmlastnl
+              when the last character of the selection is a newline character,
+              remove it. Newline characters that are not the last character in
+              the selection are not affected. If the selection  does  not  end
+              with a newline character, this option has no effect. This option
+              is useful for copying one-line output of programs  like  pwd  to
+              the  clipboard to paste it again into the command prompt without
+              executing the line immideately due to the newline character  pwd
+              appends.
+
+* Exemples:
+  $ uptime | xclip
+  Put your uptime in the X selection. Then middle click in an X  applica‐
+  tion to paste.
+ 
+  $ xclip -loops 10 -verbose /etc/motd
+  Exit  after  /etc/motd  (message  of the day) has been pasted 10 times.
+  Show how many selection requests (pastes) have been processed.
+ 
+  $ xclip -o > helloworld.c
+  Put the contents of the selection into a file.
+ 
+  $ xclip -t text/html index.html
+  Middle click in an X application supporting HTML to paste the  contents
+  of the given file as HTML.

@@ -47,11 +47,13 @@
 	colorMoved = dimmed-zebra
 	colorMovedWS = allow-indentation-change
 [fetch]
-	writeCommitGraph=true # this is part of feature.experimental
+	writeCommitGraph = true # this is part of feature.experimental
+	recurseSubmodules = on-demand
 [format]
 	signoff = true
 	numbered = true
 	coverLetter= auto
+	coverFromDescription = auto
 	#useAutoBase = true
 	#signature = ""
 [instaweb]
@@ -62,6 +64,7 @@
 [merge]
 	tool = gvimdiff
 	defaultToUpstream = true
+	directoryRenames = true #default to conflict
 [mergetool]
 	prompt = false
 [notes]
@@ -92,8 +95,9 @@
 	aliasfiletype=mutt
 	confirm = auto
 	annotate = true
-	#set up repo by repo
-	#cccmd=git-cc
+	tocover = true
+	cccover = true
+	#cccmd=git-cc # set up repo by repo or via `git my patch send`
 [status]
 	submodulesummary = true
 [submodule]
@@ -111,6 +115,7 @@
 	pushInsteadOf = "aur:"
 [url "https://github.com/"]
 	insteadOf = "gh:"
+	insteadOf = "github:"
 [url "git@github.com:"]
 	pushInsteadOf = "gh:"
 [url "git@github.com:DamienRobert/"]
@@ -161,6 +166,7 @@
 	rs-m = reset --merge
 	rs-k = reset --keep
 	count = count-objects
+	midx = multi-pack-index
 
 	# long alias
 	noteslog = !sh -c 'git log $(git notes get-ref) "$@"' --
@@ -270,6 +276,7 @@
 	subsm="! git --no-pager submodule summary"
 	subadd="submodule foreach --recursive --quiet git add"
 	subci="!f() { git mysubfor git commit \"$@\";}; f"
+	subciA="!f() { git subadd -A; git subci \"$@\";}; f"
 	subaddci="!f() { git subadd \"$@\"; git subci;}; f"
 	subdi="!f() { git mysubfor git di --color \"$@\";}; f"
 	subdc="!f() { git mysubfor git dc --color \"$@\";}; f"
@@ -279,10 +286,11 @@
 	#recdi="! ( git di --color \"$@\" && git subdi \"$@\"\" ) | less || :"
 	recdi="di --submodule=diff"
 	recdc="di --cached --submodule=diff"
-	#ciAll: alias are case insensitive => ciaall
+	#ciAll: alias are case insensitive => recciA
 	recci="!f() { git subci \"$@\"; git ci \"$@\";}; f"
-	recciA="!f() { git subadd -A; git subci \"$@\"; git add -A; git ci \"$@\";}; f"
+	recciA="!f() { git subciA \"$@\"; git add -A; git ci \"$@\";}; f"
 	recpush="push --recurse-submodules=on-demand"
+	no-rs = -c submodule.recurse=0
 
 	# diff
 	highlight = "!f() { [ \"$GIT_PREFIX\" != \"\" ] && cd \"$GIT_PREFIX\"; GIT_PAGER=\"diff-fancy.rb\" git $@; }; f"
@@ -308,3 +316,6 @@
 	# push
 	pushall="!f() { git remote | xargs -P0 -L1 -I R -- git push R $@; }; f"
 	pushask="!f() { git remote | xargs -P0 -p -L1 -I R -- git push R $@; }; f"
+
+	# for debug
+  debug = "! pwd; env"

@@ -3,12 +3,28 @@ vim: ft=markdownlight fdm=expr
 [!] Installed [+] Interesting
 Liste de logiciels libres: http://enacit.epfl.ch/logiciel-libre/
 
+Cloud
+=====
+
++ nextcloud (opensource), fork de owncloud
+- https://en.wikipedia.org/wiki/Seafile
+  Seafile is an open-source, cross-platform file-hosting software system
+
 Password manager
 ================
 
 - lastpass
 + bitwarden
 -> set up bitwarden server, using docker and bitwarden_rs (=bitwarden server reimplemented in rust) https://tech.oeru.org/setting-your-own-bitwarden-password-keeper-and-sync-server
+  - aur server: {bitwarden_rs, bitwarden_rs-vault}{,-git}, bitwarden-server
+      (bitwarden-server is just a docker wrapper)
+    aur clients: bitwarden{,-bin,-git}, bitwarden-cli{,-bin,-git}
+      bitwarden: https://github.com/bitwarden/desktop/archive/v${pkgver}.tar.gz
+      bitwarden-bin: https://github.com/bitwarden/desktop/releases/download/v${pkgver}/Bitwarden-${pkgver}-amd64.deb
+      The cli is: https://github.com/bitwarden/cli/archive/v${pkgver}.tar.gz
+      The cli-bin is https://github.com/bitwarden/cli/releases/download/v$pkgver/bw-linux-$pkgver.zip
+  - https://github.com/mvdan/bitw, Minimalist BitWarden client in go (aur: bitw-git})
+  - https://github.com/mattydebie/bitwarden-rofi (aur: bitwarden-rofi{,-git})
 
 Backups
 =======
@@ -368,7 +384,8 @@ kodi [was xbmc]: interface graphique par dessus (xbox media center)
          + chromecast: https://unix.stackexchange.com/questions/291975/how-do-i-stream-to-chromecast-using-vlc)
         android => bubbleupnp (server+client + chromecast)
 
-- serveurs de media: plex, emby, jellyfish (open source)
+- serveurs de media: plex, emby, jellyfish (fork open source de emby)
+  Utilisent kodi comme moteur sous jacent
 
 Photos
 ------
@@ -753,9 +770,6 @@ Emoji
 + https://github.com/dematerializer/emoji-finder (nodejs)
   inspired by emoj
   -> can add several emojis at once, better search results
-- https://github.com/b4b4r07/emoji-cli
-  Emoji completion on the command line (zsh)
-  Outputs :emojy:
 + https://github.com/arp242/uni
   Query the Unicode database from the commandline, with good support for emojis
   Has a dmenu and rofi integration
@@ -772,7 +786,7 @@ Emoji
   - $ uni e/emojy cry
     😢 crying face         Smileys & Emotion  face-concerned
     😭 loudly crying face  Smileys & Emotion  face-concerned
-    $ uni e -groups cat-face #search group (can match the Smileys & Emotion or face-concerned classification from above)
+    $ uni e -groups cat-face #search group (can match the 'Smileys & Emotion' or 'face-concerned' classification from above)
     😺 grinning cat                    Smileys & Emotion  cat-face
     😸 grinning cat with smiling eyes  Smileys & Emotion  cat-face
     $ uni e -groups cat-face tears
@@ -784,7 +798,10 @@ Emoji
 
 - https://github.com/mrowa44/emojify (shell)
   emojify substitutes emoji aliases that many services (like GitHub) use for emoji raw characters.
-  $ emojify "Hey, I just :raising_hand: you, and this is :scream: , but here's my :calling: , so :telephone_receiver: me, maybe?"
+  $ emojify "Hey, I just :raising_hand: you, and this is :scream: , but here's my :calling: , so :telephone_receiver: me, maybe?" -> gives emojis
+- https://github.com/b4b4r07/emoji-cli
+  Emoji completion on the command line (zsh)
+  Outputs :emojis:
 
 Modern cli
 ==========
@@ -827,6 +844,11 @@ https://github.com/jingweno/ccat
   Elastic tabstops for Rust.
 - https://github.com/BurntSushi/xsv
   A fast CSV command line toolkit written in Rust.
+- https://github.com/BurntSushi/suffix
+  Fast suffix arrays for Rust (with Unicode support).
+
+* https://github.com/leahneukirchen/xe
+simple xargs and apply replacement
 
 Rust cli
 ========
@@ -1336,3 +1358,20 @@ Games
 - Worms armaggeddon et world party
 - Blobby volley
 - Icy towers
+
+Enfants
+=======
+
+* Godot (2d/3d games)
+- https://godottutorials.pro/how-to-make-games-godot/
+- https://godottutorials.pro/fps-godot-tutorial/
+
+* snap!/scratch: language
+  https://cseducators.stackexchange.com/questions/112/what-can-snap-do-that-scratch-cannot
+  https://thestempedia.com/blog/scratch-coding-alternatives-for-teaching-kids-to-code/
+
+* https://www.turingtumble.com/
+  marble powered computers
+
+* Robots: poppy
+  https://www.poppy-project.org/en/

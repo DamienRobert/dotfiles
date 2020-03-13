@@ -65,6 +65,7 @@ out/
 *.zip
 *.tgz
 *.lrz
+*.zst
 
 #gpg are usually best ignored
 *.gpg
@@ -117,3 +118,4 @@ vendor/bundle
 .tags.files
 .tags.temp
 .tags
+.notags

@@ -3,19 +3,19 @@ vim: ft=markdownlight fdm=expr
 fzf tools
 =========
 
-http://owen.cymru/fzf-ripgrep-navigate-with-bash-faster-than-ever-before/
-https://medium.com/@sidneyliebrand/how-fzf-and-ripgrep-improved-my-workflow-61c7ca212861
-https://github.com/junegunn/fzf/wiki
-https://github.com/junegunn/fzf/wiki/examples
+- http://owen.cymru/fzf-ripgrep-navigate-with-bash-faster-than-ever-before/
+- https://medium.com/@sidneyliebrand/how-fzf-and-ripgrep-improved-my-workflow-61c7ca212861
+- https://github.com/junegunn/fzf/wiki
+- https://github.com/junegunn/fzf/wiki/examples
 
-fzf+cd bookmarks: https://dmitryfrank.com/articles/shell_shortcuts
-fzf + chrome history: https://junegunn.kr/2015/04/browsing-chrome-history-with-fzf/
-fzf + git: https://junegunn.kr/2016/07/fzf-git/
-fzf + extract path: https://github.com/edi9999/path-extractor
+- fzf+cd bookmarks: https://dmitryfrank.com/articles/shell_shortcuts
+- fzf + chrome history: https://junegunn.kr/2015/04/browsing-chrome-history-with-fzf/
+- fzf + git: https://junegunn.kr/2016/07/fzf-git/
+- fzf + extract path: https://github.com/edi9999/path-extractor
 
-vim and fzf: https://statico.github.io/vim3.html
+- vim and fzf: https://statico.github.io/vim3.html
 
-Other fuzzy finders:
+* Other fuzzy finders:
 https://github.com/lotabout/skim (in rust)
 
 Standard fzf options
@@ -72,19 +72,22 @@ kill  <TAB>, cd dir**; ls files**; ssh **; unset/unalias/export **
 ^g^r: remote
 ^g^h: log
 
+* shell script
+fzmpd --genre/--artist/--album/--title/[--playlist]
+
 * shell functions
-fzbin [--fork/--exec]: show path directories and the bin in the paths
+fzbin [-f/-x/--fork/--exec]: show path directories and the bin in the paths
 fzedit: preview && $EDITOR $files [might as well use 'edit' alias]
   -> files=("$(preview -m --print0)") && $EDITOR ${(0@)files}
   -> vs edit='fzv --tmux --edit -- -1'
 fzlpass: get lastpass passwords
 fzpdf: uses fast-p to search words in pdf
-  [`fd .pdf | fast-p` to extract text. Cache in ~/.cache/fast-p-pdftotext-output]
-fzrg: calls fzf on the results of rg
+  [Uses `fd .pdf | fast-p` to extract text. Cache in ~/.cache/fast-p-pdftotext-output]
+fzrg: calls fzf on the results of rg and then edit the file
 fztags: search .tags
 
 * fzv: fzf with a preview defined
-       + add the 'alt-c' shortcut
+       + add the 'alt-c' shortcut [-> calls cdl]
 
   $fzf_start ${=preargs} | FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $fzf_opts" $fzf_post $@
   fzf_preview_file="unbuffer -p vimcat {}"
@@ -93,7 +96,7 @@ fztags: search .tags
   Options:
 	# File selection:
 	-b|--bookmarks ) Add frequently looked at files
-	-a|--all ) -d|--dir ) -f|--files ): fd settings
+	-a|--all ) -d|--dir ) -f|--files ): fd settings (default -f)
 	-l|--locate ) Use locate
 	# Generic commands
 	--pre ) preargs
@@ -106,10 +109,10 @@ fztags: search .tags
 	--bat ) --cat ) --vimcat )  #default to bat
 	# Action after fzf selection (default is print)
 	-e|--edit ) -v|--visual ) -o|--open ) --print0 ) --cd )
+	--bare ) #There is no actions
 	# Misc
 	--cdup ) #Call fzf on ../../... folders and cd to it
 	--complete ) # for use in other completion functions
-	--bare ) #There is no actions
 	--query) #optional query parameter
 
 * shell aliases
@@ -120,8 +123,5 @@ open="fzv --tmux --open -- -1"
 cdup="fzv --tmux --cdup --"
 fzcd="fzv --tmux -d --cd --query"
 
-* shell script
-fzf_mpd --genre/--artist/--album/--title/--playlist
-
 * Divers
-path-extractor (alias IPE): g s IPE fzv / g s IPZ
+path-extractor (alias IPE): g s IPE fzv / g s IPZ [IPZ = IPE | fzv]

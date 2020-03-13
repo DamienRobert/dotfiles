@@ -1049,3 +1049,17 @@ https://arxiv.org/abs/1807.02890
 Instability in invariant theory
 George Kempf
      Transcriber's note: In the fall of 1976, my advisor, David Mumford, handed me a short preprint by George Kempf to read. It was the first state of what eventually became his influential Annals paper "Instability in Invariant Theory" (Annals of Mathematics, Second Series, Vol. 108, No. 2 (Sep., 1978), pp. 299-316). The introduction to the published version ends with an acknowledgement and a dig: "I want to thank the referee of the first version of this paper for pointing out Corollary 4-5 and conjecturing that the original {0}-instability could be replaced by S-instability. Unfortunately, the inclusion of S-instability has completely destroyed the simplicity of the original version." Over the intervening years, the simplicity and elegance of the first version has continued to create a readership for it, and copies (see Figure 8) continue to circulate informally. I created this LaTeX'ed version to make the paper accessible to all who may be interested in it, trying to keep the look close to that of the original typewritten preprint and making changes only to correct a few obvious typos and harmonize the markup. My thanks to George's children, Robin and Lucas Kempf, for graciously granting me permission to post this transcription. Comments welcome to Ian Morrison (morrison@fordham.edu)
+
+https://arxiv.org/abs/2002.07648
+Compact Merkle Multiproofs
+Lum Ramabaja, Arber Avdullahu
+    The compact Merkle multiproof is a new and significantly more memory-efficient way to generate and verify sparse Merkle multiproofs. A standard sparse Merkle multiproof requires to store an index for every non-leaf hash in the multiproof. The compact Merkle multiproof on the other hand requires only k leaf indices, where k is the number of elements used for creating a multiproof. This significantly reduces the size of multirpoofs, especially for larger Merke trees.
+
+https://arxiv.org/pdf/1905.12097.pdf
+INTERPOLATION OVERZAND TORSION IN CLASS GROUPS
+JOHN BERMAN AND DANIEL ERMA
+
+https://arxiv.org/pdf/1501.02446.pdf
+Categories of abelian varieties over finite fields I
+Abelian varieties over Fp
+TOMMASO GIORGIO CENTELEGHE AND JAKOB STIX

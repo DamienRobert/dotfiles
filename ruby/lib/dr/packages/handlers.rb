@@ -239,6 +239,12 @@ module DR
 				nil
 			end
 
+			def bootstrap(**opts)
+				super do |**opts|
+					"bootstrap command"
+				end
+			end
+
 			def parse_packages(list)
 				super do |pkg|
 					# strip version numbers
@@ -257,12 +263,15 @@ module DR
 				end
 			end
 			# eventually if the way to have the packages already give the deps:
+			# list_packages and package_dependency use this if it is defined
+			# since all other functions use these functions they will all use
+			# full_graph
 			# def full_graph
 			# 	Graph.new(full_deps)
 			# end
 
 			def package_dependencies(pkgs)
-				{deps}
+				{deps} # by default use package_dependency
 			end
 			# or define this (but this will be slower since this will be called
 			# for each package)

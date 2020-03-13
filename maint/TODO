@@ -1,3 +1,7 @@
+vim: ft=markdownlight fdm=expr
+
 - clean up Mails
 - Archive? cf 2015-09-Ecc/ big photos for poster
 - reorg sync directories via unison?
+- pour les répertoires git pollués par des pdf, voir si je peux faire du
+  replace pour les cleaner localement

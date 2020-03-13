@@ -1,3 +1,5 @@
+vim: ft=markdownlight fdm=expr
+
 Ansible
 =======
 

@@ -1,6 +1,16 @@
-    ext3 can generally be avoided: it is often slower than ext4 or xfs, yet it has the more limited feature set; for example, it is a little more prone to fragmentation. However, its greatest limitation came in the form of the maximum volume size of “only” 16 TB: with todays drive capacities (up to 4 TB for a single drive), it will quickly give up. Moreover, to reach these capacities you had to increase its block size, and this will lead to greater wasted space.
-    ext4 and xfs are two mature, reliable filesystems that can be used everywhere, form server space to laptop hard disk. Ext4 has very good write and metadata performances, but slightly lower read speed than xfs;
-    btrfs is generally slower than ext4 or xfs, but it has many unique features (eg: snapshots).
+Doc
+===
+
+- https://github.com/msuhanov/Linux-write-blocker
+  The kernel patch and userspace tools to enable Linux software write blocking
+  Nice documentation on the limits of 'mount ro'
+
+Normal fs
+=========
+
+- ext3 can generally be avoided: it is often slower than ext4 or xfs, yet it has the more limited feature set; for example, it is a little more prone to fragmentation. However, its greatest limitation came in the form of the maximum volume size of “only” 16 TB: with todays drive capacities (up to 4 TB for a single drive), it will quickly give up. Moreover, to reach these capacities you had to increase its block size, and this will lead to greater wasted space.
+- ext4 and xfs are two mature, reliable filesystems that can be used everywhere, form server space to laptop hard disk. Ext4 has very good write and metadata performances, but slightly lower read speed than xfs;
+- btrfs is generally slower than ext4 or xfs, but it has many unique features (eg: snapshots).
 
 In light of these considerations, for the general desktop Linux user I recommend the use of ext4 or xfs. Remember that ext4 great metadata handling should give you shorter waiting times when you are managing large number of small file – for example, during system updates. On the other hand, very good read speed and fragmentation resilience give xfs an edge in mostly-read tasks – which are the tasks commonly executed by home users.
 
@@ -25,12 +35,13 @@ http://en.wikipedia.org/wiki/SquashFS
 
 aufs (short for advanced multi layered unification filesystem) implements a union mount for Linux file systems.
 unionfs: an older union mount project
-overlayfs: a successor of aufs merged in the kernel
+overlayfs: a successor of aufs merged in the kernel [used by docker]
+wrapfs: https://wrapfs.filesystems.org/ minimalist Stackable Passthru File System
 
 Fusefs
 ======
 
-- https://github.com/rpodgorny/unionfs-fuse
++ https://github.com/rpodgorny/unionfs-fuse
   union filesystem using fuse [in arch]
 - https://github.com/containers/fuse-overlayfs
   An implementation of overlay+shiftfs in FUSE for rootless containers.

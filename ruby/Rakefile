@@ -17,14 +17,27 @@ rescue LoadError => e
     warn e.message
   end
 end
+desc "Generate documentation"
 task :doc => :yard
 
-task :version do |t|
+desc "Get all gem versions"
+task :versions do |t|
 	require 'pathname'
 	Pathname.new("gems").children.each do |gemdir|
 		Dir.chdir(gemdir) do
 			print "#{gemdir}: "
 			system('rake version 2>/dev/null')
+		end
+	end
+end
+
+desc "Get all infos"
+task :infos do |t|
+	require 'pathname'
+	Pathname.new("gems").children.each do |gemdir|
+		Dir.chdir(gemdir) do
+			print "#{gemdir}: "
+			system('rake infos 2>/dev/null')
 		end
 	end
 end

@@ -12,12 +12,14 @@ vim: foldmethod=expr ft=markdownlight
 # Plugins
 
 ## gui
-neovim gui: nyaovim (npm: electron) https://github.com/rhysd/NyaoVim
-gtk: http://www.wezm.net/technical/2017/12/a-killer-linux-gui-for-neovim-neovimgtk/ => https://github.com/daa84/neovim-gtk
-https://github.com/dzhou121/gonvim (qt)
-https://github.com/equalsraf/neovim-qt (qt, more active, in archlinux)
-https://github.com/onivim/oni neovim IDE; replaced by oni2 [=neovim+vscode]
-https://github.com/vhakulinen/gnvim GUI for neovim, without any web bloat (in rust)
+neovim gui:
+- nyaovim (npm: electron) https://github.com/rhysd/NyaoVim
+- gtk: http://www.wezm.net/technical/2017/12/a-killer-linux-gui-for-neovim-neovimgtk/ => https://github.com/daa84/neovim-gtk
+- https://github.com/dzhou121/gonvim (qt)
+- https://github.com/equalsraf/neovim-qt (qt, more active, in archlinux)
+- https://github.com/onivim/oni neovim IDE; replaced by oni2 [=neovim+vscode]
+- https://github.com/vhakulinen/gnvim GUI for neovim, without any web bloat (in rust)
+- https://www.reddit.com/r/rust/comments/fc1l3y/no_nonsense_neovim_client_in_rust/ https://github.com/Kethku/neovide
 
 ## code
 start:

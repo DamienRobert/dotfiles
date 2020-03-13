@@ -30,3 +30,20 @@ int main()
    }
 }
 ~~~
+
+# switch
+https://stackoverflow.com/questions/252489/why-was-the-switch-statement-designed-to-need-a-break
+https://stackoverflow.com/questions/4241545/c-switch-case-curly-braces-after-every-case
+
+~~~ c
+switch(i) {
+  case 1: {
+    int j = 4;
+    ...code...
+  } break;
+
+  case 2: {  //No variable being declared! Brace OK?
+    ...code...
+  } break;
+}
+~~~

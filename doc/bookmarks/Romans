@@ -167,6 +167,9 @@ https://www.wired.com/2012/12/and-the-winner-is-readers-choice-for-top-10-scienc
   - Snow Crash by Neal Stephenson
   - Ringworld by Larry Niven
 
+"Empress of Forever" by Max Gladstone
+cf https://www.reddit.com/r/SneerClub/comments/f8sou5/peter_gulped_on_a_rational_level_voldemort_had/
+
 Maths
 =====
 

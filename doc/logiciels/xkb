@@ -1,10 +1,14 @@
+vim: ft=markdownlight fdm=expr
+
 Xkbmap
 ======
 
+~/.Xkbmap
 fr(oss)+compose(menu)+capslock(capslock)+altwin(meta_alt)+nbsp(level3n)+srvr_ctrl(xfree86)+terminate(ctrl_alt_bksp)
 
-#cf /usr/share/X11/xkb/symbols
-compose(menu):
+-> cf /usr/share/X11/xkb/symbols
+
+## compose(menu):
   partial modifier_keys
   xkb_symbols "menu" {
       key <MENU>  { type[Group1]="TWO_LEVEL", [ Multi_key, Multi_key ] };
@@ -24,7 +28,7 @@ nbsp(level3n) groups are given by [None,Shift,AltGr,AltGr+Shift]
     };
   };
 
-altwin(meta_alt) (Meta=Shift+Alt)
+## altwin(meta_alt) (Meta=Shift+Alt)
   // Meta is mapped to second level of Alt keys.
   partial modifier_keys
   xkb_symbols "meta_alt" {
@@ -35,7 +39,7 @@ altwin(meta_alt) (Meta=Shift+Alt)
   //  modifier_map Mod4 {};
   };
 
-level3(ralt_switch)
+## level3(ralt_switch)
   // These partial variants assign ISO_Level3_Shift to various XKB keycodes
   // so that the third shift level can be reached.
 
@@ -50,7 +54,7 @@ level3(ralt_switch)
     include "level3(modifier_mapping)"
   };
 
-srvr_ctrl(xfree86)
+## srvr_ctrl(xfree86)
   // Actions which control the server's behavior.
   partial keypad_keys function_keys
   xkb_symbols "xfree86" {
@@ -58,14 +62,14 @@ srvr_ctrl(xfree86)
       include "srvr_ctrl(fkey2vt)" -> Ctrl+Alt+Keypad
   };
 
-capslock(capslock)
+## capslock(capslock)
   default  partial hidden modifier_keys
   xkb_symbols "capslock" {
       replace key <CAPS> { [ Caps_Lock ] };
       modifier_map Lock { Caps_Lock };
   };
 
-terminate(ctrl_alt_bksp)
+## terminate(ctrl_alt_bksp)
   default  partial modifier_keys
   xkb_symbols "ctrl_alt_bksp" {
       key <BKSP> {
@@ -74,7 +78,7 @@ terminate(ctrl_alt_bksp)
       };
   };
 
-keypad(oss):
+## keypad(oss):
   keypad_keys
   xkb_symbols "oss" {
       include "keypad(core)"
@@ -141,11 +145,51 @@ fr(oss)
       include "keypad(oss)"
       ...
 
+## Divers
 REM: the level5(rctrl_switch) is super annoying, this put right control to
 fifth shift level, which is only used for nbsp(level4n) (ie
 ctrl+shift+space->narrow space), but I use nbsp(level3n) (ie
 altgr+shift+space->narrow space), so this kills my Right Control Key for
 nothing!
+
+Config
+======
+
+https://who-t.blogspot.com/2020/02/user-specific-xkb-configuration-part-1.html
+> The new libxkbcommon release changes two things:
+> - it prepends $XDG_CONFIG_HOME/xkb/ to the lookup path for XKB rules (and
+> other files). [...]
+> - Secondly, rules files now support an include statement. This means you
+> can set your own rules and include system rules.
+
+Exemple of xkb config:
+
+xkb_keymap {
+  xkb_keycodes { include \"evdev+aliases(azerty)\" };
+  xkb_types { include \"complete\" };
+  xkb_compat { include \"complete\" };
+  xkb_geometry { include \"pc(pc105)\" };
+  xkb_symbols {
+
+    // include \"pc+fr+...\"
+    include \"pc\"
+    include \"fr\"
+    include \"inet(evdev)\"
+    include \"compose(menu)\"
+    include \"altwin(meta_win)\"
+    include \"level3(ralt_switch)\"
+    include \"terminate(ctrl_alt_bksp)\"
+
+    key <LatO> { [ o, O, oe, OE ] };
+    key <LatJ> { [ j, J, oslash, Ooblique ] };
+    key <LatN> { [ n, N, ntilde, Ntilde ] };
+    key <LALT> { [ Alt_L ] };
+    key <NMLK> { [ Num_Lock, Pointer_EnableKeys ] };
+    key <MENU> { [ Multi_key, Menu ] };
+
+$extra_keys
+  };
+};
 
 Xcompose
 ========
@@ -160,3 +204,6 @@ gnome
 Desactivate gnome xkb configuration to let me use my custom ones:
 gconftool-2 --type boolean --set /desktop/gnome/peripherals/keyboard/xkb/overrideSettings false
 gconftool-2 --type boolean --set /apps/gnome_settings_daemon/plugins/keyboard false
+
+Apparently gnome/gtk compose settings was hardcoded, but it seems I can use
+my custom .Xcompose

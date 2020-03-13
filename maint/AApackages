@@ -8,7 +8,7 @@ $ aur.rb db clean -f
 # ========
 
 Summary:
-  ./packages.rb [-t user, syst]
+  ./packages.rb [-t user, syst] [-v/--verbose]
      [show] list list-all pristine get-all get rm rm-extra rm-unused fix_unused top_pkgs all_pkgs pkg_search
      show_infos update check_update update_or_check clean bootstrap install uninstall change_mode clean_cache search show_top show_all show_graph clean_cache
   [Note: type is automatically determined if not specified]
@@ -17,7 +17,7 @@ Summary:
   -> clean: ./packages.rb --shell=exec clean
 
 => maintenance:
-./packages.rb --shell=exec fix_unused
+./packages.rb --shell=exec fix_unused # change mode to :manual
 ./packages.rb --shell=exec rm-unused
 ./packages.rb --shell=exec clean
 
@@ -59,7 +59,6 @@ Examples:
 ~maint/packages.rb rm #remove extra pkgs
 ~maint/packages.rb pristine #both of the above
 ~maint/packages.rb bootstrap
-~rubydr/packages/handler -t arch_abs change_mode go
 ~rubydr/packages/handlers.rb -t arch_abs change_mode go => ~rubydr/packages/handlers/arch_abs.rb change_mode go
 
 In ruby:
@@ -298,6 +297,7 @@ gitfolders -l all
 gitfolders -l opt update -a #update [called by package_git_optdist]
 gitfolders -l prodist update -a
 gitfolders -l usrdist update -a
+gitfolders -l vimscript update -a
 
 gitfolders --mirror durin #mirror all repos with durin as upstream to durin
 gitfolders --mirror #by default mirror to mathrice and durin
@@ -346,12 +346,14 @@ MANPATH='...:/home/imb/damienrobert/.opam/default/man'; export MANPATH;
 PATH='/home/imb/damienrobert/.opam/default/bin:...'
 
 * Opam root: https://opam.ocaml.org/doc/Manual.html
-OPAMROOT=...
+OPAMROOT=... (default to ~/.opam)
 opam --root=...
 
-opam #available on aur
+opam #available on abs
 # https://opam.ocaml.org/doc/1.1/Basic_Usage.html
 opam list -a            # List all available packages
+opam list -> list installed packages
+opam list --roots -> list explicitely installed packages
 opam search QUERY       # List packages with QUERY in their name or description
 opam info PACKAGE       # Display information about PACKAGE
 opam update             # Update the packages database

@@ -44,7 +44,7 @@ module DR
 					"#{@packager} #{o} install -u"
 				end
 			end
-			def check_update(*args)
+			def check_update(*args, **kw)
 				super do |o|
 					# "#{@packager} #{o} --aur -Pu"
 					"#{@packager} #{o} install -cu"

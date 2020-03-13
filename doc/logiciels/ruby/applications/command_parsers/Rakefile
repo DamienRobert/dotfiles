@@ -44,6 +44,7 @@ namespace "foo" do
 	# with a '^^' goes up two levels in the namespace scope...
 	# eg lookup('^tic')
 end
+# on peut specifier un namespace directement dans la task:
 	desc "baz in foo namespace"
 task 'foo:baz' do
 	puts ENV['baz']
@@ -206,4 +207,13 @@ end
       [task_name, arg_names, deps]
     end
     private :resolve_args_with_dependencies
+
+  Note: https://www.dan-manges.com/blog/modifying-rake-tasks
+  When defining a Rake Task twice, the new prerequisites are appended to the existing ones, and the block for the task is added to the previously defined behavior.
+  One can also use enhance:
+  Rake::Task[:foo].enhance [:add_prereq_1, :add_prereq_2]
+  Rake::Task["db:test:prepare"].enhance do
+    Rake::Task["db:test:special_task_after_prepare"].invoke
+  end
+  Rake::Task.task_defined?(:foo) #=> true
 =end

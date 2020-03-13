@@ -232,6 +232,7 @@ Ex: mkarchroot /opt/archchroot/root base-devel
   -T         Build in a temporary directory
   -U         Run makepkg as a specified user
 
+CHROOT=/var/lib/aurbuild/x86_64
 Ex: arch-nspawn $CHROOT/root pacman -Syu
     /var/abs/core/openssh $ makechrootpkg -c -r $CHROOT
     (-> mount bind $CHROOT/root into $CHROOT/dams and build the package in

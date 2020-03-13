@@ -162,8 +162,10 @@ Add audio to an image
 Presets
 -------
 
-http://x265.readthedocs.org/en/latest/presets.html
+- http://x265.readthedocs.org/en/latest/presets.html
 ultrafast superfast veryfast faster fast medium slow slower veryslow placebo
+
+- http://x265.org/revamped-veryslow-slower-presets-x265-ver-3-0/
 
 -> tox265 -preset medium ...
 

@@ -172,6 +172,7 @@ if $PROGRAM_NAME == __FILE__
 	keys[:gpg] = opts[:gpg] if opts.key?(:gpg)
 	keys[:authfile] = ARGV[1] if ARGV[1]
 	auth = DR::AuthInfo.get_authinfo(**keys)
+	# Note: get_authinfo has for default gpg: true, and authfile=~config/.authinfo
 	# with --offlineimap only keep authinfo relating to maildirs
 	if opts[:offlineimap]
 		auth.keep_if { |_k, v| v.key?(:maildir) }
